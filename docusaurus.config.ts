@@ -100,8 +100,8 @@ const config: Config = {
           title: 'Docs',
           items: [
             {
-              label: 'Tutorial',
-              to: '/docs/intro',
+              label: 'TunaOS',
+              to: '/docs/tuna-os',
             },
           ],
         },
