@@ -4,6 +4,7 @@
 
 ### **Intro**
 
+* [What are Bootable Containers? - IBM Tech](https://www.youtube.com/watch?v=cBom7aDuy9w)
 * [Flock 2024 Bootable Containers A deep dive into image based OS](https://www.youtube.com/watch?v=uNZuYBq5XfI) \- [Dan Walsh](https://www.redhat.com/en/authors/dan-walsh) (Father of SELinux/Podman)  
 * [**bootc-dev/bootc: Boot and upgrade via container images \- GitHub**](https://github.com/bootc-dev/bootc)  
   * The official project repository, a great place to start for a high-level overview of the project's goals, status, and community.  
