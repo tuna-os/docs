@@ -17,7 +17,7 @@ function HeroGraphics(): ReactNode {
                 <div className={styles.powerText}>Powered by</div>
                 <div className={styles.bootcContainer}>
                   <img 
-                    src="/docs/img/bootc-logo.png" 
+                    src="img/bootc-logo.png" 
                     alt="Bootc Logo" 
                     className={styles.bootcLogo}
                   />
