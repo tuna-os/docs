@@ -6,8 +6,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'TunaOS',
-  tagline: 'Dinosaurs and Tuna are cool',
-  favicon: 'img/favicon.ico',
+  tagline: 'A Collection of Cloud-Native Enterprise Linux OS Images',
+  favicon: 'img/favicon.svg',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -18,12 +18,12 @@ const config: Config = {
   url: 'https://tuna-os.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: '/docs/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'tuna-os', // Usually your GitHub org/user name.
-  projectName: 'TunaOS', // Usually your repo name.
+  projectName: 'docs', // Usually your repo name.
   trailingSlash: false, // Set to true if you want to add a trailing slash to all URLs.
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -45,23 +45,9 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/tuna-os/docs/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/tuna-os/docs/tree/main/',
         },
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/tuna-os/docs/tree/main/packages/create-docusaurus/templates/shared/',
-          // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
+        blog: false, // Disable blog
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -71,23 +57,22 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/tunaos-social-card.png',
     navbar: {
-      title: 'My Site',
+      title: 'TunaOS',
       logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
+        alt: 'TunaOS Logo',
+        src: 'img/tuna-logo.svg',
       },
       items: [
         {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Documentation',
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/tuna-os/docs',
+          href: 'https://github.com/tuna-os/tunaOS',
           label: 'GitHub',
           position: 'right',
         },
@@ -97,11 +82,36 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: 'TunaOS',
           items: [
             {
-              label: 'TunaOS',
-              to: '/docs/tuna-os',
+              label: 'Documentation',
+              to: 'docs/intro',
+            },
+            {
+              label: 'System Requirements',
+              to: 'docs/system-requirements',
+            },
+          ],
+        },
+        {
+          title: 'Variants',
+          items: [
+            {
+              label: 'Albacore (AlmaLinux)',
+              to: 'docs/albacore',
+            },
+            {
+              label: 'Yellowfin (AlmaLinux Kitten)',
+              to: 'docs/yellowfin',
+            },
+            {
+              label: 'Bonito (Fedora)',
+              to: 'docs/bonito',
+            },
+            {
+              label: 'Skipjack (CentOS)',
+              to: 'docs/skipjack',
             },
           ],
         },
@@ -109,16 +119,16 @@ const config: Config = {
           title: 'Community',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              label: 'Matrix Chat',
+              href: 'https://matrix.to/#/%23tunaos:reilly.asia',
             },
             {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              label: 'Universal Blue Discord',
+              href: 'https://discord.gg/WEu6BdFEtp',
             },
             {
-              label: 'X',
-              href: 'https://x.com/docusaurus',
+              label: 'AlmaLinux Atomic SIG',
+              href: 'https://chat.almalinux.org/almalinux/channels/sigatomic',
             },
           ],
         },
@@ -126,17 +136,21 @@ const config: Config = {
           title: 'More',
           items: [
             {
-              label: 'Blog',
-              to: '/blog',
+              label: 'GitHub',
+              href: 'https://github.com/tuna-os/tunaOS',
             },
             {
-              label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              label: 'Project Bluefin',
+              href: 'https://docs.projectbluefin.io',
+            },
+            {
+              label: 'AlmaLinux Wiki',
+              href: 'https://wiki.almalinux.org',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} TunaOS Project. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,
