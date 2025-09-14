@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'TunaOS',
   tagline: 'A Collection of Cloud-Native Enterprise Linux OS Images',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.svg',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -62,7 +62,7 @@ const config: Config = {
       title: 'TunaOS',
       logo: {
         alt: 'TunaOS Logo',
-        src: 'img/tuna-logo.png',
+        src: 'img/tuna-logo.svg',
       },
       items: [
         {

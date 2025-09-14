@@ -4,6 +4,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import HeroGraphics from '@site/src/components/HeroGraphics';
 import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
@@ -137,6 +138,7 @@ export default function Home(): ReactNode {
       description="A collection of cloud-native Enterprise Linux OS images based on Bluefin LTS">
       <HomepageHeader />
       <main>
+        <HeroGraphics />
         <HomepageFeatures />
         <DownloadSection />
       </main>
