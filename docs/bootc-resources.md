@@ -20,7 +20,7 @@
   * Explains the immutable filesystem layout of a bootc system, with /usr being read-only and /etc and /var being used for persistent, mutable data.  
 * [**How pre-tuned real-time bootable containers work | Red Hat Developer**](https://developers.redhat.com/articles/2025/03/06/how-pre-tuned-real-time-bootable-containers-work)  
   * A technical article that provides an example of using bootc for real-time workloads, offering a peek into its internal mechanisms and customization.  
-* 
+* [**UKIs Composefs and Bootc**](https://github.com/tuna-os/docs/blob/main/docs/bootc-resources.md)
 
   ---
 
