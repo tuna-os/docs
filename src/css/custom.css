@@ -6,25 +6,51 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-color-primary: #0056b3;
+  --ifm-color-primary-dark: #004da1;
+  --ifm-color-primary-darker: #004998;
+  --ifm-color-primary-darkest: #003c7d;
+  --ifm-color-primary-light: #005fc5;
+  --ifm-color-primary-lighter: #0063ce;
+  --ifm-color-primary-lightest: #0070e9;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --tuna-silver: #a0a0a0;
+  --tuna-dark-blue: #002b5c;
+  --tuna-light-blue: #e6f3ff;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
+  --ifm-color-primary: #47a1ff;
+  --ifm-color-primary-dark: #2e94ff;
+  --ifm-color-primary-darker: #218eff;
+  --ifm-color-primary-darkest: #0078f5;
+  --ifm-color-primary-light: #61aeff;
+  --ifm-color-primary-lighter: #6eb5ff;
+  --ifm-color-primary-lightest: #94c8ff;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --tuna-silver: #c0c0c0;
+  --tuna-dark-blue: #00152e;
+  --tuna-light-blue: #003366;
+}
+
+.hero--primary {
+  background-color: var(--tuna-dark-blue);
+  color: #ffffff;
+}
+
+[data-theme='dark'] .hero--primary {
+  background-color: #000000;
+}
+
+.button--secondary {
+  --ifm-button-background-color: var(--tuna-silver);
+  --ifm-button-border-color: var(--tuna-silver);
+  --ifm-button-color: #000000;
+}
+
+.button--secondary:hover {
+  --ifm-button-background-color: #b0b0b0;
+  --ifm-button-border-color: #b0b0b0;
 }

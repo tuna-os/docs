@@ -6,17 +6,21 @@ sidebar_position: 2
 
 **Based on:** [AlmaLinux 10.0](https://almalinux.org/blog/2025-05-27-welcoming-almalinux-10/)
 
-Stable enterprise-grade desktop experience built on AlmaLinux foundation.
+Albacore is the flagship stable variant of TunaOS, providing a rock-solid enterprise-grade desktop experience built on the AlmaLinux foundation.
 
 ## Features
 
-- ✨ **x86_64/v2** microarchitecture support for older CPUs (pre-2013)
-- 🖥️ **SPICE support** for qemu/libvirt virtualization
-- 🏢 **Enterprise Linux** foundation with AlmaLinux reliability
+- 🖥️ **GNOME 48.3**: Modern desktop backported to Enterprise Linux.
+- 🍺 **Baked-in Homebrew**: Access thousands of CLI tools and fonts immediately.
+- ✨ **Microarchitecture Support**: Optimized builds for `x86_64_v2` (older CPUs).
+- 🚀 **HWE Variant**: Hardware Enablement kernel for the latest laptops and workstations.
+- 🏢 **10-Year Lifecycle**: Benefit from the long-term support of AlmaLinux 10.
 
 ## Downloads
 
 ### Regular Edition
+The standard experience for most users.
+
 **Image:** `ghcr.io/tuna-os/albacore:latest`
 
 **ISOs:**
@@ -24,7 +28,10 @@ Stable enterprise-grade desktop experience built on AlmaLinux foundation.
 - [x86_64_v2](https://download.tunaos.org/albacore-amd64-v2.iso) 
 - [arm64](https://download.tunaos.org/albacore-arm64.iso)
 
+<a id="dx"></a>
 ### DX (Developer Experience)
+Adds `libvirt`, `docker`, `vscode`, and common development toolchains.
+
 **Image:** `ghcr.io/tuna-os/albacore-dx:latest`
 
 **ISOs:**
@@ -32,7 +39,10 @@ Stable enterprise-grade desktop experience built on AlmaLinux foundation.
 - [x86_64_v2](https://download.tunaos.org/albacore-dx-amd64-v2.iso)
 - [arm64](https://download.tunaos.org/albacore-dx-arm64.iso)
 
+<a id="gdx"></a>
 ### GDX (Graphical Developer Experience)
+Adds NVIDIA drivers, CUDA, and AI/ML development tools.
+
 **Image:** `ghcr.io/tuna-os/albacore-gdx:latest`
 
 **ISOs:**
@@ -40,34 +50,37 @@ Stable enterprise-grade desktop experience built on AlmaLinux foundation.
 - [x86_64_v2](https://download.tunaos.org/albacore-gdx-amd64-v2.iso)
 - [arm64](https://download.tunaos.org/albacore-gdx-arm64.iso)
 
+<a id="hwe"></a>
+### HWE (Hardware Enablement)
+Features a newer kernel and drivers for very recent hardware that may not be fully supported by the standard EL kernel.
+
+**Image:** `ghcr.io/tuna-os/albacore-hwe:latest`
+
+**ISOs:**
+- [x86_64](https://download.tunaos.org/albacore-hwe-amd64.iso)
+- [arm64](https://download.tunaos.org/albacore-hwe-arm64.iso)
+
 ## Installation
+
+We recommend using the `Justfile` in the [TunaOS repository](https://github.com/tuna-os/tunaOS) for building your own images.
 
 ### Using Container Image
 ```bash
 podman pull ghcr.io/tuna-os/albacore:latest
 ```
 
-### Building ISO
+### Building ISO with Just
 ```bash
-curl https://raw.githubusercontent.com/Tuna-OS/tunaOS/refs/heads/main/build-iso.sh \
--o build-bootc.sh
-chmod +x build-bootc.sh
+# Clone the repo
+git clone https://github.com/tuna-os/tunaOS.git
+cd tunaOS
 
 # Build Albacore ISO
-sudo ./build-bootc.sh iso ghcr.io/tuna-os/albacore:latest
+just build-iso albacore
 ```
-
-## Differences from Project Bluefin
-
-For general functionality, refer to the [Project Bluefin Documentation](https://docs.projectbluefin.io).
-
-AlmaLinux-specific differences:
-- Based on AlmaLinux 10 instead of CentOS Stream
-- Enterprise Linux package ecosystem
-- For AlmaLinux-specific features, see [AlmaLinux Wiki](https://wiki.almalinux.org)
 
 ## Community Support
 
+- **TunaOS**: [Matrix Chat](https://matrix.to/#/%23tunaos:reilly.asia)
 - **AlmaLinux**: [AlmaLinux Atomic SIG](https://chat.almalinux.org/almalinux/channels/sigatomic)
 - **Universal Blue**: [Discord Community](https://discord.gg/WEu6BdFEtp)
-- **TunaOS**: [Matrix Chat](https://matrix.to/#/%23tunaos:reilly.asia)

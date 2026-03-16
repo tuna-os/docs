@@ -1,6 +1,8 @@
-
-
 ---
+sidebar_position: 8
+---
+
+# Bootc Resources
 
 ### **Intro**
 
@@ -20,7 +22,6 @@
   * Explains the immutable filesystem layout of a bootc system, with /usr being read-only and /etc and /var being used for persistent, mutable data.  
 * [**How pre-tuned real-time bootable containers work | Red Hat Developer**](https://developers.redhat.com/articles/2025/03/06/how-pre-tuned-real-time-bootable-containers-work)  
   * A technical article that provides an example of using bootc for real-time workloads, offering a peek into its internal mechanisms and customization.  
-* [**UKIs Composefs and Bootc**](https://github.com/tuna-os/docs/blob/main/docs/bootc-resources.md)
 
   ---
 
@@ -56,12 +57,11 @@
     * [AlmaLinux/atomic-workstation \- GitHub](https://github.com/AlmaLinux/atomic-workstation) \- More Opinionated GNOME workstation baes on AlmaLInux  
 * [https://github.com/tuna-os/tunaOS](https://github.com/tuna-os/tunaOS)  
   * Forks of [Bluefin LTS](https://github.com/ublue-os/bluefin-lts/releases) bringing most of the goodies to other base images  
-    * Yellowfin \- Almalinux 10 Kitten (synced with CentOS 10\)  
-    * Albacore \- Almalinux 10 (synced with RHEL/EL 10\)  
-    * Bluefin-tuna \- Fedora 42 (using newer, pure bootc, unlike Bluefin)  
-    * Redfin \- RHEL 10  
+    * **Yellowfin** \- Almalinux 10 Kitten (synced with CentOS 10)  
+    * **Albacore** \- Almalinux 10 (synced with RHEL/EL 10)  
+    * **Bonito** \- Fedora 42 (using newer, pure bootc)
+    * **Skipjack** \- CentOS Stream 10
 * [HeliumOS](https://www.heliumos.org/) \- KDE CentOS-based desktop image  
-* [EU-OS](https://eu-os.eu/) \- Community-led Proof-Of-Concept of a Public-use OS for EU  
 * [ublue-os/aurora-lts: Aurora Helium \- GitHub](https://github.com/ublue-os/aurora-lts) \- CentOS companion to [ublue-os/aurora: The ultimate productivity workstation \- GitHub](https://github.com/ublue-os/aurora) **Needs maintainers\!\!**
 
   ---

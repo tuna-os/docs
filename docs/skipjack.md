@@ -1,29 +1,28 @@
 ---
-sidebar_position: 5
+sidebar_position: 4
 ---
 
 # Skipjack (CentOS)
 
-**Based on:** CentOS 10
+**Based on:** [CentOS Stream 10](https://www.centos.org/centos-stream-10/)
 
-CentOS-based variant providing a stable enterprise foundation.
-
-:::note Development Status
-This variant is currently under development. Check the [GitHub repository](https://github.com/tuna-os/tunaOS) for current progress.
-:::
+Skipjack is the upstream-tracking variant of TunaOS based on CentOS Stream 10. It serves as a testing ground for features that will eventually land in RHEL and AlmaLinux.
 
 ## Features
 
-- 🏢 **CentOS 10** enterprise foundation
-- 🔄 **Bootc-based** modern container approach
-- 🛡️ **Enterprise stability** with modern tooling
+- 🖥️ **GNOME 48.3**: Modern desktop backported to Enterprise Linux.
+- 🍺 **Baked-in Homebrew**: Access thousands of CLI tools and fonts immediately.
+- 🌊 **CentOS Stream 10**: The cutting-edge of the RHEL ecosystem.
+- 🛠️ **Developer Focus**: Ideal for developers who want to stay ahead of the enterprise curve.
 
 ## Downloads
 
-### Regular Edition
+Skipjack is currently in active development. Pre-built ISOs are periodically available.
+
 **Image:** `ghcr.io/tuna-os/skipjack:latest`
 
-**ISOs:** *Coming soon - check back for updates*
+**ISOs:**
+- [Check Latest Builds](https://download.tunaos.org/)
 
 ## Installation
 
@@ -32,34 +31,17 @@ This variant is currently under development. Check the [GitHub repository](https
 podman pull ghcr.io/tuna-os/skipjack:latest
 ```
 
-### Building ISO
+### Building ISO with Just
 ```bash
-curl https://raw.githubusercontent.com/Tuna-OS/tunaOS/refs/heads/main/build-iso.sh \
--o build-bootc.sh
-chmod +x build-bootc.sh
+# Clone the repo
+git clone https://github.com/tuna-os/tunaOS.git
+cd tunaOS
 
-# Build Skipjack ISO (when available)
-sudo ./build-bootc.sh iso ghcr.io/tuna-os/skipjack:latest
+# Build Skipjack ISO
+just build-iso skipjack
 ```
-
-## Differences from Project Bluefin
-
-For general functionality, refer to the [Project Bluefin Documentation](https://docs.projectbluefin.io).
-
-CentOS-specific features:
-- Based on CentOS 10 stream packages
-- Enterprise Linux ecosystem compatibility
-- Upstream CentOS development alignment
-
-## Development Status
-
-This variant is under active development. Contributions welcome! Track progress:
-
-- **Issues**: [GitHub Issues](https://github.com/tuna-os/tunaOS/issues)
-- **Source**: [GitHub Repository](https://github.com/tuna-os/tunaOS)
 
 ## Community Support
 
-- **CentOS**: [CentOS Stream Discussion](https://forums.centos.org/)
-- **Universal Blue**: [Discord Community](https://discord.gg/WEu6BdFEtp)
 - **TunaOS**: [Matrix Chat](https://matrix.to/#/%23tunaos:reilly.asia)
+- **CentOS Community**: [CentOS Forums](https://forums.centos.org/)

@@ -1,29 +1,30 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # Bonito (Fedora)
 
-**Based on:** Fedora 42
+**Based on:** [Fedora 42](https://fedoraproject.org/)
 
-Cutting-edge experience with Bluefin LTS tooling ported to the latest Fedora release.
-
-:::note Development Status
-Bonito is still needing some work to get into a functional state. Check the [GitHub repository](https://github.com/tuna-os/tunaOS) for current progress.
-:::
+Bonito is the most experimental variant of TunaOS, based on Fedora 42. It provides the latest packages, kernels, and desktop features ahead of any Enterprise Linux release.
 
 ## Features
 
-- 🚀 **Latest Fedora** with cutting-edge packages
-- 🔄 **Bluefin LTS tooling** ported to modern Fedora
-- ⚡ **Pure bootc** implementation (unlike upstream Bluefin)
+- 🏎️ **Bleeding Edge**: Based on Fedora 42, with the latest possible kernel and userland.
+- 🧪 **Experimental**: A playground for the newest features of the TunaOS project.
+- 🍺 **Baked-in Homebrew**: Standard across all TunaOS variants.
+- 📦 **Flatpak First**: Optimized for a fully containerized desktop experience.
+
+## Status
+
+Bonito is currently **Experimental**. It is not recommended for production use but is great for testing and experiencing the future of the Linux desktop.
 
 ## Downloads
 
-### Regular Edition
 **Image:** `ghcr.io/tuna-os/bonito:latest`
 
-**ISOs:** *Coming soon - check back for updates*
+**ISOs:**
+- [Experimental Builds](https://download.tunaos.org/experimental/)
 
 ## Installation
 
@@ -32,35 +33,17 @@ Bonito is still needing some work to get into a functional state. Check the [Git
 podman pull ghcr.io/tuna-os/bonito:latest
 ```
 
-### Building ISO
+### Building ISO with Just
 ```bash
-curl https://raw.githubusercontent.com/Tuna-OS/tunaOS/refs/heads/main/build-iso.sh \
--o build-bootc.sh
-chmod +x build-bootc.sh
+# Clone the repo
+git clone https://github.com/tuna-os/tunaOS.git
+cd tunaOS
 
-# Build Bonito ISO (when available)
-sudo ./build-bootc.sh iso ghcr.io/tuna-os/bonito:latest
+# Build Bonito ISO
+just build-iso bonito
 ```
-
-## Differences from Project Bluefin
-
-Bonito represents an experimental approach:
-
-- **Pure bootc**: Unlike upstream Bluefin which uses ostree, Bonito is built entirely on bootc
-- **Fedora 42 base**: Latest and greatest Fedora packages
-- **Modern toolchain**: Cutting-edge development environment
-
-For general Bluefin functionality, refer to the [Project Bluefin Documentation](https://docs.projectbluefin.io).
-
-## Development Status
-
-This variant is under active development. Contributions welcome! Track progress:
-
-- **Issues**: [GitHub Issues](https://github.com/tuna-os/tunaOS/issues)
-- **Source**: [GitHub Repository](https://github.com/tuna-os/tunaOS)
 
 ## Community Support
 
-- **Fedora**: [Fedora Discussion](https://discussion.fedoraproject.org/)
-- **Universal Blue**: [Discord Community](https://discord.gg/WEu6BdFEtp)
 - **TunaOS**: [Matrix Chat](https://matrix.to/#/%23tunaos:reilly.asia)
+- **Fedora**: [Fedora Discussion](https://discussion.fedoraproject.org/)

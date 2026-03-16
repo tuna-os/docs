@@ -16,7 +16,7 @@ TunaOS images can be installed in several ways, depending on your needs and pref
 
 ### Architecture Support
 
-- **x86_64**: Standard 64-bit Intel/AMD processors
+- **x86_64**: Standard 64-bit Intel/AMD processors (v3 microarchitecture)
 - **x86_64_v2**: Optimized for older CPUs (pre-2013) - available for Albacore and Yellowfin
 - **ARM64**: 64-bit ARM processors (Apple Silicon, Raspberry Pi 4+, etc.)
 
@@ -24,33 +24,30 @@ TunaOS images can be installed in several ways, depending on your needs and pref
 
 ### Method 1: Download Pre-built ISOs
 
-The easiest way to get started is downloading pre-built ISO images:
+The easiest way to get started is downloading pre-built ISO images from the [homepage](/) or variant-specific pages:
 
-#### Albacore (AlmaLinux 10)
-- [x86_64](https://download.tunaos.org/albacore-amd64.iso) | [x86_64_v2](https://download.tunaos.org/albacore-amd64-v2.iso) | [arm64](https://download.tunaos.org/albacore-arm64.iso)
-- [DX x86_64](https://download.tunaos.org/albacore-dx-amd64.iso) | [DX x86_64_v2](https://download.tunaos.org/albacore-dx-amd64-v2.iso) | [DX arm64](https://download.tunaos.org/albacore-dx-arm64.iso)
-- [GDX x86_64](https://download.tunaos.org/albacore-gdx-amd64.iso) | [GDX x86_64_v2](https://download.tunaos.org/albacore-gdx-amd64-v2.iso) | [GDX arm64](https://download.tunaos.org/albacore-gdx-arm64.iso)
-
-#### Yellowfin (AlmaLinux Kitten 10)
-- [x86_64](https://download.tunaos.org/yellowfin-amd64.iso) | [x86_64_v2](https://download.tunaos.org/yellowfin-amd64-v2.iso) | [arm64](https://download.tunaos.org/yellowfin-arm64.iso)
-- [DX x86_64](https://download.tunaos.org/yellowfin-dx-amd64.iso) | [DX x86_64_v2](https://download.tunaos.org/yellowfin-dx-amd64-v2.iso) | [DX arm64](https://download.tunaos.org/yellowfin-dx-arm64.iso)
-- [GDX x86_64](https://download.tunaos.org/yellowfin-gdx-amd64.iso) | [GDX x86_64_v2](https://download.tunaos.org/yellowfin-gdx-amd64-v2.iso) | [GDX arm64](https://download.tunaos.org/yellowfin-gdx-arm64.iso)
+- **[Albacore (Stable)](albacore#downloads)**
+- **[Yellowfin (Daily Drive)](yellowfin#downloads)**
+- **[Skipjack (Upstream)](skipjack#downloads)**
+- **[Bonito (Experimental)](bonito#downloads)**
 
 ### Method 2: Build Your Own ISO
 
-Use the TunaOS build script to create custom ISOs:
+For customization or to build a fresh image, use the `Justfile` provided in the [TunaOS repository](https://github.com/tuna-os/tunaOS). This method uses `bootc-image-builder` under the hood.
 
 ```bash
-# Download the build script
-curl https://raw.githubusercontent.com/Tuna-OS/tunaOS/refs/heads/main/build-iso.sh \
--o build-bootc.sh
-chmod +x build-bootc.sh
+# Clone the repository
+git clone https://github.com/tuna-os/tunaOS.git
+cd tunaOS
 
-# Build an ISO for your preferred variant
-sudo ./build-bootc.sh iso ghcr.io/tuna-os/yellowfin:latest
+# List available build commands
+just --list
 
-# Or build a VM image
-sudo ./build-bootc.sh qcow2 ghcr.io/tuna-os/yellowfin:latest
+# Build an Albacore ISO
+just build-iso albacore
+
+# Build a specific variant (dx, gdx, hwe)
+just build-iso albacore-dx
 ```
 
 ### Method 3: Container Runtime
@@ -61,8 +58,8 @@ For testing or container-based workflows:
 # Pull your preferred variant
 podman pull ghcr.io/tuna-os/albacore:latest
 podman pull ghcr.io/tuna-os/yellowfin:latest
-podman pull ghcr.io/tuna-os/bonito:latest
 podman pull ghcr.io/tuna-os/skipjack:latest
+podman pull ghcr.io/tuna-os/bonito:latest
 ```
 
 ## Post-Installation
@@ -93,12 +90,16 @@ After installation, TunaOS provides:
 - AI/ML development tools
 - Graphics and video editing software
 
+#### HWE (Hardware Enablement)
+- Specialized kernel and drivers for recent hardware
+- Optimized for modern laptops and workstations
+
 ## Troubleshooting
 
 ### Boot Issues
 - Ensure Secure Boot is disabled or properly configured
 - Check system requirements are met
-- Try the x86_64_v2 variant for older hardware
+- Try the `x86_64_v2` variant for older hardware
 
 ### Installation Problems
 - Verify ISO integrity after download

@@ -4,67 +4,46 @@ sidebar_position: 1
 
 # Welcome to TunaOS
 
-## A Collection of Cloud-Native Enterprise Linux OS Images
+## Modern Cloud-Native Enterprise Linux
 
-TunaOS is a curated collection of **Bootc-based desktop operating systems** that are forks of [Bluefin LTS](https://github.com/ublue-os/bluefin-lts), built on modern container technology. This is an exploration of the flexibility of Bootc and a hope that some people believe in the Enterprise Linux Desktop.
+TunaOS is a collection of **Bootc-based desktop operating systems** built on the rock-solid foundation of Enterprise Linux 10 (AlmaLinux and CentOS Stream). It is a fork of [Bluefin LTS](https://github.com/ublue-os/bluefin-lts), modernized for the next generation of enterprise desktops.
 
-The plan is to provide a stable experience with up-to-date GNOME and modern tooling.
+Our mission is to combine the **stability and long-term support** of Enterprise Linux with the **freshness and modern tooling** that today's developers and workstation users demand.
 
-## ✨ Key Features
+## ✨ Why TunaOS?
 
-- **Latest GNOME**: Don't get stuck on a 3-year-old GNOME. We try to backport the latest Desktop features and bring them to the Enterprise Desktop
-  - Currently we're shipping GNOME `48.3` while EL will be stuck on GNOME `47` for the foreseeable future
-- **Anaconda WebUI & Live ISO**: Modern installation experience (pending upstream)
-- **Homebrew**: We bake Homebrew into the image, so all your CLI apps (and fonts) are just a brew command away
-- **Flathub by Default**: This is a no-brainer that isn't preset in our base images. Actually get all the Flatpaks that are generally available on the net
+- 🖥️ **Latest GNOME**: We backport GNOME 48.3 to Enterprise Linux, ensuring you have the latest desktop features without sacrificing system stability.
+- 🍺 **Baked-in Homebrew**: Homebrew is pre-installed, giving you instant access to a massive library of CLI tools and fonts.
+- 📦 **Bootc Technology**: Built using modern container technology for immutable, reliable, and easily reproducible systems.
+- 🏢 **Enterprise DNA**: Based on AlmaLinux 10 and CentOS 10, providing a foundation supported for up to 10 years.
+- 🛍️ **Flathub Enabled**: Enjoy a full suite of desktop applications immediately with Flathub enabled out-of-the-box.
 
 ## 🐠 Available Variants
 
-We ship 3 versions for each base, matching upstream:
+| Variant | Base OS | Target Audience |
+| :--- | :--- | :--- |
+| **[Albacore](albacore)** | AlmaLinux 10 | **Flagship** Stable Enterprise Desktop |
+| **[Yellowfin](yellowfin)** | AlmaLinux Kitten | Developers / Daily Drivers |
+| **[Skipjack](skipjack)** | CentOS Stream 10 | Upstream Testing |
+| **[Bonito](bonito)** | Fedora 42 | Bleeding Edge / Experimental |
 
-- **Regular**: See [Bluefin's excellent documentation](https://docs.projectbluefin.io/) for info
-- **DX (Developer Experience)**: Adding libvirt, Docker, VSCode, etc. [Learn more](https://docs.projectbluefin.io/dx)
-- **GDX (Graphical Developer Experience)**: Adding Nvidia drivers and CUDA. For Nvidia users/AI/VFX devs. [Learn more](https://docs.projectbluefin.io/gdx)
+## 🚀 Specialized Editions
 
-### Images Available
+For our primary variants (Albacore and Yellowfin), we offer specialized editions:
 
-- **[Albacore](albacore)** - AlmaLinux 10 based
-- **[Yellowfin](yellowfin)** - AlmaLinux Kitten 10 based (closest to upstream Bluefin LTS)
-- **[Bonito](bonito)** - Fedora 42 based (cutting-edge)
-- **[Skipjack](skipjack)** - CentOS 10 based
+- **Regular**: The balanced, standard experience.
+- **DX (Developer Experience)**: Pre-configured for software development (`libvirt`, `docker`, `vscode`, etc.).
+- **GDX (Graphical Developer Experience)**: Optimized for AI, Graphics, and VFX (`NVIDIA`, `CUDA`).
+- **HWE (Hardware Enablement)**: For the latest hardware requiring newer kernels.
 
-## 📋 System Requirements
+## 📚 Next Steps
 
-| Component | Minimum | Recommended |
-|-----------|---------|-------------|
-| **CPU** | x86_64, ARM64 | x86_64, ARM64 |
-| **RAM** | 4 GB | 8 GB+ |
-| **Storage** | 20 GB | 50 GB+ |
+Ready to dive in?
 
-## 🚀 Quick Start
-
-Ready to get started? Check out our [installation guide](installation) or download ISOs for your preferred variant:
-
-- [Albacore Downloads](albacore#downloads)
-- [Yellowfin Downloads](yellowfin#downloads)
-- [Bonito Downloads](bonito#downloads)
-- [Skipjack Downloads](skipjack#downloads)
-
-## 📚 External Documentation
-
-Since TunaOS is based on Bluefin LTS, most documentation can be found at:
-
-- [Project Bluefin Documentation](https://docs.projectbluefin.io) - Primary reference for shared functionality
-- [AlmaLinux Wiki](https://wiki.almalinux.org) - For AlmaLinux-specific information
-- [Universal Blue](https://universal-blue.org/) - Community and ecosystem info
-
-## 🤝 Community & Support
-
-- 🐛 **Report Issues**: [GitHub Issues](https://github.com/tuna-os/tunaOS/issues)
-- 💬 **Matrix Chat**: [#tunaos:reilly.asia](https://matrix.to/#/%23tunaos:reilly.asia)
-- 🎮 **Discord**: [Universal Blue Community](https://discord.gg/WEu6BdFEtp)
-- 💬 **AlmaLinux Atomic SIG**: [AlmaLinux Atomic SIG](https://chat.almalinux.org/almalinux/channels/sigatomic)
+1.  **[System Requirements](system-requirements)** - Check if your hardware is supported.
+2.  **[Installation Guide](installation)** - Learn how to install TunaOS.
+3.  **[Download ISOs](/)** - Get started with pre-built images on the homepage.
 
 ---
 
-*TunaOS is made by James in his free time, powered by [Bootc](https://github.com/bootc-dev/bootc), and inspired by [Bluefin](https://projectbluefin.io) and the [Universal Blue](https://universal-blue.org/) Community.*
+*TunaOS is a labor of love by James, inspired by [Project Bluefin](https://projectbluefin.io) and the [Universal Blue](https://universal-blue.org/) community.*

@@ -16,28 +16,58 @@ const FeatureList: FeatureItem[] = [
     emoji: '🖥️',
     description: (
       <>
-        Experience GNOME 48.3 on Enterprise Linux - don't get stuck on 3-year-old 
-        desktop environments. We backport the latest features to Enterprise Linux.
+        Experience GNOME 48.3 on Enterprise Linux. We backport the latest 
+        features to provide a modern desktop experience on a stable base.
       </>
     ),
   },
   {
-    title: 'Bootc Container Technology',
+    title: 'Baked-in Homebrew',
+    emoji: '🍺',
+    description: (
+      <>
+        Homebrew is pre-installed, giving you instant access to a massive 
+        library of CLI tools and fonts that aren't in standard EL repos.
+      </>
+    ),
+  },
+  {
+    title: 'HWE & v2 Support',
+    emoji: '🚀',
+    description: (
+      <>
+        Hardware Enablement (HWE) for new gear and x86_64_v2 support for older 
+        hardware. We make sure TunaOS runs everywhere you need it.
+      </>
+    ),
+  },
+  {
+    title: 'Bootc Technology',
     emoji: '📦',
     description: (
       <>
-        Built on modern bootc container technology for immutable, reliable systems.
-        Easy updates, rollbacks, and customization through container images.
+        Built on modern bootc container technology for immutable, reliable 
+        systems with easy updates, rollbacks, and customization.
       </>
     ),
   },
   {
-    title: 'Multiple Base Images',
-    emoji: '🐠',
+    title: 'Flathub by Default',
+    emoji: '🛍️',
     description: (
       <>
-        Choose from AlmaLinux, AlmaLinux Kitten, Fedora, or CentOS bases.
-        Each variant optimized for specific use cases and compatibility needs.
+        Get all your favorite desktop apps immediately. Flathub is enabled 
+        out-of-the-box for a "ready-to-use" experience.
+      </>
+    ),
+  },
+  {
+    title: 'Enterprise Stability',
+    emoji: '🏢',
+    description: (
+      <>
+        Based on AlmaLinux 10 and CentOS 10, providing a rock-solid foundation 
+        with 10 years of support for your critical workflows.
       </>
     ),
   },
