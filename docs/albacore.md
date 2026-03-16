@@ -28,6 +28,43 @@ The standard experience for most users.
 - [x86_64_v2](https://download.tunaos.org/albacore-amd64-v2.iso) 
 - [arm64](https://download.tunaos.org/albacore-arm64.iso)
 
+<a id="kde"></a>
+### KDE Plasma
+The powerful and customizable KDE Plasma desktop environment.
+
+**Image:** `ghcr.io/tuna-os/albacore-kde:latest`
+
+**ISOs:**
+- [x86_64](https://download.tunaos.org/albacore-kde-amd64.iso)
+- [arm64](https://download.tunaos.org/albacore-kde-arm64.iso)
+
+<a id="cosmic"></a>
+### COSMIC
+The modern, Rust-based COSMIC desktop environment from System76.
+
+**Image:** `ghcr.io/tuna-os/albacore-cosmic:latest`
+
+**ISOs:**
+- [x86_64](https://download.tunaos.org/albacore-cosmic-amd64.iso)
+
+<a id="niri"></a>
+### Niri
+A scrollable tiling compositor for a unique and efficient workflow.
+
+**Image:** `ghcr.io/tuna-os/albacore-niri:latest`
+
+**ISOs:**
+- [x86_64](https://download.tunaos.org/albacore-niri-amd64.iso)
+
+<a id="gnome50"></a>
+### GNOME 50
+Experience the cutting-edge future of GNOME on a stable base.
+
+**Image:** `ghcr.io/tuna-os/albacore-gnome50:latest`
+
+**ISOs:**
+- [x86_64](https://download.tunaos.org/albacore-gnome50-amd64.iso)
+
 <a id="dx"></a>
 ### DX (Developer Experience)
 Adds `libvirt`, `docker`, `vscode`, and common development toolchains.

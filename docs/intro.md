@@ -36,6 +36,15 @@ For our primary variants (Albacore and Yellowfin), we offer specialized editions
 - **GDX (Graphical Developer Experience)**: Optimized for AI, Graphics, and VFX (`NVIDIA`, `CUDA`).
 - **HWE (Hardware Enablement)**: For the latest hardware requiring newer kernels.
 
+### 🎨 Desktop Flavors
+
+We now offer specialized desktop environment flavors to suit your workflow:
+
+- **GNOME 50**: The next generation of GNOME, pushing the boundaries of the desktop experience.
+- **KDE Plasma**: A powerful, customizable desktop environment for power users.
+- **COSMIC**: The brand new, Rust-based desktop environment from System76.
+- **Niri**: A unique, scrollable tiling compositor for a fresh take on window management.
+
 ## 📚 Next Steps
 
 Ready to dive in?

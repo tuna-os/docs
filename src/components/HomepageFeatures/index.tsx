@@ -42,6 +42,16 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
+    title: 'Multiple Desktop Flavors',
+    emoji: '🎨',
+    description: (
+      <>
+        Choose your preferred experience: GNOME 50, KDE Plasma, the modern 
+        COSMIC desktop, or the unique scrollable Niri compositor.
+      </>
+    ),
+  },
+  {
     title: 'Bootc Technology',
     emoji: '📦',
     description: (

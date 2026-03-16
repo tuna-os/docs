@@ -26,6 +26,35 @@ Yellowfin is the "developer's daily drive" variant of TunaOS. It tracks AlmaLinu
 - [x86_64_v2](https://download.tunaos.org/yellowfin-amd64-v2.iso) 
 - [arm64](https://download.tunaos.org/yellowfin-arm64.iso)
 
+<a id="kde"></a>
+### KDE Plasma
+**Image:** `ghcr.io/tuna-os/yellowfin-kde:latest`
+
+**ISOs:**
+- [x86_64](https://download.tunaos.org/yellowfin-kde-amd64.iso)
+- [arm64](https://download.tunaos.org/yellowfin-kde-arm64.iso)
+
+<a id="cosmic"></a>
+### COSMIC
+**Image:** `ghcr.io/tuna-os/yellowfin-cosmic:latest`
+
+**ISOs:**
+- [x86_64](https://download.tunaos.org/yellowfin-cosmic-amd64.iso)
+
+<a id="niri"></a>
+### Niri
+**Image:** `ghcr.io/tuna-os/yellowfin-niri:latest`
+
+**ISOs:**
+- [x86_64](https://download.tunaos.org/yellowfin-niri-amd64.iso)
+
+<a id="gnome50"></a>
+### GNOME 50
+**Image:** `ghcr.io/tuna-os/yellowfin-gnome50:latest`
+
+**ISOs:**
+- [x86_64](https://download.tunaos.org/yellowfin-gnome50-amd64.iso)
+
 <a id="dx"></a>
 ### DX (Developer Experience)
 **Image:** `ghcr.io/tuna-os/yellowfin-dx:latest`
