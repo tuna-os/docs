@@ -18,60 +18,42 @@ Yellowfin is the "developer's daily drive" variant of TunaOS. It tracks AlmaLinu
 
 ## Downloads
 
-### Regular Edition
-**Image:** `ghcr.io/tuna-os/yellowfin:latest`
+Pre-built ISOs are published every two weeks for GNOME flavors. Other flavors are available as container images only.
 
-**ISOs:**
-- [x86_64](https://download.tunaos.org/yellowfin-amd64.iso)
-- [x86_64_v2](https://download.tunaos.org/yellowfin-amd64-v2.iso) 
-- [arm64](https://download.tunaos.org/yellowfin-arm64.iso)
+### GNOME (Standard)
+**Image:** `ghcr.io/tuna-os/yellowfin:gnome`
+
+**ISOs:** [yellowfin-gnome-latest.iso](https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso)
+
+<a id="gnome-hwe"></a>
+### GNOME (HWE — Hardware Enablement)
+**Image:** `ghcr.io/tuna-os/yellowfin:gnome-hwe`
+
+**ISOs:** [yellowfin-gnome-hwe-latest.iso](https://download.tunaos.org/live-isos/yellowfin-gnome-hwe-latest.iso)
 
 <a id="kde"></a>
 ### KDE Plasma
-**Image:** `ghcr.io/tuna-os/yellowfin-kde:latest`
-
-**ISOs:**
-- [x86_64](https://download.tunaos.org/yellowfin-kde-amd64.iso)
-- [arm64](https://download.tunaos.org/yellowfin-kde-arm64.iso)
+**Image:** `ghcr.io/tuna-os/yellowfin:kde`
 
 <a id="cosmic"></a>
 ### COSMIC
-**Image:** `ghcr.io/tuna-os/yellowfin-cosmic:latest`
-
-**ISOs:**
-- [x86_64](https://download.tunaos.org/yellowfin-cosmic-amd64.iso)
+**Image:** `ghcr.io/tuna-os/yellowfin:cosmic`
 
 <a id="niri"></a>
 ### Niri
-**Image:** `ghcr.io/tuna-os/yellowfin-niri:latest`
-
-**ISOs:**
-- [x86_64](https://download.tunaos.org/yellowfin-niri-amd64.iso)
+**Image:** `ghcr.io/tuna-os/yellowfin:niri`
 
 <a id="gnome50"></a>
 ### GNOME 50
-**Image:** `ghcr.io/tuna-os/yellowfin-gnome50:latest`
-
-**ISOs:**
-- [x86_64](https://download.tunaos.org/yellowfin-gnome50-amd64.iso)
+**Image:** `ghcr.io/tuna-os/yellowfin:gnome50`
 
 <a id="dx"></a>
 ### DX (Developer Experience)
-**Image:** `ghcr.io/tuna-os/yellowfin-dx:latest`
-
-**ISOs:**
-- [x86_64](https://download.tunaos.org/yellowfin-dx-amd64.iso)
-- [x86_64_v2](https://download.tunaos.org/yellowfin-dx-amd64-v2.iso)
-- [arm64](https://download.tunaos.org/yellowfin-dx-arm64.iso)
+**Image:** `ghcr.io/tuna-os/yellowfin:gnome-dx`
 
 <a id="gdx"></a>
 ### GDX (Graphical Developer Experience)
-**Image:** `ghcr.io/tuna-os/yellowfin-gdx:latest`
-
-**ISOs:**
-- [x86_64](https://download.tunaos.org/yellowfin-gdx-amd64.iso)
-- [x86_64_v2](https://download.tunaos.org/yellowfin-gdx-amd64-v2.iso)
-- [arm64](https://download.tunaos.org/yellowfin-gdx-arm64.iso)
+**Image:** `ghcr.io/tuna-os/yellowfin:gnome-gdx`
 
 ## Installation
 

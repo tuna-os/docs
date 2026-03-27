@@ -24,12 +24,14 @@ TunaOS images can be installed in several ways, depending on your needs and pref
 
 ### Method 1: Download Pre-built ISOs
 
-The easiest way to get started is downloading pre-built ISO images from the [homepage](/) or variant-specific pages:
+ISOs for GNOME and GNOME-HWE are published every two weeks to [download.tunaos.org](https://download.tunaos.org/live-isos/).
 
-- **[Albacore (Stable)](albacore#downloads)**
-- **[Yellowfin (Daily Drive)](yellowfin#downloads)**
-- **[Skipjack (Upstream)](skipjack#downloads)**
-- **[Bonito (Experimental)](bonito#downloads)**
+| Variant | GNOME | GNOME (HWE) |
+|---------|-------|-------------|
+| **Albacore** (AlmaLinux 10) | [albacore-gnome-latest.iso](https://download.tunaos.org/live-isos/albacore-gnome-latest.iso) | [albacore-gnome-hwe-latest.iso](https://download.tunaos.org/live-isos/albacore-gnome-hwe-latest.iso) |
+| **Yellowfin** (AlmaLinux Kitten 10) | [yellowfin-gnome-latest.iso](https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso) | [yellowfin-gnome-hwe-latest.iso](https://download.tunaos.org/live-isos/yellowfin-gnome-hwe-latest.iso) |
+
+Other flavors (KDE, COSMIC, Niri, DX, GDX) are available as container images — see the variant pages for details.
 
 ### Method 2: Build Your Own ISO
 

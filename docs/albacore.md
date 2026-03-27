@@ -18,84 +18,46 @@ Albacore is the flagship stable variant of TunaOS, providing a rock-solid enterp
 
 ## Downloads
 
-### Regular Edition
+Pre-built ISOs are published every two weeks for GNOME flavors. Other flavors are available as container images only.
+
+### GNOME (Standard)
 The standard experience for most users.
 
-**Image:** `ghcr.io/tuna-os/albacore:latest`
+**Image:** `ghcr.io/tuna-os/albacore:gnome`
 
-**ISOs:**
-- [x86_64](https://download.tunaos.org/albacore-amd64.iso)
-- [x86_64_v2](https://download.tunaos.org/albacore-amd64-v2.iso) 
-- [arm64](https://download.tunaos.org/albacore-arm64.iso)
+**ISOs:** [albacore-gnome-latest.iso](https://download.tunaos.org/live-isos/albacore-gnome-latest.iso)
+
+<a id="gnome-hwe"></a>
+### GNOME (HWE — Hardware Enablement)
+Features a newer kernel and drivers for recent hardware.
+
+**Image:** `ghcr.io/tuna-os/albacore:gnome-hwe`
+
+**ISOs:** [albacore-gnome-hwe-latest.iso](https://download.tunaos.org/live-isos/albacore-gnome-hwe-latest.iso)
 
 <a id="kde"></a>
 ### KDE Plasma
-The powerful and customizable KDE Plasma desktop environment.
-
-**Image:** `ghcr.io/tuna-os/albacore-kde:latest`
-
-**ISOs:**
-- [x86_64](https://download.tunaos.org/albacore-kde-amd64.iso)
-- [arm64](https://download.tunaos.org/albacore-kde-arm64.iso)
+**Image:** `ghcr.io/tuna-os/albacore:kde`
 
 <a id="cosmic"></a>
 ### COSMIC
-The modern, Rust-based COSMIC desktop environment from System76.
-
-**Image:** `ghcr.io/tuna-os/albacore-cosmic:latest`
-
-**ISOs:**
-- [x86_64](https://download.tunaos.org/albacore-cosmic-amd64.iso)
+**Image:** `ghcr.io/tuna-os/albacore:cosmic`
 
 <a id="niri"></a>
 ### Niri
-A scrollable tiling compositor for a unique and efficient workflow.
-
-**Image:** `ghcr.io/tuna-os/albacore-niri:latest`
-
-**ISOs:**
-- [x86_64](https://download.tunaos.org/albacore-niri-amd64.iso)
+**Image:** `ghcr.io/tuna-os/albacore:niri`
 
 <a id="gnome50"></a>
 ### GNOME 50
-Experience the cutting-edge future of GNOME on a stable base.
-
-**Image:** `ghcr.io/tuna-os/albacore-gnome50:latest`
-
-**ISOs:**
-- [x86_64](https://download.tunaos.org/albacore-gnome50-amd64.iso)
+**Image:** `ghcr.io/tuna-os/albacore:gnome50`
 
 <a id="dx"></a>
 ### DX (Developer Experience)
-Adds `libvirt`, `docker`, `vscode`, and common development toolchains.
-
-**Image:** `ghcr.io/tuna-os/albacore-dx:latest`
-
-**ISOs:**
-- [x86_64](https://download.tunaos.org/albacore-dx-amd64.iso)
-- [x86_64_v2](https://download.tunaos.org/albacore-dx-amd64-v2.iso)
-- [arm64](https://download.tunaos.org/albacore-dx-arm64.iso)
+**Image:** `ghcr.io/tuna-os/albacore:gnome-dx`
 
 <a id="gdx"></a>
 ### GDX (Graphical Developer Experience)
-Adds NVIDIA drivers, CUDA, and AI/ML development tools.
-
-**Image:** `ghcr.io/tuna-os/albacore-gdx:latest`
-
-**ISOs:**
-- [x86_64](https://download.tunaos.org/albacore-gdx-amd64.iso)
-- [x86_64_v2](https://download.tunaos.org/albacore-gdx-amd64-v2.iso)
-- [arm64](https://download.tunaos.org/albacore-gdx-arm64.iso)
-
-<a id="hwe"></a>
-### HWE (Hardware Enablement)
-Features a newer kernel and drivers for very recent hardware that may not be fully supported by the standard EL kernel.
-
-**Image:** `ghcr.io/tuna-os/albacore-hwe:latest`
-
-**ISOs:**
-- [x86_64](https://download.tunaos.org/albacore-hwe-amd64.iso)
-- [arm64](https://download.tunaos.org/albacore-hwe-arm64.iso)
+**Image:** `ghcr.io/tuna-os/albacore:gnome-gdx`
 
 ## Installation
 
