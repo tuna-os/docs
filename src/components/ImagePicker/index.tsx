@@ -140,33 +140,24 @@ const STEP_LABELS: Record<StepId, string> = {
   result: 'Your Image',
 };
 
-function getNextStep(step: StepId, sel: Selection): StepId {
-  if (step === 'variant') {
-    if (sel.variant === 'skipjack' || sel.variant === 'bonito') return 'desktop';
-    return 'desktop';
-  }
-  if (step === 'desktop') {
-    if (sel.variant === 'skipjack' || sel.variant === 'bonito') return 'result';
-    if (sel.desktop === 'gnome') return 'edition';
-    return 'arch';
-  }
+function getDesktopOptions(variant: Variant | undefined): Option<Desktop>[] {
+  if (variant === 'bonito') return DESKTOP_OPTIONS.filter((o) => o.value !== 'gnome50');
+  return DESKTOP_OPTIONS;
+}
+
+function getNextStep(step: StepId, _sel: Selection): StepId {
+  if (step === 'variant') return 'desktop';
+  if (step === 'desktop') return 'edition';
   if (step === 'edition') return 'arch';
   if (step === 'arch') return 'result';
   return 'result';
 }
 
-function getPrevStep(step: StepId, sel: Selection): StepId | null {
+function getPrevStep(step: StepId, _sel: Selection): StepId | null {
   if (step === 'desktop') return 'variant';
   if (step === 'edition') return 'desktop';
-  if (step === 'arch') {
-    if (sel.desktop === 'gnome' && sel.variant !== 'skipjack' && sel.variant !== 'bonito') return 'edition';
-    return 'desktop';
-  }
-  if (step === 'result') {
-    if (sel.variant === 'skipjack' || sel.variant === 'bonito') return 'desktop';
-    if (sel.arch) return 'arch';
-    return 'desktop';
-  }
+  if (step === 'arch') return 'edition';
+  if (step === 'result') return 'arch';
   return null;
 }
 
@@ -174,23 +165,18 @@ function buildImageName(sel: Selection): string {
   const variant = sel.variant ?? 'albacore';
   const desktop = sel.desktop ?? 'gnome';
   const edition = sel.edition ?? 'standard';
-  if (sel.variant === 'skipjack' || sel.variant === 'bonito') {
-    return `ghcr.io/tuna-os/${variant}:${desktop}`;
-  }
-  if (desktop === 'gnome') {
-    if (edition === 'gdx') return `ghcr.io/tuna-os/${variant}:gnome-gdx`;
-    if (edition === 'hwe') return `ghcr.io/tuna-os/${variant}:gnome-hwe`;
-    return `ghcr.io/tuna-os/${variant}:gnome`;
-  }
-  return `ghcr.io/tuna-os/${variant}:${desktop}`;
+  let flavor = desktop;
+  if (edition === 'gdx') flavor = `${desktop}-gdx`;
+  else if (edition === 'hwe') flavor = `${desktop}-hwe`;
+  return `ghcr.io/tuna-os/${variant}:${flavor}`;
 }
 
 function getIsoUrl(sel: Selection): string | null {
-  if (!sel.variant || sel.variant === 'skipjack' || sel.variant === 'bonito') return null;
-  if (sel.desktop !== 'gnome') return null;
-  if (sel.edition !== 'standard' && sel.edition !== 'hwe') return null;
-  const suffix = sel.edition === 'hwe' ? '-hwe' : '';
-  return `https://download.tunaos.org/live-isos/${sel.variant}-gnome${suffix}-latest.iso`;
+  if (!sel.variant || !sel.desktop) return null;
+  if (sel.edition === 'hwe') return null;
+  let flavor = sel.desktop;
+  if (sel.edition === 'gdx') flavor = `${sel.desktop}-gdx`;
+  return `https://download.tunaos.org/live-isos/${sel.variant}-${flavor}-latest.iso`;
 }
 
 function getDocsUrl(sel: Selection): string {
@@ -198,24 +184,13 @@ function getDocsUrl(sel: Selection): string {
   const desktop = sel.desktop ?? 'gnome';
   const edition = sel.edition ?? 'standard';
   let anchor = desktop;
-  if (desktop === 'gnome') {
-    if (edition === 'gdx') anchor = 'gdx';
-    else if (edition === 'hwe') anchor = 'gnome-hwe';
-    else anchor = '';
-  }
-  const hash = anchor ? `#${anchor}` : '';
-  return `/docs/${variant}${hash}`;
+  if (edition === 'gdx') anchor = `${desktop}-gdx`;
+  else if (edition === 'hwe') anchor = `${desktop}-hwe`;
+  return `/docs/${variant}#${anchor}`;
 }
 
-function getVisibleSteps(sel: Selection): StepId[] {
-  const isExperimental = sel.variant === 'skipjack' || sel.variant === 'bonito';
-  const needsEdition = !isExperimental && sel.desktop === 'gnome';
-  const needsArch = !isExperimental;
-  const steps: StepId[] = ['variant', 'desktop'];
-  if (needsEdition) steps.push('edition');
-  if (needsArch) steps.push('arch');
-  steps.push('result');
-  return steps;
+function getVisibleSteps(_sel: Selection): StepId[] {
+  return ['variant', 'desktop', 'edition', 'arch', 'result'];
 }
 
 function ProgressBar({steps, current}: {steps: StepId[]; current: StepId}) {
@@ -294,7 +269,6 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
   const desktopOpt = DESKTOP_OPTIONS.find((o) => o.value === sel.desktop);
   const editionOpt = sel.edition ? EDITION_OPTIONS.find((o) => o.value === sel.edition) : null;
   const archOpt = sel.arch ? ARCH_OPTIONS.find((o) => o.value === sel.arch) : null;
-  const isExperimental = sel.variant === 'skipjack' || sel.variant === 'bonito';
 
   return (
     <div className={styles.resultCard}>
@@ -328,10 +302,10 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
           </a>
         ) : (
           <div className={styles.resultNoIso}>
-            {isExperimental
-              ? '⚠️ No ISO available — container image only for this variant.'
-              : '📦 No ISO for this flavor — use the container image with bootc.'}
-          </div>
+              {sel.edition === 'hwe'
+                ? `🔄 No HWE ISO — download the standard ISO and run \`bootc switch ${imageName}\` after install.`
+                : '📦 No ISO available for this combination.'}
+            </div>
         )}
         <Link to={docsUrl} className="button button--outline button--md">
           📖 View Docs
@@ -420,7 +394,7 @@ export default function ImagePicker(): ReactNode {
                   />
                 ))}
               {step === 'desktop' &&
-                DESKTOP_OPTIONS.map((opt) => (
+                getDesktopOptions(sel.variant).map((opt) => (
                   <OptionCard
                     key={opt.value}
                     option={opt}
