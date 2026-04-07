@@ -1,0 +1,386 @@
+.picker {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* ── Progress bar ───────────────────────────────────────────────── */
+
+.progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  row-gap: 0.75rem;
+}
+
+.progressStep {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ifm-color-emphasis-400);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.progressStep + .progressStep::before {
+  content: '';
+  display: block;
+  width: 2rem;
+  height: 2px;
+  background: var(--ifm-color-emphasis-300);
+  margin: 0 0.25rem;
+  flex-shrink: 0;
+}
+
+.progressDone .progressStep + .progressStep::before,
+.progressActive + .progressStep::before {
+  background: var(--ifm-color-primary);
+}
+
+.progressDot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--ifm-color-emphasis-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+
+.progressDone .progressDot {
+  background: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  color: white;
+}
+
+.progressActive .progressDot {
+  background: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  color: white;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ifm-color-primary) 20%, transparent);
+}
+
+.progressLabel {
+  white-space: nowrap;
+}
+
+.progressDone .progressLabel,
+.progressActive .progressLabel {
+  color: var(--ifm-color-primary);
+}
+
+/* ── Step container ─────────────────────────────────────────────── */
+
+.stepWrap {
+  animation: slideIn 0.22s ease both;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.question {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1.75rem;
+  font-weight: 700;
+}
+
+/* ── Option cards ───────────────────────────────────────────────── */
+
+.optionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.optionCard {
+  position: relative;
+  background: var(--ifm-card-background-color, white);
+  border: 2px solid var(--ifm-color-emphasis-200);
+  border-radius: 14px;
+  padding: 1.5rem 1rem 1.25rem;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  color: var(--ifm-font-color-base);
+  font-family: inherit;
+}
+
+[data-theme='dark'] .optionCard {
+  background: #1a1a1a;
+  border-color: #333;
+}
+
+.optionCard:hover {
+  border-color: var(--ifm-color-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.optionSelected {
+  border-color: var(--ifm-color-primary) !important;
+  background: color-mix(in srgb, var(--ifm-color-primary) 8%, transparent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ifm-color-primary) 25%, transparent);
+}
+
+[data-theme='dark'] .optionSelected {
+  background: color-mix(in srgb, var(--ifm-color-primary) 15%, #1a1a1a) !important;
+}
+
+.optionEmoji {
+  font-size: 2.25rem;
+  line-height: 1;
+  margin-bottom: 0.2rem;
+}
+
+.optionLabel {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.optionDesc {
+  font-size: 0.78rem;
+  color: var(--ifm-color-emphasis-600);
+  line-height: 1.4;
+  margin-top: 0.15rem;
+}
+
+.optionBadge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.optionBadgePrimary {
+  background: var(--ifm-color-primary);
+  color: white;
+}
+
+.optionBadgeWarning {
+  background: #f59e0b;
+  color: white;
+}
+
+.optionCheck {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--ifm-color-primary);
+  color: white;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+/* ── Navigation buttons ─────────────────────────────────────────── */
+
+.backBtn,
+.resetBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.9rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+  font-family: inherit;
+}
+
+.backBtn:hover,
+.resetBtn:hover {
+  background: var(--ifm-color-emphasis-100);
+  color: var(--ifm-font-color-base);
+}
+
+/* ── Result card ────────────────────────────────────────────────── */
+
+.resultCard {
+  background: var(--ifm-card-background-color, white);
+  border: 2px solid var(--ifm-color-primary);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  animation: slideIn 0.22s ease both;
+}
+
+[data-theme='dark'] .resultCard {
+  background: #1a1a1a;
+}
+
+.resultHeader {
+  margin-bottom: 2rem;
+}
+
+.resultEmoji {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.resultTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+  color: var(--ifm-color-primary);
+}
+
+.resultSummary {
+  font-size: 0.95rem;
+  color: var(--ifm-color-emphasis-600);
+  margin: 0;
+}
+
+.resultImageBox {
+  background: var(--ifm-color-emphasis-100);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.75rem;
+  text-align: left;
+}
+
+[data-theme='dark'] .resultImageBox {
+  background: #111;
+}
+
+.resultImageLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ifm-color-emphasis-500);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.6rem;
+}
+
+.resultImageRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.resultImageName {
+  font-size: 0.95rem;
+  word-break: break-all;
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.resultRebaseHint {
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-500);
+  padding: 0.4rem 0.6rem;
+  background: var(--ifm-color-emphasis-200);
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+[data-theme='dark'] .resultRebaseHint {
+  background: #222;
+}
+
+.resultRebaseHint code {
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+}
+
+.copyBtn {
+  background: var(--ifm-color-primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+  font-family: inherit;
+  flex-shrink: 0;
+}
+
+.copyBtn:hover {
+  opacity: 0.85;
+}
+
+.resultActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.resultNoIso {
+  font-size: 0.88rem;
+  color: var(--ifm-color-emphasis-600);
+  background: var(--ifm-color-emphasis-100);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+
+@media screen and (max-width: 600px) {
+  .optionGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .question {
+    font-size: 1.2rem;
+  }
+
+  .resultCard {
+    padding: 1.5rem 1rem;
+  }
+
+  .progress {
+    gap: 0;
+  }
+
+  .progressStep + .progressStep::before {
+    width: 1rem;
+  }
+
+  .progressLabel {
+    display: none;
+  }
+}
