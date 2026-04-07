@@ -6,7 +6,7 @@ import styles from './styles.module.css';
 
 type Variant = 'albacore' | 'yellowfin' | 'skipjack' | 'bonito';
 type Desktop = 'gnome' | 'gnome50' | 'kde' | 'cosmic' | 'niri';
-type Edition = 'standard' | 'dx' | 'gdx' | 'hwe';
+type Edition = 'standard' | 'gdx' | 'hwe';
 type Arch = 'amd64' | 'amd64-v2' | 'arm64';
 type StepId = 'variant' | 'desktop' | 'edition' | 'arch' | 'result';
 
@@ -97,12 +97,6 @@ const EDITION_OPTIONS: Option<Edition>[] = [
     description: 'Just the desktop — great for everyday use.',
   },
   {
-    value: 'dx',
-    emoji: '🔧',
-    label: 'Developer (DX)',
-    description: 'Adds Docker, VS Code, and developer tooling on top of the base.',
-  },
-  {
     value: 'gdx',
     emoji: '🎮',
     label: 'AI / ML (GDX)',
@@ -184,7 +178,6 @@ function buildImageName(sel: Selection): string {
     return `ghcr.io/tuna-os/${variant}:${desktop}`;
   }
   if (desktop === 'gnome') {
-    if (edition === 'dx') return `ghcr.io/tuna-os/${variant}:gnome-dx`;
     if (edition === 'gdx') return `ghcr.io/tuna-os/${variant}:gnome-gdx`;
     if (edition === 'hwe') return `ghcr.io/tuna-os/${variant}:gnome-hwe`;
     return `ghcr.io/tuna-os/${variant}:gnome`;
@@ -206,8 +199,7 @@ function getDocsUrl(sel: Selection): string {
   const edition = sel.edition ?? 'standard';
   let anchor = desktop;
   if (desktop === 'gnome') {
-    if (edition === 'dx') anchor = 'dx';
-    else if (edition === 'gdx') anchor = 'gdx';
+    if (edition === 'gdx') anchor = 'gdx';
     else if (edition === 'hwe') anchor = 'gnome-hwe';
     else anchor = '';
   }
