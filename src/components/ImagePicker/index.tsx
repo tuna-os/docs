@@ -44,14 +44,12 @@ const VARIANT_OPTIONS: Option<Variant>[] = [
     emoji: '🍣',
     label: 'Skipjack',
     description: 'CentOS Stream 10 — upstream-tracking, preview of future EL.',
-    badge: 'Experimental',
   },
   {
     value: 'bonito',
     emoji: '🎣',
     label: 'Bonito',
-    description: 'Fedora 43 — bleeding edge packages and the absolute latest kernel.',
-    badge: 'Incomplete',
+    description: 'Fedora 44 — bleeding edge packages and the absolute latest kernel.',
   },
 ];
 
