@@ -60,18 +60,6 @@ const PROJECTS: Project[] = [
     ],
   },
   {
-    name: 'Ubuntu ISO',
-    slug: '/docs/ubuntu',
-    icon: '🦝',
-    description: 'Ubuntu 26.04 Resolute Raccoon live installable ISO built with bootc. Traditional Ubuntu experience, immutable delivery.',
-    status: 'stable',
-    links: [
-      {label: 'Documentation', to: '/docs/ubuntu'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/ubuntu-26.04-iso'},
-      {label: 'Download', to: 'https://download.tunaos.org/ubuntu-26.04/ubuntu-26.04-latest.iso'},
-    ],
-  },
-  {
     name: 'Tromsø',
     slug: '/docs/tromso',
     icon: '🌋',
@@ -83,17 +71,6 @@ const PROJECTS: Project[] = [
     ],
   },
   {
-    name: 'Tromsø ISO',
-    slug: '/docs/tromso-iso',
-    icon: '🌋',
-    description: 'Live ISO builder for Tromsø KDE Linux. Produces bootable UEFI images with systemd-boot and tuna-installer.',
-    status: 'alpha',
-    links: [
-      {label: 'Documentation', to: '/docs/tromso-iso'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/tromso-iso'},
-    ],
-  },
-  {
     name: 'XFCE Linux',
     slug: '/docs/xfce-linux',
     icon: '🖥️',
@@ -102,39 +79,6 @@ const PROJECTS: Project[] = [
     links: [
       {label: 'Documentation', to: '/docs/xfce-linux'},
       {label: 'GitHub', to: 'https://github.com/tuna-os/xfce-linux'},
-    ],
-  },
-  {
-    name: 'XFCE Linux ISO',
-    slug: '/docs/xfce-linux-iso',
-    icon: '🖥️',
-    description: 'Live ISO for xfce-linux — systemd-boot, tuna-installer, bootc. Bootable UEFI image for the lightweight XFCE desktop.',
-    status: 'alpha',
-    links: [
-      {label: 'Documentation', to: '/docs/xfce-linux-iso'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/xfce-linux-iso'},
-    ],
-  },
-  {
-    name: 'Bonito X13s',
-    slug: '/docs/bonito-x13s',
-    icon: '💪',
-    description: 'Bootc image and live ISO for the Lenovo ThinkPad X13s — Qualcomm SC8280XP, aarch64. Fedora-based with GNOME.',
-    status: 'experimental',
-    links: [
-      {label: 'Documentation', to: '/docs/bonito-x13s'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/bonito-x13s'},
-    ],
-  },
-  {
-    name: 'Dakota X13s',
-    slug: '/docs/dakota-x13s',
-    icon: '💪',
-    description: 'Project Bluefin Dakota live ISO for the Lenovo ThinkPad X13s. Qualcomm SC8280XP, aarch64.',
-    status: 'experimental',
-    links: [
-      {label: 'Documentation', to: '/docs/dakota-x13s'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/dakota-x13s'},
     ],
   },
   {
