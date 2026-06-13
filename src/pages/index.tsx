@@ -146,11 +146,14 @@ function DocsBand(): ReactNode {
 function ProjectsBand(): ReactNode {
   const featured = [
     {emoji: '🐟', name: 'TunaOS', desc: 'Desktop images', to: '/tunaos'},
-    {emoji: '🧰', name: 'Tacklebox', desc: 'ISO & USB builder', to: '/tacklebox'},
+    {emoji: '🛠', name: 'Tacklebox', desc: 'ISO & USB builder', to: '/tacklebox'},
     {emoji: '🌌', name: 'Tromsø', desc: 'KDE Linux', to: '/tromso'},
     {emoji: '🖥️', name: 'XFCE Linux', desc: 'XFCE desktop', to: '/xfce-linux'},
     {emoji: '🍻', name: 'Tavern', desc: 'Homebrew GUI', to: '/tavern'},
     {emoji: '⌨️', name: 'bluefin-cli', desc: 'Shell CLI', to: '/bluefin-cli'},
+    {emoji: '⚙', name: 'COPR Builds', desc: 'RPM builder', to: '/copr'},
+    {emoji: '🦖', name: 'Dakota', desc: 'Bluefin GNOME OS', to: '/dakota'},
+    {emoji: '🌺', name: 'Hawaii', desc: 'Niri OS', to: '/hawaii'},
   ];
   return (
     <section className={clsx(styles.section)}>
