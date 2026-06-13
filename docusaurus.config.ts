@@ -60,6 +60,11 @@ const config: Config = {
       },
       items: [
         {
+          to: '/projects',
+          label: 'Projects',
+          position: 'left',
+        },
+        {
           to: '/download',
           label: 'Download',
           position: 'left',

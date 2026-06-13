@@ -298,3 +298,39 @@
   opacity: 0.9;
   margin-bottom: 2rem;
 }
+
+/* Project grid (homepage) */
+.projectGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.6rem;
+}
+
+.projectChip {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-background-surface-color);
+  text-decoration: none !important;
+  color: var(--ifm-font-color-base);
+  font-size: 0.92rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.projectChip:hover {
+  border-color: var(--ifm-color-primary-lighter);
+  box-shadow: 0 4px 12px rgba(0, 43, 92, 0.08);
+}
+
+.projectChipEmoji {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.projectChipDesc {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.85rem;
+}

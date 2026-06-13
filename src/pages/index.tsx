@@ -4,6 +4,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import AnimatedEmoji from '@site/src/components/AnimatedEmoji';
 import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
@@ -57,7 +58,7 @@ function Hero(): ReactNode {
           <span className={styles.badge}>Fedora 44</span>
         </div>
         <Heading as="h1" className={styles.heroTitle}>
-          <span className={styles.heroFish}>🐟</span> {siteConfig.title}
+          <span className={styles.heroFish}><AnimatedEmoji emoji="🐟" size={64} /></span> {siteConfig.title}
         </Heading>
         <p className={styles.heroTagline}>{siteConfig.tagline}</p>
         <p className={styles.heroLede}>
@@ -97,7 +98,7 @@ function VariantLineup(): ReactNode {
               className={clsx(styles.variantCard, {[styles.variantFlagship]: v.flagship})}
             >
               {v.flagship && <span className={styles.flagshipTag}>Recommended</span>}
-              <div className={styles.variantEmoji}>{v.emoji}</div>
+              <div className={styles.variantEmoji}><AnimatedEmoji emoji={v.emoji} size={40} /></div>
               <Heading as="h3" className={styles.variantName}>
                 {v.name}
               </Heading>
@@ -142,6 +143,47 @@ function DocsBand(): ReactNode {
   );
 }
 
+function ProjectsBand(): ReactNode {
+  const featured = [
+    {emoji: '🐟', name: 'TunaOS', desc: 'Desktop images', to: '/docs/tunaos'},
+    {emoji: '🧰', name: 'Tacklebox', desc: 'ISO & USB builder', to: '/docs/tacklebox'},
+    {emoji: '💻', name: 'bootc-installer', desc: 'TUI installer', to: '/docs/bootc-installer'},
+    {emoji: '📦', name: 'chunkah', desc: 'OCI layer tool', to: '/docs/chunkah'},
+    {emoji: '🎣', name: 'Dakota ISO', desc: 'Bluefin live ISO', to: '/docs/dakota'},
+    {emoji: '🟠', name: 'Ubuntu ISO', desc: 'Ubuntu live ISO', to: '/docs/ubuntu'},
+    {emoji: '🏔️', name: 'Tromsø', desc: 'KDE Linux', to: '/docs/tromso'},
+    {emoji: '🖥️', name: 'XFCE Linux', desc: 'XFCE desktop', to: '/docs/xfce-linux'},
+    {emoji: '🍺', name: 'Tavern', desc: 'Homebrew GUI', to: '/docs/tavern'},
+    {emoji: '⌨️', name: 'bluefin-cli', desc: 'Shell CLI', to: '/docs/bluefin-cli'},
+  ];
+  return (
+    <section className={clsx(styles.section)}>
+      <div className="container">
+        <div className={styles.sectionHead}>
+          <Heading as="h2">More from TunaOS</Heading>
+          <p>Tools, installers, and ISOs — every project in the org.</p>
+        </div>
+        <div className={styles.projectGrid}>
+          {featured.map((p) => (
+            <Link key={p.name} to={p.to} className={styles.projectChip}>
+              <span className={styles.projectChipEmoji}><AnimatedEmoji emoji={p.emoji} size={24} /></span>
+              <span>
+                <strong>{p.name}</strong>
+                <span className={styles.projectChipDesc}> — {p.desc}</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+        <div className="text--center margin-top--md">
+          <Link className="button button--outline button--md" to="/projects">
+            Explore all projects →
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FinalCta(): ReactNode {
   return (
     <section className={styles.ctaBand}>
@@ -176,6 +218,7 @@ export default function Home(): ReactNode {
         <VariantLineup />
         <HomepageFeatures />
         <DocsBand />
+        <ProjectsBand />
         <FinalCta />
       </main>
     </Layout>
