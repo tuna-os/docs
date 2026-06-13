@@ -54,3 +54,22 @@
   --ifm-button-background-color: #b0b0b0;
   --ifm-button-border-color: #b0b0b0;
 }
+
+/* ── Sidebar ── */
+
+.sidebar-section-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ifm-color-emphasis-500);
+  padding: 0.5rem 0.75rem 0.25rem;
+  margin-top: 0.75rem;
+}
+
+.sidebar-experimental::after {
+  content: "⚠";
+  margin-left: 0.4rem;
+  font-size: 0.7rem;
+  opacity: 0.6;
+}

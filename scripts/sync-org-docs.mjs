@@ -40,6 +40,10 @@ const SKIP = new Set([
 const ROOT_DOC_FILTER = {
   tunaOS: ['README.md', 'ROADMAP.md', 'SECURITY.md', 'CONTRIBUTING.md'],
   'github-copr': ['README.md', 'ARCHITECTURE.md'],
+  'dakota-iso': ['README.md', 'CONTRIBUTING.md'],
+  'ubuntu-26.04-iso': ['README.md', 'CONTRIBUTING.md'],
+  'bonito-x13s': ['README.md', 'CONTRIBUTING.md'],
+  'dakota-x13s': ['README.md', 'CONTRIBUTING.md'],
 };
 
 // Repos whose docs/ folder should NOT be synced (too noisy / internal).
