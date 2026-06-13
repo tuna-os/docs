@@ -1,0 +1,20 @@
+.header {
+  background: linear-gradient(160deg, var(--tuna-dark-blue) 0%, #013a73 55%, var(--ifm-color-primary) 100%);
+  color: #fff;
+  padding: 3rem 0 2.5rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 0 0 0.75rem;
+}
+
+.subtitle {
+  max-width: 560px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}

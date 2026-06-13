@@ -23,6 +23,9 @@ const PROJECTS = {
   'bonito-x13s': {label: 'Bonito X13s',    icon: '💪', slug: 'bonito-x13s',     status: 'experimental'},
   'dakota-x13s': {label: 'Dakota X13s',    icon: '💪', slug: 'dakota-x13s',     status: 'experimental'},
   tromso:      {label: 'Tromsø',           icon: '🏔️', slug: 'tromso',           status: 'alpha'},
+  'tromso-iso': {label: 'Tromsø ISO',      icon: '🏔️', slug: 'tromso-iso',      status: 'alpha'},
+  'xfce-linux': {label: 'XFCE Linux',      icon: '🖥️', slug: 'xfce-linux',      status: 'alpha'},
+  'xfce-linux-iso': {label: 'XFCE Linux ISO', icon: '🖥️', slug: 'xfce-linux-iso', status: 'alpha'},
   'github-copr': {label: 'COPR Builds',    icon: '🔧', slug: 'copr',            status: 'internal'},
 };
 

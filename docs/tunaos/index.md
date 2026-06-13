@@ -16,7 +16,7 @@ status: stable
 
 ---
 
-[![License](https://img.shields.io/github/license/tuna-os/tunaOS?style=for-the-badge)](https://github.com/tuna-os/tunaOS/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/tuna-os/tunaOS?style=for-the-badge)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/tuna-os/tunaOS?style=for-the-badge)](https://github.com/tuna-os/tunaOS/stargazers)
 [![Issues](https://img.shields.io/github/issues/tuna-os/tunaOS?style=for-the-badge)](https://github.com/tuna-os/tunaOS/issues)
 
@@ -260,6 +260,17 @@ Related Communities:
 - [Redfin Setup](https://github.com/tuna-os/tunaOS/blob/main/docs/rhel-setup.md) — RHEL 10 local-build instructions
 - [Developer Docs](https://tunaos.org/docs/dev/introduction) — build and contribution guide
 
+### Policies & Planning
+- [Roadmap](https://github.com/tuna-os/tunaOS/blob/main/ROADMAP.md) — project direction and feature status
+- [Versioning](https://github.com/tuna-os/tunaOS/blob/main/VERSIONING.md) — tag scheme and stability tiers
+- [Migration Guide](https://github.com/tuna-os/tunaOS/blob/main/MIGRATION.md) — switching from other distros
+- [Security Policy](https://github.com/tuna-os/tunaOS/blob/main/SECURITY.md) — vulnerability reporting and supported versions
+- [Code of Conduct](https://github.com/tuna-os/tunaOS/blob/main/CODE_OF_CONDUCT.md) — community standards
+
+### Community & Governance
+- [Community](https://github.com/tuna-os/tunaOS/blob/main/COMMUNITY.md) — contribution ladder, metrics, communication
+- [Maintainers](https://github.com/tuna-os/tunaOS/blob/main/MAINTAINERS.md) — maintainer playbook and bus factor plan
+
 ### External Resources
 - [AlmaLinux Kitten 10 Differences](https://wiki.almalinux.org/development/almalinux-os-kitten-10.html#how-is-almalinux-os-kitten-different-from-centos-stream)
 - [Project Bluefin Documentation](https://docs.projectbluefin.io)
@@ -283,6 +294,6 @@ Related Communities:
 
 *Inspired by [Bluefin](https://projectbluefin.io) and the [Universal Blue](https://universal-blue.org/) Community*
 
-*Licensed under [Apache 2.0](https://github.com/tuna-os/tunaOS/blob/main/LICENSE)*
+*Licensed under [Apache 2.0](LICENSE)*
 
 </div>

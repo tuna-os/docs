@@ -2,6 +2,7 @@
 sidebar_position: 1
 sidebar_label: "COPR Builds"
 slug: /docs/copr
+status: internal
 ---
 
 > 🔧 **Internal tooling** — used by the TunaOS build pipeline. Not user-facing.

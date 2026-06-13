@@ -77,6 +77,9 @@ const sidebars: SidebarsConfig = {
     {type: 'doc', id: 'ubuntu/index',          label: 'Ubuntu ISO'},
     {type: 'doc', id: 'bonito-x13s/index',     label: 'Bonito X13s',     className: 'sidebar-experimental'},
     {type: 'doc', id: 'dakota-x13s/index',     label: 'Dakota X13s',     className: 'sidebar-experimental'},
+    {type: 'doc', id: 'tromso-iso/index',       label: 'Tromsø ISO',      className: 'sidebar-alpha'},
+    {type: 'doc', id: 'xfce-linux/index',        label: 'XFCE Linux',      className: 'sidebar-alpha'},
+    {type: 'doc', id: 'xfce-linux-iso/index',    label: 'XFCE Linux ISO',  className: 'sidebar-alpha'},
   ],
 };
 

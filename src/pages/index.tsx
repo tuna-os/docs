@@ -142,6 +142,45 @@ function DocsBand(): ReactNode {
   );
 }
 
+function ProjectsBand(): ReactNode {
+  const featured = [
+    {emoji: '🐟', name: 'TunaOS', desc: 'Desktop images', to: '/docs/tunaos'},
+    {emoji: '🧰', name: 'Tacklebox', desc: 'ISO & USB builder', to: '/docs/tacklebox'},
+    {emoji: '💻', name: 'bootc-installer', desc: 'TUI installer', to: '/docs/bootc-installer'},
+    {emoji: '📦', name: 'chunkah', desc: 'OCI layer tool', to: '/docs/chunkah'},
+    {emoji: '🎣', name: 'Dakota ISO', desc: 'Bluefin live ISO', to: '/docs/dakota'},
+    {emoji: '🟠', name: 'Ubuntu ISO', desc: 'Ubuntu live ISO', to: '/docs/ubuntu'},
+    {emoji: '🏔️', name: 'Tromsø', desc: 'KDE Linux', to: '/docs/tromso'},
+    {emoji: '🖥️', name: 'XFCE Linux', desc: 'XFCE desktop', to: '/docs/xfce-linux'},
+  ];
+  return (
+    <section className={clsx(styles.section)}>
+      <div className="container">
+        <div className={styles.sectionHead}>
+          <Heading as="h2">More from TunaOS</Heading>
+          <p>Tools, installers, and ISOs — every project in the org.</p>
+        </div>
+        <div className={styles.projectGrid}>
+          {featured.map((p) => (
+            <Link key={p.name} to={p.to} className={styles.projectChip}>
+              <span className={styles.projectChipEmoji}>{p.emoji}</span>
+              <span>
+                <strong>{p.name}</strong>
+                <span className={styles.projectChipDesc}> — {p.desc}</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+        <div className="text--center margin-top--md">
+          <Link className="button button--outline button--md" to="/projects">
+            Explore all projects →
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FinalCta(): ReactNode {
   return (
     <section className={styles.ctaBand}>
@@ -176,6 +215,7 @@ export default function Home(): ReactNode {
         <VariantLineup />
         <HomepageFeatures />
         <DocsBand />
+        <ProjectsBand />
         <FinalCta />
       </main>
     </Layout>
