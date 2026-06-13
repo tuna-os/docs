@@ -73,8 +73,8 @@ function Hero(): ReactNode {
           <Link className={clsx('button button--lg', styles.btnPrimary)} to="/download">
             Download ISOs 📦
           </Link>
-          <Link className={clsx('button button--lg', styles.btnGhost)} to="/docs/intro">
-            Get Started 🚀
+          <Link className={clsx('button button--lg', styles.btnGhost)} to="/projects">
+            Explore Projects 🚀
           </Link>
         </div>
       </div>
