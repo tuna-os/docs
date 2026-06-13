@@ -60,6 +60,11 @@ const config: Config = {
       },
       items: [
         {
+          to: '/download',
+          label: 'Download',
+          position: 'left',
+        },
+        {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
@@ -78,6 +83,10 @@ const config: Config = {
         {
           title: 'TunaOS',
           items: [
+            {
+              label: 'Download',
+              to: '/download',
+            },
             {
               label: 'Documentation',
               to: 'docs/intro',

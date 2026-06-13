@@ -1,0 +1,65 @@
+# Regenerates static/iso-index.json from the live R2 bucket so the
+# /download page reflects whatever ISOs are actually published, with no
+# per-product code changes here.
+#
+# Lists the bucket with rclone (org-wide R2 secrets, same as the ISO
+# repos), transforms the listing with scripts/build-iso-index.mjs, and
+# commits the result. The commit triggers the site's normal redeploy, so
+# the published download page updates within a build cycle.
+name: update-iso-index
+
+on:
+  schedule:
+    # Every 6 hours — frequent enough to catch new nightly/weekly ISOs
+    # without spamming commits (the step only commits on a real diff).
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: update-iso-index
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    # Forks won't have the R2 secret; skip rather than fail.
+    if: ${{ github.repository == 'tuna-os/docs' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install rclone
+        run: sudo apt-get update && sudo apt-get install -y rclone
+
+      - name: Regenerate ISO index from R2
+        env:
+          RCLONE_CONFIG_R2_TYPE: s3
+          RCLONE_CONFIG_R2_PROVIDER: Cloudflare
+          RCLONE_CONFIG_R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          RCLONE_CONFIG_R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          RCLONE_CONFIG_R2_REGION: auto
+          RCLONE_CONFIG_R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+        run: |
+          rclone lsjson "R2:${R2_BUCKET}" --recursive --files-only \
+            --include "*.iso" --include "*SHA256SUMS*" \
+          | node scripts/build-iso-index.mjs > static/iso-index.json
+          echo "==> $(node -e 'console.log(require("./static/iso-index.json").count)') ISOs indexed"
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- static/iso-index.json; then
+            echo "No change to iso-index.json"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add static/iso-index.json
+          git commit -m "chore: refresh ISO download index from R2"
+          git push

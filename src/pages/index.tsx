@@ -4,67 +4,137 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import ImagePicker from '@site/src/components/ImagePicker';
 import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
 
-function HomepageHeader() {
+const VARIANTS = [
+  {
+    emoji: '🐟',
+    name: 'Albacore',
+    base: 'AlmaLinux 10',
+    blurb: '10-year support cycle. The rock-solid daily driver for work.',
+    to: '/docs/albacore',
+    flagship: true,
+  },
+  {
+    emoji: '🐠',
+    name: 'Yellowfin',
+    base: 'AlmaLinux Kitten',
+    blurb: 'Newer packages on a near-enterprise base. The developer pick.',
+    to: '/docs/yellowfin',
+  },
+  {
+    emoji: '🍣',
+    name: 'Skipjack',
+    base: 'CentOS Stream 10',
+    blurb: 'Upstream-tracking — a preview of where Enterprise Linux is headed.',
+    to: '/docs/skipjack',
+  },
+  {
+    emoji: '🎣',
+    name: 'Bonito',
+    base: 'Fedora 44',
+    blurb: 'Bleeding-edge packages and the very latest kernel.',
+    to: '/docs/bonito',
+  },
+];
+
+function Hero(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
-        <div className={styles.heroContent}>
-          <div className={styles.heroText}>
-            <div className="badge badge--secondary margin-bottom--md">GNOME 48.3 • AlmaLinux 10 • CentOS 10</div>
-            <Heading as="h1" className="hero__title">
-              🐟 {siteConfig.title}
-            </Heading>
-            <p className="hero__subtitle">{siteConfig.tagline}</p>
-            <p className={styles.heroDescription}>
-              Modern, cloud-native desktop images based on Enterprise Linux. 
-              Built with <a href="https://github.com/bootc-dev/bootc" target="_blank">bootc</a> technology 
-              for unparalleled reliability and flexibility.
-            </p>
-            <div className={styles.buttons}>
-              <Link
-                className="button button--secondary button--lg"
-                to="docs/intro">
-                Get Started 🚀
-              </Link>
-              <Link
-                className="button button--outline button--lg"
-                to="#download">
-                Download ISOs 📦
-              </Link>
-            </div>
-          </div>
+    <header className={styles.hero}>
+      <div className={styles.heroBubbles} aria-hidden>
+        {Array.from({length: 12}).map((_, i) => (
+          <span key={i} className={styles.bubble} />
+        ))}
+      </div>
+      <div className={clsx('container', styles.heroInner)}>
+        <div className={styles.badgeRow}>
+          <span className={styles.badge}>GNOME 48</span>
+          <span className={styles.badge}>AlmaLinux 10</span>
+          <span className={styles.badge}>CentOS 10</span>
+          <span className={styles.badge}>Fedora 44</span>
+        </div>
+        <Heading as="h1" className={styles.heroTitle}>
+          <span className={styles.heroFish}>🐟</span> {siteConfig.title}
+        </Heading>
+        <p className={styles.heroTagline}>{siteConfig.tagline}</p>
+        <p className={styles.heroLede}>
+          Modern, cloud-native desktops with the stability of Enterprise Linux.
+          Built on{' '}
+          <a href="https://github.com/bootc-dev/bootc" target="_blank" rel="noreferrer">
+            bootc
+          </a>{' '}
+          for atomic updates, painless rollbacks, and effortless customization.
+        </p>
+        <div className={styles.heroButtons}>
+          <Link className={clsx('button button--lg', styles.btnPrimary)} to="/download">
+            Download ISOs 📦
+          </Link>
+          <Link className={clsx('button button--lg', styles.btnGhost)} to="/docs/intro">
+            Get Started 🚀
+          </Link>
         </div>
       </div>
     </header>
   );
 }
 
-function WhySection() {
+function VariantLineup(): ReactNode {
   return (
-    <section className={styles.whySection}>
+    <section className={styles.section}>
       <div className="container">
-        <div className="text--center">
-          <Heading as="h2">Why TunaOS?</Heading>
-          <p>The stability of Enterprise Linux with the freshness of a modern desktop.</p>
+        <div className={styles.sectionHead}>
+          <Heading as="h2">Pick your fish</Heading>
+          <p>Four bases, one experience — same desktop, different release cadence.</p>
         </div>
-        <div className={styles.whyGrid}>
-          <div className={styles.whyItem}>
-            <Heading as="h3">🛡️ Rock Solid</Heading>
-            <p>Built on AlmaLinux 10 and CentOS 10. Get 10 years of updates and enterprise-grade stability for your workstation.</p>
+        <div className={styles.variantGrid}>
+          {VARIANTS.map((v) => (
+            <Link
+              key={v.name}
+              to={v.to}
+              className={clsx(styles.variantCard, {[styles.variantFlagship]: v.flagship})}
+            >
+              {v.flagship && <span className={styles.flagshipTag}>Recommended</span>}
+              <div className={styles.variantEmoji}>{v.emoji}</div>
+              <Heading as="h3" className={styles.variantName}>
+                {v.name}
+              </Heading>
+              <div className={styles.variantBase}>{v.base}</div>
+              <p className={styles.variantBlurb}>{v.blurb}</p>
+              <span className={styles.variantLink}>Learn more →</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function DocsBand(): ReactNode {
+  return (
+    <section className={clsx(styles.section, styles.devBand)}>
+      <div className="container">
+        <div className={styles.devInner}>
+          <div>
+            <Heading as="h2">Docs that live with the code</Heading>
+            <p className={styles.devText}>
+              From first install to building your own images, the handbook
+              covers it — and it’s sourced straight from the project repository,
+              so it never drifts from what actually ships.
+            </p>
           </div>
-          <div className={styles.whyItem}>
-            <Heading as="h3">⚡ Modern Desktop</Heading>
-            <p>We backport GNOME 48.3 and other modern desktop components that are usually years away for Enterprise Linux users.</p>
-          </div>
-          <div className={styles.whyItem}>
-            <Heading as="h3">🔧 Developer First</Heading>
-            <p>Homebrew baked-in, Flathub enabled, and specialized DX/GDX images for developers and AI researchers.</p>
+          <div className={styles.devLinks}>
+            <Link className="button button--primary button--lg" to="/docs/intro">
+              📖 Read the Docs
+            </Link>
+            <a
+              className="button button--outline button--lg"
+              href="https://github.com/tuna-os/tunaOS"
+            >
+              💻 Contribute on GitHub
+            </a>
           </div>
         </div>
       </div>
@@ -72,15 +142,24 @@ function WhySection() {
   );
 }
 
-function DownloadSection() {
+function FinalCta(): ReactNode {
   return (
-    <section id="download" className={styles.downloadSection}>
-      <div className="container">
-        <div className="text--center margin-bottom--lg">
-          <Heading as="h2">Find Your Image</Heading>
-          <p>Answer a few questions and we'll point you to the right TunaOS image.</p>
+    <section className={styles.ctaBand}>
+      <div className="container text--center">
+        <Heading as="h2" className={styles.ctaTitle}>
+          Ready to dive in?
+        </Heading>
+        <p className={styles.ctaText}>
+          Grab a live ISO, or rebase an existing bootc system in one command.
+        </p>
+        <div className={styles.heroButtons}>
+          <Link className={clsx('button button--lg', styles.btnPrimary)} to="/download">
+            Browse all ISOs 📦
+          </Link>
+          <Link className={clsx('button button--lg', styles.btnGhost)} to="/docs/installation">
+            Install Guide 📋
+          </Link>
         </div>
-        <ImagePicker />
       </div>
     </section>
   );
@@ -90,13 +169,14 @@ export default function Home(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`${siteConfig.title} - Cloud-Native Enterprise Linux`}
-      description="A collection of cloud-native Enterprise Linux OS images based on Bluefin LTS">
-      <HomepageHeader />
+      title={`${siteConfig.title} — Cloud-Native Enterprise Linux`}
+      description="A collection of cloud-native Enterprise Linux desktop images built with bootc — Albacore, Yellowfin, Skipjack, and Bonito.">
+      <Hero />
       <main>
-        <WhySection />
+        <VariantLineup />
         <HomepageFeatures />
-        <DownloadSection />
+        <DocsBand />
+        <FinalCta />
       </main>
     </Layout>
   );
