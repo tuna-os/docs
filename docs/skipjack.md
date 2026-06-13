@@ -14,7 +14,7 @@ Skipjack is the upstream-tracking variant of TunaOS based on CentOS Stream 10. I
 
 ## Features
 
-- 🖥️ **GNOME 48.3**: Modern desktop backported to Enterprise Linux.
+- 🖥️ **Modern GNOME**: A current GNOME desktop on Enterprise Linux, with GNOME 50 available via the `gnome50` image.
 - 🍺 **Baked-in Homebrew**: Access thousands of CLI tools and fonts immediately.
 - 🌊 **CentOS Stream 10**: The cutting-edge of the RHEL ecosystem.
 - 🛠️ **Developer Focus**: Ideal for developers who want to stay ahead of the enterprise curve.

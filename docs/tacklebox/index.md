@@ -168,5 +168,11 @@ just provision-usb device=/dev/sda recipe=examples/multi-test.json
 just build-xz
 ```
 
+## Related projects
+
+- **[TunaOS](/docs/tunaos)** — Tacklebox consumes TunaOS OCI images to produce its bootable media; the [live ISO generation](/docs/tunaos/live-iso-generation) pipeline calls it directly.
+- **[Tromsø](/docs/tromso)** and **[XFCE Linux](/docs/xfce-linux)** — more bootc images you can drop into a Tacklebox recipe.
+- See every project on the **[Projects page →](/projects)**.
+
 ---
 *Part of the [Tuna OS](https://github.com/tuna-os) ecosystem.*

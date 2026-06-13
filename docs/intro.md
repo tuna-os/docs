@@ -12,7 +12,7 @@ Our mission is to combine the **stability and long-term support** of Enterprise 
 
 ## ✨ Why TunaOS?
 
-- 🖥️ **Latest GNOME**: We backport GNOME 48.3 to Enterprise Linux, ensuring you have the latest desktop features without sacrificing system stability.
+- 🖥️ **Latest GNOME**: We backport GNOME 50 to Enterprise Linux (the `gnome50` image), so you can have the latest desktop features alongside the rock-stable distro GNOME — without sacrificing system stability.
 - 🍺 **Baked-in Homebrew**: Homebrew is pre-installed, giving you instant access to a massive library of CLI tools and fonts.
 - 📦 **Bootc Technology**: Built using modern container technology for immutable, reliable, and easily reproducible systems.
 - 🏢 **Enterprise DNA**: Based on AlmaLinux 10 and CentOS 10, providing a foundation supported for up to 10 years.
@@ -25,7 +25,7 @@ Our mission is to combine the **stability and long-term support** of Enterprise 
 | **[Albacore](albacore)** | AlmaLinux 10 | **Flagship** Stable Enterprise Desktop |
 | **[Yellowfin](yellowfin)** | AlmaLinux Kitten | Developers / Daily Drivers |
 | **[Skipjack](skipjack)** | CentOS Stream 10 | Upstream Testing |
-| **[Bonito](bonito)** | Fedora 42 | Bleeding Edge / Experimental |
+| **[Bonito](bonito)** | Fedora 44 | Bleeding Edge / Experimental |
 
 ## 🚀 Specialized Editions
 
@@ -33,7 +33,7 @@ For our primary variants (Albacore and Yellowfin), we offer specialized editions
 
 - **Regular**: The balanced, standard experience.
 - **DX (Developer Experience)**: Pre-configured for software development (`libvirt`, `docker`, `vscode`, etc.).
-- **GDX (Graphical Developer Experience)**: Optimized for AI, Graphics, and VFX (`NVIDIA`, `CUDA`).
+- **NVIDIA**: Optimized for AI, Graphics, and VFX with NVIDIA drivers + CUDA (the `-nvidia` flavor, formerly "GDX").
 - **HWE (Hardware Enablement)**: For the latest hardware requiring newer kernels.
 
 ### 🎨 Desktop Flavors
@@ -51,7 +51,19 @@ Ready to dive in?
 
 1.  **[System Requirements](system-requirements)** - Check if your hardware is supported.
 2.  **[Installation Guide](installation)** - Learn how to install TunaOS.
-3.  **[Download ISOs](/)** - Get started with pre-built images on the homepage.
+3.  **[Download ISOs](/download)** - Get started with pre-built images.
+
+## 🧰 Beyond the OS
+
+TunaOS is more than its images — it's an ecosystem of tools that build, install, and
+distribute them:
+
+- **[Tacklebox](/docs/tacklebox)** — orchestrates multi-boot USBs, disk images, and deduplicated ISOs from OCI images.
+- **[Tromsø](/docs/tromso)** (KDE) and **[XFCE Linux](/docs/xfce-linux)** — BuildStream-from-source desktop images.
+- **[COPR Builds](/docs/copr)** — the RPM build system that backports GNOME 50 to EL10.
+- **[Tavern](/docs/tavern)** and **[bluefin-cli](/docs/bluefin-cli)** — desktop and shell tooling.
+
+See the full list on the **[Projects page →](/projects)**.
 
 ---
 

@@ -14,7 +14,7 @@ Yellowfin is the "developer's daily drive" variant of TunaOS. It tracks AlmaLinu
 
 ## Features
 
-- 🖥️ **GNOME 48.3**: Modern desktop backported to Enterprise Linux.
+- 🖥️ **GNOME 50 available**: The latest GNOME, backported to Enterprise Linux via the `gnome50` image (see [Downloads](#gnome-50)) — alongside the stable distro GNOME.
 - 🍺 **Baked-in Homebrew**: Access thousands of CLI tools and fonts immediately.
 - ✨ **Microarchitecture Support**: Optimized builds for `x86_64_v2` (older CPUs).
 - 🐱 **Kitten Base**: Enjoy newer packages and features before they land in stable EL.
@@ -55,9 +55,11 @@ Pre-built ISOs are published every two weeks for GNOME flavors. Other flavors ar
 ### DX (Developer Experience)
 **Image:** `ghcr.io/tuna-os/yellowfin:gnome-dx`
 
-<a id="gdx"></a>
-### GDX (Graphical Developer Experience)
-**Image:** `ghcr.io/tuna-os/yellowfin:gnome-gdx`
+<a id="gnome-nvidia"></a>
+### NVIDIA (NVIDIA drivers + CUDA)
+Adds NVIDIA drivers and CUDA for AI, graphics, and VFX workloads. (Formerly "GDX".)
+
+**Image:** `ghcr.io/tuna-os/yellowfin:gnome-nvidia`
 
 ## Installation
 

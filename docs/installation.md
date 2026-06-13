@@ -31,7 +31,7 @@ ISOs for GNOME and GNOME-HWE are published every two weeks to [download.tunaos.o
 | **Albacore** (AlmaLinux 10) | [albacore-gnome-latest.iso](https://download.tunaos.org/live-isos/albacore-gnome-latest.iso) | [albacore-gnome-hwe-latest.iso](https://download.tunaos.org/live-isos/albacore-gnome-hwe-latest.iso) |
 | **Yellowfin** (AlmaLinux Kitten 10) | [yellowfin-gnome-latest.iso](https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso) | [yellowfin-gnome-hwe-latest.iso](https://download.tunaos.org/live-isos/yellowfin-gnome-hwe-latest.iso) |
 
-Other flavors (KDE, COSMIC, Niri, DX, GDX) are available as container images — see the variant pages for details.
+Other flavors (KDE, COSMIC, Niri, NVIDIA, DX) are available as container images — see the variant pages for details.
 
 ### Method 2: Build Your Own ISO
 
@@ -48,8 +48,8 @@ just --list
 # Build an Albacore ISO
 just build-iso albacore
 
-# Build a specific variant (dx, gdx, hwe)
-just build-iso albacore-dx
+# Build a specific flavor (e.g. nvidia, hwe)
+just build-iso albacore-nvidia
 ```
 
 ### Method 3: Container Runtime
@@ -87,7 +87,7 @@ After installation, TunaOS provides:
 - VSCode IDE
 - Development toolchains
 
-#### GDX (Graphical Developer Experience)
+#### NVIDIA (formerly GDX)
 - NVIDIA drivers and CUDA
 - AI/ML development tools
 - Graphics and video editing software

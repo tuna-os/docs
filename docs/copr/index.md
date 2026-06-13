@@ -251,6 +251,14 @@ for details.
 | GLib schemas not compiled after install | `%transfiletriggerin` in our `glib2` spec |
 | No Wayland by default | Set `WaylandEnable=true` in `/etc/gdm/custom.conf` |
 
+## Related projects
+
+These packages are what powers the **`gnome50`** image on the TunaOS variants —
+see [Albacore](/docs/albacore#gnome-50), [Yellowfin](/docs/yellowfin#gnome-50), and
+[Skipjack](/docs/skipjack). For how the images themselves are built, see
+[TunaOS → Building](/docs/tunaos/building), and browse the whole ecosystem on the
+**[Projects page →](/projects)**.
+
 ## License
 
 MIT

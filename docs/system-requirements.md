@@ -25,7 +25,7 @@ Before installing TunaOS, ensure your system meets the following requirements.
 | **Processor** | x86_64 or ARM64 with 2+ cores |
 | **Memory** | 8 GB RAM or more |
 | **Storage** | 50 GB+ SSD storage |
-| **Graphics** | Dedicated GPU (for GDX variant) |
+| **Graphics** | Dedicated GPU (for NVIDIA variant) |
 | **Network** | Broadband internet connection |
 
 ## Architecture Support
@@ -52,7 +52,7 @@ Before installing TunaOS, ensure your system meets the following requirements.
 - **Base installation**: ~15-20 GB
 - **With applications**: 25-30 GB typical usage
 - **Developer tools** (DX variant): +5-10 GB
-- **Graphics tools** (GDX variant): +10-15 GB
+- **Graphics tools** (NVIDIA variant): +10-15 GB
 
 ### Storage Types
 - **SSD recommended**: Better performance and responsiveness
@@ -71,7 +71,7 @@ Before installing TunaOS, ensure your system meets the following requirements.
 - **Recommended**: 16 GB RAM
 - **Optimal**: 32 GB+ RAM (for VMs and containers)
 
-### GDX (Graphical Developer Experience)
+### NVIDIA (NVIDIA drivers + CUDA)
 - **Minimum**: 8 GB RAM
 - **Recommended**: 16 GB RAM
 - **Optimal**: 32 GB+ RAM (for AI/ML workloads)
@@ -90,7 +90,7 @@ Before installing TunaOS, ensure your system meets the following requirements.
 - NVIDIA cards (with nouveau drivers)
 - AMD Radeon cards (with AMDGPU drivers)
 
-#### For GDX Variant
+#### For NVIDIA Variant
 - **NVIDIA GPU recommended** (GTX 1060 or newer)
 - CUDA support for AI/ML applications
 - Minimum 4 GB VRAM for graphics work
@@ -150,7 +150,7 @@ Before installing TunaOS, ensure your system meets the following requirements.
 ### Choosing Your Variant
 - **Albacore**: Enterprise stability (AlmaLinux 10)
 - **Yellowfin**: Upstream compatibility (AlmaLinux Kitten 10)
-- **Bonito**: Cutting-edge (Fedora 42) - *Development*
+- **Bonito**: Cutting-edge (Fedora 44) - *Development*
 - **Skipjack**: CentOS base - *Development*
 
 Need help deciding? Check our [installation guide](installation) or ask in our [Matrix chat](https://matrix.to/#/%23tunaos:reilly.asia).
