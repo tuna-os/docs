@@ -226,9 +226,9 @@ function MoreProjects({project}: {project: Project}): ReactNode {
 
 export default function ProjectLanding({project}: {project: Project}): ReactNode {
   return (
-    <Layout title={project.name} description={project.tagline} wrapperClassName={project.id === 'tromso' ? styles.auroraPage : undefined}>
+    <Layout title={project.name} description={project.tagline}>
       <Hero project={project} />
-      <main>
+      <main className={project.id === 'tromso' ? 'aurora-page' : undefined}>
         <Highlights project={project} />
         <Screenshots project={project} />
         <Features project={project} />
