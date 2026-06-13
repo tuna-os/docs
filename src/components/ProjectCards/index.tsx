@@ -158,6 +158,28 @@ const PROJECTS: Project[] = [
       {label: 'GitHub', to: 'https://github.com/tuna-os/github-copr'},
     ],
   },
+  {
+    name: 'Tavern',
+    slug: '/docs/tavern',
+    icon: '🍺',
+    description: 'A modern, fast Homebrew client for Linux built with GTK 4 and Libadwaita. App Store experience for managing formulae and casks.',
+    status: 'stable',
+    links: [
+      {label: 'Documentation', to: '/docs/tavern'},
+      {label: 'GitHub', to: 'https://github.com/tuna-os/Tavern'},
+    ],
+  },
+  {
+    name: 'bluefin-cli',
+    slug: '/docs/bluefin-cli',
+    icon: '⌨️',
+    description: 'Powerful CLI tool for shell configuration and dev environment customization. Beautiful TUIs built with Charm libraries.',
+    status: 'stable',
+    links: [
+      {label: 'Documentation', to: '/docs/bluefin-cli'},
+      {label: 'GitHub', to: 'https://github.com/tuna-os/bluefin-cli'},
+    ],
+  },
 ];
 
 const STATUS_LABELS: Record<string, string> = {

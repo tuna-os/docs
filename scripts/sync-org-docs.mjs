@@ -27,6 +27,8 @@ const PROJECTS = {
   'xfce-linux': {label: 'XFCE Linux',      icon: '🖥️', slug: 'xfce-linux',      status: 'alpha'},
   'xfce-linux-iso': {label: 'XFCE Linux ISO', icon: '🖥️', slug: 'xfce-linux-iso', status: 'alpha'},
   'github-copr': {label: 'COPR Builds',    icon: '🔧', slug: 'copr',            status: 'internal'},
+  Tavern:      {label: 'Tavern',          icon: '🍺', slug: 'tavern',          status: 'stable'},
+  'bluefin-cli': {label: 'bluefin-cli',   icon: '⌨️', slug: 'bluefin-cli',      status: 'stable'},
 };
 
 // Repos to skip (moved, dead, or internal-only).

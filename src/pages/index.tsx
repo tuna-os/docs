@@ -152,6 +152,8 @@ function ProjectsBand(): ReactNode {
     {emoji: '🟠', name: 'Ubuntu ISO', desc: 'Ubuntu live ISO', to: '/docs/ubuntu'},
     {emoji: '🏔️', name: 'Tromsø', desc: 'KDE Linux', to: '/docs/tromso'},
     {emoji: '🖥️', name: 'XFCE Linux', desc: 'XFCE desktop', to: '/docs/xfce-linux'},
+    {emoji: '🍺', name: 'Tavern', desc: 'Homebrew GUI', to: '/docs/tavern'},
+    {emoji: '⌨️', name: 'bluefin-cli', desc: 'Shell CLI', to: '/docs/bluefin-cli'},
   ];
   return (
     <section className={clsx(styles.section)}>

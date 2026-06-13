@@ -80,6 +80,20 @@ const sidebars: SidebarsConfig = {
     {type: 'doc', id: 'tromso-iso/index',       label: 'Tromsø ISO',      className: 'sidebar-alpha'},
     {type: 'doc', id: 'xfce-linux/index',        label: 'XFCE Linux',      className: 'sidebar-alpha'},
     {type: 'doc', id: 'xfce-linux-iso/index',    label: 'XFCE Linux ISO',  className: 'sidebar-alpha'},
+    {
+      type: 'category',
+      label: 'Tavern',
+      collapsible: false,
+      link: {type: 'doc', id: 'tavern/index'},
+      items: ['tavern/ROADMAP', 'tavern/CONTRIBUTING'],
+    },
+    {
+      type: 'category',
+      label: 'bluefin-cli',
+      collapsible: false,
+      link: {type: 'doc', id: 'bluefin-cli/index'},
+      items: ['bluefin-cli/ROADMAP'],
+    },
   ],
 };
 
