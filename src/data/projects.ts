@@ -275,10 +275,10 @@ export const PROJECTS: Project[] = [
       {title: 'GNOME OS family', text: 'Shares build infrastructure with <a href="https://os.gnome.org" target="_blank">GNOME OS</a> — gnome-build-meta patterns, BuildStream, and freedesktop-sdk. Different desktop, same foundation.'},
     ],
     features: [
-      {emoji: '📜', title: 'Niri compositor', text: 'Scrollable-tiling Wayland compositor. No floating windows, no overlap — just an infinite horizontal workspace.'},
-      {emoji: '🧱', title: 'Built from source', text: 'Every component in the stack is built from source with BuildStream. No binary packages from any distribution.'},
-      {emoji: '🔁', title: 'Reproducible', text: 'Same inputs, same image — every time. BuildStream caches and verifies every build artifact.'},
-      {emoji: '🔄', title: 'Zirconium reborn', text: 'Zirconium, but on freedesktop-sdk instead of Fedora. Same spirit, different foundation — closer to GNOME OS.'},
+      {emoji: '📜', title: 'Niri compositor', text: '<a href="https://github.com/YaLTeR/niri" target="_blank">Scrollable-tiling</a> Wayland compositor. No floating windows, no overlap — just an infinite horizontal workspace.'},
+      {emoji: '🧱', title: 'Built from source', text: 'Every component in the stack is built from source with <a href="https://buildstream.build" target="_blank">BuildStream</a>. No binary packages from any distribution.'},
+      {emoji: '🔁', title: 'Reproducible', text: 'Same inputs, same image — every time. <a href="https://buildstream.build" target="_blank">BuildStream</a> caches and verifies every build artifact.'},
+      {emoji: '🔄', title: 'Zirconium reborn', text: 'Zirconium, but on <a href="https://gitlab.com/freedesktop-sdk/freedesktop-sdk" target="_blank">freedesktop-sdk</a> instead of Fedora. Same spirit, different foundation — closer to <a href="https://os.gnome.org" target="_blank">GNOME OS</a>.'},
     ],
     install: [
       {label: 'Build from source', code: 'git clone https://github.com/zirconium-linux/hawaii.git\ncd hawaii\njust build'},
