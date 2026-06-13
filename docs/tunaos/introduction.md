@@ -1,8 +1,7 @@
 ---
-sidebar_position: 1
+sidebar_position: 7
+title: "introduction"
 ---
-
-# Introduction
 
 Welcome to TunaOS — a curated collection of Cloud-Native Enterprise Linux OS Images built on modern container technology.
 
@@ -123,6 +122,6 @@ This design provides:
 
 ## Getting Started
 
-1. **[Install from ISO](/docs/installation)** — download a pre-built ISO and install
-2. **[Build your own](building.md)** — build images locally with `just` and `podman`
+1. **[Install from ISO](#)** — download a pre-built ISO and install
+2. **[Build your own](https://github.com/tuna-os/tunaOS/blob/main/building.md)** — build images locally with `just` and `podman`
 3. **[Switch an existing system](building.md#switching-an-existing-system)** — `bootc switch` from another bootc-based OS

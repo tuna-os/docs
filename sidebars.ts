@@ -1,19 +1,6 @@
 import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
-
-/**
- * Creating a sidebar enables you to:
- - create an ordered group of docs
- - render a sidebar for each doc of that group
- - provide next/previous navigation
-
- The sidebars can be generated from the filesystem, or explicitly defined here.
-
- Create as many sidebars as you want.
- */
 const sidebars: SidebarsConfig = {
-  // By default, Docusaurus generates a sidebar from the docs folder structure
   tutorialSidebar: [
     'intro',
     'installation',
@@ -22,40 +9,83 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Variants',
-      items: [
-        'albacore',
-        'yellowfin',
-        'bonito',
-        'skipjack',
-      ],
+      items: ['albacore', 'yellowfin', 'bonito', 'skipjack'],
     },
     'bootc-resources',
     {
       type: 'category',
-      label: 'Developer Guide',
-      collapsible: false,
+      label: 'TunaOS',
+      link: {type: 'doc', id: 'tunaos/index'},
       items: [
-        'dev/introduction',
-        'dev/building',
-        'dev/live-iso-generation',
-        'dev/ci-cd',
-        'dev/troubleshooting',
+        'tunaos/ROADMAP',
+        'tunaos/CONTRIBUTING',
+        'tunaos/SECURITY',
+        {
+          type: 'category',
+          label: 'Developer Guide',
+          items: [
+            'tunaos/introduction',
+            'tunaos/building',
+            'tunaos/live-iso-generation',
+            'tunaos/ci-cd',
+            'tunaos/troubleshooting',
+          ],
+        },
       ],
     },
-  ],
-
-  // But you can create a sidebar manually
-  /*
-  tutorialSidebar: [
-    'intro',
-    'hello',
     {
       type: 'category',
-      label: 'Tutorial',
-      items: ['tutorial-basics/create-a-document'],
+      label: 'Tacklebox',
+      link: {type: 'doc', id: 'tacklebox/index'},
+      items: [
+        'tacklebox/ARCHITECTURE',
+        'tacklebox/TODO',
+        'tacklebox/github-iso-setup',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'chunkah',
+      link: {type: 'doc', id: 'chunkah/index'},
+      items: ['chunkah/CONTRIBUTING'],
+    },
+    {
+      type: 'category',
+      label: 'bootc-installer',
+      link: {type: 'doc', id: 'bootc-installer/index'},
+      items: [],
+    },
+    {
+      type: 'category',
+      label: 'Dakota ISO',
+      link: {type: 'doc', id: 'dakota/index'},
+      items: [],
+    },
+    {
+      type: 'category',
+      label: 'Ubuntu ISO',
+      link: {type: 'doc', id: 'ubuntu/index'},
+      items: [],
+    },
+    {
+      type: 'category',
+      label: 'Bonito X13s',
+      link: {type: 'doc', id: 'bonito-x13s/index'},
+      items: [],
+    },
+    {
+      type: 'category',
+      label: 'Dakota X13s',
+      link: {type: 'doc', id: 'dakota-x13s/index'},
+      items: [],
+    },
+    {
+      type: 'category',
+      label: 'Tromsø',
+      link: {type: 'doc', id: 'tromso/index'},
+      items: ['tromso/SPEC'],
     },
   ],
-   */
 };
 
 export default sidebars;

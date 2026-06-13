@@ -1,8 +1,7 @@
 ---
-sidebar_position: 2
+sidebar_position: 5
+title: "building"
 ---
-
-# Building TunaOS
 
 TunaOS images are built with **podman** and the **just** command runner using multi-stage Containerfiles.
 
@@ -124,7 +123,7 @@ just qcow2 yellowfin gnome
 
 ## Building for RHEL (Redfin)
 
-Redfin requires a Red Hat subscription. See [Redfin Setup](https://github.com/tuna-os/tunaOS/blob/main/docs/rhel-setup.md) for prerequisites. Then:
+Redfin requires a Red Hat subscription. See [Redfin Setup](https://github.com/tuna-os/tunaOS/blob/main/../rhel-setup.md) for prerequisites. Then:
 
 ```bash
 just build redfin base

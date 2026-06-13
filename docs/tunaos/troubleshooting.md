@@ -1,8 +1,7 @@
 ---
-sidebar_position: 5
+sidebar_position: 9
+title: "troubleshooting"
 ---
-
-# Troubleshooting
 
 Common build and runtime issues, their causes, and solutions.
 
