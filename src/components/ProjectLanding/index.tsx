@@ -130,9 +130,9 @@ function BuildStreamFamily({project}: {project: Project}): ReactNode {
         <div className={styles.sectionHead}>
           <Heading as="h2">Part of the BuildStream desktop family</Heading>
           <p>
-            {project.name} builds a complete desktop from source on freedesktop-sdk with
-            reproducible pipelines — the same lineage as GNOME OS. It's associated with these
-            upstream BuildStream desktop projects:
+            {project.name} is built with BuildStream — an Aurora-style layer on a vanilla
+            desktop base, the same model as Project Bluefin's Dakota (GNOME). It sits
+            alongside these sibling BuildStream desktop layers:
           </p>
         </div>
         <div className={styles.otherGrid}>

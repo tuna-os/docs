@@ -38,28 +38,22 @@ export const STATUS_LABELS: Record<ProjectStatus, string> = {
   internal: 'Internal',
 };
 
-// The wider BuildStream "desktop from source" ecosystem that TunaOS's
-// BuildStream images (Tromsø/KDE, XFCE Linux) are modeled on and associated
-// with. Each builds a complete desktop on freedesktop-sdk with reproducible
-// pipelines — the same lineage as GNOME OS.
+// Sibling BuildStream "Aurora-style" desktop layers — opinionated images that
+// layer customizations on top of a vanilla desktop base (GNOME OS /
+// gnome-build-meta, KDE Linux / kde-build-meta, etc.). Tromsø is the KDE member
+// of this family; these are its GNOME and Niri counterparts.
 export const BUILDSTREAM_UPSTREAMS: {desktop: string; name: string; url: string; note: string}[] = [
   {
     desktop: 'GNOME',
     name: 'Dakota (Project Bluefin)',
     url: 'https://projectbluefin.io/dakota/',
-    note: 'The BuildStream for Bluefin — the reference TunaOS Tromsø is modeled on.',
+    note: 'Project Bluefin’s BuildStream layer on GNOME OS — the reference Tromsø is modeled on.',
   },
   {
     desktop: 'Niri',
     name: 'zirconium-hawaii',
     url: 'https://github.com/zirconium-dev/zirconium-hawaii/tree/stable',
     note: 'Opinionated Niri bootc image built on freedesktop-sdk (a.k.a. Niri OS).',
-  },
-  {
-    desktop: 'KDE',
-    name: 'tuna-os/kde-build-meta',
-    url: 'https://github.com/tuna-os/tromso',
-    note: 'The KDE .bst elements that Tromsø builds on — the KDE analogue of gnome-build-meta.',
   },
 ];
 
