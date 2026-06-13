@@ -5,90 +5,78 @@ import styles from './styles.module.css';
 
 type FeatureItem = {
   title: string;
-  Svg?: React.ComponentType<React.ComponentProps<'svg'>>;
+  emoji: string;
   description: ReactNode;
-  emoji?: string;
 };
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Latest GNOME Desktop',
-    emoji: '🖥️',
+    title: 'BuildStream desktops',
+    emoji: '🌌',
     description: (
       <>
-        Experience GNOME 48.3 on Enterprise Linux. We backport the latest 
-        features to provide a modern desktop experience on a stable base.
+        Tromsø, XFCE Linux, Dakota, Hawaii — desktops built from source on{' '}
+        freedesktop-sdk. Reproducible, auditable, 100% from-source pipelines.
       </>
     ),
   },
   {
-    title: 'Baked-in Homebrew',
-    emoji: '🍺',
-    description: (
-      <>
-        Homebrew is pre-installed, giving you instant access to a massive 
-        library of CLI tools and fonts that aren't in standard EL repos.
-      </>
-    ),
-  },
-  {
-    title: 'HWE & v2 Support',
-    emoji: '🚀',
-    description: (
-      <>
-        Hardware Enablement (HWE) for new gear and x86_64_v2 support for older 
-        hardware. We make sure TunaOS runs everywhere you need it.
-      </>
-    ),
-  },
-  {
-    title: 'Multiple Desktop Flavors',
-    emoji: '🎨',
-    description: (
-      <>
-        Choose your preferred experience: GNOME 50, KDE Plasma, the modern 
-        COSMIC desktop, or the unique scrollable Niri compositor.
-      </>
-    ),
-  },
-  {
-    title: 'Bootc Technology',
+    title: 'bootc-native images',
     emoji: '📦',
     description: (
       <>
-        Built on modern bootc container technology for immutable, reliable 
-        systems with easy updates, rollbacks, and customization.
+        Every project ships as a standard bootc OCI image. Pull it, boot it,{' '}
+        rebase onto it — atomic updates and clean rollbacks built in.
       </>
     ),
   },
   {
-    title: 'Flathub by Default',
-    emoji: '🛍️',
+    title: 'Multi-boot media',
+    emoji: '🛠',
     description: (
       <>
-        Get all your favorite desktop apps immediately. Flathub is enabled 
-        out-of-the-box for a "ready-to-use" experience.
+        Tacklebox produces ISOs and USB drives with multiple environments —{' '}
+        pick your desktop at boot. File-level deduplication keeps sizes small.
       </>
     ),
   },
   {
-    title: 'Enterprise Stability',
-    emoji: '🏢',
+    title: 'Desktop apps + CLI',
+    emoji: '🍻',
     description: (
       <>
-        Based on AlmaLinux 10 and CentOS 10, providing a rock-solid foundation 
-        with 10 years of support for your critical workflows.
+        Tavern brings an App Store experience to Homebrew on Linux. bluefin-cli{' '}
+        keeps your shell environment sharp. GNOME, KDE, COSMIC, Niri, XFCE.
+      </>
+    ),
+  },
+  {
+    title: 'Enterprise Linux base',
+    emoji: '🐟',
+    description: (
+      <>
+        TunaOS desktop images ship GNOME, KDE, and more on AlmaLinux, CentOS{' '}
+        Stream, and Fedora — with 10-year support cycles and backported desktops.
+      </>
+    ),
+  },
+  {
+    title: 'Open source, open community',
+    emoji: '🚀',
+    description: (
+      <>
+        Everything we build is open source. Contribute to upstream freedesktop-sdk,{' '}
+        GNOME OS, KDE, or BuildStream — start here, level up, become part of the teams.
       </>
     ),
   },
 ];
 
-function Feature({title, Svg, emoji, description}: FeatureItem) {
+function Feature({title, emoji, description}: FeatureItem) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center">
         {emoji && <div className={styles.featureEmoji}>{emoji}</div>}
-        {Svg && <Svg className={styles.featureSvg} role="img" />}
       </div>
       <div className="text--center padding-horiz--md">
         <Heading as="h3">{title}</Heading>

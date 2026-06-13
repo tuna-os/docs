@@ -159,8 +159,8 @@ function ProjectsBand(): ReactNode {
     <section className={clsx(styles.section)}>
       <div className="container">
         <div className={styles.sectionHead}>
-          <Heading as="h2">More from TunaOS</Heading>
-          <p>Tools, installers, and ISOs — every project in the org.</p>
+          <Heading as="h2">Our projects</Heading>
+          <p>Tools, installers, and ISOs — everything we build.</p>
         </div>
         <div className={styles.projectGrid}>
           {featured.map((p) => (
@@ -215,9 +215,9 @@ export default function Home(): ReactNode {
       <Hero />
       <main>
         <VariantLineup />
+        <ProjectsBand />
         <HomepageFeatures />
         <DocsBand />
-        <ProjectsBand />
         <FinalCta />
       </main>
     </Layout>
