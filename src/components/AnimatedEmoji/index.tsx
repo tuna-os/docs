@@ -14,7 +14,7 @@ const EMOJI_MAP: Record<string, string> = {
   '📦': `${CDN_BASE}/1f4e6/512.gif`,
   '💻': `${CDN_BASE}/1f4bb/512.gif`,
   '🦝': `${CDN_BASE}/1f99d/512.gif`,  // raccoon → Ubuntu
-  '🌋': `${CDN_BASE}/1f30b/512.gif`,  // volcano → Tromsø
+  '🌌': `${CDN_BASE}/1f30c/512.gif`,  // milky way → Tromsø
   '💪': `${CDN_BASE}/1f4aa/512.gif`,
   '⚙': `${CDN_BASE}/2699/512.gif`,   // gear → COPR
   '🍻': `${CDN_BASE}/1f37b/512.gif`,  // beer mugs → Tavern

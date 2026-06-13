@@ -91,7 +91,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'tromso',
-    emoji: '🌋',
+    emoji: '🌌',
     name: 'Tromsø',
     status: 'alpha',
     tagline: 'A BuildStream-based KDE Linux distribution, built from source with reproducible pipelines.',
