@@ -1,7 +1,6 @@
 ---
 sidebar_position: 1
 sidebar_label: "Dakota"
-slug: /docs/dakota
 status: stable
 ---
 

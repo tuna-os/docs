@@ -1,7 +1,6 @@
 ---
 sidebar_position: 1
 sidebar_label: "Tavern"
-slug: /docs/tavern
 status: stable
 ---
 

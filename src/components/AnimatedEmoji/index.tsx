@@ -5,26 +5,37 @@ import React from 'react';
 const CDN_BASE = 'https://fonts.gstatic.com/s/e/notoemoji/latest';
 
 const EMOJI_MAP: Record<string, string> = {
+  // ── Verified animated on Noto CDN ──
   '🐟': `${CDN_BASE}/1f41f/512.gif`,
-  '🐠': `${CDN_BASE}/1f420/512.gif`,
-  '🍣': `${CDN_BASE}/1f363/512.gif`,
+  '🐠': `${CDN_BASE}/1f420/512.gif`,  // dead — kept for variant identity
+  '🍣': `${CDN_BASE}/1f363/512.gif`,  // dead — kept for variant identity
   '🎣': `${CDN_BASE}/1f3a3/512.gif`,
-  '🧰': `${CDN_BASE}/1f9f0/512.gif`,
+  '🛠': `${CDN_BASE}/1f6e0/512.gif`,  // tools → Tacklebox
   '📦': `${CDN_BASE}/1f4e6/512.gif`,
   '💻': `${CDN_BASE}/1f4bb/512.gif`,
-  '🟠': `${CDN_BASE}/1f7e0/512.gif`,
-  '🏔️': `${CDN_BASE}/1f3d4/512.gif`,
+  '🦝': `${CDN_BASE}/1f99d/512.gif`,  // raccoon → Ubuntu
+  '🌋': `${CDN_BASE}/1f30b/512.gif`,  // volcano → Tromsø
   '💪': `${CDN_BASE}/1f4aa/512.gif`,
-  '🔧': `${CDN_BASE}/1f527/512.gif`,
-  '🍺': `${CDN_BASE}/1f37a/512.gif`,
-  '⌨️': `${CDN_BASE}/2328/512.gif`,
-  '🖥️': `${CDN_BASE}/1f5a5/512.gif`,
-  '📖': `${CDN_BASE}/1f4d6/512.gif`,
+  '⚙': `${CDN_BASE}/2699/512.gif`,   // gear → COPR
+  '🍻': `${CDN_BASE}/1f37b/512.gif`,  // beer mugs → Tavern
+  '🐧': `${CDN_BASE}/1f427/512.gif`,  // penguin
   '🚀': `${CDN_BASE}/1f680/512.gif`,
-  '📋': `${CDN_BASE}/1f4cb/512.gif`,
-  '✨': `${CDN_BASE}/2728/512.gif`,
-  '🛡️': `${CDN_BASE}/1f6e1/512.gif`,
+  '📚': `${CDN_BASE}/1f4da/512.gif`,  // books
   '⚡': `${CDN_BASE}/26a1/512.gif`,
+  '✨': `${CDN_BASE}/2728/512.gif`,
+  '🐡': `${CDN_BASE}/1f421/512.gif`,  // blowfish
+  '🦈': `${CDN_BASE}/1f988/512.gif`,  // shark
+  '🍜': `${CDN_BASE}/1f35c/512.gif`,  // ramen
+  '🐳': `${CDN_BASE}/1f433/512.gif`,  // whale
+  '🌊': `${CDN_BASE}/1f30a/512.gif`,  // wave
+  '❄': `${CDN_BASE}/2744/512.gif`,   // snowflake
+  '📺': `${CDN_BASE}/1f4fa/512.gif`,  // tv
+  '🖨': `${CDN_BASE}/1f5a8/512.gif`,  // printer
+  '🍷': `${CDN_BASE}/1f377/512.gif`,  // wine
+  '🦀': `${CDN_BASE}/1f980/512.gif`,  // crab
+  '🥂': `${CDN_BASE}/1f942/512.gif`,  // clink
+  // ⌨️ keyboard — no animated version, uses static fallback
+  // 🖥️ desktop — no animated version, uses static fallback
 };
 
 type Props = {

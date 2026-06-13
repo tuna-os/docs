@@ -124,7 +124,7 @@ function frontmatter(title, position, slug, status) {
   return `---
 sidebar_position: ${position}
 sidebar_label: "${title}"
-slug: /docs/${slug}
+
 status: ${status || 'unknown'}
 ---
 
