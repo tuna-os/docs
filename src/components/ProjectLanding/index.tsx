@@ -21,11 +21,13 @@ function Hero({project}: {project: Project}): ReactNode {
         </div>
       )}
       <div className={clsx('container', styles.heroInner)}>
-        {!project.heroEmojiLarge && (
+        {project.logo ? (
+          <img src={project.logo} alt={project.name} className={styles.heroLogo} />
+        ) : !project.heroEmojiLarge ? (
           <div className={styles.heroEmoji}>
             <AnimatedEmoji emoji={project.emoji} size={92} />
           </div>
-        )}
+        ) : null}
         <div className={styles.heroTitleRow}>
           <Heading as="h1" className={styles.heroTitle}>{project.name}</Heading>
           <span className={clsx(styles.status, styles[`status-${project.status}`])}>

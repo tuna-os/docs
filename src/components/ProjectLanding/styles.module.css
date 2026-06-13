@@ -28,6 +28,13 @@
 .heroBgEmoji img {
   filter: blur(2px) brightness(1.2);
 }
+
+.heroLogo {
+  height: 64px;
+  width: auto;
+  margin-bottom: 1.25rem;
+  filter: brightness(0) invert(1);
+}
 .heroInner { position: relative; z-index: 2; max-width: 820px; }
 .heroEmoji { filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.35)); }
 

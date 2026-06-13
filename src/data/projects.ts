@@ -36,6 +36,8 @@ export type Project = {
   externalLink?: string;
   // Use the project emoji as a large animated background in the hero.
   heroEmojiLarge?: boolean;
+  // Custom logo URL (rendered instead of emoji in hero).
+  logo?: string;
 };
 
 export const STATUS_LABELS: Record<ProjectStatus, string> = {
@@ -247,6 +249,7 @@ export const PROJECTS: Project[] = [
     docs: '',
     external: true,
     externalLink: 'https://github.com/zirconium-linux/hawaii',
+    logo: 'https://raw.githubusercontent.com/zirconium-dev/assets/bbcc598039cc9c48b631677ff3bd267217cf8509/logos/logo-z.svg',
     buildstream: true,
     stats: [
       {label: 'Desktop', value: 'Niri (Wayland)'},
