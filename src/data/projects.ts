@@ -305,9 +305,9 @@ export const PROJECTS: Project[] = [
       {title: 'BuildStream & BuildGrid', text: 'Hermetic sandbox builds with <a href="https://buildstream.build" target="_blank">distributed execution</a>, reproducible and fully auditable.'},
     ],
     features: [
-      {emoji: '🦖', title: 'GNOME on freedesktop-sdk', text: 'The reference BuildStream desktop — GNOME OS patterns, Bluefin experience, built from source.'},
-      {emoji: '🔁', title: 'Built-in feedback loop', text: 'ujust report, ujust confirm, ujust verify — structured hardware diagnostics that flow back to upstream.'},
-      {emoji: '🧱', title: 'Reproducible', text: 'BuildStream pipelines. Same inputs, same image — every time. Fully auditable.'},
+      {emoji: '🦖', title: 'GNOME on freedesktop-sdk', text: 'The reference BuildStream desktop — <a href="https://os.gnome.org" target="_blank">GNOME OS</a> patterns, Bluefin experience, built from source with <a href="https://buildstream.build" target="_blank">BuildStream</a>.'},
+      {emoji: '🔁', title: 'Built-in feedback loop', text: '<code>ujust report</code>, <code>ujust confirm</code>, <code>ujust verify</code> — structured hardware diagnostics that flow back to upstream.'},
+      {emoji: '🧱', title: 'Reproducible', text: '<a href="https://buildstream.build" target="_blank">BuildStream</a> pipelines. Same inputs, same image — every time. Fully auditable.'},
     ],
   },
   {
