@@ -163,26 +163,31 @@ function Install({project}: {project: Project}): ReactNode {
 
 function BuildStreamFamily({project}: {project: Project}): ReactNode {
   if (!project.buildstream) return null;
+  const siblings = BUILDSTREAM_UPSTREAMS.filter((u) => u.name !== project.name);
   return (
     <section className={styles.section}>
       <div className="container">
         <div className={styles.sectionHead}>
           <Heading as="h2">Part of the BuildStream desktop family</Heading>
           <p>
-            {project.name} is built with BuildStream — an Aurora-style layer on a vanilla
-            desktop base, the same model as Project Bluefin's Dakota (GNOME). It sits
-            alongside these sibling BuildStream desktop layers:
+            {project.name} is built with{' '}
+            <a href="https://buildstream.build" target="_blank">BuildStream</a> on{' '}
+            <a href="https://gitlab.com/freedesktop-sdk/freedesktop-sdk" target="_blank">freedesktop-sdk</a> —
+            the same foundation as GNOME OS. These sibling projects share the same
+            build system and base:
           </p>
         </div>
         <div className={styles.otherGrid}>
-          {BUILDSTREAM_UPSTREAMS.map((u) => (
-            <a key={u.url} href={u.url} className={styles.otherCard}>
-              <span className={styles.bsDesktop}>{u.desktop}</span>
+          {siblings.map((u) => (
+            <Link key={u.url} to={u.url} className={styles.otherCard}>
+              <span className={styles.otherEmoji}>
+                <AnimatedEmoji emoji={u.emoji} size={30} />
+              </span>
               <span>
-                <strong className={styles.otherName}>{u.name} ↗</strong>
+                <strong className={styles.otherName}>{u.name}</strong>
                 <span className={styles.otherTagline}>{u.note}</span>
               </span>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

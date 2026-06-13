@@ -54,18 +54,27 @@ export const STATUS_LABELS: Record<ProjectStatus, string> = {
 // layer customizations on top of a vanilla desktop base (GNOME OS /
 // gnome-build-meta, KDE Linux / kde-build-meta, etc.). Tromsø is the KDE member
 // of this family; these are its GNOME and Niri counterparts.
-export const BUILDSTREAM_UPSTREAMS: {desktop: string; name: string; url: string; note: string}[] = [
+export const BUILDSTREAM_UPSTREAMS: {desktop: string; emoji: string; name: string; url: string; note: string}[] = [
   {
-    desktop: 'GNOME',
-    name: 'Dakota (Project Bluefin)',
-    url: 'https://projectbluefin.io/dakota/',
-    note: 'Project Bluefin’s BuildStream layer on GNOME OS — the reference Tromsø is modeled on.',
+    desktop: 'KDE',
+    emoji: '🌌',
+    name: 'Tromsø',
+    url: '/tromso',
+    note: 'Aurora KDE Plasma 6 — built from source on freedesktop-sdk.',
+  },
+  {
+    desktop: 'XFCE',
+    emoji: '🖥️',
+    name: 'XFCE Linux',
+    url: '/xfce-linux',
+    note: 'Lightweight XFCE Wayland on the same freedesktop-sdk base.',
   },
   {
     desktop: 'Niri',
-    name: 'zirconium-hawaii',
-    url: 'https://github.com/zirconium-dev/zirconium-hawaii/tree/stable',
-    note: 'Opinionated Niri bootc image built on freedesktop-sdk (a.k.a. Niri OS).',
+    emoji: '🌺',
+    name: 'Zirconium Hawaii',
+    url: '/hawaii',
+    note: 'Niri compositor on freedesktop-sdk — 100% reproducible from source.',
   },
 ];
 
