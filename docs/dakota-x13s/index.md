@@ -1,7 +1,6 @@
 ---
 sidebar_position: 1
 sidebar_label: "Dakota X13s"
-slug: /docs/dakota-x13s
 status: experimental
 ---
 

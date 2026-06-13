@@ -1,7 +1,6 @@
 ---
 sidebar_position: 1
 sidebar_label: "Bonito X13s"
-slug: /docs/bonito-x13s
 status: experimental
 ---
 

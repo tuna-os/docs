@@ -1,7 +1,6 @@
 ---
 sidebar_position: 1
 sidebar_label: "Tromsø ISO"
-slug: /docs/tromso-iso
 status: alpha
 ---
 

@@ -1,7 +1,6 @@
 ---
 sidebar_position: 1
 sidebar_label: "XFCE Linux ISO"
-slug: /docs/xfce-linux-iso
 status: alpha
 ---
 

@@ -1,7 +1,6 @@
 ---
 sidebar_position: 1
 sidebar_label: "TunaOS"
-slug: /docs/tunaos
 status: stable
 ---
 
@@ -16,7 +15,7 @@ status: stable
 
 ---
 
-[![License](https://img.shields.io/github/license/tuna-os/tunaOS?style=for-the-badge)](LICENSE)
+[![License](https://img.shields.io/github/license/tuna-os/tunaOS?style=for-the-badge)](https://github.com/tuna-os/tunaOS/blob/main/LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/tuna-os/tunaOS?style=for-the-badge)](https://github.com/tuna-os/tunaOS/stargazers)
 [![Issues](https://img.shields.io/github/issues/tuna-os/tunaOS?style=for-the-badge)](https://github.com/tuna-os/tunaOS/issues)
 
@@ -294,6 +293,6 @@ Related Communities:
 
 *Inspired by [Bluefin](https://projectbluefin.io) and the [Universal Blue](https://universal-blue.org/) Community*
 
-*Licensed under [Apache 2.0](LICENSE)*
+*Licensed under [Apache 2.0](https://github.com/tuna-os/tunaOS/blob/main/LICENSE)*
 
 </div>
