@@ -147,3 +147,37 @@
   color: #fff;
   background: linear-gradient(120deg, var(--p-accent, #2563eb), var(--p-accent2, #38bdf8));
 }
+
+/* ── Dakota-style highlights ── */
+.highlightGrid {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.highlightCard h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.15rem;
+  color: var(--ifm-color-primary);
+}
+
+.highlightCard p {
+  color: var(--ifm-color-emphasis-700);
+  margin: 0;
+  line-height: 1.55;
+}
+
+.alphaNote {
+  margin-top: 2.5rem;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}

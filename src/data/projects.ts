@@ -7,6 +7,7 @@ export type ProjectStatus = 'stable' | 'beta' | 'alpha' | 'experimental' | 'inte
 export type PFeature = {emoji: string; title: string; text: string};
 export type PInstall = {label: string; code: string};
 export type PShot = {src: string; alt: string};
+export type PHighlight = {title: string; text: string};
 
 export type Project = {
   id: string; // route slug (/<id>) + docs slug (/docs/<id>)
@@ -25,6 +26,8 @@ export type Project = {
   features: PFeature[];
   install?: PInstall[];
   screenshots?: PShot[];
+  // Dakota-style intro highlights (bold title + description cards).
+  highlights?: PHighlight[];
   // Built with BuildStream from source (vs. the bootc/Containerfile images).
   // Flags the project as part of the BuildStream desktop family below.
   buildstream?: boolean;
@@ -94,14 +97,21 @@ export const PROJECTS: Project[] = [
     emoji: '🌌',
     name: 'Tromsø',
     status: 'alpha',
-    tagline: 'Aurora on your desktop. KDE Plasma 6, built entirely from source.',
+    tagline: 'Aurora on your desktop.',
     lede:
-      "Tromsø is a BuildStream-based KDE Linux distribution — Aurora theming layered on freedesktop-sdk, assembled from ~170 source elements, and shipped as a bootable OCI image. Alpha means it works on the developer's machine and is looking for yours to break on.",
+      "A freedesktop.org and KDE Plasma image, designed from the ground up to bring Aurora's visual identity to KDE. Built from the best OS tech from the CNCF, Apache Foundation, and the freedesktop.org community — BuildStream pipelines, bootc delivery, and a fully Wayland Plasma 6 desktop. This is what KDE looks like when you build it from source.",
     accent: '#0c0032',
     accent2: '#6366f1',
     repo: 'https://github.com/tuna-os/tromso',
     docs: '/docs/tromso',
     buildstream: true,
+    highlights: [
+      {title: 'KDE Plasma 6', text: 'The latest stable release of Plasma, built from source — no distribution middleman, no lag.'},
+      {title: 'Freedesktop SDK', text: 'Same battle-tested libraries as Flathub. Continuously upgraded, always up to date.'},
+      {title: 'Modern Userspace', text: 'bootc, systemd-boot, container-first, and legacy-free. Wayland from the ground up.'},
+      {title: 'Designed for Contributors', text: 'Your path to contributing to KDE, freedesktop-sdk, and the BuildStream ecosystem. Start here, level up, become part of upstream.'},
+      {title: 'BuildStream & BuildGrid', text: 'Hermetic sandbox builds with distributed execution, reproducible and fully auditable.'},
+    ],
     stats: [
       {label: 'Desktop', value: 'KDE Plasma 6'},
       {label: 'Built with', value: 'BuildStream'},

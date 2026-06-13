@@ -80,6 +80,27 @@ function Screenshots({project}: {project: Project}): ReactNode {
   );
 }
 
+function Highlights({project}: {project: Project}): ReactNode {
+  if (!project.highlights?.length) return null;
+  return (
+    <section className={styles.section}>
+      <div className="container">
+        <div className={styles.highlightGrid}>
+          {project.highlights.map((h) => (
+            <div key={h.title} className={styles.highlightCard}>
+              <Heading as="h3" className={styles.highlightTitle}>{h.title}</Heading>
+              <p className={styles.highlightText}>{h.text}</p>
+            </div>
+          ))}
+        </div>
+        <div className={styles.alphaNote}>
+          <span>⚠️</span> Alpha. Take appropriate precautions.
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Features({project}: {project: Project}): ReactNode {
   return (
     <section className={clsx(styles.section, styles.sectionAlt)}>
@@ -185,6 +206,7 @@ export default function ProjectLanding({project}: {project: Project}): ReactNode
     <Layout title={project.name} description={project.tagline}>
       <Hero project={project} />
       <main>
+        <Highlights project={project} />
         <Screenshots project={project} />
         <Features project={project} />
         <Install project={project} />
