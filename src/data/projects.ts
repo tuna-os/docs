@@ -226,6 +226,7 @@ export const PROJECTS: Project[] = [
     accent: '#1e3a5f',
     accent2: '#0ea5e9',
     repo: 'https://github.com/tuna-os/xfce-linux',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/5/5b/Xfce_logo.svg',
     docs: '/docs/xfce-linux',
     buildstream: true,
     stats: [
