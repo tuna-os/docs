@@ -4,6 +4,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import AnimatedEmoji from '@site/src/components/AnimatedEmoji';
 import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
@@ -57,7 +58,7 @@ function Hero(): ReactNode {
           <span className={styles.badge}>Fedora 44</span>
         </div>
         <Heading as="h1" className={styles.heroTitle}>
-          <span className={styles.heroFish}>🐟</span> {siteConfig.title}
+          <span className={styles.heroFish}><AnimatedEmoji emoji="🐟" size={64} /></span> {siteConfig.title}
         </Heading>
         <p className={styles.heroTagline}>{siteConfig.tagline}</p>
         <p className={styles.heroLede}>
@@ -97,7 +98,7 @@ function VariantLineup(): ReactNode {
               className={clsx(styles.variantCard, {[styles.variantFlagship]: v.flagship})}
             >
               {v.flagship && <span className={styles.flagshipTag}>Recommended</span>}
-              <div className={styles.variantEmoji}>{v.emoji}</div>
+              <div className={styles.variantEmoji}><AnimatedEmoji emoji={v.emoji} size={40} /></div>
               <Heading as="h3" className={styles.variantName}>
                 {v.name}
               </Heading>
@@ -165,7 +166,7 @@ function ProjectsBand(): ReactNode {
         <div className={styles.projectGrid}>
           {featured.map((p) => (
             <Link key={p.name} to={p.to} className={styles.projectChip}>
-              <span className={styles.projectChipEmoji}>{p.emoji}</span>
+              <span className={styles.projectChipEmoji}><AnimatedEmoji emoji={p.emoji} size={24} /></span>
               <span>
                 <strong>{p.name}</strong>
                 <span className={styles.projectChipDesc}> — {p.desc}</span>

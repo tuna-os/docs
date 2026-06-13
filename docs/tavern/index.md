@@ -11,7 +11,7 @@ Tavern is a modern, fast, and beautiful Homebrew client for Linux, built with **
 
 **Flatpak (Linux, recommended):**
 ```bash
-curl -L https://nightly.link/hanthor/Tavern/workflows/flatpak/main/Tavern-Linux-CI.zip -o Tavern-Linux-CI.zip && unzip -o Tavern-Linux-CI.zip && flatpak install --user --reinstall Tavern-Linux-CI.flatpak
+curl -L https://nightly.link/tuna-os/Tavern/workflows/flatpak/main/Tavern-Linux-CI.zip -o Tavern-Linux-CI.zip && unzip -o Tavern-Linux-CI.zip && flatpak install --user --reinstall Tavern-Linux-CI.flatpak
 ```
 
 **Homebrew (macOS + Linux):**
@@ -24,7 +24,7 @@ On macOS this installs `Tavern.app`; on Linux it installs a prebuilt AppImage an
 > **⚠️ Attribution & Disclaimer**
 > Tavern is a **completely AI-generated** project and limited in it's use to just Homebrew. The UI design is a heavy "tribute" (read: shameless ripoff) of [Bazaar](https://github.com/kolunmi/bazaar), which is the best App Store for Linux. If you like this design, you should definitely check out the original project, made by humans and consider supporting the fine folks that make it.
 
-![Tavern Screenshot](https://raw.githubusercontent.com/hanthor/Tavern/main/data/screenshots/main-window.png)
+![Tavern Screenshot](https://raw.githubusercontent.com/tuna-os/Tavern/main/data/screenshots/main-window.png)
 
 ## 📸 Screenshot Walkthrough
 
@@ -79,7 +79,7 @@ brew install gtk4 libadwaita meson ninja pygobject3 gettext desktop-file-utils b
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/hanthor/Tavern.git
+   git clone https://github.com/tuna-os/Tavern.git
    cd Tavern
    ```
 
@@ -111,12 +111,12 @@ Download and install the latest Flatpak bundle built from the `main` branch:
 
 ```bash
 # Download the latest CI build
-wget https://nightly.link/hanthor/Tavern/workflows/flatpak/main/Tavern-Linux-CI.zip
+wget https://nightly.link/tuna-os/Tavern/workflows/flatpak/main/Tavern-Linux-CI.zip
 unzip Tavern-Linux-CI.zip
 flatpak install --user --reinstall Tavern-Linux-CI.flatpak
 ```
 
-Or just grab the zip directly: [Tavern-Linux-CI.zip](https://nightly.link/hanthor/Tavern/workflows/flatpak/main/Tavern-Linux-CI.zip)
+Or just grab the zip directly: [Tavern-Linux-CI.zip](https://nightly.link/tuna-os/Tavern/workflows/flatpak/main/Tavern-Linux-CI.zip)
 
 ### Build from source
 

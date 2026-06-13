@@ -1,5 +1,6 @@
 import type {ReactNode} from 'react';
 import Link from '@docusaurus/Link';
+import AnimatedEmoji from '@site/src/components/AnimatedEmoji';
 import styles from './styles.module.css';
 
 type Project = {
@@ -196,7 +197,7 @@ function ProjectCard({project}: {project: Project}) {
   return (
     <div className={`${styles.card} ${borderClass}`}>
       <div className={styles.cardTop}>
-        <span className={styles.icon}>{project.icon}</span>
+        <span className={styles.icon}><AnimatedEmoji emoji={project.icon} size={32} /></span>
         <div>
           <h3 className={styles.name}>
             <Link to={project.slug}>{project.name}</Link>
