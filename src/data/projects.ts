@@ -116,11 +116,11 @@ export const PROJECTS: Project[] = [
     docs: '/docs/tromso',
     buildstream: true,
     highlights: [
-      {title: 'KDE Plasma 6', text: 'The latest stable release of Plasma, built from source — no distribution middleman, no lag.'},
-      {title: 'Freedesktop SDK', text: 'Same battle-tested libraries as Flathub. Continuously upgraded, always up to date.'},
-      {title: 'Modern Userspace', text: 'bootc, systemd-boot, container-first, and legacy-free. Wayland from the ground up.'},
-      {title: 'Designed for Contributors', text: 'Your path to contributing to KDE, freedesktop-sdk, and the BuildStream ecosystem. Start here, level up, become part of upstream.'},
-      {title: 'BuildStream & BuildGrid', text: 'Hermetic sandbox builds with distributed execution, reproducible and fully auditable.'},
+      {title: 'KDE Plasma 6', text: 'The latest stable release of Plasma, <a href="https://kde.org/plasma-desktop" target="_blank">built from source</a> — no distribution middleman, no lag.'},
+      {title: 'Freedesktop SDK', text: 'Same battle-tested libraries as <a href="https://flathub.org" target="_blank">Flathub</a>. Continuously upgraded, always up to date.'},
+      {title: 'Modern Userspace', text: '<a href="https://github.com/bootc-dev/bootc" target="_blank">bootc</a>, systemd-boot, container-first, and legacy-free. Wayland from the ground up.'},
+      {title: 'Designed for Contributors', text: 'Your path to contributing to <a href="https://kde.org" target="_blank">KDE</a>, <a href="https://gitlab.com/freedesktop-sdk/freedesktop-sdk" target="_blank">freedesktop-sdk</a>, and the <a href="https://buildstream.build" target="_blank">BuildStream</a> ecosystem. Start here, level up, become part of upstream.'},
+      {title: 'BuildStream & BuildGrid', text: 'Hermetic sandbox builds with <a href="https://buildstream.build" target="_blank">distributed execution</a>, reproducible and fully auditable.'},
     ],
     stats: [
       {label: 'Desktop', value: 'KDE Plasma 6'},
@@ -259,11 +259,11 @@ export const PROJECTS: Project[] = [
       {label: 'Inspired by', value: 'GNOME OS'},
     ],
     highlights: [
-      {title: 'Niri compositor', text: 'A scrollable-tiling Wayland compositor — keyboard-driven, no stacking, no overlap. A different kind of desktop.'},
-      {title: 'Freedesktop SDK', text: 'Same battle-tested libraries as Flathub and GNOME OS. Continuously upgraded, always up to date.'},
-      {title: '100% reproducible', text: 'BuildStream pipelines with pinned revisions. Every package, every dependency — built from source, verifiable, auditable.'},
+      {title: 'Niri compositor', text: 'A <a href="https://github.com/YaLTeR/niri" target="_blank">scrollable-tiling</a> Wayland compositor — keyboard-driven, no stacking, no overlap. A different kind of desktop.'},
+      {title: 'Freedesktop SDK', text: 'Same battle-tested libraries as <a href="https://flathub.org" target="_blank">Flathub</a> and <a href="https://os.gnome.org" target="_blank">GNOME OS</a>. Continuously upgraded, always up to date.'},
+      {title: '100% reproducible', text: '<a href="https://buildstream.build" target="_blank">BuildStream</a> pipelines with pinned revisions. Every package, every dependency — built from source, verifiable, auditable.'},
       {title: 'Closer to the source', text: 'Builds its own components rather than repackaging a distribution. If it ships, it was built here — not borrowed from Fedora or any downstream.'},
-      {title: 'GNOME OS family', text: 'Shares build infrastructure with GNOME OS — gnome-build-meta patterns, BuildStream, and freedesktop-sdk. Different desktop, same foundation.'},
+      {title: 'GNOME OS family', text: 'Shares build infrastructure with <a href="https://os.gnome.org" target="_blank">GNOME OS</a> — gnome-build-meta patterns, BuildStream, and freedesktop-sdk. Different desktop, same foundation.'},
     ],
     features: [
       {emoji: '📜', title: 'Niri compositor', text: 'Scrollable-tiling Wayland compositor. No floating windows, no overlap — just an infinite horizontal workspace.'},
@@ -298,11 +298,11 @@ export const PROJECTS: Project[] = [
       {label: 'Base', value: 'freedesktop-sdk / GNOME OS'},
     ],
     highlights: [
-      {title: 'GNOME OS', text: 'The latest stable release of GNOME, no delays. Built from source on the same pipelines as GNOME OS itself.'},
-      {title: 'Freedesktop SDK', text: 'Same battle-tested libraries as Flathub. Continuously upgraded, always up to date.'},
-      {title: 'Modern Userspace', text: 'bootc, brew, uutils, systemd-boot, container-first, and legacy-free.'},
+      {title: 'GNOME OS', text: 'The latest stable release of GNOME, no delays. Built from source on the same pipelines as <a href="https://os.gnome.org" target="_blank">GNOME OS</a> itself.'},
+      {title: 'Freedesktop SDK', text: 'Same battle-tested libraries as <a href="https://flathub.org" target="_blank">Flathub</a>. Continuously upgraded, always up to date.'},
+      {title: 'Modern Userspace', text: '<a href="https://github.com/bootc-dev/bootc" target="_blank">bootc</a>, brew, uutils, systemd-boot, container-first, and legacy-free.'},
       {title: 'Designed for Contributors', text: 'Your path to contributing to some of the coolest projects in desktop Linux. Start here, then level up and become part of the upstream teams.'},
-      {title: 'BuildStream & BuildGrid', text: 'Hermetic sandbox builds with distributed execution, reproducible and fully auditable.'},
+      {title: 'BuildStream & BuildGrid', text: 'Hermetic sandbox builds with <a href="https://buildstream.build" target="_blank">distributed execution</a>, reproducible and fully auditable.'},
     ],
     features: [
       {emoji: '🦖', title: 'GNOME on freedesktop-sdk', text: 'The reference BuildStream desktop — GNOME OS patterns, Bluefin experience, built from source.'},

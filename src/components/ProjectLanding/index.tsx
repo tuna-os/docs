@@ -107,7 +107,7 @@ function Highlights({project}: {project: Project}): ReactNode {
           {project.highlights.map((h) => (
             <div key={h.title} className={styles.highlightCard}>
               <Heading as="h3" className={styles.highlightTitle}>{h.title}</Heading>
-              <p className={styles.highlightText}>{h.text}</p>
+              <p className={styles.highlightText} dangerouslySetInnerHTML={{__html: h.text}} />
             </div>
           ))}
         </div>
