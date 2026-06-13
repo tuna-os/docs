@@ -250,6 +250,7 @@ export const PROJECTS: Project[] = [
   {
     id: 'hawaii',
     emoji: '🌺',
+    name: 'Zirconium Hawaii',
     status: 'experimental',
     tagline: 'Zirconium, rebuilt on freedesktop-sdk. Closer to the source.',
     lede:
