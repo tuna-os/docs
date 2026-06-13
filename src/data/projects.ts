@@ -267,13 +267,6 @@ export const PROJECTS: Project[] = [
       {label: 'Base', value: 'freedesktop-sdk'},
       {label: 'Inspired by', value: 'GNOME OS'},
     ],
-    highlights: [
-      {title: 'Niri compositor', text: 'A <a href="https://github.com/YaLTeR/niri" target="_blank">scrollable-tiling</a> Wayland compositor — keyboard-driven, no stacking, no overlap. A different kind of desktop.'},
-      {title: 'Freedesktop SDK', text: 'Same battle-tested libraries as <a href="https://flathub.org" target="_blank">Flathub</a> and <a href="https://os.gnome.org" target="_blank">GNOME OS</a>. Continuously upgraded, always up to date.'},
-      {title: '100% reproducible', text: '<a href="https://buildstream.build" target="_blank">BuildStream</a> pipelines with pinned revisions. Every package, every dependency — built from source, verifiable, auditable.'},
-      {title: 'Closer to the source', text: 'Builds its own components rather than repackaging a distribution. If it ships, it was built here — not borrowed from Fedora or any downstream.'},
-      {title: 'GNOME OS family', text: 'Shares build infrastructure with <a href="https://os.gnome.org" target="_blank">GNOME OS</a> — gnome-build-meta patterns, BuildStream, and freedesktop-sdk. Different desktop, same foundation.'},
-    ],
     features: [
       {emoji: '📜', title: 'Niri compositor', text: '<a href="https://github.com/YaLTeR/niri" target="_blank">Scrollable-tiling</a> Wayland compositor. No floating windows, no overlap — just an infinite horizontal workspace.'},
       {emoji: '🧱', title: 'Built from source', text: 'Every component in the stack is built from source with <a href="https://buildstream.build" target="_blank">BuildStream</a>. No binary packages from any distribution.'},
