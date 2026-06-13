@@ -4,6 +4,10 @@ sidebar_label: "bluefin-cli"
 status: stable
 ---
 
+:::tip[Visual overview]
+Prefer a visual tour? See the **[bluefin-cli overview →](/bluefin-cli)** landing page.
+:::
+
 A powerful, modern CLI tool for managing shell configuration and development environment customization. Built with beautiful TUIs using [Charm](https://charm.sh/) libraries.
 
 ## ✨ Features

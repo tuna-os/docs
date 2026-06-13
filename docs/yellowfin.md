@@ -4,6 +4,10 @@ sidebar_position: 3
 
 # Yellowfin (AlmaLinux Kitten)
 
+:::tip[Visual overview]
+Prefer a visual tour? See the **[Yellowfin overview →](/yellowfin)** landing page.
+:::
+
 **Based on:** [AlmaLinux Kitten 10](https://almalinux.org/blog/2024-11-20-introducing-almalinux-kitten-10/)
 
 Yellowfin is the "developer's daily drive" variant of TunaOS. It tracks AlmaLinux Kitten, which is the upstream-tracking, more experimental branch of AlmaLinux. This variant is closest to the upstream Bluefin LTS experience.

@@ -4,6 +4,10 @@ sidebar_position: 2
 
 # Albacore (AlmaLinux)
 
+:::tip[Visual overview]
+Prefer a visual tour? See the **[Albacore overview →](/albacore)** landing page.
+:::
+
 **Based on:** [AlmaLinux 10.0](https://almalinux.org/blog/2025-05-27-welcoming-almalinux-10/)
 
 Albacore is the flagship stable variant of TunaOS, providing a rock-solid enterprise-grade desktop experience built on the AlmaLinux foundation.

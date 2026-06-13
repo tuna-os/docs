@@ -4,6 +4,10 @@ sidebar_position: 5
 
 # Bonito (Fedora)
 
+:::tip[Visual overview]
+Prefer a visual tour? See the **[Bonito overview →](/bonito)** landing page.
+:::
+
 **Based on:** [Fedora 42](https://fedoraproject.org/)
 
 Bonito is the most experimental variant of TunaOS, based on Fedora 42. It provides the latest packages, kernels, and desktop features ahead of any Enterprise Linux release.

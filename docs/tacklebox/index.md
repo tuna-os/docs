@@ -4,6 +4,10 @@ sidebar_label: "Tacklebox"
 status: stable
 ---
 
+:::tip[Visual overview]
+Prefer a visual tour? See the **[Tacklebox overview →](/tacklebox)** landing page.
+:::
+
 **Tacklebox** is a high-performance orchestrator for `bootc` that provisions multi-tenant, updatable, and deduplicated bootable media (USB drives, SD cards, or raw disk images).
 
 Born from the `superiso` project, Tacklebox evolves the concept from static ISOs to dynamic, writable GPT disks with a unified bootloader.

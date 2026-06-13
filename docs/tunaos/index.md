@@ -4,6 +4,10 @@ sidebar_label: "TunaOS"
 status: stable
 ---
 
+:::tip[Visual overview]
+Prefer a visual tour? See the **[TunaOS overview →](/tunaos)** landing page.
+:::
+
 
 <div>
 ![]
