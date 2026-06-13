@@ -94,7 +94,7 @@ function CategoryCard({cat}: {cat: Category}): ReactNode {
       </header>
 
       <div className={styles.isoList}>
-        {(latest.length ? latest : cat.isos).map((iso) => (
+        {(latest.length ? latest : []).map((iso) => ( // only latest, never all
           <IsoRow key={iso.path} iso={iso} />
         ))}
       </div>
@@ -169,12 +169,14 @@ export default function IsoDownloads(): ReactNode {
   return (
     <div>
       <div className={styles.grid}>
-        {index.categories.map((cat) => (
+        {index.categories
+          .filter((cat) => cat.isos.some((i) => i.latest))
+          .map((cat) => (
           <CategoryCard key={cat.id} cat={cat} />
         ))}
       </div>
       <p className={styles.generated}>
-        {index.count} images · refreshed {formatDate(index.generatedAt)} from{' '}
+        {index.categories.reduce((n, c) => n + c.isos.filter((i) => i.latest).length, 0)} latest images · refreshed {formatDate(index.generatedAt)} from{' '}
         <a href={index.baseUrl}>download.tunaos.org</a>
       </p>
     </div>
