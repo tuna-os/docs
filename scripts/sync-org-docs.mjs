@@ -18,13 +18,8 @@ const PROJECTS = {
   tacklebox:   {label: 'Tacklebox',        icon: '🧰', slug: 'tacklebox',       status: 'stable'},
   'bootc-installer-tui': {label: 'bootc-installer', icon: '💻', slug: 'bootc-installer', status: 'stable'},
   'dakota-iso': {label: 'Dakota',          icon: '🎣', slug: 'dakota',          status: 'stable'},
-  'ubuntu-26.04-iso': {label: 'Ubuntu ISO',icon: '🟠', slug: 'ubuntu',          status: 'stable'},
-  'bonito-x13s': {label: 'Bonito X13s',    icon: '💪', slug: 'bonito-x13s',     status: 'experimental'},
-  'dakota-x13s': {label: 'Dakota X13s',    icon: '💪', slug: 'dakota-x13s',     status: 'experimental'},
   tromso:      {label: 'Tromsø',           icon: '🏔️', slug: 'tromso',           status: 'alpha'},
-  'tromso-iso': {label: 'Tromsø ISO',      icon: '🏔️', slug: 'tromso-iso',      status: 'alpha'},
   'xfce-linux': {label: 'XFCE Linux',      icon: '🖥️', slug: 'xfce-linux',      status: 'alpha'},
-  'xfce-linux-iso': {label: 'XFCE Linux ISO', icon: '🖥️', slug: 'xfce-linux-iso', status: 'alpha'},
   'github-copr': {label: 'COPR Builds',    icon: '🔧', slug: 'copr',            status: 'internal'},
   Tavern:      {label: 'Tavern',          icon: '🍺', slug: 'tavern',          status: 'stable'},
   'bluefin-cli': {label: 'bluefin-cli',   icon: '⌨️', slug: 'bluefin-cli',      status: 'stable'},
@@ -45,9 +40,6 @@ const ROOT_DOC_FILTER = {
   tunaOS: ['README.md', 'ROADMAP.md', 'SECURITY.md', 'CONTRIBUTING.md'],
   'github-copr': ['README.md', 'ARCHITECTURE.md'],
   'dakota-iso': ['README.md', 'CONTRIBUTING.md'],
-  'ubuntu-26.04-iso': ['README.md', 'CONTRIBUTING.md'],
-  'bonito-x13s': ['README.md', 'CONTRIBUTING.md'],
-  'dakota-x13s': ['README.md', 'CONTRIBUTING.md'],
 };
 
 // Repos whose docs/ folder should NOT be synced (too noisy / internal).
