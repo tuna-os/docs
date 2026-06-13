@@ -2,7 +2,6 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 
 const sidebars: SidebarsConfig = {
   tutorialSidebar: [
-    // ── Getting started ──
     'intro',
     'installation',
     'installer',
@@ -14,8 +13,6 @@ const sidebars: SidebarsConfig = {
       items: ['albacore', 'yellowfin', 'bonito', 'skipjack'],
     },
     'bootc-resources',
-
-    // ── All projects at top level ──
     {
       type: 'category',
       label: 'TunaOS',
