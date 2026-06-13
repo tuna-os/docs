@@ -19,7 +19,6 @@ const PROJECTS = {
   'bootc-installer-tui': {label: 'bootc-installer', icon: '💻', slug: 'bootc-installer', status: 'stable'},
   'dakota-iso': {label: 'Dakota',          icon: '🎣', slug: 'dakota',          status: 'stable'},
   'ubuntu-26.04-iso': {label: 'Ubuntu ISO',icon: '🟠', slug: 'ubuntu',          status: 'stable'},
-  chunkah:     {label: 'chunkah',          icon: '📦', slug: 'chunkah',         status: 'experimental'},
   'bonito-x13s': {label: 'Bonito X13s',    icon: '💪', slug: 'bonito-x13s',     status: 'experimental'},
   'dakota-x13s': {label: 'Dakota X13s',    icon: '💪', slug: 'dakota-x13s',     status: 'experimental'},
   tromso:      {label: 'Tromsø',           icon: '🏔️', slug: 'tromso',           status: 'alpha'},

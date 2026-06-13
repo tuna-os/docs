@@ -53,11 +53,6 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'chunkah',
-      collapsible: false,
-      link: {type: 'doc', id: 'chunkah/index'},
-      items: ['chunkah/CONTRIBUTING'],
-    },
     {
       type: 'category',
       label: 'Tromsø',
