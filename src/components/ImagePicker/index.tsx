@@ -58,7 +58,7 @@ const DESKTOP_OPTIONS: Option<Desktop>[] = [
     value: 'gnome',
     emoji: '🖥️',
     label: 'GNOME',
-    description: 'The polished default. GNOME 48 backported to Enterprise Linux.',
+    description: 'The polished default. GNOME 50 backported to Enterprise Linux.',
     badge: 'Default',
   },
   {

@@ -69,7 +69,7 @@ podman pull ghcr.io/tuna-os/bonito:latest
 After installation, TunaOS provides:
 
 ### Pre-installed Applications
-- **GNOME 48.3**: Latest GNOME desktop environment
+- **GNOME 50**: Latest GNOME desktop environment
 - **Homebrew**: Package manager for CLI tools and fonts
 - **Flathub**: Full access to Flatpak applications
 

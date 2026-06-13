@@ -16,7 +16,7 @@ const FeatureList: FeatureItem[] = [
     emoji: '🖥️',
     description: (
       <>
-        Experience GNOME 48.3 on Enterprise Linux. We backport the latest 
+        Experience GNOME 50 on Enterprise Linux. We backport the latest
         features to provide a modern desktop experience on a stable base.
       </>
     ),

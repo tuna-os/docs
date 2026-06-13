@@ -52,7 +52,7 @@ function Hero(): ReactNode {
       </div>
       <div className={clsx('container', styles.heroInner)}>
         <div className={styles.badgeRow}>
-          <span className={styles.badge}>GNOME 48</span>
+          <span className={styles.badge}>GNOME 50</span>
           <span className={styles.badge}>AlmaLinux 10</span>
           <span className={styles.badge}>CentOS 10</span>
           <span className={styles.badge}>Fedora 44</span>
