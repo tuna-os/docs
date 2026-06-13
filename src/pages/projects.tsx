@@ -13,11 +13,12 @@ function BuildStreamFamily(): ReactNode {
         🧱 BuildStream desktop family
       </Heading>
       <p className={styles.bsLede}>
-        <strong>Tromsø</strong> (KDE) and <strong>XFCE Linux</strong> are built
-        with <a href="https://buildstream.build">BuildStream</a> — a complete
-        desktop assembled from source on freedesktop-sdk with reproducible
-        pipelines, the same lineage as GNOME OS. They're associated with these
-        upstream BuildStream desktop projects, each covering a different desktop:
+        <strong>Tromsø</strong> is the KDE counterpart to Project Bluefin's{' '}
+        <strong>Dakota</strong> (GNOME) — an Aurora-style layer built with{' '}
+        <a href="https://buildstream.build">BuildStream</a> on top of the vanilla
+        KDE Linux base (<code>kde-build-meta</code>), just as Dakota layers on{' '}
+        <code>gnome-build-meta</code>. <strong>XFCE Linux</strong> is built the
+        same way. Tromsø sits alongside these sibling BuildStream desktop layers:
       </p>
       <div className={styles.bsGrid}>
         {BUILDSTREAM_UPSTREAMS.map((u) => (
