@@ -15,7 +15,7 @@ const VARIANTS = [
     name: 'Albacore',
     base: 'AlmaLinux 10',
     blurb: '10-year support cycle. The rock-solid daily driver for work.',
-    to: '/docs/albacore',
+    to: '/albacore',
     flagship: true,
   },
   {
@@ -23,21 +23,21 @@ const VARIANTS = [
     name: 'Yellowfin',
     base: 'AlmaLinux Kitten',
     blurb: 'Newer packages on a near-enterprise base. The developer pick.',
-    to: '/docs/yellowfin',
+    to: '/yellowfin',
   },
   {
     emoji: '🍣',
     name: 'Skipjack',
     base: 'CentOS Stream 10',
     blurb: 'Upstream-tracking — a preview of where Enterprise Linux is headed.',
-    to: '/docs/skipjack',
+    to: '/skipjack',
   },
   {
     emoji: '🎣',
     name: 'Bonito',
     base: 'Fedora 44',
     blurb: 'Bleeding-edge packages and the very latest kernel.',
-    to: '/docs/bonito',
+    to: '/bonito',
   },
 ];
 
@@ -145,12 +145,12 @@ function DocsBand(): ReactNode {
 
 function ProjectsBand(): ReactNode {
   const featured = [
-    {emoji: '🐟', name: 'TunaOS', desc: 'Desktop images', to: '/docs/tunaos'},
-    {emoji: '🧰', name: 'Tacklebox', desc: 'ISO & USB builder', to: '/docs/tacklebox'},
-    {emoji: '🌋', name: 'Tromsø', desc: 'KDE Linux', to: '/docs/tromso'},
-    {emoji: '🖥️', name: 'XFCE Linux', desc: 'XFCE desktop', to: '/docs/xfce-linux'},
-    {emoji: '🍻', name: 'Tavern', desc: 'Homebrew GUI', to: '/docs/tavern'},
-    {emoji: '⌨️', name: 'bluefin-cli', desc: 'Shell CLI', to: '/docs/bluefin-cli'},
+    {emoji: '🐟', name: 'TunaOS', desc: 'Desktop images', to: '/tunaos'},
+    {emoji: '🧰', name: 'Tacklebox', desc: 'ISO & USB builder', to: '/tacklebox'},
+    {emoji: '🌋', name: 'Tromsø', desc: 'KDE Linux', to: '/tromso'},
+    {emoji: '🖥️', name: 'XFCE Linux', desc: 'XFCE desktop', to: '/xfce-linux'},
+    {emoji: '🍻', name: 'Tavern', desc: 'Homebrew GUI', to: '/tavern'},
+    {emoji: '⌨️', name: 'bluefin-cli', desc: 'Shell CLI', to: '/bluefin-cli'},
   ];
   return (
     <section className={clsx(styles.section)}>

@@ -15,7 +15,7 @@ type Project = {
 const PROJECTS: Project[] = [
   {
     name: 'TunaOS',
-    slug: '/docs/tunaos',
+    slug: '/tunaos',
     icon: '🐟',
     description: 'Cloud-native Enterprise Linux desktop images built with bootc. GNOME, KDE, COSMIC, Niri on AlmaLinux, CentOS Stream, and Fedora.',
     status: 'stable',
@@ -27,7 +27,7 @@ const PROJECTS: Project[] = [
   },
   {
     name: 'Tacklebox',
-    slug: '/docs/tacklebox',
+    slug: '/tacklebox',
     icon: '🛠',
     description: 'High-performance bootc orchestrator. Produces multi-boot USB drives, disk images, and deduplicated ISOs from OCI container images.',
     status: 'stable',
@@ -38,7 +38,7 @@ const PROJECTS: Project[] = [
   },
   {
     name: 'Tromsø',
-    slug: '/docs/tromso',
+    slug: '/tromso',
     icon: '🌋',
     description: 'A BuildStream-based KDE Linux distribution. Builds desktop OS images from source with reproducible pipelines.',
     status: 'alpha',
@@ -49,7 +49,7 @@ const PROJECTS: Project[] = [
   },
   {
     name: 'XFCE Linux',
-    slug: '/docs/xfce-linux',
+    slug: '/xfce-linux',
     icon: '🖥️',
     description: 'XFCE Wayland OCI image built with BuildStream. A lightweight desktop experience on an immutable base.',
     status: 'alpha',
@@ -71,7 +71,7 @@ const PROJECTS: Project[] = [
   },
   {
     name: 'Tavern',
-    slug: '/docs/tavern',
+    slug: '/tavern',
     icon: '🍻',
     description: 'A modern, fast Homebrew client for Linux built with GTK 4 and Libadwaita. App Store experience for managing formulae and casks.',
     status: 'stable',
@@ -82,7 +82,7 @@ const PROJECTS: Project[] = [
   },
   {
     name: 'bluefin-cli',
-    slug: '/docs/bluefin-cli',
+    slug: '/bluefin-cli',
     icon: '⌨️',
     description: 'Powerful CLI tool for shell configuration and dev environment customization. Beautiful TUIs built with Charm libraries.',
     status: 'stable',
