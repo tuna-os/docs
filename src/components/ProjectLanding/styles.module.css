@@ -25,14 +25,20 @@
   z-index: 0;
 }
 
-.heroBgEmoji img {
-  width: 110%;
-  height: 110%;
+.heroBgEmoji img,
+.heroBgEmoji canvas {
+  width: 130% !important;
+  height: 130% !important;
   object-fit: cover;
   object-position: center;
   filter: blur(1px) brightness(1.1);
-  margin: -5%;
+  margin: -15%;
   animation: stellarDrift 30s ease-in-out infinite alternate;
+}
+
+.heroBgEmoji span {
+  width: 100% !important;
+  height: 100% !important;
 }
 
 @keyframes stellarDrift {
