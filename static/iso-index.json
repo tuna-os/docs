@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-06-13T03:27:29.251Z",
+  "generatedAt": "2026-06-13T08:52:16.899Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 10,
+  "count": 176,
   "categories": [
     {
       "id": "live-isos",
@@ -13,31 +13,81 @@
       "isos": [
         {
           "category": "live-isos",
-          "name": "bonito-cosmic-latest",
-          "path": "live-isos/bonito-cosmic-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-cosmic-latest.iso",
-          "size": 2700000000,
-          "modified": "2026-06-10T05:30:00Z",
+          "name": "yellowfin-gnome50-gdx-latest",
+          "path": "live-isos/yellowfin-gnome50-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome50-gdx-latest.iso",
+          "size": 6813566976,
+          "modified": "2026-06-01T06:46:11.745608614Z",
           "arch": "",
           "latest": true
         },
         {
           "category": "live-isos",
-          "name": "yellowfin-gnome-latest",
-          "path": "live-isos/yellowfin-gnome-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso",
-          "size": 2550000000,
-          "modified": "2026-06-10T05:00:00Z",
+          "name": "albacore-gnome50-latest",
+          "path": "live-isos/albacore-gnome50-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome50-latest.iso",
+          "size": 3324698624,
+          "modified": "2026-06-01T05:50:05.356152778Z",
           "arch": "",
           "latest": true
         },
         {
           "category": "live-isos",
-          "name": "albacore-kde-latest",
-          "path": "live-isos/albacore-kde-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-kde-latest.iso",
-          "size": 2620000000,
-          "modified": "2026-06-10T04:20:00Z",
+          "name": "albacore-kde-gdx-latest",
+          "path": "live-isos/albacore-kde-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-kde-gdx-latest.iso",
+          "size": 7109720064,
+          "modified": "2026-06-01T05:15:09.522654042Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-niri-latest",
+          "path": "live-isos/bonito-niri-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-niri-latest.iso",
+          "size": 3428972544,
+          "modified": "2026-06-01T05:07:55.662838486Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome50-latest",
+          "path": "live-isos/yellowfin-gnome50-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome50-latest.iso",
+          "size": 3369992192,
+          "modified": "2026-06-01T05:03:33.287095278Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-kde-gdx-latest",
+          "path": "live-isos/bonito-kde-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-kde-gdx-latest.iso",
+          "size": 4603248640,
+          "modified": "2026-06-01T05:02:22.892162532Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-niri-latest",
+          "path": "live-isos/albacore-niri-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-niri-latest.iso",
+          "size": 2951499776,
+          "modified": "2026-06-01T05:00:15.945922321Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-cosmic-gdx-latest",
+          "path": "live-isos/bonito-cosmic-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-cosmic-gdx-latest.iso",
+          "size": 3739283456,
+          "modified": "2026-06-01T04:59:47.017681699Z",
           "arch": "",
           "latest": true
         },
@@ -46,10 +96,780 @@
           "name": "albacore-gnome-latest",
           "path": "live-isos/albacore-gnome-latest.iso",
           "url": "https://download.tunaos.org/live-isos/albacore-gnome-latest.iso",
-          "size": 2516582400,
-          "modified": "2026-06-10T04:12:00Z",
+          "size": 3323172864,
+          "modified": "2026-06-01T04:57:23.251911614Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-kde-gdx-latest",
+          "path": "live-isos/yellowfin-kde-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-gdx-latest.iso",
+          "size": 7469424640,
+          "modified": "2026-06-01T04:50:23.685370091Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-gdx-latest",
+          "path": "live-isos/albacore-gnome-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-gdx-latest.iso",
+          "size": 6648604672,
+          "modified": "2026-06-01T04:49:10.563043249Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-kde-latest",
+          "path": "live-isos/albacore-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-kde-latest.iso",
+          "size": 3968350208,
+          "modified": "2026-06-01T04:48:42.215517197Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome-gdx-latest",
+          "path": "live-isos/yellowfin-gnome-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-gdx-latest.iso",
+          "size": 6811912192,
+          "modified": "2026-06-01T04:45:33.415976108Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome50-gdx-latest",
+          "path": "live-isos/albacore-gnome50-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome50-gdx-latest.iso",
+          "size": 6650163200,
+          "modified": "2026-06-01T04:44:09.041660880Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-niri-gdx-latest",
+          "path": "live-isos/yellowfin-niri-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-niri-gdx-latest.iso",
+          "size": 6513053696,
+          "modified": "2026-06-01T04:43:59.917160281Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-cosmic-gdx-latest",
+          "path": "live-isos/yellowfin-cosmic-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-cosmic-gdx-latest.iso",
+          "size": 6360649728,
+          "modified": "2026-06-01T04:42:49.411601134Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-cosmic-gdx-latest",
+          "path": "live-isos/albacore-cosmic-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-cosmic-gdx-latest.iso",
+          "size": 6198712320,
+          "modified": "2026-06-01T04:42:45.146768662Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-niri-gdx-latest",
+          "path": "live-isos/albacore-niri-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-niri-gdx-latest.iso",
+          "size": 6277490688,
+          "modified": "2026-06-01T04:42:42.255921402Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-niri-gdx-latest",
+          "path": "live-isos/bonito-niri-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-niri-gdx-latest.iso",
+          "size": 4014811136,
+          "modified": "2026-06-01T04:38:29.924919862Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-gnome-gdx-latest",
+          "path": "live-isos/bonito-gnome-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-gnome-gdx-latest.iso",
+          "size": 3834128384,
+          "modified": "2026-06-01T04:37:51.528886376Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-kde-latest",
+          "path": "live-isos/bonito-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-kde-latest.iso",
+          "size": 4017565696,
+          "modified": "2026-06-01T04:35:57.204342954Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-kde-latest",
+          "path": "live-isos/yellowfin-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-latest.iso",
+          "size": 4024807424,
+          "modified": "2026-06-01T04:35:25.551288632Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome-latest",
+          "path": "live-isos/yellowfin-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso",
+          "size": 3368382464,
+          "modified": "2026-06-01T04:33:23.496486424Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-gnome-latest",
+          "path": "live-isos/bonito-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-gnome-latest.iso",
+          "size": 3250538496,
+          "modified": "2026-06-01T04:33:04.947286715Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-cosmic-latest",
+          "path": "live-isos/bonito-cosmic-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-cosmic-latest.iso",
+          "size": 3153592320,
+          "modified": "2026-06-01T04:33:04.623893325Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-niri-latest",
+          "path": "live-isos/yellowfin-niri-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-niri-latest.iso",
+          "size": 3068823552,
+          "modified": "2026-06-01T04:32:12.660037570Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-cosmic-latest",
+          "path": "live-isos/albacore-cosmic-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-cosmic-latest.iso",
+          "size": 2869221376,
+          "modified": "2026-06-01T04:31:27.499227010Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-cosmic-latest",
+          "path": "live-isos/yellowfin-cosmic-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-cosmic-latest.iso",
+          "size": 2916229120,
+          "modified": "2026-06-01T04:31:13.267460551Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-gnome50-latest",
+          "path": "live-isos/skipjack-gnome50-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome50-latest.iso",
+          "size": 3520339968,
+          "modified": "2026-05-15T04:21:37.455156048Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-gnome50-gdx-latest",
+          "path": "live-isos/skipjack-gnome50-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome50-gdx-latest.iso",
+          "size": 3986497536,
+          "modified": "2026-05-15T04:04:55.610898858Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-gnome-gdx-latest",
+          "path": "live-isos/skipjack-gnome-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-gdx-latest.iso",
+          "size": 3985018880,
+          "modified": "2026-05-15T04:00:42.880899179Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-gnome-latest",
+          "path": "live-isos/skipjack-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-latest.iso",
+          "size": 3518947328,
+          "modified": "2026-05-15T03:57:14.604140347Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-cosmic-gdx-latest",
+          "path": "live-isos/skipjack-cosmic-gdx-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-cosmic-gdx-latest.iso",
+          "size": 3578392576,
+          "modified": "2026-05-01T04:30:31.666928820Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-kde-latest",
+          "path": "live-isos/skipjack-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-kde-latest.iso",
+          "size": 4204058624,
+          "modified": "2026-05-01T04:23:02.615668580Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-niri-latest",
+          "path": "live-isos/skipjack-niri-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-niri-latest.iso",
+          "size": 3249266688,
+          "modified": "2026-05-01T04:15:04.030835830Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-cosmic-latest",
+          "path": "live-isos/skipjack-cosmic-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-cosmic-latest.iso",
+          "size": 3111247872,
+          "modified": "2026-05-01T03:50:35.229095690Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome-hwe-latest",
+          "path": "live-isos/yellowfin-gnome-hwe-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-hwe-latest.iso",
+          "size": 3523483648,
+          "modified": "2026-04-02T01:49:20.543899095Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-hwe-latest",
+          "path": "live-isos/albacore-gnome-hwe-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-hwe-latest.iso",
+          "size": 3091881984,
+          "modified": "2026-04-02T01:48:53.174283483Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome50-gdx-10-x86_64",
+          "path": "live-isos/yellowfin-gnome50-gdx-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome50-gdx-10-x86_64.iso",
+          "size": 6813566976,
+          "modified": "2026-06-01T06:46:11.745608614Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome50-10.2-x86_64",
+          "path": "live-isos/albacore-gnome50-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome50-10.2-x86_64.iso",
+          "size": 3324698624,
+          "modified": "2026-06-01T05:50:05.356152778Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-kde-gdx-10.1-x86_64",
+          "path": "live-isos/albacore-kde-gdx-10.1-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-kde-gdx-10.1-x86_64.iso",
+          "size": 7109720064,
+          "modified": "2026-06-01T05:15:09.522654042Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-niri-43-x86_64",
+          "path": "live-isos/bonito-niri-43-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-niri-43-x86_64.iso",
+          "size": 3428972544,
+          "modified": "2026-06-01T05:07:55.662838486Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome50-10-x86_64",
+          "path": "live-isos/yellowfin-gnome50-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome50-10-x86_64.iso",
+          "size": 3369992192,
+          "modified": "2026-06-01T05:03:33.287095278Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-kde-gdx-43-x86_64",
+          "path": "live-isos/bonito-kde-gdx-43-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-kde-gdx-43-x86_64.iso",
+          "size": 4603248640,
+          "modified": "2026-06-01T05:02:22.892162532Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-niri-10.2-x86_64",
+          "path": "live-isos/albacore-niri-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-niri-10.2-x86_64.iso",
+          "size": 2951499776,
+          "modified": "2026-06-01T05:00:15.945922321Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-cosmic-gdx-43-x86_64",
+          "path": "live-isos/bonito-cosmic-gdx-43-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-cosmic-gdx-43-x86_64.iso",
+          "size": 3739283456,
+          "modified": "2026-06-01T04:59:47.017681699Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-10.2-x86_64",
+          "path": "live-isos/albacore-gnome-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-10.2-x86_64.iso",
+          "size": 3323172864,
+          "modified": "2026-06-01T04:57:23.251911614Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-kde-gdx-10-x86_64",
+          "path": "live-isos/yellowfin-kde-gdx-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-gdx-10-x86_64.iso",
+          "size": 7469424640,
+          "modified": "2026-06-01T04:50:23.685370091Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-gdx-10.2-x86_64",
+          "path": "live-isos/albacore-gnome-gdx-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-gdx-10.2-x86_64.iso",
+          "size": 6648604672,
+          "modified": "2026-06-01T04:49:10.563043249Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-kde-10.2-x86_64",
+          "path": "live-isos/albacore-kde-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-kde-10.2-x86_64.iso",
+          "size": 3968350208,
+          "modified": "2026-06-01T04:48:42.215517197Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome-gdx-10-x86_64",
+          "path": "live-isos/yellowfin-gnome-gdx-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-gdx-10-x86_64.iso",
+          "size": 6811912192,
+          "modified": "2026-06-01T04:45:33.415976108Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome50-gdx-10.2-x86_64",
+          "path": "live-isos/albacore-gnome50-gdx-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome50-gdx-10.2-x86_64.iso",
+          "size": 6650163200,
+          "modified": "2026-06-01T04:44:09.041660880Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-niri-gdx-10-x86_64",
+          "path": "live-isos/yellowfin-niri-gdx-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-niri-gdx-10-x86_64.iso",
+          "size": 6513053696,
+          "modified": "2026-06-01T04:43:59.917160281Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-cosmic-gdx-10-x86_64",
+          "path": "live-isos/yellowfin-cosmic-gdx-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-cosmic-gdx-10-x86_64.iso",
+          "size": 6360649728,
+          "modified": "2026-06-01T04:42:49.411601134Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-cosmic-gdx-10.2-x86_64",
+          "path": "live-isos/albacore-cosmic-gdx-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-cosmic-gdx-10.2-x86_64.iso",
+          "size": 6198712320,
+          "modified": "2026-06-01T04:42:45.146768662Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-niri-gdx-10.2-x86_64",
+          "path": "live-isos/albacore-niri-gdx-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-niri-gdx-10.2-x86_64.iso",
+          "size": 6277490688,
+          "modified": "2026-06-01T04:42:42.255921402Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-niri-gdx-43-x86_64",
+          "path": "live-isos/bonito-niri-gdx-43-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-niri-gdx-43-x86_64.iso",
+          "size": 4014811136,
+          "modified": "2026-06-01T04:38:29.924919862Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-gnome-gdx-43-x86_64",
+          "path": "live-isos/bonito-gnome-gdx-43-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-gnome-gdx-43-x86_64.iso",
+          "size": 3834128384,
+          "modified": "2026-06-01T04:37:51.528886376Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-kde-43-x86_64",
+          "path": "live-isos/bonito-kde-43-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-kde-43-x86_64.iso",
+          "size": 4017565696,
+          "modified": "2026-06-01T04:35:57.204342954Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-kde-10-x86_64",
+          "path": "live-isos/yellowfin-kde-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-10-x86_64.iso",
+          "size": 4024807424,
+          "modified": "2026-06-01T04:35:25.551288632Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome-10-x86_64",
+          "path": "live-isos/yellowfin-gnome-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-10-x86_64.iso",
+          "size": 3368382464,
+          "modified": "2026-06-01T04:33:23.496486424Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-gnome-43-x86_64",
+          "path": "live-isos/bonito-gnome-43-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-gnome-43-x86_64.iso",
+          "size": 3250538496,
+          "modified": "2026-06-01T04:33:04.947286715Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-cosmic-43-x86_64",
+          "path": "live-isos/bonito-cosmic-43-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-cosmic-43-x86_64.iso",
+          "size": 3153592320,
+          "modified": "2026-06-01T04:33:04.623893325Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-niri-10-x86_64",
+          "path": "live-isos/yellowfin-niri-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-niri-10-x86_64.iso",
+          "size": 3068823552,
+          "modified": "2026-06-01T04:32:12.660037570Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-cosmic-10.2-x86_64",
+          "path": "live-isos/albacore-cosmic-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-cosmic-10.2-x86_64.iso",
+          "size": 2869221376,
+          "modified": "2026-06-01T04:31:27.499227010Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-cosmic-10-x86_64",
+          "path": "live-isos/yellowfin-cosmic-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-cosmic-10-x86_64.iso",
+          "size": 2916229120,
+          "modified": "2026-06-01T04:31:13.267460551Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome50-gdx-10.1-x86_64",
+          "path": "live-isos/albacore-gnome50-gdx-10.1-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome50-gdx-10.1-x86_64.iso",
+          "size": 6661439488,
+          "modified": "2026-05-15T04:28:16.003800532Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-gnome50-10-x86_64",
+          "path": "live-isos/skipjack-gnome50-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome50-10-x86_64.iso",
+          "size": 3520339968,
+          "modified": "2026-05-15T04:21:37.455156048Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-gnome50-gdx-10-x86_64",
+          "path": "live-isos/skipjack-gnome50-gdx-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome50-gdx-10-x86_64.iso",
+          "size": 3986497536,
+          "modified": "2026-05-15T04:04:55.610898858Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-gdx-10.1-x86_64",
+          "path": "live-isos/albacore-gnome-gdx-10.1-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-gdx-10.1-x86_64.iso",
+          "size": 6661156864,
+          "modified": "2026-05-15T04:04:41.551904166Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-kde-10.1-x86_64",
+          "path": "live-isos/albacore-kde-10.1-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-kde-10.1-x86_64.iso",
+          "size": 3677458432,
+          "modified": "2026-05-15T04:03:20.804292444Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-gnome-gdx-10-x86_64",
+          "path": "live-isos/skipjack-gnome-gdx-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-gdx-10-x86_64.iso",
+          "size": 3985018880,
+          "modified": "2026-05-15T04:00:42.880899179Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-gnome-10-x86_64",
+          "path": "live-isos/skipjack-gnome-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-10-x86_64.iso",
+          "size": 3518947328,
+          "modified": "2026-05-15T03:57:14.604140347Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-10.1-x86_64",
+          "path": "live-isos/albacore-gnome-10.1-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-10.1-x86_64.iso",
+          "size": 3081580544,
+          "modified": "2026-05-15T03:56:30.405888307Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome50-10.1-x86_64",
+          "path": "live-isos/albacore-gnome50-10.1-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome50-10.1-x86_64.iso",
+          "size": 3082168320,
+          "modified": "2026-05-15T03:55:46.808904848Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-cosmic-10.1-x86_64",
+          "path": "live-isos/albacore-cosmic-10.1-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-cosmic-10.1-x86_64.iso",
+          "size": 2604898304,
+          "modified": "2026-05-15T03:53:21.308297715Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "superiso-live",
+          "path": "live-isos/superiso-live.iso",
+          "url": "https://download.tunaos.org/live-isos/superiso-live.iso",
+          "size": 45826703360,
+          "modified": "2026-05-09T13:14:26.999277795Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-cosmic-gdx-10-x86_64",
+          "path": "live-isos/skipjack-cosmic-gdx-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-cosmic-gdx-10-x86_64.iso",
+          "size": 3578392576,
+          "modified": "2026-05-01T04:30:31.666928820Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-niri-gdx-10.1-x86_64",
+          "path": "live-isos/albacore-niri-gdx-10.1-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-niri-gdx-10.1-x86_64.iso",
+          "size": 6279274496,
+          "modified": "2026-05-01T04:25:03.737586128Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-kde-10-x86_64",
+          "path": "live-isos/skipjack-kde-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-kde-10-x86_64.iso",
+          "size": 4204058624,
+          "modified": "2026-05-01T04:23:02.615668580Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-niri-10-x86_64",
+          "path": "live-isos/skipjack-niri-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-niri-10-x86_64.iso",
+          "size": 3249266688,
+          "modified": "2026-05-01T04:15:04.030835830Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-niri-10.1-x86_64",
+          "path": "live-isos/albacore-niri-10.1-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-niri-10.1-x86_64.iso",
+          "size": 2724513792,
+          "modified": "2026-05-01T04:12:09.174615470Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-cosmic-gdx-10.1-x86_64",
+          "path": "live-isos/albacore-cosmic-gdx-10.1-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-cosmic-gdx-10.1-x86_64.iso",
+          "size": 6170904576,
+          "modified": "2026-05-01T03:58:33.590412157Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-cosmic-10-x86_64",
+          "path": "live-isos/skipjack-cosmic-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-cosmic-10-x86_64.iso",
+          "size": 3111247872,
+          "modified": "2026-05-01T03:50:35.229095690Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome-hwe-10-x86_64",
+          "path": "live-isos/yellowfin-gnome-hwe-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-hwe-10-x86_64.iso",
+          "size": 3523483648,
+          "modified": "2026-04-02T01:49:20.543899095Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-hwe-10.1-x86_64",
+          "path": "live-isos/albacore-gnome-hwe-10.1-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-hwe-10.1-x86_64.iso",
+          "size": 3091881984,
+          "modified": "2026-04-02T01:48:53.174283483Z",
+          "arch": "x86_64",
+          "latest": false
         }
       ]
     },
@@ -66,18 +886,128 @@
           "name": "dakota-live-latest",
           "path": "dakota/dakota-live-latest.iso",
           "url": "https://download.tunaos.org/dakota/dakota-live-latest.iso",
-          "size": 2890000000,
-          "modified": "2026-06-09T03:00:00Z",
+          "size": 4583325696,
+          "modified": "2026-04-20T06:02:37.054517567Z",
           "arch": "",
           "latest": true
         },
         {
           "category": "dakota",
-          "name": "dakota-live-20260609-abc1234",
-          "path": "dakota/dakota-live-20260609-abc1234.iso",
-          "url": "https://download.tunaos.org/dakota/dakota-live-20260609-abc1234.iso",
-          "size": 2890000000,
-          "modified": "2026-06-09T03:00:00Z",
+          "name": "dakota-live-20260420-1662985",
+          "path": "dakota/dakota-live-20260420-1662985.iso",
+          "url": "https://download.tunaos.org/dakota/dakota-live-20260420-1662985.iso",
+          "size": 4583325696,
+          "modified": "2026-04-20T06:02:37.054517567Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "dakota",
+          "name": "dakota-live-20260413-1662985",
+          "path": "dakota/dakota-live-20260413-1662985.iso",
+          "url": "https://download.tunaos.org/dakota/dakota-live-20260413-1662985.iso",
+          "size": 4495245312,
+          "modified": "2026-04-13T04:30:48.028931238Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "dakota",
+          "name": "dakota-live-20260409-1662985",
+          "path": "dakota/dakota-live-20260409-1662985.iso",
+          "url": "https://download.tunaos.org/dakota/dakota-live-20260409-1662985.iso",
+          "size": 4860674048,
+          "modified": "2026-04-09T16:44:22.055441205Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "dakota",
+          "name": "dakota-live-20260409-71a6c19",
+          "path": "dakota/dakota-live-20260409-71a6c19.iso",
+          "url": "https://download.tunaos.org/dakota/dakota-live-20260409-71a6c19.iso",
+          "size": 4860674048,
+          "modified": "2026-04-09T15:56:26.066217161Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "dakota",
+          "name": "dakota-live-20260409-5d7a36b",
+          "path": "dakota/dakota-live-20260409-5d7a36b.iso",
+          "url": "https://download.tunaos.org/dakota/dakota-live-20260409-5d7a36b.iso",
+          "size": 4860674048,
+          "modified": "2026-04-09T15:32:52.076225092Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "dakota",
+          "name": "dakota-live-20260409-780c244",
+          "path": "dakota/dakota-live-20260409-780c244.iso",
+          "url": "https://download.tunaos.org/dakota/dakota-live-20260409-780c244.iso",
+          "size": 4860674048,
+          "modified": "2026-04-09T15:26:29.039749600Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "dakota",
+          "name": "dakota-live-20260409-046b02f",
+          "path": "dakota/dakota-live-20260409-046b02f.iso",
+          "url": "https://download.tunaos.org/dakota/dakota-live-20260409-046b02f.iso",
+          "size": 4860674048,
+          "modified": "2026-04-09T13:48:04.095215303Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "dakota",
+          "name": "dakota-live-20260409-c9a2701",
+          "path": "dakota/dakota-live-20260409-c9a2701.iso",
+          "url": "https://download.tunaos.org/dakota/dakota-live-20260409-c9a2701.iso",
+          "size": 4860674048,
+          "modified": "2026-04-09T10:48:07.062816746Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "dakota",
+          "name": "dakota-live-20260409-5ec7c86",
+          "path": "dakota/dakota-live-20260409-5ec7c86.iso",
+          "url": "https://download.tunaos.org/dakota/dakota-live-20260409-5ec7c86.iso",
+          "size": 4860674048,
+          "modified": "2026-04-09T10:44:17.035319264Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "dakota",
+          "name": "dakota-live-20260409-74079c8",
+          "path": "dakota/dakota-live-20260409-74079c8.iso",
+          "url": "https://download.tunaos.org/dakota/dakota-live-20260409-74079c8.iso",
+          "size": 4860674048,
+          "modified": "2026-04-09T10:38:28.032273988Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "dakota",
+          "name": "dakota-live-20260409-13b5075",
+          "path": "dakota/dakota-live-20260409-13b5075.iso",
+          "url": "https://download.tunaos.org/dakota/dakota-live-20260409-13b5075.iso",
+          "size": 4860674048,
+          "modified": "2026-04-09T10:29:55.000470690Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "dakota",
+          "name": "dakota-live-20260409-84bbd03",
+          "path": "dakota/dakota-live-20260409-84bbd03.iso",
+          "url": "https://download.tunaos.org/dakota/dakota-live-20260409-84bbd03.iso",
+          "size": 4860674048,
+          "modified": "2026-04-09T09:48:12.094529728Z",
           "arch": "",
           "latest": false
         }
@@ -93,63 +1023,803 @@
       "isos": [
         {
           "category": "dakota-x13s",
-          "name": "dakota-x13s-live-latest",
-          "path": "dakota-x13s/dakota-x13s-live-latest.iso",
-          "url": "https://download.tunaos.org/dakota-x13s/dakota-x13s-live-latest.iso",
-          "size": 2950000000,
-          "modified": "2026-06-07T01:00:00Z",
+          "name": "x13s-live-latest",
+          "path": "dakota-x13s/x13s-live-latest.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-latest.iso",
+          "size": 5599471616,
+          "modified": "2026-06-12T09:24:45.856573568Z",
+          "arch": "aarch64",
+          "latest": true
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260612-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260612-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260612-f8b0071.iso",
+          "size": 5599471616,
+          "modified": "2026-06-12T09:24:45.856573568Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260610-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260610-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260610-f8b0071.iso",
+          "size": 5599453184,
+          "modified": "2026-06-10T09:16:39.919857739Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260609-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260609-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260609-f8b0071.iso",
+          "size": 5599453184,
+          "modified": "2026-06-09T08:55:12.385199299Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260608-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260608-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260608-f8b0071.iso",
+          "size": 5599457280,
+          "modified": "2026-06-08T09:52:42.250406767Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260607-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260607-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260607-f8b0071.iso",
+          "size": 5599457280,
+          "modified": "2026-06-07T08:50:56.554646768Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260606-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260606-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260606-f8b0071.iso",
+          "size": 5599457280,
+          "modified": "2026-06-06T08:17:40.105024207Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260605-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260605-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260605-f8b0071.iso",
+          "size": 5599449088,
+          "modified": "2026-06-05T09:12:32.966531082Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260604-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260604-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260604-f8b0071.iso",
+          "size": 5599420416,
+          "modified": "2026-06-04T09:18:22.434348883Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260603-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260603-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260603-f8b0071.iso",
+          "size": 5594267648,
+          "modified": "2026-06-03T09:52:33.841683736Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260602-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260602-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260602-f8b0071.iso",
+          "size": 5594034176,
+          "modified": "2026-06-02T09:36:14.132202163Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260531-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260531-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260531-f8b0071.iso",
+          "size": 5594042368,
+          "modified": "2026-05-31T08:42:59.178046321Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260530-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260530-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260530-f8b0071.iso",
+          "size": 5594042368,
+          "modified": "2026-05-30T08:13:06.577794488Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260528-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260528-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260528-f8b0071.iso",
+          "size": 5594025984,
+          "modified": "2026-05-28T09:11:24.056848121Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260527-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260527-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260527-f8b0071.iso",
+          "size": 5594025984,
+          "modified": "2026-05-27T09:06:54.164980184Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260526-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260526-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260526-f8b0071.iso",
+          "size": 5594025984,
+          "modified": "2026-05-26T08:58:00.089792362Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260525-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260525-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260525-f8b0071.iso",
+          "size": 5533589504,
+          "modified": "2026-05-25T09:25:59.052011094Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260524-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260524-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260524-f8b0071.iso",
+          "size": 5533589504,
+          "modified": "2026-05-24T08:16:24.991107250Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260523-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260523-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260523-f8b0071.iso",
+          "size": 5533120512,
+          "modified": "2026-05-23T07:59:01.502767551Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260521-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260521-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260521-f8b0071.iso",
+          "size": 5533124608,
+          "modified": "2026-05-21T09:01:55.849183408Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260520-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260520-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260520-f8b0071.iso",
+          "size": 5533120512,
+          "modified": "2026-05-20T08:51:23.361700278Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260519-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260519-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260519-f8b0071.iso",
+          "size": 5533116416,
+          "modified": "2026-05-19T08:54:23.348289615Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260518-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260518-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260518-f8b0071.iso",
+          "size": 5532710912,
+          "modified": "2026-05-18T09:12:30.130750454Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260517-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260517-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260517-f8b0071.iso",
+          "size": 5532715008,
+          "modified": "2026-05-17T07:59:24.588585640Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260516-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260516-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260516-f8b0071.iso",
+          "size": 5532715008,
+          "modified": "2026-05-16T07:42:22.083202802Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260515-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260515-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260515-f8b0071.iso",
+          "size": 5532710912,
+          "modified": "2026-05-15T08:19:16.412230673Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260514-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260514-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260514-f8b0071.iso",
+          "size": 5532706816,
+          "modified": "2026-05-14T08:10:02.628716663Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260513-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260513-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260513-f8b0071.iso",
+          "size": 5532383232,
+          "modified": "2026-05-13T08:16:12.776414233Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260512-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260512-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260512-f8b0071.iso",
+          "size": 5532383232,
+          "modified": "2026-05-12T08:14:23.922329883Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260511-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260511-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260511-f8b0071.iso",
+          "size": 5532375040,
+          "modified": "2026-05-11T08:51:57.954219773Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260510-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260510-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260510-f8b0071.iso",
+          "size": 5532375040,
+          "modified": "2026-05-10T07:53:09.303400839Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260509-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260509-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260509-f8b0071.iso",
+          "size": 5532370944,
+          "modified": "2026-05-09T07:36:30.616628317Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260508-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260508-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260508-f8b0071.iso",
+          "size": 5532370944,
+          "modified": "2026-05-08T07:17:55.779492176Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260507-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260507-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260507-f8b0071.iso",
+          "size": 5532370944,
+          "modified": "2026-05-07T08:11:50.719060578Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260506-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260506-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260506-f8b0071.iso",
+          "size": 5532370944,
+          "modified": "2026-05-06T07:59:48.922556217Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260505-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260505-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260505-f8b0071.iso",
+          "size": 5532370944,
+          "modified": "2026-05-05T07:45:04.921830822Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260504-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260504-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260504-f8b0071.iso",
+          "size": 5532370944,
+          "modified": "2026-05-04T08:16:08.020326030Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260502-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260502-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260502-f8b0071.iso",
+          "size": 5531838464,
+          "modified": "2026-05-02T07:27:16.476883451Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260501-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260501-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260501-f8b0071.iso",
+          "size": 5531301888,
+          "modified": "2026-05-01T07:52:39.244053148Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260430-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260430-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260430-f8b0071.iso",
+          "size": 5523568640,
+          "modified": "2026-04-30T07:56:55.006085169Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260429-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260429-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260429-f8b0071.iso",
+          "size": 5523564544,
+          "modified": "2026-04-29T07:49:16.194747633Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260428-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260428-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260428-f8b0071.iso",
+          "size": 5523564544,
+          "modified": "2026-04-28T07:55:59.426261141Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260427-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260427-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260427-f8b0071.iso",
+          "size": 5523564544,
+          "modified": "2026-04-27T08:03:12.458278819Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260426-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260426-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260426-f8b0071.iso",
+          "size": 5437505536,
+          "modified": "2026-04-26T07:26:11.080238816Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260425-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260425-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260425-f8b0071.iso",
+          "size": 5437505536,
+          "modified": "2026-04-25T06:50:10.106650148Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260424-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260424-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260424-f8b0071.iso",
+          "size": 5437505536,
+          "modified": "2026-04-24T07:35:29.179900114Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260423-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260423-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260423-f8b0071.iso",
+          "size": 5437505536,
+          "modified": "2026-04-23T07:29:25.192419387Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260422-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260422-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260422-f8b0071.iso",
+          "size": 5437505536,
+          "modified": "2026-04-22T07:28:30.863016050Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260421-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260421-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260421-f8b0071.iso",
+          "size": 5437499392,
+          "modified": "2026-04-21T07:27:47.271205227Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260420-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260420-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260420-f8b0071.iso",
+          "size": 5437499392,
+          "modified": "2026-04-20T07:43:12.867654832Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260419-f8b0071",
+          "path": "dakota-x13s/x13s-live-20260419-f8b0071.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260419-f8b0071.iso",
+          "size": 5437499392,
+          "modified": "2026-04-19T06:16:29.426248571Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260418-4978450",
+          "path": "dakota-x13s/x13s-live-20260418-4978450.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260418-4978450.iso",
+          "size": 5311731712,
+          "modified": "2026-04-18T19:09:58.285390217Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260418-a865899",
+          "path": "dakota-x13s/x13s-live-20260418-a865899.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260418-a865899.iso",
+          "size": 5311727616,
+          "modified": "2026-04-18T18:09:06.593824855Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260418-1ed437a",
+          "path": "dakota-x13s/x13s-live-20260418-1ed437a.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260418-1ed437a.iso",
+          "size": 5176471552,
+          "modified": "2026-04-18T16:59:50.829837551Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260418-f26aebe",
+          "path": "dakota-x13s/x13s-live-20260418-f26aebe.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260418-f26aebe.iso",
+          "size": 5176471552,
+          "modified": "2026-04-18T13:41:12.487731734Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "dakota-x13s",
+          "name": "x13s-live-20260418-8227b81",
+          "path": "dakota-x13s/x13s-live-20260418-8227b81.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/x13s-live-20260418-8227b81.iso",
+          "size": 5176467456,
+          "modified": "2026-04-18T12:59:57.129012758Z",
+          "arch": "aarch64",
+          "latest": false
+        }
+      ]
+    },
+    {
+      "id": "bonito-x13s",
+      "label": "Bonito — ThinkPad X13s",
+      "blurb": "Bonito bootc image + live ISO for the ThinkPad X13s (aarch64).",
+      "icon": "💪",
+      "order": 3,
+      "checksums": null,
+      "isos": [
+        {
+          "category": "bonito-x13s",
+          "name": "bonito-x13s-latest",
+          "path": "bonito-x13s/bonito-x13s-latest.iso",
+          "url": "https://download.tunaos.org/bonito-x13s/bonito-x13s-latest.iso",
+          "size": 3863435264,
+          "modified": "2026-03-27T10:47:26.196784225Z",
+          "arch": "aarch64",
+          "latest": true
+        },
+        {
+          "category": "bonito-x13s",
+          "name": "debian-x13s-latest",
+          "path": "bonito-x13s/debian-x13s-latest.iso",
+          "url": "https://download.tunaos.org/bonito-x13s/debian-x13s-latest.iso",
+          "size": 909989888,
+          "modified": "2026-03-27T10:45:01.959284680Z",
           "arch": "aarch64",
           "latest": true
         }
       ]
     },
     {
-      "id": "ubuntu-26.04",
-      "label": "Ubuntu 26.04 (Resolute Raccoon)",
-      "blurb": "Ubuntu 26.04 live installable ISO built with bootc.",
-      "icon": "🟠",
-      "order": 4,
+      "id": "gnome-os-x13s",
+      "label": "Gnome Os X13s",
+      "blurb": "",
+      "icon": "📀",
+      "order": 99,
       "checksums": null,
       "isos": [
         {
-          "category": "ubuntu-26.04",
-          "name": "ubuntu-26.04-live-latest",
-          "path": "ubuntu-26.04/ubuntu-26.04-live-latest.iso",
-          "url": "https://download.tunaos.org/ubuntu-26.04/ubuntu-26.04-live-latest.iso",
-          "size": 3100000000,
-          "modified": "2026-06-08T02:00:00Z",
+          "category": "gnome-os-x13s",
+          "name": "disk",
+          "path": "gnome-os-x13s/disk.iso",
+          "url": "https://download.tunaos.org/gnome-os-x13s/disk.iso",
+          "size": 3229528064,
+          "modified": "2026-03-27T13:19:14.240835865Z",
           "arch": "",
-          "latest": true
+          "latest": false
         }
       ]
     },
     {
-      "id": "tacklebox",
-      "label": "Tacklebox (multi-boot)",
-      "blurb": "Proof-of-concept multi-image bootc ISOs from the tacklebox orchestrator.",
-      "icon": "🧰",
-      "order": 5,
-      "checksums": "https://download.tunaos.org/tacklebox/SHA256SUMS-20260613-2e1e0c7",
+      "id": "other",
+      "label": "Other",
+      "blurb": "",
+      "icon": "📀",
+      "order": 99,
+      "checksums": null,
       "isos": [
         {
-          "category": "tacklebox",
-          "name": "tacklebox-poc-dedup-latest",
-          "path": "tacklebox/tacklebox-poc-dedup-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-latest.iso",
-          "size": 1400000000,
-          "modified": "2026-06-13T05:00:00Z",
-          "arch": "",
-          "latest": true
+          "category": "other",
+          "name": "albacore-amd64",
+          "path": "albacore-amd64.iso",
+          "url": "https://download.tunaos.org/albacore-amd64.iso",
+          "size": 5531164672,
+          "modified": "2025-11-02T03:07:53.272714604Z",
+          "arch": "x86_64",
+          "latest": false
         },
         {
-          "category": "tacklebox",
-          "name": "tacklebox-poc-perenv-latest",
-          "path": "tacklebox/tacklebox-poc-perenv-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-latest.iso",
-          "size": 2300000000,
-          "modified": "2026-06-13T05:00:00Z",
-          "arch": "",
-          "latest": true
+          "category": "other",
+          "name": "albacore-amd64-v2",
+          "path": "albacore-amd64-v2.iso",
+          "url": "https://download.tunaos.org/albacore-amd64-v2.iso",
+          "size": 4562198528,
+          "modified": "2025-11-02T03:04:29.133128398Z",
+          "arch": "x86_64-v2",
+          "latest": false
+        },
+        {
+          "category": "other",
+          "name": "yellowfin-amd64-v2",
+          "path": "yellowfin-amd64-v2.iso",
+          "url": "https://download.tunaos.org/yellowfin-amd64-v2.iso",
+          "size": 4747096064,
+          "modified": "2025-11-02T03:04:23.086798474Z",
+          "arch": "x86_64-v2",
+          "latest": false
+        },
+        {
+          "category": "other",
+          "name": "yellowfin-amd64",
+          "path": "yellowfin-amd64.iso",
+          "url": "https://download.tunaos.org/yellowfin-amd64.iso",
+          "size": 4846526464,
+          "modified": "2025-11-02T03:00:04.375550798Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "other",
+          "name": "albacore-arm64",
+          "path": "albacore-arm64.iso",
+          "url": "https://download.tunaos.org/albacore-arm64.iso",
+          "size": 5129863168,
+          "modified": "2025-11-02T02:57:08.163950932Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "other",
+          "name": "yellowfin-arm64",
+          "path": "yellowfin-arm64.iso",
+          "url": "https://download.tunaos.org/yellowfin-arm64.iso",
+          "size": 4435111936,
+          "modified": "2025-11-02T02:56:59.889610658Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "other",
+          "name": "albacore-gdx-amd64-v2",
+          "path": "albacore-gdx-amd64-v2.iso",
+          "url": "https://download.tunaos.org/albacore-gdx-amd64-v2.iso",
+          "size": 9857515520,
+          "modified": "2025-09-17T04:49:02.279374943Z",
+          "arch": "x86_64-v2",
+          "latest": false
+        },
+        {
+          "category": "other",
+          "name": "albacore-dx-amd64-v2",
+          "path": "albacore-dx-amd64-v2.iso",
+          "url": "https://download.tunaos.org/albacore-dx-amd64-v2.iso",
+          "size": 6276763648,
+          "modified": "2025-09-17T04:45:22.477996353Z",
+          "arch": "x86_64-v2",
+          "latest": false
+        },
+        {
+          "category": "other",
+          "name": "yellowfin-gdx-amd64-v2",
+          "path": "yellowfin-gdx-amd64-v2.iso",
+          "url": "https://download.tunaos.org/yellowfin-gdx-amd64-v2.iso",
+          "size": 5656500224,
+          "modified": "2025-09-17T04:45:16.979280367Z",
+          "arch": "x86_64-v2",
+          "latest": false
+        },
+        {
+          "category": "other",
+          "name": "yellowfin-dx-amd64-v2",
+          "path": "yellowfin-dx-amd64-v2.iso",
+          "url": "https://download.tunaos.org/yellowfin-dx-amd64-v2.iso",
+          "size": 5642852352,
+          "modified": "2025-09-17T04:42:39.217552182Z",
+          "arch": "x86_64-v2",
+          "latest": false
+        },
+        {
+          "category": "other",
+          "name": "albacore-gdx-amd64",
+          "path": "albacore-gdx-amd64.iso",
+          "url": "https://download.tunaos.org/albacore-gdx-amd64.iso",
+          "size": 9410699264,
+          "modified": "2025-09-13T03:15:54.389018580Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "other",
+          "name": "albacore-dx-amd64",
+          "path": "albacore-dx-amd64.iso",
+          "url": "https://download.tunaos.org/albacore-dx-amd64.iso",
+          "size": 5731786752,
+          "modified": "2025-09-13T03:11:08.927315998Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "other",
+          "name": "yellowfin-gdx-amd64",
+          "path": "yellowfin-gdx-amd64.iso",
+          "url": "https://download.tunaos.org/yellowfin-gdx-amd64.iso",
+          "size": 5129267200,
+          "modified": "2025-09-13T03:09:12.343473337Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "other",
+          "name": "yellowfin-dx-amd64",
+          "path": "yellowfin-dx-amd64.iso",
+          "url": "https://download.tunaos.org/yellowfin-dx-amd64.iso",
+          "size": 5114148864,
+          "modified": "2025-09-13T03:08:19.982864372Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "other",
+          "name": "albacore-gdx-arm64",
+          "path": "albacore-gdx-arm64.iso",
+          "url": "https://download.tunaos.org/albacore-gdx-arm64.iso",
+          "size": 8585009152,
+          "modified": "2025-09-13T03:06:25.677267953Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "other",
+          "name": "yellowfin-gdx-arm64",
+          "path": "yellowfin-gdx-arm64.iso",
+          "url": "https://download.tunaos.org/yellowfin-gdx-arm64.iso",
+          "size": 4345569280,
+          "modified": "2025-09-13T03:03:50.400169421Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "other",
+          "name": "yellowfin-dx-arm64",
+          "path": "yellowfin-dx-arm64.iso",
+          "url": "https://download.tunaos.org/yellowfin-dx-arm64.iso",
+          "size": 4333748224,
+          "modified": "2025-09-13T03:02:47.636226838Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "other",
+          "name": "albacore-dx-arm64",
+          "path": "albacore-dx-arm64.iso",
+          "url": "https://download.tunaos.org/albacore-dx-arm64.iso",
+          "size": 4979458048,
+          "modified": "2025-09-13T03:02:05.578623661Z",
+          "arch": "aarch64",
+          "latest": false
         }
       ]
     }
