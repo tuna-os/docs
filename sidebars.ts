@@ -53,8 +53,6 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-    {
-      type: 'category',
       label: 'Tromsø',
       collapsible: false,
       link: {type: 'doc', id: 'tromso/index'},
