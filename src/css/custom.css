@@ -80,3 +80,10 @@
   font-size: 0.7rem;
   opacity: 0.6;
 }
+
+.sidebar-external::after {
+  content: "↗";
+  margin-left: 0.4rem;
+  font-size: 0.7rem;
+  opacity: 0.5;
+}

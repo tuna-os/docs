@@ -14,16 +14,24 @@ function Hero({project}: {project: Project}): ReactNode {
     ['--p-accent2' as string]: project.accent2,
   };
   return (
-    <header className={styles.hero} style={style}>
-      <div className={clsx('container', styles.heroInner)}>
-        <div className={styles.heroEmoji}>
-          <AnimatedEmoji emoji={project.emoji} size={92} />
+    <header className={clsx(styles.hero, project.heroEmojiLarge && styles.heroLargeEmoji)} style={style}>
+      {project.heroEmojiLarge && (
+        <div className={styles.heroBgEmoji} aria-hidden>
+          <AnimatedEmoji emoji={project.emoji} size={420} />
         </div>
+      )}
+      <div className={clsx('container', styles.heroInner)}>
+        {!project.heroEmojiLarge && (
+          <div className={styles.heroEmoji}>
+            <AnimatedEmoji emoji={project.emoji} size={92} />
+          </div>
+        )}
         <div className={styles.heroTitleRow}>
           <Heading as="h1" className={styles.heroTitle}>{project.name}</Heading>
           <span className={clsx(styles.status, styles[`status-${project.status}`])}>
             {STATUS_LABELS[project.status]}
           </span>
+          {project.external && <span className={styles.externalBadge}>External</span>}
         </div>
         <p className={styles.heroTagline}>{project.tagline}</p>
         <p className={styles.heroLede}>{project.lede}</p>
@@ -45,14 +53,22 @@ function Hero({project}: {project: Project}): ReactNode {
               {project.cta.label}
             </Link>
           )}
-          <Link
-            className={clsx('button button--lg', project.cta ? styles.btnGhost : styles.btnPrimary)}
-            to={project.docs}>
-            Documentation 📖
-          </Link>
-          <a className={clsx('button button--lg', styles.btnGhost)} href={project.repo}>
-            GitHub 💻
-          </a>
+          {project.docs && (
+            <Link
+              className={clsx('button button--lg', project.cta ? styles.btnGhost : styles.btnPrimary)}
+              to={project.docs}>
+              Documentation 📖
+            </Link>
+          )}
+          {project.external ? (
+            <a className={clsx('button button--lg', project.cta || project.docs ? styles.btnGhost : styles.btnPrimary)} href={project.externalLink || project.repo}>
+              View on GitHub 💻
+            </a>
+          ) : (
+            <a className={clsx('button button--lg', styles.btnGhost)} href={project.repo}>
+              GitHub 💻
+            </a>
+          )}
         </div>
       </div>
     </header>
@@ -173,7 +189,7 @@ function BuildStreamFamily({project}: {project: Project}): ReactNode {
 }
 
 function MoreProjects({project}: {project: Project}): ReactNode {
-  const others = PROJECTS.filter((p) => p.id !== project.id);
+  const others = PROJECTS.filter((p) => p.id !== project.id && !p.external);
   return (
     <section className={clsx(styles.section, styles.sectionAlt)}>
       <div className="container">

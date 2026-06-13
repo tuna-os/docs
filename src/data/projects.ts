@@ -31,6 +31,11 @@ export type Project = {
   // Built with BuildStream from source (vs. the bootc/Containerfile images).
   // Flags the project as part of the BuildStream desktop family below.
   buildstream?: boolean;
+  // External project (not in tuna-os org).
+  external?: boolean;
+  externalLink?: string;
+  // Use the project emoji as a large animated background in the hero.
+  heroEmojiLarge?: boolean;
 };
 
 export const STATUS_LABELS: Record<ProjectStatus, string> = {
@@ -102,6 +107,7 @@ export const PROJECTS: Project[] = [
       "A freedesktop.org and KDE Plasma image, designed from the ground up to bring Aurora's visual identity to KDE. Built from the best OS tech from the CNCF, Apache Foundation, and the freedesktop.org community — BuildStream pipelines, bootc delivery, and a fully Wayland Plasma 6 desktop. This is what KDE looks like when you build it from source.",
     accent: '#0c0032',
     accent2: '#6366f1',
+    heroEmojiLarge: true,
     repo: 'https://github.com/tuna-os/tromso',
     docs: '/docs/tromso',
     buildstream: true,
@@ -225,6 +231,44 @@ export const PROJECTS: Project[] = [
     install: [
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/xfce-linux.git\ncd xfce-linux\njust build'},
       {label: 'Rebase an existing bootc system', code: 'sudo bootc switch ghcr.io/tuna-os/xfce-linux:latest'},
+    ],
+  },
+  {
+    id: 'hawaii',
+    emoji: '🌺',
+    name: 'Zirconium Hawaii',
+    status: 'experimental',
+    tagline: 'Zirconium, rebuilt on freedesktop-sdk. Closer to the source.',
+    lede:
+      "Zirconium Hawaii is an experiment — initially Niri OS — that turned into a real project. It builds its own components from source on freedesktop-sdk with BuildStream, 100% reproducible. The closest comparison is GNOME OS, which is the project's biggest inspiration — same build system, shared components, different desktop.",
+    accent: '#14532d',
+    accent2: '#22c55e',
+    repo: 'https://github.com/zirconium-linux/hawaii',
+    docs: '',
+    external: true,
+    externalLink: 'https://github.com/zirconium-linux/hawaii',
+    buildstream: true,
+    stats: [
+      {label: 'Desktop', value: 'Niri (Wayland)'},
+      {label: 'Built with', value: 'BuildStream'},
+      {label: 'Base', value: 'freedesktop-sdk'},
+      {label: 'Inspired by', value: 'GNOME OS'},
+    ],
+    highlights: [
+      {title: 'Niri compositor', text: 'A scrollable-tiling Wayland compositor — keyboard-driven, no stacking, no overlap. A different kind of desktop.'},
+      {title: 'Freedesktop SDK', text: 'Same battle-tested libraries as Flathub and GNOME OS. Continuously upgraded, always up to date.'},
+      {title: '100% reproducible', text: 'BuildStream pipelines with pinned revisions. Every package, every dependency — built from source, verifiable, auditable.'},
+      {title: 'Closer to the source', text: 'Builds its own components rather than repackaging a distribution. If it ships, it was built here — not borrowed from Fedora or any downstream.'},
+      {title: 'GNOME OS family', text: 'Shares build infrastructure with GNOME OS — gnome-build-meta patterns, BuildStream, and freedesktop-sdk. Different desktop, same foundation.'},
+    ],
+    features: [
+      {emoji: '📜', title: 'Niri compositor', text: 'Scrollable-tiling Wayland compositor. No floating windows, no overlap — just an infinite horizontal workspace.'},
+      {emoji: '🧱', title: 'Built from source', text: 'Every component in the stack is built from source with BuildStream. No binary packages from any distribution.'},
+      {emoji: '🔁', title: 'Reproducible', text: 'Same inputs, same image — every time. BuildStream caches and verifies every build artifact.'},
+      {emoji: '🔄', title: 'Zirconium reborn', text: 'Zirconium, but on freedesktop-sdk instead of Fedora. Same spirit, different foundation — closer to GNOME OS.'},
+    ],
+    install: [
+      {label: 'Build from source', code: 'git clone https://github.com/zirconium-linux/hawaii.git\ncd hawaii\njust build'},
     ],
   },
   {

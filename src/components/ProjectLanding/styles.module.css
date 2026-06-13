@@ -9,6 +9,25 @@
   color: #fff;
   background: radial-gradient(120% 120% at 50% -10%, var(--p-accent2) 0%, var(--p-accent) 60%, #0b1220 100%);
 }
+
+.heroLargeEmoji {
+  padding: 6rem 1rem 4rem;
+}
+
+.heroBgEmoji {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0.15;
+  z-index: 0;
+}
+
+.heroBgEmoji img {
+  filter: blur(2px) brightness(1.2);
+}
 .heroInner { position: relative; z-index: 2; max-width: 820px; }
 .heroEmoji { filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.35)); }
 
@@ -180,4 +199,18 @@
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
+}
+
+.externalBadge {
+  display: inline-block;
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid var(--ifm-color-emphasis-400);
+  color: var(--ifm-color-emphasis-600);
+  vertical-align: middle;
+  margin-left: 0.4rem;
 }
