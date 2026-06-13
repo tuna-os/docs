@@ -227,10 +227,10 @@ export const PROJECTS: Project[] = [
     ],
     features: [
       {emoji: '🪶', title: 'XFCE on Wayland', text: 'A modern Wayland session with the classic XFCE desktop. Fast, familiar, and resource-light — ideal for older hardware or minimal setups.'},
-      {emoji: '🧱', title: 'Built on freedesktop-sdk', text: 'The same minimal Linux runtime used by GNOME OS and Tromsø. A shared, battle-tested foundation — not a one-off base image.'},
-      {emoji: '🔁', title: 'Reproducible from source', text: 'BuildStream pipelines give deterministic, cacheable builds. Every package, from the kernel to the panel plugins, is built from source with pinned revisions.'},
-      {emoji: '🐳', title: 'bootc OCI image', text: 'The output is a standard bootc image. Pull it, boot it, rebase onto it — same workflow as every other TunaOS image.'},
-      {emoji: '🌌', title: 'Shared family', text: "Tromsø and XFCE Linux are siblings — same build system, same base, different desktop. Fix the base once, both benefit."},
+      {emoji: '🧱', title: 'Built on freedesktop-sdk', text: 'The same <a href="https://gitlab.com/freedesktop-sdk/freedesktop-sdk" target="_blank">freedesktop-sdk</a> minimal Linux runtime used by <a href="https://os.gnome.org" target="_blank">GNOME OS</a> and <a href="/tromso">Tromsø</a>. A shared, battle-tested foundation — not a one-off base image.'},
+      {emoji: '🔁', title: 'Reproducible from source', text: '<a href="https://buildstream.build" target="_blank">BuildStream</a> pipelines give deterministic, cacheable builds. Every package, from the kernel to the panel plugins, is built from source with pinned revisions.'},
+      {emoji: '🐳', title: 'bootc OCI image', text: 'The output is a standard <a href="https://github.com/bootc-dev/bootc" target="_blank">bootc</a> image. Pull it, boot it, rebase onto it — same workflow as every other TunaOS image.'},
+      {emoji: '🌌', title: 'Shared family', text: '<a href="/tromso">Tromsø</a> and XFCE Linux are siblings — same build system, same base, different desktop. Fix the base once, both benefit.'},
     ],
     install: [
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/xfce-linux.git\ncd xfce-linux\njust build'},
