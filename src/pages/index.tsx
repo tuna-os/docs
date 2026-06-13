@@ -147,8 +147,6 @@ function ProjectsBand(): ReactNode {
   const featured = [
     {emoji: '🐟', name: 'TunaOS', desc: 'Desktop images', to: '/docs/tunaos'},
     {emoji: '🧰', name: 'Tacklebox', desc: 'ISO & USB builder', to: '/docs/tacklebox'},
-    {emoji: '💻', name: 'bootc-installer', desc: 'TUI installer', to: '/docs/bootc-installer'},
-    {emoji: '🎣', name: 'Dakota ISO', desc: 'Bluefin live ISO', to: '/docs/dakota'},
     {emoji: '🌋', name: 'Tromsø', desc: 'KDE Linux', to: '/docs/tromso'},
     {emoji: '🖥️', name: 'XFCE Linux', desc: 'XFCE desktop', to: '/docs/xfce-linux'},
     {emoji: '🍻', name: 'Tavern', desc: 'Homebrew GUI', to: '/docs/tavern'},

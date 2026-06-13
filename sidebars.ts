@@ -12,8 +12,6 @@ const sidebars: SidebarsConfig = {
     {type: 'category', label: 'Tacklebox', link: {type: 'doc', id: 'tacklebox/index'}, items: ['tacklebox/ARCHITECTURE', 'tacklebox/github-iso-setup', 'tacklebox/TODO']},
     {type: 'category', label: 'Tromsø', link: {type: 'doc', id: 'tromso/index'}, items: ['tromso/SPEC']},
     {type: 'category', label: 'COPR Builds', link: {type: 'doc', id: 'copr/index'}, items: ['copr/ARCHITECTURE']},
-    {type: 'doc', id: 'bootc-installer/index', label: 'bootc-installer'},
-    {type: 'doc', id: 'dakota/index', label: 'Dakota ISO'},
     {type: 'doc', id: 'xfce-linux/index', label: 'XFCE Linux', className: 'sidebar-alpha'},
     {type: 'category', label: 'Tavern', link: {type: 'doc', id: 'tavern/index'}, items: ['tavern/ROADMAP', 'tavern/CONTRIBUTING']},
     {type: 'category', label: 'bluefin-cli', link: {type: 'doc', id: 'bluefin-cli/index'}, items: ['bluefin-cli/ROADMAP']},

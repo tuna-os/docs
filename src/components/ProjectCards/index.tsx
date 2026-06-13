@@ -37,29 +37,6 @@ const PROJECTS: Project[] = [
     ],
   },
   {
-    name: 'bootc-installer',
-    slug: '/docs/bootc-installer',
-    icon: '💻',
-    description: 'Terminal UI installer for bootc-based systems. 11-step wizard — network, disk, encryption, SSH keys, and live progress.',
-    status: 'stable',
-    links: [
-      {label: 'Documentation', to: '/docs/bootc-installer'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/bootc-installer-tui'},
-    ],
-  },
-  {
-    name: 'Dakota ISO',
-    slug: '/docs/dakota',
-    icon: '🎣',
-    description: 'Bootable UEFI live ISO for Project Bluefin Dakota. Offline installation via tuna-installer with composefs and systemd-boot.',
-    status: 'stable',
-    links: [
-      {label: 'Documentation', to: '/docs/dakota'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/dakota-iso'},
-      {label: 'Download', to: 'https://download.tunaos.org/dakota/dakota-live-latest.iso'},
-    ],
-  },
-  {
     name: 'Tromsø',
     slug: '/docs/tromso',
     icon: '🌋',
