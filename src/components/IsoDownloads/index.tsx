@@ -53,7 +53,18 @@ function prettyName(iso: Iso): string {
   if (iso.latest) {
     return base
       .split('-')
-      .map((p) => (p.toLowerCase() === 'gnome' ? 'GNOME' : p.toLowerCase() === 'kde' ? 'KDE' : p.charAt(0).toUpperCase() + p.slice(1)))
+      .map((p) => {
+        const l = p.toLowerCase();
+        if (l === 'gnome') return 'GNOME';
+        if (l === 'kde') return 'KDE';
+        if (l === 'niri') return 'Niri';
+        if (l === 'cosmic') return 'COSMIC';
+        if (l === 'gdx') return 'NVIDIA'; // renamed
+        if (l === 'nvidia') return 'NVIDIA';
+        if (l === 'hwe') return 'HWE';
+        if (l === 'gnome50') return 'GNOME 50';
+        return p.charAt(0).toUpperCase() + p.slice(1);
+      })
       .join(' · ');
   }
   return iso.name;
@@ -78,10 +89,49 @@ function IsoRow({iso}: {iso: Iso}): ReactNode {
   );
 }
 
+function groupByVariant(isos: Iso[]): Record<string, Iso[]> {
+  const groups: Record<string, Iso[]> = {};
+  for (const iso of isos) {
+    // Extract variant prefix: first segment before '-' (e.g. albacore, yellowfin)
+    const variant = iso.name.split('-')[0].toLowerCase();
+    if (!groups[variant]) groups[variant] = [];
+    groups[variant].push(iso);
+  }
+  return groups;
+}
+
+function VariantSection({name, isos}: {name: string; isos: Iso[]}) {
+  const [open, setOpen] = useState(true);
+  const label = name.charAt(0).toUpperCase() + name.slice(1);
+  return (
+    <div className={styles.variantSection}>
+      <button
+        className={styles.variantToggle}
+        onClick={() => setOpen((v) => !v)}
+        type="button"
+        aria-expanded={open}
+      >
+        <span>{open ? '▾' : '▸'}</span> {label} <span className={styles.variantCount}>({isos.length})</span>
+      </button>
+      {open && (
+        <div className={styles.isoList}>
+          {isos.map((iso) => (
+            <IsoRow key={iso.path} iso={iso} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function CategoryCard({cat}: {cat: Category}): ReactNode {
   const latest = cat.isos.filter((i) => i.latest);
   const archives = cat.isos.filter((i) => !i.latest);
   const [showArchive, setShowArchive] = useState(false);
+
+  // Group latest ISOs by variant prefix (e.g. albacore, yellowfin)
+  const groups = groupByVariant(latest.length ? latest : []);
+  const hasGroups = Object.keys(groups).length > 1;
 
   return (
     <section className={styles.card}>
@@ -94,9 +144,15 @@ function CategoryCard({cat}: {cat: Category}): ReactNode {
       </header>
 
       <div className={styles.isoList}>
-        {(latest.length ? latest : cat.isos).map((iso) => (
-          <IsoRow key={iso.path} iso={iso} />
-        ))}
+        {hasGroups ? (
+          Object.entries(groups).map(([variant, isos]) => (
+            <VariantSection key={variant} name={variant} isos={isos} />
+          ))
+        ) : (
+          (latest.length ? latest : []).map((iso) => (
+            <IsoRow key={iso.path} iso={iso} />
+          ))
+        )}
       </div>
 
       {archives.length > 0 && latest.length > 0 && (
@@ -169,12 +225,14 @@ export default function IsoDownloads(): ReactNode {
   return (
     <div>
       <div className={styles.grid}>
-        {index.categories.map((cat) => (
+        {index.categories
+          .filter((cat) => cat.isos.some((i) => i.latest))
+          .map((cat) => (
           <CategoryCard key={cat.id} cat={cat} />
         ))}
       </div>
       <p className={styles.generated}>
-        {index.count} images · refreshed {formatDate(index.generatedAt)} from{' '}
+        {index.categories.reduce((n, c) => n + c.isos.filter((i) => i.latest).length, 0)} latest images · refreshed {formatDate(index.generatedAt)} from{' '}
         <a href={index.baseUrl}>download.tunaos.org</a>
       </p>
     </div>

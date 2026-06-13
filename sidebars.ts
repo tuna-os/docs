@@ -28,6 +28,9 @@ const sidebars: SidebarsConfig = {
     {type: 'category', label: 'XFCE Linux', className: 'sidebar-alpha', link: {type: 'doc', id: 'xfce-linux/index'}, items: ['xfce-linux/README', 'xfce-linux/PROJECT_STATUS', 'xfce-linux/CONTRIBUTING']},
     {type: 'category', label: 'Tavern', link: {type: 'doc', id: 'tavern/index'}, items: ['tavern/ROADMAP', 'tavern/CONTRIBUTING']},
     {type: 'category', label: 'bluefin-cli', link: {type: 'doc', id: 'bluefin-cli/index'}, items: ['bluefin-cli/ROADMAP']},
+    {type: 'html', value: '<div class="sidebar-section-label">Community</div>', defaultStyle: true},
+    {type: 'doc', id: 'hawaii/index', label: 'Zirconium Hawaii', className: 'sidebar-external'},
+    {type: 'doc', id: 'dakota/index', label: 'Dakota (Bluefin)', className: 'sidebar-external'},
   ],
 };
 

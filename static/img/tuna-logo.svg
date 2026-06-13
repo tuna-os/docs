@@ -1,4 +1,37 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
-  <circle cx="50" cy="50" r="45" fill="#0F4C75" stroke="#3282B8" stroke-width="2"/>
-  <text x="50" y="65" font-family="system-ui, -apple-system, sans-serif" font-size="40" text-anchor="middle" fill="white">🐟</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="fishGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="tailGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e40af;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Body -->
+  <ellipse cx="52" cy="60" rx="38" ry="22" fill="url(#fishGrad)" />
+
+  <!-- Tail -->
+  <path d="M85 48 L110 28 L105 60 L110 92 L85 72 Z" fill="url(#tailGrad)" />
+
+  <!-- Dorsal fin -->
+  <path d="M35 38 Q50 15 65 40" fill="#2563eb" opacity="0.8" />
+
+  <!-- Pectoral fin -->
+  <path d="M45 74 Q55 90 38 84" fill="#2563eb" opacity="0.6" />
+
+  <!-- Eye -->
+  <circle cx="30" cy="56" r="4" fill="white" />
+  <circle cx="30" cy="56" r="2" fill="#0f172a" />
+
+  <!-- Mouth -->
+  <path d="M16 62 Q20 58 26 60" stroke="#93c5fd" stroke-width="1.5" fill="none" stroke-linecap="round" />
+
+  <!-- Gill line -->
+  <path d="M36 42 Q40 60 36 78" stroke="#1e3a8a" stroke-width="1" fill="none" opacity="0.4" />
+
+  <!-- Lateral line -->
+  <path d="M40 60 Q55 54 75 60" stroke="#93c5fd" stroke-width="0.8" fill="none" opacity="0.3" />
 </svg>

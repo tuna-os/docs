@@ -14,16 +14,26 @@ function Hero({project}: {project: Project}): ReactNode {
     ['--p-accent2' as string]: project.accent2,
   };
   return (
-    <header className={styles.hero} style={style}>
-      <div className={clsx('container', styles.heroInner)}>
-        <div className={styles.heroEmoji}>
-          <AnimatedEmoji emoji={project.emoji} size={92} />
+    <header className={clsx(styles.hero, project.heroEmojiLarge && styles.heroLargeEmoji)} style={style}>
+      {project.heroEmojiLarge && (
+        <div className={styles.heroBgEmoji} aria-hidden>
+          <AnimatedEmoji emoji={project.emoji} size={420} speed={0.4} />
         </div>
+      )}
+      <div className={clsx('container', styles.heroInner)}>
+        {project.logo ? (
+          <img src={project.logo} alt={project.name} className={clsx(styles.heroLogo, project.logoLight && styles.heroLogoLight)} />
+        ) : !project.heroEmojiLarge ? (
+          <div className={styles.heroEmoji}>
+            <AnimatedEmoji emoji={project.emoji} size={92} />
+          </div>
+        ) : null}
         <div className={styles.heroTitleRow}>
           <Heading as="h1" className={styles.heroTitle}>{project.name}</Heading>
           <span className={clsx(styles.status, styles[`status-${project.status}`])}>
             {STATUS_LABELS[project.status]}
           </span>
+          {project.external && <span className={styles.externalBadge}>External</span>}
         </div>
         <p className={styles.heroTagline}>{project.tagline}</p>
         <p className={styles.heroLede}>{project.lede}</p>
@@ -45,14 +55,22 @@ function Hero({project}: {project: Project}): ReactNode {
               {project.cta.label}
             </Link>
           )}
-          <Link
-            className={clsx('button button--lg', project.cta ? styles.btnGhost : styles.btnPrimary)}
-            to={project.docs}>
-            Documentation 📖
-          </Link>
-          <a className={clsx('button button--lg', styles.btnGhost)} href={project.repo}>
-            GitHub 💻
-          </a>
+          {project.docs && (
+            <Link
+              className={clsx('button button--lg', project.cta ? styles.btnGhost : styles.btnPrimary)}
+              to={project.docs}>
+              Documentation 📖
+            </Link>
+          )}
+          {project.external ? (
+            <a className={clsx('button button--lg', project.cta || project.docs ? styles.btnGhost : styles.btnPrimary)} href={project.externalLink || project.repo}>
+              View on GitHub 💻
+            </a>
+          ) : (
+            <a className={clsx('button button--lg', styles.btnGhost)} href={project.repo}>
+              GitHub 💻
+            </a>
+          )}
         </div>
       </div>
     </header>
@@ -80,6 +98,27 @@ function Screenshots({project}: {project: Project}): ReactNode {
   );
 }
 
+function Highlights({project}: {project: Project}): ReactNode {
+  if (!project.highlights?.length) return null;
+  return (
+    <section className={styles.section}>
+      <div className="container">
+        <div className={styles.highlightGrid}>
+          {project.highlights.map((h) => (
+            <div key={h.title} className={styles.highlightCard}>
+              <Heading as="h3" className={styles.highlightTitle}>{h.title}</Heading>
+              <p className={styles.highlightText} dangerouslySetInnerHTML={{__html: h.text}} />
+            </div>
+          ))}
+        </div>
+        <div className={styles.alphaNote}>
+          <span>⚠️</span> Alpha. Take appropriate precautions.
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Features({project}: {project: Project}): ReactNode {
   return (
     <section className={clsx(styles.section, styles.sectionAlt)}>
@@ -92,7 +131,7 @@ function Features({project}: {project: Project}): ReactNode {
             <div key={f.title} className={styles.featCard}>
               <span className={styles.featEmoji}><AnimatedEmoji emoji={f.emoji} size={30} /></span>
               <Heading as="h3" className={styles.featTitle}>{f.title}</Heading>
-              <p className={styles.featText}>{f.text}</p>
+              <p className={styles.featText} dangerouslySetInnerHTML={{__html: f.text}} />
             </div>
           ))}
         </div>
@@ -124,26 +163,31 @@ function Install({project}: {project: Project}): ReactNode {
 
 function BuildStreamFamily({project}: {project: Project}): ReactNode {
   if (!project.buildstream) return null;
+  const siblings = BUILDSTREAM_UPSTREAMS.filter((u) => u.name !== project.name);
   return (
     <section className={styles.section}>
       <div className="container">
         <div className={styles.sectionHead}>
           <Heading as="h2">Part of the BuildStream desktop family</Heading>
           <p>
-            {project.name} is built with BuildStream — an Aurora-style layer on a vanilla
-            desktop base, the same model as Project Bluefin's Dakota (GNOME). It sits
-            alongside these sibling BuildStream desktop layers:
+            {project.name} is built with{' '}
+            <a href="https://buildstream.build" target="_blank">BuildStream</a> on{' '}
+            <a href="https://gitlab.com/freedesktop-sdk/freedesktop-sdk" target="_blank">freedesktop-sdk</a> —
+            the same foundation as GNOME OS. These sibling projects share the same
+            build system and base:
           </p>
         </div>
         <div className={styles.otherGrid}>
-          {BUILDSTREAM_UPSTREAMS.map((u) => (
-            <a key={u.url} href={u.url} className={styles.otherCard}>
-              <span className={styles.bsDesktop}>{u.desktop}</span>
+          {siblings.map((u) => (
+            <Link key={u.url} to={u.url} className={styles.otherCard}>
+              <span className={styles.otherEmoji}>
+                <AnimatedEmoji emoji={u.emoji} size={30} />
+              </span>
               <span>
-                <strong className={styles.otherName}>{u.name} ↗</strong>
+                <strong className={styles.otherName}>{u.name}</strong>
                 <span className={styles.otherTagline}>{u.note}</span>
               </span>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
@@ -152,7 +196,7 @@ function BuildStreamFamily({project}: {project: Project}): ReactNode {
 }
 
 function MoreProjects({project}: {project: Project}): ReactNode {
-  const others = PROJECTS.filter((p) => p.id !== project.id);
+  const others = PROJECTS.filter((p) => p.id !== project.id && !p.external);
   return (
     <section className={clsx(styles.section, styles.sectionAlt)}>
       <div className="container">
@@ -184,7 +228,8 @@ export default function ProjectLanding({project}: {project: Project}): ReactNode
   return (
     <Layout title={project.name} description={project.tagline}>
       <Hero project={project} />
-      <main>
+      <main className={project.id === 'tromso' ? 'aurora-page' : undefined}>
+        <Highlights project={project} />
         <Screenshots project={project} />
         <Features project={project} />
         <Install project={project} />

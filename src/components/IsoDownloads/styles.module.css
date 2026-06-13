@@ -162,6 +162,37 @@
   color: var(--ifm-color-emphasis-600);
 }
 
+/* ── Nested variant grouping ── */
+.variantSection {
+  margin-bottom: 0.5rem;
+}
+
+.variantToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
+  cursor: pointer;
+  text-align: left;
+}
+
+.variantToggle:hover {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.variantCount {
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: var(--ifm-color-emphasis-600);
+}
+
 .loading,
 .fallback {
   display: flex;

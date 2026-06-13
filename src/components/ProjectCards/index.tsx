@@ -39,7 +39,7 @@ const PROJECTS: Project[] = [
   {
     name: 'Tromsø',
     slug: '/tromso',
-    icon: '🌋',
+    icon: '🌌',
     description: 'A BuildStream-based KDE Linux distribution. Builds desktop OS images from source with reproducible pipelines.',
     status: 'alpha',
     links: [

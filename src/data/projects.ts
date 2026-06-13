@@ -7,6 +7,7 @@ export type ProjectStatus = 'stable' | 'beta' | 'alpha' | 'experimental' | 'inte
 export type PFeature = {emoji: string; title: string; text: string};
 export type PInstall = {label: string; code: string};
 export type PShot = {src: string; alt: string};
+export type PHighlight = {title: string; text: string};
 
 export type Project = {
   id: string; // route slug (/<id>) + docs slug (/docs/<id>)
@@ -25,9 +26,20 @@ export type Project = {
   features: PFeature[];
   install?: PInstall[];
   screenshots?: PShot[];
+  // Dakota-style intro highlights (bold title + description cards).
+  highlights?: PHighlight[];
   // Built with BuildStream from source (vs. the bootc/Containerfile images).
   // Flags the project as part of the BuildStream desktop family below.
   buildstream?: boolean;
+  // External project (not in tuna-os org).
+  external?: boolean;
+  externalLink?: string;
+  // Use the project emoji as a large animated background in the hero.
+  heroEmojiLarge?: boolean;
+  // Custom logo URL (rendered instead of emoji in hero).
+  logo?: string;
+  // If true, the logo is already light-colored — skip the invert filter.
+  logoLight?: boolean;
 };
 
 export const STATUS_LABELS: Record<ProjectStatus, string> = {
@@ -42,18 +54,27 @@ export const STATUS_LABELS: Record<ProjectStatus, string> = {
 // layer customizations on top of a vanilla desktop base (GNOME OS /
 // gnome-build-meta, KDE Linux / kde-build-meta, etc.). Tromsø is the KDE member
 // of this family; these are its GNOME and Niri counterparts.
-export const BUILDSTREAM_UPSTREAMS: {desktop: string; name: string; url: string; note: string}[] = [
+export const BUILDSTREAM_UPSTREAMS: {desktop: string; emoji: string; name: string; url: string; note: string}[] = [
   {
-    desktop: 'GNOME',
-    name: 'Dakota (Project Bluefin)',
-    url: 'https://projectbluefin.io/dakota/',
-    note: 'Project Bluefin’s BuildStream layer on GNOME OS — the reference Tromsø is modeled on.',
+    desktop: 'KDE',
+    emoji: '🌌',
+    name: 'Tromsø',
+    url: '/tromso',
+    note: 'Aurora KDE Plasma 6 — built from source on freedesktop-sdk.',
+  },
+  {
+    desktop: 'XFCE',
+    emoji: '🖥️',
+    name: 'XFCE Linux',
+    url: '/xfce-linux',
+    note: 'Lightweight XFCE Wayland on the same freedesktop-sdk base.',
   },
   {
     desktop: 'Niri',
-    name: 'zirconium-hawaii',
-    url: 'https://github.com/zirconium-dev/zirconium-hawaii/tree/stable',
-    note: 'Opinionated Niri bootc image built on freedesktop-sdk (a.k.a. Niri OS).',
+    emoji: '🌺',
+    name: 'Zirconium Hawaii',
+    url: '/hawaii',
+    note: 'Niri compositor on freedesktop-sdk — 100% reproducible from source.',
   },
 ];
 
@@ -91,31 +112,42 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'tromso',
-    emoji: '🌋',
+    emoji: '🌌',
     name: 'Tromsø',
     status: 'alpha',
-    tagline: 'A BuildStream-based KDE Linux distribution, built from source with reproducible pipelines.',
+    tagline: 'Aurora on your desktop.',
     lede:
-      'Aurora Tromsø is a BuildStream-based KDE Linux OCI/bootc image, modeled on Project Bluefin’s dakota. It builds KDE Plasma 6 on top of freedesktop-sdk and publishes a bootable OCI image — and it boots to a working Plasma 6 Wayland desktop.',
-    accent: '#b91c1c',
-    accent2: '#f97316',
+      "A freedesktop.org and KDE Plasma image, designed from the ground up to bring Aurora's visual identity to KDE. Built from the best OS tech from the CNCF, Apache Foundation, and the freedesktop.org community — BuildStream pipelines, bootc delivery, and a fully Wayland Plasma 6 desktop. This is what KDE looks like when you build it from source.",
+    accent: '#0c0032',
+    accent2: '#6366f1',
+    heroEmojiLarge: true,
     repo: 'https://github.com/tuna-os/tromso',
     docs: '/docs/tromso',
     buildstream: true,
+    highlights: [
+      {title: 'KDE Plasma 6', text: 'The latest stable release of Plasma, <a href="https://kde.org/plasma-desktop" target="_blank">built from source</a> — no distribution middleman, no lag.'},
+      {title: 'Freedesktop SDK', text: 'Same battle-tested libraries as <a href="https://flathub.org" target="_blank">Flathub</a>. Continuously upgraded, always up to date.'},
+      {title: 'Modern Userspace', text: '<a href="https://github.com/bootc-dev/bootc" target="_blank">bootc</a>, systemd-boot, container-first, and legacy-free. Wayland from the ground up.'},
+      {title: 'Designed for Contributors', text: 'Your path to contributing to <a href="https://kde.org" target="_blank">KDE</a>, <a href="https://gitlab.com/freedesktop-sdk/freedesktop-sdk" target="_blank">freedesktop-sdk</a>, and the <a href="https://buildstream.build" target="_blank">BuildStream</a> ecosystem. Start here, level up, become part of upstream.'},
+      {title: 'BuildStream & BuildGrid', text: 'Hermetic sandbox builds with <a href="https://buildstream.build" target="_blank">distributed execution</a>, reproducible and fully auditable.'},
+    ],
     stats: [
       {label: 'Desktop', value: 'KDE Plasma 6'},
-      {label: 'Build', value: 'BuildStream'},
+      {label: 'Built with', value: 'BuildStream'},
       {label: 'Base', value: 'freedesktop-sdk'},
+      {label: 'Modeled on', value: 'GNOME OS'},
     ],
     features: [
-      {emoji: '🧩', title: 'Built from source', text: 'A complete KDE desktop assembled from ~170 BuildStream elements (Qt6, Frameworks, Plasma, apps).'},
-      {emoji: '🔁', title: 'Reproducible pipelines', text: 'BuildStream gives deterministic, cacheable builds — the same inputs always yield the same image.'},
-      {emoji: '🐳', title: 'OCI + bootc native', text: 'Publishes a bootable OCI image you can run, rebase onto, or turn into installable media.'},
-      {emoji: '🧱', title: 'Two-repo model', text: 'kde-build-meta builds the KDE base (like gnome-build-meta); Tromsø layers Aurora theming and apps on top.'},
+      {emoji: '🧱', title: 'Everything from source', text: 'Qt 6, KDE Frameworks, Plasma, and apps — ~170 BuildStream elements built on freedesktop-sdk, the same minimal Linux runtime that powers GNOME OS. No binary packages.'},
+      {emoji: '🔁', title: 'Reproducible by design', text: 'BuildStream caches every build artifact. Same inputs, same image — every time. No "works on my machine" drift between contributors.'},
+      {emoji: '🌌', title: 'Aurora-themed Plasma', text: "KDE Plasma 6 with Aurora's visual identity — not stock upstream, not a re-skin. A coherent desktop built to look like it belongs together."},
+      {emoji: '🐳', title: 'Native bootc image', text: 'The output is a standard bootc OCI image. Pull it, boot it, rebase onto it, or turn it into installable media with tacklebox.'},
+      {emoji: '🖥️', title: 'Shared family', text: 'Tromsø and XFCE Linux are siblings — same freedesktop-sdk base, same BuildStream pipeline, different desktop. Fix the base once, both benefit.'},
     ],
     install: [
-      {label: 'Build the image', code: 'git clone https://github.com/tuna-os/tromso.git\ncd tromso\njust build'},
-      {label: 'Boot a test VM', code: 'just generate-bootable-image\njust boot-vm'},
+      {label: 'Build from source', code: 'git clone https://github.com/tuna-os/tromso.git\ncd tromso\njust build'},
+      {label: 'Boot in a VM', code: 'just generate-bootable-image\njust boot-vm'},
+      {label: 'Rebase an existing bootc system', code: 'sudo bootc switch ghcr.io/tuna-os/tromso:latest'},
     ],
   },
   {
@@ -188,24 +220,97 @@ export const PROJECTS: Project[] = [
     emoji: '🖥️',
     name: 'XFCE Linux',
     status: 'alpha',
-    tagline: 'A lightweight XFCE Wayland desktop on an immutable bootc base, built with BuildStream.',
+    tagline: 'The lightweight one. XFCE Wayland on the same freedesktop-sdk base as Tromsø and GNOME OS.',
     lede:
-      'XFCE Linux is an XFCE Wayland OCI image built with BuildStream — a lightweight, fast desktop experience layered on an immutable, atomically-updated base. Early-stage and evolving.',
-    accent: '#475569',
+      "XFCE Linux shares its DNA with Tromsø — both are BuildStream images built on freedesktop-sdk, the same minimal Linux runtime that powers GNOME OS. The difference: where Tromsø layers KDE Plasma 6, XFCE Linux layers the XFCE desktop. Lightweight, fast, and fully Wayland.",
+    accent: '#1e3a5f',
     accent2: '#0ea5e9',
     repo: 'https://github.com/tuna-os/xfce-linux',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/5/5b/Xfce_logo.svg',
     docs: '/docs/xfce-linux',
     buildstream: true,
     stats: [
       {label: 'Desktop', value: 'XFCE (Wayland)'},
-      {label: 'Build', value: 'BuildStream'},
-      {label: 'Status', value: 'Alpha'},
+      {label: 'Built with', value: 'BuildStream'},
+      {label: 'Base', value: 'freedesktop-sdk'},
+      {label: 'Sibling', value: 'Tromsø (KDE)'},
     ],
     features: [
-      {emoji: '🪶', title: 'Lightweight', text: 'XFCE keeps the desktop fast and out of the way — ideal for older or resource-constrained hardware.'},
-      {emoji: '🌊', title: 'Wayland', text: 'A modern Wayland session rather than legacy X11.'},
-      {emoji: '🔄', title: 'Immutable + atomic', text: 'bootc image-based updates with clean rollbacks, like the rest of the TunaOS family.'},
-      {emoji: '🧩', title: 'BuildStream pipeline', text: 'Reproducible, cacheable builds from source.'},
+      {emoji: '🪶', title: 'XFCE on Wayland', text: 'A modern Wayland session with the classic XFCE desktop. Fast, familiar, and resource-light — ideal for older hardware or minimal setups.'},
+      {emoji: '🧱', title: 'Built on freedesktop-sdk', text: 'The same <a href="https://gitlab.com/freedesktop-sdk/freedesktop-sdk" target="_blank">freedesktop-sdk</a> minimal Linux runtime used by <a href="https://os.gnome.org" target="_blank">GNOME OS</a> and <a href="/tromso">Tromsø</a>. A shared, battle-tested foundation — not a one-off base image.'},
+      {emoji: '🔁', title: 'Reproducible from source', text: '<a href="https://buildstream.build" target="_blank">BuildStream</a> pipelines give deterministic, cacheable builds. Every package, from the kernel to the panel plugins, is built from source with pinned revisions.'},
+      {emoji: '🐳', title: 'bootc OCI image', text: 'The output is a standard <a href="https://github.com/bootc-dev/bootc" target="_blank">bootc</a> image. Pull it, boot it, rebase onto it — same workflow as every other TunaOS image.'},
+      {emoji: '🌌', title: 'Shared family', text: '<a href="/tromso">Tromsø</a> and XFCE Linux are siblings — same build system, same base, different desktop. Fix the base once, both benefit.'},
+    ],
+    install: [
+      {label: 'Build from source', code: 'git clone https://github.com/tuna-os/xfce-linux.git\ncd xfce-linux\njust build'},
+      {label: 'Rebase an existing bootc system', code: 'sudo bootc switch ghcr.io/tuna-os/xfce-linux:latest'},
+    ],
+  },
+  {
+    id: 'hawaii',
+    emoji: '🌺',
+    status: 'experimental',
+    tagline: 'Zirconium, rebuilt on freedesktop-sdk. Closer to the source.',
+    lede:
+      "Zirconium Hawaii is an experiment — initially Niri OS — that turned into a real project. It builds its own components from source on freedesktop-sdk with BuildStream, 100% reproducible. The closest comparison is GNOME OS, which is the project's biggest inspiration — same build system, shared components, different desktop.",
+    accent: '#14532d',
+    accent2: '#22c55e',
+    repo: 'https://github.com/zirconium-linux/hawaii',
+    docs: '',
+    external: true,
+    externalLink: 'https://github.com/zirconium-linux/hawaii',
+    logo: 'https://raw.githubusercontent.com/zirconium-dev/assets/bbcc598039cc9c48b631677ff3bd267217cf8509/logos/logo-z.svg',
+    buildstream: true,
+    stats: [
+      {label: 'Desktop', value: 'Niri (Wayland)'},
+      {label: 'Built with', value: 'BuildStream'},
+      {label: 'Base', value: 'freedesktop-sdk'},
+      {label: 'Inspired by', value: 'GNOME OS'},
+    ],
+    features: [
+      {emoji: '📜', title: 'Niri compositor', text: '<a href="https://github.com/YaLTeR/niri" target="_blank">Scrollable-tiling</a> Wayland compositor. No floating windows, no overlap — just an infinite horizontal workspace.'},
+      {emoji: '🧱', title: 'Built from source', text: 'Every component in the stack is built from source with <a href="https://buildstream.build" target="_blank">BuildStream</a>. No binary packages from any distribution.'},
+      {emoji: '🔁', title: 'Reproducible', text: 'Same inputs, same image — every time. <a href="https://buildstream.build" target="_blank">BuildStream</a> caches and verifies every build artifact.'},
+      {emoji: '🔄', title: 'Zirconium reborn', text: 'Zirconium, but on <a href="https://gitlab.com/freedesktop-sdk/freedesktop-sdk" target="_blank">freedesktop-sdk</a> instead of Fedora. Same spirit, different foundation — closer to <a href="https://os.gnome.org" target="_blank">GNOME OS</a>.'},
+    ],
+    install: [
+      {label: 'Build from source', code: 'git clone https://github.com/zirconium-linux/hawaii.git\ncd hawaii\njust build'},
+    ],
+  },
+  {
+    id: 'dakota',
+    emoji: '🎣',
+    name: 'Dakota',
+    status: 'beta',
+    tagline: 'The Final Form. Bluefin Perfected.',
+    lede:
+      "A freedesktop.org and GNOME OS image, designed from the ground up to be the most modern raptor in the pack. The familiar Bluefin desktop and developer experience in a whole new streamlined package — built from the best OS tech from the CNCF, Apache Foundation, and the UAPI Group.",
+    accent: '#0f172a',
+    accent2: '#3b82f6',
+    repo: 'https://github.com/projectbluefin/dakota',
+    docs: '',
+    external: true,
+    externalLink: 'https://github.com/projectbluefin/dakota',
+    logo: 'https://docs.projectbluefin.io/assets/images/01b99cdf-2b10-4be4-88bf-23da3a945be8-ea4ce28757013465dc1434aaa7a18742.png',
+    logoLight: true,
+    buildstream: true,
+    stats: [
+      {label: 'Desktop', value: 'GNOME'},
+      {label: 'Built with', value: 'BuildStream'},
+      {label: 'Base', value: 'freedesktop-sdk / GNOME OS'},
+    ],
+    highlights: [
+      {title: 'GNOME OS', text: 'The latest stable release of GNOME, no delays. Built from source on the same pipelines as <a href="https://os.gnome.org" target="_blank">GNOME OS</a> itself.'},
+      {title: 'Freedesktop SDK', text: 'Same battle-tested libraries as <a href="https://flathub.org" target="_blank">Flathub</a>. Continuously upgraded, always up to date.'},
+      {title: 'Modern Userspace', text: '<a href="https://github.com/bootc-dev/bootc" target="_blank">bootc</a>, brew, uutils, systemd-boot, container-first, and legacy-free.'},
+      {title: 'Designed for Contributors', text: 'Your path to contributing to some of the coolest projects in desktop Linux. Start here, then level up and become part of the upstream teams.'},
+      {title: 'BuildStream & BuildGrid', text: 'Hermetic sandbox builds with <a href="https://buildstream.build" target="_blank">distributed execution</a>, reproducible and fully auditable.'},
+    ],
+    features: [
+      {emoji: '🦖', title: 'GNOME on freedesktop-sdk', text: 'The reference BuildStream desktop — <a href="https://os.gnome.org" target="_blank">GNOME OS</a> patterns, Bluefin experience, built from source with <a href="https://buildstream.build" target="_blank">BuildStream</a>.'},
+      {emoji: '🔁', title: 'Built-in feedback loop', text: '<code>ujust report</code>, <code>ujust confirm</code>, <code>ujust verify</code> — structured hardware diagnostics that flow back to upstream.'},
+      {emoji: '🧱', title: 'Reproducible', text: '<a href="https://buildstream.build" target="_blank">BuildStream</a> pipelines. Same inputs, same image — every time. Fully auditable.'},
     ],
   },
   {

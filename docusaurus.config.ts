@@ -61,7 +61,7 @@ const config: Config = {
       items: [
         {
           type: 'dropdown',
-          label: 'Variants',
+          label: '🐟 Variants',
           position: 'left',
           items: [
             {to: '/albacore', label: '🐟 Albacore — AlmaLinux 10'},
@@ -71,13 +71,26 @@ const config: Config = {
           ],
         },
         {
-          to: '/projects',
-          label: 'Projects',
+          type: 'dropdown',
+          label: '🧰 Projects',
           position: 'left',
+          items: [
+            {to: '/tunaos', label: '🐟 TunaOS'},
+            {to: '/tacklebox', label: '🛠 Tacklebox'},
+            {to: '/tromso', label: '🌌 Tromsø'},
+            {to: '/xfce-linux', label: '🖥️ XFCE Linux'},
+            {to: '/tavern', label: '🍻 Tavern'},
+            {to: '/bluefin-cli', label: '⌨️ bluefin-cli'},
+            {to: '/copr', label: '⚙ COPR Builds'},
+            {type: 'html', value: '<hr style="margin:0.3rem 0;opacity:0.3">'},
+            {to: '/dakota', label: '🦖 Dakota ↗'},
+            {to: '/hawaii', label: '🌺 Zirconium Hawaii ↗'},
+            {to: '/projects', label: 'All projects →'},
+          ],
         },
         {
           to: '/download',
-          label: 'Download',
+          label: '📦 Download',
           position: 'left',
         },
         {
