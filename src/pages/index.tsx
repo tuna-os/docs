@@ -15,7 +15,7 @@ const VARIANTS = [
     name: 'Albacore',
     base: 'AlmaLinux 10',
     blurb: '10-year support cycle. The rock-solid daily driver for work.',
-    to: '/docs/albacore',
+    to: '/albacore',
     flagship: true,
   },
   {
@@ -23,21 +23,21 @@ const VARIANTS = [
     name: 'Yellowfin',
     base: 'AlmaLinux Kitten',
     blurb: 'Newer packages on a near-enterprise base. The developer pick.',
-    to: '/docs/yellowfin',
+    to: '/yellowfin',
   },
   {
     emoji: '🍣',
     name: 'Skipjack',
     base: 'CentOS Stream 10',
     blurb: 'Upstream-tracking — a preview of where Enterprise Linux is headed.',
-    to: '/docs/skipjack',
+    to: '/skipjack',
   },
   {
     emoji: '🎣',
     name: 'Bonito',
     base: 'Fedora 44',
     blurb: 'Bleeding-edge packages and the very latest kernel.',
-    to: '/docs/bonito',
+    to: '/bonito',
   },
 ];
 

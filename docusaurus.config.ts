@@ -60,6 +60,17 @@ const config: Config = {
       },
       items: [
         {
+          type: 'dropdown',
+          label: 'Variants',
+          position: 'left',
+          items: [
+            {to: '/albacore', label: '🐟 Albacore — AlmaLinux 10'},
+            {to: '/yellowfin', label: '🐠 Yellowfin — AlmaLinux Kitten'},
+            {to: '/skipjack', label: '🍣 Skipjack — CentOS Stream 10'},
+            {to: '/bonito', label: '🎣 Bonito — Fedora 44'},
+          ],
+        },
+        {
           to: '/projects',
           label: 'Projects',
           position: 'left',
@@ -107,19 +118,19 @@ const config: Config = {
           items: [
             {
               label: 'Albacore (AlmaLinux)',
-              to: 'docs/albacore',
+              to: '/albacore',
             },
             {
               label: 'Yellowfin (AlmaLinux Kitten)',
-              to: 'docs/yellowfin',
+              to: '/yellowfin',
             },
             {
               label: 'Bonito (Fedora)',
-              to: 'docs/bonito',
+              to: '/bonito',
             },
             {
               label: 'Skipjack (CentOS)',
-              to: 'docs/skipjack',
+              to: '/skipjack',
             },
           ],
         },
