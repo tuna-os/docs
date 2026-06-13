@@ -28,7 +28,7 @@ const PROJECTS: Project[] = [
   {
     name: 'Tacklebox',
     slug: '/docs/tacklebox',
-    icon: '🧰',
+    icon: '🛠',
     description: 'High-performance bootc orchestrator. Produces multi-boot USB drives, disk images, and deduplicated ISOs from OCI container images.',
     status: 'stable',
     links: [
@@ -73,7 +73,7 @@ const PROJECTS: Project[] = [
   {
     name: 'Ubuntu ISO',
     slug: '/docs/ubuntu',
-    icon: '🟠',
+    icon: '🦝',
     description: 'Ubuntu 26.04 Resolute Raccoon live installable ISO built with bootc. Traditional Ubuntu experience, immutable delivery.',
     status: 'stable',
     links: [
@@ -85,7 +85,7 @@ const PROJECTS: Project[] = [
   {
     name: 'Tromsø',
     slug: '/docs/tromso',
-    icon: '🏔️',
+    icon: '🌋',
     description: 'A BuildStream-based KDE Linux distribution. Builds desktop OS images from source with reproducible pipelines.',
     status: 'alpha',
     links: [
@@ -96,7 +96,7 @@ const PROJECTS: Project[] = [
   {
     name: 'Tromsø ISO',
     slug: '/docs/tromso-iso',
-    icon: '🏔️',
+    icon: '🌋',
     description: 'Live ISO builder for Tromsø KDE Linux. Produces bootable UEFI images with systemd-boot and tuna-installer.',
     status: 'alpha',
     links: [
@@ -151,7 +151,7 @@ const PROJECTS: Project[] = [
   {
     name: 'COPR Builds',
     slug: '/docs/copr',
-    icon: '🔧',
+    icon: '⚙',
     description: 'GitHub Actions-based RPM build system for TunaOS. Builds packages from COPR-like specs with Cloudflare R2 distribution.',
     status: 'internal',
     links: [
@@ -162,7 +162,7 @@ const PROJECTS: Project[] = [
   {
     name: 'Tavern',
     slug: '/docs/tavern',
-    icon: '🍺',
+    icon: '🍻',
     description: 'A modern, fast Homebrew client for Linux built with GTK 4 and Libadwaita. App Store experience for managing formulae and casks.',
     status: 'stable',
     links: [

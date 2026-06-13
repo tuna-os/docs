@@ -1,7 +1,6 @@
 ---
 sidebar_position: 1
 sidebar_label: "XFCE Linux"
-slug: /docs/xfce-linux
 status: alpha
 ---
 

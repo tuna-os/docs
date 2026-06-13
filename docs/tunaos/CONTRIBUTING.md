@@ -87,4 +87,4 @@ See [`docs/AGENT_GUIDE.md`](https://github.com/tuna-os/tunaOS/blob/main/docs/AGE
 
 ## License
 
-TunaOS is licensed under [Apache 2.0](LICENSE).
+TunaOS is licensed under [Apache 2.0](https://github.com/tuna-os/tunaOS/blob/main/LICENSE).

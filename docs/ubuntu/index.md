@@ -1,7 +1,6 @@
 ---
 sidebar_position: 1
 sidebar_label: "Ubuntu ISO"
-slug: /docs/ubuntu
 status: stable
 ---
 
