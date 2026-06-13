@@ -178,30 +178,30 @@ function main() {
         console.log(`  ✓ README.md → index.md`);
       }
 
-      // ── Additional root docs ──
-      const EXTRA = ['ARCHITECTURE', 'CONTRIBUTING', 'ROADMAP', 'TODO', 'SECURITY', 'SPEC'];
-      const rootFilter = ROOT_DOC_FILTER[repo] || null;
-      for (const file of readdirSync(dir).sort()) {
-        const upper = file.replace(/\.(md|rst)$/, '');
-        if (file === 'README.md') continue;
-        if (rootFilter !== null) {
-          // Use explicit allowlist
-          if (!rootFilter.includes(file)) continue;
-        } else {
-          // Default: only known doc files
-          if (!EXTRA.includes(upper)) continue;
-        }
-        let content = readFileSync(join(dir, file), 'utf8');
-        content = sanitizeHtml(content);
-        content = fixRelativeLinks(content, repo);
-        content = content.replace(/^# .*\n\n?/, '');
-        const title = upper.charAt(0) + upper.slice(1).toLowerCase();
-        content = subFrontmatter(title, localPos++) + content;
-        writeFileSync(join(targetDir, file), content);
-        console.log(`  ✓ ${file}`);
-      }
 
-      // ── docs/ folder (recursive) ──
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       const docsSubdir = DOCS_SUBDIR[repo] || 'docs';
       const docsDir = join(dir, docsSubdir);
       if (existsSync(docsDir) && readdirSync(docsDir).length > 0) {
