@@ -1,8 +1,7 @@
 ---
-sidebar_position: 4
+sidebar_position: 6
+title: "ci cd"
 ---
-
-# CI/CD Pipelines
 
 TunaOS uses GitHub Actions for automated building, testing, and distribution of container images and ISO artifacts.
 

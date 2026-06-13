@@ -1,8 +1,7 @@
 ---
-sidebar_position: 3
+sidebar_position: 8
+title: "live iso generation"
 ---
-
-# Live ISO Generation
 
 TunaOS generates bootable Live ISOs from its bootc container images using [tacklebox](https://github.com/tuna-os/tacklebox), a Go-based ISO and disk image builder.
 

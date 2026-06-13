@@ -1,0 +1,48 @@
+# Syncs READMEs and docs from every active project in the tuna-os GitHub
+# org into the Docusaurus site. Runs daily; opens a PR on changes.
+#
+# New repos with a README are automatically picked up — no per-project
+# config needed here (see scripts/sync-org-docs.mjs for the repo list).
+
+name: sync-org-docs
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'tuna-os/docs' }}
+    steps:
+      - uses: actions/checkout@3d147700e9102d63eab6c121c870aa6e0af9396b # v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@cd93095a6e160be2cc06e0158b140f5f8aa19670 # v4
+        with:
+          node-version: 20
+
+      - name: Sync docs from all tuna-os org repos
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/sync-org-docs.mjs
+
+      - name: Create PR if changed
+        uses: peter-evans/create-pull-request@67ccf781d68cd99b580ae25a5c18a1cc84ffff1f # v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: sync org-wide project docs'
+          title: 'chore: sync org-wide project docs'
+          body: |
+            Automated sync of READMEs and docs from all active
+            [tuna-os](https://github.com/tuna-os) repos.
+            Review for content accuracy before merging.
+          branch: automation/sync-org-docs
+          delete-branch: true
+          labels: documentation
