@@ -17,7 +17,7 @@ function Hero({project}: {project: Project}): ReactNode {
     <header className={clsx(styles.hero, project.heroEmojiLarge && styles.heroLargeEmoji)} style={style}>
       {project.heroEmojiLarge && (
         <div className={styles.heroBgEmoji} aria-hidden>
-          <AnimatedEmoji emoji={project.emoji} size={420} />
+          <AnimatedEmoji emoji={project.emoji} size={420} speed={0.4} />
         </div>
       )}
       <div className={clsx('container', styles.heroInner)}>
