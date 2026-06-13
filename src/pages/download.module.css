@@ -1,0 +1,71 @@
+.header {
+  background: linear-gradient(160deg, var(--tuna-dark-blue) 0%, #013a73 55%, var(--ifm-color-primary) 100%);
+  color: #fff;
+  padding: 3.5rem 0 3rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 0 0 0.75rem;
+}
+
+.subtitle {
+  max-width: 640px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  opacity: 0.92;
+}
+
+.subtitle a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.chooser {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 14px;
+  margin-bottom: 2.5rem;
+  overflow: hidden;
+  background: var(--ifm-background-surface-color);
+}
+
+.chooserToggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
+}
+
+.chooserToggle:hover {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.chooserChevron {
+  color: var(--ifm-color-primary);
+}
+
+.chooserBody {
+  padding: 0 1.25rem 1.5rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.help {
+  margin-top: 3.5rem;
+  padding: 2rem;
+  border-radius: 14px;
+  background: var(--ifm-color-emphasis-100);
+}
+
+.help pre {
+  margin: 0.75rem 0;
+}

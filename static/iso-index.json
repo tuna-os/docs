@@ -1,0 +1,157 @@
+{
+  "generatedAt": "2026-06-13T03:27:29.251Z",
+  "baseUrl": "https://download.tunaos.org",
+  "count": 10,
+  "categories": [
+    {
+      "id": "live-isos",
+      "label": "TunaOS Desktop",
+      "blurb": "Cloud-native Enterprise Linux desktops — the main TunaOS lineup.",
+      "icon": "🐟",
+      "order": 0,
+      "checksums": null,
+      "isos": [
+        {
+          "category": "live-isos",
+          "name": "bonito-cosmic-latest",
+          "path": "live-isos/bonito-cosmic-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-cosmic-latest.iso",
+          "size": 2700000000,
+          "modified": "2026-06-10T05:30:00Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome-latest",
+          "path": "live-isos/yellowfin-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso",
+          "size": 2550000000,
+          "modified": "2026-06-10T05:00:00Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-kde-latest",
+          "path": "live-isos/albacore-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-kde-latest.iso",
+          "size": 2620000000,
+          "modified": "2026-06-10T04:20:00Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-latest",
+          "path": "live-isos/albacore-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-latest.iso",
+          "size": 2516582400,
+          "modified": "2026-06-10T04:12:00Z",
+          "arch": "",
+          "latest": true
+        }
+      ]
+    },
+    {
+      "id": "dakota",
+      "label": "Dakota",
+      "blurb": "Project Bluefin Dakota live ISO — offline install via tuna-installer.",
+      "icon": "🎣",
+      "order": 1,
+      "checksums": null,
+      "isos": [
+        {
+          "category": "dakota",
+          "name": "dakota-live-latest",
+          "path": "dakota/dakota-live-latest.iso",
+          "url": "https://download.tunaos.org/dakota/dakota-live-latest.iso",
+          "size": 2890000000,
+          "modified": "2026-06-09T03:00:00Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "dakota",
+          "name": "dakota-live-20260609-abc1234",
+          "path": "dakota/dakota-live-20260609-abc1234.iso",
+          "url": "https://download.tunaos.org/dakota/dakota-live-20260609-abc1234.iso",
+          "size": 2890000000,
+          "modified": "2026-06-09T03:00:00Z",
+          "arch": "",
+          "latest": false
+        }
+      ]
+    },
+    {
+      "id": "dakota-x13s",
+      "label": "Dakota — ThinkPad X13s",
+      "blurb": "Dakota for the Lenovo ThinkPad X13s (Qualcomm SC8280XP, aarch64).",
+      "icon": "💪",
+      "order": 2,
+      "checksums": null,
+      "isos": [
+        {
+          "category": "dakota-x13s",
+          "name": "dakota-x13s-live-latest",
+          "path": "dakota-x13s/dakota-x13s-live-latest.iso",
+          "url": "https://download.tunaos.org/dakota-x13s/dakota-x13s-live-latest.iso",
+          "size": 2950000000,
+          "modified": "2026-06-07T01:00:00Z",
+          "arch": "aarch64",
+          "latest": true
+        }
+      ]
+    },
+    {
+      "id": "ubuntu-26.04",
+      "label": "Ubuntu 26.04 (Resolute Raccoon)",
+      "blurb": "Ubuntu 26.04 live installable ISO built with bootc.",
+      "icon": "🟠",
+      "order": 4,
+      "checksums": null,
+      "isos": [
+        {
+          "category": "ubuntu-26.04",
+          "name": "ubuntu-26.04-live-latest",
+          "path": "ubuntu-26.04/ubuntu-26.04-live-latest.iso",
+          "url": "https://download.tunaos.org/ubuntu-26.04/ubuntu-26.04-live-latest.iso",
+          "size": 3100000000,
+          "modified": "2026-06-08T02:00:00Z",
+          "arch": "",
+          "latest": true
+        }
+      ]
+    },
+    {
+      "id": "tacklebox",
+      "label": "Tacklebox (multi-boot)",
+      "blurb": "Proof-of-concept multi-image bootc ISOs from the tacklebox orchestrator.",
+      "icon": "🧰",
+      "order": 5,
+      "checksums": "https://download.tunaos.org/tacklebox/SHA256SUMS-20260613-2e1e0c7",
+      "isos": [
+        {
+          "category": "tacklebox",
+          "name": "tacklebox-poc-dedup-latest",
+          "path": "tacklebox/tacklebox-poc-dedup-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-latest.iso",
+          "size": 1400000000,
+          "modified": "2026-06-13T05:00:00Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "tacklebox-poc-perenv-latest",
+          "path": "tacklebox/tacklebox-poc-perenv-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-latest.iso",
+          "size": 2300000000,
+          "modified": "2026-06-13T05:00:00Z",
+          "arch": "",
+          "latest": true
+        }
+      ]
+    }
+  ]
+}
