@@ -32,7 +32,10 @@ const EMOJI_MAP: Record<string, string> = {
   '📺': `${CDN_BASE}/1f4fa/512.gif`,  // tv
   '🖨': `${CDN_BASE}/1f5a8/512.gif`,  // printer
   '🍷': `${CDN_BASE}/1f377/512.gif`,  // wine
+  '🦖': `${CDN_BASE}/1f996/512.gif`,  // t-rex → Dakota
+  '🦕': `${CDN_BASE}/1f995/512.gif`,  // sauropod
   '🦀': `${CDN_BASE}/1f980/512.gif`,  // crab
+  '🌺': `${CDN_BASE}/1f33a/512.gif`,  // hibiscus → Hawaii (static fallback, logo is primary)
   '🥂': `${CDN_BASE}/1f942/512.gif`,  // clink
   // ⌨️ keyboard — no animated version, uses static fallback
   // 🖥️ desktop — no animated version, uses static fallback

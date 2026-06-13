@@ -30,6 +30,7 @@ const sidebars: SidebarsConfig = {
     {type: 'category', label: 'bluefin-cli', link: {type: 'doc', id: 'bluefin-cli/index'}, items: ['bluefin-cli/ROADMAP']},
     {type: 'html', value: '<div class="sidebar-section-label">Community</div>', defaultStyle: true},
     {type: 'doc', id: 'hawaii/index', label: 'Zirconium Hawaii', className: 'sidebar-external'},
+    {type: 'doc', id: 'dakota/index', label: 'Dakota (Bluefin)', className: 'sidebar-external'},
   ],
 };
 

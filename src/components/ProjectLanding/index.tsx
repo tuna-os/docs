@@ -22,7 +22,7 @@ function Hero({project}: {project: Project}): ReactNode {
       )}
       <div className={clsx('container', styles.heroInner)}>
         {project.logo ? (
-          <img src={project.logo} alt={project.name} className={styles.heroLogo} />
+          <img src={project.logo} alt={project.name} className={clsx(styles.heroLogo, project.logoLight && styles.heroLogoLight)} />
         ) : !project.heroEmojiLarge ? (
           <div className={styles.heroEmoji}>
             <AnimatedEmoji emoji={project.emoji} size={92} />

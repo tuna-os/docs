@@ -38,6 +38,8 @@ export type Project = {
   heroEmojiLarge?: boolean;
   // Custom logo URL (rendered instead of emoji in hero).
   logo?: string;
+  // If true, the logo is already light-colored — skip the invert filter.
+  logoLight?: boolean;
 };
 
 export const STATUS_LABELS: Record<ProjectStatus, string> = {
@@ -238,7 +240,6 @@ export const PROJECTS: Project[] = [
   {
     id: 'hawaii',
     emoji: '🌺',
-    name: 'Zirconium Hawaii',
     status: 'experimental',
     tagline: 'Zirconium, rebuilt on freedesktop-sdk. Closer to the source.',
     lede:
@@ -272,6 +273,41 @@ export const PROJECTS: Project[] = [
     ],
     install: [
       {label: 'Build from source', code: 'git clone https://github.com/zirconium-linux/hawaii.git\ncd hawaii\njust build'},
+    ],
+  },
+  {
+    id: 'dakota',
+    emoji: '🎣',
+    name: 'Dakota',
+    status: 'beta',
+    tagline: 'The Final Form. Bluefin Perfected.',
+    lede:
+      "A freedesktop.org and GNOME OS image, designed from the ground up to be the most modern raptor in the pack. The familiar Bluefin desktop and developer experience in a whole new streamlined package — built from the best OS tech from the CNCF, Apache Foundation, and the UAPI Group.",
+    accent: '#0f172a',
+    accent2: '#3b82f6',
+    repo: 'https://github.com/projectbluefin/dakota',
+    docs: '',
+    external: true,
+    externalLink: 'https://github.com/projectbluefin/dakota',
+    logo: 'https://docs.projectbluefin.io/assets/images/01b99cdf-2b10-4be4-88bf-23da3a945be8-ea4ce28757013465dc1434aaa7a18742.png',
+    logoLight: true,
+    buildstream: true,
+    stats: [
+      {label: 'Desktop', value: 'GNOME'},
+      {label: 'Built with', value: 'BuildStream'},
+      {label: 'Base', value: 'freedesktop-sdk / GNOME OS'},
+    ],
+    highlights: [
+      {title: 'GNOME OS', text: 'The latest stable release of GNOME, no delays. Built from source on the same pipelines as GNOME OS itself.'},
+      {title: 'Freedesktop SDK', text: 'Same battle-tested libraries as Flathub. Continuously upgraded, always up to date.'},
+      {title: 'Modern Userspace', text: 'bootc, brew, uutils, systemd-boot, container-first, and legacy-free.'},
+      {title: 'Designed for Contributors', text: 'Your path to contributing to some of the coolest projects in desktop Linux. Start here, then level up and become part of the upstream teams.'},
+      {title: 'BuildStream & BuildGrid', text: 'Hermetic sandbox builds with distributed execution, reproducible and fully auditable.'},
+    ],
+    features: [
+      {emoji: '🦖', title: 'GNOME on freedesktop-sdk', text: 'The reference BuildStream desktop — GNOME OS patterns, Bluefin experience, built from source.'},
+      {emoji: '🔁', title: 'Built-in feedback loop', text: 'ujust report, ujust confirm, ujust verify — structured hardware diagnostics that flow back to upstream.'},
+      {emoji: '🧱', title: 'Reproducible', text: 'BuildStream pipelines. Same inputs, same image — every time. Fully auditable.'},
     ],
   },
   {
