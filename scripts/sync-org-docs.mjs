@@ -16,8 +16,6 @@ import {join, dirname} from 'node:path';
 const PROJECTS = {
   tunaOS:      {label: 'TunaOS',           icon: '🐟', slug: 'tunaos',          status: 'stable'},
   tacklebox:   {label: 'Tacklebox',        icon: '🧰', slug: 'tacklebox',       status: 'stable'},
-  'bootc-installer-tui': {label: 'bootc-installer', icon: '💻', slug: 'bootc-installer', status: 'stable'},
-  'dakota-iso': {label: 'Dakota',          icon: '🎣', slug: 'dakota',          status: 'stable'},
   tromso:      {label: 'Tromsø',           icon: '🏔️', slug: 'tromso',           status: 'alpha'},
   'xfce-linux': {label: 'XFCE Linux',      icon: '🖥️', slug: 'xfce-linux',      status: 'alpha'},
   'github-copr': {label: 'COPR Builds',    icon: '🔧', slug: 'copr',            status: 'internal'},
@@ -39,7 +37,6 @@ const SKIP = new Set([
 const ROOT_DOC_FILTER = {
   tunaOS: ['README.md', 'ROADMAP.md', 'SECURITY.md', 'CONTRIBUTING.md'],
   'github-copr': ['README.md', 'ARCHITECTURE.md'],
-  'dakota-iso': ['README.md', 'CONTRIBUTING.md'],
 };
 
 // Repos whose docs/ folder should NOT be synced (too noisy / internal).
