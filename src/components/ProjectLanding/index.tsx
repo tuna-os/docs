@@ -131,7 +131,7 @@ function Features({project}: {project: Project}): ReactNode {
             <div key={f.title} className={styles.featCard}>
               <span className={styles.featEmoji}><AnimatedEmoji emoji={f.emoji} size={30} /></span>
               <Heading as="h3" className={styles.featTitle}>{f.title}</Heading>
-              <p className={styles.featText}>{f.text}</p>
+              <p className={styles.featText} dangerouslySetInnerHTML={{__html: f.text}} />
             </div>
           ))}
         </div>
