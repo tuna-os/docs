@@ -4,6 +4,7 @@ import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import AnimatedEmoji from '@site/src/components/AnimatedEmoji';
+import DesktopScreenshots from '@site/src/components/DesktopScreenshots';
 import {VARIANTS, type Variant} from '@site/src/data/variants';
 
 import styles from './styles.module.css';
@@ -190,6 +191,7 @@ export default function VariantLanding({variant}: {variant: Variant}): ReactNode
       <Hero variant={variant} />
       <main>
         <Desktops variant={variant} />
+        <DesktopScreenshots variant={variant.id} desktops={variant.desktops} />
         <Features variant={variant} />
         <Flavors variant={variant} />
         <OtherVariants variant={variant} />
