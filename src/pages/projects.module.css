@@ -18,3 +18,66 @@
   line-height: 1.6;
   opacity: 0.9;
 }
+
+/* ── BuildStream desktop family band ── */
+.bsFamily {
+  margin-top: 3rem;
+  padding: 2rem;
+  border-radius: 18px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-color-emphasis-100);
+}
+.bsTitle {
+  font-size: clamp(1.4rem, 3.5vw, 1.9rem);
+  margin: 0 0 0.5rem;
+}
+.bsLede {
+  max-width: 760px;
+  color: var(--ifm-color-emphasis-800);
+  line-height: 1.6;
+  margin: 0 0 1.5rem;
+}
+.bsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+.bsCard {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  text-decoration: none !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.bsCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+}
+.bsBadge {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 54px;
+  padding: 0.35rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(120deg, var(--ifm-color-primary), #38bdf8);
+}
+.bsName {
+  display: block;
+  color: var(--ifm-heading-color);
+  font-size: 1rem;
+}
+.bsNote {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-700);
+  margin-top: 0.2rem;
+}
