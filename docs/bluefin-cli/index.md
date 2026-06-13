@@ -16,7 +16,7 @@ A powerful, modern CLI tool for managing shell configuration and development env
 - **✨ Bling**: Toggle modern shell enhancements (eza, bat, ugrep, zoxide, atuin, starship)
 - **📰 MOTD**: Beautiful Message of the Day with system info and random tips
 - **📦 Bundle Installer**: Install curated tool bundles (ai, cli, fonts, k8s) from Universal Blue
-- **�️ Wallpapers**: Install desktop wallpaper collections from ublue-os/tap
+- **🖼️ Wallpapers**: Install desktop wallpaper collections from ublue-os/tap
 - **🎨 Starship Themes**: Browse and apply Starship prompt themes
 - **📊 Status Command**: View configuration and installed tools at a glance
 
@@ -27,7 +27,7 @@ A powerful, modern CLI tool for managing shell configuration and development env
 Build and install from source:
 
 ```powershell
-git clone https://github.com/hanthor/bluefin-cli.git
+git clone https://github.com/tuna-os/bluefin-cli.git
 cd bluefin-cli
 go build -o bluefin-cli.exe .
 
@@ -55,7 +55,7 @@ go install github.com/hanthor/bluefin-cli@latest
 - Go 1.21 or later
 
 ```bash
-git clone https://github.com/hanthor/bluefin-cli.git
+git clone https://github.com/tuna-os/bluefin-cli.git
 cd bluefin-cli
 go build -o bluefin-cli .
 ```
@@ -128,7 +128,7 @@ Features:
 - **zoxide**: Smarter `cd`
 - **atuin**: Shell history sync
 - **starship**: Cross-shell prompt
-- **uutils**: Rust rewrite of coreutilsl
+- **uutils**: Rust rewrite of coreutils
 
 #### MOTD - Message of the Day
 
@@ -215,8 +215,8 @@ Non-interactive wallpaper flags:
 - In Auto Dark Mode, point light/dark custom script hooks to those two scripts.
 
 #### Starship Themes
-you can change your prompy lookks
-Browse and apply Starship preset themes:
+
+Change how your shell prompt looks. Browse and apply Starship preset themes:
 
 ```bash
 bluefin-cli starship theme
@@ -353,6 +353,9 @@ This project is licensed under the Apache License 2.0 - see the LICENSE file for
 
 ## 🔗 Related Projects
 
+- [Tavern](/docs/tavern) — TunaOS's GTK 4 Homebrew GUI; the graphical companion to bluefin-cli's bundle installer.
+- [TunaOS](/docs/tunaos) — the desktop images that ship bluefin-cli and Homebrew out of the box.
+- See every project on the [Projects page →](/projects).
 - [ublue-os/packages](https://github.com/ublue-os/packages) - Original package implementations
 - [Starship](https://starship.rs/) - Cross-shell prompt
 - [Homebrew](https://brew.sh/) - Package manager for macOS and Linux

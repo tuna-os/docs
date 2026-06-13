@@ -14,7 +14,7 @@ Albacore is the flagship stable variant of TunaOS, providing a rock-solid enterp
 
 ## Features
 
-- 🖥️ **GNOME 48.3**: Modern desktop backported to Enterprise Linux.
+- 🖥️ **GNOME 50 available**: The latest GNOME, backported to Enterprise Linux via the `gnome50` image (see [Downloads](#gnome-50)) — alongside the stable distro GNOME.
 - 🍺 **Baked-in Homebrew**: Access thousands of CLI tools and fonts immediately.
 - ✨ **Microarchitecture Support**: Optimized builds for `x86_64_v2` (older CPUs).
 - 🚀 **HWE Variant**: Hardware Enablement kernel for the latest laptops and workstations.
@@ -59,9 +59,11 @@ Features a newer kernel and drivers for recent hardware.
 ### DX (Developer Experience)
 **Image:** `ghcr.io/tuna-os/albacore:gnome-dx`
 
-<a id="gdx"></a>
-### GDX (Graphical Developer Experience)
-**Image:** `ghcr.io/tuna-os/albacore:gnome-gdx`
+<a id="gnome-nvidia"></a>
+### NVIDIA (NVIDIA drivers + CUDA)
+Adds NVIDIA drivers and CUDA for AI, graphics, and VFX workloads. (Formerly "GDX".)
+
+**Image:** `ghcr.io/tuna-os/albacore:gnome-nvidia`
 
 ## Installation
 

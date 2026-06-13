@@ -6,7 +6,7 @@ import styles from './styles.module.css';
 
 type Variant = 'albacore' | 'yellowfin' | 'skipjack' | 'bonito';
 type Desktop = 'gnome' | 'gnome50' | 'kde' | 'cosmic' | 'niri';
-type Edition = 'standard' | 'gdx' | 'hwe';
+type Edition = 'standard' | 'nvidia' | 'hwe';
 type Arch = 'amd64' | 'amd64-v2' | 'arm64';
 type Product = 'tunaos' | 'dakota' | 'tromso' | 'xfce' | 'hawaii';
 type StepId = 'product' | 'variant' | 'desktop' | 'edition' | 'arch' | 'result';
@@ -94,7 +94,7 @@ const DESKTOP_OPTIONS: Option<Desktop>[] = [
     value: 'gnome',
     emoji: '🖥️',
     label: 'GNOME',
-    description: 'The polished default. GNOME 48 backported to Enterprise Linux.',
+    description: 'The polished default. GNOME 50 backported to Enterprise Linux.',
     badge: 'Default',
   },
   {
@@ -131,10 +131,10 @@ const EDITION_OPTIONS: Option<Edition>[] = [
     description: 'Just the desktop — great for everyday use.',
   },
   {
-    value: 'gdx',
+    value: 'nvidia',
     emoji: '🎮',
-    label: 'AI / ML (GDX)',
-    description: 'Adds NVIDIA drivers and CUDA support for AI/ML workloads.',
+    label: 'AI / ML (NVIDIA)',
+    description: 'Adds NVIDIA drivers and CUDA support for AI/ML, graphics, and VFX workloads.',
   },
   {
     value: 'hwe',
@@ -208,8 +208,8 @@ function buildImageName(sel: Selection): string {
   const variant = sel.variant ?? 'albacore';
   const desktop = sel.desktop ?? 'gnome';
   const edition = sel.edition ?? 'standard';
-  let flavor = desktop;
-  if (edition === 'gdx') flavor = `${desktop}-gdx`;
+  let flavor: string = desktop;
+  if (edition === 'nvidia') flavor = `${desktop}-nvidia`;
   else if (edition === 'hwe') flavor = `${desktop}-hwe`;
   return `ghcr.io/tuna-os/${variant}:${flavor}`;
 }
@@ -223,8 +223,8 @@ function getIsoUrl(sel: Selection): string | null {
   // TunaOS variants
   if (!sel.variant || !sel.desktop) return null;
   if (sel.edition === 'hwe') return null;
-  let flavor = sel.desktop;
-  if (sel.edition === 'gdx') flavor = `${sel.desktop}-gdx`;
+  let flavor: string = sel.desktop;
+  if (sel.edition === 'nvidia') flavor = `${sel.desktop}-nvidia`;
   return `https://download.tunaos.org/live-isos/${sel.variant}-${flavor}-latest.iso`;
 }
 
@@ -236,8 +236,8 @@ function getDocsUrl(sel: Selection): string {
   const variant = sel.variant ?? 'albacore';
   const desktop = sel.desktop ?? 'gnome';
   const edition = sel.edition ?? 'standard';
-  let anchor = desktop;
-  if (edition === 'gdx') anchor = `${desktop}-gdx`;
+  let anchor: string = desktop;
+  if (edition === 'nvidia') anchor = `${desktop}-nvidia`;
   else if (edition === 'hwe') anchor = `${desktop}-hwe`;
   return `/docs/${variant}#${anchor}`;
 }

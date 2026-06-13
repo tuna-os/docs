@@ -10,7 +10,6 @@ Prefer a visual tour? See the **[TunaOS overview →](/tunaos)** landing page.
 
 
 <div>
-![]
 
 ## TunaOS
 ### *A Collection of Cloud-Native Enterprise Linux OS Images*
@@ -273,6 +272,13 @@ Related Communities:
 ### Community & Governance
 - [Community](https://github.com/tuna-os/tunaOS/blob/main/COMMUNITY.md) — contribution ladder, metrics, communication
 - [Maintainers](https://github.com/tuna-os/tunaOS/blob/main/MAINTAINERS.md) — maintainer playbook and bus factor plan
+
+### TunaOS ecosystem
+The tools that build, install, and extend these images — see them all on the [Projects page](/projects):
+- [Tacklebox](/docs/tacklebox) — builds the ISOs and multi-boot media from TunaOS images
+- [COPR Builds](/docs/copr) — backports GNOME 50 to Enterprise Linux (the `gnome50` image)
+- [Tromsø](/docs/tromso) & [XFCE Linux](/docs/xfce-linux) — BuildStream-from-source KDE and XFCE images
+- [Tavern](/docs/tavern) & [bluefin-cli](/docs/bluefin-cli) — desktop and shell tooling
 
 ### External Resources
 - [AlmaLinux Kitten 10 Differences](https://wiki.almalinux.org/development/almalinux-os-kitten-10.html#how-is-almalinux-os-kitten-different-from-centos-stream)
