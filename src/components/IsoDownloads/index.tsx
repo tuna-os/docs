@@ -53,7 +53,18 @@ function prettyName(iso: Iso): string {
   if (iso.latest) {
     return base
       .split('-')
-      .map((p) => (p.toLowerCase() === 'gnome' ? 'GNOME' : p.toLowerCase() === 'kde' ? 'KDE' : p.charAt(0).toUpperCase() + p.slice(1)))
+      .map((p) => {
+        const l = p.toLowerCase();
+        if (l === 'gnome') return 'GNOME';
+        if (l === 'kde') return 'KDE';
+        if (l === 'niri') return 'Niri';
+        if (l === 'cosmic') return 'COSMIC';
+        if (l === 'gdx') return 'NVIDIA'; // renamed
+        if (l === 'nvidia') return 'NVIDIA';
+        if (l === 'hwe') return 'HWE';
+        if (l === 'gnome50') return 'GNOME 50';
+        return p.charAt(0).toUpperCase() + p.slice(1);
+      })
       .join(' · ');
   }
   return iso.name;
