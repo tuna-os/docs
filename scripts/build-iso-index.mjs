@@ -43,16 +43,16 @@ const CATEGORIES = {
     icon: '💪',
     order: 3,
   },
-  'ubuntu-26.04': {
-    label: 'Ubuntu 26.04 (Resolute Raccoon)',
-    blurb: 'Ubuntu 26.04 live installable ISO built with bootc.',
-    icon: '🟠',
+  tromso: {
+    label: 'Tromsø',
+    blurb: 'Aurora KDE Plasma 6 — built from source on freedesktop-sdk with BuildStream.',
+    icon: '🌌',
     order: 4,
   },
-  tacklebox: {
-    label: 'Tacklebox (multi-boot)',
-    blurb: 'Proof-of-concept multi-image bootc ISOs from the tacklebox orchestrator.',
-    icon: '🧰',
+  'xfce-linux': {
+    label: 'XFCE Linux',
+    blurb: 'Lightweight XFCE Wayland desktop — built from source on freedesktop-sdk.',
+    icon: '🖥️',
     order: 5,
   },
 };
