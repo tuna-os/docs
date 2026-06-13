@@ -4,6 +4,10 @@ sidebar_label: "Tavern"
 status: stable
 ---
 
+:::tip[Visual overview]
+Prefer a visual tour? See the **[Tavern overview →](/tavern)** landing page.
+:::
+
 Tavern is a modern, fast, and beautiful Homebrew client for Linux, built with **Python**, **GTK 4**, and **Libadwaita**. It provides a premium "App Store" experience for managing your Homebrew formulae and casks.
 
 ### Quick Install

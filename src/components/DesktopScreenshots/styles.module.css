@@ -1,0 +1,53 @@
+.section {
+  padding: 4rem 1rem;
+}
+
+.head {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 2.5rem;
+}
+.head h2 {
+  font-size: clamp(1.7rem, 4vw, 2.3rem);
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+.head p {
+  color: var(--ifm-color-emphasis-700);
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.shot {
+  margin: 0;
+}
+.shot img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  display: block;
+  background: var(--ifm-color-emphasis-100);
+}
+.shot figcaption {
+  margin-top: 0.6rem;
+  text-align: center;
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-800);
+}
+
+/* Off-screen probe used to detect late-arriving screenshots without layout. */
+.probe {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}

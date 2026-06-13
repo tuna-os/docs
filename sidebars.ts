@@ -6,7 +6,20 @@ const sidebars: SidebarsConfig = {
     'installation',
     'installer',
     'system-requirements',
-    {type: 'category', label: 'Variants', items: ['albacore', 'yellowfin', 'bonito', 'skipjack']},
+    {
+      type: 'category',
+      label: '🐟 Variants',
+      collapsed: false,
+      // Showcase: the rich, visual landing pages (custom React pages), with the
+      // detailed per-variant reference docs nested beneath.
+      items: [
+        {type: 'link', label: 'Albacore — AlmaLinux 10', href: '/albacore'},
+        {type: 'link', label: 'Yellowfin — AlmaLinux Kitten', href: '/yellowfin'},
+        {type: 'link', label: 'Skipjack — CentOS Stream 10', href: '/skipjack'},
+        {type: 'link', label: 'Bonito — Fedora 44', href: '/bonito'},
+        {type: 'category', label: 'Reference docs', collapsed: true, items: ['albacore', 'yellowfin', 'bonito', 'skipjack']},
+      ],
+    },
     'bootc-resources',
     {type: 'category', label: 'TunaOS', link: {type: 'doc', id: 'tunaos/index'}, items: ['tunaos/ROADMAP', 'tunaos/CONTRIBUTING', 'tunaos/SECURITY', {type: 'category', label: 'Developer Guide', collapsible: true, collapsed: true, items: ['tunaos/introduction', 'tunaos/building', 'tunaos/live-iso-generation', 'tunaos/ci-cd', 'tunaos/troubleshooting']}]},
     {type: 'category', label: 'Tacklebox', link: {type: 'doc', id: 'tacklebox/index'}, items: ['tacklebox/ARCHITECTURE', 'tacklebox/github-iso-setup', 'tacklebox/TODO']},

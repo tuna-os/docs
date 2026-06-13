@@ -4,7 +4,7 @@ import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import AnimatedEmoji from '@site/src/components/AnimatedEmoji';
-import {PROJECTS, STATUS_LABELS, type Project} from '@site/src/data/projects';
+import {PROJECTS, STATUS_LABELS, BUILDSTREAM_UPSTREAMS, type Project} from '@site/src/data/projects';
 
 import styles from './styles.module.css';
 
@@ -122,6 +122,35 @@ function Install({project}: {project: Project}): ReactNode {
   );
 }
 
+function BuildStreamFamily({project}: {project: Project}): ReactNode {
+  if (!project.buildstream) return null;
+  return (
+    <section className={styles.section}>
+      <div className="container">
+        <div className={styles.sectionHead}>
+          <Heading as="h2">Part of the BuildStream desktop family</Heading>
+          <p>
+            {project.name} builds a complete desktop from source on freedesktop-sdk with
+            reproducible pipelines — the same lineage as GNOME OS. It's associated with these
+            upstream BuildStream desktop projects:
+          </p>
+        </div>
+        <div className={styles.otherGrid}>
+          {BUILDSTREAM_UPSTREAMS.map((u) => (
+            <a key={u.url} href={u.url} className={styles.otherCard}>
+              <span className={styles.bsDesktop}>{u.desktop}</span>
+              <span>
+                <strong className={styles.otherName}>{u.name} ↗</strong>
+                <span className={styles.otherTagline}>{u.note}</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function MoreProjects({project}: {project: Project}): ReactNode {
   const others = PROJECTS.filter((p) => p.id !== project.id);
   return (
@@ -159,6 +188,7 @@ export default function ProjectLanding({project}: {project: Project}): ReactNode
         <Screenshots project={project} />
         <Features project={project} />
         <Install project={project} />
+        <BuildStreamFamily project={project} />
         <MoreProjects project={project} />
       </main>
     </Layout>

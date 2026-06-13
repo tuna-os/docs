@@ -132,3 +132,18 @@
 .otherEmoji { flex: none; }
 .otherName { display: block; color: var(--ifm-heading-color); font-size: 1.05rem; }
 .otherTagline { display: block; font-size: 0.85rem; color: var(--ifm-color-emphasis-700); margin-top: 0.2rem; }
+
+/* BuildStream family — desktop label badge */
+.bsDesktop {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  padding: 0.3rem 0.55rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(120deg, var(--p-accent, #2563eb), var(--p-accent2, #38bdf8));
+}

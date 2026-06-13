@@ -4,6 +4,10 @@ sidebar_label: "Tromsø"
 status: alpha
 ---
 
+:::tip[Visual overview]
+Prefer a visual tour? See the **[Tromsø overview →](/tromso)** landing page.
+:::
+
 > ⚠️ **Alpha** — early development. Not production-ready. APIs and behaviour may change without notice.
 
 **Aurora Tromso** is a BuildStream-based KDE Linux OCI/bootc image, modeled on Project Bluefin's

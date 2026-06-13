@@ -4,6 +4,10 @@ sidebar_position: 4
 
 # Skipjack (CentOS)
 
+:::tip[Visual overview]
+Prefer a visual tour? See the **[Skipjack overview →](/skipjack)** landing page.
+:::
+
 **Based on:** [CentOS Stream 10](https://www.centos.org/centos-stream-10/)
 
 Skipjack is the upstream-tracking variant of TunaOS based on CentOS Stream 10. It serves as a testing ground for features that will eventually land in RHEL and AlmaLinux.
