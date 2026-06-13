@@ -97,8 +97,8 @@ export const PROJECTS: Project[] = [
     tagline: 'Aurora on your desktop. KDE Plasma 6, built entirely from source.',
     lede:
       "Tromsø is a BuildStream-based KDE Linux distribution — Aurora theming layered on freedesktop-sdk, assembled from ~170 source elements, and shipped as a bootable OCI image. Alpha means it works on the developer's machine and is looking for yours to break on.",
-    accent: '#1e1b4b',
-    accent2: '#7c3aed',
+    accent: '#0c0032',
+    accent2: '#6366f1',
     repo: 'https://github.com/tuna-os/tromso',
     docs: '/docs/tromso',
     buildstream: true,
