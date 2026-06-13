@@ -8,9 +8,11 @@ type Variant = 'albacore' | 'yellowfin' | 'skipjack' | 'bonito';
 type Desktop = 'gnome' | 'gnome50' | 'kde' | 'cosmic' | 'niri';
 type Edition = 'standard' | 'gdx' | 'hwe';
 type Arch = 'amd64' | 'amd64-v2' | 'arm64';
-type StepId = 'variant' | 'desktop' | 'edition' | 'arch' | 'result';
+type Product = 'tunaos' | 'dakota' | 'tromso' | 'xfce' | 'hawaii';
+type StepId = 'product' | 'variant' | 'desktop' | 'edition' | 'arch' | 'result';
 
 type Selection = {
+  product?: Product;
   variant?: Variant;
   desktop?: Desktop;
   edition?: Edition;
@@ -24,6 +26,40 @@ type Option<T extends string> = {
   description: string;
   badge?: string;
 };
+
+const PRODUCT_OPTIONS: Option<Product>[] = [
+  {
+    value: 'tunaos',
+    emoji: '🐟',
+    label: 'TunaOS',
+    description: 'Enterprise Linux desktops — Albacore, Yellowfin, Skipjack, Bonito.',
+    badge: 'Most popular',
+  },
+  {
+    value: 'dakota',
+    emoji: '🦖',
+    label: 'Dakota (Bluefin)',
+    description: 'GNOME OS built from source. The reference BuildStream desktop.',
+  },
+  {
+    value: 'tromso',
+    emoji: '🌌',
+    label: 'Tromsø',
+    description: 'Aurora KDE Plasma 6 — built from source on freedesktop-sdk.',
+  },
+  {
+    value: 'xfce',
+    emoji: '🖥️',
+    label: 'XFCE Linux',
+    description: 'Lightweight XFCE Wayland — built from source on freedesktop-sdk.',
+  },
+  {
+    value: 'hawaii',
+    emoji: '🌺',
+    label: 'Zirconium Hawaii',
+    description: 'Niri compositor on freedesktop-sdk. Experimental.',
+  },
+];
 
 const VARIANT_OPTIONS: Option<Variant>[] = [
   {
@@ -131,6 +167,7 @@ const ARCH_OPTIONS: Option<Arch>[] = [
 ];
 
 const STEP_LABELS: Record<StepId, string> = {
+  product: 'Product',
   variant: 'Base',
   desktop: 'Desktop',
   edition: 'Edition',
@@ -143,7 +180,11 @@ function getDesktopOptions(variant: Variant | undefined): Option<Desktop>[] {
   return DESKTOP_OPTIONS;
 }
 
-function getNextStep(step: StepId, _sel: Selection): StepId {
+function getNextStep(step: StepId, sel: Selection): StepId {
+  if (step === 'product') {
+    if (sel.product === 'tunaos') return 'variant';
+    return 'result'; // skip to result for non-tunaOS products
+  }
   if (step === 'variant') return 'desktop';
   if (step === 'desktop') return 'edition';
   if (step === 'edition') return 'arch';
@@ -151,11 +192,15 @@ function getNextStep(step: StepId, _sel: Selection): StepId {
   return 'result';
 }
 
-function getPrevStep(step: StepId, _sel: Selection): StepId | null {
+function getPrevStep(step: StepId, sel: Selection): StepId | null {
+  if (step === 'variant') return 'product';
   if (step === 'desktop') return 'variant';
   if (step === 'edition') return 'desktop';
   if (step === 'arch') return 'edition';
-  if (step === 'result') return 'arch';
+  if (step === 'result') {
+    if (sel.product !== 'tunaos') return 'product';
+    return 'arch';
+  }
   return null;
 }
 
@@ -170,6 +215,12 @@ function buildImageName(sel: Selection): string {
 }
 
 function getIsoUrl(sel: Selection): string | null {
+  // Non-tunaOS products
+  if (sel.product === 'dakota') return 'https://download.tunaos.org/dakota/dakota-live-latest.iso';
+  if (sel.product === 'tromso') return 'https://download.tunaos.org/tromso/tromso-live-latest.iso';
+  if (sel.product === 'xfce') return 'https://download.tunaos.org/xfce-linux/xfce-linux-live-latest.iso';
+  if (sel.product === 'hawaii') return null; // no ISOs yet
+  // TunaOS variants
   if (!sel.variant || !sel.desktop) return null;
   if (sel.edition === 'hwe') return null;
   let flavor = sel.desktop;
@@ -178,6 +229,10 @@ function getIsoUrl(sel: Selection): string | null {
 }
 
 function getDocsUrl(sel: Selection): string {
+  if (sel.product === 'dakota') return '/dakota';
+  if (sel.product === 'tromso') return '/tromso';
+  if (sel.product === 'xfce') return '/xfce-linux';
+  if (sel.product === 'hawaii') return '/hawaii';
   const variant = sel.variant ?? 'albacore';
   const desktop = sel.desktop ?? 'gnome';
   const edition = sel.edition ?? 'standard';
@@ -187,8 +242,9 @@ function getDocsUrl(sel: Selection): string {
   return `/docs/${variant}#${anchor}`;
 }
 
-function getVisibleSteps(_sel: Selection): StepId[] {
-  return ['variant', 'desktop', 'edition', 'arch', 'result'];
+function getVisibleSteps(sel: Selection): StepId[] {
+  if (sel.product !== 'tunaos') return ['product', 'result'];
+  return ['product', 'variant', 'desktop', 'edition', 'arch', 'result'];
 }
 
 function ProgressBar({steps, current}: {steps: StepId[]; current: StepId}) {
@@ -260,13 +316,43 @@ function CopyButton({text}: {text: string}) {
 }
 
 function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
+  const isTunaOS = sel.product === 'tunaos';
   const imageName = buildImageName(sel);
   const isoUrl = getIsoUrl(sel);
   const docsUrl = getDocsUrl(sel);
+  const productOpt = PRODUCT_OPTIONS.find((o) => o.value === sel.product);
   const variantOpt = VARIANT_OPTIONS.find((o) => o.value === sel.variant);
   const desktopOpt = DESKTOP_OPTIONS.find((o) => o.value === sel.desktop);
   const editionOpt = sel.edition ? EDITION_OPTIONS.find((o) => o.value === sel.edition) : null;
   const archOpt = sel.arch ? ARCH_OPTIONS.find((o) => o.value === sel.arch) : null;
+
+  // Non-tunaOS result
+  if (!isTunaOS) {
+    const productName = productOpt?.label || sel.product;
+    const productEmoji = productOpt?.emoji || '';
+    return (
+      <div className={styles.resultCard}>
+        <div className={styles.resultHeader}>
+          <div className={styles.resultEmoji}>{productEmoji}</div>
+          <h3 className={styles.resultTitle}>{productName}</h3>
+        </div>
+        <div className={styles.resultActions}>
+          {isoUrl ? (
+            <a href={isoUrl} className="button button--primary button--lg">
+              ⬇️ Download ISO
+            </a>
+          ) : (
+            <div className={styles.resultNoIso}>
+              📦 No ISO available yet for {productName}.
+            </div>
+          )}
+        </div>
+        <button className={styles.resetBtn} onClick={onReset} type="button">
+          ← Start Over
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.resultCard}>
@@ -318,7 +404,7 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
 }
 
 export default function ImagePicker(): ReactNode {
-  const [step, setStep] = useState<StepId>('variant');
+  const [step, setStep] = useState<StepId>('product');
   const [sel, setSel] = useState<Selection>({});
   const [animDir, setAnimDir] = useState<'forward' | 'back'>('forward');
 
@@ -340,11 +426,17 @@ export default function ImagePicker(): ReactNode {
   const reset = () => {
     setAnimDir('back');
     setSel({});
-    setStep('variant');
+    setStep('product');
   };
 
   const pick = <T extends keyof Selection>(key: T, value: Selection[T]) => {
     const nextSel: Selection = {...sel, [key]: value};
+    if (key === 'product') {
+      nextSel.variant = undefined;
+      nextSel.desktop = undefined;
+      nextSel.edition = undefined;
+      nextSel.arch = undefined;
+    }
     if (key === 'variant') {
       nextSel.desktop = undefined;
       nextSel.edition = undefined;
@@ -362,6 +454,7 @@ export default function ImagePicker(): ReactNode {
   };
 
   const STEP_QUESTIONS: Record<StepId, string> = {
+    product: 'Which product line?',
     variant: 'Which base suits you?',
     desktop: 'Which desktop environment?',
     edition: 'Standard desktop or something specialized?',
@@ -382,6 +475,15 @@ export default function ImagePicker(): ReactNode {
           <>
             <h2 className={styles.question}>{STEP_QUESTIONS[step]}</h2>
             <div className={styles.optionGrid}>
+              {step === 'product' &&
+                PRODUCT_OPTIONS.map((opt) => (
+                  <OptionCard
+                    key={opt.value}
+                    option={opt}
+                    selected={sel.product === opt.value}
+                    onClick={() => pick('product', opt.value)}
+                  />
+                ))}
               {step === 'variant' &&
                 VARIANT_OPTIONS.map((opt) => (
                   <OptionCard
@@ -419,7 +521,7 @@ export default function ImagePicker(): ReactNode {
                   />
                 ))}
             </div>
-            {step !== 'variant' && (
+            {step !== 'product' && (
               <button className={styles.backBtn} onClick={goBack} type="button">
                 ← Back
               </button>
