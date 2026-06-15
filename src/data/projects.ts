@@ -176,6 +176,7 @@ export const PROJECTS: Project[] = [
       {emoji: '🐧', title: 'Linux first', text: 'Smart filtering hides macOS-only casks on Linux; full dark-mode and responsive layouts.'},
     ],
     install: [
+      {label: 'Flatpak (Linux, recommended)', code: 'flatpak remote-add --user --if-not-exists tuna-os oci+https://tuna-os.github.io/Tavern\nflatpak install --user tuna-os dev.hanthor.Tavern'},
       {label: 'Homebrew (macOS + Linux)', code: 'brew tap hanthor/homebrew-tap\nbrew install --cask hanthor/tap/tavern'},
     ],
     screenshots: [
