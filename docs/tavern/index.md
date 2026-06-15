@@ -12,9 +12,10 @@ Tavern is a modern, fast, and beautiful Homebrew client for Linux, built with **
 
 ### Quick Install
 
-**Flatpak (Linux, recommended):**
+**Flatpak (Linux, recommended, with automatic updates):**
 ```bash
-curl -L https://nightly.link/tuna-os/Tavern/workflows/flatpak/main/Tavern-Linux-CI.zip -o Tavern-Linux-CI.zip && unzip -o Tavern-Linux-CI.zip && flatpak install --user --reinstall Tavern-Linux-CI.flatpak
+flatpak remote-add --user --if-not-exists tuna-os oci+https://tuna-os.github.io/Tavern
+flatpak install --user tuna-os dev.hanthor.Tavern
 ```
 
 **Homebrew (macOS + Linux):**
@@ -108,23 +109,22 @@ meson compile -C builddir run
 
 ## 📦 Flatpak
 
-### Install latest build from CI
+### Install from the custom OCI Remote (Recommended)
 
-Download and install the latest Flatpak bundle built from the `main` branch:
+To get automatic updates directly through your software center (like GNOME Software or KDE Discover) or CLI, add the official `tuna-os` OCI remote:
 
 ```bash
-# Download the latest CI build
+flatpak remote-add --user --if-not-exists tuna-os oci+https://tuna-os.github.io/Tavern
+flatpak install --user tuna-os dev.hanthor.Tavern
+```
+
+### Install a single standalone bundle from CI
+If you prefer to install a one-off nightly build from the main branch:
+
+```bash
 wget https://nightly.link/tuna-os/Tavern/workflows/flatpak/main/Tavern-Linux-CI.zip
 unzip Tavern-Linux-CI.zip
 flatpak install --user --reinstall Tavern-Linux-CI.flatpak
-```
-
-Or just grab the zip directly: [Tavern-Linux-CI.zip](https://nightly.link/tuna-os/Tavern/workflows/flatpak/main/Tavern-Linux-CI.zip)
-
-### Build from source
-
-```bash
-flatpak-builder --force-clean --user --install flatpak-build dev.hanthor.Tavern.json
 ```
 
 ## 🤝 Contributing
