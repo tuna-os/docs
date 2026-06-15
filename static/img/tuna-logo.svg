@@ -1,37 +1,117 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
   <defs>
-    <linearGradient id="fishGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    <!-- Background gradient: deep ocean navy -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d1b2a"/>
+      <stop offset="100%" stop-color="#1a2e44"/>
     </linearGradient>
-    <linearGradient id="tailGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1e40af;stop-opacity:1" />
+
+    <!-- Tuna body gradient: dark teal to bright ocean blue -->
+    <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f4c75"/>
+      <stop offset="50%" stop-color="#1e90ff"/>
+      <stop offset="100%" stop-color="#63b3f7"/>
     </linearGradient>
+
+    <!-- Belly highlight: lighter blue/white -->
+    <linearGradient id="bellyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#63b3f7" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#e8f4fd" stop-opacity="0.7"/>
+    </linearGradient>
+
+    <!-- Fin gradient -->
+    <linearGradient id="finGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a3d62"/>
+      <stop offset="100%" stop-color="#1e90ff"/>
+    </linearGradient>
+
+    <!-- Sheen/highlight -->
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0"/>
+    </linearGradient>
+
+    <!-- Drop shadow filter -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+
+    <!-- Subtle glow on fish -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
 
-  <!-- Body -->
-  <ellipse cx="52" cy="60" rx="38" ry="22" fill="url(#fishGrad)" />
+  <!-- Background plate — GNOME-style rounded square -->
+  <rect x="8" y="8" width="240" height="240" rx="54"
+        fill="url(#bgGrad)" stroke="#0a1520" stroke-width="2"
+        filter="url(#shadow)"/>
 
-  <!-- Tail -->
-  <path d="M85 48 L110 28 L105 60 L110 92 L85 72 Z" fill="url(#tailGrad)" />
+  <!-- Subtle inner ring -->
+  <rect x="12" y="12" width="232" height="232" rx="50"
+        fill="none" stroke="#1e90ff" stroke-width="1" opacity="0.2"/>
 
-  <!-- Dorsal fin -->
-  <path d="M35 38 Q50 15 65 40" fill="#2563eb" opacity="0.8" />
+  <!-- ── Tuna fish, centred, facing right ── -->
+  <g transform="translate(128, 134)" filter="url(#glow)">
 
-  <!-- Pectoral fin -->
-  <path d="M45 74 Q55 90 38 84" fill="#2563eb" opacity="0.6" />
+    <!-- Tail fin (forked, left side) -->
+    <path d="M -80 0 L -112 -30 L -100 0 L -112 30 Z"
+          fill="url(#finGrad)" stroke="#0a3d62" stroke-width="1.5"/>
 
-  <!-- Eye -->
-  <circle cx="30" cy="56" r="4" fill="white" />
-  <circle cx="30" cy="56" r="2" fill="#0f172a" />
+    <!-- Main body — streamlined torpedo shape -->
+    <ellipse cx="0" cy="0" rx="75" ry="34"
+             fill="url(#bodyGrad)" stroke="#0a3d62" stroke-width="2"/>
 
-  <!-- Mouth -->
-  <path d="M16 62 Q20 58 26 60" stroke="#93c5fd" stroke-width="1.5" fill="none" stroke-linecap="round" />
+    <!-- Belly highlight (lighter lower-half) -->
+    <ellipse cx="4" cy="12" rx="62" ry="20"
+             fill="url(#bellyGrad)" opacity="0.55"/>
 
-  <!-- Gill line -->
-  <path d="M36 42 Q40 60 36 78" stroke="#1e3a8a" stroke-width="1" fill="none" opacity="0.4" />
+    <!-- Dorsal fin (top) -->
+    <path d="M -10 -34 L 20 -60 L 45 -34"
+          fill="url(#finGrad)" stroke="#0a3d62" stroke-width="1.5" stroke-linejoin="round"/>
 
-  <!-- Lateral line -->
-  <path d="M40 60 Q55 54 75 60" stroke="#93c5fd" stroke-width="0.8" fill="none" opacity="0.3" />
+    <!-- Pectoral fin (side) -->
+    <path d="M 10 8 L 30 36 L 50 10"
+          fill="url(#finGrad)" stroke="#0a3d62" stroke-width="1.5" stroke-linejoin="round"/>
+
+    <!-- Anal fin (small lower fin) -->
+    <path d="M -5 34 L 10 52 L 25 34"
+          fill="url(#finGrad)" stroke="#0a3d62" stroke-width="1.5" stroke-linejoin="round"/>
+
+    <!-- Lateral line (characteristic tuna stripe) -->
+    <path d="M -68 -6 Q -20 -12 60 -4"
+          fill="none" stroke="#63b3f7" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+
+    <!-- Second lateral stripe -->
+    <path d="M -55 2 Q 0 -2 62 4"
+          fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" opacity="0.2"/>
+
+    <!-- Body sheen overlay -->
+    <ellipse cx="-5" cy="-8" rx="55" ry="20"
+             fill="url(#sheen)"/>
+
+    <!-- Head / snout area (slightly darker) -->
+    <ellipse cx="62" cy="0" rx="22" ry="28"
+             fill="#0f4c75" stroke="#0a3d62" stroke-width="1.5"/>
+
+    <!-- Eye -->
+    <circle cx="70" cy="-8" r="7" fill="#0a1520"/>
+    <circle cx="70" cy="-8" r="5" fill="#1e90ff" opacity="0.9"/>
+    <circle cx="70" cy="-8" r="3" fill="#000a14"/>
+    <!-- Eye highlight -->
+    <circle cx="72" cy="-10" r="1.5" fill="#ffffff" opacity="0.9"/>
+
+    <!-- Mouth line -->
+    <path d="M 82 4 Q 80 8 76 6" fill="none" stroke="#0a1520" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Small finlets along the back (tuna characteristic) -->
+    <ellipse cx="28" cy="-35" rx="5" ry="3" fill="#1e90ff" opacity="0.7" transform="rotate(-15,28,-35)"/>
+    <ellipse cx="8"  cy="-35" rx="4" ry="2.5" fill="#1e90ff" opacity="0.6" transform="rotate(-10,8,-35)"/>
+    <ellipse cx="-12" cy="-34" rx="4" ry="2.5" fill="#1e90ff" opacity="0.5" transform="rotate(-8,-12,-34)"/>
+  </g>
 </svg>
