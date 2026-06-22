@@ -56,7 +56,7 @@ const config: Config = {
       title: 'TunaOS',
       logo: {
         alt: 'TunaOS Logo',
-        src: 'img/tuna-logo.svg',
+        src: 'img/logo.png',
       },
       items: [
         {
