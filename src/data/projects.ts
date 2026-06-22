@@ -248,7 +248,8 @@ export const PROJECTS: Project[] = [
       {label: 'Start the web UI', code: './corral web'},
     ],
     screenshots: [
-      {src: 'https://raw.githubusercontent.com/tuna-os/corral/main/docs/screenshots/dashboard.png', alt: 'Corral web dashboard'},
+      {src: '/img/screenshots/corral-dashboard.png', alt: 'Corral web dashboard — datacenter view'},
+      {src: '/img/screenshots/corral-dashboard-mobile.png', alt: 'Corral web UI on mobile'},
     ],
   },
   {
