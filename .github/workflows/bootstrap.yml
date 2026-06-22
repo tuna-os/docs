@@ -1,0 +1,74 @@
+# Tests the developer onboarding flow (npm install → build) on a
+# schedule so the next person to clone the repo doesn't hit a broken
+# setup. Auto-opens an issue when it breaks and closes it once green.
+#
+# Pattern from: https://mikemcquaid.com/make-github-actions-do-more-for-you/
+
+name: bootstrap
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'  # daily at midnight UTC
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  bootstrap:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    if: ${{ github.repository == 'tuna-os/docs' }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        id: install
+        run: npm ci
+
+      - name: Build the site
+        id: build
+        run: npm run build
+
+      # Open a tracking issue (one per OS) the first time bootstrap breaks.
+      - name: Open an issue on failure
+        if: failure() && (steps.install.outcome == 'failure' || steps.build.outcome == 'failure')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: "Bootstrap is broken on ${{ matrix.os }}"
+          URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh issue list --state open --search "${TITLE} in:title" \
+            --json number --jq '.[].number' | grep -q . || \
+          gh issue create \
+            --title "${TITLE}" \
+            --label bootstrap \
+            --body "Bootstrap failed: ${URL}"
+
+      # Close it again once bootstrap is green.
+      - name: Close the issue on success
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: "Bootstrap is broken on ${{ matrix.os }}"
+        run: |
+          gh issue list --state open --search "${TITLE} in:title" \
+            --json number --jq '.[].number' | \
+          while read -r number; do
+            gh issue close "${number}" \
+              --comment "Bootstrap is green again."
+          done
