@@ -27,9 +27,33 @@ const APPS = [
   },
 ];
 
-function AppCard({app}: {app: (typeof APPS)[number]}): ReactNode {
+const RUST_APPS = [
+  {
+    id: 'org.tunaos.letters-rust',
+    name: 'Letters (Rust)',
+    emoji: '📝',
+    description: 'Native GTK4 word processor — pure Rust, no Python required.',
+    docs: '/letters',
+  },
+  {
+    id: 'org.tunaos.tables-rust',
+    name: 'Tables (Rust)',
+    emoji: '📊',
+    description: 'Native GTK4 spreadsheet — pure Rust, no Python required.',
+    docs: '/tables',
+  },
+  {
+    id: 'org.tunaos.decks-rust',
+    name: 'Decks (Rust)',
+    emoji: '📽️',
+    description: 'Native GTK4 presentation app — pure Rust, no Python required.',
+    docs: '/decks',
+  },
+];
+
+function AppCard({app, badge}: {app: (typeof APPS)[number]; badge?: string}): ReactNode {
   return (
-    <Link to={app.docs} style={{
+    <Link to={`/install?app=${app.id}`} style={{
       display: 'flex', alignItems: 'center', gap: '1rem',
       padding: '1rem 1.25rem', borderRadius: 12,
       background: 'var(--ifm-card-background-color)',
@@ -38,7 +62,18 @@ function AppCard({app}: {app: (typeof APPS)[number]}): ReactNode {
     }}>
       <span style={{fontSize: '2rem'}}>{app.emoji}</span>
       <div style={{flex: 1}}>
-        <strong style={{display: 'block', fontSize: '1.1rem'}}>{app.name}</strong>
+        <strong style={{display: 'block', fontSize: '1.1rem'}}>
+          {app.name}
+          {badge && (
+            <span style={{
+              marginLeft: '0.5rem', fontSize: '0.7rem',
+              background: 'var(--ifm-color-warning-contrast-background)',
+              color: 'var(--ifm-color-warning-contrast-foreground)',
+              borderRadius: 99, padding: '0.1rem 0.5rem',
+              verticalAlign: 'middle',
+            }}>{badge}</span>
+          )}
+        </strong>
         <span style={{color: 'var(--ifm-color-emphasis-600)', fontSize: '0.9rem'}}>{app.description}</span>
       </div>
       <code style={{
@@ -85,11 +120,24 @@ export default function Flatpak(): ReactNode {
           </p>
         </section>
 
-        <section>
+        <section style={{marginBottom: '3rem'}}>
           <Heading as="h2">Available apps</Heading>
           <div style={{display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1.5rem'}}>
             {APPS.map((app) => (
               <AppCard key={app.id} app={app} />
+            ))}
+          </div>
+        </section>
+
+        <section style={{marginBottom: '3rem'}}>
+          <Heading as="h2">🦀 Rust previews</Heading>
+          <p style={{color: 'var(--ifm-color-emphasis-600)', marginBottom: '1rem'}}>
+            Native GTK4 rewrites — no Python or WebKit dependency. Lighter and faster.
+            Feature parity with the Python versions is in progress.
+          </p>
+          <div style={{display: 'flex', flexDirection: 'column', gap: '0.75rem'}}>
+            {RUST_APPS.map((app) => (
+              <AppCard key={app.id} app={app} badge="Preview" />
             ))}
           </div>
         </section>
@@ -106,7 +154,7 @@ export default function Flatpak(): ReactNode {
           </pre>
           <p style={{marginTop: '0.5rem'}}>
             Replace <code>org.tunaos.letters</code> with any app ID above.{' '}
-            <a href="https://github.com/tuna-os/flatpak-index">View on GitHub →</a>
+            <a href="https://github.com/tuna-os/hanthor-rust">Rust source →</a>
           </p>
         </section>
       </main>
