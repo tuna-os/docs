@@ -65,7 +65,7 @@
       "Name": "hanthor/letters",
       "Images": [
         {
-          "Digest": "sha256:4be49449a40c8f37ae7bb108a7c50228f444414875b9544093874f46a3ed843b",
+          "Digest": "sha256:a9066654c90f252274f22d7fd9a263873f30cf27cd71b4ab1b1935fdaefcf888",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -73,20 +73,20 @@
             "latest"
           ],
           "Labels": {
+            "org.flatpak.body": "Name: org.tunaos.letters\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
+            "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy50dW5hb3MubGV0dGVycwpydW50aW1lPW9yZy5nbm9tZS5QbGF0Zm9ybS94ODZfNjQvNTAKc2RrPW9yZy5nbm9tZS5TZGsveDg2XzY0LzUwCmNvbW1hbmQ9bGV0dGVycwoKW0NvbnRleHRdCnNoYXJlZD1pcGM7CnNvY2tldHM9ZmFsbGJhY2steDExO3dheWxhbmQ7CmRldmljZXM9ZHJpOwpmaWxlc3lzdGVtcz1ob3N0OwoKW1gtRmxhdHBhay1NaW1lVHlwZV0KdGV4dC9wbGFpbjthcHBsaWNhdGlvbi9qc29uO2ltYWdlL3BuZzthcHBsaWNhdGlvbi92bmQub3BlbnhtbGZvcm1hdHMtb2ZmaWNlZG9jdW1lbnQud29yZHByb2Nlc3NpbmdtbC5kb2N1bWVudDthcHBsaWNhdGlvbi92bmQub2FzaXMub3BlbmRvY3VtZW50LnRleHQ7dGV4dC9tYXJrZG93bj10cnVlCgpbRXh0ZW5zaW9uIG9yZy50dW5hb3MubGV0dGVycy5Mb2NhbGVdCmRpcmVjdG9yeT1zaGFyZS9ydW50aW1lL2xvY2FsZQphdXRvZGVsZXRlPXRydWUKbG9jYWxlLXN1YnNldD10cnVlCgpbRXh0ZW5zaW9uIG9yZy50dW5hb3MubGV0dGVycy5EZWJ1Z10KZGlyZWN0b3J5PWxpYi9kZWJ1ZwphdXRvZGVsZXRlPXRydWUKbm8tYXV0b2Rvd25sb2FkPXRydWUKCltCdWlsZF0KYnVpbHQtZXh0ZW5zaW9ucz1vcmcudHVuYW9zLmxldHRlcnMuTG9jYWxlO29yZy50dW5hb3MubGV0dGVycy5EZWJ1ZzsAAHM=",
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
-            "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW5ldC5jb2RlbG9naXN0aWNzLmxldHRlcnMKcnVudGltZT1vcmcuZ25vbWUuUGxhdGZvcm0veDg2XzY0LzUwCnNkaz1vcmcuZ25vbWUuU2RrL3g4Nl82NC81MApjb21tYW5kPWxldHRlcnMKCltDb250ZXh0XQpzaGFyZWQ9aXBjOwpzb2NrZXRzPWZhbGxiYWNrLXgxMTt3YXlsYW5kOwpkZXZpY2VzPWRyaTsKZmlsZXN5c3RlbXM9aG9zdDsKCltYLUZsYXRwYWstTWltZVR5cGVdCnRleHQvcGxhaW47YXBwbGljYXRpb24vanNvbjtpbWFnZS9wbmc7YXBwbGljYXRpb24vdm5kLm9wZW54bWxmb3JtYXRzLW9mZmljZWRvY3VtZW50LndvcmRwcm9jZXNzaW5nbWwuZG9jdW1lbnQ7YXBwbGljYXRpb24vdm5kLm9hc2lzLm9wZW5kb2N1bWVudC50ZXh0O3RleHQvbWFya2Rvd249dHJ1ZQoKW0V4dGVuc2lvbiBuZXQuY29kZWxvZ2lzdGljcy5sZXR0ZXJzLkxvY2FsZV0KZGlyZWN0b3J5PXNoYXJlL3J1bnRpbWUvbG9jYWxlCmF1dG9kZWxldGU9dHJ1ZQpsb2NhbGUtc3Vic2V0PXRydWUKCltFeHRlbnNpb24gbmV0LmNvZGVsb2dpc3RpY3MubGV0dGVycy5EZWJ1Z10KZGlyZWN0b3J5PWxpYi9kZWJ1ZwphdXRvZGVsZXRlPXRydWUKbm8tYXV0b2Rvd25sb2FkPXRydWUKCltCdWlsZF0KYnVpbHQtZXh0ZW5zaW9ucz1uZXQuY29kZWxvZ2lzdGljcy5sZXR0ZXJzLkxvY2FsZTtuZXQuY29kZWxvZ2lzdGljcy5sZXR0ZXJzLkRlYnVnOwAAcw==",
-            "org.flatpak.ref": "app/net.codelogistics.letters/x86_64/master",
-            "org.flatpak.installed-size": "212733952",
-            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAyuEAAAdA==",
-            "org.flatpak.metadata": "[Application]\nname=net.codelogistics.letters\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=letters\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=host;\n\n[X-Flatpak-MimeType]\ntext/plain;application/json;image/png;application/vnd.openxmlformats-officedocument.wordprocessingml.document;application/vnd.oasis.opendocument.text;text/markdown=true\n\n[Extension net.codelogistics.letters.Locale]\ndirectory=share/runtime/locale\nautodelete=true\nlocale-subset=true\n\n[Extension net.codelogistics.letters.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=net.codelogistics.letters.Locale;net.codelogistics.letters.Debug;",
-            "org.flatpak.timestamp": "1782129702",
-            "org.flatpak.download-size": "49554901",
-            "org.flatpak.commit": "b5c12ff4f81fb7e0b70f9e5a72e339918e5e53cd652161f75b4d58d3b9a24081",
-            "org.flatpak.subject": "Built from 4cb54e2af64b6f077d2c852a6d98ac1487daf402",
-            "org.flatpak.body": "Name: net.codelogistics.letters\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
-            "org.flatpak.commit-metadata.xa.ref": "YXBwL25ldC5jb2RlbG9naXN0aWNzLmxldHRlcnMveDg2XzY0L21hc3RlcgAAcw==",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAL56ZsAdA==",
-            "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL25ldC5jb2RlbG9naXN0aWNzLmxldHRlcnMveDg2XzY0L21hc3RlcgAsAGFz"
+            "org.flatpak.metadata": "[Application]\nname=org.tunaos.letters\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=letters\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=host;\n\n[X-Flatpak-MimeType]\ntext/plain;application/json;image/png;application/vnd.openxmlformats-officedocument.wordprocessingml.document;application/vnd.oasis.opendocument.text;text/markdown=true\n\n[Extension org.tunaos.letters.Locale]\ndirectory=share/runtime/locale\nautodelete=true\nlocale-subset=true\n\n[Extension org.tunaos.letters.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.letters.Locale;org.tunaos.letters.Debug;",
+            "org.flatpak.installed-size": "212702208",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAL5j44AdA==",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAytlAAAdA==",
+            "org.flatpak.download-size": "49533504",
+            "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MubGV0dGVycy94ODZfNjQvbWFzdGVyACUAYXM=",
+            "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MubGV0dGVycy94ODZfNjQvbWFzdGVyAABz",
+            "org.flatpak.ref": "app/org.tunaos.letters/x86_64/master",
+            "org.flatpak.subject": "Built from 02e3bf2d7afe7b2189b9d28c31a5f9d9ffc8451b",
+            "org.flatpak.commit": "c2030fb4c0041d932b6a9c5955ecf22c123b4d92db3cc078cda1174a667916ee",
+            "org.flatpak.timestamp": "1782131164"
           }
         }
       ]
