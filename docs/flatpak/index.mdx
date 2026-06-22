@@ -20,6 +20,8 @@ flatpak remote-add tuna-os https://docs.tuna-os.org/flatpak/tuna-os.flatpakrepo
 
 ## 2. Install apps
 
+### Python versions (stable)
+
 <Tabs>
   <TabItem value="tables" label="🧮 Tables">
     ```bash
@@ -43,3 +45,25 @@ Or install all three at once:
 ```bash
 flatpak install tuna-os org.tunaos.tables org.tunaos.decks org.tunaos.letters
 ```
+
+### 🦀 Rust versions (preview)
+
+Native GTK4 rewrites — no Python or WebKit required. Lighter and faster, feature parity in progress.
+
+<Tabs>
+  <TabItem value="tables-rust" label="🧮 Tables (Rust)">
+    ```bash
+    flatpak install tuna-os org.tunaos.tables-rust
+    ```
+  </TabItem>
+  <TabItem value="decks-rust" label="🎬 Decks (Rust)">
+    ```bash
+    flatpak install tuna-os org.tunaos.decks-rust
+    ```
+  </TabItem>
+  <TabItem value="letters-rust" label="📄 Letters (Rust)">
+    ```bash
+    flatpak install tuna-os org.tunaos.letters-rust
+    ```
+  </TabItem>
+</Tabs>
