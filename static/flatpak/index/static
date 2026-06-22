@@ -60,6 +60,36 @@
           }
         }
       ]
+    },
+    {
+      "Name": "hanthor/letters",
+      "Images": [
+        {
+          "Digest": "sha256:54bdc23b646058467b5b29fa9d28f3aa3d324bc7c47e0f2df66724b7c9d377ad",
+          "MediaType": "application/vnd.oci.image.manifest.v1+json",
+          "OS": "linux",
+          "Architecture": "amd64",
+          "Tags": [
+            "latest"
+          ],
+          "Labels": {
+            "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
+            "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW5ldC5jb2RlbG9naXN0aWNzLmxldHRlcnMKcnVudGltZT1vcmcuZ25vbWUuUGxhdGZvcm0veDg2XzY0LzUwCnNkaz1vcmcuZ25vbWUuU2RrL3g4Nl82NC81MApjb21tYW5kPWxldHRlcnMKCltDb250ZXh0XQpzaGFyZWQ9aXBjOwpzb2NrZXRzPWZhbGxiYWNrLXgxMTt3YXlsYW5kOwpkZXZpY2VzPWRyaTsKZmlsZXN5c3RlbXM9aG9zdDsKCltYLUZsYXRwYWstTWltZVR5cGVdCnRleHQvcGxhaW47YXBwbGljYXRpb24vanNvbjtpbWFnZS9wbmc7YXBwbGljYXRpb24vdm5kLm9wZW54bWxmb3JtYXRzLW9mZmljZWRvY3VtZW50LndvcmRwcm9jZXNzaW5nbWwuZG9jdW1lbnQ7YXBwbGljYXRpb24vdm5kLm9hc2lzLm9wZW5kb2N1bWVudC50ZXh0O3RleHQvbWFya2Rvd249dHJ1ZQoKW0V4dGVuc2lvbiBuZXQuY29kZWxvZ2lzdGljcy5sZXR0ZXJzLkxvY2FsZV0KZGlyZWN0b3J5PXNoYXJlL3J1bnRpbWUvbG9jYWxlCmF1dG9kZWxldGU9dHJ1ZQpsb2NhbGUtc3Vic2V0PXRydWUKCltFeHRlbnNpb24gbmV0LmNvZGVsb2dpc3RpY3MubGV0dGVycy5EZWJ1Z10KZGlyZWN0b3J5PWxpYi9kZWJ1ZwphdXRvZGVsZXRlPXRydWUKbm8tYXV0b2Rvd25sb2FkPXRydWUKCltCdWlsZF0KYnVpbHQtZXh0ZW5zaW9ucz1uZXQuY29kZWxvZ2lzdGljcy5sZXR0ZXJzLkxvY2FsZTtuZXQuY29kZWxvZ2lzdGljcy5sZXR0ZXJzLkRlYnVnOwAAcw==",
+            "org.flatpak.ref": "app/net.codelogistics.letters/x86_64/master",
+            "org.flatpak.installed-size": "212733952",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAyuEAAAdA==",
+            "org.flatpak.metadata": "[Application]\nname=net.codelogistics.letters\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=letters\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=host;\n\n[X-Flatpak-MimeType]\ntext/plain;application/json;image/png;application/vnd.openxmlformats-officedocument.wordprocessingml.document;application/vnd.oasis.opendocument.text;text/markdown=true\n\n[Extension net.codelogistics.letters.Locale]\ndirectory=share/runtime/locale\nautodelete=true\nlocale-subset=true\n\n[Extension net.codelogistics.letters.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=net.codelogistics.letters.Locale;net.codelogistics.letters.Debug;",
+            "org.flatpak.timestamp": "1782129736",
+            "org.flatpak.download-size": "49554848",
+            "org.flatpak.commit": "5a76519b101f68367962ac0abc04131f84ae5ed78043b1591046a3ee1995dd33",
+            "org.flatpak.subject": "Built from 2ff9c025def0ac25023309edabf1ad7aea195031",
+            "org.flatpak.body": "Name: net.codelogistics.letters\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
+            "org.flatpak.commit-metadata.xa.ref": "YXBwL25ldC5jb2RlbG9naXN0aWNzLmxldHRlcnMveDg2XzY0L21hc3RlcgAAcw==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAL56ZsAdA==",
+            "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL25ldC5jb2RlbG9naXN0aWNzLmxldHRlcnMveDg2XzY0L21hc3RlcgAsAGFz"
+          }
+        }
+      ]
     }
   ]
 }
