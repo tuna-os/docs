@@ -1,4 +1,35 @@
 {
   "Registry": "https://ghcr.io",
-  "Results": []
+  "Results": [
+    {
+      "Name": "hanthor/tables",
+      "Images": [
+        {
+          "Digest": "sha256:13429b69f03fa946a5b5b5ee9003e795f77723e67c07c900f9ff19925be350d4",
+          "MediaType": "application/vnd.oci.image.manifest.v1+json",
+          "OS": "linux",
+          "Architecture": "amd64",
+          "Tags": [
+            "latest"
+          ],
+          "Labels": {
+            "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
+            "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPWlvLmdpdGh1Yi5oYW50aG9yLnRhYmxlcwpydW50aW1lPW9yZy5nbm9tZS5QbGF0Zm9ybS94ODZfNjQvNTAKc2RrPW9yZy5nbm9tZS5TZGsveDg2XzY0LzUwCmNvbW1hbmQ9dGFibGVzCgpbQ29udGV4dF0Kc2hhcmVkPWlwYzsKc29ja2V0cz1mYWxsYmFjay14MTE7d2F5bGFuZDsKZGV2aWNlcz1kcmk7CgpbRXh0ZW5zaW9uIGlvLmdpdGh1Yi5oYW50aG9yLnRhYmxlcy5EZWJ1Z10KZGlyZWN0b3J5PWxpYi9kZWJ1ZwphdXRvZGVsZXRlPXRydWUKbm8tYXV0b2Rvd25sb2FkPXRydWUKCltCdWlsZF0KYnVpbHQtZXh0ZW5zaW9ucz1pby5naXRodWIuaGFudGhvci50YWJsZXMuRGVidWc7AABz",
+            "org.flatpak.ref": "app/io.github.hanthor.tables/x86_64/master",
+            "org.flatpak.installed-size": "7017472",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAABrFAAAdA==",
+            "org.flatpak.metadata": "[Application]\nname=io.github.hanthor.tables\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=tables\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\n\n[Extension io.github.hanthor.tables.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=io.github.hanthor.tables.Debug;",
+            "org.flatpak.timestamp": "1782129176",
+            "org.flatpak.download-size": "2210368",
+            "org.flatpak.commit": "45705dca91628d0d503925992dab70f22c29443995af9362b4b1a8bdbe7c1893",
+            "org.flatpak.subject": "Built from ed6f28be6bed093fc5327413e7b96eac5b73ef55",
+            "org.flatpak.body": "Name: io.github.hanthor.tables\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
+            "org.flatpak.commit-metadata.xa.ref": "YXBwL2lvLmdpdGh1Yi5oYW50aG9yLnRhYmxlcy94ODZfNjQvbWFzdGVyAABz",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAAkL4MAdA==",
+            "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL2lvLmdpdGh1Yi5oYW50aG9yLnRhYmxlcy94ODZfNjQvbWFzdGVyACsAYXM="
+          }
+        }
+      ]
+    }
+  ]
 }
