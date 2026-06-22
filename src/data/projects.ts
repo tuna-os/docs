@@ -230,7 +230,7 @@ export const PROJECTS: Project[] = [
     accent2: '#22c55e',
     repo: 'https://github.com/tuna-os/tables',
     docs: '/docs/tables',
-    flathub: 'https://tuna-os.github.io/flatpak-index',
+    flathub: '/flatpak',
     stats: [
       {label: 'Engine', value: 'Jspreadsheet CE + HyperFormula'},
       {label: 'Formats', value: 'XLSX · ODS · CSV'},
@@ -275,7 +275,7 @@ export const PROJECTS: Project[] = [
       {emoji: '🎨', title: 'Libadwaita native', text: 'Clean, responsive GTK 4 interface with light and dark mode.'},
       {emoji: '🤝', title: 'Suite family', text: 'Shares the suite-common scaffold with <a href="/tables">Tables</a> and <a href="/decks">Decks</a>.'},
     ],
-    flathub: 'https://tuna-os.github.io/flatpak-index',
+    flathub: '/flatpak',
     install: [
       {label: 'TunaOS Flatpak remote', code: 'flatpak remote-add tuna-os oci+https://tuna-os.github.io/flatpak-index\nflatpak install tuna-os org.tunaos.letters'},
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/letters.git\ncd letters\njust setup\njust build'},
@@ -296,7 +296,7 @@ export const PROJECTS: Project[] = [
     accent2: '#ef4444',
     repo: 'https://github.com/tuna-os/decks',
     docs: '/docs/decks',
-    flathub: 'https://tuna-os.github.io/flatpak-index',
+    flathub: '/flatpak',
     stats: [
       {label: 'Engine', value: 'Fabric.js + Reveal.js'},
       {label: 'Formats', value: 'PPTX · ODP'},

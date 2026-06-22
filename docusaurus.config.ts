@@ -97,6 +97,11 @@ const config: Config = {
           position: 'left',
         },
         {
+          to: '/flatpak',
+          label: '📦 Flatpak',
+          position: 'left',
+        },
+        {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
