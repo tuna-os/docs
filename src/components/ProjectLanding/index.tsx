@@ -56,8 +56,8 @@ function Hero({project}: {project: Project}): ReactNode {
             </Link>
           )}
           {project.flathub && (
-            <a className={styles.btnFlathub} href={project.flathub}>
-              <img src="https://flathub.org/api/badge?locale=en" alt="Get it on Flathub" />
+            <a className={clsx('button button--lg', styles.btnPrimary)} href={project.flathub}>
+              Install 📦
             </a>
           )}
           {project.docs && (

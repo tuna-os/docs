@@ -104,9 +104,7 @@
 .statLabel { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.85; }
 
 .heroButtons { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.8rem; margin-top: 1.9rem; }
-.btnFlathub { display: inline-flex; height: 42px; transition: transform 0.15s; }
-.btnFlathub img { height: 100%; width: auto; }
-.btnFlathub:hover { transform: translateY(-2px); }
+
 .btnPrimary { background: #fff; color: #0b1220 !important; border: none; font-weight: 700; }
 .btnPrimary:hover { background: #f1f5f9; color: #0b1220 !important; transform: translateY(-2px); }
 .btnGhost {
