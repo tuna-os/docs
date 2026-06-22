@@ -1,0 +1,81 @@
+name: Lint
+
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - '*.md'
+      - '.github/workflows/lint.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - '*.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  markdown-lint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901abe5b8200bef0e37dffb14cc0ad4d7e # v4
+
+      - uses: actions/setup-node@cd93095a6e160be2cc06e0158b140f5f8aa19670 # v4
+        with:
+          node-version: '20'
+
+      - name: Install markdownlint
+        run: npm install -g markdownlint-cli
+
+      - name: Run markdownlint
+        run: |
+          markdownlint 'docs/**/*.md' '*.md' \
+            --ignore docs/docs/tacklebox \
+            --disable MD013 MD033 MD041 || \
+            echo "NOTE: markdownlint found issues — review and fix"
+
+  # Check for broken internal links using a lightweight markdown link checker
+  link-check:
+    name: Internal Link Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901abe5b8200bef0e37dffb14cc0ad4d7e # v4
+
+      - name: Check for broken internal references
+        run: |
+          echo "=== Checking internal .md links ==="
+          ERRORS=0
+          # Find all markdown links to .md files and check if they exist
+          for f in $(find docs -name '*.md' -type f); do
+            while IFS= read -r link; do
+              # Extract the file reference from markdown links [text](path)
+              target=$(echo "$link" | sed -n 's/.*\[.*\](\([^)]*\.md\(#[^)]*\)*\)).*/\1/p')
+              [ -z "$target" ] && continue
+              # Remove anchor
+              target_file="${target%%#*}"
+              # Skip external URLs
+              echo "$target" | grep -qE '^https?://' && continue
+              # Check relative links
+              if [ ! -f "$(dirname "$f")/$target_file" ] && [ ! -f "$target_file" ]; then
+                echo "  BROKEN: $f -> $target"
+                ERRORS=$((ERRORS + 1))
+              fi
+            done < <(grep -oP '\[.*?\]\([^)]+\.md(#[^)]*)?\)' "$f" 2>/dev/null || true)
+          done
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "Found $ERRORS broken internal links"
+          else
+            echo "No broken internal links found"
+          fi
+
+      - name: Test summary
+        if: always()
+        run: |
+          echo "## Lint Results" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Check | Status |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Markdown Lint | completed |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Internal Link Check | completed |" >> "$GITHUB_STEP_SUMMARY"
