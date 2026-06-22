@@ -35,7 +35,7 @@
       "Name": "hanthor/decks",
       "Images": [
         {
-          "Digest": "sha256:02aa5ab583b3519e197750ad99fcb672afe0ce5adfc7b4c0d7349970f78d2aeb",
+          "Digest": "sha256:39f3efe5c9e6eceda639c1a2e6182ffc0681ce2a75cc5e99162585109d544718",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -49,10 +49,10 @@
             "org.flatpak.installed-size": "39448576",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAJZ8AAAdA==",
             "org.flatpak.metadata": "[Application]\nname=io.github.hanthor.decks\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=decks\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\n\n[Extension io.github.hanthor.decks.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=io.github.hanthor.decks.Debug;",
-            "org.flatpak.timestamp": "1782129679",
-            "org.flatpak.download-size": "13637673",
-            "org.flatpak.commit": "4daeef87fe74410a55052c5171e3ac1bbe46ca81efc1dc0559140e11c4b85141",
-            "org.flatpak.subject": "Built from 3329534e8cd8e182bbd76cb69c4720999f2a1c2f",
+            "org.flatpak.timestamp": "1782129700",
+            "org.flatpak.download-size": "13637580",
+            "org.flatpak.commit": "bef9eefae0b6ed75deba54463e737f7b012e9ae65898559ebdd6a4503eca25aa",
+            "org.flatpak.subject": "Built from b96207fa41e1d6cc2a18478b9cc8d03199c570c6",
             "org.flatpak.body": "Name: io.github.hanthor.decks\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL2lvLmdpdGh1Yi5oYW50aG9yLmRlY2tzL3g4Nl82NC9tYXN0ZXIAAHM=",
             "org.flatpak.commit-metadata.xa.download-size": "AAAAAADUJ+oAdA==",
