@@ -22,6 +22,8 @@ export type Project = {
   docs: string; // doc path, usually /docs/<id>
   // Optional primary CTA beyond Docs + GitHub.
   cta?: {label: string; to: string};
+  // Flathub app URL (renders as a Flathub install badge in the hero).
+  flathub?: string;
   stats?: {label: string; value: string}[];
   features: PFeature[];
   install?: PInstall[];
@@ -272,8 +274,8 @@ export const PROJECTS: Project[] = [
       {emoji: '🎨', title: 'Libadwaita native', text: 'Clean, responsive GTK 4 interface with light and dark mode.'},
       {emoji: '🤝', title: 'Suite family', text: 'Shares the suite-common scaffold with <a href="/tables">Tables</a> and <a href="/decks">Decks</a>.'},
     ],
+    flathub: 'https://flathub.org/apps/org.tunaos.letters',
     install: [
-      {label: 'Flathub', code: 'flatpak install flathub org.tunaos.letters'},
       {label: 'TunaOS Flatpak remote', code: 'flatpak remote-add tuna-os oci+https://tuna-os.github.io/flatpak-index\nflatpak install tuna-os org.tunaos.letters'},
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/letters.git\ncd letters\njust setup\njust build'},
     ],
