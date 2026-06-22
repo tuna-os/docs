@@ -56,7 +56,7 @@ function Hero({project}: {project: Project}): ReactNode {
             </Link>
           )}
           {project.flathub && (
-            <a className={clsx('button button--lg', styles.btnPrimary)} href={project.flathub}>
+            <a className={clsx('button button--lg', styles.btnPrimary)} href={`/flatpak/appstream/${project.flathub}.flatpakref`}>
               Install 📦
             </a>
           )}

@@ -22,7 +22,7 @@ export type Project = {
   docs: string; // doc path, usually /docs/<id>
   // Optional primary CTA beyond Docs + GitHub.
   cta?: {label: string; to: string};
-  // Flathub app URL (renders as a Flathub install badge in the hero).
+  // Flatpak app ID (renders as install button with appstream:// URI).
   flathub?: string;
   stats?: {label: string; value: string}[];
   features: PFeature[];
@@ -230,7 +230,7 @@ export const PROJECTS: Project[] = [
     accent2: '#22c55e',
     repo: 'https://github.com/tuna-os/tables',
     docs: '/docs/tables',
-    flathub: '/flatpak',
+    flathub: 'org.tunaos.tables',
     stats: [
       {label: 'Engine', value: 'Jspreadsheet CE + HyperFormula'},
       {label: 'Formats', value: 'XLSX · ODS · CSV'},
@@ -275,7 +275,7 @@ export const PROJECTS: Project[] = [
       {emoji: '🎨', title: 'Libadwaita native', text: 'Clean, responsive GTK 4 interface with light and dark mode.'},
       {emoji: '🤝', title: 'Suite family', text: 'Shares the suite-common scaffold with <a href="/tables">Tables</a> and <a href="/decks">Decks</a>.'},
     ],
-    flathub: '/flatpak',
+    flathub: 'org.tunaos.tables',
     install: [
       {label: 'TunaOS Flatpak remote', code: 'flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo\nflatpak install tuna-os org.tunaos.letters'},
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/letters.git\ncd letters\njust setup\njust build'},
@@ -296,7 +296,7 @@ export const PROJECTS: Project[] = [
     accent2: '#ef4444',
     repo: 'https://github.com/tuna-os/decks',
     docs: '/docs/decks',
-    flathub: '/flatpak',
+    flathub: 'org.tunaos.decks',
     stats: [
       {label: 'Engine', value: 'Fabric.js + Reveal.js'},
       {label: 'Formats', value: 'PPTX · ODP'},
