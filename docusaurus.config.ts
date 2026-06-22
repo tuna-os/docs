@@ -85,6 +85,7 @@ const config: Config = {
             {to: '/letters', label: '📝 Letters'},
             {to: '/decks', label: '📽️ Decks'},
             {to: '/copr', label: '⚙ COPR Builds'},
+            {to: '/office', label: '🏢 Office Suite (Tables, Letters, Decks)'},
             {type: 'html', value: '<hr style="margin:0.3rem 0;opacity:0.3">'},
             {to: '/dakota', label: '🦖 Dakota ↗'},
             {to: '/hawaii', label: '🌺 Zirconium Hawaii ↗'},
@@ -94,6 +95,11 @@ const config: Config = {
         {
           to: '/download',
           label: '📦 Download',
+          position: 'left',
+        },
+        {
+          to: '/office',
+          label: '🏢 Office Suite',
           position: 'left',
         },
         {
