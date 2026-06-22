@@ -30,6 +30,36 @@
           }
         }
       ]
+    },
+    {
+      "Name": "hanthor/decks",
+      "Images": [
+        {
+          "Digest": "sha256:02aa5ab583b3519e197750ad99fcb672afe0ce5adfc7b4c0d7349970f78d2aeb",
+          "MediaType": "application/vnd.oci.image.manifest.v1+json",
+          "OS": "linux",
+          "Architecture": "amd64",
+          "Tags": [
+            "latest"
+          ],
+          "Labels": {
+            "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
+            "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPWlvLmdpdGh1Yi5oYW50aG9yLmRlY2tzCnJ1bnRpbWU9b3JnLmdub21lLlBsYXRmb3JtL3g4Nl82NC81MApzZGs9b3JnLmdub21lLlNkay94ODZfNjQvNTAKY29tbWFuZD1kZWNrcwoKW0NvbnRleHRdCnNoYXJlZD1pcGM7CnNvY2tldHM9ZmFsbGJhY2steDExO3dheWxhbmQ7CmRldmljZXM9ZHJpOwoKW0V4dGVuc2lvbiBpby5naXRodWIuaGFudGhvci5kZWNrcy5EZWJ1Z10KZGlyZWN0b3J5PWxpYi9kZWJ1ZwphdXRvZGVsZXRlPXRydWUKbm8tYXV0b2Rvd25sb2FkPXRydWUKCltCdWlsZF0KYnVpbHQtZXh0ZW5zaW9ucz1pby5naXRodWIuaGFudGhvci5kZWNrcy5EZWJ1ZzsAAHM=",
+            "org.flatpak.ref": "app/io.github.hanthor.decks/x86_64/master",
+            "org.flatpak.installed-size": "39448576",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAJZ8AAAdA==",
+            "org.flatpak.metadata": "[Application]\nname=io.github.hanthor.decks\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=decks\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\n\n[Extension io.github.hanthor.decks.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=io.github.hanthor.decks.Debug;",
+            "org.flatpak.timestamp": "1782129679",
+            "org.flatpak.download-size": "13637673",
+            "org.flatpak.commit": "4daeef87fe74410a55052c5171e3ac1bbe46ca81efc1dc0559140e11c4b85141",
+            "org.flatpak.subject": "Built from 3329534e8cd8e182bbd76cb69c4720999f2a1c2f",
+            "org.flatpak.body": "Name: io.github.hanthor.decks\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
+            "org.flatpak.commit-metadata.xa.ref": "YXBwL2lvLmdpdGh1Yi5oYW50aG9yLmRlY2tzL3g4Nl82NC9tYXN0ZXIAAHM=",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAADUJ+oAdA==",
+            "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL2lvLmdpdGh1Yi5oYW50aG9yLmRlY2tzL3g4Nl82NC9tYXN0ZXIAKgBhcw=="
+          }
+        }
+      ]
     }
   ]
 }
