@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'TunaOS',
   tagline: 'A Collection of Cloud-Native Enterprise Linux OS Images',
-  favicon: 'img/favicon.svg',
+  favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
