@@ -5,6 +5,8 @@ description: Presentations for GNOME with slide editing and fullscreen mode
 ---
 
 import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # 🎬 Decks
 
@@ -14,10 +16,22 @@ Reads and writes PPTX and ODP files.  Exports to PDF.
 
 ## Install
 
-<CodeBlock language="bash">
-flatpak remote-add tuna-os https://docs.tuna-os.org/flatpak/tuna-os.flatpakrepo
-flatpak install tuna-os org.tunaos.decks
-</CodeBlock>
+<Tabs>
+  <TabItem value="python" label="Python (stable)">
+    <CodeBlock language="bash">
+      flatpak remote-add tuna-os https://docs.tuna-os.org/flatpak/tuna-os.flatpakrepo
+      flatpak install tuna-os org.tunaos.decks
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="rust" label="🦀 Rust (preview)">
+    <CodeBlock language="bash">
+      flatpak remote-add tuna-os https://docs.tuna-os.org/flatpak/tuna-os.flatpakrepo
+      flatpak install tuna-os org.tunaos.decks-rust
+    </CodeBlock>
+    > **Note:** The Rust version is a lightweight native rewrite — no Python or WebKit required.
+    > Feature set is a subset of the Python version while the port is in progress.
+  </TabItem>
+</Tabs>
 
 ## Features
 
@@ -29,4 +43,4 @@ flatpak install tuna-os org.tunaos.decks
 - **Undo/Redo**: 30-level canvas action history
 - **Export**: Multi-page PDF
 
-[View source on GitHub →](https://github.com/hanthor/decks)
+[View source on GitHub →](https://github.com/hanthor/decks) · [Rust rewrite →](https://github.com/tuna-os/hanthor-rust)
