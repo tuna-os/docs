@@ -1,0 +1,8 @@
+[Flatpak Ref]
+Name=org.tunaos.letters-rust
+Branch=stable
+Title=org.tunaos.letters-rust from tuna-os
+IsRuntime=false
+Url=oci+https://tunaos.org/flatpak
+SuggestRemoteName=tuna-os
+RuntimeRepo=https://tunaos.org/flatpak/tuna-os.flatpakrepo
