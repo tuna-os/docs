@@ -1,4 +1,5 @@
 import type {ReactNode} from 'react';
+import Head from '@docusaurus/Head';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import Link from '@docusaurus/Link';
@@ -82,6 +83,17 @@ function AppCard({app}: {app: (typeof APPS)[number]}): ReactNode {
 export default function Office(): ReactNode {
   return (
     <Layout title="GNOME Office Suite" description="Tables, Letters, and Decks — a modern office suite for the GNOME desktop.">
+      <Head>
+        <meta property="og:title" content="GNOME Office Suite — TunaOS" />
+        <meta property="og:description" content="Tables, Letters, and Decks — a modern, native office suite for GNOME." />
+        <meta property="og:image" content="https://tunaos.org/img/tunaos-social-card.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="GNOME Office Suite — TunaOS" />
+        <meta name="twitter:description" content="Tables, Letters, and Decks — a modern, native office suite for GNOME." />
+        <meta name="twitter:image" content="https://tunaos.org/img/tunaos-social-card.png" />
+      </Head>
       <header style={{
         textAlign: 'center', padding: '4rem 1rem 2rem',
         background: 'radial-gradient(120% 120% at 50% -10%, #f59e0b 0%, #92400e 60%, #0b1220 100%)',

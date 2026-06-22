@@ -1,4 +1,5 @@
 import type {ReactNode} from 'react';
+import Head from '@docusaurus/Head';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
@@ -232,6 +233,17 @@ function MoreProjects({project}: {project: Project}): ReactNode {
 export default function ProjectLanding({project}: {project: Project}): ReactNode {
   return (
     <Layout title={project.name} description={project.tagline}>
+      <Head>
+        <meta property="og:title" content={`${project.name} — TunaOS`} />
+        <meta property="og:description" content={project.tagline} />
+        <meta property="og:image" content="https://tunaos.org/img/tunaos-social-card.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${project.name} — TunaOS`} />
+        <meta name="twitter:description" content={project.tagline} />
+        <meta name="twitter:image" content="https://tunaos.org/img/tunaos-social-card.png" />
+      </Head>
       <Hero project={project} />
       <main className={project.id === 'tromso' ? 'aurora-page' : undefined}>
         <Highlights project={project} />
