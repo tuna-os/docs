@@ -81,6 +81,17 @@ const PROJECTS: Project[] = [
     ],
   },
   {
+    name: 'Corral',
+    slug: '/corral',
+    icon: '🤠',
+    description: 'Herd your VMs into your tailnet — QEMU + KubeVirt manager with a Proxmox-style web UI. One binary, no daemons.',
+    status: 'alpha',
+    links: [
+      {label: 'Documentation', to: '/docs/corral'},
+      {label: 'GitHub', to: 'https://github.com/tuna-os/corral'},
+    ],
+  },
+  {
     name: 'Tables',
     slug: '/tables',
     icon: '📊',

@@ -81,6 +81,7 @@ const config: Config = {
             {to: '/xfce-linux', label: '🖥️ XFCE Linux'},
             {to: '/tavern', label: '🍻 Tavern'},
             {to: '/bluefin-cli', label: '⌨️ bluefin-cli'},
+            {to: '/corral', label: '🤠 Corral'},
             {to: '/tables', label: '📊 Tables'},
             {to: '/letters', label: '📝 Letters'},
             {to: '/decks', label: '📽️ Decks'},

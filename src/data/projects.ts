@@ -219,6 +219,39 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    id: 'corral',
+    emoji: '🤠',
+    name: 'Corral',
+    status: 'alpha',
+    tagline: 'Herd your VMs into your tailnet — QEMU + KubeVirt VM manager with a Proxmox-style web UI.',
+    lede:
+      'Corral gives you one command for VMs on your laptop and your Kubernetes cluster. Local QEMU/KVM and cluster KubeVirt share the same five verbs — create, start, ssh, viewer, delete. Every VM lands on your Tailscale tailnet automatically. One static Go binary, no daemons.',
+    accent: '#78350f',
+    accent2: '#f59e0b',
+    repo: 'https://github.com/tuna-os/corral',
+    docs: '/docs/corral',
+    stats: [
+      {label: 'Backends', value: 'QEMU/KVM + KubeVirt'},
+      {label: 'Interfaces', value: 'CLI · TUI · Web UI'},
+      {label: 'Binary', value: 'One static Go binary'},
+    ],
+    features: [
+      {emoji: '🐄', title: 'Same commands everywhere', text: 'create, start, ssh, viewer, delete — identical whether local QEMU or cluster KubeVirt.'},
+      {emoji: '🔑', title: 'SSH that just works', text: 'Public key injected at create time. Corral picks the right path: K8s tunnel for cluster VMs, Tailscale port-forward for local ones.'},
+      {emoji: '🌐', title: 'VMs join your tailnet', text: 'Drop a Tailscale auth key and every cloud-init VM registers itself — MagicDNS name and all.'},
+      {emoji: '🖥️', title: 'Proxmox-style web UI', text: 'Dark dashboard with datacenter→node→VM tree, live status, create wizard, one-click live migration, in-browser VNC and serial consoles.'},
+      {emoji: '🧩', title: 'Plugin marketplace', text: 'Extensions ship as plugins — browse, install, and run from CLI or web UI. bootc plugin builds OS disks on-cluster from container images.'},
+      {emoji: '📦', title: 'One static binary', text: 'No daemons, no controllers, no client-side K8s SDK. Drives kubectl/virtctl/systemctl — the tools you already trust.'},
+    ],
+    install: [
+      {label: 'Build from source', code: 'git clone https://github.com/tuna-os/corral.git\ncd corral\ngo build -o corral .'},
+      {label: 'Start the web UI', code: './corral web'},
+    ],
+    screenshots: [
+      {src: 'https://raw.githubusercontent.com/tuna-os/corral/main/docs/screenshots/dashboard.png', alt: 'Corral web dashboard'},
+    ],
+  },
+  {
     id: 'tables',
     emoji: '📊',
     name: 'Tables',
