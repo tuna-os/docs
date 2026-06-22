@@ -26,7 +26,7 @@ Letters is a modern, minimalist word processor for the GNOME desktop, with suppo
 Or from the TunaOS Flatpak remote:
 
 ```bash
-flatpak remote-add tuna-os oci+https://tuna-os.github.io/flatpak-index
+flatpak remote-add tuna-os oci+https://tunaos.org/flatpak
 flatpak install tuna-os org.tunaos.letters
 ```
 

@@ -74,11 +74,11 @@ export default function Flatpak(): ReactNode {
             padding: '1.25rem', borderRadius: 8,
             fontSize: '0.95rem',
           }}>
-            <code>flatpak remote-add --user tuna-os oci+https://tuna-os.github.io/flatpak-index</code>
+            <code>flatpak remote-add --user tuna-os oci+https://tunaos.org/flatpak</code>
           </pre>
           <p style={{marginTop: '0.75rem', color: 'var(--ifm-color-emphasis-600)'}}>
             Or download the{' '}
-            <a href="https://raw.githubusercontent.com/tuna-os/flatpak-index/main/tuna-os.flatpakrepo">
+            <a href="/flatpak/tuna-os.flatpakrepo">
               tuna-os.flatpakrepo
             </a>{' '}
             file and open it with GNOME Software.

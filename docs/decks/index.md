@@ -24,7 +24,7 @@ Shares the [suite-common](https://github.com/tuna-os/suite-common) scaffold with
 ## Install
 
 ```bash
-flatpak remote-add tuna-os oci+https://tuna-os.github.io/flatpak-index
+flatpak remote-add tuna-os oci+https://tunaos.org/flatpak
 flatpak install tuna-os org.tunaos.decks
 ```
 

@@ -1,7 +1,7 @@
 [Flatpak Repo]
 Title=TunaOS Flatpaks
-Url=oci+https://docs.tuna-os.org/flatpak
-Homepage=https://github.com/tuna-os
+Url=oci+https://tunaos.org/flatpak
+Homepage=https://tunaos.org
 Comment=TunaOS Flatpak repository
-Description=GNOME office suite and utilities from tuna-os
+Description=GNOME office suite — Tables, Letters, Decks
 Icon=https://avatars.githubusercontent.com/u/196050174
