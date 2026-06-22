@@ -3,20 +3,43 @@ sidebar_position: 1
 title: Flatpak
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # TunaOS Flatpaks
 
 Install GNOME office apps directly from our Flatpak remote.
 
-## Add the remote
+## 1. Add the remote
+
+This is a one-time step:
 
 ```bash
 flatpak remote-add tuna-os https://docs.tuna-os.org/flatpak/tuna-os.flatpakrepo
 ```
 
-## Available apps
+## 2. Install apps
 
-| App | Install |
-|-----|---------|
-| [🧮 Tables](/docs/apps/tables) | `flatpak install tuna-os org.tunaos.tables` |
-| [🎬 Decks](/docs/apps/decks) | `flatpak install tuna-os org.tunaos.decks` |
-| [📄 Letters](/docs/apps/letters) | `flatpak install tuna-os org.tunaos.letters` |
+<Tabs>
+  <TabItem value="tables" label="🧮 Tables">
+    ```bash
+    flatpak install tuna-os org.tunaos.tables
+    ```
+  </TabItem>
+  <TabItem value="decks" label="🎬 Decks">
+    ```bash
+    flatpak install tuna-os org.tunaos.decks
+    ```
+  </TabItem>
+  <TabItem value="letters" label="📄 Letters">
+    ```bash
+    flatpak install tuna-os org.tunaos.letters
+    ```
+  </TabItem>
+</Tabs>
+
+Or install all three at once:
+
+```bash
+flatpak install tuna-os org.tunaos.tables org.tunaos.decks org.tunaos.letters
+```

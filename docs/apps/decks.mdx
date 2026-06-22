@@ -1,35 +1,32 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 title: "🎬 Decks"
+description: Presentations for GNOME with slide editing and fullscreen mode
 ---
 
-# Decks
+import CodeBlock from '@theme/CodeBlock';
 
-Presentation app with slide editing and fullscreen mode
+# 🎬 Decks
 
-Part of the [TunaOS](https://github.com/tuna-os) GNOME office suite.
+Presentation application powered by [Fabric.js](http://fabricjs.com/) for canvas editing and [Reveal.js](https://revealjs.com/) for fullscreen presentations.
+
+Reads and writes PPTX and ODP files.  Exports to PDF.
 
 ## Install
 
-```bash
+<CodeBlock language="bash">
 flatpak remote-add tuna-os https://docs.tuna-os.org/flatpak/tuna-os.flatpakrepo
 flatpak install tuna-os org.tunaos.decks
-```
+</CodeBlock>
 
 ## Features
 
-See [README](https://github.com/hanthor/decks#readme) for full details.
+- **Canvas editing**: Text boxes, shapes, images on a Fabric.js canvas
+- **Slide management**: Add, delete, duplicate, reorder via sidebar
+- **Layouts**: Blank, Title, Title+Content, Two-Column presets
+- **Transitions**: Fade, Slide, Convex, Concave, Zoom (per-slide)
+- **Present mode**: Fullscreen with B/W/. blank shortcuts
+- **Undo/Redo**: 30-level canvas action history
+- **Export**: Multi-page PDF
 
-## Build from source
-
-```bash
-git clone https://github.com/hanthor/decks.git
-cd decks
-just setup
-just build
-just run
-```
-
-## License
-
-GPL-3.0-or-later
+[View source on GitHub →](https://github.com/hanthor/decks)
