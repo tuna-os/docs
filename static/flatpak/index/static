@@ -65,7 +65,7 @@
       "Name": "hanthor/letters",
       "Images": [
         {
-          "Digest": "sha256:54bdc23b646058467b5b29fa9d28f3aa3d324bc7c47e0f2df66724b7c9d377ad",
+          "Digest": "sha256:4be49449a40c8f37ae7bb108a7c50228f444414875b9544093874f46a3ed843b",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -79,10 +79,10 @@
             "org.flatpak.installed-size": "212733952",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAyuEAAAdA==",
             "org.flatpak.metadata": "[Application]\nname=net.codelogistics.letters\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=letters\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=host;\n\n[X-Flatpak-MimeType]\ntext/plain;application/json;image/png;application/vnd.openxmlformats-officedocument.wordprocessingml.document;application/vnd.oasis.opendocument.text;text/markdown=true\n\n[Extension net.codelogistics.letters.Locale]\ndirectory=share/runtime/locale\nautodelete=true\nlocale-subset=true\n\n[Extension net.codelogistics.letters.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=net.codelogistics.letters.Locale;net.codelogistics.letters.Debug;",
-            "org.flatpak.timestamp": "1782129736",
-            "org.flatpak.download-size": "49554848",
-            "org.flatpak.commit": "5a76519b101f68367962ac0abc04131f84ae5ed78043b1591046a3ee1995dd33",
-            "org.flatpak.subject": "Built from 2ff9c025def0ac25023309edabf1ad7aea195031",
+            "org.flatpak.timestamp": "1782129702",
+            "org.flatpak.download-size": "49554901",
+            "org.flatpak.commit": "b5c12ff4f81fb7e0b70f9e5a72e339918e5e53cd652161f75b4d58d3b9a24081",
+            "org.flatpak.subject": "Built from 4cb54e2af64b6f077d2c852a6d98ac1487daf402",
             "org.flatpak.body": "Name: net.codelogistics.letters\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL25ldC5jb2RlbG9naXN0aWNzLmxldHRlcnMveDg2XzY0L21hc3RlcgAAcw==",
             "org.flatpak.commit-metadata.xa.download-size": "AAAAAAL56ZsAdA==",
