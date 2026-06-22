@@ -81,6 +81,39 @@ const PROJECTS: Project[] = [
     ],
   },
   {
+    name: 'Tables',
+    slug: '/tables',
+    icon: '📊',
+    description: 'GNOME spreadsheet — Excel-equivalent with ~400 functions, charts, and multi-sheet workbooks. Jspreadsheet CE + HyperFormula.',
+    status: 'alpha',
+    links: [
+      {label: 'Documentation', to: '/docs/tables'},
+      {label: 'GitHub', to: 'https://github.com/tuna-os/tables'},
+    ],
+  },
+  {
+    name: 'Letters',
+    slug: '/letters',
+    icon: '📝',
+    description: 'Modern minimalist word processor for GNOME. DOCX, ODT, Markdown, HTML, and PDF export via Pandoc and WeasyPrint.',
+    status: 'alpha',
+    links: [
+      {label: 'Documentation', to: '/docs/letters'},
+      {label: 'GitHub', to: 'https://github.com/tuna-os/letters'},
+    ],
+  },
+  {
+    name: 'Decks',
+    slug: '/decks',
+    icon: '📽️',
+    description: 'GNOME presentation app — Fabric.js canvas editing and Reveal.js fullscreen. PPTX, ODP, and PDF export.',
+    status: 'alpha',
+    links: [
+      {label: 'Documentation', to: '/docs/decks'},
+      {label: 'GitHub', to: 'https://github.com/tuna-os/decks'},
+    ],
+  },
+  {
     name: 'bluefin-cli',
     slug: '/bluefin-cli',
     icon: '⌨️',
