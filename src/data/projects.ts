@@ -245,7 +245,7 @@ export const PROJECTS: Project[] = [
       {emoji: '🤝', title: 'Suite family', text: 'Shares the suite-common scaffold with <a href="/letters">Letters</a> and <a href="/decks">Decks</a>.'},
     ],
     install: [
-      {label: 'Flatpak (TunaOS remote)', code: 'flatpak remote-add tuna-os oci+https://tunaos.org/flatpak\nflatpak install tuna-os org.tunaos.tables'},
+      {label: 'Flatpak (TunaOS remote)', code: 'flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo\nflatpak install tuna-os org.tunaos.tables'},
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/tables.git\ncd tables\njust setup\njust build'},
     ],
   },
@@ -277,7 +277,7 @@ export const PROJECTS: Project[] = [
     ],
     flathub: '/flatpak',
     install: [
-      {label: 'TunaOS Flatpak remote', code: 'flatpak remote-add tuna-os oci+https://tunaos.org/flatpak\nflatpak install tuna-os org.tunaos.letters'},
+      {label: 'TunaOS Flatpak remote', code: 'flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo\nflatpak install tuna-os org.tunaos.letters'},
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/letters.git\ncd letters\njust setup\njust build'},
     ],
     screenshots: [
@@ -311,7 +311,7 @@ export const PROJECTS: Project[] = [
       {emoji: '🤝', title: 'Suite family', text: 'Shares the suite-common scaffold with <a href="/tables">Tables</a> and <a href="/letters">Letters</a>.'},
     ],
     install: [
-      {label: 'Flatpak (TunaOS remote)', code: 'flatpak remote-add tuna-os oci+https://tunaos.org/flatpak\nflatpak install tuna-os org.tunaos.decks'},
+      {label: 'Flatpak (TunaOS remote)', code: 'flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo\nflatpak install tuna-os org.tunaos.decks'},
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/decks.git\ncd decks\njust setup\njust build'},
     ],
   },

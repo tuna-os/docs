@@ -74,7 +74,7 @@ export default function Flatpak(): ReactNode {
             padding: '1.25rem', borderRadius: 8,
             fontSize: '0.95rem',
           }}>
-            <code>flatpak remote-add --user tuna-os oci+https://tunaos.org/flatpak</code>
+            <code>flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo</code>
           </pre>
           <p style={{marginTop: '0.75rem', color: 'var(--ifm-color-emphasis-600)'}}>
             Or download the{' '}
