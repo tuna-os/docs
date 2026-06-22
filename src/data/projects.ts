@@ -275,7 +275,7 @@ export const PROJECTS: Project[] = [
       {emoji: '🎨', title: 'Libadwaita native', text: 'Clean, responsive GTK 4 interface with light and dark mode.'},
       {emoji: '🤝', title: 'Suite family', text: 'Shares the suite-common scaffold with <a href="/tables">Tables</a> and <a href="/decks">Decks</a>.'},
     ],
-    flathub: 'org.tunaos.tables',
+    flathub: 'org.tunaos.letters',
     install: [
       {label: 'TunaOS Flatpak remote', code: 'flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo\nflatpak install tuna-os org.tunaos.letters'},
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/letters.git\ncd letters\njust setup\njust build'},
