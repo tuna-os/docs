@@ -2,7 +2,7 @@
   "Registry": "https://ghcr.io",
   "Results": [
     {
-      "Name": "hanthor/letters-rust",
+      "Name": "tuna-os/letters-rust",
       "Images": [
         {
           "Digest": "sha256:2545a474c5b0b679fd9ea8e4e27d31eeb19908401e7dae209314419e2a37da16",
@@ -32,7 +32,7 @@
       ]
     },
     {
-      "Name": "hanthor/tables-rust",
+      "Name": "tuna-os/tables-rust",
       "Images": [
         {
           "Digest": "sha256:7ec52935eff32ea8e2dc8eeea8fa6a1592c3ecbf5f7f7f7522cc0081335acc1b",
@@ -62,7 +62,7 @@
       ]
     },
     {
-      "Name": "hanthor/decks-rust",
+      "Name": "tuna-os/decks-rust",
       "Images": [
         {
           "Digest": "sha256:3adb670aaf4bd4debd26cafbb644fb696fda5b7b413b547adec2bfd33e577267",
