@@ -25,6 +25,27 @@ const APPS = [
     description: 'Presentation app — Fabric.js canvas + Reveal.js fullscreen.',
     docs: '/decks',
   },
+  {
+    id: 'org.tunaos.tables-rust',
+    name: 'Tables (Rust)',
+    emoji: '🦀',
+    description: 'Pure Rust GTK4 spreadsheet — fast, native, no WebKit.',
+    docs: '/tables',
+  },
+  {
+    id: 'org.tunaos.letters-rust',
+    name: 'Letters (Rust)',
+    emoji: '🦀',
+    description: 'Pure Rust GTK4 word processor — fast, native, no WebKit.',
+    docs: '/letters',
+  },
+  {
+    id: 'org.tunaos.decks-rust',
+    name: 'Decks (Rust)',
+    emoji: '🦀',
+    description: 'Pure Rust GTK4 presentation app — fast, native, no WebKit.',
+    docs: '/decks',
+  },
 ];
 
 const RUST_APPS = [

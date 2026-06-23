@@ -61,6 +61,11 @@ function Hero({project}: {project: Project}): ReactNode {
               Install 📦
             </a>
           )}
+          {project.flatpakRust && (
+            <a className={clsx('button button--lg', styles.btnGhost)} href={`/install?app=${project.flatpakRust}`}>
+              Install (Rust) 🦀
+            </a>
+          )}
           {project.docs && (
             <Link
               className={clsx('button button--lg', project.cta ? styles.btnGhost : styles.btnPrimary)}

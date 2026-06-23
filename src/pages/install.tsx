@@ -10,7 +10,6 @@ const APPS: Record<string, {
   emoji: string;
   summary: string;
   tagline: string;
-  badge?: string;
 }> = {
   'org.tunaos.letters': {
     name: 'Letters',
@@ -30,26 +29,23 @@ const APPS: Record<string, {
     summary: 'GNOME presentation app with Fabric.js and Reveal.js.',
     tagline: 'PPTX, ODP, and multi-page PDF export.',
   },
-  'org.tunaos.letters-rust': {
-    name: 'Letters (Rust)',
-    emoji: '📝',
-    summary: 'Native GTK4 word processor — pure Rust, no Python required.',
-    tagline: 'Lightweight rewrite of Letters. Feature parity in progress.',
-    badge: '🦀 Preview',
-  },
   'org.tunaos.tables-rust': {
     name: 'Tables (Rust)',
-    emoji: '📊',
-    summary: 'Native GTK4 spreadsheet — pure Rust, no Python required.',
-    tagline: 'Lightweight rewrite of Tables. Feature parity in progress.',
-    badge: '🦀 Preview',
+    emoji: '🦀',
+    summary: 'Pure Rust GTK4 spreadsheet — no WebKit, just speed.',
+    tagline: 'Fast, native spreadsheet for GNOME.',
+  },
+  'org.tunaos.letters-rust': {
+    name: 'Letters (Rust)',
+    emoji: '🦀',
+    summary: 'Pure Rust GTK4 word processor — no WebKit, just speed.',
+    tagline: 'Fast, native word processor for GNOME.',
   },
   'org.tunaos.decks-rust': {
     name: 'Decks (Rust)',
-    emoji: '📽️',
-    summary: 'Native GTK4 presentation app — pure Rust, no Python required.',
-    tagline: 'Lightweight rewrite of Decks. Feature parity in progress.',
-    badge: '🦀 Preview',
+    emoji: '🦀',
+    summary: 'Pure Rust GTK4 presentation app — no WebKit, just speed.',
+    tagline: 'Fast, native presentations for GNOME.',
   },
 };
 
@@ -88,20 +84,13 @@ function Content(): ReactNode {
   return (
     <>
       <header style={{
-        textAlign: 'center', padding: '4rem 1rem 2rem',
+        textAlign: 'center', padding: '3rem 1rem 1.5rem',
         background: 'radial-gradient(120% 120% at 50% -10%, #6366f1 0%, #1e3a5f 60%, #0b1220 100%)',
         color: '#fff',
       }}>
         <div className="container">
           <span style={{fontSize: '3rem', display: 'block'}}>{app.emoji}</span>
           <Heading as="h1" style={{marginTop: '0.5rem'}}>Install {app.name}</Heading>
-          {app.badge && (
-            <span style={{
-              display: 'inline-block', marginBottom: '0.75rem',
-              background: 'rgba(255,255,255,0.15)', borderRadius: 99,
-              padding: '0.2rem 0.75rem', fontSize: '0.85rem',
-            }}>{app.badge}</span>
-          )}
           <p style={{fontSize: '1.1rem', opacity: 0.85}}>{app.summary}</p>
           <p style={{opacity: 0.65}}>{app.tagline}</p>
         </div>

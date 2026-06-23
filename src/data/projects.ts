@@ -22,8 +22,10 @@ export type Project = {
   docs: string; // doc path, usually /docs/<id>
   // Optional primary CTA beyond Docs + GitHub.
   cta?: {label: string; to: string};
-  // Flatpak app ID (renders as install button with appstream:// URI).
+  // Flatpak app ID (renders as install button linking to /install?app=).
   flathub?: string;
+  // Rust variant Flatpak app ID (renders as a separate Install button).
+  flatpakRust?: string;
   stats?: {label: string; value: string}[];
   features: PFeature[];
   install?: PInstall[];
@@ -265,6 +267,7 @@ export const PROJECTS: Project[] = [
     repo: 'https://github.com/tuna-os/tables',
     docs: '/docs/tables',
     flathub: 'org.tunaos.tables',
+    flatpakRust: 'org.tunaos.tables-rust',
     stats: [
       {label: 'Engine', value: 'Jspreadsheet CE + HyperFormula'},
       {label: 'Formats', value: 'XLSX · ODS · CSV'},
@@ -310,6 +313,7 @@ export const PROJECTS: Project[] = [
       {emoji: '🤝', title: 'Suite family', text: 'Shares the suite-common scaffold with <a href="/tables">Tables</a> and <a href="/decks">Decks</a>.'},
     ],
     flathub: 'org.tunaos.letters',
+    flatpakRust: 'org.tunaos.letters-rust',
     install: [
       {label: 'TunaOS Flatpak remote', code: 'flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo\nflatpak install tuna-os org.tunaos.letters'},
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/letters.git\ncd letters\njust setup\njust build'},
@@ -331,6 +335,7 @@ export const PROJECTS: Project[] = [
     repo: 'https://github.com/tuna-os/decks',
     docs: '/docs/decks',
     flathub: 'org.tunaos.decks',
+    flatpakRust: 'org.tunaos.decks-rust',
     stats: [
       {label: 'Engine', value: 'Fabric.js + Reveal.js'},
       {label: 'Formats', value: 'PPTX · ODP'},

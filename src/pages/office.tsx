@@ -30,6 +30,30 @@ const APPS = [
     summary: 'GNOME presentation app with Fabric.js and Reveal.js.',
     features: ['Fabric.js canvas editing', 'Reveal.js fullscreen present mode', 'PPTX, ODP I/O', '30-level undo/redo'],
   },
+  {
+    id: 'tables-rust',
+    name: 'Tables (Rust)',
+    emoji: '🦀',
+    flatpak: 'org.tunaos.tables-rust',
+    summary: 'Pure Rust GTK4 spreadsheet — no WebKit.',
+    features: ['Pure Rust + GTK4', 'Native performance', 'No WebKit dependency', 'Lightning fast'],
+  },
+  {
+    id: 'letters-rust',
+    name: 'Letters (Rust)',
+    emoji: '🦀',
+    flatpak: 'org.tunaos.letters-rust',
+    summary: 'Pure Rust GTK4 word processor — no WebKit.',
+    features: ['Pure Rust + GTK4', 'Native performance', 'No WebKit dependency', 'Lightning fast'],
+  },
+  {
+    id: 'decks-rust',
+    name: 'Decks (Rust)',
+    emoji: '🦀',
+    flatpak: 'org.tunaos.decks-rust',
+    summary: 'Pure Rust GTK4 presentation app — no WebKit.',
+    features: ['Pure Rust + GTK4', 'Native performance', 'No WebKit dependency', 'Lightning fast'],
+  },
 ];
 
 function AppCard({app}: {app: (typeof APPS)[number]}): ReactNode {
@@ -122,6 +146,8 @@ export default function Office(): ReactNode {
           }}>
             <code>{'flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo'}</code>
             {'\n'}<code>{'flatpak install tuna-os org.tunaos.letters org.tunaos.tables org.tunaos.decks'}</code>
+            {'\n'}<code>{'# Rust variants (no WebKit, pure GTK4)'}</code>
+            {'\n'}<code>{'flatpak install tuna-os org.tunaos.letters-rust org.tunaos.tables-rust org.tunaos.decks-rust'}</code>
           </pre>
           <p style={{marginTop: '1rem'}}>
             <Link className="button button--primary button--lg" to="/flatpak">
