@@ -5,7 +5,7 @@
       "Name": "tuna-os/letters-rust",
       "Images": [
         {
-          "Digest": "sha256:2545a474c5b0b679fd9ea8e4e27d31eeb19908401e7dae209314419e2a37da16",
+          "Digest": "sha256:ef664e08e3beae2cbdf0ae12926aa1ebf311a0406ddca5b2ea3ca7af2cff73ea",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -20,13 +20,13 @@
             "org.flatpak.installed-size": "491008",
             "org.flatpak.commit-metadata.xa.download-size": "AAAAAAADTcQAdA==",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAAHfgAAdA==",
-            "org.flatpak.download-size": "217148",
+            "org.flatpak.download-size": "217145",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MubGV0dGVycy1ydXN0L3g4Nl82NC9tYXN0ZXIAKgBhcw==",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MubGV0dGVycy1ydXN0L3g4Nl82NC9tYXN0ZXIAAHM=",
             "org.flatpak.ref": "app/org.tunaos.letters-rust/x86_64/master",
-            "org.flatpak.subject": "Built from 60b5aba7a21f18aecf96cb1cc24346ff5d7cdf2b",
-            "org.flatpak.commit": "1bf351fa8154d0fdc2de435b4692d72b02a062ebcad9a7bf201eea4681d7e67e",
-            "org.flatpak.timestamp": "1782191032"
+            "org.flatpak.subject": "Built from 89849b4077feaf7217b0283bfa7f3de681f64439",
+            "org.flatpak.commit": "0943b104b7a455c37d3fc125fe268563b56efa1f596baac8b572322683a0704d",
+            "org.flatpak.timestamp": "1782192405"
           }
         }
       ]
@@ -35,7 +35,7 @@
       "Name": "tuna-os/tables-rust",
       "Images": [
         {
-          "Digest": "sha256:7ec52935eff32ea8e2dc8eeea8fa6a1592c3ecbf5f7f7f7522cc0081335acc1b",
+          "Digest": "sha256:56efce8a99e9078877b1ec499e6c4d1684d84cb68bcae87fc02fe00553f344c8",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -50,13 +50,13 @@
             "org.flatpak.installed-size": "2458624",
             "org.flatpak.commit-metadata.xa.download-size": "AAAAAAART1YAdA==",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAAlhAAAdA==",
-            "org.flatpak.download-size": "1135507",
+            "org.flatpak.download-size": "1135504",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MudGFibGVzLXJ1c3QveDg2XzY0L21hc3RlcgApAGFz",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MudGFibGVzLXJ1c3QveDg2XzY0L21hc3RlcgAAcw==",
             "org.flatpak.ref": "app/org.tunaos.tables-rust/x86_64/master",
-            "org.flatpak.subject": "Built from 60b5aba7a21f18aecf96cb1cc24346ff5d7cdf2b",
-            "org.flatpak.commit": "abcc22dbea5d601d2bb388cf91f3083335102212fdb4b9a39c3c3033613a502a",
-            "org.flatpak.timestamp": "1782191053"
+            "org.flatpak.subject": "Built from 89849b4077feaf7217b0283bfa7f3de681f64439",
+            "org.flatpak.commit": "92335c49ee0544116e8b737220e98125ece4241ef21135947e30a5d1dc557ee9",
+            "org.flatpak.timestamp": "1782191799"
           }
         }
       ]
@@ -65,7 +65,7 @@
       "Name": "tuna-os/decks-rust",
       "Images": [
         {
-          "Digest": "sha256:3adb670aaf4bd4debd26cafbb644fb696fda5b7b413b547adec2bfd33e577267",
+          "Digest": "sha256:8f784885ba8ed29dfaebc9afe0cb53f529eb373fb43d31d5558b79520c735d72",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -78,15 +78,15 @@
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.decks-rust\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=decks\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=home;\n\n[Extension org.tunaos.decks_rust.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.decks_rust.Debug;",
             "org.flatpak.installed-size": "469504",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAADPKcAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAADPKgAdA==",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAAHKgAAdA==",
-            "org.flatpak.download-size": "212863",
+            "org.flatpak.download-size": "212866",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuZGVja3MtcnVzdC94ODZfNjQvbWFzdGVyACgAYXM=",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuZGVja3MtcnVzdC94ODZfNjQvbWFzdGVyAABz",
             "org.flatpak.ref": "app/org.tunaos.decks-rust/x86_64/master",
-            "org.flatpak.subject": "Built from 60b5aba7a21f18aecf96cb1cc24346ff5d7cdf2b",
-            "org.flatpak.commit": "f5b7fd17f0436f8b3d1b9d1d865c63142a571f672fb163d4ed1697367079ebcd",
-            "org.flatpak.timestamp": "1782191106"
+            "org.flatpak.subject": "Built from 89849b4077feaf7217b0283bfa7f3de681f64439",
+            "org.flatpak.commit": "6189965fd834acdff1c1fb48ccd52e08e91a786eb63ea3aae351f8838cff1acf",
+            "org.flatpak.timestamp": "1782192540"
           }
         }
       ]
