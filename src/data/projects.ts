@@ -259,7 +259,7 @@ export const PROJECTS: Project[] = [
     emoji: '📊',
     name: 'Tables',
     status: 'alpha',
-    tagline: 'A GNOME spreadsheet — Excel-equivalent with ~400 functions, charts, and multi-sheet workbooks.',
+    tagline: 'A GNOME spreadsheet with ~400 functions, charts, and multi-sheet workbooks.',
     lede:
       'Tables is a modern, libadwaita spreadsheet application for GNOME — powered by Jspreadsheet CE and HyperFormula. Reads and writes XLSX, ODS, and CSV via openpyxl, calamine, and odfpy. Shares the suite-common scaffold with Letters and Decks.',
     accent: '#1d6f42',
@@ -271,13 +271,13 @@ export const PROJECTS: Project[] = [
     stats: [
       {label: 'Engine', value: 'Jspreadsheet CE + HyperFormula'},
       {label: 'Formats', value: 'XLSX · ODS · CSV'},
-      {label: 'Functions', value: '~400 Excel-compatible'},
+      {label: 'Functions', value: '~400 compatible'},
     ],
     features: [
-      {emoji: '🧮', title: '~400 formulas', text: 'SUM, IF, VLOOKUP, and ~400 more via HyperFormula — full Excel compatibility.'},
+      {emoji: '🧮', title: '~400 formulas', text: 'SUM, IF, VLOOKUP, and ~400 more via HyperFormula.'},
       {emoji: '📑', title: 'Multi-sheet', text: 'Workbook tabs, sheet navigation, freeze panes, sort, and filter.'},
       {emoji: '📊', title: 'Charts', text: 'Bar, line, and pie charts embedded in XLSX via openpyxl.'},
-      {emoji: '⌨️', title: 'Excel shortcuts', text: 'Ctrl+B/I/U, Ctrl+D/R fill, Ctrl/Space column select, Shift+Space row select.'},
+      {emoji: '⌨️', title: 'Familiar shortcuts', text: 'Ctrl+B/I/U, Ctrl+D/R fill, Ctrl/Space column select, Shift+Space row select.'},
       {emoji: '🎨', title: 'Libadwaita native', text: 'Responsive, dark-mode-ready GTK 4 interface that looks at home on GNOME.'},
       {emoji: '🤝', title: 'Suite family', text: 'Shares the suite-common scaffold with <a href="/letters">Letters</a> and <a href="/decks">Decks</a>.'},
     ],
@@ -327,7 +327,7 @@ export const PROJECTS: Project[] = [
     emoji: '📽️',
     name: 'Decks',
     status: 'alpha',
-    tagline: 'A GNOME presentation app — PowerPoint-equivalent with Fabric.js canvas editing and Reveal.js fullscreen.',
+    tagline: 'A GNOME presentation app with Fabric.js canvas editing and Reveal.js fullscreen.',
     lede:
       'Decks is a modern presentation app for GNOME. Edit slides on a Fabric.js canvas, manage them in a sidebar, and present fullscreen with Reveal.js. Reads and writes PPTX and ODP via python-pptx and odfpy. Exports multi-page PDFs via Pillow.',
     accent: '#991b1b',
@@ -346,7 +346,7 @@ export const PROJECTS: Project[] = [
       {emoji: '🖼️', title: 'Slide management', text: 'Add, delete, duplicate, and reorder slides via a sidebar thumbnail strip.'},
       {emoji: '📐', title: 'Layout presets', text: 'Blank, Title, Title+Content, and Two-Column layouts for every slide.'},
       {emoji: '🎬', title: 'Fullscreen present mode', text: 'Reveal.js fullscreen with slide transitions and B/W/. blank shortcuts.'},
-      {emoji: '⌨️', title: 'PowerPoint shortcuts', text: 'Ctrl+M new slide, Ctrl+Shift+D duplicate, F5 present, Home/End navigate.'},
+      {emoji: '⌨️', title: 'Familiar shortcuts', text: 'Ctrl+M new slide, Ctrl+Shift+D duplicate, F5 present, Home/End navigate.'},
       {emoji: '🤝', title: 'Suite family', text: 'Shares the suite-common scaffold with <a href="/tables">Tables</a> and <a href="/letters">Letters</a>.'},
     ],
     install: [

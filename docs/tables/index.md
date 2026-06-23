@@ -6,7 +6,7 @@ sidebar_position: 1
 
 Spreadsheet application for the TunaOS GNOME office suite.
 
-Powered by [Jspreadsheet CE](https://jspreadsheet.com/) and [HyperFormula](https://hyperformula.handsontable.com/) with ~400 Excel-compatible functions. Reads and writes CSV, XLSX, and ODS files using [openpyxl](https://openpyxl.readthedocs.io/), [python-calamine](https://github.com/tafia/calamine), and [odfpy](https://github.com/eea/odfpy).
+Powered by [Jspreadsheet CE](https://jspreadsheet.com/) and [HyperFormula](https://hyperformula.handsontable.com/) with ~400 functions. Reads and writes CSV, XLSX, and ODS files using [openpyxl](https://openpyxl.readthedocs.io/), [python-calamine](https://github.com/tafia/calamine), and [odfpy](https://github.com/eea/odfpy).
 
 Shares the [suite-common](https://github.com/tuna-os/suite-common) scaffold with [Letters](/docs/letters) and [Decks](/docs/decks).
 
@@ -19,7 +19,7 @@ Shares the [suite-common](https://github.com/tuna-os/suite-common) scaffold with
 - **Data tools**: Sort, filter, freeze panes, merge cells, number formatting
 - **Fill**: Fill down (Ctrl+D), fill right (Ctrl+R)
 - **Selection**: Ctrl+Space (column), Shift+Space (row)
-- **Keyboard shortcuts**: Excel-compatible (Ctrl+B/I/U, PgUp/PgDn, etc.)
+- **Keyboard shortcuts**: Familiar shortcuts (Ctrl+B/I/U, PgUp/PgDn, etc.)
 
 ## Install
 

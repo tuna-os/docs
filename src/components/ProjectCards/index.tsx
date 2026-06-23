@@ -95,7 +95,7 @@ const PROJECTS: Project[] = [
     name: 'Tables',
     slug: '/tables',
     icon: '📊',
-    description: 'GNOME spreadsheet — Excel-equivalent with ~400 functions, charts, and multi-sheet workbooks. Jspreadsheet CE + HyperFormula.',
+    description: 'GNOME spreadsheet — ~400 functions, charts, and multi-sheet workbooks. Jspreadsheet CE + HyperFormula.',
     status: 'alpha',
     links: [
       {label: 'Documentation', to: '/docs/tables'},

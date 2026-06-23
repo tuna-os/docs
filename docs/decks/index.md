@@ -19,7 +19,7 @@ Shares the [suite-common](https://github.com/tuna-os/suite-common) scaffold with
 - **Present mode**: Fullscreen via Reveal.js with B/W/. blank shortcuts
 - **Undo/Redo**: 30-level canvas action history (Ctrl+Z / Ctrl+Shift+Z)
 - **Export**: Multi-page PDF
-- **Keyboard shortcuts**: PowerPoint-compatible (Ctrl+M, Ctrl+Shift+D, F5, Home, End)
+- **Keyboard shortcuts**: Familiar shortcuts (Ctrl+M, Ctrl+Shift+D, F5, Home, End)
 
 ## Install
 
