@@ -3,6 +3,6 @@ Name=org.tunaos.tables
 Branch=stable
 Title=org.tunaos.tables from tuna-os
 IsRuntime=false
-Url=oci+https://tunaos.org/flatpak
+Url=oci+https://tuna-os.github.io/flatpak-index
 SuggestRemoteName=tuna-os
 RuntimeRepo=https://tunaos.org/flatpak/tuna-os.flatpakrepo
