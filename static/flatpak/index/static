@@ -1,4 +1,95 @@
 {
   "Registry": "https://ghcr.io",
-  "Results": []
+  "Results": [
+    {
+      "Name": "hanthor/letters-rust",
+      "Images": [
+        {
+          "Digest": "sha256:2545a474c5b0b679fd9ea8e4e27d31eeb19908401e7dae209314419e2a37da16",
+          "MediaType": "application/vnd.oci.image.manifest.v1+json",
+          "OS": "linux",
+          "Architecture": "amd64",
+          "Tags": [
+            "latest"
+          ],
+          "Labels": {
+            "org.flatpak.body": "Name: org.tunaos.letters-rust\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
+            "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy50dW5hb3MubGV0dGVycy1ydXN0CnJ1bnRpbWU9b3JnLmdub21lLlBsYXRmb3JtL3g4Nl82NC81MApzZGs9b3JnLmdub21lLlNkay94ODZfNjQvNTAKY29tbWFuZD1sZXR0ZXJzCgpbQ29udGV4dF0Kc2hhcmVkPWlwYzsKc29ja2V0cz1mYWxsYmFjay14MTE7d2F5bGFuZDsKZGV2aWNlcz1kcmk7CmZpbGVzeXN0ZW1zPWhvbWU7CgpbRXh0ZW5zaW9uIG9yZy50dW5hb3MubGV0dGVyc19ydXN0LkRlYnVnXQpkaXJlY3Rvcnk9bGliL2RlYnVnCmF1dG9kZWxldGU9dHJ1ZQpuby1hdXRvZG93bmxvYWQ9dHJ1ZQoKW0J1aWxkXQpidWlsdC1leHRlbnNpb25zPW9yZy50dW5hb3MubGV0dGVyc19ydXN0LkRlYnVnOwAAcw==",
+            "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
+            "org.flatpak.metadata": "[Application]\nname=org.tunaos.letters-rust\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=letters\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=home;\n\n[Extension org.tunaos.letters_rust.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.letters_rust.Debug;",
+            "org.flatpak.installed-size": "491008",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAADTcQAdA==",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAAHfgAAdA==",
+            "org.flatpak.download-size": "217148",
+            "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MubGV0dGVycy1ydXN0L3g4Nl82NC9tYXN0ZXIAKgBhcw==",
+            "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MubGV0dGVycy1ydXN0L3g4Nl82NC9tYXN0ZXIAAHM=",
+            "org.flatpak.ref": "app/org.tunaos.letters-rust/x86_64/master",
+            "org.flatpak.subject": "Built from 60b5aba7a21f18aecf96cb1cc24346ff5d7cdf2b",
+            "org.flatpak.commit": "1bf351fa8154d0fdc2de435b4692d72b02a062ebcad9a7bf201eea4681d7e67e",
+            "org.flatpak.timestamp": "1782191032"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "hanthor/tables-rust",
+      "Images": [
+        {
+          "Digest": "sha256:7ec52935eff32ea8e2dc8eeea8fa6a1592c3ecbf5f7f7f7522cc0081335acc1b",
+          "MediaType": "application/vnd.oci.image.manifest.v1+json",
+          "OS": "linux",
+          "Architecture": "amd64",
+          "Tags": [
+            "latest"
+          ],
+          "Labels": {
+            "org.flatpak.body": "Name: org.tunaos.tables-rust\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
+            "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy50dW5hb3MudGFibGVzLXJ1c3QKcnVudGltZT1vcmcuZ25vbWUuUGxhdGZvcm0veDg2XzY0LzUwCnNkaz1vcmcuZ25vbWUuU2RrL3g4Nl82NC81MApjb21tYW5kPXRhYmxlcwoKW0NvbnRleHRdCnNoYXJlZD1pcGM7CnNvY2tldHM9ZmFsbGJhY2steDExO3dheWxhbmQ7CmRldmljZXM9ZHJpOwpmaWxlc3lzdGVtcz1ob21lOwoKW0V4dGVuc2lvbiBvcmcudHVuYW9zLnRhYmxlc19ydXN0LkRlYnVnXQpkaXJlY3Rvcnk9bGliL2RlYnVnCmF1dG9kZWxldGU9dHJ1ZQpuby1hdXRvZG93bmxvYWQ9dHJ1ZQoKW0J1aWxkXQpidWlsdC1leHRlbnNpb25zPW9yZy50dW5hb3MudGFibGVzX3J1c3QuRGVidWc7AABz",
+            "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
+            "org.flatpak.metadata": "[Application]\nname=org.tunaos.tables-rust\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=tables\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=home;\n\n[Extension org.tunaos.tables_rust.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.tables_rust.Debug;",
+            "org.flatpak.installed-size": "2458624",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAART1YAdA==",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAAlhAAAdA==",
+            "org.flatpak.download-size": "1135507",
+            "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MudGFibGVzLXJ1c3QveDg2XzY0L21hc3RlcgApAGFz",
+            "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MudGFibGVzLXJ1c3QveDg2XzY0L21hc3RlcgAAcw==",
+            "org.flatpak.ref": "app/org.tunaos.tables-rust/x86_64/master",
+            "org.flatpak.subject": "Built from 60b5aba7a21f18aecf96cb1cc24346ff5d7cdf2b",
+            "org.flatpak.commit": "abcc22dbea5d601d2bb388cf91f3083335102212fdb4b9a39c3c3033613a502a",
+            "org.flatpak.timestamp": "1782191053"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "hanthor/decks-rust",
+      "Images": [
+        {
+          "Digest": "sha256:3adb670aaf4bd4debd26cafbb644fb696fda5b7b413b547adec2bfd33e577267",
+          "MediaType": "application/vnd.oci.image.manifest.v1+json",
+          "OS": "linux",
+          "Architecture": "amd64",
+          "Tags": [
+            "latest"
+          ],
+          "Labels": {
+            "org.flatpak.body": "Name: org.tunaos.decks-rust\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
+            "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy50dW5hb3MuZGVja3MtcnVzdApydW50aW1lPW9yZy5nbm9tZS5QbGF0Zm9ybS94ODZfNjQvNTAKc2RrPW9yZy5nbm9tZS5TZGsveDg2XzY0LzUwCmNvbW1hbmQ9ZGVja3MKCltDb250ZXh0XQpzaGFyZWQ9aXBjOwpzb2NrZXRzPWZhbGxiYWNrLXgxMTt3YXlsYW5kOwpkZXZpY2VzPWRyaTsKZmlsZXN5c3RlbXM9aG9tZTsKCltFeHRlbnNpb24gb3JnLnR1bmFvcy5kZWNrc19ydXN0LkRlYnVnXQpkaXJlY3Rvcnk9bGliL2RlYnVnCmF1dG9kZWxldGU9dHJ1ZQpuby1hdXRvZG93bmxvYWQ9dHJ1ZQoKW0J1aWxkXQpidWlsdC1leHRlbnNpb25zPW9yZy50dW5hb3MuZGVja3NfcnVzdC5EZWJ1ZzsAAHM=",
+            "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
+            "org.flatpak.metadata": "[Application]\nname=org.tunaos.decks-rust\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=decks\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=home;\n\n[Extension org.tunaos.decks_rust.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.decks_rust.Debug;",
+            "org.flatpak.installed-size": "469504",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAADPKcAdA==",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAAHKgAAdA==",
+            "org.flatpak.download-size": "212863",
+            "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuZGVja3MtcnVzdC94ODZfNjQvbWFzdGVyACgAYXM=",
+            "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuZGVja3MtcnVzdC94ODZfNjQvbWFzdGVyAABz",
+            "org.flatpak.ref": "app/org.tunaos.decks-rust/x86_64/master",
+            "org.flatpak.subject": "Built from 60b5aba7a21f18aecf96cb1cc24346ff5d7cdf2b",
+            "org.flatpak.commit": "f5b7fd17f0436f8b3d1b9d1d865c63142a571f672fb163d4ed1697367079ebcd",
+            "org.flatpak.timestamp": "1782191106"
+          }
+        }
+      ]
+    }
+  ]
 }
