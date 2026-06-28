@@ -67,7 +67,7 @@ const sidebars: SidebarsConfig = {
           type: 'category',
           label: '🤠 Corral',
           link: {type: 'doc', id: 'corral/index'},
-          items: ['corral/vdi', 'corral/containers', 'corral/backup', 'corral/bootc', 'corral/windows', 'corral/gpu', 'corral/snapsched', 'corral/schedule', 'corral/proxmox'],
+          items: ['corral/getting-started', 'corral/vdi', 'corral/containers', 'corral/backup', 'corral/bootc', 'corral/windows', 'corral/gpu', 'corral/snapsched', 'corral/schedule', 'corral/proxmox'],
         },
         {
           type: 'category',
