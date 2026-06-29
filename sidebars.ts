@@ -31,6 +31,7 @@ const sidebars: SidebarsConfig = {
     {type: 'category', label: '📊 Tables', link: {type: 'doc', id: 'tables/index'}, items: []},
     {type: 'category', label: '📝 Letters', link: {type: 'doc', id: 'letters/index'}, items: []},
     {type: 'category', label: '📽️ Decks', link: {type: 'doc', id: 'decks/index'}, items: []},
+    {type: 'category', label: '📦 Flatpak', link: {type: 'doc', id: 'flatpak/index'}, items: ['flatpak/guide']},
     {type: 'category', label: 'bluefin-cli', link: {type: 'doc', id: 'bluefin-cli/index'}, items: ['bluefin-cli/ROADMAP']},
     {type: 'html', value: '<div class="sidebar-section-label">Community</div>', defaultStyle: true},
     {type: 'doc', id: 'hawaii/index', label: 'Zirconium Hawaii', className: 'sidebar-external'},
