@@ -27,7 +27,7 @@ const sidebars: SidebarsConfig = {
     {type: 'category', label: 'COPR Builds', link: {type: 'doc', id: 'copr/index'}, items: ['copr/ARCHITECTURE']},
     {type: 'category', label: '🤠 Corral', link: {type: 'doc', id: 'corral/index'}, items: []},
     {type: 'category', label: 'XFCE Linux', className: 'sidebar-alpha', link: {type: 'doc', id: 'xfce-linux/index'}, items: ['xfce-linux/README', 'xfce-linux/PROJECT_STATUS', 'xfce-linux/CONTRIBUTING']},
-    {type: 'category', label: 'Tavern', link: {type: 'doc', id: 'tavern/index'}, items: ['tavern/ROADMAP', 'tavern/CONTRIBUTING']},
+    {type: 'category', label: 'Tavern', link: {type: 'doc', id: 'tavern/index'}, items: ['tavern/ROADMAP', 'tavern/CONTRIBUTING', 'tavern/guide']},
     {type: 'category', label: '📊 Tables', link: {type: 'doc', id: 'tables/index'}, items: []},
     {type: 'category', label: '📝 Letters', link: {type: 'doc', id: 'letters/index'}, items: []},
     {type: 'category', label: '📽️ Decks', link: {type: 'doc', id: 'decks/index'}, items: []},
