@@ -25,7 +25,7 @@ const sidebars: SidebarsConfig = {
     {type: 'category', label: 'Tacklebox', link: {type: 'doc', id: 'tacklebox/index'}, items: ['tacklebox/ARCHITECTURE', 'tacklebox/github-iso-setup', 'tacklebox/TODO']},
     {type: 'category', label: 'Tromsø', link: {type: 'doc', id: 'tromso/index'}, items: ['tromso/SPEC']},
     {type: 'category', label: 'COPR Builds', link: {type: 'doc', id: 'copr/index'}, items: ['copr/ARCHITECTURE']},
-    {type: 'category', label: '🤠 Corral', link: {type: 'doc', id: 'corral/index'}, items: []},
+    {type: 'category', label: '🤠 Corral', link: {type: 'doc', id: 'corral/index'}, items: ['corral/getting-started']},
     {type: 'category', label: 'XFCE Linux', className: 'sidebar-alpha', link: {type: 'doc', id: 'xfce-linux/index'}, items: ['xfce-linux/README', 'xfce-linux/PROJECT_STATUS', 'xfce-linux/CONTRIBUTING']},
     {type: 'category', label: 'Tavern', link: {type: 'doc', id: 'tavern/index'}, items: ['tavern/ROADMAP', 'tavern/CONTRIBUTING']},
     {type: 'category', label: '📊 Tables', link: {type: 'doc', id: 'tables/index'}, items: []},

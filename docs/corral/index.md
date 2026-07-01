@@ -23,6 +23,20 @@ corral ssh web        # from this machine, your laptop, or your phone's terminal
 - **Proxmox-style web UI.** Dark dashboard: datacenter→node→VM tree, live status, create wizard, live migration, in-browser VNC + serial consoles.
 - **One static Go binary.** No daemons, no controllers, no client-side K8s SDK. Drives the tools you already trust.
 
+## Quick Start
+
+```bash
+# Build Corral, create a VM, and SSH in
+git clone https://github.com/tuna-os/corral.git
+cd corral && go build -o corral .
+./corral create devbox --qemu --container-disk quay.io/containerdisks/fedora:42
+./corral ssh devbox
+```
+
+👉 Need a step-by-step walkthrough? See the **[Getting Started](getting-started.md)** guide.
+
+---
+
 ## Install
 
 ```bash
