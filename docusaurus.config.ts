@@ -41,7 +41,19 @@ const config: Config = {
           editUrl:
             'https://github.com/tuna-os/docs/tree/main/',
         },
-        blog: false, // Disable blog
+        blog: {
+          routeBasePath: '/blog',
+          blogTitle: 'Blog',
+          blogDescription: 'News, updates, and announcements from the TunaOS project',
+          postsPerPage: 5,
+          showReadingTime: true,
+          feedOptions: {
+            type: 'rss',
+            title: 'TunaOS Blog',
+            description: 'News, updates, and announcements from the TunaOS project',
+            copyright: `Copyright © ${new Date().getFullYear()} TunaOS Project`,
+          },
+        },
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -114,6 +126,7 @@ const config: Config = {
           position: 'left',
           label: 'Documentation',
         },
+        {to: '/blog', label: '📝 Blog', position: 'left'},
         {
           href: 'https://github.com/tuna-os/tunaOS',
           label: 'GitHub',
