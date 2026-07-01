@@ -21,9 +21,9 @@ jobs:
     name: Markdown Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901abe5b8200bef0e37dffb14cc0ad4d7e # v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
-      - uses: actions/setup-node@cd93095a6e160be2cc06e0158b140f5f8aa19670 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '20'
 
@@ -39,12 +39,12 @@ jobs:
 
   # Check for broken internal links using a lightweight markdown link checker
   js-syntax:
-    name: Node.js Syntax Check
+    name: Node.js Syntax & Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901abe5b8200bef0e37dffb14cc0ad4d7e # v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
-      - uses: actions/setup-node@cd93095a6e160be2cc06e0158b140f5f8aa19670 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '20'
 
@@ -67,11 +67,27 @@ jobs:
           done
           exit $FAILED
 
+      - name: Run unit tests
+        run: |
+          echo "=== Running unit tests ==="
+          FAILED=0
+          for f in scripts/__tests__/*.test.mjs scripts/*.test.mjs; do
+            [[ -f "$f" ]] || continue
+            echo "  Running: $f"
+            if ! node "$f"; then
+              echo "    FAILED"
+              FAILED=1
+            else
+              echo "    OK"
+            fi
+          done
+          exit $FAILED
+
   link-check:
     name: Internal Link Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901abe5b8200bef0e37dffb14cc0ad4d7e # v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Check for broken internal references
         run: |
@@ -103,4 +119,5 @@ jobs:
           echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
           echo "| Markdown Lint | completed |" >> "$GITHUB_STEP_SUMMARY"
           echo "| Node.js Syntax | completed |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Unit Tests | completed |" >> "$GITHUB_STEP_SUMMARY"
           echo "| Internal Link Check | completed |" >> "$GITHUB_STEP_SUMMARY"
