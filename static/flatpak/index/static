@@ -95,7 +95,7 @@
       "Name": "tuna-os/mariner",
       "Images": [
         {
-          "Digest": "sha256:6461284d54b8418b2f117b62725407c85d5418dfe92eb51061187dea547c342f",
+          "Digest": "sha256:048832181a0b42e8af0f2ba6364d03fb54c58677f24f12e270bd5a9b8190f38d",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -107,16 +107,16 @@
             "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy50dW5hb3MubWFyaW5lcgpydW50aW1lPW9yZy5nbm9tZS5QbGF0Zm9ybS94ODZfNjQvNTAKc2RrPW9yZy5nbm9tZS5TZGsveDg2XzY0LzUwCnRhZ3M9bGF0ZXN0Owpjb21tYW5kPW1hcmluZXIKCltDb250ZXh0XQpzaGFyZWQ9aXBjOwpzb2NrZXRzPWZhbGxiYWNrLXgxMTt3YXlsYW5kOwpkZXZpY2VzPWRyaTsKZmlsZXN5c3RlbXM9aG9tZTtob3N0OwoKW1Nlc3Npb24gQnVzIFBvbGljeV0Kb3JnLmZyZWVkZXNrdG9wLkZsYXRwYWs9dGFsawpvcmcuZ3RrLnZmcy5Ob3RpZmljYXRpb25zPXRhbGsKb3JnLmd0ay52ZnMuKj10YWxrCm9yZy5ndGsudmZzLkRhZW1vbj10YWxrCgpbU3lzdGVtIEJ1cyBQb2xpY3ldCm9yZy5mcmVlZGVza3RvcC5VRGlza3MyPXRhbGsKCltFbnZpcm9ubWVudF0KR0lPX0VYVFJBX01PRFVMRVM9L2FwcC9saWIvZ2lvL21vZHVsZXMKCltFeHRlbnNpb24gb3JnLnR1bmFvcy5tYXJpbmVyLkRlYnVnXQpkaXJlY3Rvcnk9bGliL2RlYnVnCmF1dG9kZWxldGU9dHJ1ZQpuby1hdXRvZG93bmxvYWQ9dHJ1ZQoKW0J1aWxkXQpidWlsdC1leHRlbnNpb25zPW9yZy50dW5hb3MubWFyaW5lci5EZWJ1ZzsAAHM=",
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.mariner\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ntags=latest;\ncommand=mariner\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=home;host;\n\n[Session Bus Policy]\norg.freedesktop.Flatpak=talk\norg.gtk.vfs.Notifications=talk\norg.gtk.vfs.*=talk\norg.gtk.vfs.Daemon=talk\n\n[System Bus Policy]\norg.freedesktop.UDisks2=talk\n\n[Environment]\nGIO_EXTRA_MODULES=/app/lib/gio/modules\n\n[Extension org.tunaos.mariner.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.mariner.Debug;",
-            "org.flatpak.installed-size": "286441472",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAATnUS4AdA==",
-            "org.flatpak.commit-metadata.xa.installed-size": "AAAAABESwAAAdA==",
-            "org.flatpak.download-size": "57406212",
+            "org.flatpak.installed-size": "289811456",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAT8qZcAdA==",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAABFGLAAAdA==",
+            "org.flatpak.download-size": "58802672",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MubWFyaW5lci94ODZfNjQvbWFzdGVyACUAYXM=",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MubWFyaW5lci94ODZfNjQvbWFzdGVyAABz",
             "org.flatpak.ref": "app/org.tunaos.mariner/x86_64/master",
-            "org.flatpak.subject": "Built from 630e71943261f5ec5a7cb11652455887fa85f67c",
-            "org.flatpak.commit": "0f7bb679e43dbe4eb2847e937fb0efd1aa25e165f7f7d53e0b150fbfd8ee0dcd",
-            "org.flatpak.timestamp": "1783014811"
+            "org.flatpak.subject": "Built from 66568056bce0e6dfdd06bd0dc1ea5b6a2a6d8057",
+            "org.flatpak.commit": "e4ebdbdbe294fbde0622ccf794dac68742f01b9dfd8224f20064263c44b00846",
+            "org.flatpak.timestamp": "1783015123"
           }
         }
       ]
