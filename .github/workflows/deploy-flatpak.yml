@@ -39,4 +39,5 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: be6724e409f2877081ad17eb20e94563
           command: pages deploy build --project-name tunaos-org --branch main
