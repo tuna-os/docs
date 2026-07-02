@@ -1,4 +1,4 @@
-# Deploys to Cloudflare Pages when flatpak index files change.
+# Deploys to Cloudflare Workers + Assets when flatpak index files change.
 # Also runs on workflow_dispatch for manual triggers.
 
 name: Deploy Flatpak Index
@@ -35,9 +35,11 @@ jobs:
       - name: Build the site
         run: npm run build
 
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: be6724e409f2877081ad17eb20e94563
-          command: deploy
+      - name: Install Wrangler
+        run: npm install -g wrangler@4
+
+      - name: Deploy to Cloudflare Workers
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: be6724e409f2877081ad17eb20e94563
+        run: wrangler deploy
