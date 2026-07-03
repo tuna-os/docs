@@ -32,6 +32,20 @@ const APPS = [
     description: 'GNOME Files alternative — typeahead, dual-pane, Quick Look, full-text search.',
     docs: 'https://github.com/romgrk/mariner',
   },
+  {
+    id: 'org.tunaos.tavern',
+    name: 'Tavern',
+    emoji: '🍻',
+    description: 'Homebrew client for Linux — GTK 4 + Libadwaita.',
+    docs: '/tavern',
+  },
+  {
+    id: 'org.bootcinstaller.Installer',
+    name: 'bootc-installer',
+    emoji: '🖥️',
+    description: 'Graphical OS installer for bootc-based systems.',
+    docs: 'https://github.com/projectbluefin/bootc-installer',
+  },
 ];
 
 const RUST_APPS = [
@@ -103,7 +117,7 @@ export default function Flatpak(): ReactNode {
         <div className="container">
           <Heading as="h1">📦 TunaOS Flatpak Remote</Heading>
           <p style={{fontSize: '1.2rem', opacity: 0.85, maxWidth: 600, margin: '1rem auto'}}>
-            Install Tables, Letters, Decks, Mariner, and more with one command.
+            Install Tables, Letters, Decks, Mariner, Tavern, and more.
           </p>
         </div>
       </header>
@@ -163,6 +177,20 @@ export default function Flatpak(): ReactNode {
             Replace <code>org.tunaos.letters</code> with any app ID above.{' '}
             <a href="https://github.com/tuna-os/hanthor-rust">Rust source →</a>
           </p>
+        </section>
+
+        <section style={{marginTop: '3rem'}}>
+          <Heading as="h2">🍻 Tavern</Heading>
+          <p style={{color: 'var(--ifm-color-emphasis-600)', marginBottom: '1rem'}}>
+            Tavern uses its own dedicated flatpak remote. Add it separately:
+          </p>
+          <pre style={{
+            background: 'var(--prism-background-color)',
+            padding: '1.25rem', borderRadius: 8,
+            fontSize: '0.95rem',
+          }}>
+            <code>flatpak remote-add --if-not-exists tavern oci+https://tuna-os.github.io/Tavern{`\n`}flatpak install tavern org.tunaos.tavern</code>
+          </pre>
         </section>
       </main>
     </Layout>
