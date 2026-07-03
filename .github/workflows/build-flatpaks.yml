@@ -48,6 +48,7 @@ jobs:
         with:
           repository: ${{ matrix.app.repo }}
           ref: ${{ matrix.app.branch || 'main' }}
+          submodules: recursive
 
       - name: Build Flatpak
         uses: flatpak/flatpak-github-actions/flatpak-builder@v6
