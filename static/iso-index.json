@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-03T08:55:29.380Z",
+  "generatedAt": "2026-07-03T13:51:40.676Z",
   "baseUrl": "https://download.tunaos.org",
   "count": 184,
   "categories": [
@@ -11,6 +11,16 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome-latest",
+          "path": "live-isos/yellowfin-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso",
+          "size": 3580559360,
+          "modified": "2026-07-03T09:07:46.697022609Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "yellowfin-gnome50-gdx-latest",
@@ -233,16 +243,6 @@
         },
         {
           "category": "live-isos",
-          "name": "yellowfin-gnome-latest",
-          "path": "live-isos/yellowfin-gnome-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso",
-          "size": 3368382464,
-          "modified": "2026-06-01T04:33:23.496486424Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
           "name": "bonito-gnome-latest",
           "path": "live-isos/bonito-gnome-latest.iso",
           "url": "https://download.tunaos.org/live-isos/bonito-gnome-latest.iso",
@@ -390,6 +390,16 @@
           "modified": "2026-04-02T01:48:53.174283483Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome-10-x86_64",
+          "path": "live-isos/yellowfin-gnome-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-10-x86_64.iso",
+          "size": 3580559360,
+          "modified": "2026-07-03T09:07:46.697022609Z",
+          "arch": "x86_64",
+          "latest": false
         },
         {
           "category": "live-isos",
@@ -608,16 +618,6 @@
           "url": "https://download.tunaos.org/live-isos/yellowfin-kde-10-x86_64.iso",
           "size": 4024807424,
           "modified": "2026-06-01T04:35:25.551288632Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "yellowfin-gnome-10-x86_64",
-          "path": "live-isos/yellowfin-gnome-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-10-x86_64.iso",
-          "size": 3368382464,
-          "modified": "2026-06-01T04:33:23.496486424Z",
           "arch": "x86_64",
           "latest": false
         },
