@@ -50,6 +50,7 @@ const ALL_DESKTOPS: Desktop[] = [
   {emoji: '🌊', name: 'KDE Plasma', tag: 'kde', blurb: 'Endlessly customizable, feature-rich Plasma desktop.'},
   {emoji: '🚀', name: 'COSMIC', tag: 'cosmic', blurb: "System76's Rust-built next-gen desktop."},
   {emoji: '⚡', name: 'Niri', tag: 'niri', blurb: 'A scrollable-tiling Wayland compositor for keyboard-driven flow.'},
+  {emoji: '🐭', name: 'XFCE', tag: 'xfce', blurb: 'The classic lightweight desktop — ported to Wayland with the new xfwl4 compositor.'},
 ];
 
 const HOMEBREW: Feature = {
@@ -214,6 +215,36 @@ export const VARIANTS: Variant[] = [
       {name: 'COSMIC', image: 'ghcr.io/tuna-os/bonito:cosmic'},
       {name: 'Niri', image: 'ghcr.io/tuna-os/bonito:niri'},
       {name: 'GNOME (NVIDIA)', image: 'ghcr.io/tuna-os/bonito:gnome-nvidia'},
+    ],
+    hasIsos: false,
+  },
+  {
+    id: 'grouper',
+    emoji: '🐠',
+    name: 'Grouper',
+    base: 'Ubuntu 26.04',
+    baseUrl: 'https://ubuntu.com',
+    blurb: 'The Ubuntu you know, rebuilt as an immutable bootc image.',
+    lede:
+      'Grouper brings the bootc model to the most familiar base in Linux: Ubuntu. Atomic image updates, composefs, and the same desktops as every other TunaOS variant — experimental today, parity-bound tomorrow.',
+    accent: '#e95420',
+    accent2: '#f5a623',
+    stats: [
+      {label: 'Status', value: 'Experimental'},
+      {label: 'Backend', value: 'composefs'},
+      {label: 'Arch', value: 'x86_64'},
+    ],
+    desktops: ALL_DESKTOPS.filter((d) => ['gnome', 'kde', 'niri', 'xfce'].includes(d.tag)),
+    features: [BOOTC, HOMEBREW, FLATHUB, {
+      emoji: '🧪',
+      title: 'Experimental by design',
+      text: 'The proving ground for the Ubuntu bootc story — composefs root, apt-built desktops, and the newest ideas land here first.',
+    }],
+    flavors: [
+      {name: 'GNOME', image: 'ghcr.io/tuna-os/grouper:gnome'},
+      {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/grouper:kde'},
+      {name: 'Niri', image: 'ghcr.io/tuna-os/grouper:niri'},
+      {name: 'XFCE', image: 'ghcr.io/tuna-os/grouper:xfce'},
     ],
     hasIsos: false,
   },
