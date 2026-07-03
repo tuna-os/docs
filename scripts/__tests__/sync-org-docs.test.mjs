@@ -29,14 +29,12 @@ try {
   process.exit(1);
 }
 
-// Wrap the script source in a function so we can capture its internals
-const scriptFn = new Function(`
-  const module = { exports: {} };
-  const __dirname = '${__dirname.replace(/\\/g, '\\\\')}';
-  ${scriptSource}
-  return module.exports;
-`);
-const exports = scriptFn();
+// NOTE: the original harness tried `new Function(scriptSource)` to capture
+// the script's internals — that can never work here (the shebang line and
+// ESM `import` statements are both syntax errors in a function body), and
+// its result was never used: the tests below re-derive the pure functions
+// from the source text instead. The dead wrapper made the whole suite fail
+// at load time.
 
 // The script uses top-level function declarations — new Function won't capture them.
 // Instead, let's reimplement the pure functions based on the source to test
