@@ -39,7 +39,7 @@ jobs:
 
   # Check for broken internal links using a lightweight markdown link checker
   js-syntax:
-    name: Node.js Syntax Check
+    name: Node.js Syntax & Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -69,8 +69,22 @@ jobs:
           done
           exit $FAILED
 
-      - name: Run ISO index builder tests
-        run: node scripts/build-iso-index.test.mjs
+      - name: Run unit tests
+        run: |
+          echo "=== Running unit tests ==="
+          FAILED=0
+          for f in scripts/__tests__/*.test.mjs scripts/*.test.mjs; do
+            [[ -f "$f" ]] || continue
+            echo "  Running: $f"
+            if ! node "$f"; then
+              echo "    FAILED"
+              FAILED=1
+            else
+              echo "    OK"
+            fi
+          done
+          exit $FAILED
+
 
   link-check:
     name: Internal Link Check
@@ -108,4 +122,5 @@ jobs:
           echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
           echo "| Markdown Lint | completed |" >> "$GITHUB_STEP_SUMMARY"
           echo "| Node.js Syntax | completed |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Unit Tests | completed |" >> "$GITHUB_STEP_SUMMARY"
           echo "| Internal Link Check | completed |" >> "$GITHUB_STEP_SUMMARY"
