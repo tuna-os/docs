@@ -179,19 +179,6 @@ export default function Flatpak(): ReactNode {
           </p>
         </section>
 
-        <section style={{marginTop: '3rem'}}>
-          <Heading as="h2">🍻 Tavern</Heading>
-          <p style={{color: 'var(--ifm-color-emphasis-600)', marginBottom: '1rem'}}>
-            Tavern uses its own dedicated flatpak remote. Add it separately:
-          </p>
-          <pre style={{
-            background: 'var(--prism-background-color)',
-            padding: '1.25rem', borderRadius: 8,
-            fontSize: '0.95rem',
-          }}>
-            <code>flatpak remote-add --if-not-exists tavern oci+https://tuna-os.github.io/Tavern{`\n`}flatpak install tavern org.tunaos.tavern</code>
-          </pre>
-        </section>
       </main>
     </Layout>
   );
