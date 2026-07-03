@@ -99,6 +99,11 @@ const config: Config = {
           position: 'left',
         },
         {
+          to: '/matrix',
+          label: '🗂️ Build Matrix',
+          position: 'left',
+        },
+        {
           to: '/office',
           label: '🏢 Office Suite',
           position: 'left',
