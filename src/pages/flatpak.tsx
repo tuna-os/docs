@@ -46,6 +46,13 @@ const APPS = [
     description: 'Pure Rust GTK4 presentation app — fast, native, no WebKit.',
     docs: '/decks',
   },
+  {
+    id: 'org.tunaos.mariner',
+    name: 'Mariner',
+    emoji: '🧭',
+    description: 'GNOME Files alternative — typeahead, dual-pane, Quick Look, full-text search.',
+    docs: 'https://github.com/romgrk/mariner',
+  },
 ];
 
 const RUST_APPS = [
@@ -117,7 +124,7 @@ export default function Flatpak(): ReactNode {
         <div className="container">
           <Heading as="h1">📦 TunaOS Flatpak Remote</Heading>
           <p style={{fontSize: '1.2rem', opacity: 0.85, maxWidth: 600, margin: '1rem auto'}}>
-            Install Tables, Letters, Decks, and more with one command.
+            Install Tables, Letters, Decks, Mariner, and more with one command.
           </p>
         </div>
       </header>
