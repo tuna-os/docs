@@ -44,7 +44,7 @@ export type Variant = {
   hasIsos: boolean;
 };
 
-const ALL_DESKTOPS: Desktop[] = [
+export const ALL_DESKTOPS: Desktop[] = [
   {emoji: '🖥️', name: 'GNOME', tag: 'gnome', blurb: 'The polished default — latest GNOME, backported to Enterprise Linux.'},
   {emoji: '✨', name: 'GNOME 50', tag: 'gnome50', blurb: 'The newest GNOME stack, riding the same base.'},
   {emoji: '🌊', name: 'KDE Plasma', tag: 'kde', blurb: 'Endlessly customizable, feature-rich Plasma desktop.'},
@@ -97,7 +97,8 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Enterprise-stable'},
       {label: 'Arch', value: 'x86_64 · aarch64'},
     ],
-    desktops: ALL_DESKTOPS,
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/github-copr#65
+
     features: [BOOTC, HOMEBREW, FLATHUB, HWE, NVIDIA, {
       emoji: '🛡️',
       title: 'Enterprise stability',
@@ -130,7 +131,8 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Fresh + stable'},
       {label: 'Microarch', value: 'x86_64_v2 builds'},
     ],
-    desktops: ALL_DESKTOPS,
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/github-copr#65
+
     features: [BOOTC, HOMEBREW, FLATHUB, HWE, NVIDIA, {
       emoji: '🐱',
       title: 'Kitten freshness',
@@ -163,7 +165,8 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Rolling preview'},
       {label: 'Role', value: 'Next-RHEL testing'},
     ],
-    desktops: ALL_DESKTOPS,
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/github-copr#65
+
     features: [BOOTC, HOMEBREW, FLATHUB, HWE, {
       emoji: '🔭',
       title: 'See what’s next',
