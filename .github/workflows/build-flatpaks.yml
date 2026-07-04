@@ -42,6 +42,10 @@ jobs:
             repo: projectbluefin/bootc-installer
             manifest: flatpak/org.bootcinstaller.Installer.json
             branch: prod
+          - name: mariner
+            id: org.tunaos.mariner
+            repo: tuna-os/mariner
+            manifest: org.tunaos.mariner.json
     steps:
       - name: Checkout ${{ matrix.app.repo }}
         uses: actions/checkout@v4
