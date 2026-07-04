@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-03T19:11:14.049Z",
+  "generatedAt": "2026-07-04T02:24:22.959Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 184,
+  "count": 199,
   "categories": [
     {
       "id": "live-isos",
@@ -11,6 +11,46 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "grouper-xfce-latest",
+          "path": "live-isos/grouper-xfce-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-xfce-latest.iso",
+          "size": 1869217792,
+          "modified": "2026-07-03T23:00:44.230994204Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-kde-latest",
+          "path": "live-isos/grouper-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-kde-latest.iso",
+          "size": 2187657216,
+          "modified": "2026-07-03T23:00:41.464010183Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-gnome-latest",
+          "path": "live-isos/grouper-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-gnome-latest.iso",
+          "size": 2225602560,
+          "modified": "2026-07-03T23:00:34.547937073Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-niri-latest",
+          "path": "live-isos/grouper-niri-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-niri-latest.iso",
+          "size": 1836777472,
+          "modified": "2026-07-03T23:00:16.211312215Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "yellowfin-gnome-latest",
@@ -390,6 +430,46 @@
           "modified": "2026-04-02T01:48:53.174283483Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-xfce-26.04-x86_64",
+          "path": "live-isos/grouper-xfce-26.04-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-xfce-26.04-x86_64.iso",
+          "size": 1869217792,
+          "modified": "2026-07-03T23:00:44.230994204Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-kde-26.04-x86_64",
+          "path": "live-isos/grouper-kde-26.04-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-kde-26.04-x86_64.iso",
+          "size": 2187657216,
+          "modified": "2026-07-03T23:00:41.464010183Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-gnome-26.04-x86_64",
+          "path": "live-isos/grouper-gnome-26.04-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-gnome-26.04-x86_64.iso",
+          "size": 2225602560,
+          "modified": "2026-07-03T23:00:34.547937073Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-niri-26.04-x86_64",
+          "path": "live-isos/grouper-niri-26.04-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-niri-26.04-x86_64.iso",
+          "size": 1836777472,
+          "modified": "2026-07-03T23:00:16.211312215Z",
+          "arch": "x86_64",
+          "latest": false
         },
         {
           "category": "live-isos",
@@ -1829,8 +1909,38 @@
       "blurb": "",
       "icon": "📀",
       "order": 99,
-      "checksums": "https://download.tunaos.org/tacklebox/SHA256SUMS-20260629-8d65fdb",
+      "checksums": "https://download.tunaos.org/tacklebox/bazzite-aio-SHA256SUMS-20260704-5d49db2",
       "isos": [
+        {
+          "category": "tacklebox",
+          "name": "bazzite-aio-latest",
+          "path": "tacklebox/bazzite-aio-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-aio-latest.iso",
+          "size": 16763715584,
+          "modified": "2026-07-04T00:30:08.085937582Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-kde-latest",
+          "path": "tacklebox/bazzite-kde-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-kde-latest.iso",
+          "size": 13383172096,
+          "modified": "2026-07-04T00:06:33.069552686Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-gnome-latest",
+          "path": "tacklebox/bazzite-gnome-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-gnome-latest.iso",
+          "size": 12161777664,
+          "modified": "2026-07-04T00:02:28.070255333Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "tacklebox",
           "name": "tacklebox-poc-dedup-latest",
@@ -1850,6 +1960,46 @@
           "modified": "2026-06-29T09:56:47.045863464Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-aio-20260704-5d49db2",
+          "path": "tacklebox/bazzite-aio-20260704-5d49db2.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-aio-20260704-5d49db2.iso",
+          "size": 16763715584,
+          "modified": "2026-07-04T00:30:08.085937582Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-kde-20260704-5d49db2",
+          "path": "tacklebox/bazzite-kde-20260704-5d49db2.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-kde-20260704-5d49db2.iso",
+          "size": 13383172096,
+          "modified": "2026-07-04T00:06:33.069552686Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-gnome-20260704-5d49db2",
+          "path": "tacklebox/bazzite-gnome-20260704-5d49db2.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-gnome-20260704-5d49db2.iso",
+          "size": 12161777664,
+          "modified": "2026-07-04T00:02:28.070255333Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-aio-20260703-c548c6f",
+          "path": "tacklebox/bazzite-aio-20260703-c548c6f.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-aio-20260703-c548c6f.iso",
+          "size": 16763715584,
+          "modified": "2026-07-03T23:19:29.029427943Z",
+          "arch": "",
+          "latest": false
         },
         {
           "category": "tacklebox",
