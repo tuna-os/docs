@@ -23,13 +23,11 @@ Dakota ships with a structured hardware diagnostic loop:
 
 No telemetry. No phone-home. Every report is reviewed before it leaves your machine.
 
-## Migrating from Bluefin
+## Already running Bluefin?
 
-Already running Bluefin and want to switch to Dakota without reinstalling?
-The **[Migrate from Bluefin guide](./migrate-from-bluefin)** walks you
-through an in-place OSTree → ComposeFS migration using
-[`bootc-migrate-composefs`](https://github.com/tuna-os/bootc-migrate-composefs).
-Your `/home`, `/var`, flatpaks, containers, and user accounts are preserved.
+You don't need to reinstall to get Dakota's ComposeFS backend — see
+[Migrating from Bluefin](/docs/dakota/migration) for the in-place migration
+tool and its interactive wizard.
 
 ## See also
 
