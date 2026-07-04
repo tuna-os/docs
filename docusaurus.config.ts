@@ -1,8 +1,29 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import {PROJECTS} from './src/data/projects';
+import {VARIANTS} from './src/data/variants';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
+
+// Navbar dropdowns derive from the same shared data as the /projects grid
+// and each project's own landing page — a hand-maintained 3rd/4th copy of
+// this list is exactly how bootc-migrate-composefs and Grouper went missing
+// from menus that already listed every one of their siblings.
+const variantNavItems = VARIANTS.map((v) => ({
+  to: `/${v.id}`,
+  label: `${v.emoji} ${v.name} — ${v.base}`,
+}));
+
+const projectNavItems = PROJECTS.filter((p) => !p.external).map((p) => ({
+  to: `/${p.id}`,
+  label: `${p.emoji} ${p.name}`,
+}));
+
+const externalProjectNavItems = PROJECTS.filter((p) => p.external).map((p) => ({
+  to: `/${p.id}`,
+  label: `${p.emoji} ${p.name} ↗`,
+}));
 
 const config: Config = {
   title: 'TunaOS',
@@ -49,6 +70,20 @@ const config: Config = {
     ],
   ],
 
+  // Local search index built at build time — no external service/API key
+  // needed (unlike Algolia DocSearch).
+  themes: [
+    [
+      '@easyops-cn/docusaurus-search-local',
+      {
+        hashed: true,
+        indexDocs: true,
+        indexPages: true,
+        docsRouteBasePath: '/docs',
+      },
+    ],
+  ],
+
   themeConfig: {
     // Replace with your project's social card
     image: 'img/tunaos-social-card.png',
@@ -63,33 +98,18 @@ const config: Config = {
           type: 'dropdown',
           label: '🐟 Variants',
           position: 'left',
-          items: [
-            {to: '/albacore', label: '🐟 Albacore — AlmaLinux 10'},
-            {to: '/yellowfin', label: '🐠 Yellowfin — AlmaLinux Kitten'},
-            {to: '/skipjack', label: '🍣 Skipjack — CentOS Stream 10'},
-            {to: '/bonito', label: '🎣 Bonito — Fedora 44'},
-          ],
+          items: variantNavItems,
         },
         {
           type: 'dropdown',
           label: '🧰 Projects',
           position: 'left',
           items: [
-            {to: '/tunaos', label: '🐟 TunaOS'},
-            {to: '/tacklebox', label: '🛠 Tacklebox'},
-            {to: '/tromso', label: '🌌 Tromsø'},
-            {to: '/xfce-linux', label: '🖥️ XFCE Linux'},
-            {to: '/tavern', label: '🍻 Tavern'},
-            {to: '/bluefin-cli', label: '⌨️ bluefin-cli'},
-            {to: '/corral', label: '🤠 Corral'},
-            {to: '/tables', label: '📊 Tables'},
-            {to: '/letters', label: '📝 Letters'},
-            {to: '/decks', label: '📽️ Decks'},
+            ...projectNavItems,
             {to: '/copr', label: '⚙ COPR Builds'},
             {to: '/office', label: '🏢 Office Suite (Tables, Letters, Decks)'},
             {type: 'html', value: '<hr style="margin:0.3rem 0;opacity:0.3">'},
-            {to: '/dakota', label: '🦖 Dakota ↗'},
-            {to: '/hawaii', label: '🌺 Zirconium Hawaii ↗'},
+            ...externalProjectNavItems,
             {to: '/projects', label: 'All projects →'},
           ],
         },
@@ -148,24 +168,7 @@ const config: Config = {
         },
         {
           title: 'Variants',
-          items: [
-            {
-              label: 'Albacore (AlmaLinux)',
-              to: '/albacore',
-            },
-            {
-              label: 'Yellowfin (AlmaLinux Kitten)',
-              to: '/yellowfin',
-            },
-            {
-              label: 'Bonito (Fedora)',
-              to: '/bonito',
-            },
-            {
-              label: 'Skipjack (CentOS)',
-              to: '/skipjack',
-            },
-          ],
+          items: VARIANTS.map((v) => ({label: `${v.name} (${v.base})`, to: `/${v.id}`})),
         },
         {
           title: 'Community',
