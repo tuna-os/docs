@@ -115,6 +115,41 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    id: 'bootc-migrate-composefs',
+    emoji: '🧭',
+    name: 'bootc-migrate-composefs',
+    status: 'stable',
+    tagline: 'In-place migration from OSTree-backed bootc systems to ComposeFS — no reinstall.',
+    lede:
+      'bootc-migrate-composefs converts an already-installed OSTree-backed bootc system (e.g. Bluefin) into a ComposeFS-backed system (e.g. Dakota) in place — /home, /var, /etc customizations, flatpaks, container storage, and user accounts all survive the trip. An interactive TUI wizard walks through the whole process; the previous OSTree deployment stays bootable as a fallback until you run commit.',
+    accent: '#1e3a5f',
+    accent2: '#38bdf8',
+    repo: 'https://github.com/tuna-os/bootc-migrate-composefs',
+    docs: '/docs/bootc-migrate-composefs',
+    stats: [
+      {label: 'Reversible', value: 'until commit'},
+      {label: 'Interfaces', value: 'CLI · TUI wizard'},
+      {label: 'Ships as', value: 'binary · container'},
+    ],
+    features: [
+      {emoji: '🧙', title: 'Interactive TUI wizard', text: 'Target image selection, a plain-English review of what will happen, and a live phase-by-phase progress view with scrollable logs — `bootc-migrate-composefs tui`.'},
+      {emoji: '↩️', title: 'Reversible until commit', text: 'The previous OSTree deployment stays in the boot menu the whole time. `commit` is the one-way step that removes it and reclaims disk space.'},
+      {emoji: '🔔', title: 'Self-clearing login reminder', text: 'A login banner nudges you to run `commit` (or `undo`) so a migration never sits forgotten in the dual-boot "limbo" state.'},
+      {emoji: '🔄', title: 'undo for partial migrations', text: 'Cleans up composefs boot artifacts and staged deployments while preserving the object store, so a failed run is cheap to retry.'},
+      {emoji: '📦', title: 'Binary or container image', text: 'Prebuilt per-arch binaries and a ghcr.io OCI image — pull it directly or COPY --from= it into another Containerfile.'},
+      {emoji: '🧪', title: 'CI-validated', text: 'Four E2E scenarios (btrfs, XFS+ext4-loopback, LUKS+XFS, LVM-on-LUKS with a dedicated /var) run on every push.'},
+    ],
+    install: [
+      {label: 'Run the wizard', code: 'sudo bootc-migrate-composefs tui'},
+      {label: 'Download the binary', code: 'curl -fsSL -o bmc.tar.gz \\\n  https://github.com/tuna-os/bootc-migrate-composefs/releases/latest/download/bootc-migrate-composefs-x86_64-unknown-linux-gnu.tar.gz\ntar xzf bmc.tar.gz\nsudo install -m755 bootc-migrate-composefs /usr/local/bin/'},
+    ],
+    screenshots: [
+      {src: '/img/screenshots/dakota-migrate-welcome.png', alt: 'TUI wizard welcome screen'},
+      {src: '/img/screenshots/dakota-migrate-review.png', alt: 'TUI wizard review screen showing the command that will run'},
+      {src: '/img/screenshots/dakota-migrate-running.png', alt: 'TUI wizard live migration progress with phase tracking and logs'},
+    ],
+  },
+  {
     id: 'tromso',
     emoji: '🌌',
     name: 'Tromsø',
