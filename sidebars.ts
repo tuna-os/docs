@@ -80,6 +80,7 @@ const sidebars: SidebarsConfig = {
         {type: 'category', label: '📊 Tables', link: {type: 'doc', id: 'tables/index'}, items: []},
         {type: 'category', label: '📝 Letters', link: {type: 'doc', id: 'letters/index'}, items: []},
         {type: 'category', label: '📽️ Decks', link: {type: 'doc', id: 'decks/index'}, items: []},
+        {type: 'category', label: '🗺️ Mariner', link: {type: 'doc', id: 'mariner/index'}, items: []},
       ],
     },
     {type: 'html', value: '<div class="sidebar-section-label">Community</div>', defaultStyle: true},

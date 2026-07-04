@@ -400,6 +400,38 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    id: 'mariner',
+    emoji: '🗺️',
+    name: 'Mariner',
+    status: 'alpha',
+    tagline: 'GNOME Files, plus everything the issue tracker rejected.',
+    lede:
+      'Mariner is a GTK4 + libadwaita file manager for the GNOME desktop. It drives the same widgets as GNOME Files (Nautilus), so it looks and behaves like home — then adds type-ahead navigation, dual-pane split view, a Quick Look preview, a command palette, full-text search, and a built-in disk analyzer on top.',
+    accent: '#0e7490',
+    accent2: '#22d3ee',
+    repo: 'https://github.com/tuna-os/mariner',
+    docs: '/docs/mariner',
+    flathub: 'org.tunaos.mariner',
+    stats: [
+      {label: 'Toolkit', value: 'GTK 4 · Libadwaita'},
+      {label: 'Based on', value: 'GNOME Files (Nautilus)'},
+      {label: 'Status', value: 'Beta'},
+    ],
+    features: [
+      {emoji: '⌨️', title: 'Type-ahead navigation', text: 'Just start typing and Mariner navigates straight to the matching file.'},
+      {emoji: '🪟', title: 'Dual-pane split view', text: 'Two folders side by side — copy, move, or drag files between them without juggling windows.'},
+      {emoji: '👀', title: 'Quick Look preview', text: 'Press Space on any file to preview images, video, audio, text, and code instantly.'},
+      {emoji: '⌘', title: 'Command palette', text: 'Ctrl+P runs any command or jumps to a recent folder — like VS Code, for your files.'},
+      {emoji: '🔍', title: 'Full-text search', text: 'Search file contents, not just names, with an optional ripgrep-powered Contents filter.'},
+      {emoji: '📊', title: 'Built-in disk analyzer', text: 'See what\'s eating your disk space without a separate app.'},
+    ],
+    install: [
+      {label: 'Flatpak (TunaOS remote)', code: 'flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo\nflatpak install tuna-os org.tunaos.mariner'},
+      {label: 'Arch Linux (AUR)', code: 'paru -S mariner-git      # or: yay -S mariner-git'},
+      {label: 'Build from source', code: 'git clone https://github.com/tuna-os/mariner.git\ncd mariner\nnpm install\nnpm start'},
+    ],
+  },
+  {
     id: 'xfce-linux',
     emoji: '🖥️',
     name: 'XFCE Linux',
