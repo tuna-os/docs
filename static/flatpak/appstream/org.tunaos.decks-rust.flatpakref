@@ -1,6 +1,6 @@
 [Flatpak Ref]
 Name=org.tunaos.decks-rust
-Branch=stable
+Branch=master
 Title=org.tunaos.decks-rust from tuna-os
 IsRuntime=false
 Url=oci+https://tuna-os.github.io/flatpak-index
