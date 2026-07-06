@@ -46,6 +46,7 @@ jobs:
             id: org.tunaos.mariner
             repo: tuna-os/mariner
             manifest: org.tunaos.mariner.json
+            branch: master
     steps:
       - name: Checkout ${{ matrix.app.repo }}
         uses: actions/checkout@v4
