@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-06T15:20:51.366Z",
+  "generatedAt": "2026-07-06T19:49:07.769Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 227,
+  "count": 229,
   "categories": [
     {
       "id": "live-isos",
@@ -13,11 +13,11 @@
       "isos": [
         {
           "category": "live-isos",
-          "name": "yellowfin-gnome50-latest",
-          "path": "live-isos/yellowfin-gnome50-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome50-latest.iso",
-          "size": 3586260992,
-          "modified": "2026-07-05T23:18:54.209096390Z",
+          "name": "yellowfin-kde-nvidia-latest",
+          "path": "live-isos/yellowfin-kde-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-nvidia-latest.iso",
+          "size": 4270587904,
+          "modified": "2026-07-06T17:48:25.521811550Z",
           "arch": "",
           "latest": true
         },
@@ -26,8 +26,48 @@
           "name": "yellowfin-gnome-nvidia-latest",
           "path": "live-isos/yellowfin-gnome-nvidia-latest.iso",
           "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-nvidia-latest.iso",
-          "size": 3584294912,
-          "modified": "2026-07-05T23:17:48.920615930Z",
+          "size": 3584425984,
+          "modified": "2026-07-06T17:48:22.305230434Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-niri-nvidia-latest",
+          "path": "live-isos/yellowfin-niri-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-niri-nvidia-latest.iso",
+          "size": 3315728384,
+          "modified": "2026-07-06T17:47:55.525833787Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome50-nvidia-latest",
+          "path": "live-isos/yellowfin-gnome50-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome50-nvidia-latest.iso",
+          "size": 3586326528,
+          "modified": "2026-07-06T17:47:54.111567428Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-cosmic-nvidia-latest",
+          "path": "live-isos/yellowfin-cosmic-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-cosmic-nvidia-latest.iso",
+          "size": 3087073280,
+          "modified": "2026-07-06T17:47:35.071624195Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome50-latest",
+          "path": "live-isos/yellowfin-gnome50-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome50-latest.iso",
+          "size": 3586260992,
+          "modified": "2026-07-05T23:18:54.209096390Z",
           "arch": "",
           "latest": true
         },
@@ -143,16 +183,6 @@
         },
         {
           "category": "live-isos",
-          "name": "yellowfin-niri-nvidia-latest",
-          "path": "live-isos/yellowfin-niri-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-niri-nvidia-latest.iso",
-          "size": 3315728384,
-          "modified": "2026-07-05T23:03:01.447089937Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
           "name": "grouper-kde-latest",
           "path": "live-isos/grouper-kde-latest.iso",
           "url": "https://download.tunaos.org/live-isos/grouper-kde-latest.iso",
@@ -223,16 +253,6 @@
         },
         {
           "category": "live-isos",
-          "name": "yellowfin-gnome50-nvidia-latest",
-          "path": "live-isos/yellowfin-gnome50-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome50-nvidia-latest.iso",
-          "size": 3586260992,
-          "modified": "2026-07-05T23:00:43.977073377Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
           "name": "bonito-xfce-nvidia-latest",
           "path": "live-isos/bonito-xfce-nvidia-latest.iso",
           "url": "https://download.tunaos.org/live-isos/bonito-xfce-nvidia-latest.iso",
@@ -258,16 +278,6 @@
           "url": "https://download.tunaos.org/live-isos/albacore-gnome-nvidia-latest.iso",
           "size": 3389718528,
           "modified": "2026-07-05T23:00:33.629530519Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "yellowfin-cosmic-nvidia-latest",
-          "path": "live-isos/yellowfin-cosmic-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-cosmic-nvidia-latest.iso",
-          "size": 3086942208,
-          "modified": "2026-07-05T23:00:29.240023103Z",
           "arch": "",
           "latest": true
         },
@@ -563,11 +573,11 @@
         },
         {
           "category": "live-isos",
-          "name": "yellowfin-gnome50-10-x86_64",
-          "path": "live-isos/yellowfin-gnome50-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome50-10-x86_64.iso",
-          "size": 3586260992,
-          "modified": "2026-07-05T23:18:54.209096390Z",
+          "name": "yellowfin-kde-nvidia-10-x86_64",
+          "path": "live-isos/yellowfin-kde-nvidia-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-nvidia-10-x86_64.iso",
+          "size": 4270587904,
+          "modified": "2026-07-06T17:48:25.521811550Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -576,8 +586,48 @@
           "name": "yellowfin-gnome-nvidia-10-x86_64",
           "path": "live-isos/yellowfin-gnome-nvidia-10-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-nvidia-10-x86_64.iso",
-          "size": 3584294912,
-          "modified": "2026-07-05T23:17:48.920615930Z",
+          "size": 3584425984,
+          "modified": "2026-07-06T17:48:22.305230434Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-niri-nvidia-10-x86_64",
+          "path": "live-isos/yellowfin-niri-nvidia-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-niri-nvidia-10-x86_64.iso",
+          "size": 3315728384,
+          "modified": "2026-07-06T17:47:55.525833787Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome50-nvidia-10-x86_64",
+          "path": "live-isos/yellowfin-gnome50-nvidia-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome50-nvidia-10-x86_64.iso",
+          "size": 3586326528,
+          "modified": "2026-07-06T17:47:54.111567428Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-cosmic-nvidia-10-x86_64",
+          "path": "live-isos/yellowfin-cosmic-nvidia-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-cosmic-nvidia-10-x86_64.iso",
+          "size": 3087073280,
+          "modified": "2026-07-06T17:47:35.071624195Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome50-10-x86_64",
+          "path": "live-isos/yellowfin-gnome50-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome50-10-x86_64.iso",
+          "size": 3586260992,
+          "modified": "2026-07-05T23:18:54.209096390Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -693,16 +743,6 @@
         },
         {
           "category": "live-isos",
-          "name": "yellowfin-niri-nvidia-10-x86_64",
-          "path": "live-isos/yellowfin-niri-nvidia-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-niri-nvidia-10-x86_64.iso",
-          "size": 3315728384,
-          "modified": "2026-07-05T23:03:01.447089937Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
           "name": "grouper-kde-26.04-x86_64",
           "path": "live-isos/grouper-kde-26.04-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/grouper-kde-26.04-x86_64.iso",
@@ -773,16 +813,6 @@
         },
         {
           "category": "live-isos",
-          "name": "yellowfin-gnome50-nvidia-10-x86_64",
-          "path": "live-isos/yellowfin-gnome50-nvidia-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome50-nvidia-10-x86_64.iso",
-          "size": 3586260992,
-          "modified": "2026-07-05T23:00:43.977073377Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
           "name": "bonito-xfce-nvidia-43-x86_64",
           "path": "live-isos/bonito-xfce-nvidia-43-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/bonito-xfce-nvidia-43-x86_64.iso",
@@ -808,16 +838,6 @@
           "url": "https://download.tunaos.org/live-isos/albacore-gnome-nvidia-10.2-x86_64.iso",
           "size": 3389718528,
           "modified": "2026-07-05T23:00:33.629530519Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "yellowfin-cosmic-nvidia-10-x86_64",
-          "path": "live-isos/yellowfin-cosmic-nvidia-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-cosmic-nvidia-10-x86_64.iso",
-          "size": 3086942208,
-          "modified": "2026-07-05T23:00:29.240023103Z",
           "arch": "x86_64",
           "latest": false
         },
