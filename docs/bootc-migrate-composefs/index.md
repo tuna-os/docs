@@ -19,6 +19,9 @@ flatpaks, container storage, or user accounts.
   image selection, a plain-English review of what's about to happen, and a
   live phase-by-phase progress view with scrollable logs. Run
   `sudo bootc-migrate-composefs tui`, or just omit `--target-image`.
+* **📊 System preflight dashboard** — before the migration starts, a visual
+  dashboard shows disk space gauges, projected post-migration usage, and a
+  9-point readiness checklist so you know exactly what will happen.
 * **↩️ Reversible until you commit** — the previous OSTree deployment stays
   in the boot menu as a fallback throughout. `commit` is the one-way step
   that removes it and reclaims disk space.
@@ -27,9 +30,22 @@ flatpaks, container storage, or user accounts.
   state indefinitely.
 * **🔄 `undo` for partial/failed migrations** — cleans up composefs boot
   artifacts and staged deployments while preserving the object store.
+* **🛡️ Pending transaction detection** — detects staged deployments, pending
+  updates, and stale transaction files before migrating. Prevents incomplete
+  composefs images that would fail to boot.
 * **📦 Ships as a binary or container image** — prebuilt per-arch binaries
   and a `ghcr.io/tuna-os/bootc-migrate-composefs` OCI image for easy
   `COPY --from=` use in other Containerfiles.
+
+## Screenshots
+
+| Welcome | Preflight |
+|---------|-----------|
+| ![Welcome](/img/screenshots/dakota-migrate-welcome.png) | ![Preflight](/img/screenshots/dakota-migrate-preflight.png) |
+
+| Image Selection | Review & Run |
+|----------------|--------------|
+| ![Select](/img/screenshots/dakota-migrate-select-image.png) | ![Review](/img/screenshots/dakota-migrate-review.png) |
 
 ## Getting started
 
