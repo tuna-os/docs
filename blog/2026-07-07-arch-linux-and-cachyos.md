@@ -74,3 +74,12 @@ sudo bootc switch ghcr.io/tuna-os/wahoo:kde
 ```
 
 Both variants are marked **experimental** — expect rough edges. ISOs coming once the builds stabilize.
+
+## Credits
+
+This work stands on the shoulders of:
+
+- **[bootcrew](https://github.com/bootcrew/mono)** — the reference implementation for Arch Linux on bootc. Their `arch-bootc` project proved the composefs-native backend works on Arch and pioneered the `/var` → `/usr/lib/sysimage` pacman migration. Our `Containerfile.arch` is directly based on their work.
+- **[jumpvi / bootc-shindig](https://github.com/bootc-shindig)** — the `bootc-deb` apt packages that make bootc work on Ubuntu/Debian. Without their work packaging bootc for apt-based systems, our Grouper (Ubuntu) variant wouldn't exist. The entire deb-based bootc ecosystem traces back to their packaging effort.
+- **[CachyOS](https://cachyos.org)** — for maintaining performance-optimized Arch repos (BORE scheduler, LTO, x86-64-v3) and publishing Docker images we can build on.
+- **[Universal Blue](https://universal-blue.org/)** and **[Project Bluefin](https://projectbluefin.io)** — for proving that bootc-based desktop images work at scale and inspiring this entire approach.
