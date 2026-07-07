@@ -103,9 +103,14 @@ const config: Config = {
       items: [
         {
           type: 'dropdown',
-          label: '🐟 Variants',
+          label: '🐟 TunaOS',
           position: 'left',
-          items: variantNavItems,
+          items: [
+            ...variantNavItems,
+            {type: 'html', value: '<hr style="margin:0.3rem 0;opacity:0.3">'},
+            {to: '/matrix', label: '🗂️ Build Matrix'},
+            {to: '/download', label: '📦 Download'},
+          ],
         },
         {
           type: 'dropdown',
@@ -114,21 +119,12 @@ const config: Config = {
           items: [
             ...projectNavItems,
             {to: '/copr', label: '⚙ COPR Builds'},
-            {to: '/office', label: '🏢 Office Suite (Tables, Letters, Decks)'},
+            {to: '/office', label: '🏢 Office Suite'},
+            {to: '/flatpak', label: '📦 Flatpak'},
             {type: 'html', value: '<hr style="margin:0.3rem 0;opacity:0.3">'},
             ...externalProjectNavItems,
             {to: '/projects', label: 'All projects →'},
           ],
-        },
-        {
-          to: '/download',
-          label: '📦 Download',
-          position: 'left',
-        },
-        {
-          to: '/matrix',
-          label: '🗂️ Build Matrix',
-          position: 'left',
         },
         {
           to: '/blog',
@@ -136,20 +132,10 @@ const config: Config = {
           position: 'left',
         },
         {
-          to: '/office',
-          label: '🏢 Office Suite',
-          position: 'left',
-        },
-        {
-          to: '/flatpak',
-          label: '📦 Flatpak',
-          position: 'left',
-        },
-        {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Documentation',
+          label: 'Docs',
         },
         {
           href: 'https://github.com/tuna-os/tunaOS',
