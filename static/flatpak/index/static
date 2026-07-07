@@ -235,6 +235,36 @@
           }
         }
       ]
+    },
+    {
+      "Name": "hanthor/letters",
+      "Images": [
+        {
+          "Digest": "sha256:acc42a6d315367b738b0f549d25fae66f10baf78694028e08c9e010cc4fe510a",
+          "MediaType": "application/vnd.oci.image.manifest.v1+json",
+          "OS": "linux",
+          "Architecture": "amd64",
+          "Tags": [
+            "latest"
+          ],
+          "Labels": {
+            "org.flatpak.body": "Name: org.tunaos.letters\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
+            "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy50dW5hb3MubGV0dGVycwpydW50aW1lPW9yZy5nbm9tZS5QbGF0Zm9ybS94ODZfNjQvNTAKc2RrPW9yZy5nbm9tZS5TZGsveDg2XzY0LzUwCmNvbW1hbmQ9bGV0dGVycwoKW0NvbnRleHRdCnNoYXJlZD1pcGM7CnNvY2tldHM9ZmFsbGJhY2steDExO3dheWxhbmQ7CmRldmljZXM9ZHJpOwpmaWxlc3lzdGVtcz1ob3N0OwoKW1gtRmxhdHBhay1NaW1lVHlwZV0KdGV4dC9wbGFpbjthcHBsaWNhdGlvbi9qc29uO2ltYWdlL3BuZzthcHBsaWNhdGlvbi92bmQub3BlbnhtbGZvcm1hdHMtb2ZmaWNlZG9jdW1lbnQud29yZHByb2Nlc3NpbmdtbC5kb2N1bWVudDthcHBsaWNhdGlvbi92bmQub2FzaXMub3BlbmRvY3VtZW50LnRleHQ7dGV4dC9tYXJrZG93bj10cnVlCgpbRXh0ZW5zaW9uIG9yZy50dW5hb3MubGV0dGVycy5Mb2NhbGVdCmRpcmVjdG9yeT1zaGFyZS9ydW50aW1lL2xvY2FsZQphdXRvZGVsZXRlPXRydWUKbG9jYWxlLXN1YnNldD10cnVlCgpbRXh0ZW5zaW9uIG9yZy50dW5hb3MubGV0dGVycy5EZWJ1Z10KZGlyZWN0b3J5PWxpYi9kZWJ1ZwphdXRvZGVsZXRlPXRydWUKbm8tYXV0b2Rvd25sb2FkPXRydWUKCltCdWlsZF0KYnVpbHQtZXh0ZW5zaW9ucz1vcmcudHVuYW9zLmxldHRlcnMuTG9jYWxlO29yZy50dW5hb3MubGV0dGVycy5EZWJ1ZzsAAHM=",
+            "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
+            "org.flatpak.metadata": "[Application]\nname=org.tunaos.letters\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=letters\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=host;\n\n[X-Flatpak-MimeType]\ntext/plain;application/json;image/png;application/vnd.openxmlformats-officedocument.wordprocessingml.document;application/vnd.oasis.opendocument.text;text/markdown=true\n\n[Extension org.tunaos.letters.Locale]\ndirectory=share/runtime/locale\nautodelete=true\nlocale-subset=true\n\n[Extension org.tunaos.letters.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.letters.Locale;org.tunaos.letters.Debug;",
+            "org.flatpak.installed-size": "212888576",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAL6cTAAdA==",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAywbAAAdA==",
+            "org.flatpak.download-size": "49589075",
+            "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MubGV0dGVycy94ODZfNjQvbWFzdGVyACUAYXM=",
+            "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MubGV0dGVycy94ODZfNjQvbWFzdGVyAABz",
+            "org.flatpak.ref": "app/org.tunaos.letters/x86_64/master",
+            "org.flatpak.subject": "Built from f879877366e051d5ed765ad5c839bd4e024b26f6",
+            "org.flatpak.commit": "f0a729fd1c90fe952dc00e554391024c7b5362202003b3d86ab286b16f830389",
+            "org.flatpak.timestamp": "1783390390"
+          }
+        }
+      ]
     }
   ]
 }
