@@ -62,7 +62,14 @@ const config: Config = {
           editUrl:
             'https://github.com/tuna-os/docs/tree/main/',
         },
-        blog: false, // Disable blog
+        blog: {
+          showReadingTime: true,
+          blogTitle: 'TunaOS Blog',
+          blogDescription: 'Engineering updates, feature roundups, and build system deep-dives from the TunaOS image factory.',
+          blogSidebarTitle: 'Recent posts',
+          blogSidebarCount: 10,
+          editUrl: 'https://github.com/tuna-os/docs/tree/main/',
+        },
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -121,6 +128,11 @@ const config: Config = {
         {
           to: '/matrix',
           label: '🗂️ Build Matrix',
+          position: 'left',
+        },
+        {
+          to: '/blog',
+          label: '📝 Blog',
           position: 'left',
         },
         {
