@@ -265,6 +265,36 @@
           }
         }
       ]
+    },
+    {
+      "Name": "hanthor/tables",
+      "Images": [
+        {
+          "Digest": "sha256:ab0c1bd3897294d7ae85f0249c7b56d599d9c90202e5401aef0e8dc9a1561270",
+          "MediaType": "application/vnd.oci.image.manifest.v1+json",
+          "OS": "linux",
+          "Architecture": "amd64",
+          "Tags": [
+            "latest"
+          ],
+          "Labels": {
+            "org.flatpak.body": "Name: org.tunaos.tables\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
+            "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy50dW5hb3MudGFibGVzCnJ1bnRpbWU9b3JnLmdub21lLlBsYXRmb3JtL3g4Nl82NC81MApzZGs9b3JnLmdub21lLlNkay94ODZfNjQvNTAKY29tbWFuZD10YWJsZXMKCltDb250ZXh0XQpzaGFyZWQ9aXBjOwpzb2NrZXRzPWZhbGxiYWNrLXgxMTt3YXlsYW5kOwpkZXZpY2VzPWRyaTsKCltFeHRlbnNpb24gb3JnLnR1bmFvcy50YWJsZXMuRGVidWddCmRpcmVjdG9yeT1saWIvZGVidWcKYXV0b2RlbGV0ZT10cnVlCm5vLWF1dG9kb3dubG9hZD10cnVlCgpbQnVpbGRdCmJ1aWx0LWV4dGVuc2lvbnM9b3JnLnR1bmFvcy50YWJsZXMuRGVidWc7AABz",
+            "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
+            "org.flatpak.metadata": "[Application]\nname=org.tunaos.tables\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=tables\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\n\n[Extension org.tunaos.tables.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.tables.Debug;",
+            "org.flatpak.installed-size": "7023104",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAAkLgkAdA==",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAABrKgAAdA==",
+            "org.flatpak.download-size": "2210378",
+            "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MudGFibGVzL3g4Nl82NC9tYXN0ZXIAJABhcw==",
+            "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MudGFibGVzL3g4Nl82NC9tYXN0ZXIAAHM=",
+            "org.flatpak.ref": "app/org.tunaos.tables/x86_64/master",
+            "org.flatpak.subject": "Built from ebd6032899567def33982a64d7855d32e9b104ba",
+            "org.flatpak.commit": "bbefa6acf3488c90274cef734599386c45c9ff6a4a08651245fc54b04171df17",
+            "org.flatpak.timestamp": "1783390395"
+          }
+        }
+      ]
     }
   ]
 }
