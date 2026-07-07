@@ -205,6 +205,36 @@
           }
         }
       ]
+    },
+    {
+      "Name": "hanthor/decks",
+      "Images": [
+        {
+          "Digest": "sha256:cb730cdb3bb03c2d496d694628dde2b078da84aee486a1b8a2d78f5588029021",
+          "MediaType": "application/vnd.oci.image.manifest.v1+json",
+          "OS": "linux",
+          "Architecture": "amd64",
+          "Tags": [
+            "latest"
+          ],
+          "Labels": {
+            "org.flatpak.body": "Name: org.tunaos.decks\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
+            "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy50dW5hb3MuZGVja3MKcnVudGltZT1vcmcuZ25vbWUuUGxhdGZvcm0veDg2XzY0LzUwCnNkaz1vcmcuZ25vbWUuU2RrL3g4Nl82NC81MApjb21tYW5kPWRlY2tzCgpbQ29udGV4dF0Kc2hhcmVkPWlwYzsKc29ja2V0cz1mYWxsYmFjay14MTE7d2F5bGFuZDsKZGV2aWNlcz1kcmk7CgpbRXh0ZW5zaW9uIG9yZy50dW5hb3MuZGVja3MuRGVidWddCmRpcmVjdG9yeT1saWIvZGVidWcKYXV0b2RlbGV0ZT10cnVlCm5vLWF1dG9kb3dubG9hZD10cnVlCgpbQnVpbGRdCmJ1aWx0LWV4dGVuc2lvbnM9b3JnLnR1bmFvcy5kZWNrcy5EZWJ1ZzsAAHM=",
+            "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
+            "org.flatpak.metadata": "[Application]\nname=org.tunaos.decks\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=decks\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\n\n[Extension org.tunaos.decks.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.decks.Debug;",
+            "org.flatpak.installed-size": "39621120",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAADU5S0AdA==",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAJckgAAdA==",
+            "org.flatpak.download-size": "13688783",
+            "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuZGVja3MveDg2XzY0L21hc3RlcgAjAGFz",
+            "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuZGVja3MveDg2XzY0L21hc3RlcgAAcw==",
+            "org.flatpak.ref": "app/org.tunaos.decks/x86_64/master",
+            "org.flatpak.subject": "Built from 362f39eb2b3dc7cf0bdb0a3b24fd3790b206e8c7",
+            "org.flatpak.commit": "d20fd3280ada42c65ec6f21567f1d14f714536abd676426613194431e6a8b74b",
+            "org.flatpak.timestamp": "1783390347"
+          }
+        }
+      ]
     }
   ]
 }
