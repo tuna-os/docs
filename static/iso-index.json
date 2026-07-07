@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-07T09:39:35.785Z",
+  "generatedAt": "2026-07-07T14:18:00.988Z",
   "baseUrl": "https://download.tunaos.org",
   "count": 230,
   "categories": [
@@ -13,11 +13,11 @@
       "isos": [
         {
           "category": "live-isos",
-          "name": "yellowfin-kde-nvidia-latest",
-          "path": "live-isos/yellowfin-kde-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-nvidia-latest.iso",
-          "size": 4270587904,
-          "modified": "2026-07-06T17:48:25.521811550Z",
+          "name": "yellowfin-cosmic-nvidia-latest",
+          "path": "live-isos/yellowfin-cosmic-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-cosmic-nvidia-latest.iso",
+          "size": 3087073280,
+          "modified": "2026-07-07T09:29:58.182467780Z",
           "arch": "",
           "latest": true
         },
@@ -27,17 +27,17 @@
           "path": "live-isos/yellowfin-gnome-nvidia-latest.iso",
           "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-nvidia-latest.iso",
           "size": 3584425984,
-          "modified": "2026-07-06T17:48:22.305230434Z",
+          "modified": "2026-07-07T09:29:39.971217703Z",
           "arch": "",
           "latest": true
         },
         {
           "category": "live-isos",
-          "name": "yellowfin-niri-nvidia-latest",
-          "path": "live-isos/yellowfin-niri-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-niri-nvidia-latest.iso",
-          "size": 3315728384,
-          "modified": "2026-07-06T17:47:55.525833787Z",
+          "name": "yellowfin-kde-nvidia-latest",
+          "path": "live-isos/yellowfin-kde-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-nvidia-latest.iso",
+          "size": 4270587904,
+          "modified": "2026-07-07T09:28:09.758289210Z",
           "arch": "",
           "latest": true
         },
@@ -47,17 +47,17 @@
           "path": "live-isos/yellowfin-gnome50-nvidia-latest.iso",
           "url": "https://download.tunaos.org/live-isos/yellowfin-gnome50-nvidia-latest.iso",
           "size": 3586326528,
-          "modified": "2026-07-06T17:47:54.111567428Z",
+          "modified": "2026-07-07T09:27:57.101943465Z",
           "arch": "",
           "latest": true
         },
         {
           "category": "live-isos",
-          "name": "yellowfin-cosmic-nvidia-latest",
-          "path": "live-isos/yellowfin-cosmic-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-cosmic-nvidia-latest.iso",
-          "size": 3087073280,
-          "modified": "2026-07-06T17:47:35.071624195Z",
+          "name": "yellowfin-niri-nvidia-latest",
+          "path": "live-isos/yellowfin-niri-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-niri-nvidia-latest.iso",
+          "size": 3315728384,
+          "modified": "2026-07-07T09:27:20.467093251Z",
           "arch": "",
           "latest": true
         },
@@ -2189,8 +2189,18 @@
       "blurb": "",
       "icon": "📀",
       "order": 99,
-      "checksums": "https://download.tunaos.org/tacklebox/SHA256SUMS-20260706-5d49db2",
+      "checksums": "https://download.tunaos.org/tacklebox/bazzite-aio-SHA256SUMS-20260707-5d49db2",
       "isos": [
+        {
+          "category": "tacklebox",
+          "name": "bazzite-aio-latest",
+          "path": "tacklebox/bazzite-aio-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-aio-latest.iso",
+          "size": 16763715584,
+          "modified": "2026-07-07T09:17:28.012504085Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "tacklebox",
           "name": "tacklebox-poc-dedup-latest",
@@ -2208,16 +2218,6 @@
           "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-latest.iso",
           "size": 2875719680,
           "modified": "2026-07-06T09:08:37.064773803Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "tacklebox",
-          "name": "bazzite-aio-latest",
-          "path": "tacklebox/bazzite-aio-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/bazzite-aio-latest.iso",
-          "size": 16763715584,
-          "modified": "2026-07-04T00:30:08.085937582Z",
           "arch": "",
           "latest": true
         },
