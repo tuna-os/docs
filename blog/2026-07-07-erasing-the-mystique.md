@@ -1,14 +1,14 @@
 ---
 slug: erasing-the-mystique
-title: "Erasing the Mystique: 10 Fishes in the Sea"
+title: "Erasing the Mystique: 9 Fishes in the Sea"
 authors: [james]
 tags: [vision, variants, architecture]
 date: 2026-07-07
 ---
 
-# Erasing the Mystique: 10 Fishes in the Sea
+# Erasing the Mystique: 9 Fishes in the Sea
 
-A Linux distribution shouldn't be a sacred artifact maintained by priesthood. It should be a composition of choices — base OS, desktop, kernel, drivers — assembled by a factory and delivered as an image. Today, TunaOS has **10 variants** spanning 4 package managers and every major Linux family. Here's why, and where we're going.
+A Linux distribution shouldn't be a sacred artifact maintained by priesthood. It should be a composition of choices — base OS, desktop, kernel, drivers — assembled by a factory and delivered as an image. Today, TunaOS has **9 variants** spanning 4 package managers and every major Linux family. Here's why, and where we're going.
 
 <!-- truncate -->
 
@@ -32,7 +32,7 @@ The output is an OCI container image you can `bootc switch` to — atomically, w
 
 ## The Fishes
 
-Every TunaOS variant is named after a fish. Today there are 10:
+Every TunaOS variant is named after a fish. Today there are 9:
 
 | Fish | Base | Package Manager | Character |
 |------|------|-----------------|-----------|
@@ -41,13 +41,15 @@ Every TunaOS variant is named after a fish. Today there are 10:
 | 🍣 **Skipjack** | CentOS Stream 10 | dnf | Upstream RHEL |
 | 🔒 **Redfin** | RHEL 10 | dnf | Supported, subscription-based |
 | 🎣 **Bonito** | Fedora 44 | dnf | Cutting-edge Fedora |
+| 🐉 **Bonito Rawhide** | Fedora Rawhide | dnf | Rolling Fedora development |
 | 🐟 **Grouper** | Ubuntu 26.04 | apt | Ubuntu on bootc |
-| 🐟 **Flounder** | Debian Trixie | apt | Debian stable on bootc |
-| 🐟 **Flounder-sid** | Debian Sid | apt | Debian rolling on bootc |
-| 🐟 **Marlin** | Arch Linux | pacman | Rolling release, latest everything |
-| 🐟 **Wahoo** | CachyOS | pacman | Performance-optimized Arch (BORE, LTO, v3) |
+| 🛡️ **Flounder** | Debian Trixie | apt | Debian stable on bootc |
+| ☢️ **Flounder-sid** | Debian Sid | apt | Debian rolling on bootc |
+| 🚀 **Marlin** | Arch Linux | pacman | Rolling release, latest everything |
 
-Each fish gets **6 desktops**: GNOME, GNOME 50, KDE Plasma, COSMIC, Niri, and XFCE. Each desktop can optionally layer an HWE kernel or NVIDIA drivers on top.
+CachyOS performance kernel is available as a flavor overlay on Marlin (`*-cachyos`).
+
+Each fish gets several desktops: GNOME (GNOME 50 via COPR on EL10), KDE Plasma, COSMIC, Niri, and XFCE. Each desktop can optionally layer an HWE kernel or NVIDIA drivers on top.
 
 ## How We Got Here
 
@@ -61,15 +63,16 @@ That's it. The generic installer reads the YAML, installs the right packages for
 
 ## What This Means For Users
 
-**You're not locked in.** Want to try Arch after running AlmaLinux for a year? `sudo bootc switch ghcr.io/tuna-os/marlin:kde`. Want the CachyOS performance kernel on your KDE desktop? `sudo bootc switch ghcr.io/tuna-os/wahoo:kde`. Don't like GNOME 50? Switch to GNOME 49: `sudo bootc switch ghcr.io/tuna-os/yellowfin:gnome`.
+**You're not locked in.** Want to try Arch after running AlmaLinux for a year? `sudo bootc switch ghcr.io/tuna-os/marlin:kde`. Want the CachyOS performance kernel on Arch? `sudo bootc switch ghcr.io/tuna-os/marlin:kde-cachyos`.
 
-The matrix is your menu. Every cell is a valid, tested, bootable system.
+The matrix is your menu. Every cell is a valid, bootable system.
 
 ## What's Next
 
-- **Build validation** — getting CI green for all 10 variants across all platforms
+- **Build validation** — getting CI green for all 9 variants across all platforms
 - **ISOs** — tacklebox-generated live ISOs for every variant×desktop combination
-- **NVIDIA on Arch/CachyOS** — `pacman -S nvidia-open` as a manifest entry (no akmods needed)
+- **NVIDIA on Arch** — `pacman -S nvidia-open` as a manifest entry (no akmods needed)
+- **LUKS e2e boot verification** — automated encrypted boot testing
 - **More desktops** — Hyprland, Sway, Budgie are each one YAML file away
 - **Community manifests** — let anyone contribute a desktop definition without touching build scripts
 
