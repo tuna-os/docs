@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-08T02:07:49.069Z",
+  "generatedAt": "2026-07-08T08:17:06.014Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 230,
+  "count": 231,
   "categories": [
     {
       "id": "live-isos",
@@ -2240,6 +2240,16 @@
           "modified": "2026-07-04T00:02:28.070255333Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-kde-20260708-5d49db2",
+          "path": "tacklebox/bazzite-kde-20260708-5d49db2.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-kde-20260708-5d49db2.iso",
+          "size": 13383172096,
+          "modified": "2026-07-08T07:45:25.038801355Z",
+          "arch": "",
+          "latest": false
         },
         {
           "category": "tacklebox",
