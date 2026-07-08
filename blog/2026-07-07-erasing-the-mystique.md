@@ -46,6 +46,8 @@ Every TunaOS variant is named after a fish. Today there are 9:
 | 🛡️ **Flounder** | Debian Trixie | apt | Debian stable on bootc |
 | ☢️ **Flounder-sid** | Debian Sid | apt | Debian rolling on bootc |
 | 🚀 **Marlin** | Arch Linux | pacman | Rolling release, latest everything |
+| 🦎 **openSUSE** | openSUSE Tumbleweed | zypper | Rolling, SUSE ecosystem |
+| 🐧 **Gentoo** | Gentoo Linux | emerge | Source-based, fully customizable |
 
 CachyOS performance kernel is available as a flavor overlay on Marlin (`*-cachyos`).
 
