@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-09T09:29:34.135Z",
+  "generatedAt": "2026-07-09T14:45:24.318Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 242,
+  "count": 244,
   "categories": [
     {
       "id": "live-isos",
@@ -11,6 +11,16 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-kde-nvidia-latest",
+          "path": "live-isos/bonito-rawhide-kde-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-kde-nvidia-latest.iso",
+          "size": 4368171008,
+          "modified": "2026-07-09T12:06:14.816115817Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "bonito-niri-nvidia-latest",
@@ -620,6 +630,16 @@
           "modified": "2026-04-02T01:48:53.174283483Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-kde-nvidia-45-x86_64",
+          "path": "live-isos/bonito-rawhide-kde-nvidia-45-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-kde-nvidia-45-x86_64.iso",
+          "size": 4368171008,
+          "modified": "2026-07-09T12:06:14.816115817Z",
+          "arch": "x86_64",
+          "latest": false
         },
         {
           "category": "live-isos",
