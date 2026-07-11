@@ -1,25 +1,13 @@
 ---
 sidebar_position: 1
-sidebar_label: "ubuntu"
-
-status: unknown
+sidebar_label: "Ubuntu"
 ---
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+# 🐧 Ubuntu on TunaOS
 
-**Ubuntu-based bootc OCI images and live installable ISOs.**
+TunaOS provides **Ubuntu 26.04 Resolute Raccoon** as a bootc OCI image with a live installable ISO. This brings Ubuntu's familiar experience to an immutable, container-native foundation.
 
-Part of the [TunaOS](https://tunaos.org) ecosystem.
-
-## 26.04 Resolute Raccoon
-
-Ubuntu 26.04 Resolute Raccoon as a bootc OCI image with a live installable ISO. Traditional Ubuntu experience on an immutable, container-native foundation.
-
-### Download
-
-The ISO workflow was moved into this repo (merged from the archived `ubuntu-26.04-iso`). Check [tunaos.org/download](https://tunaos.org/download) for the latest builds.
-
-### Usage
+## Quick Start
 
 ```bash
 # Pull the image
@@ -27,14 +15,70 @@ podman pull ghcr.io/tuna-os/ubuntu:26.04
 
 # Switch an existing bootc system
 sudo bootc switch ghcr.io/tuna-os/ubuntu:26.04
+sudo systemctl reboot
 ```
 
-## Docs
+## Download ISO
 
-- [Ubuntu on tunaos.org](https://tunaos.org/docs/ubuntu)
-- [Contributing](https://github.com/tuna-os/ubuntu/blob/main/CONTRIBUTING.md)
+Pre-built ISOs are available at [tunaos.org/download](https://tunaos.org/download).
 
-## License
+## Features
 
-Apache 2.0 — see [LICENSE](LICENSE).
+- **Familiar Ubuntu experience** — same APT, same workflows, same ecosystem
+- **Immutable base** — atomic updates and rollbacks via bootc
+- **Live ISO** — try before you install
+- **OCI-native** — pull and switch like any other bootc image
 
+## Comparison with Traditional Ubuntu
+
+| Aspect | Traditional Ubuntu | TunaOS Ubuntu |
+|---|---|---|
+| Updates | `apt upgrade` | `bootc upgrade` + reboot |
+| Rollback | Complex (fs snapshots) | `bootc rollback` |
+| Immutability | Partial | Full (/usr is read-only) |
+| Installation | ISO installer | `bootc switch` or ISO |
+| Package mgmt | APT | APT + Homebrew + Flatpak |
+
+## Usage
+
+### Package Management
+
+Ubuntu's APT package manager works as expected:
+
+```bash
+# Update package lists
+sudo apt update
+
+# Install packages
+sudo apt install htop neovim
+
+# Snap packages (pre-enabled)
+sudo snap install firefox
+```
+
+### Homebrew
+
+Homebrew is pre-installed on TunaOS Ubuntu images:
+
+```bash
+# Install CLI tools
+brew install ripgrep fd bat
+
+# Install graphical apps
+brew install --cask visual-studio-code
+```
+
+### Flatpak
+
+Flatpak is pre-enabled with Flathub:
+
+```bash
+flatpak install flathub org.mozilla.firefox
+```
+
+## See Also
+
+- [Installation Guide](../installation.md) — general TunaOS installation
+- [Managing with Bootc](../tunaos/bootc-usage.md) — bootc day-to-day operations
+- [Homebrew Guide](../tunaos/homebrew.md) — using Homebrew on TunaOS
+- [Ubuntu Repo](https://github.com/tuna-os/ubuntu) — source repository
