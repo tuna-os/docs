@@ -6,31 +6,26 @@ date: 2026-06-30
 tags: [tunaos, announcement, welcome]
 ---
 
-Welcome to the TunaOS blog!
+So this is the TunaOS blog. Figured we should actually have one instead of just dumping everything into commit messages.
 
 <!-- truncate -->
 
-TunaOS is a collection of bootc-based, immutable desktop operating system images built on Enterprise Linux — AlmaLinux, CentOS Stream, and Fedora.
+Quick version of what TunaOS is: bootc-based, immutable desktop images built on top of Enterprise Linux — AlmaLinux, CentOS Stream, Fedora, that kind of thing. If you've used something like Bluefin or Bazzite you already get the idea, we're just doing it for the EL side of the world too.
 
-## What is TunaOS?
+## What's actually in it
 
-TunaOS brings modern desktops to Enterprise Linux. Choose from GNOME, KDE Plasma, COSMIC, XFCE, or Niri — all on a stable, enterprise-grade foundation with atomic updates and rollbacks via bootc.
+You get your pick of desktop — GNOME, KDE Plasma, COSMIC, XFCE, or Niri — sitting on top of that same Enterprise Linux base. Updates are atomic through bootc, so if one breaks you just roll back instead of panicking.
 
-## What's New
+## Where things are at
 
-The project has been growing steadily. Here are some highlights:
+We're still early but it's moving fast:
 
-- **47 stars** on GitHub and growing
-- **4 desktop variants**: GNOME, KDE, COSMIC, XFCE, Niri across multiple base OS options
-- **GDX variants** with NVIDIA/CUDA for AI/ML workloads
-- **Rust office suite**: Tables (spreadsheet), Decks (presentations), Letters (word processor)
-- **Ecosystem tools**: Corral (VM manager), Tacklebox (multi-boot creator), Tavern (Homebrew GUI)
+- 47 stars on GitHub, which isn't much but it's growing
+- 4 desktop variants across a handful of base OS options
+- GDX variants with NVIDIA/CUDA baked in if you're doing AI/ML stuff
+- A Rust-based office suite — Tables, Decks, Letters — because why not
+- Some ecosystem tools too: Corral for VMs, Tacklebox for multi-boot USBs, Tavern as a Homebrew GUI
 
-## Coming Soon
+## What's next
 
-- More desktop environment options
-- Enhanced GPU support
-- Expanded documentation and tutorials
-- Community events and conferences
-
-Stay tuned for more updates!
+More desktops, better GPU support, actual documentation instead of tribal knowledge, and hopefully some community stuff down the line. We'll see how it goes.
