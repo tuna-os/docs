@@ -330,7 +330,7 @@
       "Name": "tuna-os/tuna-installer-kde",
       "Images": [
         {
-          "Digest": "sha256:16b21667605660fe966b9ac7f7b454b95f3d5fb7e1519cb8456aeaa265868adf",
+          "Digest": "sha256:9d002b0827aa9bad82f122948e5c27104d3ce0744f8225b1b968ab3198b095bb",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -343,15 +343,15 @@
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.InstallerKde\nruntime=org.kde.Platform/x86_64/6.9\nsdk=org.kde.Sdk/x86_64/6.9\ncommand=tuna-installer-kde\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;wayland;\ndevices=all;\nfilesystems=xdg-config/kdeglobals:ro;host;\n\n[Session Bus Policy]\ncom.canonical.AppMenu.Registrar=talk\norg.kde.kconfig.notify=talk\norg.kde.KGlobalSettings=talk\norg.freedesktop.Flatpak=talk\norg.kde.kdeconnect=talk\n\n[System Bus Policy]\norg.freedesktop.PolicyKit1=talk\n\n[Extension org.tunaos.InstallerKde.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.InstallerKde.Debug;",
             "org.flatpak.installed-size": "237437952",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAARkrwUAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAARkryAAdA==",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAA4nBAAAdA==",
-            "org.flatpak.download-size": "69201359",
+            "org.flatpak.download-size": "69201819",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyS2RlL3g4Nl82NC9tYXN0ZXIAKgBhcw==",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyS2RlL3g4Nl82NC9tYXN0ZXIAAHM=",
             "org.flatpak.ref": "app/org.tunaos.InstallerKde/x86_64/master",
-            "org.flatpak.subject": "Built from 01196254878be1d54f034a5a9f3434727447c696",
-            "org.flatpak.commit": "3c31484f51486528c288c73157092b3d2ebfc7e8b23b0facc3a9730ffc689cd8",
-            "org.flatpak.timestamp": "1783745826"
+            "org.flatpak.subject": "Built from 4ec396ba733f45f227ecc31aaa98ca1aa3c0469e",
+            "org.flatpak.commit": "e1e64f7e9788e9360ae438419a2a95aefcdf11c3f0c7e31e56d76c6dc95f912a",
+            "org.flatpak.timestamp": "1783749174"
           }
         }
       ]
