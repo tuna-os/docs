@@ -44,12 +44,12 @@ export type Variant = {
   hasIsos: boolean;
 };
 
-const ALL_DESKTOPS: Desktop[] = [
+export const ALL_DESKTOPS: Desktop[] = [
   {emoji: '🖥️', name: 'GNOME', tag: 'gnome', blurb: 'The polished default — latest GNOME, backported to Enterprise Linux.'},
-  {emoji: '✨', name: 'GNOME 50', tag: 'gnome50', blurb: 'The newest GNOME stack, riding the same base.'},
   {emoji: '🌊', name: 'KDE Plasma', tag: 'kde', blurb: 'Endlessly customizable, feature-rich Plasma desktop.'},
   {emoji: '🚀', name: 'COSMIC', tag: 'cosmic', blurb: "System76's Rust-built next-gen desktop."},
   {emoji: '⚡', name: 'Niri', tag: 'niri', blurb: 'A scrollable-tiling Wayland compositor for keyboard-driven flow.'},
+  {emoji: '🐭', name: 'XFCE', tag: 'xfce', blurb: 'The classic lightweight desktop — ported to Wayland with the new xfwl4 compositor.'},
 ];
 
 const HOMEBREW: Feature = {
@@ -96,7 +96,8 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Enterprise-stable'},
       {label: 'Arch', value: 'x86_64 · aarch64'},
     ],
-    desktops: ALL_DESKTOPS,
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/github-copr#65
+
     features: [BOOTC, HOMEBREW, FLATHUB, HWE, NVIDIA, {
       emoji: '🛡️',
       title: 'Enterprise stability',
@@ -105,7 +106,6 @@ export const VARIANTS: Variant[] = [
     flavors: [
       {name: 'GNOME', image: 'ghcr.io/tuna-os/albacore:gnome', note: 'Live ISO published'},
       {name: 'GNOME (HWE)', image: 'ghcr.io/tuna-os/albacore:gnome-hwe', note: 'Live ISO published'},
-      {name: 'GNOME 50', image: 'ghcr.io/tuna-os/albacore:gnome50'},
       {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/albacore:kde'},
       {name: 'COSMIC', image: 'ghcr.io/tuna-os/albacore:cosmic'},
       {name: 'Niri', image: 'ghcr.io/tuna-os/albacore:niri'},
@@ -129,7 +129,8 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Fresh + stable'},
       {label: 'Microarch', value: 'x86_64_v2 builds'},
     ],
-    desktops: ALL_DESKTOPS,
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/github-copr#65
+
     features: [BOOTC, HOMEBREW, FLATHUB, HWE, NVIDIA, {
       emoji: '🐱',
       title: 'Kitten freshness',
@@ -138,7 +139,6 @@ export const VARIANTS: Variant[] = [
     flavors: [
       {name: 'GNOME', image: 'ghcr.io/tuna-os/yellowfin:gnome', note: 'Live ISO published'},
       {name: 'GNOME (HWE)', image: 'ghcr.io/tuna-os/yellowfin:gnome-hwe', note: 'Live ISO published'},
-      {name: 'GNOME 50', image: 'ghcr.io/tuna-os/yellowfin:gnome50'},
       {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/yellowfin:kde'},
       {name: 'COSMIC', image: 'ghcr.io/tuna-os/yellowfin:cosmic'},
       {name: 'Niri', image: 'ghcr.io/tuna-os/yellowfin:niri'},
@@ -162,7 +162,8 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Rolling preview'},
       {label: 'Role', value: 'Next-RHEL testing'},
     ],
-    desktops: ALL_DESKTOPS,
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/github-copr#65
+
     features: [BOOTC, HOMEBREW, FLATHUB, HWE, {
       emoji: '🔭',
       title: 'See what’s next',
@@ -174,7 +175,6 @@ export const VARIANTS: Variant[] = [
     }],
     flavors: [
       {name: 'GNOME', image: 'ghcr.io/tuna-os/skipjack:gnome'},
-      {name: 'GNOME 50', image: 'ghcr.io/tuna-os/skipjack:gnome50'},
       {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/skipjack:kde'},
       {name: 'COSMIC', image: 'ghcr.io/tuna-os/skipjack:cosmic'},
       {name: 'Niri', image: 'ghcr.io/tuna-os/skipjack:niri'},
@@ -216,6 +216,213 @@ export const VARIANTS: Variant[] = [
       {name: 'GNOME (NVIDIA)', image: 'ghcr.io/tuna-os/bonito:gnome-nvidia'},
     ],
     hasIsos: false,
+  },
+  {
+    id: 'grouper',
+    emoji: '🐟',
+    name: 'Grouper',
+    base: 'Ubuntu 26.04',
+    baseUrl: 'https://ubuntu.com',
+    blurb: 'The Ubuntu you know, rebuilt as an immutable bootc image.',
+    lede:
+      'Grouper brings the bootc model to the most familiar base in Linux: Ubuntu. Atomic image updates, composefs, and the same desktops as every other TunaOS variant — experimental today, parity-bound tomorrow.',
+    accent: '#e95420',
+    accent2: '#f5a623',
+    stats: [
+      {label: 'Status', value: 'Experimental'},
+      {label: 'Backend', value: 'composefs'},
+      {label: 'Arch', value: 'x86_64'},
+    ],
+    desktops: ALL_DESKTOPS.filter((d) => ['gnome', 'kde', 'niri', 'xfce'].includes(d.tag)),
+    features: [BOOTC, HOMEBREW, FLATHUB, {
+      emoji: '🧪',
+      title: 'Experimental by design',
+      text: 'The proving ground for the Ubuntu bootc story — composefs root, apt-built desktops, and the newest ideas land here first.',
+    }],
+    flavors: [
+      {name: 'GNOME', image: 'ghcr.io/tuna-os/grouper:gnome'},
+      {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/grouper:kde'},
+      {name: 'Niri', image: 'ghcr.io/tuna-os/grouper:niri'},
+      {name: 'XFCE', image: 'ghcr.io/tuna-os/grouper:xfce'},
+    ],
+    hasIsos: false,
+  },
+  {
+    id: 'redfin',
+    emoji: '🔒',
+    name: 'Redfin',
+    base: 'RHEL 10',
+    baseUrl: 'https://redhat.com',
+    blurb: 'Secure enterprise workspace. Local-build only.',
+    lede: 'Redfin is based on Red Hat Enterprise Linux 10, requiring a local build due to subscription constraints.',
+    accent: '#cc0000',
+    accent2: '#ef3333',
+    stats: [
+      {label: 'Status', value: 'Local-build'},
+      {label: 'Support', value: '10 years'},
+      {label: 'Role', value: 'Enterprise secure'},
+    ],
+    desktops: ALL_DESKTOPS,
+    features: [BOOTC, HOMEBREW, FLATHUB, HWE, NVIDIA],
+    flavors: [
+      {name: 'GNOME', image: 'local/redfin:gnome'},
+      {name: 'KDE Plasma', image: 'local/redfin:kde'},
+      {name: 'COSMIC', image: 'local/redfin:cosmic'},
+      {name: 'Niri', image: 'local/redfin:niri'},
+      {name: 'XFCE', image: 'local/redfin:xfce'},
+    ],
+    hasIsos: false,
+  },
+  {
+    id: 'marlin',
+    emoji: '🚀',
+    name: 'Marlin',
+    base: 'Arch Linux',
+    baseUrl: 'https://archlinux.org',
+    blurb: 'Rolling release base with absolute latest packages.',
+    lede: 'Marlin tracks Arch Linux rolling packages on top of the composefs-native bootc runtime.',
+    accent: '#1793d1',
+    accent2: '#33aaff',
+    stats: [
+      {label: 'Status', value: 'Production'},
+      {label: 'Cadence', value: 'Rolling-release'},
+      {label: 'Arch', value: 'x86_64'},
+    ],
+    desktops: ALL_DESKTOPS,
+    features: [BOOTC, HOMEBREW, FLATHUB, NVIDIA],
+    flavors: [
+      {name: 'GNOME', image: 'ghcr.io/tuna-os/marlin:gnome'},
+      {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/marlin:kde'},
+      {name: 'COSMIC', image: 'ghcr.io/tuna-os/marlin:cosmic'},
+      {name: 'Niri', image: 'ghcr.io/tuna-os/marlin:niri'},
+      {name: 'XFCE', image: 'ghcr.io/tuna-os/marlin:xfce'},
+    ],
+    hasIsos: true,
+  },
+  {
+    id: 'flounder',
+    emoji: '🐡',
+    name: 'Flounder',
+    base: 'Debian 13 Trixie',
+    baseUrl: 'https://debian.org',
+    blurb: 'Stable Debian base with containerized package delivery.',
+    lede: 'Flounder brings Debian 13 (Trixie) to the bootc model with stable package guarantees.',
+    accent: '#a80030',
+    accent2: '#d70a53',
+    stats: [
+      {label: 'Status', value: 'Production'},
+      {label: 'Cadence', value: 'Debian stable'},
+      {label: 'Arch', value: 'x86_64'},
+    ],
+    desktops: ALL_DESKTOPS,
+    features: [BOOTC, HOMEBREW, FLATHUB],
+    flavors: [
+      {name: 'GNOME', image: 'ghcr.io/tuna-os/flounder:gnome'},
+      {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/flounder:kde'},
+      {name: 'COSMIC', image: 'ghcr.io/tuna-os/flounder:cosmic'},
+      {name: 'Niri', image: 'ghcr.io/tuna-os/flounder:niri'},
+      {name: 'XFCE', image: 'ghcr.io/tuna-os/flounder:xfce'},
+    ],
+    hasIsos: true,
+  },
+  {
+    id: 'flounder-sid',
+    emoji: '☢️',
+    name: 'Flounder Sid',
+    base: 'Debian Sid',
+    baseUrl: 'https://debian.org',
+    blurb: 'Rolling Debian development base.',
+    lede: 'Flounder Sid tracks Debian unstable (Sid) packages for bleeding-edge deb-based systems.',
+    accent: '#003554',
+    accent2: '#005082',
+    stats: [
+      {label: 'Status', value: 'Production'},
+      {label: 'Cadence', value: 'Debian unstable'},
+      {label: 'Arch', value: 'x86_64'},
+    ],
+    desktops: ALL_DESKTOPS,
+    features: [BOOTC, HOMEBREW, FLATHUB],
+    flavors: [
+      {name: 'GNOME', image: 'ghcr.io/tuna-os/flounder-sid:gnome'},
+      {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/flounder-sid:kde'},
+      {name: 'COSMIC', image: 'ghcr.io/tuna-os/flounder-sid:cosmic'},
+      {name: 'Niri', image: 'ghcr.io/tuna-os/flounder-sid:niri'},
+      {name: 'XFCE', image: 'ghcr.io/tuna-os/flounder-sid:xfce'},
+    ],
+    hasIsos: true,
+  },
+  {
+    id: 'bonito-rawhide',
+    emoji: '🐉',
+    name: 'Bonito Rawhide',
+    base: 'Fedora Rawhide',
+    baseUrl: 'https://fedoraproject.org',
+    blurb: 'Fedora Rawhide upstream development base.',
+    lede: 'Bonito Rawhide tracks Fedora Rawhide packages for upstream-bleeding Fedora development.',
+    accent: '#1b4332',
+    accent2: '#2d6a4f',
+    stats: [
+      {label: 'Status', value: 'Production'},
+      {label: 'Cadence', value: 'Rawhide'},
+      {label: 'Arch', value: 'x86_64 · aarch64'},
+    ],
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'gnome50'),
+    features: [BOOTC, HOMEBREW, FLATHUB],
+    flavors: [
+      {name: 'GNOME', image: 'ghcr.io/tuna-os/bonito-rawhide:gnome'},
+      {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/bonito-rawhide:kde'},
+      {name: 'Niri', image: 'ghcr.io/tuna-os/bonito-rawhide:niri'},
+      {name: 'XFCE', image: 'ghcr.io/tuna-os/bonito-rawhide:xfce'},
+    ],
+    hasIsos: true,
+  },
+  {
+    id: 'sailfin',
+    emoji: '🦎',
+    name: 'Sailfin',
+    base: 'openSUSE Tumbleweed',
+    baseUrl: 'https://opensuse.org',
+    blurb: 'openSUSE Tumbleweed rolling package base.',
+    lede: 'Sailfin is openSUSE Tumbleweed, providing a transactional-style rolling package base.',
+    accent: '#73ba1f',
+    accent2: '#93d93f',
+    stats: [
+      {label: 'Status', value: 'Production'},
+      {label: 'Cadence', value: 'openSUSE rolling'},
+      {label: 'Arch', value: 'x86_64'},
+    ],
+    desktops: ALL_DESKTOPS.filter((d) => ['gnome', 'kde', 'niri', 'xfce'].includes(d.tag)),
+    features: [BOOTC, HOMEBREW, FLATHUB],
+    flavors: [
+      {name: 'GNOME', image: 'ghcr.io/tuna-os/sailfin:gnome'},
+      {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/sailfin:kde'},
+      {name: 'Niri', image: 'ghcr.io/tuna-os/sailfin:niri'},
+      {name: 'XFCE', image: 'ghcr.io/tuna-os/sailfin:xfce'},
+    ],
+    hasIsos: true,
+  },
+  {
+    id: 'guppy',
+    emoji: '🐧',
+    name: 'Guppy',
+    base: 'Gentoo Linux',
+    baseUrl: 'https://gentoo.org',
+    blurb: 'Source-based Gentoo packages compiled on immutable layers.',
+    lede: 'Guppy tracks Gentoo Linux stable packages with fast compile updates and portage binhost support.',
+    accent: '#4e3a65',
+    accent2: '#6b5883',
+    stats: [
+      {label: 'Status', value: 'Production'},
+      {label: 'Cadence', value: 'Gentoo stable'},
+      {label: 'Arch', value: 'x86_64'},
+    ],
+    desktops: ALL_DESKTOPS.filter((d) => ['gnome', 'kde'].includes(d.tag)),
+    features: [BOOTC, HOMEBREW, FLATHUB],
+    flavors: [
+      {name: 'GNOME', image: 'ghcr.io/tuna-os/guppy:gnome'},
+      {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/guppy:kde'},
+    ],
+    hasIsos: true,
   },
 ];
 
