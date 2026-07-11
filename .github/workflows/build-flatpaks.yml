@@ -1,0 +1,120 @@
+# Centralized flatpak builder for the tunaos.org remote.
+# Builds apps that don't publish their own OCI, or as a fallback
+# for any app. Runs daily and on workflow_dispatch.
+#
+# To add an app: add an entry to the APPS list below.
+
+name: Build Flatpaks
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # daily at 06:00 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: build-flatpaks
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io/tuna-os
+
+jobs:
+  build:
+    name: Build ${{ matrix.app.name }}
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-50
+      options: --privileged
+    strategy:
+      fail-fast: false
+      matrix:
+        app:
+          - name: tavern
+            id: org.tunaos.tavern
+            repo: tuna-os/Tavern
+            manifest: org.tunaos.tavern.json
+          - name: bootc-installer
+            id: org.bootcinstaller.Installer
+            repo: projectbluefin/bootc-installer
+            manifest: flatpak/org.bootcinstaller.Installer.json
+            branch: prod
+          - name: mariner
+            id: org.tunaos.mariner
+            repo: tuna-os/mariner
+            manifest: org.tunaos.mariner.json
+            branch: master
+    steps:
+      - name: Checkout ${{ matrix.app.repo }}
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ matrix.app.repo }}
+          ref: ${{ matrix.app.branch || 'main' }}
+          submodules: recursive
+
+      - name: Build Flatpak
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          manifest-path: ${{ matrix.app.manifest }}
+          cache-key: flatpak-builder-${{ matrix.app.name }}-${{ github.sha }}
+          build-bundle: false
+          upload-artifact: false
+
+      - name: Export OCI
+        run: |
+          flatpak build-bundle --oci --arch=x86_64 repo ${{ matrix.app.name }}.oci ${{ matrix.app.id }}
+
+      - name: Upload OCI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: oci-${{ matrix.app.name }}
+          path: ${{ matrix.app.name }}.oci/
+          retention-days: 1
+
+  publish:
+    name: Publish
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all OCI artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: oci-*
+          path: artifacts
+          merge-multiple: true
+
+      - name: Push to GHCR & update index
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | skopeo login ghcr.io -u "${{ github.actor }}" --password-stdin
+          git clone --depth 1 \
+            https://x-access-token:${{ secrets.FLATPAK_INDEX_TOKEN }}@github.com/tuna-os/docs.git \
+            index-repo
+          pip install requests
+
+          for dir in artifacts/*/; do
+            app=$(basename "$dir")
+            echo "=== Publishing $app ==="
+            skopeo copy "oci:${dir}" "docker://${REGISTRY}/${app}:latest" || true
+
+            python3 .github/scripts/update-index.py \
+              --oci-dir "${dir}" \
+              --index-file index-repo/static/flatpak/index/static \
+              --repo-name "tuna-os/${app}" \
+              --tags latest || true
+          done
+
+          cd index-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add static/flatpak/index/static
+          if git diff --cached --quiet; then
+            echo "No index changes"
+          else
+            git commit -m "chore(flatpak): update OCI index from centralized builder"
+            git push origin main
+          fi

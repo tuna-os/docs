@@ -4,6 +4,19 @@ sidebar_position: 7
 
 # Installer
 
+import InstallerWalkthrough from '@site/src/components/InstallerWalkthrough';
+
+<InstallerWalkthrough
+  title="See it before you run it"
+  subtitle="These are real captures — a workflow boots a freshly built live ISO in QEMU every week, walks the installer, and publishes every step."
+/>
+
+<InstallerWalkthrough
+  title="COSMIC flow"
+  subtitle="The same journey on the COSMIC desktop variant."
+  prefix="cosmic_"
+/>
+
 TunaOS ships with **TunaOS First Setup**, a graphical installer built with GTK4 and Libadwaita. It runs automatically when you boot from a live ISO and guides you through installing TunaOS to disk, then setting up your system on first boot.
 
 > TunaOS First Setup is a fork of [Vanilla OS First Setup](https://github.com/Vanilla-OS/first-setup), adapted for bootc-based installation on Enterprise Linux.

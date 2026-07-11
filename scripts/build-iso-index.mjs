@@ -150,3 +150,6 @@ const out = {
 };
 
 process.stdout.write(JSON.stringify(out, null, 2) + '\n');
+
+// Exported for unit tests.
+export {detectArch, titleCase, CATEGORIES};
