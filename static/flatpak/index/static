@@ -325,6 +325,36 @@
           }
         }
       ]
+    },
+    {
+      "Name": "tuna-os/tuna-installer-kde",
+      "Images": [
+        {
+          "Digest": "sha256:e37f2190468b51b343346d21ba627cac33ad436ef692e5c8d58212185d8812a8",
+          "MediaType": "application/vnd.oci.image.manifest.v1+json",
+          "OS": "linux",
+          "Architecture": "amd64",
+          "Tags": [
+            "latest"
+          ],
+          "Labels": {
+            "org.flatpak.body": "Name: org.tunaos.InstallerKde\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
+            "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy50dW5hb3MuSW5zdGFsbGVyS2RlCnJ1bnRpbWU9b3JnLmtkZS5QbGF0Zm9ybS94ODZfNjQvNi45CnNkaz1vcmcua2RlLlNkay94ODZfNjQvNi45CmNvbW1hbmQ9dHVuYS1pbnN0YWxsZXIta2RlCgpbQ29udGV4dF0Kc2hhcmVkPWlwYztuZXR3b3JrOwpzb2NrZXRzPWZhbGxiYWNrLXgxMTt3YXlsYW5kOwpkZXZpY2VzPWFsbDsKZmlsZXN5c3RlbXM9eGRnLWNvbmZpZy9rZGVnbG9iYWxzOnJvO2hvc3Q7CgpbU2Vzc2lvbiBCdXMgUG9saWN5XQpjb20uY2Fub25pY2FsLkFwcE1lbnUuUmVnaXN0cmFyPXRhbGsKb3JnLmtkZS5rY29uZmlnLm5vdGlmeT10YWxrCm9yZy5rZGUuS0dsb2JhbFNldHRpbmdzPXRhbGsKb3JnLmZyZWVkZXNrdG9wLkZsYXRwYWs9dGFsawpvcmcua2RlLmtkZWNvbm5lY3Q9dGFsawoKW1N5c3RlbSBCdXMgUG9saWN5XQpvcmcuZnJlZWRlc2t0b3AuUG9saWN5S2l0MT10YWxrCgpbRXh0ZW5zaW9uIG9yZy50dW5hb3MuSW5zdGFsbGVyS2RlLkRlYnVnXQpkaXJlY3Rvcnk9bGliL2RlYnVnCmF1dG9kZWxldGU9dHJ1ZQpuby1hdXRvZG93bmxvYWQ9dHJ1ZQoKW0J1aWxkXQpidWlsdC1leHRlbnNpb25zPW9yZy50dW5hb3MuSW5zdGFsbGVyS2RlLkRlYnVnOwAAcw==",
+            "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
+            "org.flatpak.metadata": "[Application]\nname=org.tunaos.InstallerKde\nruntime=org.kde.Platform/x86_64/6.9\nsdk=org.kde.Sdk/x86_64/6.9\ncommand=tuna-installer-kde\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;wayland;\ndevices=all;\nfilesystems=xdg-config/kdeglobals:ro;host;\n\n[Session Bus Policy]\ncom.canonical.AppMenu.Registrar=talk\norg.kde.kconfig.notify=talk\norg.kde.KGlobalSettings=talk\norg.freedesktop.Flatpak=talk\norg.kde.kdeconnect=talk\n\n[System Bus Policy]\norg.freedesktop.PolicyKit1=talk\n\n[Extension org.tunaos.InstallerKde.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.InstallerKde.Debug;",
+            "org.flatpak.installed-size": "237437952",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAARkrwUAdA==",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAA4nBAAAdA==",
+            "org.flatpak.download-size": "69201974",
+            "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyS2RlL3g4Nl82NC9tYXN0ZXIAKgBhcw==",
+            "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyS2RlL3g4Nl82NC9tYXN0ZXIAAHM=",
+            "org.flatpak.ref": "app/org.tunaos.InstallerKde/x86_64/master",
+            "org.flatpak.subject": "Built from f03beb71ae6ccc8222caea0c011c3cfcf1f8d540",
+            "org.flatpak.commit": "cf2d4c8efa3a40cf5ca894c437349069c2ab0b223f2be49fa5c7caa5017b1455",
+            "org.flatpak.timestamp": "1783744725"
+          }
+        }
+      ]
     }
   ]
 }
