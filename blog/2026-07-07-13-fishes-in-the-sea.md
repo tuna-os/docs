@@ -77,21 +77,31 @@ That's it. The CI pipeline handles the rest: container images and bootable ISOs,
 
 ## The Desktops
 
-Every variant ships the same five desktop environments, defined as YAML manifests with per-package-manager package lists. Two are worth highlighting for pushing the Wayland envelope.
+Every variant ships the same five desktop environments. TunaOS doesn't build these experiences from scratch — we layer upstream quality customizations on top of stock packages, then multiply those experiences across every base OS in the matrix. Each desktop has an upstream project we pull from, and we're grateful for the craftsmanship they bring.
+
+### <img src="/img/desktops/gnome.svg" width="22" /> GNOME
+
+GNOME's defaults are polished out of the box, but TunaOS goes further by pulling from [**Project Bluefin**](https://projectbluefin.io)'s [`common`](https://github.com/projectbluefin/common) layer. Bluefin brings developer-quality-of-life tooling, curated Flatpak defaults, and years of bootc desktop operational experience. Every TunaOS GNOME image — whether on Arch, Fedora, or Gentoo — ships the same Bluefin-derived experience. For those ready to go further, Bluefin also maintains a distroless BuildStream build on [freedesktop-sdk](https://gitlab.com/freedesktop-sdk/freedesktop-sdk).
+
+### <img src="/img/desktops/kde.svg" width="22" /> KDE Plasma
+
+KDE Plasma gets its identity from [**Aurora**](https://github.com/get-aurora-dev/common)'s [`common`](https://github.com/get-aurora-dev/common) layer — the theming, branding, and visual cohesion that turns stock Plasma into something that looks like it belongs together. Aurora's customizations are what give TunaOS KDE its distinct look across all 13 base distributions. Aurora also offers a distroless BuildStream build on [freedesktop-sdk](https://gitlab.com/freedesktop-sdk/freedesktop-sdk) for a fully source-based KDE experience.
 
 ### <img src="/img/desktops/niri.svg" width="22" /> Niri + <img src="/img/desktops/dms.svg" width="22" /> DMS
 
 [Niri](https://github.com/YaLTeR/niri) is a scrollable-tiling Wayland compositor — windows tile horizontally on an infinite ribbon you scroll through, rather than stacking in workspaces. It's the most unusual DE in the lineup and the one that most purely commits to Wayland's protocol model.
 
-TunaOS pairs Niri with **[DMS](https://github.com/avengemedia/dms)** (DankMaterialShell), a desktop shell that layers greeter integration, a CLI control panel, and application launching on top of Niri. The full stack is `greetd` (display manager) → Niri (compositor) → DMS (shell). DMS is still early-stage but gives Niri a cohesive desktop experience beyond bare windows.
+TunaOS pairs Niri with **[DMS](https://github.com/avengemedia/dms)** (DankMaterialShell), a desktop shell that layers greeter integration, a CLI control panel, and application launching on top of Niri. The full stack is `greetd` (display manager) &rarr; Niri (compositor) &rarr; DMS (shell). DMS is still early-stage but gives Niri a cohesive desktop experience beyond bare windows.
 
-TunaOS also maintains **[Zirconium Hawaii](https://github.com/zirconium-linux/hawaii)** — a Niri desktop built entirely from source on [freedesktop-sdk](https://gitlab.com/freedesktop-sdk/freedesktop-sdk) using BuildStream. Where the variants layer on top of existing distributions, Zirconium builds the entire stack from source, 100% reproducible. Think of it as "GNOME OS, but Niri."
+The Niri configuration, theming, and defaults we ship come from **[Zirconium](https://github.com/zirconium-dev/zirconium)** — TunaOS pulls from Zirconium's common layer to deliver the same polished Niri experience across every base. Zirconium also maintains its own distroless build on [freedesktop-sdk](https://gitlab.com/freedesktop-sdk/freedesktop-sdk) with BuildStream.
 
 ### <img src="/img/desktops/xfce.svg" width="22" /> XFCE (Wayland)
 
-XFCE 4.20 introduced experimental Wayland support via its new compositor `xfwl4`, replacing the X11-era `xfwm4`. While XFCE's Wayland session is still maturing, it already works well enough for daily driving on Fedora and EL10 — TunaOS ships the optional `xfce4-wayland` package and defaults to GDM as the display manager to ensure the Wayland session is discoverable. Think of it as "XFCE, but with tear-free rendering and per-monitor refresh rates."
+XFCE 4.20 introduced experimental Wayland support via its new compositor `xfwl4`, replacing the X11-era `xfwm4`. While the Wayland session is still maturing, it already works well enough for daily driving on Fedora and EL10 — TunaOS ships the optional `xfce4-wayland` package and defaults to GDM as the display manager to ensure the Wayland session is discoverable. Think of it as "XFCE, but with tear-free rendering and per-monitor refresh rates."
 
-The other three desktops — <img src="/img/desktops/gnome.svg" width="18" /> [GNOME](https://www.gnome.org/), <img src="/img/desktops/kde.svg" width="18" /> [KDE Plasma](https://kde.org/), and <img src="/img/desktops/cosmic.svg" width="18" /> [COSMIC](https://system76.com/cosmic) — are Wayland-first by default and round out the lineup with more mature, full-featured environments. Each has a sibling "distroless" project in the TunaOS family: [**Project Bluefin**](https://projectbluefin.io) for GNOME, [**Aurora**](/tromso) for KDE Plasma, and Zirconium for Niri — all built from source on freedesktop-sdk with BuildStream.
+### <img src="/img/desktops/cosmic.svg" width="22" /> COSMIC
+
+[COSMIC](https://system76.com/cosmic) is System76's Rust-based desktop, Wayland-first by design. The stock COSMIC experience ships as-is — it's already opinionated and cohesive enough to stand on its own.
 
 ## What's Next
 
