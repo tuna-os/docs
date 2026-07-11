@@ -59,7 +59,7 @@ TunaOS is more than its images — it's an ecosystem of tools that build, instal
 distribute them:
 
 - **[Tacklebox](/docs/tacklebox)** — orchestrates multi-boot USBs, disk images, and deduplicated ISOs from OCI images.
-- **[Tromsø](/docs/tromso)** (KDE) and **[XFCE Linux](/docs/xfce-linux)** — BuildStream-from-source desktop images.
+- **[Tromsø](tromso/index)** (KDE), **[XFCE Linux](xfce-linux/index)**, **[Dakota](https://github.com/projectbluefin/dakota)** (GNOME), and **[Zirconium Hawaii](https://github.com/zirconium-linux/hawaii)** (Niri) — "distroless" desktops built via a declarative BuildStream pipeline on top of the [Freedesktop SDK](https://freedesktop-sdk.io/).
 - **[COPR Builds](/docs/copr)** — the RPM build system that backports GNOME 50 to EL10.
 - **[Tavern](/docs/tavern)** and **[bluefin-cli](/docs/bluefin-cli)** — desktop and shell tooling.
 

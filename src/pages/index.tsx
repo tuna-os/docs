@@ -152,6 +152,7 @@ function ProjectsBand(): ReactNode {
     {emoji: '🍻', name: 'Tavern', desc: 'Homebrew GUI', to: '/tavern'},
     {emoji: '⌨️', name: 'bluefin-cli', desc: 'Shell CLI', to: '/bluefin-cli'},
     {emoji: '⚙', name: 'COPR Builds', desc: 'RPM builder', to: '/copr'},
+    {emoji: '🤠', name: 'Corral', desc: 'VM & container manager', to: '/corral'},
     {emoji: '🦖', name: 'Dakota', desc: 'Bluefin GNOME OS', to: '/dakota'},
     {emoji: '🌺', name: 'Hawaii', desc: 'Niri OS', to: '/hawaii'},
   ];
@@ -177,6 +178,86 @@ function ProjectsBand(): ReactNode {
           <Link className="button button--outline button--md" to="/projects">
             Explore all projects →
           </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PipelineBand(): ReactNode {
+  const tools = [
+    {
+      emoji: '🛠',
+      name: 'Tacklebox',
+      desc: 'Turns bootc OCI images into multi-desktop, deduplicated live ISOs and installable disk images — one shared squashfs store instead of a separate ISO per desktop.',
+      to: '/tacklebox',
+    },
+    {
+      emoji: '🤠',
+      name: 'Corral',
+      desc: "Boots every published image in a real VM (QEMU locally, KubeVirt in CI) and checks it actually reaches a working desktop before promotion — TunaOS's boot gate.",
+      to: '/corral',
+    },
+    {
+      emoji: '⚙',
+      name: 'github-copr',
+      desc: 'A self-hosted, mock-based RPM build system with GitHub Actions and Cloudflare R2 — builds the packages EL10 doesn’t ship yet (GNOME 50, the XFCE Wayland stack) and its apt-world sibling debian-copr.',
+      to: 'https://github.com/tuna-os/github-copr',
+      external: true,
+    },
+    {
+      emoji: '🌺',
+      name: 'Zirconium',
+      desc: "Supplies the Niri desktop's greetd session files, theming, and shell config across every TunaOS variant — the same system files ship whether you're on AlmaLinux, CentOS Stream, Fedora, or Ubuntu.",
+      to: '/hawaii',
+    },
+  ];
+
+  return (
+    <section className={clsx(styles.section, styles.pipelineSection)}>
+      <div className="container">
+        <div className={styles.sectionHead}>
+          <Heading as="h2">The pipeline behind every build</Heading>
+          <p>
+            TunaOS isn't just Containerfiles — it's a small, purpose-built toolchain that
+            builds, boots, and verifies every image before it ships.
+          </p>
+        </div>
+        <div className={styles.pipelineGrid}>
+          {tools.map((t) => (
+            <Link
+              key={t.name}
+              to={t.to}
+              {...(t.external ? {target: '_blank', rel: 'noopener noreferrer'} : {})}
+              className={styles.pipelineCard}>
+              <div className={styles.pipelineCardHead}>
+                <span className={styles.projectChipEmoji}><AnimatedEmoji emoji={t.emoji} size={28} /></span>
+                <strong>{t.name}{t.external ? ' ↗' : ''}</strong>
+              </div>
+              <p>{t.desc}</p>
+            </Link>
+          ))}
+        </div>
+
+        <div className={styles.foundationNote}>
+          <Heading as="h3">Built on a proven foundation</Heading>
+          <p>
+            TunaOS is a fork of{' '}
+            <a href="https://github.com/ublue-os/bluefin-lts" target="_blank" rel="noopener noreferrer">
+              Bluefin LTS
+            </a>{' '}
+            — itself part of the{' '}
+            <a href="https://github.com/ublue-os/bluefin" target="_blank" rel="noopener noreferrer">
+              Bluefin
+            </a>{' '}
+            /{' '}
+            <a href="https://github.com/ublue-os/aurora" target="_blank" rel="noopener noreferrer">
+              Aurora
+            </a>{' '}
+            family from Universal Blue — the pipeline design, CI patterns, and desktop
+            polish this project builds on all trace back there, adapted for Enterprise Linux
+            and, now, Ubuntu.
+          </p>
         </div>
       </div>
     </section>
