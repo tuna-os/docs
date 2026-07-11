@@ -25,7 +25,11 @@ The illusion is that this is *hard*. That it requires a priesthood of release en
 TunaOS is not a distribution. It's an **image factory**. The inputs are simple data:
 
 ```
-base OS  ×  desktop  ×  kernel  ×  drivers  =  bootable image
+base OS  
+desktop
+kernel
+drivers  
+=  bootable image
 ```
 
 The output is an OCI container image you can `bootc switch` to atomically, with clean rollback. Change your base distribution, change your desktop, or change your kernel stack in a single command. 
@@ -52,29 +56,25 @@ Every TunaOS variant is named after a fish. Today there are 13:
 | 🦎 **Sailfin** | [openSUSE Tumbleweed](https://opensuse.org) | zypper | Production | [View Landing Page](/sailfin) | openSUSE rolling transactional base |
 | 🐧 **Guppy** | [Gentoo Linux](https://gentoo.org) | emerge | Production | [View Landing Page](/guppy) | Source-based Gentoo on bootc |
 
-Each fish gets **6 desktops**: GNOME, GNOME 50, KDE Plasma, COSMIC, Niri, and XFCE. Each desktop can optionally layer an HWE kernel or NVIDIA drivers on top.
+Each fish gets **5 desktops**: GNOME, KDE Plasma, COSMIC, Niri, and XFCE. Each desktop can optionally layer an Custom kernel or NVIDIA drivers on top.
 
 ## How We Got Here
 
-A week ago, adding a new base OS meant writing hundreds of lines of new shell scripts. Today it means:
+Before, adding a new base OS to TunaOS meant writing hundreds of lines of new shell scripts. Today it means:
 
-1. **A Containerfile** that bootcifies the stock container image (~150 lines, mostly the ostree filesystem layout)
+1. **A Containerfile** that bootcifies the stock container image (~150 lines, mostly the ostree filesystem layout) these have been adapted from [bootcrew's base images](https://www.github.com/bootcrew/mono) 
 2. **A `pacman:` or `apt:` section** in each desktop manifest (the packages that make up GNOME/KDE/etc. on that OS)
 3. **An entry in `build-config.yml`** (the variant name, base image, platforms)
 
-That's it. The generic installer reads the YAML, installs the right packages for the detected OS, and produces a working image. No per-distro bash scripts. No per-DE-per-distro combinatorial explosion.
+That's it. The factory will produce images and ISOs. 
 
 ## What This Means For Users
 
-**You're not locked in.** Want to try Arch after running AlmaLinux for a year? `sudo bootc switch ghcr.io/tuna-os/marlin:kde`. Want the CachyOS performance kernel on your KDE desktop? `sudo bootc switch ghcr.io/tuna-os/wahoo:kde`. Don't like GNOME 50? Switch to GNOME 49: `sudo bootc switch ghcr.io/tuna-os/yellowfin:gnome`.
-
-The matrix is your menu. Every cell is a valid, tested, bootable system.
+**You're not locked in.** Want to try Arch after running AlmaLinux for a year? this is/will be possible using bootc-migrator in the works. 
 
 ## What's Next
 
 - **Build validation** — getting CI green for all 10 variants across all platforms
-- **ISOs** — tacklebox-generated live ISOs for every variant×desktop combination
-- **NVIDIA on Arch/CachyOS** — `pacman -S nvidia-open` as a manifest entry (no akmods needed)
 - **More desktops** — Hyprland, Sway, Budgie are each one YAML file away
 - **Community manifests** — let anyone contribute a desktop definition without touching build scripts
 
@@ -82,9 +82,8 @@ The matrix is your menu. Every cell is a valid, tested, bootable system.
 
 This wouldn't be possible without:
 
-- **[bootcrew](https://github.com/bootcrew/mono)** — reference bootc implementations for Arch and Debian
+- **[bootcrew](https://github.com/bootcrew/mono)** — reference bootc implementations for Arch, Gentoo, OpenSUSE, and Debian
 - **[jumpvi / bootc-shindig](https://github.com/bootc-shindig)** — bootc-deb packages for Ubuntu/Debian
-- **[CachyOS](https://cachyos.org)** — performance-optimized Arch repos and Docker images
 - **[Universal Blue](https://universal-blue.org/)** & **[Project Bluefin](https://projectbluefin.io)** — proving bootc desktop works at scale
 - **[bootc](https://github.com/bootc-dev/bootc)** — the engine that makes all of this possible
 
