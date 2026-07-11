@@ -23,6 +23,12 @@ Dakota ships with a structured hardware diagnostic loop:
 
 No telemetry. No phone-home. Every report is reviewed before it leaves your machine.
 
+## Already running Bluefin?
+
+You don't need to reinstall to get Dakota's ComposeFS backend — see
+[Migrating from Bluefin](/docs/dakota/migration) for the in-place migration
+tool and its interactive wizard.
+
 ## See also
 
 - [Tromsø](/tromso) — KDE Plasma on the same freedesktop-sdk base
