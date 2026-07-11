@@ -6,7 +6,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Getting Started',
       collapsed: false,
-      items: ['intro', 'installation', 'installer', 'system-requirements', 'bootc-resources', 'faq'],
+      items: ['intro', 'installation', 'installer', 'system-requirements', 'bootc-resources', 'faq', 'ublue-ecosystem'],
     },
     {
       type: 'category',
