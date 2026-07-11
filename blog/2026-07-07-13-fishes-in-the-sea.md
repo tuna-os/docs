@@ -116,12 +116,35 @@ Like XFCE, COSMIC doesn't yet have a dedicated upstream customization layer. If 
 
 ## Credits
 
-This architecture stands on the work of these projects:
+TunaOS stands on the shoulders of these projects. If you find value in what we do, consider supporting the people who make it possible.
+
+### Infrastructure
 
 - **[bootcrew](https://github.com/bootcrew/mono)** — Reference bootc implementations for Arch, Gentoo, openSUSE, and Debian
 - **[jumpvi / bootc-shindig](https://github.com/bootc-shindig)** — bootc-deb packaging for Ubuntu and Debian
 - **[Universal Blue](https://universal-blue.org/)** & **[Project Bluefin](https://projectbluefin.io)** — Pioneering the bootc desktop model at scale
 - **[bootc](https://github.com/containers/bootc)** — The engine that makes all of this possible
+
+### Desktop Upstreams
+
+These are the projects whose customization layers we ship across every variant. They put in the work to make each desktop look and feel cohesive — please support them.
+
+**Project Bluefin** (GNOME): [sponsor @castrojo](https://github.com/sponsors/castrojo) · [sponsor @tulilirockz](https://github.com/sponsors/tulilirockz)
+
+**Aurora** (KDE Plasma): [sponsor @NiHaiden](https://github.com/sponsors/NiHaiden) · [ko-fi](https://ko-fi.com/valerie-tar-gz) · [venmo](https://venmo.com/u/bri-recchia) · [ko-fi/brirec](https://ko-fi.com/brirec)
+
+**Zirconium** (Niri): [sponsor @tulilirockz](https://github.com/sponsors/tulilirockz)
+
+### Desktop Environments
+
+The desktops themselves are monumental community efforts worth supporting directly.
+
+- [Donate to GNOME](https://www.gnome.org/donate/)
+- [Donate to KDE](https://kde.org/community/donations/)
+- [Donate to XFCE](https://xfce.org/donate)
+- [Sponsor Niri](https://github.com/sponsors/YaLTeR)
+
+See our **[Support page](/support)** for a full list of ways to contribute.
 
 ---
 
