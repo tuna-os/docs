@@ -57,6 +57,12 @@
 
 /* ── Sidebar ── */
 
+/* Inline OS/desktop logos: invert in dark mode */
+[data-theme='dark'] article img[src*='/img/os/'],
+[data-theme='dark'] article img[src*='/img/desktops/'] {
+  filter: invert(1);
+}
+
 .sidebar-section-label {
   font-size: 0.7rem;
   font-weight: 700;

@@ -85,11 +85,13 @@ Every variant ships the same five desktop environments, defined as YAML manifest
 
 TunaOS pairs Niri with **[DMS](https://github.com/avengemedia/dms)** (DankMaterialShell), a desktop shell that layers greeter integration, a CLI control panel, and application launching on top of Niri. The full stack is `greetd` (display manager) → Niri (compositor) → DMS (shell). DMS is still early-stage but gives Niri a cohesive desktop experience beyond bare windows.
 
+TunaOS also maintains **[Zirconium Hawaii](https://github.com/zirconium-linux/hawaii)** — a Niri desktop built entirely from source on [freedesktop-sdk](https://gitlab.com/freedesktop-sdk/freedesktop-sdk) using BuildStream. Where the variants layer on top of existing distributions, Zirconium builds the entire stack from source, 100% reproducible. Think of it as "GNOME OS, but Niri."
+
 ### <img src="/img/desktops/xfce.svg" width="22" /> XFCE (Wayland)
 
 XFCE 4.20 introduced experimental Wayland support via its new compositor `xfwl4`, replacing the X11-era `xfwm4`. While XFCE's Wayland session is still maturing, it already works well enough for daily driving on Fedora and EL10 — TunaOS ships the optional `xfce4-wayland` package and defaults to GDM as the display manager to ensure the Wayland session is discoverable. Think of it as "XFCE, but with tear-free rendering and per-monitor refresh rates."
 
-The other three desktops — <img src="/img/desktops/gnome.svg" width="18" /> [GNOME](https://www.gnome.org/), <img src="/img/desktops/kde.svg" width="18" /> [KDE Plasma](https://kde.org/), and <img src="/img/desktops/cosmic.svg" width="18" /> [COSMIC](https://system76.com/cosmic) — are Wayland-first by default and round out the lineup with more mature, full-featured environments.
+The other three desktops — <img src="/img/desktops/gnome.svg" width="18" /> [GNOME](https://www.gnome.org/), <img src="/img/desktops/kde.svg" width="18" /> [KDE Plasma](https://kde.org/), and <img src="/img/desktops/cosmic.svg" width="18" /> [COSMIC](https://system76.com/cosmic) — are Wayland-first by default and round out the lineup with more mature, full-featured environments. Each has a sibling "distroless" project in the TunaOS family: [**Project Bluefin**](https://projectbluefin.io) for GNOME, [**Aurora**](/tromso) for KDE Plasma, and Zirconium for Niri — all built from source on freedesktop-sdk with BuildStream.
 
 ## What's Next
 
