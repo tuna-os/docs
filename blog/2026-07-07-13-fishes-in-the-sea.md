@@ -10,7 +10,9 @@ date: 2026-07-07
 
 For too long, the Linux desktop has been held back by fragmentation. Hundreds of distros that are 95% the same packages with 5% different defaults — and picking one felt like a permanent, load-bearing architecture decision.
 
-TunaOS rejects that. Today we ship **13 variants** spanning 5 package managers and every major Linux family, all producing a completely consistent desktop experience. The proof is in the matrix: when you can switch base OS underneath the same desktop without changing a thing, the distro stops being a decision and becomes a dial.
+This isn't a new observation. [**Bedrock Linux**](https://bedrocklinux.org) proved years ago that packages from different distros could coexist on the same system. [**CarbonOS**](https://github.com/carbonOS) — Adrian Vovk's early experiment with bootable container images — showed that the OS itself could be delivered like an app. And [**Jessie Frazelle**](https://blog.jessfraz.com) famously ran her entire desktop out of Docker containers, proving the "container as OS boundary" model worked for real daily use. Each of these poked a hole in the distro fallacy. TunaOS is what happens when you connect all the holes.
+
+TunaOS rejects the old model. Today we ship **13 variants** spanning 5 package managers and every major Linux family, all producing a completely consistent desktop experience. The proof is in the matrix: when you can switch base OS underneath the same desktop without changing a thing, the distro stops being a decision and becomes a dial.
 
 <!-- truncate -->
 
