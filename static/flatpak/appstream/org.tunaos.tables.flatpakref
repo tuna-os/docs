@@ -1,6 +1,6 @@
 [Flatpak Ref]
 Name=org.tunaos.tables
-Branch=stable
+Branch=master
 Title=org.tunaos.tables from tuna-os
 IsRuntime=false
 Url=oci+https://tuna-os.github.io/flatpak-index

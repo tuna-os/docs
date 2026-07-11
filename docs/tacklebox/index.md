@@ -12,6 +12,21 @@ Prefer a visual tour? See the **[Tacklebox overview →](/tacklebox)** landing p
 
 Born from the `superiso` project, Tacklebox evolves the concept from static ISOs to dynamic, writable GPT disks with a unified bootloader.
 
+
+## Quick Start
+
+```bash
+# Build Tacklebox, create a recipe, and build a multi-boot USB
+git clone https://github.com/tuna-os/tacklebox.git
+cd tacklebox
+make build
+sudo ./bin/tacklebox build recipe.json --img tbox.img
+```
+
+👉 See the **[Getting Started](getting-started.md)** guide for a complete walkthrough.
+
+---
+
 ## ✨ Key Features
 
 *   **🚀 Multi-Boot Dictatorship:** Automatically installs and manages `systemd-boot` on a unified ESP, resolving conflicts between Ostree and Composefs backends.

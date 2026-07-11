@@ -20,11 +20,11 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.repository == 'tuna-os/docs' }}
     steps:
-      - uses: actions/checkout@3d147700e9102d63eab6c121c870aa6e0af9396b # v4
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/setup-node@cd93095a6e160be2cc06e0158b140f5f8aa19670 # v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
 
