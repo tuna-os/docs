@@ -26,25 +26,25 @@ const APPS = [
     docs: '/decks',
   },
   {
-    id: 'org.tunaos.tables-rust',
-    name: 'Tables (Rust)',
-    emoji: '🦀',
-    description: 'Pure Rust GTK4 spreadsheet — fast, native, no WebKit.',
-    docs: '/tables',
+    id: 'org.tunaos.mariner',
+    name: 'Mariner',
+    emoji: '🧭',
+    description: 'GNOME Files alternative — typeahead, dual-pane, Quick Look, full-text search.',
+    docs: 'https://github.com/romgrk/mariner',
   },
   {
-    id: 'org.tunaos.letters-rust',
-    name: 'Letters (Rust)',
-    emoji: '🦀',
-    description: 'Pure Rust GTK4 word processor — fast, native, no WebKit.',
-    docs: '/letters',
+    id: 'org.tunaos.tavern',
+    name: 'Tavern',
+    emoji: '🍻',
+    description: 'Homebrew client for Linux — GTK 4 + Libadwaita.',
+    docs: '/tavern',
   },
   {
-    id: 'org.tunaos.decks-rust',
-    name: 'Decks (Rust)',
-    emoji: '🦀',
-    description: 'Pure Rust GTK4 presentation app — fast, native, no WebKit.',
-    docs: '/decks',
+    id: 'org.bootcinstaller.Installer',
+    name: 'bootc-installer',
+    emoji: '🖥️',
+    description: 'Graphical OS installer for bootc-based systems.',
+    docs: 'https://github.com/projectbluefin/bootc-installer',
   },
 ];
 
@@ -117,7 +117,7 @@ export default function Flatpak(): ReactNode {
         <div className="container">
           <Heading as="h1">📦 TunaOS Flatpak Remote</Heading>
           <p style={{fontSize: '1.2rem', opacity: 0.85, maxWidth: 600, margin: '1rem auto'}}>
-            Install Tables, Letters, Decks, and more with one command.
+            Install Tables, Letters, Decks, Mariner, Tavern, and more.
           </p>
         </div>
       </header>
@@ -178,6 +178,7 @@ export default function Flatpak(): ReactNode {
             <a href="https://github.com/tuna-os/hanthor-rust">Rust source →</a>
           </p>
         </section>
+
       </main>
     </Layout>
   );
