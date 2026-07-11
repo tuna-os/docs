@@ -85,6 +85,7 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         {type: 'category', label: 'Tavern', link: {type: 'doc', id: 'tavern/index'}, items: ['tavern/ROADMAP', 'tavern/CONTRIBUTING', 'tavern/guide']},
+        {type: 'doc', id: 'gtk-office-suite/index', label: '🏢 Office Suite'},
         {type: 'category', label: '📊 Tables', link: {type: 'doc', id: 'tables/index'}, items: ['tables/guide']},
         {type: 'category', label: '📝 Letters', link: {type: 'doc', id: 'letters/index'}, items: ['letters/guide']},
         {type: 'category', label: '📽️ Decks', link: {type: 'doc', id: 'decks/index'}, items: ['decks/guide']},
