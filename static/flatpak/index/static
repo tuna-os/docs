@@ -150,7 +150,7 @@
       "Name": "tuna-os/tavern",
       "Images": [
         {
-          "Digest": "sha256:4fa273a12c39d2bcfe58b29d90ea41d702057a2758df906388e466e5f1fa33c4",
+          "Digest": "sha256:0bfda7d9d95b640947c3b7bd2dbe2ba4ddf66c87bb42170b017a410668dd07ff",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -163,15 +163,15 @@
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.tavern\nruntime=org.gnome.Platform/x86_64/49\nsdk=org.gnome.Sdk/x86_64/49\ncommand=tavern\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=home;/home/linuxbrew:ro;\n\n[Session Bus Policy]\norg.freedesktop.Flatpak=talk\norg.tunaos.tavern.SearchProvider=own\n\n[Environment]\nHOMEBREW_NO_AUTO_UPDATE=1\n",
             "org.flatpak.installed-size": "471040",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAABrXcAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAABrXgAdA==",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAAHMAAAdA==",
-            "org.flatpak.download-size": "101528",
+            "org.flatpak.download-size": "101536",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MudGF2ZXJuL3g4Nl82NC9tYXN0ZXIAJABhcw==",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MudGF2ZXJuL3g4Nl82NC9tYXN0ZXIAAHM=",
             "org.flatpak.ref": "app/org.tunaos.tavern/x86_64/master",
-            "org.flatpak.subject": "Built from f170071084d138a2e8ea9288eb3c411d3e2917d7",
-            "org.flatpak.commit": "a435970bfa6339ccaaac8b0629aec1d475c34e2132dbf23f81cd73f1bb6ee5f0",
-            "org.flatpak.timestamp": "1783145385"
+            "org.flatpak.subject": "Built from db6d68a2d1817e99fecfe4bc9fe833fd4970a500",
+            "org.flatpak.commit": "ebf1fd173304779fedcf84c2d450d468321aabbe13da1c083fe1b1b8d9ceb7cc",
+            "org.flatpak.timestamp": "1783768601"
           }
         }
       ]
