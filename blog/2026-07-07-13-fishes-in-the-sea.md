@@ -8,25 +8,25 @@ date: 2026-07-07
 
 # 13 Fishes in the Sea: The TunaOS Variant Landscape
 
-For too long, the Linux desktop has been held back by fragmentation. Hundreds of distros that are 95% the same packages with 5% different defaults — and picking one felt like a permanent, load-bearing architecture decision.
+Picking a Linux distro has always felt weirder to me than it should be. Most of them are like 95% the same packages with 5% different defaults, and yet somehow choosing one feels like a permanent decision you're stuck with forever.
 
-This isn't a new observation. [**Bedrock Linux**](https://bedrocklinux.org) proved in 2012 that packages from different distros could coexist on the same system. [**Lennart Poettering**](https://0pointer.net/blog/fitting-everything-together.html) laid out the full blueprint in his mkosi blog series — systemd-sysext, confext, repart, UKIs, all fitting together into a coherent image-based OS model. [**CarbonOS**](https://github.com/carbonOS) — Adrian Vovk's 2021 experiment built on Fedora Atomic and those same systemd ideals — pushed further toward OCI image delivery with btrfs snapshots. And back in 2015, [**Jessie Frazelle**](https://blog.jessfraz.com) famously ran her entire desktop out of Docker containers, proving the "container as OS boundary" model worked for real daily use. Each of these poked a hole in the distro fallacy.
+I didn't come up with this idea, to be clear. [Bedrock Linux](https://bedrocklinux.org) was mixing packages from different distros on one system back in 2012. [Lennart Poettering](https://0pointer.net/blog/fitting-everything-together.html) wrote the whole blueprint out in his mkosi posts — sysext, confext, repart, UKIs, the works. [CarbonOS](https://github.com/carbonOS) took a run at OCI image delivery with btrfs snapshots on Fedora Atomic back in 2021. And [Jessie Frazelle](https://blog.jessfraz.com) was running her whole desktop out of Docker containers in 2015, which honestly should have gotten more attention than it did. Everyone kept poking at the same idea from a different angle.
 
-Two things turned the holes into a door. **[bootc](https://github.com/containers/bootc)** made it practical — an OCI image you can `switch` to atomically, with rollback, on real hardware. **[Project Bluefin](https://projectbluefin.io)** proved the model at scale — a polished, cloud-native desktop that thousands of people actually use every day. Bluefin showed us what was possible. TunaOS is us asking: what if we push this idea as far as it can go?
+What actually made it usable were two things. [bootc](https://github.com/containers/bootc) — you get an OCI image, you `switch` to it, it's atomic, and you can roll back if you screwed something up. And [Project Bluefin](https://projectbluefin.io) proved people would actually use this every day, not just as a tech demo. Once I saw that working at scale I started wondering how far you could actually push it.
 
-TunaOS rejects the old model. Today we ship **13 variants** spanning 5 package managers and every major Linux family, all producing a completely consistent desktop experience. The proof is in the matrix: when you can switch base OS underneath the same desktop without changing a thing, the distro stops being a decision and becomes a dial.
+So that's what TunaOS is, I guess — pushing it. We ship 13 variants right now across 5 package managers and pretty much every major Linux family, and they all end up as the same desktop experience underneath. If you can swap the base OS out from under a desktop and nothing changes, the distro isn't really a decision anymore. It's just a setting.
 
 <!-- truncate -->
 
-## The Image Factory
+## It's a factory, not a distro
 
-TunaOS is not a distribution. It's an **image factory**. The inputs are simple data:
+I keep saying "TunaOS" like it's one thing, but really it's a factory that spits out images. The inputs are just data:
 
 ```text
 base OS + desktop + kernel + drivers = bootable image
 ```
 
-The output is an OCI container image you can `bootc switch` to atomically, with clean rollback. Want a different desktop on the same base? Switch. Want a performance kernel? Switch. The matrix is your menu:
+Out the other end you get an OCI image you `bootc switch` to, atomically, with rollback if it goes bad. Want a different desktop on the same base? Switch. Want a beefier kernel? Switch. The whole matrix is on the menu:
 
 ```bash
 # Same base, different desktop
@@ -43,13 +43,13 @@ sudo bootc switch ghcr.io/tuna-os/marlin:kde-hwe
 
 :::
 
-Cross-family migration (e.g. AlmaLinux &rarr; Arch in-place) is also on the roadmap. Even same-family switching alone makes the base OS interchangeable in a way the traditional distro model never allowed.
+Cross-family migration (AlmaLinux &rarr; Arch in place, say) is on the roadmap but not there yet. Even just same-family switching already makes the base OS swappable in a way regular distros never let you do.
 
-The stack underneath is cloud-native: [`bootc`](https://github.com/containers/bootc), CI/CD automation, and [Podman](https://podman.io). By treating operating systems like container deployments, the desktop catches up to workflows the server side has had for years.
+Under the hood it's the same stuff server folks have been using for years — [`bootc`](https://github.com/containers/bootc), CI, [Podman](https://podman.io). We're basically just treating the desktop like a container deployment. Nothing revolutionary, the server side figured this out a while ago, the desktop's just catching up.
 
-## The Variants
+## The variants
 
-Every TunaOS variant is named after a fish. There are 13:
+Everything's named after a fish, because I like fish and also because "AlmaLinux 10 + KDE + hwe kernel" is a mouthful. 13 of them right now:
 
 | Variant | Base Distribution | Status |
 | :--- | :--- | :--- |
@@ -67,71 +67,71 @@ Every TunaOS variant is named after a fish. There are 13:
 | 🦎 [**Sailfin**](/sailfin) | <img src="/img/os/opensuse.svg" width="20" /> [openSUSE Tumbleweed](https://opensuse.org) | Production |
 | 🐧 [**Guppy**](/guppy) | <img src="/img/os/gentoo.svg" width="20" /> [Gentoo Linux](https://gentoo.org) | Production |
 
-Each variant ships **5 desktops**: <img src="/img/desktops/gnome.svg" width="18" /> [GNOME](https://www.gnome.org/), <img src="/img/desktops/kde.svg" width="18" /> [KDE Plasma](https://kde.org/), <img src="/img/desktops/cosmic.svg" width="18" /> [COSMIC](https://system76.com/cosmic), <img src="/img/desktops/niri.svg" width="18" /> [Niri](https://github.com/YaLTeR/niri) + <img src="/img/desktops/dms.svg" width="18" /> [DMS](https://github.com/avengemedia/dms), and <img src="/img/desktops/xfce.svg" width="18" /> [XFCE](https://xfce.org/) (Wayland). Custom kernels or NVIDIA drivers layer on top of any of them.
+Every variant gets the same 5 desktops: <img src="/img/desktops/gnome.svg" width="18" /> [GNOME](https://www.gnome.org/), <img src="/img/desktops/kde.svg" width="18" /> [KDE Plasma](https://kde.org/), <img src="/img/desktops/cosmic.svg" width="18" /> [COSMIC](https://system76.com/cosmic), <img src="/img/desktops/niri.svg" width="18" /> [Niri](https://github.com/YaLTeR/niri) + <img src="/img/desktops/dms.svg" width="18" /> [DMS](https://github.com/avengemedia/dms), and <img src="/img/desktops/xfce.svg" width="18" /> [XFCE](https://xfce.org/) on Wayland. Stack a custom kernel or NVIDIA drivers on top of any of them if you want.
 
-## How We Got Here
+## How this got easier
 
-A week ago, adding a new base OS meant writing hundreds of lines of shell scripts. Today it means three things:
+Not that long ago, adding a new base OS meant writing a few hundred lines of shell. Now it's three things:
 
-1. **A Containerfile** that bootcifies the stock container image — adapted from [bootcrew's base images](https://github.com/bootcrew/mono)
-2. **A package manager manifest** (`pacman:`, `apt:`, etc.) defining the desktop components for that OS
-3. **An entry in `build-config.yml`** — variant name, base image, target platforms
+1. A Containerfile that bootc-ifies the stock image (started from [bootcrew's base images](https://github.com/bootcrew/mono), saved me a ton of work)
+2. A package manager manifest (`pacman:`, `apt:`, whatever) listing what that OS needs for each desktop
+3. An entry in `build-config.yml` — name, base image, platforms
 
-That's it. The CI pipeline handles the rest: container images and bootable ISOs, automatically. No per-distro bash scripts. No per-DE-per-distro combinatorial explosion. The factory just runs.
+That's the whole job now. CI does the rest and spits out container images and ISOs on its own. No per-distro bash, no combinatorial mess of per-desktop-per-distro scripts to keep in sync.
 
-## The Desktops
+## The desktops themselves
 
-Every variant ships the same five desktop environments. TunaOS doesn't build these experiences from scratch — we layer upstream quality customizations on top of stock packages, then multiply those experiences across every base OS in the matrix. Each desktop has an upstream project we pull from, and we're grateful for the craftsmanship they bring.
+Same 5 desktops on every variant, and none of them are built from scratch — we're layering existing customization work on top of stock packages and just running that layer across every base OS we support. Each one has an upstream project doing the actual hard work, and honestly they deserve more credit than they get.
 
 ### <img src="/img/desktops/gnome.svg" width="22" /> GNOME
 
-GNOME's defaults are polished out of the box, but TunaOS goes further by pulling from [**Project Bluefin**](https://projectbluefin.io)'s [`common`](https://github.com/projectbluefin/common) layer. Bluefin brings developer-quality-of-life tooling, curated Flatpak defaults, and years of bootc desktop operational experience. Every TunaOS GNOME image — whether on Arch, Fedora, or Gentoo — ships the same Bluefin-derived experience. For those ready to go further, Bluefin also maintains a distroless BuildStream build on [freedesktop-sdk](https://gitlab.com/freedesktop-sdk/freedesktop-sdk).
+GNOME already looks good out of the box, but we still pull from [Project Bluefin](https://projectbluefin.io)'s [`common`](https://github.com/projectbluefin/common) layer on top of it — dev tooling, curated Flatpaks, and just years of them running bootc desktops in the real world that we'd be dumb not to use. Every GNOME image we build, Arch or Fedora or Gentoo, gets the same Bluefin layer. They also have a distroless BuildStream build on [freedesktop-sdk](https://gitlab.com/freedesktop-sdk/freedesktop-sdk) if you want to go further down that hole.
 
 ### <img src="/img/desktops/kde.svg" width="22" /> KDE Plasma
 
-KDE Plasma gets its identity from [**Aurora**](https://github.com/get-aurora-dev/common)'s [`common`](https://github.com/get-aurora-dev/common) layer — the theming, branding, and visual cohesion that turns stock Plasma into something that looks like it belongs together. Aurora's customizations are what give TunaOS KDE its distinct look across all 13 base distributions. Aurora also offers a distroless BuildStream build on [freedesktop-sdk](https://gitlab.com/freedesktop-sdk/freedesktop-sdk) for a fully source-based KDE experience.
+Plasma's look comes from [Aurora](https://github.com/get-aurora-dev/common)'s [`common`](https://github.com/get-aurora-dev/common) layer — theming and branding that makes stock Plasma actually feel like one coherent thing instead of a pile of defaults. That's what gives our KDE its look across all 13 bases. They've also got a source-based BuildStream build on [freedesktop-sdk](https://gitlab.com/freedesktop-sdk/freedesktop-sdk) if you're into that.
 
 ### <img src="/img/desktops/niri.svg" width="22" /> Niri + <img src="/img/desktops/dms.svg" width="22" /> DMS
 
-[Niri](https://github.com/YaLTeR/niri) is a scrollable-tiling Wayland compositor — windows tile horizontally on an infinite ribbon you scroll through, rather than stacking in workspaces. It's the most unusual DE in the lineup and the one that most purely commits to Wayland's protocol model.
+[Niri](https://github.com/YaLTeR/niri) is a scrollable-tiling compositor — windows line up horizontally on a ribbon you scroll through instead of stacking into workspaces. It's the odd one out in the lineup and probably the most "pure Wayland" thing we ship.
 
-TunaOS pairs Niri with **[DMS](https://github.com/avengemedia/dms)** (DankMaterialShell), a desktop shell that layers greeter integration, a CLI control panel, and application launching on top of Niri. The full stack is `greetd` (display manager) &rarr; Niri (compositor) &rarr; DMS (shell). DMS is still early-stage but gives Niri a cohesive desktop experience beyond bare windows.
+We pair it with [DMS](https://github.com/avengemedia/dms) (DankMaterialShell) for the greeter, a control panel, and app launching. So the stack is `greetd` &rarr; Niri &rarr; DMS. DMS is still pretty early but it's enough to make Niri feel like an actual desktop and not just bare windows on a ribbon.
 
-The Niri configuration, theming, and defaults we ship come from **[Zirconium](https://github.com/zirconium-dev/zirconium)** — TunaOS pulls from Zirconium's common layer to deliver the same polished Niri experience across every base. Zirconium also maintains its own distroless build on [freedesktop-sdk](https://gitlab.com/freedesktop-sdk/freedesktop-sdk) with BuildStream.
+Config and theming come from [Zirconium](https://github.com/zirconium-dev/zirconium), same deal as Bluefin and Aurora — one layer, applied everywhere. They've also got their own BuildStream build on [freedesktop-sdk](https://gitlab.com/freedesktop-sdk/freedesktop-sdk).
 
 ### <img src="/img/desktops/xfce.svg" width="22" /> XFCE (Wayland)
 
-XFCE 4.20 introduced experimental Wayland support via its new compositor `xfwl4`, replacing the X11-era `xfwm4`. While the Wayland session is still maturing, it already works well enough for daily driving on Fedora and EL10 — TunaOS ships the optional `xfce4-wayland` package and defaults to GDM as the display manager to ensure the Wayland session is discoverable. Think of it as "XFCE, but with tear-free rendering and per-monitor refresh rates."
+XFCE 4.20 shipped experimental Wayland support with a new compositor, `xfwl4`, replacing the old X11 `xfwm4`. It's still maturing but it's already good enough to daily-drive on Fedora and EL10 — we ship the optional `xfce4-wayland` package and default to GDM so the Wayland session actually shows up in the login list. Basically: XFCE, but with tear-free rendering and per-monitor refresh rates now.
 
-XFCE is the only desktop in the lineup without a dedicated upstream customization layer — no Bluefin, no Aurora, no Zirconium. If you're passionate about XFCE and want to define what a polished, modern XFCE experience looks like across every distro, **[contributions are welcome](https://github.com/tuna-os/docs/blob/main/CONTRIBUTING.md)**.
+XFCE's the only desktop here without a dedicated customization layer — no Bluefin, no Aurora, no Zirconium equivalent. If you use XFCE and have opinions on what it should look like, [I'd take the help](https://github.com/tuna-os/docs/blob/main/CONTRIBUTING.md).
 
 ### <img src="/img/desktops/cosmic.svg" width="22" /> COSMIC
 
-[COSMIC](https://system76.com/cosmic) is System76's Rust-based desktop, Wayland-first by design. The stock COSMIC experience ships as-is — it's already opinionated and cohesive enough to stand on its own.
+[COSMIC](https://system76.com/cosmic) is System76's Rust desktop, Wayland from the ground up. We ship it mostly stock — it's already opinionated enough on its own that it doesn't really need our fingerprints on it.
 
-Like XFCE, COSMIC doesn't yet have a dedicated upstream customization layer. If you're excited about shaping a curated COSMIC experience that spans every TunaOS variant, **[contributions are welcome](https://github.com/tuna-os/docs/blob/main/CONTRIBUTING.md)**.
+Same story as XFCE — no dedicated layer yet. If you want to be the person who defines what a curated COSMIC setup looks like across every variant, [go for it](https://github.com/tuna-os/docs/blob/main/CONTRIBUTING.md).
 
-## What's Next
+## What's next
 
-- **Build validation** — getting CI green across all 13 variants on all platforms
-- **More desktops** — [Hyprland](https://hyprland.org/), [Sway](https://swaywm.org/), and [Budgie](https://buddiesofbudgie.org/) are one manifest file away
-- **Cross-backend migration** — [`bootc-migrate-composefs`](https://github.com/tuna-os/bootc-migrate-composefs) `[alpha]` handles OSTree &rarr; ComposeFS in-place; cross-family migration (e.g. AlmaLinux &rarr; Arch) up next
-- **Community manifests** — let anyone contribute a desktop definition without touching build scripts
+- Getting CI actually green across all 13 variants on all platforms (we're not there yet, not going to pretend otherwise)
+- More desktops — [Hyprland](https://hyprland.org/), [Sway](https://swaywm.org/), [Budgie](https://buddiesofbudgie.org/) are basically just a manifest file away at this point
+- Cross-backend migration — [`bootc-migrate-composefs`](https://github.com/tuna-os/bootc-migrate-composefs) (alpha) does OSTree &rarr; ComposeFS in place, cross-family (AlmaLinux &rarr; Arch) is the next hard problem
+- Letting people contribute a desktop definition without having to touch the actual build scripts
 
-## Credits
+## Credit where it's due
 
-TunaOS stands on the shoulders of these projects. If you find value in what we do, consider supporting the people who make it possible.
+None of this happens without a bunch of other projects doing the hard work first. If any of this is useful to you, go support the people who actually built it.
 
-### Infrastructure
+### Infra
 
-- **[bootcrew](https://github.com/bootcrew/mono)** — Reference bootc implementations for Arch, Gentoo, openSUSE, and Debian
-- **[jumpvi / bootc-shindig](https://github.com/bootc-shindig)** — bootc-deb packaging for Ubuntu and Debian
-- **[Universal Blue](https://universal-blue.org/)** & **[Project Bluefin](https://projectbluefin.io)** — Pioneering the bootc desktop model at scale
-- **[bootc](https://github.com/containers/bootc)** — The engine that makes all of this possible
+- [bootcrew](https://github.com/bootcrew/mono) — reference bootc setups for Arch, Gentoo, openSUSE, Debian
+- [jumpvi / bootc-shindig](https://github.com/bootc-shindig) — bootc-deb packaging for Ubuntu and Debian
+- [Universal Blue](https://universal-blue.org/) and [Project Bluefin](https://projectbluefin.io) — did the bootc desktop thing at scale before anyone else
+- [bootc](https://github.com/containers/bootc) — none of this exists without this project
 
-### Desktop Upstreams
+### Desktop upstreams
 
-These are the projects whose customization layers we ship across every variant. They put in the work to make each desktop look and feel cohesive — please support them.
+These are the folks whose customization layers we're shipping. They did the actual work of making each desktop feel cohesive — go support them if you can.
 
 **Project Bluefin** (GNOME): [sponsor @castrojo](https://github.com/sponsors/castrojo) · [sponsor @tulilirockz](https://github.com/sponsors/tulilirockz)
 
@@ -139,17 +139,17 @@ These are the projects whose customization layers we ship across every variant. 
 
 **Zirconium** (Niri): [sponsor @tulilirockz](https://github.com/sponsors/tulilirockz)
 
-### Desktop Environments
+### The desktops themselves
 
-The desktops themselves are monumental community efforts worth supporting directly.
+And obviously the desktop environments are their own massive community efforts, worth supporting directly too.
 
 - [Donate to GNOME](https://www.gnome.org/donate/)
 - [Donate to KDE](https://kde.org/community/donations/)
 - [Donate to XFCE](https://xfce.org/donate)
 - [Sponsor Niri](https://github.com/sponsors/YaLTeR)
 
-See our **[Support page](/support)** for a full list of ways to contribute.
+Full list on the [Support page](/support) if you want more ways to help out.
 
 ---
 
-*The distro is no longer a decision. It's a dial. Pick your fish.*
+*Pick your fish. It's less of a decision than it used to be.*

@@ -1,12 +1,11 @@
 ---
 sidebar_position: 1
 sidebar_label: "Tavern"
+
 status: stable
 ---
 
-:::tip[Visual overview]
-Prefer a visual tour? See the **[Tavern overview →](/tavern)** landing page.
-:::
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 Tavern is a modern, fast, and beautiful Homebrew client for Linux, built with **Python**, **GTK 4**, and **Libadwaita**. It provides a premium "App Store" experience for managing your Homebrew formulae and casks.
 
@@ -15,7 +14,7 @@ Tavern is a modern, fast, and beautiful Homebrew client for Linux, built with **
 **Flatpak (Linux, recommended, with automatic updates):**
 ```bash
 flatpak remote-add --user --if-not-exists tuna-os oci+https://tuna-os.github.io/Tavern
-flatpak install --user tuna-os dev.hanthor.Tavern
+flatpak install --user tuna-os org.tunaos.tavern
 ```
 
 **Homebrew (macOS + Linux):**
@@ -115,7 +114,7 @@ To get automatic updates directly through your software center (like GNOME Softw
 
 ```bash
 flatpak remote-add --user --if-not-exists tuna-os oci+https://tuna-os.github.io/Tavern
-flatpak install --user tuna-os dev.hanthor.Tavern
+flatpak install --user tuna-os org.tunaos.tavern
 ```
 
 ### Install a single standalone bundle from CI
@@ -131,12 +130,10 @@ flatpak install --user --reinstall Tavern-Linux-CI.flatpak
 
 Contributions are welcome! See [CONTRIBUTING.md](https://github.com/tuna-os/Tavern/blob/main/CONTRIBUTING.md) for dev setup, tests, and PR guidelines.
 
-## 🔗 Related projects
-
-- [bluefin-cli](/docs/bluefin-cli) — the terminal companion; installs curated Homebrew bundles that Tavern then manages graphically.
-- [TunaOS](/docs/tunaos) — the desktop images that ship Homebrew out of the box.
-- See every project on the [Projects page →](/projects).
-
 ## 📄 License
 
 Tavern is released under the **GPL-3.0-or-later** license. See `LICENSE` for details.
+
+---
+
+Part of the [TunaOS](https://tunaos.org) ecosystem. [Docs](https://tunaos.org) · [Contributing](https://github.com/tuna-os/Tavern/blob/main/CONTRIBUTING.md)
