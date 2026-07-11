@@ -20,7 +20,9 @@ Every media has the same logical layout regardless of target type:
 
 - An **ESP** (FAT) holding `systemd-boot` + per-env kernel/initrd + BLS entries.
 - A **shared store** holding each env's content (ostree deployments for
-  block targets; `<env>.rootfs.sfs` squashfs files for ISOs).
+  block targets; `<env>.rootfs.sfs` squashfs files for ISOs — or one
+  `combined.rootfs.sfs` with a subtree per env when `shared_store.dedup`
+  is set, deduplicating files shared across images).
 - (block only) A **persist partition** for cross-env user state.
 
 Each *bootable environment* is independently bootable from the systemd-boot
@@ -47,11 +49,12 @@ tacklebox/
 │   │   └── iso.go             # IsoTarget (.iso)
 │   ├── install/               # per-env install backends
 │   │   ├── bootc.go           # `bootc install to-filesystem` (block)
-│   │   ├── live.go            # podman image mount + mksquashfs (ISO)
-│   │   ├── initramfs.go       # initramfs preparation + dracut rebuild + cache
+│   │   ├── live.go            # podman image mount + mksquashfs + cache (ISO)
+│   │   ├── initramfs.go       # initramfs probe + dracut rebuild + cache
 │   │   └── bootloader.go      # systemd-boot install + BLS entry writer
 │   ├── blockdev/              # sgdisk + mkfs wrappers
 │   └── runner/                # subprocess wrapper (verbose toggle, sudo)
+├── embedded.go                # go:embed of src/dracut/ (consumed by initramfs.go)
 ├── src/
 │   ├── dracut/95tbox-root/    # initramfs module (per-env root pivot)
 │   └── systemd/               # boot-time updater units
@@ -75,22 +78,36 @@ tacklebox/
    - BlockTarget: `truncate` + `losetup` + `sgdisk` + `mkfs` + `mount` ESP+STORE + `bootctl install`.
    - IsoTarget: scratch `iso-root/` + `esp-staging/` dirs.
 6. **Pre-pull** all unique image refs in parallel.
-7. **Initramfs preparation** (`install.PrepareInitramfs`), per env:
-   - Compute cache key from OCI image digest + required module set.
-   - **Cache hit** (`<output-base>/initramfs-cache/<key>.img`): use as-is, no rebuild.
-   - **Cache miss**: run `dracut` inside a privileged container derived from the
-     image, bind-mounting `src/dracut/95tbox-root/` in. Module set is determined
-     by target type — ISO: `[dmsquash-live, tbox-root]`; Block: `[tbox-root]`.
-     Write result to cache keyed by digest so subsequent builds are instant.
-   - Skipped entirely when `"skip_initramfs_rebuild": true` is set on the env
-     (use this for images that already ship the required modules).
-8. **Per-env install loop** (`installEnv`), dispatched on `Target.InstallMode()`:
+7. **Per-env install loop** (`installEnv`), dispatched on `Target.InstallMode()`:
+   - Both modes start with **initramfs preparation** (`install.PrepareInitramfs`):
+     - Compute cache key from image ID + required module set. Module set is
+       determined by target type — ISO: `[dmsquash-live, tbox-root]`;
+       Block: `[tbox-root]`.
+     - **Cache hit** (`<output-base>/initramfs-cache/<key>.img`): use as-is.
+     - **Cache miss**: probe the image's stock initramfs (`lsinitrd -m`) inside
+       a container; if all modules are present, cache the stock initramfs;
+       otherwise run `dracut --add …` in a privileged container derived from
+       the image, bind-mounting the **embedded** `95tbox-root` module source in
+       (`embedded.go` at the repo root carries it via `go:embed`).
+     - Skipped entirely when `"skip_initramfs_rebuild": true` is set on the env
+       (use this for images that already ship the required modules).
    - `Bootc`: `podman run … <image> bootc install to-filesystem … --stateroot <env> /target`,
-     followed by `ExtractBootFiles` (vmlinuz + initrd into the ESP).
+     followed by `ExtractBootFiles` (vmlinuz + prepared initrd into the ESP).
    - `Live`: `podman image mount` + `mksquashfs` into `LiveOS/<env>.rootfs.sfs`,
-     followed by `ExtractBootFiles` into `images/pxeboot/<env>/`.
-   - Both: write a BLS entry under `loader/entries/<env>.conf`.
-9. **`Target.Finalize(track)`** returns the artifact path.
+     followed by `ExtractBootFiles` into `images/pxeboot/<env>/`. The squashfs
+     is cached under `<output-base>/squashfs-cache/` keyed by image ID +
+     compression settings and hardlinked into the staging tree, so rebuilding a
+     multi-env ISO only re-squashes envs whose image changed.
+   - `Live` + `shared_store.dedup`: one `mksquashfs` pass packs every env as a
+     subtree of `LiveOS/combined.rootfs.sfs` (cross-env file dedup). Every BLS
+     entry points at the same squashimg plus `tacklebox.root=<env>`; at boot,
+     dmsquash-live mounts the combined squashfs + overlay and the `tbox-root`
+     module bind-mounts `/sysroot/<env>` over `/sysroot` — the same pivot it
+     performs for block targets. Cache key covers all image IDs, so any image
+     change rebuilds the whole combined squashfs.
+   - Both: write a BLS entry under `loader/entries/<id>.conf` (menu title from
+     the recipe's per-env `title`, falling back to the env ID).
+8. **`Target.Finalize(track)`** returns the artifact path.
    - BlockTarget: unmount + detach loop. Returns the .img / device path.
    - IsoTarget: extract sd-boot from EFISource, mirror pxeboot to iso-root,
      `mkfs.fat` + mtools the ESP image, run `xorriso` to wrap iso-root.
@@ -131,8 +148,12 @@ boot time, for **block targets only**:
    sees the per-env subtree as the root.
 3. Optionally overlay `/home` from the persist partition.
 
-For ISO targets, this module is a no-op (no `tacklebox.root=` arg);
-`dmsquash-live` does the equivalent work via `rd.live.squashimg=`.
+For per-env-squashfs ISOs, this module is a no-op (no `tacklebox.root=`
+arg); `dmsquash-live` does the equivalent work via `rd.live.squashimg=`.
+For `shared_store.dedup` ISOs the module IS the per-env mechanism: every
+entry mounts the same combined squashfs and `tacklebox.root=<env>` makes
+the module bind-mount the env subtree over `/sysroot` (step 2 above,
+without the `tbox-install/` prefix).
 
 The unit ordering took two iterations (see git log around 2026-05-11):
 the service is symlinked into both `initrd-root-fs.target.wants/` AND
@@ -203,12 +224,40 @@ Updates are best-effort and never block boot; failures log but exit 0.
 - **`lint-test`** (~2 min) — `go vet`, `go test`, `go build`,
   JSON-schema parse of every recipe, shellcheck the dracut module.
 - **`verify-smoke`** (~10-15 min) — builds a 10 GB two-env block image
-  from `centos-bootc:stream10` + `fedora-bootc:42`, runs `tacklebox
-  verify` and `tacklebox status` against it.
-- **Stage 4 Boot Smoke** — boots the `verify-smoke` image in QEMU (via
-  TCG) and asserts that the boot menu, kernel, and initramfs (with
-  `tbox-root` pivot) all work by grepping the serial console for success
-  patterns.
+  from `centos-bootc:stream10` + `fedora-bootc:44`, runs `tacklebox
+  verify` and `tacklebox status` against it. Restores/saves the
+  image-ID-keyed build caches (`initramfs-cache/`, `squashfs-cache/`) via
+  `actions/cache`; the `update` step shares the build's `-b` dir so cache
+  reuse is itself under test. Then boots the image in QEMU (TCG) and
+  greps the serial console for the `tbox-root`/`ostree-prepare-root`
+  pivot + login.
+- **`iso-smoke`** (~20-30 min) — the ISO counterpart. Builds two fixture
+  live images in-job (`fixtures/iso-smoke.Containerfile`:
+  `fedora-bootc:44` + `dracut-live` + a per-env marker file) into the
+  runner user's rootless store, then builds **both** ISO layouts from
+  them: the per-env-squashfs `fixtures/iso-2env.json` and the combined
+  `fixtures/iso-dedup-2env.json`. Verifies each, asserts the dedup ISO is
+  meaningfully smaller (the marker is the only diff, so the shared base
+  must dedup), and QEMU-boots both — the per-env ISO into `beta`, the
+  dedup ISO into `alpha` with a required-pattern assertion that the
+  `tbox-root` subtree pivot logged `rebased OK`. This is the only job
+  that exercises the live/ISO boot path end to end.
+
+`scripts/test-boot.sh <image> [timeout] [required-pattern…]` is shared by
+both QEMU steps: extra args are literal strings that must also appear in
+the serial log (e.g. `tacklebox.env=alpha`, `Tacklebox: rebased OK`), and
+`QEMU_LOG=` separates logs when a job boots more than one image.
+
+`.github/workflows/poc-artifacts.yml` (manual `workflow_dispatch` +
+weekly cron) builds the PoC ISOs — the fixture pair in both layouts, or a
+caller-supplied registry recipe — verifies them, and publishes to
+Cloudflare R2 with `rclone`, using the org-wide secrets
+(`R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ENDPOINT`, `R2_BUCKET`)
+and the same convention as `dakota-iso`/`ubuntu-26.04-iso`: under the
+`tacklebox/` prefix as `<name>-<date>-<sha>.iso` plus a rolling
+`<name>-latest.iso`, served from `https://download.tunaos.org/tacklebox/`.
+Upload is skipped on PRs, on the `skip_upload` dry-run input, and on forks
+with no `R2_BUCKET`; build + verify always run.
 
 ## Key invariants
 
