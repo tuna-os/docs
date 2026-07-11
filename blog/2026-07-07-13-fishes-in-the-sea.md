@@ -99,9 +99,13 @@ The Niri configuration, theming, and defaults we ship come from **[Zirconium](ht
 
 XFCE 4.20 introduced experimental Wayland support via its new compositor `xfwl4`, replacing the X11-era `xfwm4`. While the Wayland session is still maturing, it already works well enough for daily driving on Fedora and EL10 — TunaOS ships the optional `xfce4-wayland` package and defaults to GDM as the display manager to ensure the Wayland session is discoverable. Think of it as "XFCE, but with tear-free rendering and per-monitor refresh rates."
 
+XFCE is the only desktop in the lineup without a dedicated upstream customization layer — no Bluefin, no Aurora, no Zirconium. If you're passionate about XFCE and want to define what a polished, modern XFCE experience looks like across every distro, **[contributions are welcome](https://github.com/tuna-os/docs/blob/main/CONTRIBUTING.md)**.
+
 ### <img src="/img/desktops/cosmic.svg" width="22" /> COSMIC
 
 [COSMIC](https://system76.com/cosmic) is System76's Rust-based desktop, Wayland-first by design. The stock COSMIC experience ships as-is — it's already opinionated and cohesive enough to stand on its own.
+
+Like XFCE, COSMIC doesn't yet have a dedicated upstream customization layer. If you're excited about shaping a curated COSMIC experience that spans every TunaOS variant, **[contributions are welcome](https://github.com/tuna-os/docs/blob/main/CONTRIBUTING.md)**.
 
 ## What's Next
 
