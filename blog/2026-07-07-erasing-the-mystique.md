@@ -1,14 +1,14 @@
 ---
 slug: erasing-the-mystique
-title: "Erasing the Mystique: 10 Fishes in the Sea"
+title: "Erasing the Mystique: 13 Fishes in the Sea"
 authors: [james]
 tags: [vision, variants, architecture]
 date: 2026-07-07
 ---
 
-# Erasing the Mystique: 10 Fishes in the Sea
+# Erasing the Mystique: 13 Fishes in the Sea
 
-A Linux distribution shouldn't be a sacred artifact maintained by priesthood. It should be a composition of choices — base OS, desktop, kernel, drivers — assembled by a factory and delivered as an image. Today, TunaOS has **10 variants** spanning 4 package managers and every major Linux family. Here's why, and where we're going.
+A Linux distribution shouldn't be a sacred artifact maintained by priesthood. It should be a composition of choices — base OS, desktop, kernel, drivers — assembled by a factory and delivered as an image. Today, TunaOS has **13 variants** spanning 5 package managers and every major Linux family. Here's why, and where we're going.
 
 <!-- truncate -->
 
@@ -32,20 +32,23 @@ The output is an OCI container image you can `bootc switch` to — atomically, w
 
 ## The Fishes
 
-Every TunaOS variant is named after a fish. Today there are 10:
+Every TunaOS variant is named after a fish. Today there are 13:
 
-| Fish | Base | Package Manager | Character |
-|------|------|-----------------|-----------|
-| 🐠 **Yellowfin** | AlmaLinux Kitten 10 | dnf | Bleeding-edge Enterprise Linux |
-| 🐟 **Albacore** | AlmaLinux 10 | dnf | Stable Enterprise Linux |
-| 🍣 **Skipjack** | CentOS Stream 10 | dnf | Upstream RHEL |
-| 🔒 **Redfin** | RHEL 10 | dnf | Supported, subscription-based |
-| 🎣 **Bonito** | Fedora 44 | dnf | Cutting-edge Fedora |
-| 🐟 **Grouper** | Ubuntu 26.04 | apt | Ubuntu on bootc |
-| 🐟 **Flounder** | Debian Trixie | apt | Debian stable on bootc |
-| 🐟 **Flounder-sid** | Debian Sid | apt | Debian rolling on bootc |
-| 🐟 **Marlin** | Arch Linux | pacman | Rolling release, latest everything |
-| 🐟 **Wahoo** | CachyOS | pacman | Performance-optimized Arch (BORE, LTO, v3) |
+| Fish | Base Distribution | Package Manager | Status | Landing Page | Core Character / Use Case |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 🐠 **Yellowfin** | [AlmaLinux Kitten 10](https://almalinux.org) | dnf | Production | [View Landing Page](/yellowfin) | Bleeding-edge Enterprise Linux |
+| 🐟 **Albacore** | [AlmaLinux 10](https://almalinux.org) | dnf | Production (Recommended) | [View Landing Page](/albacore) | Stable Enterprise Linux (10-yr support) |
+| 🍣 **Skipjack** | [CentOS Stream 10](https://centos.org) | dnf | Production | [View Landing Page](/skipjack) | Upstream RHEL Testing preview |
+| 🔒 **Redfin** | [RHEL 10](https://redhat.com) | dnf | Local-build | [View Landing Page](/redfin) | Supported secure workstation |
+| 🎣 **Bonito** | [Fedora 44](https://fedoraproject.org) | dnf | Production | [View Landing Page](/bonito) | Cutting-edge Fedora desktop |
+| 🐟 **Grouper** | [Ubuntu 26.04](https://ubuntu.com) | apt | Experimental | [View Landing Page](/grouper) | Ubuntu base on bootc |
+| 🐡 **Flounder** | [Debian Trixie (13)](https://debian.org) | apt | Production | [View Landing Page](/flounder) | Stable Debian on bootc |
+| ☢️ **Flounder Sid** | [Debian Sid](https://debian.org) | apt | Production | [View Landing Page](/flounder-sid) | Debian rolling development |
+| 🚀 **Marlin** | [Arch Linux](https://archlinux.org) | pacman | Production | [View Landing Page](/marlin) | Rolling release, latest everything |
+| 🐟 **Wahoo** | [CachyOS](https://cachyos.org) | pacman | Experimental | [View Landing Page](/wahoo) | Performance-optimized Arch (BORE scheduler) |
+| 🐉 **Bonito Rawhide** | [Fedora Rawhide](https://fedoraproject.org) | dnf | Production | [View Landing Page](/bonito-rawhide) | Bleeding-edge Fedora development |
+| 🦎 **Sailfin** | [openSUSE Tumbleweed](https://opensuse.org) | zypper | Production | [View Landing Page](/sailfin) | openSUSE rolling transactional base |
+| 🐧 **Guppy** | [Gentoo Linux](https://gentoo.org) | emerge | Production | [View Landing Page](/guppy) | Source-based Gentoo on bootc |
 
 Each fish gets **6 desktops**: GNOME, GNOME 50, KDE Plasma, COSMIC, Niri, and XFCE. Each desktop can optionally layer an HWE kernel or NVIDIA drivers on top.
 
