@@ -32,17 +32,17 @@ On macOS this installs `Tavern.app`; on Linux it installs a prebuilt AppImage an
 ## 📸 Screenshot Walkthrough
 
 ### Main window
-![Main window](data/screenshots/main-window.png)
+![Main window](https://raw.githubusercontent.com/tuna-os/Tavern/main/data/screenshots/main-window.png)
 
 ### Search workflow
-![GNOME search](data/screenshots/gnome%20search.png)
-![Search results](data/screenshots/search%20results.png)
+![GNOME search](https://raw.githubusercontent.com/tuna-os/Tavern/main/data/screenshots/gnome%20search.png)
+![Search results](https://raw.githubusercontent.com/tuna-os/Tavern/main/data/screenshots/search%20results.png)
 
 ### Package details
-![App view](data/screenshots/App%20View.png)
+![App view](https://raw.githubusercontent.com/tuna-os/Tavern/main/data/screenshots/App%20View.png)
 
 ### Taps browser
-![Tap view](data/screenshots/Tap%20View.png)
+![Tap view](https://raw.githubusercontent.com/tuna-os/Tavern/main/data/screenshots/Tap%20View.png)
 
 ## ✨ Features
 
