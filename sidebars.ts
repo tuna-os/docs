@@ -78,6 +78,7 @@ const sidebars: SidebarsConfig = {
         {type: 'category', label: 'bootc-migrate-composefs', link: {type: 'doc', id: 'bootc-migrate-composefs/index'}, items: []},
         {type: 'category', label: 'COPR Builds', link: {type: 'doc', id: 'copr/index'}, items: ['copr/gnome50-guide', 'copr/ARCHITECTURE', 'copr/gnome49-centos-bootc']},
         {type: 'category', label: '📦 Flatpak', link: {type: 'doc', id: 'flatpak/index'}, items: ['flatpak/guide']},
+        {type: 'category', label: '🐧 Ubuntu (bootc)', link: {type: 'doc', id: 'ubuntu/index'}, items: []},
       ],
     },
     {
