@@ -43,7 +43,7 @@ const sidebars: SidebarsConfig = {
           label: 'Developer Guide',
           collapsible: true,
           collapsed: true,
-          items: ['tunaos/introduction', 'tunaos/building', 'tunaos/bootc-usage', 'tunaos/cosmic-desktop', 'tunaos/homebrew', 'tunaos/platform-engineering', 'tunaos/live-iso-generation', 'tunaos/ci-cd', 'tunaos/troubleshooting'],
+          items: ['tunaos/introduction', 'tunaos/building', 'tunaos/ai-ml-development', 'tunaos/bootc-usage', 'tunaos/cosmic-desktop', 'tunaos/homebrew', 'tunaos/platform-engineering', 'tunaos/live-iso-generation', 'tunaos/ci-cd', 'tunaos/troubleshooting'],
         },
       ],
     },
