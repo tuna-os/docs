@@ -240,7 +240,7 @@
       "Name": "hanthor/letters",
       "Images": [
         {
-          "Digest": "sha256:acc42a6d315367b738b0f549d25fae66f10baf78694028e08c9e010cc4fe510a",
+          "Digest": "sha256:a80947a339c315b0e888c4f2f01d0ad99130ff6bbaa37156ea8a9156ccda7890",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -253,15 +253,15 @@
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.letters\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=letters\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=host;\n\n[X-Flatpak-MimeType]\ntext/plain;application/json;image/png;application/vnd.openxmlformats-officedocument.wordprocessingml.document;application/vnd.oasis.opendocument.text;text/markdown=true\n\n[Extension org.tunaos.letters.Locale]\ndirectory=share/runtime/locale\nautodelete=true\nlocale-subset=true\n\n[Extension org.tunaos.letters.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.letters.Locale;org.tunaos.letters.Debug;",
             "org.flatpak.installed-size": "212888576",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAL6cTAAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAL6cS0AdA==",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAywbAAAdA==",
-            "org.flatpak.download-size": "49589075",
+            "org.flatpak.download-size": "49588796",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MubGV0dGVycy94ODZfNjQvbWFzdGVyACUAYXM=",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MubGV0dGVycy94ODZfNjQvbWFzdGVyAABz",
             "org.flatpak.ref": "app/org.tunaos.letters/x86_64/master",
-            "org.flatpak.subject": "Built from f879877366e051d5ed765ad5c839bd4e024b26f6",
-            "org.flatpak.commit": "f0a729fd1c90fe952dc00e554391024c7b5362202003b3d86ab286b16f830389",
-            "org.flatpak.timestamp": "1783390390"
+            "org.flatpak.subject": "Built from 9bd9734f4cc834b2c4406588988c4ff2de11d24f",
+            "org.flatpak.commit": "1a8d1b581813319a5124d0ae1608bf8c30d3e369d878d7541a182a0cc90c5eb0",
+            "org.flatpak.timestamp": "1783768484"
           }
         }
       ]
