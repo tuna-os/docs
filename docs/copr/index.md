@@ -1,10 +1,15 @@
 ---
 sidebar_position: 1
 sidebar_label: "COPR Builds"
+
 status: internal
 ---
 
 > 🔧 **Internal tooling** — used by the TunaOS build pipeline. Not user-facing.
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://github.com/tuna-os/github-copr/blob/main/CODE_OF_CONDUCT.md)
+[![Security Policy](https://img.shields.io/badge/Security-Policy-7b68ee.svg)](https://github.com/tuna-os/github-copr/blob/main/SECURITY.md)
 
 RPM packages bringing GNOME 50 to CentOS Stream 10 (EL10), hosted on
 [COPR](https://copr.fedorainfracloud.org/coprs/jreilly1821/c10s-gnome-50/).
@@ -206,6 +211,8 @@ to Fedora:
 
 ```
 # Must use local spec (SCM or SRPM upload):
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 glib2               → SRPM   src/gnome-50/glib2/
 gdm                 → SCM    src/gnome-50/gdm/
 gjs                 → SCM    src/gnome-50/gjs/
@@ -216,6 +223,8 @@ tinysparql          → SCM    src/deps/tinysparql/
 gnome50-el10-compat → SRPM   src/deps/gnome50-el10-compat/
 
 # Everything else uses Fedora Rawhide dist-git directly:
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 mutter, gnome-shell, gtk4, libadwaita, pipewire, pango, fontconfig,
 xdg-desktop-portal, xdg-desktop-portal-gnome, gobject-introspection,
 gsettings-desktop-schemas, gnome-session, gnome-control-center,
@@ -250,14 +259,6 @@ for details.
 | PAM: `pam_unix` can't resolve dynamic greeter users | `/etc/pam.d/systemd-user` override |
 | GLib schemas not compiled after install | `%transfiletriggerin` in our `glib2` spec |
 | No Wayland by default | Set `WaylandEnable=true` in `/etc/gdm/custom.conf` |
-
-## Related projects
-
-These packages are what powers the **`gnome50`** image on the TunaOS variants —
-see [Albacore](/docs/albacore#gnome-50), [Yellowfin](/docs/yellowfin#gnome-50), and
-[Skipjack](/docs/skipjack). For how the images themselves are built, see
-[TunaOS → Building](/docs/tunaos/building), and browse the whole ecosystem on the
-**[Projects page →](/projects)**.
 
 ## License
 

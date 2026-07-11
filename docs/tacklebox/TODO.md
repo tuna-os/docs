@@ -1,33 +1,11 @@
 ---
-sidebar_position: 3
+sidebar_position: 6
 title: "Todo"
 ---
 
 Tracked items not yet implemented. Roughly ordered by value / blocking-ness.
 
 ## Features
-
-### `tacklebox update <recipe.json>`
-Re-pull the recipe's images and replay `bootc install` (or smarter
-`bootc switch`) into existing per-env subtrees on a previously-built
-media, without wiping the persist partition. Lets users refresh USB
-media without re-formatting.
-
-### `tacklebox add <env>` / `tacklebox remove <env>`
-Mutate an existing media in place: add a fourth env to a built image,
-or drop one. Today the only way is to rebuild from scratch.
-
-### `tacklebox verify <image-or-device>`
-Sanity-check a built image. Asserts:
-- All BLS entries resolve to existing kernel + initrd in the ESP.
-- Each env's ostree commit hash is **distinct from the others**
-  (catches today's bootc-install content-collision bug — see below).
-- ESP usage is under its partition size.
-- Per-env `tbox-install/<env>/ostree/repo` is consistent (`ostree fsck`).
-- `loader.conf` references an entry that exists.
-
-Prerequisite for meaningful CI regression coverage — both the smoke
-test and full E2E should call `tacklebox verify` after build.
 
 ### Per-stateroot greenboot / rollback
 Each env boots independently with its own stateroot, so health-check
@@ -40,102 +18,89 @@ module, but there's no story for:
 - Garbage collection when an env is removed.
 - Migration if the recipe's env list changes between builds.
 
-### USB pre-flight: unmount busy partitions
-`final-attempt.log` shows `mkfs.vfat` failing because `/dev/sdb1` was
-auto-mounted by the desktop. `internal/blockdev` should sweep
-`/dev/<target>*` mounts before format. Only matters for `/dev/*`
-targets, not loop images.
+### Multi-env ISO: ARM64 support
+Partially there: `install.ExtractEFIBinary` (`live.go:283`) already probes
+for both `systemd-bootx64.efi` → `BOOTX64.EFI` and `systemd-bootaa64.efi`
+→ `BOOTAA64.EFI`. Remaining gaps:
+- The ISO9660-root EFI fallback is hardcoded to `BOOTX64.EFI` (`iso.go`);
+  needs to use the arch-appropriate basename.
+- aarch64 sd-boot path selection end-to-end through the ISO assembly.
+- OVMF (aarch64) for QEMU smoke testing in CI.
+Needs an ARM test environment to validate.
 
 ## Bugs
 
-### Serial `bootc install` shares ostree commits across envs
-**Reproduces with `examples/all-test.json`.** Each `bootc install
-to-filesystem` runs from the correct container image, but both
-`tbox-install/aurora` and `tbox-install/bazzite` end up with the
-*same* ostree commit hash (`e2c044ed7f9a…` — bazzite content). The
-aurora container itself contains genuine Aurora content when run
-standalone (`podman run --rm localhost/superiso-live-aurora cat
-/etc/os-release` shows `NAME="Aurora"`).
+### Serial `bootc install` shares ostree commits across envs (block targets only)
+Each `bootc install to-filesystem` runs from the correct container image,
+but two different images can end up with the same ostree commit hash.
+Reproduces with `examples/all-test.json`. `tacklebox verify` catches
+this in CI.
 
-**What was tried and didn't fix it (2026-05-11):**
-- Pass `--source-imgref containers-storage:<image>` to bootc install
-  to pin the source explicitly. Hash unchanged — verify still flags
-  the same collision.
-- Remove the `--mount type=bind,src=/var/lib/containers` so the install
-  container can't see host's containers-storage at all. Hash *still*
-  unchanged. So the bug is not (or not only) about which image bootc
-  resolves; bootc seems to share state somewhere we haven't found.
+Root cause likely in bootc's install-source resolution. Not yet fixed
+upstream. ISO targets (Live mode) are unaffected.
 
-Both fixes are kept in `internal/install/bootc.go` as defense in depth
-since they're cheap and harmless, but the actual root cause needs
-either:
-- A deeper read of bootc's install-source resolution (RUST_LOG=debug
-  on a single install would help isolate where the wrong commit gets
-  computed), or
-- Filing upstream — bootc 1.15.2 against ublue-os/aurora + ublue-os/
-  bazzite reproduces deterministically in our setup.
+## Done ✓
 
-`tacklebox verify` (above) catches this in CI; nightly builds of
-all-test will fail until the underlying bootc bug is fixed.
+### `tacklebox add` / `tacklebox remove` ✓
+Mutate an existing media in place without reformatting or touching other
+envs / TBOX_PERSIST. `add RECIPE TARGET [--env ID]` installs new env(s) via
+`updateEnvBootc` with an ESP-fit pre-check (`checkESPFit`); `remove ENV... TARGET`
+drops the subtree (`ClearEnvDir`), the `/EFI/<id>` boot dir, and the env's BLS
+entries, re-promoting `default_boot` to a surviving env when needed. Both
+rewrite the embedded `recipe.json` across all surviving envs so `update-all`
+tracks the new roster. Block targets only — ISOs are rejected (rebuild).
+`cmd/tacklebox/add.go`, `remove.go`, shared helpers in `media.go`.
 
-## CI / automated testing
+NOTE: `remove`'s subtree teardown is the GC entry point for the
+persist-partition lifecycle item above (per-env garbage collection).
 
-The goal is regression coverage for the dracut module, partitioning,
-bootloader wiring, and per-env install correctness, runnable on every
-PR.
+### USB pre-flight: unmount busy partitions ✓
+`blockdev.UnmountDevice` (`internal/blockdev/format.go`) lazily sweeps every
+mount whose source starts with `/dev/<target>` before format, fixing the
+`mkfs.vfat`-on-busy-`/dev/sdb1` failure. Wired into the block install path
+(`internal/target/block.go`), skips non-`/dev/` (loop image) targets, and
+covered by unit + loop-smoke integration tests.
 
-### Stage 1 — Lint + unit (every PR, ~2 min, ubuntu-latest)
-- `go test ./...`
-- `go vet ./...`
-- `shellcheck src/dracut/95tbox-root/*.sh`
-- `go build ./...`
+### `tacklebox update <recipe.json>` ✓
+Re-pulls recipe images and replays `bootc install` into existing per-env
+subtrees without reformatting. `cmd/tacklebox/update.go`.
 
-### Stage 2 — Recipe schema check (every PR, seconds)
-- Parse every `examples/*.json` through tacklebox's loader; fail on
-  any rejection.
+### `tacklebox verify <image-or-device>` ✓
+Sanity-checks a built image: BLS entries resolve, env ostree commits
+are distinct, ESP usage fits, loader.conf references a valid entry.
+`cmd/tacklebox/verify.go`. Called in CI on every PR.
 
-### Stage 3 — Two-env disk-build smoke (every PR, ~10 min, ubuntu-latest)
-- Two-env fixture recipe (`fixtures/smoke-2env.json`) using minimal
-  bootc images — e.g. `quay.io/centos-bootc/centos-bootc:stream10`
-  twice with different stateroots, or two distinct minimal images.
-  Two envs is the *minimum* useful E2E — it catches the kind of
-  cross-env content-collision bug we hit on 2026-05-11.
-- `tacklebox build fixtures/smoke-2env.json` to a ~30 GB loop image.
-- `tacklebox verify` — must assert each env's ostree commit hash
-  is distinct.
+### CI: full pipeline ✓
+- Stage 1: lint + unit + shellcheck (every PR)
+- Stage 2: recipe schema parse (every PR)
+- Stage 3: 2-env block image build + verify + cache (every PR)
+- Stage 4: QEMU boot smoke (block + ISO, every PR)
+- ISO smoke: per-env + dedup ISO build, verify, dedup assertion, QEMU boot
+- 6-env dedup scale test in iso-smoke (fixtures/iso-dedup-6env.json)
 
-**Disk budget on free `ubuntu-latest` (~14 GB workspace + ~75 GB on `/mnt`):**
-- Run `jlumbroso/free-disk-space` first to recover ~30 GB on `/`
-  (Android SDK, .NET, Haskell, etc.).
-- Use `/mnt` as the build output base (`tacklebox build -b /mnt/tb`)
-  so the 30 GB loop image lives on the NVMe.
-- Containers-storage on `/mnt` too (`STORAGE_DRIVER=overlay` with
-  `graphroot=/mnt/containers`).
-- Total expected workspace: ~40–50 GB. Fits.
+### Multi-image ISO dedup (`shared_store.dedup`) ✓
+Pack multiple envs into one combined squashfs with file-level
+deduplication. Tested at 2-env and 6-env scale. `internal/install/live.go`.
 
-### Stage 4 — QEMU boot smoke (every PR, ~5 min, ubuntu-latest with /dev/kvm)
-- Boot the Stage 3 image headless under KVM, capture serial log.
-- Grep for `tbox-root.service: ... finished`, `ostree-prepare-root.service:
-  ... finished`, and `Welcome to`.
-- Boot **both** envs by editing `loader.conf` between runs (or by
-  passing `systemd.unit=...` / boot-entry selection via QEMU OVMF)
-  — confirms each env actually boots its own content, not just the
-  alphabetically-first one.
-- On failure, upload the serial log + ESP contents as a CI artifact.
+### `default_boot` BLS ordering ✓
+Default env gets sort-key `00-tbox-<id>` (first in menu). ISO and block
+targets both supported. `internal/install/bootloader.go`.
 
-### Stage 5 — Nightly full regression (optional, larger runner)
-- Real `examples/all-test.json` (bazzite + aurora + dakota, 60 GB).
-  Doesn't fit the two-env smoke budget — needs either a `ubuntu-latest-large`
-  paid runner, a self-hosted runner, or an ephemeral cloud box spun up
-  from the workflow. Mostly catches issues with the *real* upstream
-  ublue images that the minimal fixtures don't exercise.
+### `tacklebox recipe-gen` ✓
+Generates tacklebox recipes from simplified YAML env-lists. Auto-defaults
+dedup, size, modes, and default_boot. `cmd/tacklebox/recipe_gen.go`.
 
-### Workflow file
-`.github/workflows/ci.yml` (stages 1–4) + `.github/workflows/nightly.yml`
-(stage 5, `schedule:` + `workflow_dispatch:`).
+### Automatic initramfs preparation ✓
+Probes images for required dracut modules, rebuilds when missing.
+Cached by image ID. `internal/install/initramfs.go`.
 
-### Test fixtures
-- `fixtures/smoke-2env.json` — two-env recipe (minimum useful for
-  catching cross-env regressions), ~30 GB shared store, 1 GB ESP.
-- Either pull fixture images from a public registry, or build them
-  in-repo and push to GHCR on main.
+### Build caches ✓
+Initramfs cache + squashfs cache keyed by image ID. Incremental rebuilds
+only pay for what changed. `cmd/tacklebox/build.go`.
+
+### `tacklebox status` ✓
+Inspects installed environments on a built media. `cmd/tacklebox/status.go`.
+
+### `tacklebox update-all` ✓
+Boot-time cross-env updater timer. Updates all envs from the persisted
+recipe. `cmd/tacklebox/update_all.go` + `src/systemd/`.

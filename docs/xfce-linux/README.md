@@ -1,7 +1,6 @@
 ---
-sidebar_position: 2
-title: "Build Guide"
-slug: /xfce-linux/build-guide
+sidebar_position: 6
+title: "README"
 ---
 
 A production-ready XFCE desktop Linux distribution built with BuildStream, freedesktop-sdk 25.08, and gnome-build-meta infrastructure.

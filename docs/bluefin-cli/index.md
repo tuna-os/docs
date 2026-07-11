@@ -1,12 +1,11 @@
 ---
 sidebar_position: 1
 sidebar_label: "bluefin-cli"
+
 status: stable
 ---
 
-:::tip[Visual overview]
-Prefer a visual tour? See the **[bluefin-cli overview →](/bluefin-cli)** landing page.
-:::
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 A powerful, modern CLI tool for managing shell configuration and development environment customization. Built with beautiful TUIs using [Charm](https://charm.sh/) libraries.
 
@@ -16,7 +15,7 @@ A powerful, modern CLI tool for managing shell configuration and development env
 - **✨ Bling**: Toggle modern shell enhancements (eza, bat, ugrep, zoxide, atuin, starship)
 - **📰 MOTD**: Beautiful Message of the Day with system info and random tips
 - **📦 Bundle Installer**: Install curated tool bundles (ai, cli, fonts, k8s) from Universal Blue
-- **🖼️ Wallpapers**: Install desktop wallpaper collections from ublue-os/tap
+- **�️ Wallpapers**: Install desktop wallpaper collections from ublue-os/tap
 - **🎨 Starship Themes**: Browse and apply Starship prompt themes
 - **📊 Status Command**: View configuration and installed tools at a glance
 
@@ -27,11 +26,13 @@ A powerful, modern CLI tool for managing shell configuration and development env
 Build and install from source:
 
 ```powershell
-git clone https://github.com/tuna-os/bluefin-cli.git
+git clone https://github.com/hanthor/bluefin-cli.git
 cd bluefin-cli
 go build -o bluefin-cli.exe .
 
 # Optional: move to a permanent location on PATH
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 New-Item -ItemType Directory -Force "$HOME\\bin" | Out-Null
 Move-Item .\\bluefin-cli.exe "$HOME\\bin\\bluefin-cli.exe" -Force
 $env:PATH = "$HOME\\bin;$env:PATH"
@@ -55,7 +56,7 @@ go install github.com/hanthor/bluefin-cli@latest
 - Go 1.21 or later
 
 ```bash
-git clone https://github.com/tuna-os/bluefin-cli.git
+git clone https://github.com/hanthor/bluefin-cli.git
 cd bluefin-cli
 go build -o bluefin-cli .
 ```
@@ -114,8 +115,12 @@ To enable the shell experience:
 ```bash
 bluefin-cli shell bash on
 # or
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli shell zsh on
 # or
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli shell fish on
 ```
 
@@ -128,7 +133,7 @@ Features:
 - **zoxide**: Smarter `cd`
 - **atuin**: Shell history sync
 - **starship**: Cross-shell prompt
-- **uutils**: Rust rewrite of coreutils
+- **uutils**: Rust rewrite of coreutilsl
 
 #### MOTD - Message of the Day
 
@@ -142,12 +147,18 @@ Toggle MOTD for shells:
 
 ```bash
 # Enable for all shells
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli motd toggle all on
 
 # Enable for specific shell
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli motd toggle zsh on
 
 # Disable MOTD
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli motd toggle all off
 ```
 
@@ -157,15 +168,21 @@ Install curated Homebrew bundles:
 
 ```bash
 # List available bundles
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install list
 
 # Install specific bundle
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install ai       # AI tools
 bluefin-cli install cli      # CLI essentials
 bluefin-cli install fonts    # Development fonts
 bluefin-cli install k8s      # Kubernetes tools
 
 # Interactive mode
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install
 ```
 
@@ -175,27 +192,43 @@ Install desktop wallpaper collections:
 
 ```bash
 # Interactive selection
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install wallpapers
 
 # Install specific wallpaper casks
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install wallpapers bluefin-wallpapers aurora-wallpapers bazzite-wallpapers
 
 # Non-interactive test run: apply theme + enable all automation
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install wallpapers bluefin-wallpapers --yes
 
 # Non-interactive with explicit controls
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install wallpapers bluefin-wallpapers --non-interactive --apply-theme --theme Bluefin --enable-mode-sync --enable-auto-dark-light --trigger-source polling
 
 # Use startup-only mode sync (no minute polling task)
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install wallpapers bluefin-wallpapers --non-interactive --enable-mode-sync --trigger-source startup
 
 # Auto Dark Mode integration mode (startup sync + external mode-change utility)
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install wallpapers bluefin-wallpapers --non-interactive --enable-mode-sync --trigger-source autodarkmode
 
 # Cleanup Windows sync artifacts/state/tasks generated by wallpaper integration
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install wallpapers cleanup
 
 # Full reset for testing: cleanup + uninstall known wallpaper casks + local wallpaper folders
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install wallpapers cleanup --all
 
 ```
@@ -215,8 +248,8 @@ Non-interactive wallpaper flags:
 - In Auto Dark Mode, point light/dark custom script hooks to those two scripts.
 
 #### Starship Themes
-
-Change how your shell prompt looks. Browse and apply Starship preset themes:
+you can change your prompy lookks
+Browse and apply Starship preset themes:
 
 ```bash
 bluefin-cli starship theme
@@ -307,9 +340,13 @@ just build
 
 ```bash
 # Run tests in container
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 just test
 
 # Run tests locally
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 go test ./...
 ```
 
@@ -353,9 +390,10 @@ This project is licensed under the Apache License 2.0 - see the LICENSE file for
 
 ## 🔗 Related Projects
 
-- [Tavern](/docs/tavern) — TunaOS's GTK 4 Homebrew GUI; the graphical companion to bluefin-cli's bundle installer.
-- [TunaOS](/docs/tunaos) — the desktop images that ship bluefin-cli and Homebrew out of the box.
-- See every project on the [Projects page →](/projects).
 - [ublue-os/packages](https://github.com/ublue-os/packages) - Original package implementations
 - [Starship](https://starship.rs/) - Cross-shell prompt
 - [Homebrew](https://brew.sh/) - Package manager for macOS and Linux
+
+---
+
+Part of the [TunaOS](https://tunaos.org) ecosystem. [Docs](https://tunaos.org) · [Contributing](https://github.com/tuna-os/bluefin-cli/blob/main/CONTRIBUTING.md)

@@ -1,12 +1,11 @@
 ---
 sidebar_position: 1
 sidebar_label: "Tacklebox"
+
 status: stable
 ---
 
-:::tip[Visual overview]
-Prefer a visual tour? See the **[Tacklebox overview →](/tacklebox)** landing page.
-:::
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 **Tacklebox** is a high-performance orchestrator for `bootc` that provisions multi-tenant, updatable, and deduplicated bootable media (USB drives, SD cards, or raw disk images).
 
@@ -15,7 +14,7 @@ Born from the `superiso` project, Tacklebox evolves the concept from static ISOs
 ## ✨ Key Features
 
 *   **🚀 Multi-Boot Dictatorship:** Automatically installs and manages `systemd-boot` on a unified ESP, resolving conflicts between Ostree and Composefs backends.
-*   **🧠 Intelligent Deduplication:** Leverages a shared `containers/storage` and `ostree` repo across all bootable environments on a single disk.
+*   **🧠 Intelligent Deduplication:** Leverages a shared `containers/storage` and `ostree` repo across all bootable environments on a single disk. For ISOs, `"shared_store": {"dedup": true}` packs every env into one combined squashfs so files shared between images (e.g. the Fedora base of Bluefin + Bazzite) are stored once.
 *   **🔄 Integrated Update Lifecycle:** Update any OS on the drive in-place with `tacklebox update`. It safely rotates BLS entries and extracts new kernels/initrd files.
 *   **💾 Modal Booting:** Supports both **Live (ephemeral)** and **Persistent** boot entries for the same OS image via smart kernel argument manipulation.
 *   **📂 Shared Persistence:** Smart OverlayFS mounts allow sharing files in `/home/liveuser` across all OSes while isolating desktop-specific configurations (KDE vs GNOME).
@@ -34,8 +33,9 @@ Before placing the initramfs on the ESP, Tacklebox checks whether the image's
 initramfs already contains the required modules. If not, it rebuilds it
 automatically by running `dracut` inside a privileged container derived from
 the source image — no pre-processing of your images required. The rebuilt
-initramfs is cached by OCI image digest, so the overhead only occurs on the
-first build or after an image update.
+initramfs is cached by image ID, so the overhead only occurs on the
+first build or after an image update. The dracut module source is embedded
+in the tacklebox binary, so this works without the repo checkout.
 
 **Modules injected automatically:**
 
@@ -47,6 +47,18 @@ first build or after an image update.
 If your image already ships the required modules (e.g. pre-built `superiso-live`
 images), add `"skip_initramfs_rebuild": true` to the environment in your recipe
 to skip the rebuild and use the image's initramfs as-is.
+
+### Build caches
+Everything expensive is cached under `<output-base>/` keyed by image ID,
+so incremental rebuilds only pay for what actually changed:
+
+| Cache | What it saves |
+|---|---|
+| `initramfs-cache/` | The per-image dracut probe/rebuild (~2-3 min) |
+| `squashfs-cache/` | The per-env `mksquashfs` for ISO targets (minutes per env) |
+
+Rebuilding a three-env ISO where one image ref changed re-squashes only
+that env. Delete the cache directories to force a full rebuild.
 
 ### Composefs Support
 Tacklebox automatically handles the unique requirements of the Composefs backend, including:
@@ -103,6 +115,7 @@ Tacklebox is driven by simple JSON recipes:
     {
       "id": "bluefin",
       "image": "ghcr.io/ublue-os/bluefin:stable",
+      "title": "Bluefin (GNOME)",
       "modes": ["live", "persistent"]
     },
     {
@@ -129,6 +142,27 @@ images that already include `dmsquash-live` and `tbox-root` in their initramfs
 (e.g. pre-built `superiso-live` images) to skip the rebuild step and save
 2–3 minutes per environment on the first build.
 
+`title` is optional and sets the human-facing boot menu entry name
+(e.g. "Bluefin (GNOME)"); the env `id` is used when omitted.
+
+`shared_store.compression` controls squashfs quality for ISO targets:
+the default favours build speed (zstd level 3); set `"release"` (or
+`"max"`) for distribution-quality compression (zstd level 15, ~10-15%
+smaller, slower to build). The `SUPERISO_COMPRESSION=release` env var
+overrides the recipe.
+
+`shared_store.dedup` (ISO targets only, default `false`) packs every env
+into **one** combined squashfs — one subtree per env — instead of one
+squashfs per env. mksquashfs then stores files shared across images
+exactly once, which can shrink a multi-env ISO dramatically when the
+images share a base (Bluefin + Bazzite, or two variants of your own
+image). At boot, dmsquash-live mounts the combined squashfs and the
+`tbox-root` dracut module pivots into the env's subtree
+(`tacklebox.root=<env>` on the kernel cmdline). Trade-offs: changing any
+one image rebuilds (and re-downloads) the whole combined squashfs, and
+the squashfs cache is keyed by *all* image IDs together. See
+`examples/iso-dedup.json`.
+
 > **Sizing rule of thumb:** ostree-backed bootc deployments occupy ~10 GiB
 > each, composefs-backed ones ~5 GiB. A 30 GiB recipe is enough for one
 > ostree env; three need ~60 GiB. Tacklebox prints a warning before
@@ -139,7 +173,7 @@ images that already include `dmsquash-live` and `tbox-root` in their initramfs
 | Flag | What it does |
 |---|---|
 | `-b, --output-base DIR` | Where intermediate artifacts and `tacklebox.img` are written. |
-| `--xz` | Compress the resulting image with `xz -T0`. |
+| `--xz` | Compress the resulting image or ISO with `xz -T0`. |
 | `-y, --yes` | Skip the destructive-target confirmation. Required in CI / non-tty contexts. |
 | `-v, --verbose` | Stream subprocess output and command traces. Default is quiet (stderr still captured on failure). |
 | `--parallel-install N` | **Experimental.** Run N bootc installs concurrently. Bounded by slowest env, not sum — but shares `/var/lib/containers`. Default 1 (sequential). |
@@ -168,11 +202,9 @@ just provision-usb device=/dev/sda recipe=examples/multi-test.json
 just build-xz
 ```
 
-## Related projects
-
-- **[TunaOS](/docs/tunaos)** — Tacklebox consumes TunaOS OCI images to produce its bootable media; the [live ISO generation](/docs/tunaos/live-iso-generation) pipeline calls it directly.
-- **[Tromsø](/docs/tromso)** and **[XFCE Linux](/docs/xfce-linux)** — more bootc images you can drop into a Tacklebox recipe.
-- See every project on the **[Projects page →](/projects)**.
-
 ---
 *Part of the [Tuna OS](https://github.com/tuna-os) ecosystem.*
+
+---
+
+Part of the [TunaOS](https://tunaos.org) ecosystem. [Docs](https://tunaos.org) · [Contributing](https://github.com/tuna-os/tacklebox/blob/main/CONTRIBUTING.md)

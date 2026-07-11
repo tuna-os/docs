@@ -1,14 +1,13 @@
 ---
 sidebar_position: 1
 sidebar_label: "Tromsø"
+
 status: alpha
 ---
 
-:::tip[Visual overview]
-Prefer a visual tour? See the **[Tromsø overview →](/tromso)** landing page.
-:::
-
 > ⚠️ **Alpha** — early development. Not production-ready. APIs and behaviour may change without notice.
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 **Aurora Tromso** is a BuildStream-based KDE Linux OCI/bootc image, modeled on Project Bluefin's
 [`projectbluefin/dakota`](https://github.com/projectbluefin/dakota). It builds KDE Plasma 6 on top
@@ -130,13 +129,6 @@ TMPDIR=/var/tmp git commit -m "Update junction to kde-build-meta ${SHA}"
 
 See `AGENTS.md` for full conventions and workflows.
 
-## Related projects
-
-- **[XFCE Linux](/docs/xfce-linux)** — the XFCE sibling, built the same BuildStream-from-source way.
-- **[Project Bluefin Dakota](https://github.com/projectbluefin/dakota)** — the GNOME counterpart Tromsø is modeled on.
-- **[TunaOS](/docs/tunaos)** — the bootc Enterprise Linux desktop images at the heart of the org.
-- See every project on the **[Projects page →](/projects)**.
-
 ## References
 
 - **[KDE Linux](https://invent.kde.org/kde-linux/kde-linux)** — authoritative KDE package list
@@ -145,3 +137,9 @@ See `AGENTS.md` for full conventions and workflows.
 - **[gnome-build-meta](https://gitlab.gnome.org/GNOME/gnome-build-meta)** — build patterns reference
 - **[freedesktop-sdk](https://freedesktop-sdk.io/)** — base SDK
 - **[BuildStream](https://www.buildstream.build/)** — build system
+
+## ISO Builder (merged from tromso-iso)
+
+---
+
+Part of the [TunaOS](https://tunaos.org) ecosystem. [Docs](https://tunaos.org) · [Contributing](https://github.com/tuna-os/tromso/blob/main/CONTRIBUTING.md)
