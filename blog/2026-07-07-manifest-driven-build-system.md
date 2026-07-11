@@ -8,19 +8,19 @@ date: 2026-07-07
 
 # The Image Factory: Manifest-Driven Builds
 
-TunaOS just shipped the biggest architectural change since the project started: **declarative desktop manifests**. Adding a new desktop environment is now a YAML file — no shell scripts, no Containerfile changes, no CI edits.
+Biggest change to the build system since I started this thing: desktops are now just a YAML file. No shell script per desktop, no touching the Containerfile, no CI edits. Wanted to write this one up because I'm pretty happy with how it turned out.
 
 <!-- truncate -->
 
-## The Problem
+## What it was before
 
-The old build system had a 150-line bash script per desktop (gnome.sh, kde.sh, cosmic.sh, niri.sh, xfce.sh). Each one was an imperative mess of `if fedora; dnf install X; elif el10; dnf group install Y; fi`. Adding GNOME 50 meant duplicating gnome.sh. Adding Ubuntu support meant adding `elif apt; pkg_install Z` to every single script.
+Every desktop had its own 150-line bash script — gnome.sh, kde.sh, cosmic.sh, niri.sh, xfce.sh. Each one was a pile of `if fedora; dnf install X; elif el10; dnf group install Y; fi`. Wanted GNOME 50? Copy-paste gnome.sh and hope you didn't miss a spot. Wanted Ubuntu support? Go add `elif apt; pkg_install Z` to five different files and pray you got them all consistent.
 
-The Justfile's `_build` recipe was 150 lines of positional-argument spaghetti. Understanding what `arg 7` meant required reading the recipe signature.
+The Justfile wasn't much better. The `_build` recipe was 150 lines of positional arguments, and if you wanted to know what `arg 7` did you had to go read the whole signature. Not fun to touch.
 
-## The Solution
+## What it is now
 
-### Desktop Manifests
+### Desktop manifests
 
 Each desktop is now a YAML file in `manifests/desktops/`:
 
@@ -45,17 +45,17 @@ packages:
 versionlock: [plasma-desktop, "qt6-*"]
 ```
 
-A single generic installer (`install-desktop.sh`) reads the manifest and handles everything: groups, packages, COPRs, version locks, display manager enablement.
+One generic installer (`install-desktop.sh`) reads the manifest and does the rest — groups, packages, COPRs, version locks, enabling the display manager, all of it.
 
-### Build Engine Extraction
+### Pulling the build engine out
 
-The Justfile `_build` monolith became `scripts/build-image-inner.sh` — 198 lines, env-var driven (not 11 positional args). The Justfile is now a 25-line export wrapper.
+The `_build` monolith in the Justfile is now `scripts/build-image-inner.sh` — 198 lines, driven by env vars instead of 11 positional args you had to memorize. The Justfile itself is down to a 25-line wrapper.
 
-### Flavor Resolution
+### Flavor resolution
 
-`scripts/resolve-flavor.sh` maps any flavor to its build parameters. 18 BATS tests cover every path. The old 50-line if/elif/case block in the Justfile is gone.
+`scripts/resolve-flavor.sh` maps a flavor to its build params now, and I actually wrote 18 BATS tests to cover the paths instead of just hoping. The old 50-line if/elif/case block in the Justfile is just gone.
 
-## The Numbers
+## Numbers, if you like that sort of thing
 
 | Before | After |
 |--------|-------|
@@ -64,12 +64,12 @@ The Justfile `_build` monolith became `scripts/build-image-inner.sh` — 198 lin
 | 3 Containerfiles for HWE/nvidia (213 lines dead code) | 1 parameterized `Containerfile.overlay` (72 lines) |
 | 0 tests for flavor routing | 18 BATS cases |
 
-## What's Next
+## What's next
 
-The manifest system now supports **4 package managers** (dnf, apt, pacman, zypper) and we've added Arch Linux (marlin) and Debian (flounder, flounder-sid) variants. The matrix grows:
+Manifests now cover 4 package managers — dnf, apt, pacman, zypper — and I've since added Arch (marlin) and Debian (flounder, flounder-sid) on top of it. The matrix just keeps growing:
 
 ```
-9 base variants × 5-6 desktops × 3 hardware layers = image factory
+9 base variants × 5-6 desktops × 3 hardware layers
 ```
 
-Adding a new distro = write a Containerfile that bootcifies it + add pacman/apt/dnf sections to the manifests. The build system handles the rest.
+Adding a new distro at this point is: write a Containerfile that bootc-ifies it, add the pacman/apt/dnf sections to the manifests, done. The build system doesn't care what you throw at it.

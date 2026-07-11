@@ -210,7 +210,7 @@
       "Name": "hanthor/decks",
       "Images": [
         {
-          "Digest": "sha256:cb730cdb3bb03c2d496d694628dde2b078da84aee486a1b8a2d78f5588029021",
+          "Digest": "sha256:d57e4db19deae1534afd4714ce176d56001dbdd380759ebaa5aa7e13515d22eb",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -223,15 +223,15 @@
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.decks\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=decks\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\n\n[Extension org.tunaos.decks.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.decks.Debug;",
             "org.flatpak.installed-size": "39621120",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAADU5S0AdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAADU5SwAdA==",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAJckgAAdA==",
-            "org.flatpak.download-size": "13688783",
+            "org.flatpak.download-size": "13688808",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuZGVja3MveDg2XzY0L21hc3RlcgAjAGFz",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuZGVja3MveDg2XzY0L21hc3RlcgAAcw==",
             "org.flatpak.ref": "app/org.tunaos.decks/x86_64/master",
-            "org.flatpak.subject": "Built from 362f39eb2b3dc7cf0bdb0a3b24fd3790b206e8c7",
-            "org.flatpak.commit": "d20fd3280ada42c65ec6f21567f1d14f714536abd676426613194431e6a8b74b",
-            "org.flatpak.timestamp": "1783390347"
+            "org.flatpak.subject": "Built from 13c42761270d722b26a066fe11dcb640e1c9d1bf",
+            "org.flatpak.commit": "c0bedd477fd02500b43ec2da779eb55f4a018638841d6357ef58e9524c178326",
+            "org.flatpak.timestamp": "1783771043"
           }
         }
       ]
@@ -270,7 +270,7 @@
       "Name": "hanthor/tables",
       "Images": [
         {
-          "Digest": "sha256:ab0c1bd3897294d7ae85f0249c7b56d599d9c90202e5401aef0e8dc9a1561270",
+          "Digest": "sha256:b5e9ef930600652aafbf9959932459ca935cd2d1653fb28a6f0229fb6fc664ce",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -285,13 +285,13 @@
             "org.flatpak.installed-size": "7023104",
             "org.flatpak.commit-metadata.xa.download-size": "AAAAAAAkLgkAdA==",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAABrKgAAdA==",
-            "org.flatpak.download-size": "2210378",
+            "org.flatpak.download-size": "2210382",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MudGFibGVzL3g4Nl82NC9tYXN0ZXIAJABhcw==",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MudGFibGVzL3g4Nl82NC9tYXN0ZXIAAHM=",
             "org.flatpak.ref": "app/org.tunaos.tables/x86_64/master",
-            "org.flatpak.subject": "Built from ebd6032899567def33982a64d7855d32e9b104ba",
-            "org.flatpak.commit": "bbefa6acf3488c90274cef734599386c45c9ff6a4a08651245fc54b04171df17",
-            "org.flatpak.timestamp": "1783390395"
+            "org.flatpak.subject": "Built from c31913762872027bd676c82e884b40978044e1b1",
+            "org.flatpak.commit": "8218c16780b149748b09cbf47cbb8cc16d625b8e5f8c611a24d9795bda36408a",
+            "org.flatpak.timestamp": "1783771031"
           }
         }
       ]
