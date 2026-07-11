@@ -76,7 +76,8 @@ chmod +x corral
 install corral ~/.local/bin/
 ```
 
-<details><summary>…or via <code>go install</code></summary>
+<details>
+<summary>…or via <code>go install</code></summary>
 
 ```bash
 go install github.com/tuna-os/corral@latest
@@ -84,7 +85,8 @@ go install github.com/tuna-os/corral@latest
 
 </details>
 
-<details><summary>…or build from source</summary>
+<details>
+<summary>…or build from source</summary>
 
 ```bash
 git clone https://github.com/tuna-os/corral
@@ -95,7 +97,8 @@ install corral ~/.local/bin/
 
 </details>
 
-<details><summary>…or pull the container image</summary>
+<details>
+<summary>…or pull the container image</summary>
 
 The same image that runs `corral web` in-cluster also ships the CLI binary:
 
