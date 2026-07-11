@@ -11,7 +11,7 @@ image: it keeps a small manifest of packages and customizations, builds them
 into a local derived image, and rebases your system to it — rebuilding
 automatically whenever the base image updates. It's the answer to "how do I
 just install a package?" on an image-based system, and it gives the same
-answer on every TunaOS variant: **dnf, zypper, pacman, and apt**.
+answer on every TunaOS variant: **dnf, zypper, pacman, apt, portage (emerge), and apk**.
 
 ```bash
 sudo remora init                 # one-time setup

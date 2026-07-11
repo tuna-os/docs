@@ -11,8 +11,8 @@ date: 2026-07-11
 Every image-based distro eventually gets asked the same question: *"okay, but
 how do I just install a package?"* Today TunaOS ships its answer. **remora**
 is local layering done the container-native way — and it works identically on
-every variant in the fleet, whether the base speaks dnf, zypper, pacman, or
-apt.
+every variant in the fleet, whether the base speaks dnf, zypper, pacman, apt,
+emerge, or apk.
 
 ```bash
 sudo remora install htop
@@ -71,12 +71,13 @@ extra repos and keys. Exotic builders welcome — a
 build script. Remora doesn't wrap your tools; it gives them a home in the
 image build.
 
-## One tool, five package managers
+## One tool, six package managers
 
 TunaOS is [13 fishes across every major Linux family](/blog/13-fishes-in-the-sea),
 so a Fedora-only layering tool was never going to fly. Remora detects the
 base's package manager and generates the right build — dnf on Yellowfin,
-zypper on Bonito, pacman on Skipjack, apt on the Debian and Ubuntu bases —
+zypper on Sailfin, pacman on Marlin, apt on Flounder and Grouper, emerge on
+Guppy, apk on Alpine bases —
 with per-manager cache mounts so rebuilds stay fast, and a `bootc container
 lint` gate so broken images never reach your bootloader.
 
