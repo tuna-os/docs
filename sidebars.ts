@@ -61,7 +61,7 @@ const sidebars: SidebarsConfig = {
       label: '🛠 Tools',
       collapsed: false,
       items: [
-        {type: 'category', label: 'Tacklebox', link: {type: 'doc', id: 'tacklebox/index'}, items: ['tacklebox/ARCHITECTURE', 'tacklebox/github-iso-setup', 'tacklebox/TODO']},
+        {type: 'category', label: 'Tacklebox', link: {type: 'doc', id: 'tacklebox/index'}, items: ['tacklebox/getting-started', 'tacklebox/ARCHITECTURE', 'tacklebox/github-iso-setup', 'tacklebox/TODO']},
         {type: 'category', label: '🐟 remora', link: {type: 'doc', id: 'remora/index'}, items: []},
         {
           type: 'category',
