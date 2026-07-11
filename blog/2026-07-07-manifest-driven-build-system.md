@@ -66,10 +66,10 @@ The Justfile `_build` monolith became `scripts/build-image-inner.sh` — 198 lin
 
 ## What's Next
 
-The manifest system now supports **4 package managers** (dnf, apt, pacman, zypper) and we've added Arch Linux (marlin) and CachyOS (wahoo) variants. The matrix grows:
+The manifest system now supports **4 package managers** (dnf, apt, pacman, zypper) and we've added Arch Linux (marlin) and Debian (flounder, flounder-sid) variants. The matrix grows:
 
 ```
-9 base variants × 6 desktops × 3 hardware layers = image factory
+9 base variants × 5-6 desktops × 3 hardware layers = image factory
 ```
 
 Adding a new distro = write a Containerfile that bootcifies it + add pacman/apt/dnf sections to the manifests. The build system handles the rest.

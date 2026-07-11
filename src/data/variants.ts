@@ -46,7 +46,6 @@ export type Variant = {
 
 export const ALL_DESKTOPS: Desktop[] = [
   {emoji: '🖥️', name: 'GNOME', tag: 'gnome', blurb: 'The polished default — latest GNOME, backported to Enterprise Linux.'},
-  {emoji: '✨', name: 'GNOME 50', tag: 'gnome50', blurb: 'The newest GNOME stack, riding the same base.'},
   {emoji: '🌊', name: 'KDE Plasma', tag: 'kde', blurb: 'Endlessly customizable, feature-rich Plasma desktop.'},
   {emoji: '🚀', name: 'COSMIC', tag: 'cosmic', blurb: "System76's Rust-built next-gen desktop."},
   {emoji: '⚡', name: 'Niri', tag: 'niri', blurb: 'A scrollable-tiling Wayland compositor for keyboard-driven flow.'},
@@ -107,7 +106,6 @@ export const VARIANTS: Variant[] = [
     flavors: [
       {name: 'GNOME', image: 'ghcr.io/tuna-os/albacore:gnome', note: 'Live ISO published'},
       {name: 'GNOME (HWE)', image: 'ghcr.io/tuna-os/albacore:gnome-hwe', note: 'Live ISO published'},
-      {name: 'GNOME 50', image: 'ghcr.io/tuna-os/albacore:gnome50'},
       {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/albacore:kde'},
       {name: 'COSMIC', image: 'ghcr.io/tuna-os/albacore:cosmic'},
       {name: 'Niri', image: 'ghcr.io/tuna-os/albacore:niri'},
@@ -141,7 +139,6 @@ export const VARIANTS: Variant[] = [
     flavors: [
       {name: 'GNOME', image: 'ghcr.io/tuna-os/yellowfin:gnome', note: 'Live ISO published'},
       {name: 'GNOME (HWE)', image: 'ghcr.io/tuna-os/yellowfin:gnome-hwe', note: 'Live ISO published'},
-      {name: 'GNOME 50', image: 'ghcr.io/tuna-os/yellowfin:gnome50'},
       {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/yellowfin:kde'},
       {name: 'COSMIC', image: 'ghcr.io/tuna-os/yellowfin:cosmic'},
       {name: 'Niri', image: 'ghcr.io/tuna-os/yellowfin:niri'},
@@ -178,7 +175,6 @@ export const VARIANTS: Variant[] = [
     }],
     flavors: [
       {name: 'GNOME', image: 'ghcr.io/tuna-os/skipjack:gnome'},
-      {name: 'GNOME 50', image: 'ghcr.io/tuna-os/skipjack:gnome50'},
       {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/skipjack:kde'},
       {name: 'COSMIC', image: 'ghcr.io/tuna-os/skipjack:cosmic'},
       {name: 'Niri', image: 'ghcr.io/tuna-os/skipjack:niri'},
@@ -223,7 +219,7 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'grouper',
-    emoji: '🐠',
+    emoji: '🐟',
     name: 'Grouper',
     base: 'Ubuntu 26.04',
     baseUrl: 'https://ubuntu.com',
@@ -427,7 +423,15 @@ export const VARIANTS: Variant[] = [
       {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/guppy:kde'},
     ],
     hasIsos: true,
+  },}],
+    flavors: [
+      {name: 'GNOME', image: 'ghcr.io/tuna-os/guppy:gnome'},
+      {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/guppy:kde'},
+    ],
+    hasIsos: false,
   },
+
+>>>>>>> origin/main
 ];
 
 export function getVariant(id: string): Variant | undefined {
