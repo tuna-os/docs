@@ -1,169 +1,41 @@
 import type {ReactNode} from 'react';
 import Link from '@docusaurus/Link';
 import AnimatedEmoji from '@site/src/components/AnimatedEmoji';
+import {PROJECTS, STATUS_LABELS, type Project, type ProjectStatus} from '@site/src/data/projects';
 import styles from './styles.module.css';
 
-type Project = {
-  name: string;
-  slug: string;
-  icon: string;
-  description: string;
-  status: 'stable' | 'beta' | 'alpha' | 'experimental' | 'internal';
-  links: {label: string; to: string}[];
-};
-
-const PROJECTS: Project[] = [
-  {
-    name: 'TunaOS',
-    slug: '/tunaos',
-    icon: '🐟',
-    description: 'Cloud-native Enterprise Linux desktop images built with bootc. GNOME, KDE, COSMIC, Niri on AlmaLinux, CentOS Stream, and Fedora.',
-    status: 'stable',
-    links: [
-      {label: 'Documentation', to: '/docs/tunaos'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/tunaOS'},
-      {label: 'Download', to: '/download'},
-    ],
-  },
-  {
-    name: 'Tacklebox',
-    slug: '/tacklebox',
-    icon: '🛠',
-    description: 'High-performance bootc orchestrator. Produces multi-boot USB drives, disk images, and deduplicated ISOs from OCI container images.',
-    status: 'stable',
-    links: [
-      {label: 'Documentation', to: '/docs/tacklebox'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/tacklebox'},
-    ],
-  },
-  {
-    name: 'Tromsø',
-    slug: '/tromso',
-    icon: '🌌',
-    description: 'A BuildStream-based KDE Linux distribution. Builds desktop OS images from source with reproducible pipelines.',
-    status: 'alpha',
-    links: [
-      {label: 'Documentation', to: '/docs/tromso'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/tromso'},
-    ],
-  },
-  {
-    name: 'XFCE Linux',
-    slug: '/xfce-linux',
-    icon: '🖥️',
-    description: 'XFCE Wayland OCI image built with BuildStream. A lightweight desktop experience on an immutable base.',
-    status: 'alpha',
-    links: [
-      {label: 'Documentation', to: '/docs/xfce-linux'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/xfce-linux'},
-    ],
-  },
-  {
-    name: 'COPR Builds',
-    slug: '/docs/copr',
-    icon: '⚙',
-    description: 'GitHub Actions-based RPM build system for TunaOS. Builds packages from COPR-like specs with Cloudflare R2 distribution.',
-    status: 'internal',
-    links: [
-      {label: 'Documentation', to: '/docs/copr'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/github-copr'},
-    ],
-  },
-  {
-    name: 'Tavern',
-    slug: '/tavern',
-    icon: '🍻',
-    description: 'A modern, fast Homebrew client for Linux built with GTK 4 and Libadwaita. App Store experience for managing formulae and casks.',
-    status: 'stable',
-    links: [
-      {label: 'Documentation', to: '/docs/tavern'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/Tavern'},
-    ],
-  },
-  {
-    name: 'Corral',
-    slug: '/corral',
-    icon: '🤠',
-    description: 'Herd your VMs into your tailnet — QEMU + KubeVirt manager with a Proxmox-style web UI. One binary, no daemons.',
-    status: 'alpha',
-    links: [
-      {label: 'Documentation', to: '/docs/corral'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/corral'},
-    ],
-  },
-  {
-    name: 'Tables',
-    slug: '/tables',
-    icon: '📊',
-    description: 'GNOME spreadsheet — ~400 functions, charts, and multi-sheet workbooks. Jspreadsheet CE + HyperFormula.',
-    status: 'alpha',
-    links: [
-      {label: 'Documentation', to: '/docs/tables'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/tables'},
-    ],
-  },
-  {
-    name: 'Letters',
-    slug: '/letters',
-    icon: '📝',
-    description: 'Modern minimalist word processor for GNOME. DOCX, ODT, Markdown, HTML, and PDF export via Pandoc and WeasyPrint.',
-    status: 'alpha',
-    links: [
-      {label: 'Documentation', to: '/docs/letters'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/letters'},
-    ],
-  },
-  {
-    name: 'Decks',
-    slug: '/decks',
-    icon: '📽️',
-    description: 'GNOME presentation app — Fabric.js canvas editing and Reveal.js fullscreen. PPTX, ODP, and PDF export.',
-    status: 'alpha',
-    links: [
-      {label: 'Documentation', to: '/docs/decks'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/decks'},
-    ],
-  },
-  {
-    name: 'bluefin-cli',
-    slug: '/bluefin-cli',
-    icon: '⌨️',
-    description: 'Powerful CLI tool for shell configuration and dev environment customization. Beautiful TUIs built with Charm libraries.',
-    status: 'stable',
-    links: [
-      {label: 'Documentation', to: '/docs/bluefin-cli'},
-      {label: 'GitHub', to: 'https://github.com/tuna-os/bluefin-cli'},
-    ],
-  },
-];
-
-const STATUS_LABELS: Record<string, string> = {
-  stable: 'Stable',
-  beta: 'Beta',
-  alpha: 'Alpha',
-  experimental: 'Experimental',
-  internal: 'Internal',
-};
+// Cards derive straight from the shared project data (src/data/projects.ts)
+// — the same source each project's own landing page reads via getProject().
+// A second, independently-maintained list here was the cause of this page
+// silently dropping projects that existed everywhere else on the site.
+const CARD_PROJECTS = PROJECTS.filter((p) => !p.external);
 
 function ProjectCard({project}: {project: Project}) {
-  const statusClass = styles[`badge-${project.status}`] || '';
-  const borderClass = styles[`status-${project.status}`] || '';
+  const status: ProjectStatus = project.status;
+  const statusClass = styles[`badge-${status}`] || '';
+  const borderClass = styles[`status-${status}`] || '';
+  const links = [
+    project.docs ? {label: 'Documentation', to: project.docs} : null,
+    {label: 'GitHub', to: project.repo},
+    project.cta ?? null,
+  ].filter((l): l is {label: string; to: string} => l !== null);
+
   return (
     <div className={`${styles.card} ${borderClass}`}>
       <div className={styles.cardTop}>
-        <span className={styles.icon}><AnimatedEmoji emoji={project.icon} size={32} /></span>
+        <span className={styles.icon}><AnimatedEmoji emoji={project.emoji} size={32} /></span>
         <div>
           <h3 className={styles.name}>
-            <Link to={project.slug}>{project.name}</Link>
+            <Link to={`/${project.id}`}>{project.name}</Link>
           </h3>
           <span className={`${styles.badge} ${statusClass}`}>
-            {STATUS_LABELS[project.status]}
+            {STATUS_LABELS[status]}
           </span>
         </div>
       </div>
-      <p className={styles.desc}>{project.description}</p>
+      <p className={styles.desc}>{project.tagline}</p>
       <div className={styles.links}>
-        {project.links.map((link) => (
+        {links.map((link) => (
           <Link key={link.label} className={styles.link} to={link.to}>
             {link.label}
           </Link>
@@ -176,8 +48,8 @@ function ProjectCard({project}: {project: Project}) {
 export default function ProjectCards(): ReactNode {
   return (
     <div className={styles.grid}>
-      {PROJECTS.map((p) => (
-        <ProjectCard key={p.slug} project={p} />
+      {CARD_PROJECTS.map((p) => (
+        <ProjectCard key={p.id} project={p} />
       ))}
     </div>
   );
