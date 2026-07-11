@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-11T13:06:04.619Z",
+  "generatedAt": "2026-07-11T18:53:53.445Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 248,
+  "count": 252,
   "categories": [
     {
       "id": "live-isos",
@@ -11,6 +11,26 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "flounder-kde-latest",
+          "path": "live-isos/flounder-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-kde-latest.iso",
+          "size": 853671936,
+          "modified": "2026-07-11T16:50:42.898750937Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "flounder-gnome-latest",
+          "path": "live-isos/flounder-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-gnome-latest.iso",
+          "size": 853671936,
+          "modified": "2026-07-11T16:50:35.880107606Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "grouper-gnome-latest",
@@ -650,6 +670,26 @@
           "modified": "2026-04-02T01:48:53.174283483Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "flounder-kde-13-x86_64",
+          "path": "live-isos/flounder-kde-13-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-kde-13-x86_64.iso",
+          "size": 853671936,
+          "modified": "2026-07-11T16:50:42.898750937Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "flounder-gnome-13-x86_64",
+          "path": "live-isos/flounder-gnome-13-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-gnome-13-x86_64.iso",
+          "size": 853671936,
+          "modified": "2026-07-11T16:50:35.880107606Z",
+          "arch": "x86_64",
+          "latest": false
         },
         {
           "category": "live-isos",
