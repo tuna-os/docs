@@ -4,50 +4,35 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import Link from '@docusaurus/Link';
+import {PROJECTS} from '@site/src/data/projects';
 
-const APPS: Record<string, {
-  name: string;
-  emoji: string;
-  summary: string;
-  tagline: string;
-}> = {
-  'org.tunaos.letters': {
-    name: 'Letters',
-    emoji: '📝',
-    summary: 'Modern word processor for the GNOME desktop.',
-    tagline: 'DOCX, ODT, Markdown, HTML, and PDF export.',
-  },
-  'org.tunaos.tables': {
-    name: 'Tables',
-    emoji: '📊',
-    summary: 'GNOME spreadsheet with ~400 Excel-compatible functions.',
-    tagline: 'XLSX, ODS, CSV, charts, and multi-sheet workbooks.',
-  },
-  'org.tunaos.decks': {
-    name: 'Decks',
-    emoji: '📽️',
-    summary: 'GNOME presentation app with Fabric.js and Reveal.js.',
-    tagline: 'PPTX, ODP, and multi-page PDF export.',
-  },
-  'org.tunaos.tables-rust': {
-    name: 'Tables (Rust)',
-    emoji: '🦀',
-    summary: 'Pure Rust GTK4 spreadsheet — no WebKit, just speed.',
-    tagline: 'Fast, native spreadsheet for GNOME.',
-  },
-  'org.tunaos.letters-rust': {
-    name: 'Letters (Rust)',
-    emoji: '🦀',
-    summary: 'Pure Rust GTK4 word processor — no WebKit, just speed.',
-    tagline: 'Fast, native word processor for GNOME.',
-  },
-  'org.tunaos.decks-rust': {
-    name: 'Decks (Rust)',
-    emoji: '🦀',
-    summary: 'Pure Rust GTK4 presentation app — no WebKit, just speed.',
-    tagline: 'Fast, native presentations for GNOME.',
-  },
-};
+type InstallApp = {name: string; emoji: string; summary: string; tagline: string};
+
+// Derived from the shared project data (src/data/projects.ts) via each
+// project's flathub/flatpakRust app ID — not a separate hand-maintained
+// list, so a project gains (or loses) an /install page automatically.
+const APPS: Record<string, InstallApp> = Object.fromEntries(
+  PROJECTS.flatMap((p): [string, InstallApp][] => {
+    const entries: [string, InstallApp][] = [];
+    if (p.flathub) {
+      entries.push([p.flathub, {
+        name: p.name,
+        emoji: p.emoji,
+        summary: p.tagline,
+        tagline: p.features[0]?.text ?? '',
+      }]);
+    }
+    if (p.flatpakRust) {
+      entries.push([p.flatpakRust, {
+        name: `${p.name} (Rust)`,
+        emoji: '🦀',
+        summary: p.tagline,
+        tagline: 'Pure Rust GTK4 rewrite — no WebKit, just speed.',
+      }]);
+    }
+    return entries;
+  }),
+);
 
 function Content(): ReactNode {
   const [appId, setAppId] = useState<string | null>(null);
