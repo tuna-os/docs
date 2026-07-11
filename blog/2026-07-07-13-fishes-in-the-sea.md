@@ -75,6 +75,22 @@ A week ago, adding a new base OS meant writing hundreds of lines of shell script
 
 That's it. The CI pipeline handles the rest: container images and bootable ISOs, automatically. No per-distro bash scripts. No per-DE-per-distro combinatorial explosion. The factory just runs.
 
+## The Desktops
+
+Every variant ships the same five desktop environments, defined as YAML manifests with per-package-manager package lists. Two are worth highlighting for pushing the Wayland envelope.
+
+### Niri + DMS
+
+[Niri](https://github.com/YaLTeR/niri) is a scrollable-tiling Wayland compositor — windows tile horizontally on an infinite ribbon you scroll through, rather than stacking in workspaces. It's the most unusual DE in the lineup and the one that most purely commits to Wayland's protocol model.
+
+TunaOS pairs Niri with **[DMS](https://github.com/avengemedia/dms)** (DankMaterialShell), a desktop shell that layers greeter integration, a CLI control panel, and application launching on top of Niri. The full stack is `greetd` (display manager) → Niri (compositor) → DMS (shell). DMS is still early-stage but gives Niri a cohesive desktop experience beyond bare windows.
+
+### XFCE (Wayland)
+
+XFCE 4.20 introduced experimental Wayland support via its new compositor `xfwl4`, replacing the X11-era `xfwm4`. While XFCE's Wayland session is still maturing, it already works well enough for daily driving on Fedora and EL10 — TunaOS ships the optional `xfce4-wayland` package and defaults to GDM as the display manager to ensure the Wayland session is discoverable. Think of it as "XFCE, but with tear-free rendering and per-monitor refresh rates."
+
+The other three desktops — [GNOME](https://www.gnome.org/), [KDE Plasma](https://kde.org/), and [COSMIC](https://system76.com/cosmic) — are Wayland-first by default and round out the lineup with more mature, full-featured environments.
+
 ## What's Next
 
 - **Build validation** — getting CI green across all 13 variants on all platforms
