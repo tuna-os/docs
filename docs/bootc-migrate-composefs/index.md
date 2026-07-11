@@ -43,6 +43,7 @@ podman cp bmc-extract:/usr/local/bin/bootc-migrate-composefs .
 podman rm bmc-extract
 sudo install -m755 bootc-migrate-composefs /usr/local/bin/
 ```
+
 </details>
 
 <details><summary>…or build from source (needs Rust)</summary>
@@ -53,6 +54,7 @@ cd bootc-migrate-composefs
 cargo build --release
 sudo install -m755 target/release/bootc-migrate-composefs /usr/local/bin/
 ```
+
 </details>
 
 **2. Dry-run** — makes no changes, just checks your system is ready:
