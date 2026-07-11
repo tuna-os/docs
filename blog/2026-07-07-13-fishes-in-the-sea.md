@@ -1,22 +1,22 @@
 ---
-slug: erasing-the-mystique
-title: "Erasing the Mystique: 13 Fishes in the Sea"
+slug: 13-fishes-in-the-sea
+title: "13 Fishes in the Sea: The TunaOS Variant Landscape"
 authors: [james]
 tags: [vision, variants, architecture]
 date: 2026-07-07
 ---
 
-# Erasing the Mystique: 13 Fishes in the Sea
+# 13 Fishes in the Sea: The TunaOS Variant Landscape
 
 A Linux distribution shouldn't be a sacred artifact maintained by priesthood. It should be a composition of choices — base OS, desktop, kernel, drivers — assembled by a factory and delivered as an image. Today, TunaOS has **13 variants** spanning 5 package managers and every major Linux family. Here's why, and where we're going.
 
 <!-- truncate -->
 
-## The Mystique
+## The Distro Illusion
 
 For decades, "making a Linux distro" meant: fork a package set, maintain an installer, hand-tune configs, ship ISOs on a 6-month cadence, and pray nothing breaks between your packages and upstream. The result: hundreds of distros that are 95% the same packages with 5% different defaults.
 
-The mystique is that this is *hard*. That it takes a team of package maintainers and release engineers. That choosing Arch vs Fedora vs Debian is a permanent, load-bearing decision.
+The illusion is that this is *hard*. That it takes a team of package maintainers and release engineers. That choosing Arch vs Fedora vs Debian is a permanent, load-bearing decision.
 
 **We reject this.**
 
@@ -88,4 +88,4 @@ This wouldn't be possible without:
 
 ---
 
-*The mystique is dead. A distro is just data in, image out. Pick your fish.*
+*The distro illusion is dead. A distro is just data in, image out. Pick your fish.*
