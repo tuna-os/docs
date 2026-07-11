@@ -85,9 +85,9 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         {type: 'category', label: 'Tavern', link: {type: 'doc', id: 'tavern/index'}, items: ['tavern/ROADMAP', 'tavern/CONTRIBUTING']},
-        {type: 'category', label: '📊 Tables', link: {type: 'doc', id: 'tables/index'}, items: []},
+        {type: 'category', label: '📊 Tables', link: {type: 'doc', id: 'tables/index'}, items: ['tables/guide']},
         {type: 'category', label: '📝 Letters', link: {type: 'doc', id: 'letters/index'}, items: ['letters/guide']},
-        {type: 'category', label: '📽️ Decks', link: {type: 'doc', id: 'decks/index'}, items: []},
+        {type: 'category', label: '📽️ Decks', link: {type: 'doc', id: 'decks/index'}, items: ['decks/guide']},
         {type: 'category', label: '🗺️ Mariner', link: {type: 'doc', id: 'mariner/index'}, items: []},
       ],
     },
