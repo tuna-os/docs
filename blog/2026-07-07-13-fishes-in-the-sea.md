@@ -63,7 +63,7 @@ Every TunaOS variant is named after a fish. There are 13:
 | 🦎 [**Sailfin**](/sailfin) | <img src="/img/os/opensuse.svg" width="20" /> [openSUSE Tumbleweed](https://opensuse.org) | Production |
 | 🐧 [**Guppy**](/guppy) | <img src="/img/os/gentoo.svg" width="20" /> [Gentoo Linux](https://gentoo.org) | Production |
 
-Each variant ships **5 desktops**: [GNOME](https://www.gnome.org/), [KDE Plasma](https://kde.org/), [COSMIC](https://system76.com/cosmic), [Niri](https://github.com/YaLTeR/niri), and [XFCE](https://xfce.org/). Custom kernels or NVIDIA drivers layer on top of any of them.
+Each variant ships **5 desktops**: <img src="/img/desktops/gnome.svg" width="18" /> [GNOME](https://www.gnome.org/), <img src="/img/desktops/kde.svg" width="18" /> [KDE Plasma](https://kde.org/), <img src="/img/desktops/system76.svg" width="18" /> [COSMIC](https://system76.com/cosmic), <img src="/img/desktops/niri.svg" width="18" /> [Niri](https://github.com/YaLTeR/niri) + [DMS](https://github.com/avengemedia/dms), and <img src="/img/desktops/xfce.svg" width="18" /> [XFCE](https://xfce.org/) (Wayland). Custom kernels or NVIDIA drivers layer on top of any of them.
 
 ## How We Got Here
 
@@ -79,17 +79,17 @@ That's it. The CI pipeline handles the rest: container images and bootable ISOs,
 
 Every variant ships the same five desktop environments, defined as YAML manifests with per-package-manager package lists. Two are worth highlighting for pushing the Wayland envelope.
 
-### Niri + DMS
+### <img src="/img/desktops/niri.svg" width="22" /> Niri + DMS
 
 [Niri](https://github.com/YaLTeR/niri) is a scrollable-tiling Wayland compositor — windows tile horizontally on an infinite ribbon you scroll through, rather than stacking in workspaces. It's the most unusual DE in the lineup and the one that most purely commits to Wayland's protocol model.
 
 TunaOS pairs Niri with **[DMS](https://github.com/avengemedia/dms)** (DankMaterialShell), a desktop shell that layers greeter integration, a CLI control panel, and application launching on top of Niri. The full stack is `greetd` (display manager) → Niri (compositor) → DMS (shell). DMS is still early-stage but gives Niri a cohesive desktop experience beyond bare windows.
 
-### XFCE (Wayland)
+### <img src="/img/desktops/xfce.svg" width="22" /> XFCE (Wayland)
 
 XFCE 4.20 introduced experimental Wayland support via its new compositor `xfwl4`, replacing the X11-era `xfwm4`. While XFCE's Wayland session is still maturing, it already works well enough for daily driving on Fedora and EL10 — TunaOS ships the optional `xfce4-wayland` package and defaults to GDM as the display manager to ensure the Wayland session is discoverable. Think of it as "XFCE, but with tear-free rendering and per-monitor refresh rates."
 
-The other three desktops — [GNOME](https://www.gnome.org/), [KDE Plasma](https://kde.org/), and [COSMIC](https://system76.com/cosmic) — are Wayland-first by default and round out the lineup with more mature, full-featured environments.
+The other three desktops — <img src="/img/desktops/gnome.svg" width="18" /> [GNOME](https://www.gnome.org/), <img src="/img/desktops/kde.svg" width="18" /> [KDE Plasma](https://kde.org/), and <img src="/img/desktops/system76.svg" width="18" /> [COSMIC](https://system76.com/cosmic) — are Wayland-first by default and round out the lineup with more mature, full-featured environments.
 
 ## What's Next
 
