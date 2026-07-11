@@ -6,7 +6,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Getting Started',
       collapsed: false,
-      items: ['intro', 'installation', 'installer', 'system-requirements', 'bootc-resources'],
+      items: ['intro', 'installation', 'installer', 'system-requirements', 'bootc-resources', 'faq'],
     },
     {
       type: 'category',
