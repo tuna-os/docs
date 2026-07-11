@@ -1,4 +1,3 @@
-
 ---
 slug: 13-fishes-in-the-sea
 title: "13 Fishes in the Sea: The TunaOS Variant Landscape"
@@ -9,69 +8,89 @@ date: 2026-07-07
 
 # 13 Fishes in the Sea: The TunaOS Variant Landscape
 
-TunaOS now provides **13 variants** spanning 5 package managers and multiple Linux families. By leveraging image-based OS delivery, we are shifting our focus from standard distribution maintenance to software consistency. The underlying operating system functions as an interchangeable component rather than a permanent architectural lock-in.
+For too long, the Linux desktop has been held back by fragmentation. Hundreds of distros that are 95% the same packages with 5% different defaults — and picking one felt like a permanent, load-bearing architecture decision.
+
+TunaOS rejects that. Today we ship **13 variants** spanning 5 package managers and every major Linux family, all producing a completely consistent desktop experience. The proof is in the matrix: when you can switch base OS underneath the same desktop without changing a thing, the distro stops being a decision and becomes a dial.
 
 <!-- truncate -->
 
-## The Build Approach
+## The Image Factory
 
-Traditional distribution maintenance involves forking package sets, maintaining custom installers, and extensive manual configuration. TunaOS approaches this differently. A consistent desktop experience is generated across 13 distinct distributions using standardized container tools. 
-
-TunaOS functions as an image builder. The pipeline takes configuration data as input:
+TunaOS is not a distribution. It's an **image factory**. The inputs are simple data:
 
 ```text
 base OS + desktop + kernel + drivers = bootable image
 ```
 
-The output is an OCI container image. Systems can atomically update or rollback using [`bootc`](https://github.com/containers/bootc). Building this matrix relies on a standard cloud-native stack: `bootc`, CI/CD automation, and [Podman](https://podman.io/).
+The output is an OCI container image you can `bootc switch` to atomically, with clean rollback. Want a different desktop on the same base? Switch. Want a performance kernel? Switch. The matrix is your menu:
+
+```bash
+# Same base, different desktop
+sudo bootc switch ghcr.io/tuna-os/marlin:kde
+sudo bootc switch ghcr.io/tuna-os/marlin:gnome
+
+# Same desktop, different kernel
+sudo bootc switch ghcr.io/tuna-os/marlin:kde-hwe
+```
+
+:::note
+
+`bootc switch` works within the same storage backend — both source and target images must use either ComposeFS or OSTree. Cross-backend migration (e.g. OSTree &rarr; ComposeFS) requires [`bootc-migrate-composefs`](https://github.com/tuna-os/bootc-migrate-composefs) `[alpha]`.
+
+:::
+
+Cross-family migration (e.g. AlmaLinux &rarr; Arch in-place) is also on the roadmap. Even same-family switching alone makes the base OS interchangeable in a way the traditional distro model never allowed.
+
+The stack underneath is cloud-native: [`bootc`](https://github.com/containers/bootc), CI/CD automation, and [Podman](https://podman.io). By treating operating systems like container deployments, the desktop catches up to workflows the server side has had for years.
 
 ## The Variants
 
-Every TunaOS variant is named after a fish. Currently, there are 13 available images. 
+Every TunaOS variant is named after a fish. There are 13:
 
 | Variant | Base Distribution | Status |
 | :--- | :--- | :--- |
-| ðŸ  [**Yellowfin**](/yellowfin) | <img src="/img/os/almalinux.svg" width="20" /> [AlmaLinux Kitten 10](https://almalinux.org) | Production |
-| ðŸŸ [**Albacore**](/albacore) | <img src="/img/os/almalinux.svg" width="20" /> [AlmaLinux 10](https://almalinux.org) | Production |
-| ðŸ£ [**Skipjack**](/skipjack) | <img src="/img/os/centos.svg" width="20" /> [CentOS Stream 10](https://centos.org) | Production |
-| ðŸ”’ [**Redfin**](/redfin) | <img src="/img/os/rhel.svg" width="20" /> [RHEL 10](https://redhat.com) | Local-build |
-| ðŸŽ£ [**Bonito**](/bonito) | <img src="/img/os/fedora.svg" width="20" /> [Fedora 44](https://fedoraproject.org) | Production |
-| ðŸ‰ [**Bonito Rawhide**](/bonito-rawhide) | <img src="/img/os/fedora.svg" width="20" /> [Fedora Rawhide](https://fedoraproject.org) | Production |
-| ðŸŸ [**Grouper**](/grouper) | <img src="/img/os/ubuntu.svg" width="20" /> [Ubuntu 26.04](https://ubuntu.com) | Experimental |
-| ðŸ¡ [**Flounder**](/flounder) | <img src="/img/os/debian.svg" width="20" /> [Debian Trixie (13)](https://debian.org) | Production |
-| â˜¢ï¸ [**Flounder Sid**](/flounder-sid) | <img src="/img/os/debian.svg" width="20" /> [Debian Sid](https://debian.org) | Production |
-| ðŸš€ [**Marlin**](/marlin) | <img src="/img/os/arch.svg" width="20" /> [Arch Linux](https://archlinux.org) | Production |
-| ðŸŸ [**Wahoo**](/wahoo) | <img src="/img/os/cachyos.svg" width="20" /> [CachyOS](https://cachyos.org) | Experimental |
-| ðŸ¦Ž [**Sailfin**](/sailfin) | <img src="/img/os/opensuse.svg" width="20" /> [openSUSE Tumbleweed](https://opensuse.org) | Production |
-| ðŸ§ [**Guppy**](/guppy) | <img src="/img/os/gentoo.svg" width="20" /> [Gentoo Linux](https://gentoo.org) | Production |
+| 🐠  [**Yellowfin**](/yellowfin) | <img src="/img/os/almalinux.svg" width="20" /> [AlmaLinux Kitten 10](https://almalinux.org) | Production |
+| 🐟 [**Albacore**](/albacore) | <img src="/img/os/almalinux.svg" width="20" /> [AlmaLinux 10](https://almalinux.org) | Production |
+| 🍣 [**Skipjack**](/skipjack) | <img src="/img/os/centos.svg" width="20" /> [CentOS Stream 10](https://centos.org) | Production |
+| 🔒 [**Redfin**](/redfin) | <img src="/img/os/rhel.svg" width="20" /> [RHEL 10](https://redhat.com) | Local-build |
+| 🎣 [**Bonito**](/bonito) | <img src="/img/os/fedora.svg" width="20" /> [Fedora 44](https://fedoraproject.org) | Production |
+| 🐉 [**Bonito Rawhide**](/bonito-rawhide) | <img src="/img/os/fedora.svg" width="20" /> [Fedora Rawhide](https://fedoraproject.org) | Production |
+| 🐟 [**Grouper**](/grouper) | <img src="/img/os/ubuntu.svg" width="20" /> [Ubuntu 26.04](https://ubuntu.com) | Experimental |
+| 🐡 [**Flounder**](/flounder) | <img src="/img/os/debian.svg" width="20" /> [Debian Trixie (13)](https://debian.org) | Production |
+| ☢️ [**Flounder Sid**](/flounder-sid) | <img src="/img/os/debian.svg" width="20" /> [Debian Sid](https://debian.org) | Production |
+| 🚀 [**Marlin**](/marlin) | <img src="/img/os/arch.svg" width="20" /> [Arch Linux](https://archlinux.org) | Production |
+| 🐟 [**Wahoo**](/wahoo) | <img src="/img/os/cachyos.svg" width="20" /> [CachyOS](https://cachyos.org) | Experimental |
+| 🦎 [**Sailfin**](/sailfin) | <img src="/img/os/opensuse.svg" width="20" /> [openSUSE Tumbleweed](https://opensuse.org) | Production |
+| 🐧 [**Guppy**](/guppy) | <img src="/img/os/gentoo.svg" width="20" /> [Gentoo Linux](https://gentoo.org) | Production |
 
-Each variant supports **5 desktops**: [GNOME](https://www.gnome.org/), [KDE Plasma](https://kde.org/), [COSMIC](https://system76.com/cosmic), [Niri](https://github.com/YaLTeR/niri), and [XFCE](https://xfce.org/). Custom kernels or NVIDIA drivers can be layered onto any of these environments.
+Each variant ships **5 desktops**: [GNOME](https://www.gnome.org/), [KDE Plasma](https://kde.org/), [COSMIC](https://system76.com/cosmic), [Niri](https://github.com/YaLTeR/niri), and [XFCE](https://xfce.org/). Custom kernels or NVIDIA drivers layer on top of any of them.
 
-## Implementation Details
+## How We Got Here
 
-Integrating a new base OS into TunaOS requires three components:
+A week ago, adding a new base OS meant writing hundreds of lines of shell scripts. Today it means three things:
 
-1. **A Containerfile** to define the `ostree` filesystem layout. These are currently adapted from [bootcrew's base images](https://github.com/bootcrew/mono).
-2. **A package manager manifest** (e.g., `pacman:` or `apt:`) defining the desktop components for that OS.
-3. **A configuration entry** in `build-config.yml` detailing the variant name, base image, and target platforms.
+1. **A Containerfile** that bootcifies the stock container image — adapted from [bootcrew's base images](https://github.com/bootcrew/mono)
+2. **A package manager manifest** (`pacman:`, `apt:`, etc.) defining the desktop components for that OS
+3. **An entry in `build-config.yml`** — variant name, base image, target platforms
 
-Once defined, the CI pipeline automatically produces the required container images and bootable ISOs. 
-
-## Moving Between Variants
-
-Because the base OS is delivered as a container image, users are not permanently locked into their initial distribution choice. Tooling to easily migrate between base variants (for instance, switching from an AlmaLinux base to an Arch base in-place) is actively being developed via `bootc-migrator`.
+That's it. The CI pipeline handles the rest: container images and bootable ISOs, automatically. No per-distro bash scripts. No per-DE-per-distro combinatorial explosion. The factory just runs.
 
 ## What's Next
 
-- **Build validation:** Ensuring CI passes reliably for all variants across supported platforms.
-- **Desktop expansion:** Adding support for [Hyprland](https://hyprland.org/), [Sway](https://swaywm.org/), and [Budgie](https://buddiesofbudgie.org/). 
-- **Community manifests:** Standardizing the build process so users can submit desktop definitions without altering core build scripts.
+- **Build validation** — getting CI green across all 13 variants on all platforms
+- **More desktops** — [Hyprland](https://hyprland.org/), [Sway](https://swaywm.org/), and [Budgie](https://buddiesofbudgie.org/) are one manifest file away
+- **Cross-backend migration** — [`bootc-migrate-composefs`](https://github.com/tuna-os/bootc-migrate-composefs) `[alpha]` handles OSTree &rarr; ComposeFS in-place; cross-family migration (e.g. AlmaLinux &rarr; Arch) up next
+- **Community manifests** — let anyone contribute a desktop definition without touching build scripts
 
 ## Credits
 
-This architecture relies on upstream work from the following projects:
+This architecture stands on the work of these projects:
 
-- **[bootcrew](https://github.com/bootcrew/mono)** â€” Reference bootc implementations for Arch, Gentoo, openSUSE, and Debian.
-- **[jumpvi / bootc-shindig](https://github.com/bootc-shindig)** â€” bootc-deb packaging for Ubuntu and Debian.
-- **[Universal Blue](https://universal-blue.org/)** & **[Project Bluefin](https://projectbluefin.io)** â€” Pioneering the bootc desktop model at scale.
-- **[bootc](https://github.com/containers/bootc)** â€” The foundational engine for image-based OS delivery.
+- **[bootcrew](https://github.com/bootcrew/mono)** — Reference bootc implementations for Arch, Gentoo, openSUSE, and Debian
+- **[jumpvi / bootc-shindig](https://github.com/bootc-shindig)** — bootc-deb packaging for Ubuntu and Debian
+- **[Universal Blue](https://universal-blue.org/)** & **[Project Bluefin](https://projectbluefin.io)** — Pioneering the bootc desktop model at scale
+- **[bootc](https://github.com/containers/bootc)** — The engine that makes all of this possible
+
+---
+
+*The distro is no longer a decision. It's a dial. Pick your fish.*
