@@ -423,15 +423,7 @@ export const VARIANTS: Variant[] = [
       {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/guppy:kde'},
     ],
     hasIsos: true,
-  },}],
-    flavors: [
-      {name: 'GNOME', image: 'ghcr.io/tuna-os/guppy:gnome'},
-      {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/guppy:kde'},
-    ],
-    hasIsos: false,
   },
-
->>>>>>> origin/main
 ];
 
 export function getVariant(id: string): Variant | undefined {
