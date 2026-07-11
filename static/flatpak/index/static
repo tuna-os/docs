@@ -300,7 +300,7 @@
       "Name": "tuna-os/tuna-installer-xfce",
       "Images": [
         {
-          "Digest": "sha256:ffb8dc69550bb6bc237bfe75da8a7462de045a8aa53fb9a8c48c76dbd7536a13",
+          "Digest": "sha256:3bfa5f39e52f36bfa362d995ae2a96913315bae32a5a5660393cbdaac947328c",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -312,16 +312,16 @@
             "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy50dW5hb3MuSW5zdGFsbGVyWGZjZQpydW50aW1lPW9yZy5nbm9tZS5QbGF0Zm9ybS94ODZfNjQvNDkKc2RrPW9yZy5nbm9tZS5TZGsveDg2XzY0LzQ5CmNvbW1hbmQ9dHVuYS1pbnN0YWxsZXIteGZjZQoKW0NvbnRleHRdCnNoYXJlZD1pcGM7bmV0d29yazsKc29ja2V0cz1mYWxsYmFjay14MTE7d2F5bGFuZDsKZGV2aWNlcz1hbGw7CmZpbGVzeXN0ZW1zPWhvc3Q7CgpbU2Vzc2lvbiBCdXMgUG9saWN5XQpvcmcuZnJlZWRlc2t0b3AuRmxhdHBhaz10YWxrCgpbU3lzdGVtIEJ1cyBQb2xpY3ldCm9yZy5mcmVlZGVza3RvcC5Qb2xpY3lLaXQxPXRhbGsKCltFeHRlbnNpb24gb3JnLnR1bmFvcy5JbnN0YWxsZXJYZmNlLkRlYnVnXQpkaXJlY3Rvcnk9bGliL2RlYnVnCmF1dG9kZWxldGU9dHJ1ZQpuby1hdXRvZG93bmxvYWQ9dHJ1ZQoKW0J1aWxkXQpidWlsdC1leHRlbnNpb25zPW9yZy50dW5hb3MuSW5zdGFsbGVyWGZjZS5EZWJ1ZzsAAHM=",
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.InstallerXfce\nruntime=org.gnome.Platform/x86_64/49\nsdk=org.gnome.Sdk/x86_64/49\ncommand=tuna-installer-xfce\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;wayland;\ndevices=all;\nfilesystems=host;\n\n[Session Bus Policy]\norg.freedesktop.Flatpak=talk\n\n[System Bus Policy]\norg.freedesktop.PolicyKit1=talk\n\n[Extension org.tunaos.InstallerXfce.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.InstallerXfce.Debug;",
-            "org.flatpak.installed-size": "237329920",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAARkH8gAdA==",
-            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAA4lXgAAdA==",
-            "org.flatpak.download-size": "69169512",
+            "org.flatpak.installed-size": "237330432",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAARkICwAdA==",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAA4lYAAAdA==",
+            "org.flatpak.download-size": "69169764",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyWGZjZS94ODZfNjQvbWFzdGVyACsAYXM=",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyWGZjZS94ODZfNjQvbWFzdGVyAABz",
             "org.flatpak.ref": "app/org.tunaos.InstallerXfce/x86_64/master",
-            "org.flatpak.subject": "Built from e37d8f8b3ab8fed772377ede2b43e608d338837c",
-            "org.flatpak.commit": "ee2d69b1d047037a93689fd140bca7c7d89883c60c85a9ac4dea040c2aace13c",
-            "org.flatpak.timestamp": "1783745840"
+            "org.flatpak.subject": "Built from 6e8613c764a87eb0a0467d65e092cec031799685",
+            "org.flatpak.commit": "4fca34eaafc373781d0f2594114ecddb652bc482c05eec2be482c2b6b02bab78",
+            "org.flatpak.timestamp": "1783749052"
           }
         }
       ]
