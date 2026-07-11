@@ -1,8 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
   "name": "tunaos-org",
+  "main": "./worker/index.js",
   "compatibility_date": "2025-09-14",
   "assets": {
-    "directory": "./build"
+    "directory": "./build",
+    "binding": "ASSETS"
   }
 }
