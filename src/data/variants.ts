@@ -21,6 +21,14 @@ export type Flavor = {
   note?: string;
 };
 
+// Non-"standard" build variants a base actually ships, per
+// tuna-os/tunaOS .github/build-config.yml. "nvidia" was renamed from the
+// legacy "gdx" flavor suffix (see docs/adr/0001-gdx-to-nvidia-rename.md —
+// the two are the same thing). "cachyos" is Marlin-only: a CachyOS kernel
+// overlay on the Arch base, the same shape as -hwe/-nvidia elsewhere but
+// under its own name.
+export type Edition = 'nvidia' | 'hwe' | 'cachyos';
+
 export type Variant = {
   id: string; // route slug + image repo, e.g. "yellowfin"
   emoji: string;
@@ -40,6 +48,18 @@ export type Variant = {
   desktops: Desktop[];
   features: Feature[];
   flavors: Flavor[];
+  // CPU platforms actually built for this base (build-config.yml `platforms:`).
+  // Most variants are amd64-only; only the EL10 trio + Bonito/Bonito Rawhide/
+  // Skipjack also build arm64, and only EL10 also builds an amd64_v2 target.
+  platforms: ('amd64' | 'amd64-v2' | 'arm64')[];
+  // Which non-standard editions this base actually builds. Empty for bases
+  // that only ship the plain desktop image (Sailfin, Guppy, Marlin sans
+  // cachyos, Flounder, Flounder Sid, Grouper — none of these have -hwe/
+  // -nvidia flavors defined upstream).
+  editions: Edition[];
+  // True for bases with no public ghcr image or ISO at all — RHEL's EULA
+  // means Redfin can only be built locally (`just build redfin <desktop>`).
+  localBuildOnly?: boolean;
 };
 
 export const ALL_DESKTOPS: Desktop[] = [
@@ -79,6 +99,8 @@ const HWE: Feature = {
 export const VARIANTS: Variant[] = [
   {
     id: 'albacore',
+    platforms: ['amd64', 'amd64-v2', 'arm64'],
+    editions: ['nvidia', 'hwe'],
     emoji: '🐟',
     name: 'Albacore',
     base: 'AlmaLinux 10',
@@ -112,6 +134,8 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'yellowfin',
+    platforms: ['amd64', 'amd64-v2', 'arm64'],
+    editions: ['nvidia', 'hwe'],
     emoji: '🐠',
     name: 'Yellowfin',
     base: 'AlmaLinux Kitten 10',
@@ -144,6 +168,8 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'skipjack',
+    platforms: ['amd64', 'arm64'],
+    editions: ['nvidia', 'hwe'],
     emoji: '🍣',
     name: 'Skipjack',
     base: 'CentOS Stream 10',
@@ -178,6 +204,8 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'bonito',
+    platforms: ['amd64', 'arm64'],
+    editions: ['nvidia', 'hwe'],
     emoji: '🎣',
     name: 'Bonito',
     base: 'Fedora 44',
@@ -213,6 +241,8 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'grouper',
+    platforms: ['amd64'],
+    editions: [],
     emoji: '🐟',
     name: 'Grouper',
     base: 'Ubuntu 26.04',
@@ -242,6 +272,9 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'redfin',
+    platforms: ['amd64', 'arm64'],
+    editions: ['nvidia', 'hwe'],
+    localBuildOnly: true,
     emoji: '🔒',
     name: 'Redfin',
     base: 'RHEL 10',
@@ -267,6 +300,8 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'marlin',
+    platforms: ['amd64'],
+    editions: ['cachyos'],
     emoji: '🚀',
     name: 'Marlin',
     base: 'Arch Linux',
@@ -292,6 +327,8 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'flounder',
+    platforms: ['amd64'],
+    editions: [],
     emoji: '🐡',
     name: 'Flounder',
     base: 'Debian 13 Trixie',
@@ -317,6 +354,8 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'flounder-sid',
+    platforms: ['amd64'],
+    editions: [],
     emoji: '☢️',
     name: 'Flounder Sid',
     base: 'Debian Sid',
@@ -342,6 +381,8 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'bonito-rawhide',
+    platforms: ['amd64', 'arm64'],
+    editions: ['nvidia', 'hwe'],
     emoji: '🐉',
     name: 'Bonito Rawhide',
     base: 'Fedora Rawhide',
@@ -366,6 +407,8 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'sailfin',
+    platforms: ['amd64'],
+    editions: [],
     emoji: '🦎',
     name: 'Sailfin',
     base: 'openSUSE Tumbleweed',
@@ -390,6 +433,8 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'guppy',
+    platforms: ['amd64'],
+    editions: [],
     emoji: '🐧',
     name: 'Guppy',
     base: 'Gentoo Linux',

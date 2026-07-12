@@ -206,6 +206,30 @@
   font-weight: 700;
 }
 
+/* ── Rolling-release sibling links ─────────────────────────────── */
+
+.rollingNote {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-600);
+  margin: 0.5rem 0 0;
+}
+
+.rollingLink {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ifm-color-primary);
+  font-size: inherit;
+  font-family: inherit;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.rollingLink:hover {
+  color: var(--ifm-color-primary-dark);
+}
+
 /* ── Navigation buttons ─────────────────────────────────────────── */
 
 .backBtn,
