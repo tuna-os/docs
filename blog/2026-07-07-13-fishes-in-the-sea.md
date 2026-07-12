@@ -1,12 +1,12 @@
 ---
 slug: 13-fishes-in-the-sea
-title: "13 Fishes in the Sea: The TunaOS Variant Landscape"
+title: "12 Fishes in the Sea: The TunaOS Variant Landscape"
 authors: [james]
 tags: [vision, variants, architecture]
 date: 2026-07-07
 ---
 
-# 13 Fishes in the Sea: The TunaOS Variant Landscape
+# 12 Fishes in the Sea: The TunaOS Variant Landscape
 
 Picking a Linux distro has always felt weirder to me than it should be. Most of them are like 95% the same packages with 5% different defaults, and yet somehow choosing one feels like a permanent decision you're stuck with forever.
 
@@ -14,7 +14,7 @@ I didn't come up with this idea, to be clear. [Bedrock Linux](https://bedrocklin
 
 What actually made it usable were two things. [bootc](https://github.com/containers/bootc) — you get an OCI image, you `switch` to it, it's atomic, and you can roll back if you screwed something up. And [Project Bluefin](https://projectbluefin.io) proved people would actually use this every day, not just as a tech demo. Once I saw that working at scale I started wondering how far you could actually push it.
 
-So that's what TunaOS is, I guess — pushing it. We ship 13 variants right now across 5 package managers and pretty much every major Linux family, and they all end up as the same desktop experience underneath. If you can swap the base OS out from under a desktop and nothing changes, the distro isn't really a decision anymore. It's just a setting.
+So that's what TunaOS is, I guess — pushing it. We ship 12 variants right now across 5 package managers and pretty much every major Linux family, and they all end up as the same desktop experience underneath. If you can swap the base OS out from under a desktop and nothing changes, the distro isn't really a decision anymore. It's just a setting.
 
 <!-- truncate -->
 
@@ -49,7 +49,7 @@ Under the hood it's the same stuff server folks have been using for years — [`
 
 ## The variants
 
-Everything's named after a fish, because I like fish and also because "AlmaLinux 10 + KDE + hwe kernel" is a mouthful. 13 of them right now:
+Everything's named after a fish, because I like fish and also because "AlmaLinux 10 + KDE + hwe kernel" is a mouthful. 12 of them right now:
 
 | Variant | Base Distribution | Status |
 | :--- | :--- | :--- |
@@ -63,11 +63,10 @@ Everything's named after a fish, because I like fish and also because "AlmaLinux
 | 🐡 [**Flounder**](/flounder) | <img src="/img/os/debian.svg" width="20" /> [Debian Trixie (13)](https://debian.org) | Production |
 | ☢️ [**Flounder Sid**](/flounder-sid) | <img src="/img/os/debian.svg" width="20" /> [Debian Sid](https://debian.org) | Production |
 | 🚀 [**Marlin**](/marlin) | <img src="/img/os/arch.svg" width="20" /> [Arch Linux](https://archlinux.org) | Production |
-| 🐟 [**Wahoo**](/wahoo) | <img src="/img/os/cachyos.svg" width="20" /> [CachyOS](https://cachyos.org) | Experimental |
-| 🦎 [**Sailfin**](/sailfin) | <img src="/img/os/opensuse.svg" width="20" /> [openSUSE Tumbleweed](https://opensuse.org) | Production |
-| 🐧 [**Guppy**](/guppy) | <img src="/img/os/gentoo.svg" width="20" /> [Gentoo Linux](https://gentoo.org) | Production |
+| 🦈 [**Sailfin**](/sailfin) | <img src="/img/os/opensuse.svg" width="20" /> [openSUSE Tumbleweed](https://opensuse.org) | Production |
+| 🌈 [**Guppy**](/guppy) | <img src="/img/os/gentoo.svg" width="20" /> [Gentoo Linux](https://gentoo.org) | Production |
 
-Every variant gets the same 5 desktops: <img src="/img/desktops/gnome.svg" width="18" /> [GNOME](https://www.gnome.org/), <img src="/img/desktops/kde.svg" width="18" /> [KDE Plasma](https://kde.org/), <img src="/img/desktops/cosmic.svg" width="18" /> [COSMIC](https://system76.com/cosmic), <img src="/img/desktops/niri.svg" width="18" /> [Niri](https://github.com/YaLTeR/niri) + <img src="/img/desktops/dms.svg" width="18" /> [DMS](https://github.com/avengemedia/dms), and <img src="/img/desktops/xfce.svg" width="18" /> [XFCE](https://xfce.org/) on Wayland. Stack a custom kernel or NVIDIA drivers on top of any of them if you want.
+Most variants get the same 5 desktops: <img src="/img/desktops/gnome.svg" width="18" /> [GNOME](https://www.gnome.org/), <img src="/img/desktops/kde.svg" width="18" /> [KDE Plasma](https://kde.org/), <img src="/img/desktops/cosmic.svg" width="18" /> [COSMIC](https://system76.com/cosmic), <img src="/img/desktops/niri.svg" width="18" /> [Niri](https://github.com/YaLTeR/niri) + <img src="/img/desktops/dms.svg" width="18" /> [DMS](https://github.com/avengemedia/dms), and <img src="/img/desktops/xfce.svg" width="18" /> [XFCE](https://xfce.org/) on Wayland. Guppy ships 2 (GNOME, KDE). Sailfin ships 4 (no COSMIC). Stack a custom kernel or NVIDIA drivers on top of any of them if you want.
 
 ## How this got easier
 
@@ -81,7 +80,7 @@ That's the whole job now. CI does the rest and spits out container images and IS
 
 ## The desktops themselves
 
-Same 5 desktops on every variant, and none of them are built from scratch — we're layering existing customization work on top of stock packages and just running that layer across every base OS we support. Each one has an upstream project doing the actual hard work, and honestly they deserve more credit than they get.
+Mostly the same desktops on every variant, and none of them are built from scratch — we're layering existing customization work on top of stock packages and just running that layer across every base OS we support. Each one has an upstream project doing the actual hard work, and honestly they deserve more credit than they get.
 
 ### <img src="/img/desktops/gnome.svg" width="22" /> GNOME
 
@@ -89,7 +88,7 @@ GNOME already looks good out of the box, but we still pull from [Project Bluefin
 
 ### <img src="/img/desktops/kde.svg" width="22" /> KDE Plasma
 
-Plasma's look comes from [Aurora](https://github.com/get-aurora-dev/common)'s [`common`](https://github.com/get-aurora-dev/common) layer — theming and branding that makes stock Plasma actually feel like one coherent thing instead of a pile of defaults. That's what gives our KDE its look across all 13 bases. They've also got a source-based BuildStream build on [freedesktop-sdk](https://gitlab.com/freedesktop-sdk/freedesktop-sdk) if you're into that.
+Plasma's look comes from [Aurora](https://github.com/get-aurora-dev/common)'s [`common`](https://github.com/get-aurora-dev/common) layer — theming and branding that makes stock Plasma actually feel like one coherent thing instead of a pile of defaults. That's what gives our KDE its look across all 12 bases. They've also got a source-based BuildStream build on [freedesktop-sdk](https://gitlab.com/freedesktop-sdk/freedesktop-sdk) if you're into that.
 
 ### <img src="/img/desktops/niri.svg" width="22" /> Niri + <img src="/img/desktops/dms.svg" width="22" /> DMS
 
@@ -113,7 +112,7 @@ Same story as XFCE — no dedicated layer yet. If you want to be the person who 
 
 ## What's next
 
-- Getting CI actually green across all 13 variants on all platforms (we're not there yet, not going to pretend otherwise)
+- Getting CI actually green across all 12 variants on all platforms (we're not there yet, not going to pretend otherwise)
 - More desktops — [Hyprland](https://hyprland.org/), [Sway](https://swaywm.org/), [Budgie](https://buddiesofbudgie.org/) are basically just a manifest file away at this point
 - Cross-backend migration — [`bootc-migrate-composefs`](https://github.com/tuna-os/bootc-migrate-composefs) (alpha) does OSTree &rarr; ComposeFS in place, cross-family (AlmaLinux &rarr; Arch) is the next hard problem
 - Letting people contribute a desktop definition without having to touch the actual build scripts
