@@ -6,15 +6,23 @@ import Heading from '@theme/Heading';
 import AnimatedEmoji from '@site/src/components/AnimatedEmoji';
 import DesktopScreenshots from '@site/src/components/DesktopScreenshots';
 import {VARIANTS, type Variant} from '@site/src/data/variants';
+import useIsoNames from '@site/src/hooks/useIsoNames';
+import {ISO_BASE_URL, isoNameForImage} from '@site/src/utils/isoNaming';
 
 import styles from './styles.module.css';
 
-function Hero({variant}: {variant: Variant}): ReactNode {
+function Hero({variant, isoNames}: {variant: Variant; isoNames: Set<string> | null}): ReactNode {
   // Per-variant accent gradient, injected as CSS custom properties.
   const style = {
     ['--v-accent' as string]: variant.accent,
     ['--v-accent2' as string]: variant.accent2,
   };
+  // Prefer a direct link to the flagship flavor's live ISO; fall back to the
+  // picker page if nothing's published yet (or the index hasn't loaded).
+  const heroFlavor = variant.flavors.find(
+    (f) => isoNames && isoNames.has(isoNameForImage(variant.id, f.image) ?? ''),
+  );
+  const heroIsoUrl = heroFlavor ? `${ISO_BASE_URL}/${isoNameForImage(variant.id, heroFlavor.image)}.iso` : null;
   return (
     <header className={styles.hero} style={style}>
       <div className={styles.heroBubbles} aria-hidden>
@@ -45,9 +53,15 @@ function Hero({variant}: {variant: Variant}): ReactNode {
         </div>
 
         <div className={styles.heroButtons}>
-          <Link className={clsx('button button--lg', styles.btnPrimary)} to="/download">
-            {variant.hasIsos ? 'Download ISO 📦' : 'Browse images 📦'}
-          </Link>
+          {heroIsoUrl ? (
+            <a className={clsx('button button--lg', styles.btnPrimary)} href={heroIsoUrl}>
+              Download ISO 📦
+            </a>
+          ) : (
+            <Link className={clsx('button button--lg', styles.btnPrimary)} to="/download">
+              Browse images 📦
+            </Link>
+          )}
           <Link className={clsx('button button--lg', styles.btnGhost)} to={`/docs/${variant.id}`}>
             Full docs 📖
           </Link>
@@ -101,24 +115,36 @@ function Features({variant}: {variant: Variant}): ReactNode {
   );
 }
 
-function Flavors({variant}: {variant: Variant}): ReactNode {
+function Flavors({variant, isoNames}: {variant: Variant; isoNames: Set<string> | null}): ReactNode {
   return (
     <section className={styles.section}>
       <div className="container">
         <div className={styles.sectionHead}>
           <Heading as="h2">Images & flavors</Heading>
-          <p>Pull any flavor directly, or rebase an existing bootc system onto it.</p>
+          <p>Pull any flavor directly, or grab a live ISO where one's published.</p>
         </div>
         <div className={styles.flavorTable}>
-          {variant.flavors.map((f) => (
-            <div key={f.image} className={styles.flavorRow}>
-              <span className={styles.flavorName}>
-                {f.name}
-                {f.note && <span className={styles.flavorNote}>{f.note}</span>}
-              </span>
-              <code className={styles.flavorImage}>{f.image}</code>
-            </div>
-          ))}
+          {variant.flavors.map((f) => {
+            const isoName = isoNameForImage(variant.id, f.image);
+            const isoUrl = isoName && isoNames?.has(isoName) ? `${ISO_BASE_URL}/${isoName}.iso` : null;
+            return (
+              <div key={f.image} className={styles.flavorRow}>
+                <span className={styles.flavorName}>
+                  {f.name}
+                  {f.note && <span className={styles.flavorNote}>{f.note}</span>}
+                </span>
+                <code className={styles.flavorImage}>{f.image}</code>
+                {isoUrl && (
+                  <a
+                    href={isoUrl}
+                    className={clsx('button button--sm button--primary', styles.flavorDownload)}
+                  >
+                    ⬇️ ISO
+                  </a>
+                )}
+              </div>
+            );
+          })}
         </div>
         <div className={styles.rebaseBox}>
           <span className={styles.rebaseLabel}>Rebase an existing bootc system</span>
@@ -184,16 +210,17 @@ function Cta({variant}: {variant: Variant}): ReactNode {
 }
 
 export default function VariantLanding({variant}: {variant: Variant}): ReactNode {
+  const isoNames = useIsoNames();
   return (
     <Layout
       title={`${variant.name} — ${variant.base}`}
       description={variant.blurb}>
-      <Hero variant={variant} />
+      <Hero variant={variant} isoNames={isoNames} />
       <main>
         <Desktops variant={variant} />
         <DesktopScreenshots variant={variant.id} desktops={variant.desktops} />
         <Features variant={variant} />
-        <Flavors variant={variant} />
+        <Flavors variant={variant} isoNames={isoNames} />
         <OtherVariants variant={variant} />
         <Cta variant={variant} />
       </main>

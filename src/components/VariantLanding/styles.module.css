@@ -234,6 +234,7 @@
   color: var(--v-accent, #16a34a);
 }
 .flavorImage { font-size: 0.82rem; color: var(--ifm-color-emphasis-800); }
+.flavorDownload { margin-left: auto; }
 
 .rebaseBox {
   max-width: 760px;

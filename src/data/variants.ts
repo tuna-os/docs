@@ -40,8 +40,6 @@ export type Variant = {
   desktops: Desktop[];
   features: Feature[];
   flavors: Flavor[];
-  // Whether grouped/flagship live ISOs are published for this variant.
-  hasIsos: boolean;
 };
 
 export const ALL_DESKTOPS: Desktop[] = [
@@ -111,7 +109,6 @@ export const VARIANTS: Variant[] = [
       {name: 'Niri', image: 'ghcr.io/tuna-os/albacore:niri'},
       {name: 'GNOME (NVIDIA)', image: 'ghcr.io/tuna-os/albacore:gnome-nvidia'},
     ],
-    hasIsos: true,
   },
   {
     id: 'yellowfin',
@@ -144,7 +141,6 @@ export const VARIANTS: Variant[] = [
       {name: 'Niri', image: 'ghcr.io/tuna-os/yellowfin:niri'},
       {name: 'GNOME (NVIDIA)', image: 'ghcr.io/tuna-os/yellowfin:gnome-nvidia'},
     ],
-    hasIsos: true,
   },
   {
     id: 'skipjack',
@@ -179,7 +175,6 @@ export const VARIANTS: Variant[] = [
       {name: 'COSMIC', image: 'ghcr.io/tuna-os/skipjack:cosmic'},
       {name: 'Niri', image: 'ghcr.io/tuna-os/skipjack:niri'},
     ],
-    hasIsos: true,
   },
   {
     id: 'bonito',
@@ -215,7 +210,6 @@ export const VARIANTS: Variant[] = [
       {name: 'Niri', image: 'ghcr.io/tuna-os/bonito:niri'},
       {name: 'GNOME (NVIDIA)', image: 'ghcr.io/tuna-os/bonito:gnome-nvidia'},
     ],
-    hasIsos: false,
   },
   {
     id: 'grouper',
@@ -245,7 +239,6 @@ export const VARIANTS: Variant[] = [
       {name: 'Niri', image: 'ghcr.io/tuna-os/grouper:niri'},
       {name: 'XFCE', image: 'ghcr.io/tuna-os/grouper:xfce'},
     ],
-    hasIsos: false,
   },
   {
     id: 'redfin',
@@ -271,7 +264,6 @@ export const VARIANTS: Variant[] = [
       {name: 'Niri', image: 'local/redfin:niri'},
       {name: 'XFCE', image: 'local/redfin:xfce'},
     ],
-    hasIsos: false,
   },
   {
     id: 'marlin',
@@ -297,7 +289,6 @@ export const VARIANTS: Variant[] = [
       {name: 'Niri', image: 'ghcr.io/tuna-os/marlin:niri'},
       {name: 'XFCE', image: 'ghcr.io/tuna-os/marlin:xfce'},
     ],
-    hasIsos: true,
   },
   {
     id: 'flounder',
@@ -323,7 +314,6 @@ export const VARIANTS: Variant[] = [
       {name: 'Niri', image: 'ghcr.io/tuna-os/flounder:niri'},
       {name: 'XFCE', image: 'ghcr.io/tuna-os/flounder:xfce'},
     ],
-    hasIsos: true,
   },
   {
     id: 'flounder-sid',
@@ -349,7 +339,6 @@ export const VARIANTS: Variant[] = [
       {name: 'Niri', image: 'ghcr.io/tuna-os/flounder-sid:niri'},
       {name: 'XFCE', image: 'ghcr.io/tuna-os/flounder-sid:xfce'},
     ],
-    hasIsos: true,
   },
   {
     id: 'bonito-rawhide',
@@ -374,7 +363,6 @@ export const VARIANTS: Variant[] = [
       {name: 'Niri', image: 'ghcr.io/tuna-os/bonito-rawhide:niri'},
       {name: 'XFCE', image: 'ghcr.io/tuna-os/bonito-rawhide:xfce'},
     ],
-    hasIsos: true,
   },
   {
     id: 'sailfin',
@@ -399,7 +387,6 @@ export const VARIANTS: Variant[] = [
       {name: 'Niri', image: 'ghcr.io/tuna-os/sailfin:niri'},
       {name: 'XFCE', image: 'ghcr.io/tuna-os/sailfin:xfce'},
     ],
-    hasIsos: true,
   },
   {
     id: 'guppy',
@@ -422,7 +409,6 @@ export const VARIANTS: Variant[] = [
       {name: 'GNOME', image: 'ghcr.io/tuna-os/guppy:gnome'},
       {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/guppy:kde'},
     ],
-    hasIsos: true,
   },
 ];
 
