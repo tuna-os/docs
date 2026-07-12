@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T02:09:22.136Z",
+  "generatedAt": "2026-07-12T08:09:22.569Z",
   "baseUrl": "https://download.tunaos.org",
   "count": 252,
   "categories": [
@@ -11,6 +11,26 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "skipjack-gnome-latest",
+          "path": "live-isos/skipjack-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-latest.iso",
+          "size": 3522494464,
+          "modified": "2026-07-12T07:39:16.972998321Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-latest",
+          "path": "live-isos/albacore-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-latest.iso",
+          "size": 3263889408,
+          "modified": "2026-07-12T07:20:41.436267430Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "flounder-gnome-latest",
@@ -343,16 +363,6 @@
         },
         {
           "category": "live-isos",
-          "name": "albacore-gnome-latest",
-          "path": "live-isos/albacore-gnome-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-gnome-latest.iso",
-          "size": 3263889408,
-          "modified": "2026-07-10T01:00:55.428910586Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
           "name": "skipjack-kde-nvidia-latest",
           "path": "live-isos/skipjack-kde-nvidia-latest.iso",
           "url": "https://download.tunaos.org/live-isos/skipjack-kde-nvidia-latest.iso",
@@ -368,16 +378,6 @@
           "url": "https://download.tunaos.org/live-isos/skipjack-niri-nvidia-latest.iso",
           "size": 3023372288,
           "modified": "2026-07-09T23:07:07.213708629Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-gnome-latest",
-          "path": "live-isos/skipjack-gnome-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-latest.iso",
-          "size": 3523674112,
-          "modified": "2026-07-09T22:22:41.068966154Z",
           "arch": "",
           "latest": true
         },
@@ -670,6 +670,26 @@
           "modified": "2026-04-02T01:48:53.174283483Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-gnome-10-x86_64",
+          "path": "live-isos/skipjack-gnome-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-10-x86_64.iso",
+          "size": 3522494464,
+          "modified": "2026-07-12T07:39:16.972998321Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-10.2-x86_64",
+          "path": "live-isos/albacore-gnome-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-10.2-x86_64.iso",
+          "size": 3263889408,
+          "modified": "2026-07-12T07:20:41.436267430Z",
+          "arch": "x86_64",
+          "latest": false
         },
         {
           "category": "live-isos",
@@ -1003,16 +1023,6 @@
         },
         {
           "category": "live-isos",
-          "name": "albacore-gnome-10.2-x86_64",
-          "path": "live-isos/albacore-gnome-10.2-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-gnome-10.2-x86_64.iso",
-          "size": 3263889408,
-          "modified": "2026-07-10T01:00:55.428910586Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
           "name": "skipjack-kde-nvidia-10-x86_64",
           "path": "live-isos/skipjack-kde-nvidia-10-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/skipjack-kde-nvidia-10-x86_64.iso",
@@ -1028,16 +1038,6 @@
           "url": "https://download.tunaos.org/live-isos/skipjack-niri-nvidia-10-x86_64.iso",
           "size": 3023372288,
           "modified": "2026-07-09T23:07:07.213708629Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-gnome-10-x86_64",
-          "path": "live-isos/skipjack-gnome-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-10-x86_64.iso",
-          "size": 3523674112,
-          "modified": "2026-07-09T22:22:41.068966154Z",
           "arch": "x86_64",
           "latest": false
         },
