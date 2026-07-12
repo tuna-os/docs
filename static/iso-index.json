@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T08:09:22.569Z",
+  "generatedAt": "2026-07-12T13:10:07.579Z",
   "baseUrl": "https://download.tunaos.org",
   "count": 252,
   "categories": [
@@ -11,6 +11,36 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "skipjack-gnome-nvidia-latest",
+          "path": "live-isos/skipjack-gnome-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-nvidia-latest.iso",
+          "size": 3522494464,
+          "modified": "2026-07-12T12:10:54.086649923Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-nvidia-latest",
+          "path": "live-isos/albacore-gnome-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-nvidia-latest.iso",
+          "size": 3263889408,
+          "modified": "2026-07-12T11:40:02.541482198Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-gnome-nvidia-latest",
+          "path": "live-isos/bonito-gnome-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-gnome-nvidia-latest.iso",
+          "size": 3471114240,
+          "modified": "2026-07-12T11:08:04.980311391Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "skipjack-gnome-latest",
@@ -163,31 +193,11 @@
         },
         {
           "category": "live-isos",
-          "name": "bonito-gnome-nvidia-latest",
-          "path": "live-isos/bonito-gnome-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-gnome-nvidia-latest.iso",
-          "size": 3470786560,
-          "modified": "2026-07-11T08:07:09.830928079Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
           "name": "bonito-niri-nvidia-latest",
           "path": "live-isos/bonito-niri-nvidia-latest.iso",
           "url": "https://download.tunaos.org/live-isos/bonito-niri-nvidia-latest.iso",
           "size": 3249143808,
           "modified": "2026-07-11T08:07:06.681142303Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-gnome-nvidia-latest",
-          "path": "live-isos/skipjack-gnome-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-nvidia-latest.iso",
-          "size": 3523739648,
-          "modified": "2026-07-11T08:05:21.981267185Z",
           "arch": "",
           "latest": true
         },
@@ -208,16 +218,6 @@
           "url": "https://download.tunaos.org/live-isos/albacore-kde-nvidia-latest.iso",
           "size": 4076994560,
           "modified": "2026-07-11T07:48:10.239138846Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "albacore-gnome-nvidia-latest",
-          "path": "live-isos/albacore-gnome-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-gnome-nvidia-latest.iso",
-          "size": 3265134592,
-          "modified": "2026-07-11T07:48:00.456251617Z",
           "arch": "",
           "latest": true
         },
@@ -673,6 +673,36 @@
         },
         {
           "category": "live-isos",
+          "name": "skipjack-gnome-nvidia-10-x86_64",
+          "path": "live-isos/skipjack-gnome-nvidia-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-nvidia-10-x86_64.iso",
+          "size": 3522494464,
+          "modified": "2026-07-12T12:10:54.086649923Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-nvidia-10.2-x86_64",
+          "path": "live-isos/albacore-gnome-nvidia-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-nvidia-10.2-x86_64.iso",
+          "size": 3263889408,
+          "modified": "2026-07-12T11:40:02.541482198Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-gnome-nvidia-43-x86_64",
+          "path": "live-isos/bonito-gnome-nvidia-43-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-gnome-nvidia-43-x86_64.iso",
+          "size": 3471114240,
+          "modified": "2026-07-12T11:08:04.980311391Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
           "name": "skipjack-gnome-10-x86_64",
           "path": "live-isos/skipjack-gnome-10-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/skipjack-gnome-10-x86_64.iso",
@@ -823,31 +853,11 @@
         },
         {
           "category": "live-isos",
-          "name": "bonito-gnome-nvidia-43-x86_64",
-          "path": "live-isos/bonito-gnome-nvidia-43-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-gnome-nvidia-43-x86_64.iso",
-          "size": 3470786560,
-          "modified": "2026-07-11T08:07:09.830928079Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
           "name": "bonito-niri-nvidia-43-x86_64",
           "path": "live-isos/bonito-niri-nvidia-43-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/bonito-niri-nvidia-43-x86_64.iso",
           "size": 3249143808,
           "modified": "2026-07-11T08:07:06.681142303Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-gnome-nvidia-10-x86_64",
-          "path": "live-isos/skipjack-gnome-nvidia-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-nvidia-10-x86_64.iso",
-          "size": 3523739648,
-          "modified": "2026-07-11T08:05:21.981267185Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -868,16 +878,6 @@
           "url": "https://download.tunaos.org/live-isos/albacore-kde-nvidia-10.2-x86_64.iso",
           "size": 4076994560,
           "modified": "2026-07-11T07:48:10.239138846Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "albacore-gnome-nvidia-10.2-x86_64",
-          "path": "live-isos/albacore-gnome-nvidia-10.2-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-gnome-nvidia-10.2-x86_64.iso",
-          "size": 3265134592,
-          "modified": "2026-07-11T07:48:00.456251617Z",
           "arch": "x86_64",
           "latest": false
         },
