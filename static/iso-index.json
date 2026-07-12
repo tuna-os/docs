@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T18:53:53.445Z",
+  "generatedAt": "2026-07-12T02:09:22.136Z",
   "baseUrl": "https://download.tunaos.org",
   "count": 252,
   "categories": [
@@ -13,21 +13,21 @@
       "isos": [
         {
           "category": "live-isos",
-          "name": "flounder-kde-latest",
-          "path": "live-isos/flounder-kde-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/flounder-kde-latest.iso",
-          "size": 853671936,
-          "modified": "2026-07-11T16:50:42.898750937Z",
+          "name": "flounder-gnome-latest",
+          "path": "live-isos/flounder-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-gnome-latest.iso",
+          "size": 1514930176,
+          "modified": "2026-07-12T01:30:39.103350201Z",
           "arch": "",
           "latest": true
         },
         {
           "category": "live-isos",
-          "name": "flounder-gnome-latest",
-          "path": "live-isos/flounder-gnome-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/flounder-gnome-latest.iso",
+          "name": "flounder-kde-latest",
+          "path": "live-isos/flounder-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-kde-latest.iso",
           "size": 853671936,
-          "modified": "2026-07-11T16:50:35.880107606Z",
+          "modified": "2026-07-11T16:50:42.898750937Z",
           "arch": "",
           "latest": true
         },
@@ -673,21 +673,21 @@
         },
         {
           "category": "live-isos",
-          "name": "flounder-kde-13-x86_64",
-          "path": "live-isos/flounder-kde-13-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/flounder-kde-13-x86_64.iso",
-          "size": 853671936,
-          "modified": "2026-07-11T16:50:42.898750937Z",
+          "name": "flounder-gnome-13-x86_64",
+          "path": "live-isos/flounder-gnome-13-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-gnome-13-x86_64.iso",
+          "size": 1514930176,
+          "modified": "2026-07-12T01:30:39.103350201Z",
           "arch": "x86_64",
           "latest": false
         },
         {
           "category": "live-isos",
-          "name": "flounder-gnome-13-x86_64",
-          "path": "live-isos/flounder-gnome-13-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/flounder-gnome-13-x86_64.iso",
+          "name": "flounder-kde-13-x86_64",
+          "path": "live-isos/flounder-kde-13-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-kde-13-x86_64.iso",
           "size": 853671936,
-          "modified": "2026-07-11T16:50:35.880107606Z",
+          "modified": "2026-07-11T16:50:42.898750937Z",
           "arch": "x86_64",
           "latest": false
         },
