@@ -9,17 +9,24 @@ import styles from './styles.module.css';
 
 type Variant = string;
 type Desktop = 'gnome' | 'gnome50' | 'kde' | 'cosmic' | 'niri';
-type Edition = 'standard' | 'nvidia' | 'hwe';
-type Arch = 'amd64' | 'amd64-v2' | 'arm64';
+type Edition = 'standard' | 'nvidia' | 'hwe' | 'cachyos';
 type Product = 'tunaos' | 'dakota' | 'tromso' | 'xfce' | 'hawaii';
-type StepId = 'product' | 'variant' | 'desktop' | 'edition' | 'arch' | 'result';
+type StepId = 'product' | 'variant' | 'desktop' | 'edition' | 'result';
 
 type Selection = {
   product?: Product;
   variant?: Variant;
   desktop?: Desktop;
   edition?: Edition;
-  arch?: Arch;
+};
+
+// Rolling-release siblings that ride the same desktop/edition catalog as
+// their stable base — kept out of the main variant grid so the picker
+// doesn't present 12 equally-weighted choices, but still reachable from
+// their parent's card.
+const ROLLING_SIBLING_OF: Record<string, string> = {
+  'bonito-rawhide': 'bonito',
+  'flounder-sid': 'flounder',
 };
 
 type Option<T extends string> = {
@@ -66,8 +73,10 @@ const PRODUCT_OPTIONS: Option<Product>[] = [
 
 // Sourced from the same VARIANTS data that drives the variant landing pages,
 // so this list can't silently fall behind as new bases are added (it used to
-// hardcode just 4 of the 12 published variants).
-const VARIANT_OPTIONS: Option<Variant>[] = VARIANTS.map((v) => ({
+// hardcode just 4 of the 12 published variants). Rolling-release siblings
+// (Bonito Rawhide, Flounder Sid) are excluded here and offered as a
+// secondary choice under their parent's card instead.
+const VARIANT_OPTIONS: Option<Variant>[] = VARIANTS.filter((v) => !(v.id in ROLLING_SIBLING_OF)).map((v) => ({
   value: v.id,
   emoji: v.emoji,
   label: v.name,
@@ -109,57 +118,69 @@ const DESKTOP_OPTIONS: Option<Desktop>[] = [
   },
 ];
 
-const EDITION_OPTIONS: Option<Edition>[] = [
-  {
+// Catalog of every possible edition; which ones actually apply to a given
+// variant is looked up from that variant's real `editions` list (sourced
+// from build-config.yml) via getEditionOptions() below — so a base that
+// doesn't build an HWE or NVIDIA flavor (Sailfin, Guppy, Grouper, Flounder,
+// Flounder Sid) never even offers the choice, and Marlin's real third
+// edition (a CachyOS kernel overlay) shows up instead of a fake NVIDIA/HWE
+// option it doesn't have.
+const EDITION_CATALOG: Record<Edition, Option<Edition>> = {
+  standard: {
     value: 'standard',
     emoji: '👤',
     label: 'Standard',
     description: 'Just the desktop — great for everyday use.',
   },
-  {
+  nvidia: {
     value: 'nvidia',
     emoji: '🎮',
     label: 'AI / ML (NVIDIA)',
     description: 'Adds NVIDIA drivers and CUDA support for AI/ML, graphics, and VFX workloads.',
   },
-  {
+  hwe: {
     value: 'hwe',
     emoji: '🖥️',
     label: 'New Hardware (HWE)',
     description: 'A newer kernel for very recent hardware like the latest AMD and Intel platforms.',
   },
-];
+  cachyos: {
+    value: 'cachyos',
+    emoji: '⚡',
+    label: 'CachyOS kernel',
+    description: 'The performance-tuned CachyOS kernel overlay on the same Arch userspace.',
+  },
+};
 
-const ARCH_OPTIONS: Option<Arch>[] = [
-  {
-    value: 'amd64',
-    emoji: '💻',
-    label: 'x86_64',
-    description: 'Standard 64-bit. The right choice for most PCs and laptops.',
-    badge: 'Most Common',
-  },
-  {
-    value: 'amd64-v2',
-    emoji: '🔩',
-    label: 'x86_64_v2',
-    description: 'Optimised for CPUs from ~2009-2013 lacking newer instructions.',
-  },
-  {
-    value: 'arm64',
-    emoji: '💪',
-    label: 'ARM64',
-    description: 'Apple Silicon (M-series), Snapdragon, Raspberry Pi 5, and similar.',
-  },
-];
+function getEditionOptions(variantId: Variant | undefined): Option<Edition>[] {
+  const variant = VARIANTS.find((v) => v.id === variantId);
+  const extra = variant?.editions ?? [];
+  return [EDITION_CATALOG.standard, ...extra.map((e) => EDITION_CATALOG[e])];
+}
 
 const STEP_LABELS: Record<StepId, string> = {
   product: 'Product',
   variant: 'Base',
   desktop: 'Desktop',
   edition: 'Edition',
-  arch: 'Architecture',
   result: 'Your Image',
 };
+
+// The suffix a given edition appends to a desktop tag, matching build-config.yml
+// flavor ids exactly (gnome-nvidia, gnome-hwe, gnome-cachyos, ...).
+function editionSuffix(edition: Edition | undefined): string {
+  if (edition === 'nvidia') return '-nvidia';
+  if (edition === 'hwe') return '-hwe';
+  if (edition === 'cachyos') return '-cachyos';
+  return '';
+}
+
+// True when the selected variant only builds the standard edition — the
+// edition step has nothing to offer, so it's skipped entirely rather than
+// showing a one-option "choice."
+function hasExtraEditions(variantId: Variant | undefined): boolean {
+  return getEditionOptions(variantId).length > 1;
+}
 
 function getNextStep(step: StepId, sel: Selection): StepId {
   if (step === 'product') {
@@ -167,9 +188,8 @@ function getNextStep(step: StepId, sel: Selection): StepId {
     return 'result'; // skip to result for non-tunaOS products
   }
   if (step === 'variant') return 'desktop';
-  if (step === 'desktop') return 'edition';
-  if (step === 'edition') return 'arch';
-  if (step === 'arch') return 'result';
+  if (step === 'desktop') return hasExtraEditions(sel.variant) ? 'edition' : 'result';
+  if (step === 'edition') return 'result';
   return 'result';
 }
 
@@ -177,10 +197,9 @@ function getPrevStep(step: StepId, sel: Selection): StepId | null {
   if (step === 'variant') return 'product';
   if (step === 'desktop') return 'variant';
   if (step === 'edition') return 'desktop';
-  if (step === 'arch') return 'edition';
   if (step === 'result') {
     if (sel.product !== 'tunaos') return 'product';
-    return 'arch';
+    return hasExtraEditions(sel.variant) ? 'edition' : 'desktop';
   }
   return null;
 }
@@ -188,11 +207,7 @@ function getPrevStep(step: StepId, sel: Selection): StepId | null {
 function buildImageName(sel: Selection): string {
   const variant = sel.variant ?? 'albacore';
   const desktop = sel.desktop ?? 'gnome';
-  const edition = sel.edition ?? 'standard';
-  let flavor: string = desktop;
-  if (edition === 'nvidia') flavor = `${desktop}-nvidia`;
-  else if (edition === 'hwe') flavor = `${desktop}-hwe`;
-  return `ghcr.io/tuna-os/${variant}:${flavor}`;
+  return `ghcr.io/tuna-os/${variant}:${desktop}${editionSuffix(sel.edition)}`;
 }
 
 function getIsoUrl(sel: Selection, isoNames: Set<string> | null): string | null {
@@ -206,10 +221,8 @@ function getIsoUrl(sel: Selection, isoNames: Set<string> | null): string | null 
   // combo is or isn't downloadable. (HWE ISOs, for example, do exist for some
   // variant+desktop pairs — this used to hardcode them as always unavailable.)
   if (!sel.variant || !sel.desktop) return null;
-  let flavor: string = sel.desktop;
-  if (sel.edition === 'nvidia') flavor = `${sel.desktop}-nvidia`;
-  else if (sel.edition === 'hwe') flavor = `${sel.desktop}-hwe`;
-  const name = `${sel.variant}-${flavor}-latest`;
+  if (VARIANTS.find((v) => v.id === sel.variant)?.localBuildOnly) return null;
+  const name = `${sel.variant}-${sel.desktop}${editionSuffix(sel.edition)}-latest`;
   if (!isoNames || !isoNames.has(name)) return null;
   return `${ISO_BASE_URL}/${name}.iso`;
 }
@@ -221,16 +234,15 @@ function getDocsUrl(sel: Selection): string {
   if (sel.product === 'hawaii') return '/hawaii';
   const variant = sel.variant ?? 'albacore';
   const desktop = sel.desktop ?? 'gnome';
-  const edition = sel.edition ?? 'standard';
-  let anchor: string = desktop;
-  if (edition === 'nvidia') anchor = `${desktop}-nvidia`;
-  else if (edition === 'hwe') anchor = `${desktop}-hwe`;
-  return `/docs/${variant}#${anchor}`;
+  return `/docs/${variant}#${desktop}${editionSuffix(sel.edition)}`;
 }
 
 function getVisibleSteps(sel: Selection): StepId[] {
   if (sel.product !== 'tunaos') return ['product', 'result'];
-  return ['product', 'variant', 'desktop', 'edition', 'arch', 'result'];
+  const steps: StepId[] = ['product', 'variant', 'desktop'];
+  if (hasExtraEditions(sel.variant)) steps.push('edition');
+  steps.push('result');
+  return steps;
 }
 
 function ProgressBar({steps, current}: {steps: StepId[]; current: StepId}) {
@@ -308,10 +320,10 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
   const isoUrl = getIsoUrl(sel, isoNames);
   const docsUrl = getDocsUrl(sel);
   const productOpt = PRODUCT_OPTIONS.find((o) => o.value === sel.product);
+  const variantMeta = VARIANTS.find((v) => v.id === sel.variant);
   const variantOpt = VARIANT_OPTIONS.find((o) => o.value === sel.variant);
   const desktopOpt = DESKTOP_OPTIONS.find((o) => o.value === sel.desktop);
-  const editionOpt = sel.edition ? EDITION_OPTIONS.find((o) => o.value === sel.edition) : null;
-  const archOpt = sel.arch ? ARCH_OPTIONS.find((o) => o.value === sel.arch) : null;
+  const editionOpt = sel.edition ? getEditionOptions(sel.variant).find((o) => o.value === sel.edition) : null;
 
   // Non-tunaOS result
   if (!isTunaOS) {
@@ -341,6 +353,43 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
     );
   }
 
+  // Redfin (and any future base with no public image/ISO) — RHEL's EULA
+  // means there's nothing to pull or download, only a local build.
+  if (variantMeta?.localBuildOnly) {
+    return (
+      <div className={styles.resultCard}>
+        <div className={styles.resultHeader}>
+          <div className={styles.resultEmoji}>
+            {variantOpt?.emoji}{desktopOpt?.emoji}
+          </div>
+          <h3 className={styles.resultTitle}>{variantOpt?.label} — local build only</h3>
+          <p className={styles.resultSummary}>
+            {variantMeta.base} restricts redistribution, so there's no public image or ISO —
+            build it yourself instead.
+          </p>
+        </div>
+
+        <div className={styles.resultImageBox}>
+          <span className={styles.resultImageLabel}>Build command</span>
+          <div className={styles.resultImageRow}>
+            <code className={styles.resultImageName}>{`just build ${sel.variant} ${sel.desktop ?? 'gnome'}`}</code>
+            <CopyButton text={`just build ${sel.variant} ${sel.desktop ?? 'gnome'}`} />
+          </div>
+        </div>
+
+        <div className={styles.resultActions}>
+          <Link to={docsUrl} className="button button--outline button--md">
+            📖 View Docs
+          </Link>
+        </div>
+
+        <button className={styles.resetBtn} onClick={onReset} type="button">
+          ← Start Over
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.resultCard}>
       <div className={styles.resultHeader}>
@@ -351,7 +400,6 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
         <p className={styles.resultSummary}>
           {variantOpt?.label} · {desktopOpt?.label}
           {editionOpt && editionOpt.value !== 'standard' ? ` · ${editionOpt.label}` : ''}
-          {archOpt ? ` · ${archOpt.label}` : ''}
         </p>
       </div>
 
@@ -422,19 +470,13 @@ export default function ImagePicker(): ReactNode {
       nextSel.variant = undefined;
       nextSel.desktop = undefined;
       nextSel.edition = undefined;
-      nextSel.arch = undefined;
     }
     if (key === 'variant') {
       nextSel.desktop = undefined;
       nextSel.edition = undefined;
-      nextSel.arch = undefined;
     }
     if (key === 'desktop') {
       nextSel.edition = undefined;
-      nextSel.arch = undefined;
-    }
-    if (key === 'edition') {
-      nextSel.arch = undefined;
     }
     const nextStep = getNextStep(step, nextSel);
     advance(nextSel, nextStep);
@@ -445,7 +487,6 @@ export default function ImagePicker(): ReactNode {
     variant: 'Which base suits you?',
     desktop: 'Which desktop environment?',
     edition: 'Standard desktop or something specialized?',
-    arch: 'What\'s your CPU architecture?',
     result: '',
   };
 
@@ -490,7 +531,7 @@ export default function ImagePicker(): ReactNode {
                   />
                 ))}
               {step === 'edition' &&
-                EDITION_OPTIONS.map((opt) => (
+                getEditionOptions(sel.variant).map((opt) => (
                   <OptionCard
                     key={opt.value}
                     option={opt}
@@ -498,16 +539,29 @@ export default function ImagePicker(): ReactNode {
                     onClick={() => pick('edition', opt.value)}
                   />
                 ))}
-              {step === 'arch' &&
-                ARCH_OPTIONS.map((opt) => (
-                  <OptionCard
-                    key={opt.value}
-                    option={opt}
-                    selected={sel.arch === opt.value}
-                    onClick={() => pick('arch', opt.value)}
-                  />
-                ))}
             </div>
+            {step === 'variant' && (
+              <p className={styles.rollingNote}>
+                Want a rolling-release edge instead?{' '}
+                {Object.entries(ROLLING_SIBLING_OF).map(([siblingId, parentId], i, arr) => {
+                  const sibling = VARIANTS.find((v) => v.id === siblingId);
+                  const parent = VARIANTS.find((v) => v.id === parentId);
+                  if (!sibling || !parent) return null;
+                  return (
+                    <span key={siblingId}>
+                      <button
+                        className={styles.rollingLink}
+                        type="button"
+                        onClick={() => pick('variant', siblingId)}
+                      >
+                        {sibling.emoji} {sibling.name} (rolling {parent.name})
+                      </button>
+                      {i < arr.length - 1 ? ' · ' : ''}
+                    </span>
+                  );
+                })}
+              </p>
+            )}
             {step !== 'product' && (
               <button className={styles.backBtn} onClick={goBack} type="button">
                 ← Back
