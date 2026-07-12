@@ -2,9 +2,12 @@ import type {ReactNode} from 'react';
 import {useState} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
+import {VARIANTS} from '@site/src/data/variants';
+import useIsoNames from '@site/src/hooks/useIsoNames';
+import {ISO_BASE_URL} from '@site/src/utils/isoNaming';
 import styles from './styles.module.css';
 
-type Variant = 'albacore' | 'yellowfin' | 'skipjack' | 'bonito';
+type Variant = string;
 type Desktop = 'gnome' | 'gnome50' | 'kde' | 'cosmic' | 'niri';
 type Edition = 'standard' | 'nvidia' | 'hwe';
 type Arch = 'amd64' | 'amd64-v2' | 'arm64';
@@ -61,33 +64,16 @@ const PRODUCT_OPTIONS: Option<Product>[] = [
   },
 ];
 
-const VARIANT_OPTIONS: Option<Variant>[] = [
-  {
-    value: 'albacore',
-    emoji: '🐟',
-    label: 'Albacore',
-    description: 'AlmaLinux 10 — 10-year support cycle, rock-solid stability for work.',
-    badge: 'Recommended',
-  },
-  {
-    value: 'yellowfin',
-    emoji: '🐠',
-    label: 'Yellowfin',
-    description: 'AlmaLinux Kitten — newer packages, the developer daily driver.',
-  },
-  {
-    value: 'skipjack',
-    emoji: '🍣',
-    label: 'Skipjack',
-    description: 'CentOS Stream 10 — upstream-tracking, preview of future EL.',
-  },
-  {
-    value: 'bonito',
-    emoji: '🎣',
-    label: 'Bonito',
-    description: 'Fedora 44 — bleeding edge packages and the absolute latest kernel.',
-  },
-];
+// Sourced from the same VARIANTS data that drives the variant landing pages,
+// so this list can't silently fall behind as new bases are added (it used to
+// hardcode just 4 of the 12 published variants).
+const VARIANT_OPTIONS: Option<Variant>[] = VARIANTS.map((v) => ({
+  value: v.id,
+  emoji: v.emoji,
+  label: v.name,
+  description: v.blurb,
+  badge: v.recommended ? 'Recommended' : undefined,
+}));
 
 const DESKTOP_OPTIONS: Option<Desktop>[] = [
   {
@@ -175,11 +161,6 @@ const STEP_LABELS: Record<StepId, string> = {
   result: 'Your Image',
 };
 
-function getDesktopOptions(variant: Variant | undefined): Option<Desktop>[] {
-  if (variant === 'bonito') return DESKTOP_OPTIONS.filter((o) => o.value !== 'gnome50');
-  return DESKTOP_OPTIONS;
-}
-
 function getNextStep(step: StepId, sel: Selection): StepId {
   if (step === 'product') {
     if (sel.product === 'tunaos') return 'variant';
@@ -214,18 +195,23 @@ function buildImageName(sel: Selection): string {
   return `ghcr.io/tuna-os/${variant}:${flavor}`;
 }
 
-function getIsoUrl(sel: Selection): string | null {
+function getIsoUrl(sel: Selection, isoNames: Set<string> | null): string | null {
   // Non-tunaOS products
   if (sel.product === 'dakota') return 'https://download.tunaos.org/dakota/dakota-live-latest.iso';
   if (sel.product === 'tromso') return 'https://download.tunaos.org/tromso/tromso-live-latest.iso';
   if (sel.product === 'xfce') return 'https://download.tunaos.org/xfce-linux/xfce-linux-live-latest.iso';
   if (sel.product === 'hawaii') return null; // no ISOs yet
-  // TunaOS variants
+  // TunaOS variants — validated against the live ISO index (static/iso-index.json)
+  // rather than guessed, so this never wrongly claims an HWE/NVIDIA/GNOME 50
+  // combo is or isn't downloadable. (HWE ISOs, for example, do exist for some
+  // variant+desktop pairs — this used to hardcode them as always unavailable.)
   if (!sel.variant || !sel.desktop) return null;
-  if (sel.edition === 'hwe') return null;
   let flavor: string = sel.desktop;
   if (sel.edition === 'nvidia') flavor = `${sel.desktop}-nvidia`;
-  return `https://download.tunaos.org/live-isos/${sel.variant}-${flavor}-latest.iso`;
+  else if (sel.edition === 'hwe') flavor = `${sel.desktop}-hwe`;
+  const name = `${sel.variant}-${flavor}-latest`;
+  if (!isoNames || !isoNames.has(name)) return null;
+  return `${ISO_BASE_URL}/${name}.iso`;
 }
 
 function getDocsUrl(sel: Selection): string {
@@ -316,9 +302,10 @@ function CopyButton({text}: {text: string}) {
 }
 
 function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
+  const isoNames = useIsoNames();
   const isTunaOS = sel.product === 'tunaos';
   const imageName = buildImageName(sel);
-  const isoUrl = getIsoUrl(sel);
+  const isoUrl = getIsoUrl(sel, isoNames);
   const docsUrl = getDocsUrl(sel);
   const productOpt = PRODUCT_OPTIONS.find((o) => o.value === sel.product);
   const variantOpt = VARIANT_OPTIONS.find((o) => o.value === sel.variant);
@@ -384,12 +371,12 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
           <a href={isoUrl} className="button button--primary button--lg">
             ⬇️ Download ISO
           </a>
+        ) : isoNames === null ? (
+          <div className={styles.resultNoIso}>⏳ Checking what's published…</div>
         ) : (
           <div className={styles.resultNoIso}>
-              {sel.edition === 'hwe'
-                ? `🔄 No HWE ISO — download the standard ISO and run \`bootc switch ${imageName}\` after install.`
-                : '📦 No ISO available for this combination.'}
-            </div>
+            {`📦 No live ISO for this combination — install the standard ISO and run \`bootc switch ${imageName}\` afterward.`}
+          </div>
         )}
         <Link to={docsUrl} className="button button--outline button--md">
           📖 View Docs
@@ -494,7 +481,7 @@ export default function ImagePicker(): ReactNode {
                   />
                 ))}
               {step === 'desktop' &&
-                getDesktopOptions(sel.variant).map((opt) => (
+                DESKTOP_OPTIONS.map((opt) => (
                   <OptionCard
                     key={opt.value}
                     option={opt}
