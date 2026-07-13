@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-12T18:58:37.455Z",
+  "generatedAt": "2026-07-13T02:11:06.235Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 252,
+  "count": 254,
   "categories": [
     {
       "id": "live-isos",
@@ -13,61 +13,11 @@
       "isos": [
         {
           "category": "live-isos",
-          "name": "bonito-gnome-nvidia-latest",
-          "path": "live-isos/bonito-gnome-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-gnome-nvidia-latest.iso",
-          "size": 3470065664,
-          "modified": "2026-07-12T18:12:28.878161567Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "yellowfin-gnome-nvidia-latest",
-          "path": "live-isos/yellowfin-gnome-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-nvidia-latest.iso",
-          "size": 3454009344,
-          "modified": "2026-07-12T18:10:44.366780956Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "albacore-gnome-nvidia-latest",
-          "path": "live-isos/albacore-gnome-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-gnome-nvidia-latest.iso",
-          "size": 3263889408,
-          "modified": "2026-07-12T18:04:36.493265410Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-gnome-nvidia-latest",
-          "path": "live-isos/skipjack-gnome-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-nvidia-latest.iso",
-          "size": 3522494464,
-          "modified": "2026-07-12T18:04:17.185102334Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
           "name": "bonito-gnome-latest",
           "path": "live-isos/bonito-gnome-latest.iso",
           "url": "https://download.tunaos.org/live-isos/bonito-gnome-latest.iso",
           "size": 3470065664,
-          "modified": "2026-07-12T16:30:31.146489364Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "yellowfin-gnome-latest",
-          "path": "live-isos/yellowfin-gnome-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso",
-          "size": 3454009344,
-          "modified": "2026-07-12T16:23:17.021484379Z",
+          "modified": "2026-07-12T22:55:52.930773285Z",
           "arch": "",
           "latest": true
         },
@@ -77,7 +27,37 @@
           "path": "live-isos/albacore-gnome-latest.iso",
           "url": "https://download.tunaos.org/live-isos/albacore-gnome-latest.iso",
           "size": 3263889408,
-          "modified": "2026-07-12T15:53:21.505406061Z",
+          "modified": "2026-07-12T22:53:32.383606764Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-gnome-nvidia-latest",
+          "path": "live-isos/skipjack-gnome-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-nvidia-latest.iso",
+          "size": 3522494464,
+          "modified": "2026-07-12T22:53:20.129042491Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome-nvidia-latest",
+          "path": "live-isos/yellowfin-gnome-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-nvidia-latest.iso",
+          "size": 3454009344,
+          "modified": "2026-07-12T22:52:50.775245190Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-gnome-nvidia-latest",
+          "path": "live-isos/bonito-gnome-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-gnome-nvidia-latest.iso",
+          "size": 3470065664,
+          "modified": "2026-07-12T22:52:47.763140530Z",
           "arch": "",
           "latest": true
         },
@@ -87,7 +67,37 @@
           "path": "live-isos/skipjack-gnome-latest.iso",
           "url": "https://download.tunaos.org/live-isos/skipjack-gnome-latest.iso",
           "size": 3522494464,
-          "modified": "2026-07-12T07:39:16.972998321Z",
+          "modified": "2026-07-12T22:51:44.868691025Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-nvidia-latest",
+          "path": "live-isos/albacore-gnome-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-nvidia-latest.iso",
+          "size": 3263889408,
+          "modified": "2026-07-12T22:49:04.433334354Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome-latest",
+          "path": "live-isos/yellowfin-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso",
+          "size": 3454009344,
+          "modified": "2026-07-12T22:46:24.777475994Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-gnome-latest",
+          "path": "live-isos/bonito-rawhide-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-gnome-latest.iso",
+          "size": 3455057920,
+          "modified": "2026-07-12T22:46:06.840167808Z",
           "arch": "",
           "latest": true
         },
@@ -97,7 +107,17 @@
           "path": "live-isos/flounder-gnome-latest.iso",
           "url": "https://download.tunaos.org/live-isos/flounder-gnome-latest.iso",
           "size": 1514930176,
-          "modified": "2026-07-12T01:30:39.103350201Z",
+          "modified": "2026-07-12T22:44:46.148263022Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-gnome-latest",
+          "path": "live-isos/grouper-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-gnome-latest.iso",
+          "size": 2234449920,
+          "modified": "2026-07-12T22:44:42.520133466Z",
           "arch": "",
           "latest": true
         },
@@ -108,16 +128,6 @@
           "url": "https://download.tunaos.org/live-isos/flounder-kde-latest.iso",
           "size": 853671936,
           "modified": "2026-07-11T16:50:42.898750937Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-gnome-latest",
-          "path": "live-isos/grouper-gnome-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-gnome-latest.iso",
-          "size": 2238316544,
-          "modified": "2026-07-11T11:23:30.437197353Z",
           "arch": "",
           "latest": true
         },
@@ -673,61 +683,11 @@
         },
         {
           "category": "live-isos",
-          "name": "bonito-gnome-nvidia-43-x86_64",
-          "path": "live-isos/bonito-gnome-nvidia-43-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-gnome-nvidia-43-x86_64.iso",
-          "size": 3470065664,
-          "modified": "2026-07-12T18:12:28.878161567Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "yellowfin-gnome-nvidia-10-x86_64",
-          "path": "live-isos/yellowfin-gnome-nvidia-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-nvidia-10-x86_64.iso",
-          "size": 3454009344,
-          "modified": "2026-07-12T18:10:44.366780956Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "albacore-gnome-nvidia-10.2-x86_64",
-          "path": "live-isos/albacore-gnome-nvidia-10.2-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-gnome-nvidia-10.2-x86_64.iso",
-          "size": 3263889408,
-          "modified": "2026-07-12T18:04:36.493265410Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-gnome-nvidia-10-x86_64",
-          "path": "live-isos/skipjack-gnome-nvidia-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-nvidia-10-x86_64.iso",
-          "size": 3522494464,
-          "modified": "2026-07-12T18:04:17.185102334Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
           "name": "bonito-gnome-43-x86_64",
           "path": "live-isos/bonito-gnome-43-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/bonito-gnome-43-x86_64.iso",
           "size": 3470065664,
-          "modified": "2026-07-12T16:30:31.146489364Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "yellowfin-gnome-10-x86_64",
-          "path": "live-isos/yellowfin-gnome-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-10-x86_64.iso",
-          "size": 3454009344,
-          "modified": "2026-07-12T16:23:17.021484379Z",
+          "modified": "2026-07-12T22:55:52.930773285Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -737,7 +697,37 @@
           "path": "live-isos/albacore-gnome-10.2-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/albacore-gnome-10.2-x86_64.iso",
           "size": 3263889408,
-          "modified": "2026-07-12T15:53:21.505406061Z",
+          "modified": "2026-07-12T22:53:32.383606764Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-gnome-nvidia-10-x86_64",
+          "path": "live-isos/skipjack-gnome-nvidia-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-nvidia-10-x86_64.iso",
+          "size": 3522494464,
+          "modified": "2026-07-12T22:53:20.129042491Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome-nvidia-10-x86_64",
+          "path": "live-isos/yellowfin-gnome-nvidia-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-nvidia-10-x86_64.iso",
+          "size": 3454009344,
+          "modified": "2026-07-12T22:52:50.775245190Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-gnome-nvidia-43-x86_64",
+          "path": "live-isos/bonito-gnome-nvidia-43-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-gnome-nvidia-43-x86_64.iso",
+          "size": 3470065664,
+          "modified": "2026-07-12T22:52:47.763140530Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -747,7 +737,37 @@
           "path": "live-isos/skipjack-gnome-10-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/skipjack-gnome-10-x86_64.iso",
           "size": 3522494464,
-          "modified": "2026-07-12T07:39:16.972998321Z",
+          "modified": "2026-07-12T22:51:44.868691025Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-nvidia-10.2-x86_64",
+          "path": "live-isos/albacore-gnome-nvidia-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-nvidia-10.2-x86_64.iso",
+          "size": 3263889408,
+          "modified": "2026-07-12T22:49:04.433334354Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-gnome-10-x86_64",
+          "path": "live-isos/yellowfin-gnome-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-10-x86_64.iso",
+          "size": 3454009344,
+          "modified": "2026-07-12T22:46:24.777475994Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-gnome-45-x86_64",
+          "path": "live-isos/bonito-rawhide-gnome-45-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-gnome-45-x86_64.iso",
+          "size": 3455057920,
+          "modified": "2026-07-12T22:46:06.840167808Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -757,7 +777,17 @@
           "path": "live-isos/flounder-gnome-13-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/flounder-gnome-13-x86_64.iso",
           "size": 1514930176,
-          "modified": "2026-07-12T01:30:39.103350201Z",
+          "modified": "2026-07-12T22:44:46.148263022Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-gnome-26.04-x86_64",
+          "path": "live-isos/grouper-gnome-26.04-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-gnome-26.04-x86_64.iso",
+          "size": 2234449920,
+          "modified": "2026-07-12T22:44:42.520133466Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -768,16 +798,6 @@
           "url": "https://download.tunaos.org/live-isos/flounder-kde-13-x86_64.iso",
           "size": 853671936,
           "modified": "2026-07-11T16:50:42.898750937Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-gnome-26.04-x86_64",
-          "path": "live-isos/grouper-gnome-26.04-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-gnome-26.04-x86_64.iso",
-          "size": 2238316544,
-          "modified": "2026-07-11T11:23:30.437197353Z",
           "arch": "x86_64",
           "latest": false
         },
