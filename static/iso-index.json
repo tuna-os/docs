@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-13T02:11:06.235Z",
+  "generatedAt": "2026-07-13T09:01:22.183Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 254,
+  "count": 256,
   "categories": [
     {
       "id": "live-isos",
@@ -13,11 +13,31 @@
       "isos": [
         {
           "category": "live-isos",
+          "name": "yellowfin-gnome-latest",
+          "path": "live-isos/yellowfin-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso",
+          "size": 3454009344,
+          "modified": "2026-07-13T08:42:20.889979022Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-gnome-latest",
+          "path": "live-isos/skipjack-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-latest.iso",
+          "size": 3522494464,
+          "modified": "2026-07-13T07:45:06.125944534Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
           "name": "bonito-gnome-latest",
           "path": "live-isos/bonito-gnome-latest.iso",
           "url": "https://download.tunaos.org/live-isos/bonito-gnome-latest.iso",
           "size": 3470065664,
-          "modified": "2026-07-12T22:55:52.930773285Z",
+          "modified": "2026-07-13T07:20:39.800471200Z",
           "arch": "",
           "latest": true
         },
@@ -26,8 +46,8 @@
           "name": "albacore-gnome-latest",
           "path": "live-isos/albacore-gnome-latest.iso",
           "url": "https://download.tunaos.org/live-isos/albacore-gnome-latest.iso",
-          "size": 3263889408,
-          "modified": "2026-07-12T22:53:32.383606764Z",
+          "size": 3263823872,
+          "modified": "2026-07-13T07:12:33.522671387Z",
           "arch": "",
           "latest": true
         },
@@ -63,31 +83,11 @@
         },
         {
           "category": "live-isos",
-          "name": "skipjack-gnome-latest",
-          "path": "live-isos/skipjack-gnome-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-latest.iso",
-          "size": 3522494464,
-          "modified": "2026-07-12T22:51:44.868691025Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
           "name": "albacore-gnome-nvidia-latest",
           "path": "live-isos/albacore-gnome-nvidia-latest.iso",
           "url": "https://download.tunaos.org/live-isos/albacore-gnome-nvidia-latest.iso",
           "size": 3263889408,
           "modified": "2026-07-12T22:49:04.433334354Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "yellowfin-gnome-latest",
-          "path": "live-isos/yellowfin-gnome-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso",
-          "size": 3454009344,
-          "modified": "2026-07-12T22:46:24.777475994Z",
           "arch": "",
           "latest": true
         },
@@ -683,11 +683,31 @@
         },
         {
           "category": "live-isos",
+          "name": "yellowfin-gnome-10-x86_64",
+          "path": "live-isos/yellowfin-gnome-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-10-x86_64.iso",
+          "size": 3454009344,
+          "modified": "2026-07-13T08:42:20.889979022Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-gnome-10-x86_64",
+          "path": "live-isos/skipjack-gnome-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-10-x86_64.iso",
+          "size": 3522494464,
+          "modified": "2026-07-13T07:45:06.125944534Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
           "name": "bonito-gnome-43-x86_64",
           "path": "live-isos/bonito-gnome-43-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/bonito-gnome-43-x86_64.iso",
           "size": 3470065664,
-          "modified": "2026-07-12T22:55:52.930773285Z",
+          "modified": "2026-07-13T07:20:39.800471200Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -696,8 +716,8 @@
           "name": "albacore-gnome-10.2-x86_64",
           "path": "live-isos/albacore-gnome-10.2-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/albacore-gnome-10.2-x86_64.iso",
-          "size": 3263889408,
-          "modified": "2026-07-12T22:53:32.383606764Z",
+          "size": 3263823872,
+          "modified": "2026-07-13T07:12:33.522671387Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -733,31 +753,11 @@
         },
         {
           "category": "live-isos",
-          "name": "skipjack-gnome-10-x86_64",
-          "path": "live-isos/skipjack-gnome-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-10-x86_64.iso",
-          "size": 3522494464,
-          "modified": "2026-07-12T22:51:44.868691025Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
           "name": "albacore-gnome-nvidia-10.2-x86_64",
           "path": "live-isos/albacore-gnome-nvidia-10.2-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/albacore-gnome-nvidia-10.2-x86_64.iso",
           "size": 3263889408,
           "modified": "2026-07-12T22:49:04.433334354Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "yellowfin-gnome-10-x86_64",
-          "path": "live-isos/yellowfin-gnome-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-10-x86_64.iso",
-          "size": 3454009344,
-          "modified": "2026-07-12T22:46:24.777475994Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -2409,8 +2409,28 @@
       "blurb": "",
       "icon": "📀",
       "order": 99,
-      "checksums": "https://download.tunaos.org/tacklebox/bazzite-gnome-SHA256SUMS-20260708-5d49db2",
+      "checksums": "https://download.tunaos.org/tacklebox/SHA256SUMS-20260713-86da45b",
       "isos": [
+        {
+          "category": "tacklebox",
+          "name": "tacklebox-poc-dedup-latest",
+          "path": "tacklebox/tacklebox-poc-dedup-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-latest.iso",
+          "size": 1758003200,
+          "modified": "2026-07-13T08:28:58.018641661Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "tacklebox-poc-perenv-latest",
+          "path": "tacklebox/tacklebox-poc-perenv-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-latest.iso",
+          "size": 2859270144,
+          "modified": "2026-07-13T08:28:01.070953431Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "tacklebox",
           "name": "bazzite-gnome-latest",
@@ -2443,23 +2463,23 @@
         },
         {
           "category": "tacklebox",
-          "name": "tacklebox-poc-dedup-latest",
-          "path": "tacklebox/tacklebox-poc-dedup-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-latest.iso",
-          "size": 1764622336,
-          "modified": "2026-07-06T09:09:02.081216388Z",
+          "name": "tacklebox-poc-dedup-20260713-86da45b",
+          "path": "tacklebox/tacklebox-poc-dedup-20260713-86da45b.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-20260713-86da45b.iso",
+          "size": 1758003200,
+          "modified": "2026-07-13T08:28:58.018641661Z",
           "arch": "",
-          "latest": true
+          "latest": false
         },
         {
           "category": "tacklebox",
-          "name": "tacklebox-poc-perenv-latest",
-          "path": "tacklebox/tacklebox-poc-perenv-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-latest.iso",
-          "size": 2875719680,
-          "modified": "2026-07-06T09:08:37.064773803Z",
+          "name": "tacklebox-poc-perenv-20260713-86da45b",
+          "path": "tacklebox/tacklebox-poc-perenv-20260713-86da45b.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-20260713-86da45b.iso",
+          "size": 2859270144,
+          "modified": "2026-07-13T08:28:01.070953431Z",
           "arch": "",
-          "latest": true
+          "latest": false
         },
         {
           "category": "tacklebox",
