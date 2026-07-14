@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T01:56:49.064Z",
+  "generatedAt": "2026-07-14T07:56:48.941Z",
   "baseUrl": "https://download.tunaos.org",
   "count": 256,
   "categories": [
@@ -13,11 +13,41 @@
       "isos": [
         {
           "category": "live-isos",
+          "name": "skipjack-gnome-latest",
+          "path": "live-isos/skipjack-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-latest.iso",
+          "size": 3522494464,
+          "modified": "2026-07-14T07:35:47.949792955Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
           "name": "yellowfin-gnome-nvidia-latest",
           "path": "live-isos/yellowfin-gnome-nvidia-latest.iso",
           "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-nvidia-latest.iso",
-          "size": 3454074880,
-          "modified": "2026-07-13T10:12:24.816628789Z",
+          "size": 6307250176,
+          "modified": "2026-07-14T07:15:31.526026341Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-gnome-latest",
+          "path": "live-isos/bonito-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-gnome-latest.iso",
+          "size": 6277890048,
+          "modified": "2026-07-14T06:44:13.418316919Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-latest",
+          "path": "live-isos/albacore-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-latest.iso",
+          "size": 5948506112,
+          "modified": "2026-07-14T06:26:13.984267340Z",
           "arch": "",
           "latest": true
         },
@@ -58,36 +88,6 @@
           "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso",
           "size": 3454009344,
           "modified": "2026-07-13T08:42:20.889979022Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-gnome-latest",
-          "path": "live-isos/skipjack-gnome-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-latest.iso",
-          "size": 3522494464,
-          "modified": "2026-07-13T07:45:06.125944534Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-gnome-latest",
-          "path": "live-isos/bonito-gnome-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-gnome-latest.iso",
-          "size": 3470065664,
-          "modified": "2026-07-13T07:20:39.800471200Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "albacore-gnome-latest",
-          "path": "live-isos/albacore-gnome-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-gnome-latest.iso",
-          "size": 3263823872,
-          "modified": "2026-07-13T07:12:33.522671387Z",
           "arch": "",
           "latest": true
         },
@@ -683,11 +683,41 @@
         },
         {
           "category": "live-isos",
+          "name": "skipjack-gnome-10-x86_64",
+          "path": "live-isos/skipjack-gnome-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-10-x86_64.iso",
+          "size": 6140198912,
+          "modified": "2026-07-14T07:35:47.949792955Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
           "name": "yellowfin-gnome-nvidia-10-x86_64",
           "path": "live-isos/yellowfin-gnome-nvidia-10-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-nvidia-10-x86_64.iso",
-          "size": 3454074880,
-          "modified": "2026-07-13T10:12:24.816628789Z",
+          "size": 6307250176,
+          "modified": "2026-07-14T07:15:31.526026341Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-gnome-43-x86_64",
+          "path": "live-isos/bonito-gnome-43-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-gnome-43-x86_64.iso",
+          "size": 6277890048,
+          "modified": "2026-07-14T06:44:13.418316919Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-10.2-x86_64",
+          "path": "live-isos/albacore-gnome-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-10.2-x86_64.iso",
+          "size": 5948506112,
+          "modified": "2026-07-14T06:26:13.984267340Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -728,36 +758,6 @@
           "url": "https://download.tunaos.org/live-isos/yellowfin-gnome-10-x86_64.iso",
           "size": 3454009344,
           "modified": "2026-07-13T08:42:20.889979022Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-gnome-10-x86_64",
-          "path": "live-isos/skipjack-gnome-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-gnome-10-x86_64.iso",
-          "size": 3522494464,
-          "modified": "2026-07-13T07:45:06.125944534Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-gnome-43-x86_64",
-          "path": "live-isos/bonito-gnome-43-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-gnome-43-x86_64.iso",
-          "size": 3470065664,
-          "modified": "2026-07-13T07:20:39.800471200Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "albacore-gnome-10.2-x86_64",
-          "path": "live-isos/albacore-gnome-10.2-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-gnome-10.2-x86_64.iso",
-          "size": 3263823872,
-          "modified": "2026-07-13T07:12:33.522671387Z",
           "arch": "x86_64",
           "latest": false
         },
