@@ -73,13 +73,7 @@ export const BUILDSTREAM_UPSTREAMS: {desktop: string; emoji: string; name: strin
     url: '/xfce-linux',
     note: 'Lightweight XFCE Wayland on the same freedesktop-sdk base.',
   },
-  {
-    desktop: 'Niri',
-    emoji: '🌺',
-    name: 'Zirconium Hawaii',
-    url: '/hawaii',
-    note: 'Niri compositor on freedesktop-sdk — 100% reproducible from source.',
-  },
+
 ];
 
 export const PROJECTS: Project[] = [
@@ -463,38 +457,7 @@ export const PROJECTS: Project[] = [
       {label: 'Rebase an existing bootc system', code: 'sudo bootc switch ghcr.io/tuna-os/xfce-linux:latest'},
     ],
   },
-  {
-    id: 'hawaii',
-    emoji: '🌺',
-    name: 'Zirconium Hawaii',
-    status: 'experimental',
-    tagline: 'Zirconium, rebuilt on freedesktop-sdk. Closer to the source.',
-    lede:
-      "Zirconium Hawaii is an experiment — initially Niri OS — that turned into a real project. It builds its own components from source on freedesktop-sdk with BuildStream, 100% reproducible. The closest comparison is GNOME OS, which is the project's biggest inspiration — same build system, shared components, different desktop.",
-    accent: '#14532d',
-    accent2: '#22c55e',
-    repo: 'https://github.com/zirconium-linux/hawaii',
-    docs: '',
-    external: true,
-    externalLink: 'https://github.com/zirconium-linux/hawaii',
-    logo: 'https://raw.githubusercontent.com/zirconium-dev/assets/bbcc598039cc9c48b631677ff3bd267217cf8509/logos/logo-z.svg',
-    buildstream: true,
-    stats: [
-      {label: 'Desktop', value: 'Niri (Wayland)'},
-      {label: 'Built with', value: 'BuildStream'},
-      {label: 'Base', value: 'freedesktop-sdk'},
-      {label: 'Inspired by', value: 'GNOME OS'},
-    ],
-    features: [
-      {emoji: '📜', title: 'Niri compositor', text: '<a href="https://github.com/YaLTeR/niri" target="_blank">Scrollable-tiling</a> Wayland compositor. No floating windows, no overlap — just an infinite horizontal workspace.'},
-      {emoji: '🧱', title: 'Built from source', text: 'Every component in the stack is built from source with <a href="https://buildstream.build" target="_blank">BuildStream</a>. No binary packages from any distribution.'},
-      {emoji: '🔁', title: 'Reproducible', text: 'Same inputs, same image — every time. <a href="https://buildstream.build" target="_blank">BuildStream</a> caches and verifies every build artifact.'},
-      {emoji: '🔄', title: 'Zirconium reborn', text: 'Zirconium, but on <a href="https://gitlab.com/freedesktop-sdk/freedesktop-sdk" target="_blank">freedesktop-sdk</a> instead of Fedora. Same spirit, different foundation — closer to <a href="https://os.gnome.org" target="_blank">GNOME OS</a>.'},
-    ],
-    install: [
-      {label: 'Build from source', code: 'git clone https://github.com/zirconium-linux/hawaii.git\ncd hawaii\njust build'},
-    ],
-  },
+
   {
     id: 'dakota',
     emoji: '🎣',

@@ -96,7 +96,7 @@ Plasma's look comes from [Aurora](https://github.com/get-aurora-dev/common)'s [`
 
 We pair it with [DMS](https://github.com/avengemedia/dms) (DankMaterialShell) for the greeter, a control panel, and app launching. So the stack is `greetd` &rarr; Niri &rarr; DMS. DMS is still pretty early but it's enough to make Niri feel like an actual desktop and not just bare windows on a ribbon.
 
-Config and theming come from [Zirconium](https://github.com/zirconium-dev/zirconium), same deal as Bluefin and Aurora — one layer, applied everywhere. They've also got their own BuildStream build on [freedesktop-sdk](https://gitlab.com/freedesktop-sdk/freedesktop-sdk).
+Config and theming come from [Zirconium](https://github.com/zirconium-dev/zirconium), same deal as Bluefin and Aurora — one layer, applied everywhere.
 
 ### <img src="/img/desktops/xfce.svg" width="22" /> XFCE (Wayland)
 
@@ -134,7 +134,7 @@ These are the folks whose customization layers we're shipping. They did the actu
 
 **Project Bluefin** (GNOME): [sponsor @castrojo](https://github.com/sponsors/castrojo) · [sponsor @tulilirockz](https://github.com/sponsors/tulilirockz)
 
-**Aurora** (KDE Plasma): [sponsor @NiHaiden](https://github.com/sponsors/NiHaiden) · [ko-fi](https://ko-fi.com/valerie-tar-gz) · [venmo](https://venmo.com/u/bri-recchia) · [ko-fi/brirec](https://ko-fi.com/brirec)
+**Aurora** (KDE Plasma): [sponsor @NiHaiden](https://github.com/sponsors/NiHaiden)
 
 **Zirconium** (Niri): [sponsor @tulilirockz](https://github.com/sponsors/tulilirockz)
 

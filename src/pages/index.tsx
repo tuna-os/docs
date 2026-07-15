@@ -154,7 +154,6 @@ function ProjectsBand(): ReactNode {
     {emoji: '⚙', name: 'COPR Builds', desc: 'RPM builder', to: '/copr'},
     {emoji: '🤠', name: 'Corral', desc: 'VM & container manager', to: '/corral'},
     {emoji: '🦖', name: 'Dakota', desc: 'Bluefin GNOME OS', to: '/dakota'},
-    {emoji: '🌺', name: 'Hawaii', desc: 'Niri OS', to: '/hawaii'},
   ];
   return (
     <section className={clsx(styles.section)}>
@@ -204,12 +203,6 @@ function PipelineBand(): ReactNode {
       desc: 'A self-hosted, mock-based RPM build system with GitHub Actions and Cloudflare R2 — builds the packages EL10 doesn’t ship yet (GNOME 50, the XFCE Wayland stack) and its apt-world sibling debian-copr.',
       to: 'https://github.com/tuna-os/github-copr',
       external: true,
-    },
-    {
-      emoji: '🌺',
-      name: 'Zirconium',
-      desc: "Supplies the Niri desktop's greetd session files, theming, and shell config across every TunaOS variant — the same system files ship whether you're on AlmaLinux, CentOS Stream, Fedora, or Ubuntu.",
-      to: '/hawaii',
     },
   ];
 

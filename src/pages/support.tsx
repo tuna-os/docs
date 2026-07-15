@@ -20,9 +20,6 @@ const SPONSOR_SECTIONS = [
         desktop: 'KDE Plasma',
         links: [
           { label: 'Sponsor @NiHaiden', href: 'https://github.com/sponsors/NiHaiden' },
-          { label: 'ko-fi', href: 'https://ko-fi.com/valerie-tar-gz' },
-          { label: 'venmo', href: 'https://venmo.com/u/bri-recchia' },
-          { label: 'ko-fi/brirec', href: 'https://ko-fi.com/brirec' },
         ],
       },
       {

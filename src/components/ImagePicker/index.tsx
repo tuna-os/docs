@@ -10,7 +10,7 @@ import styles from './styles.module.css';
 type Variant = string;
 type Desktop = 'gnome' | 'gnome50' | 'kde' | 'cosmic' | 'niri';
 type Edition = 'standard' | 'nvidia' | 'hwe' | 'cachyos';
-type Product = 'tunaos' | 'dakota' | 'tromso' | 'xfce' | 'hawaii';
+type Product = 'tunaos' | 'dakota' | 'tromso' | 'xfce';
 type StepId = 'product' | 'variant' | 'desktop' | 'edition' | 'result';
 
 type Selection = {
@@ -62,12 +62,6 @@ const PRODUCT_OPTIONS: Option<Product>[] = [
     emoji: '🖥️',
     label: 'XFCE Linux',
     description: 'Lightweight XFCE Wayland — built from source on freedesktop-sdk.',
-  },
-  {
-    value: 'hawaii',
-    emoji: '🌺',
-    label: 'Zirconium Hawaii',
-    description: 'Niri compositor on freedesktop-sdk. Experimental.',
   },
 ];
 
@@ -215,7 +209,6 @@ function getIsoUrl(sel: Selection, isoNames: Set<string> | null): string | null 
   if (sel.product === 'dakota') return 'https://download.tunaos.org/dakota/dakota-live-latest.iso';
   if (sel.product === 'tromso') return 'https://download.tunaos.org/tromso/tromso-live-latest.iso';
   if (sel.product === 'xfce') return 'https://download.tunaos.org/xfce-linux/xfce-linux-live-latest.iso';
-  if (sel.product === 'hawaii') return null; // no ISOs yet
   // TunaOS variants — validated against the live ISO index (static/iso-index.json)
   // rather than guessed, so this never wrongly claims an HWE/NVIDIA/GNOME 50
   // combo is or isn't downloadable. (HWE ISOs, for example, do exist for some
@@ -231,7 +224,6 @@ function getDocsUrl(sel: Selection): string {
   if (sel.product === 'dakota') return '/dakota';
   if (sel.product === 'tromso') return '/tromso';
   if (sel.product === 'xfce') return '/xfce-linux';
-  if (sel.product === 'hawaii') return '/hawaii';
   const variant = sel.variant ?? 'albacore';
   const desktop = sel.desktop ?? 'gnome';
   return `/docs/${variant}#${desktop}${editionSuffix(sel.edition)}`;

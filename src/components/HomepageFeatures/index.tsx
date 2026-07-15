@@ -15,7 +15,7 @@ const FeatureList: FeatureItem[] = [
     emoji: '🌌',
     description: (
       <>
-        Tromsø, XFCE Linux, Dakota, Hawaii — desktops built from source on{' '}
+        Tromsø, XFCE Linux, Dakota — desktops built from source on{' '}
         freedesktop-sdk. Reproducible, auditable, 100% from-source pipelines.
       </>
     ),
