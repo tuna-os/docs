@@ -33,8 +33,7 @@ tar xzf bmc.tar.gz
 sudo install -m755 bootc-migrate-composefs /usr/local/bin/
 ```
 
-<details>
-<summary>…or pull the container image</summary>
+<details><summary>…or pull the container image</summary>
 
 A minimal image ships the same binary, useful when GitHub Releases is rate-limited/blocked, or to `COPY --from=` it into another Containerfile:
 
@@ -44,11 +43,9 @@ podman cp bmc-extract:/usr/local/bin/bootc-migrate-composefs .
 podman rm bmc-extract
 sudo install -m755 bootc-migrate-composefs /usr/local/bin/
 ```
-
 </details>
 
-<details>
-<summary>…or build from source (needs Rust)</summary>
+<details><summary>…or build from source (needs Rust)</summary>
 
 ```bash
 git clone https://github.com/tuna-os/bootc-migrate-composefs
@@ -56,7 +53,6 @@ cd bootc-migrate-composefs
 cargo build --release
 sudo install -m755 target/release/bootc-migrate-composefs /usr/local/bin/
 ```
-
 </details>
 
 **2. Dry-run** — makes no changes, just checks your system is ready:
@@ -116,7 +112,7 @@ and a live phase-by-phase progress view with scrollable logs:
 sudo bootc-migrate-composefs tui
 ```
 
-![bootc-migrate-composefs TUI wizard](https://raw.githubusercontent.com/tuna-os/bootc-migrate-composefs/main/docs/images/tui-review.png)
+![bootc-migrate-composefs TUI wizard](docs/images/tui-review.png)
 
 The wizard defaults to `--dry-run` and only builds the equivalent CLI
 invocation shown on the Review screen — it doesn't need root just to browse;
