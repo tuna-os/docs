@@ -73,6 +73,9 @@ function Hero(): ReactNode {
           <Link className={clsx('button button--lg', styles.btnPrimary)} to="/download">
             Download ISOs 📦
           </Link>
+          <Link className={clsx('button button--lg', styles.btnGhost)} to="/iso-builder">
+            Build your own ISO 🛠️
+          </Link>
           <Link className={clsx('button button--lg', styles.btnGhost)} to="/projects">
             Explore Projects 🚀
           </Link>

@@ -16,7 +16,9 @@ function DownloadHeader(): ReactNode {
         <p className={styles.subtitle}>
           Bootable live ISOs for every TunaOS image and product line, served
           fresh from <a href="https://download.tunaos.org">download.tunaos.org</a>.
-          Not sure which one? Let the picker choose for you.
+          Not sure which one? Let the picker choose for you. Prefer it your
+          way? <a href="/iso-builder">Build your own ISO in the browser</a> —
+          any TunaOS image, your flatpak picks, no downloads middleman.
         </p>
       </div>
     </header>
