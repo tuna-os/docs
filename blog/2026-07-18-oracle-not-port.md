@@ -111,5 +111,9 @@ hundred lines of test harness, and it converts "we aim to be compatible"
 into a number that moves.
 
 *Code: [tuna-os/gtk-office-suite](https://github.com/tuna-os/gtk-office-suite)
-(Apache-2.0/GPL-3.0). The document model is being prepared for crates.io as
-`letters-core` once its git dependencies land in upstream releases.*
+(Apache-2.0/GPL-3.0). The spreadsheet core is on crates.io as
+[tables-core](https://crates.io/crates/tables-core), alongside
+[suite-common-core](https://crates.io/crates/suite-common-core) and
+[suite-export](https://crates.io/crates/suite-export); the document model
+follows as `letters-core` once its rdocx additions land upstream
+([tensorbee/rdocx#6](https://github.com/tensorbee/rdocx/pull/6)).*
