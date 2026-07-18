@@ -1,49 +1,48 @@
 ---
 sidebar_position: 7
-title: "Menu System"
+title: "menus"
 ---
 
-# 🎯 Menu System
+The Bluefin CLI provides a rich interactive menu system to manage your environment. Below is a diagram of the menu hierarchy and available options.
 
-Bluefin CLI provides an interactive TUI menu system for easy navigation of all features:
+```mermaid
+graph TD
+    Main[Main Menu] --> Status[📊 Status]
+    Main --> Shell[✨ Shell Shell Experience]
+    Main --> Bundles[📦 Install Tools]
+    Main --> Wallpapers[🖼  Wallpapers]
+    Main --> Starship[🚀 Starship Theme]
 
-## Main Menu
+    Shell --> ShellAction{Action}
+    ShellAction -->|Toggle Current| ShellToggle[Enable/Disable Current Shell]
+    ShellAction -->|Configure Components| ShellComps[Select Tools]
+    ShellAction -->|MOTD Settings| MOTD[📰 MOTD]
+    ShellAction -->|Manage Shells| ShellShells[Select Shells to Enable]
 
-Run without arguments to open the main menu:
+    ShellComps --> |Multi-Select| ShellToolsList[eza, ugrep, bat, atuin, starship, zoxide, uutils]
+    ShellShells --> |Multi-Select| ShellsList[bash, zsh, fish]
 
-```bash
-bluefin-cli
+    MOTD --> MOTDAction{Action}
+    MOTDAction -->|Show| MOTDShow[Display MOTD]
+    MOTDAction -->|Toggle| MOTDToggle[Select Shells to Enable]
+
+    MOTDToggle --> |Multi-Select| ShellsList
+
+    Bundles --> BundlesList[Select Bundles]
+    BundlesList --> |Multi-Select| BundlesOptions[AI Tools, CLI Essentials, CNCF Tools, Experimental IDE, Fonts, IDE Tools, K8s Tools]
+
+    Wallpapers --> WallpapersList[Select Wallpapers]
+    WallpapersList --> |Multi-Select| WallpaperCasks[List from ublue-os/tap]
+
+    Starship --> StarshipThemes[Select Theme]
+    StarshipThemes --> |Select| ThemeOptions[Nerd Font Symbols, Tokyo Night, Catppuccin Powerline, etc.]
 ```
 
-The menu presents:
-- **Bling** — toggle shell enhancements
-- **Bundles** — install curated tool sets
-- **MOTD** — configure the Message of the Day
-- **Wallpapers** — install desktop backgrounds
-- **Starship** — browse and apply prompt themes
-- **Status** — view current configuration
+## Section Descriptions
 
-## Keyboard Shortcuts
-
-| Key | Action |
-|---|---|
-| `↑`/`↓` | Navigate items |
-| `Enter` | Select item |
-| `Esc` | Back / exit |
-| `Tab` | Switch panes |
-| `Ctrl+C` | Quit |
-
-## Command-line mode
-
-All menu items are also available as CLI flags for scripting:
-
-```bash
-# Toggle bling features from CLI
-bluefin-cli bling toggle starship
-
-# Install a bundle non-interactively
-bluefin-cli bundle install cli --yes
-
-# Show status as JSON
-bluefin-cli status --json
-```
+- **Status**: Checks the current configuration and installation status of tools.
+- **Shell Experience**: Manages shell enhancements like `eza`, `bat`, `starship`, etc. You can toggle them for specific shells or configure which tools are enabled. MOTD settings are also accessible from this menu.
+- **MOTD**: Controls the "Message of the Day" that appears when you open a terminal. MOTD is enabled by default when you enable the Shell experience.
+- **Install Tools**: Allows you to install curated bundles of Homebrew packages for various use cases (AI, Dev, Kubernetes, etc.).
+- **Wallpapers**: Browse and install wallpapers available as Homebrew casks.
+- **Starship Theme**: Quickly switch between different presets for the Starship prompt.

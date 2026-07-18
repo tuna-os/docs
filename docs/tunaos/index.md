@@ -5,14 +5,13 @@ sidebar_label: "TunaOS"
 status: stable
 ---
 
-
 <div>
 ![]
 
 ## TunaOS
-### *A Collection of Cloud-Native Enterprise Linux OS Images*
+### *Cloud-native, immutable desktop Linux images*
 
-*Bootc-based desktop Linux images built on AlmaLinux, CentOS Stream, and Fedora*
+*One bootc-native desktop experience across Enterprise Linux and community distributions*
 
 ---
 
@@ -23,11 +22,11 @@ status: stable
 
 </div>
 
-## 🚀 About TunaOS
+## About TunaOS
 
-TunaOS is a curated collection of **bootc-based desktop operating systems** built on modern container technology. The goal is to bring a modern desktop experience to Enterprise Linux — stable, immutable, and up-to-date. Inspired by [Bluefin](https://projectbluefin.io) and the [Universal Blue](https://universal-blue.org/) community.
+TunaOS builds **bootc-based desktop operating systems** with atomic updates and straightforward rollbacks. Choose an Enterprise Linux base for long-term stability or a community distribution for a faster release cadence, while keeping the same image-based management model.
 
-Read the launch announcement: **[Modern Enterprise Linux Desktops with TunaOS](https://tunaos.org/blog/modern-enterprise-linux-desktops-with-tunaos)** and the landscape comparison: **[The Immutable Desktop Landscape: Where TunaOS Fits](https://tunaos.org/blog/the-immutable-desktop-landscape-where-tunaos-fits)**.
+[Visit tunaos.org](https://tunaos.org/) or read the [launch announcement](https://tunaos.org/blog/modern-enterprise-linux-desktops-with-tunaos).
 
 ### Features
 
@@ -38,24 +37,48 @@ Read the launch announcement: **[Modern Enterprise Linux Desktops with TunaOS](h
 - **HWE Option**: Hardware Enablement kernel for newer hardware support
 - **NVIDIA Option**: NVIDIA drivers and CUDA for graphics and AI workflows
 
-## 🐠 Images & Variants
+## Images and variants
 
 TunaOS provides a variety of bootc-based operating system images. Use the table below to choose your base distribution and desktop environment.
+
+### Live build matrix
+
+
+
+_Generated from the latest completed main-branch build for each variant. A cell is green when its image was successfully promoted to the published tag._
+
+| Variant | Green image cells | Latest run | Blocked or failing tags |
+| :--- | ---: | :--- | :--- |
+| 🐠 `yellowfin` | **9/16** | [❌ 2026-07-14](https://github.com/tuna-os/tunaOS/actions/runs/29304663189) | base,base-hwe,base-nvidia,gnome,cosmic,kde,niri |
+| 🐟 `albacore` | **16/16** | [❌ 2026-07-14](https://github.com/tuna-os/tunaOS/actions/runs/29304560979) | — |
+| 🍣 `skipjack` | **15/15** | [❌ 2026-07-14](https://github.com/tuna-os/tunaOS/actions/runs/29304713188) | — |
+| 🎣 `bonito` | **14/14** | [❌ 2026-07-14](https://github.com/tuna-os/tunaOS/actions/runs/29304431595) | — |
+| 🦈 `sailfin` | **5/5** | [✅ 2026-07-14](https://github.com/tuna-os/tunaOS/actions/runs/29304766845) | — |
+| 🌈 `guppy` | **3/3** | [✅ 2026-07-14](https://github.com/tuna-os/tunaOS/actions/runs/29305134903) | — |
+| 🐉 `bonito-rawhide` | **13/14** | [❌ 2026-07-14](https://github.com/tuna-os/tunaOS/actions/runs/29304558402) | gnome |
+| 🐟 `grouper` | **4/6** | [❌ 2026-07-14](https://github.com/tuna-os/tunaOS/actions/runs/29304749688) | gnome-zfs,niri |
+| 🚀 `marlin` | **0/8** | [❌ 2026-07-15](https://github.com/tuna-os/tunaOS/actions/runs/29388284284) | base,gnome,kde,cosmic,niri,xfce,gnome-cachyos,kde-cachyos |
+| 🐡 `flounder` | **0/6** | [❌ 2026-07-15](https://github.com/tuna-os/tunaOS/actions/runs/29387806332) | base,gnome,kde,cosmic,niri,xfce |
+| ☢️ `flounder-sid` | **0/6** | [❌ 2026-07-15](https://github.com/tuna-os/tunaOS/actions/runs/29387743218) | base,gnome,kde,cosmic,niri,xfce |
+
+**Current image coverage: 79/109 cells (72%).** This is a point-in-time CI snapshot, not a support-tier promise.
+
+
 
 | Variant | Base OS | Registry Path | Desktops | Architectures |
 | :--- | :--- | :--- | :--- | :--- |
 | 🐠 **Yellowfin** | AlmaLinux Kitten 10 | `ghcr.io/tuna-os/yellowfin` | GNOME, KDE, COSMIC, Niri | x86_64, x86_64/v2, arm64 |
-| 🐟 **Albacore** | AlmaLinux 10 (RHEL 10) | `ghcr.io/tuna-os/albacore` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64, x86_64/v2, arm64 |
+| 🐟 **Albacore** | AlmaLinux 10 (RHEL 10) | `ghcr.io/tuna-os/albacore` | GNOME, KDE, COSMIC, Niri | x86_64, x86_64/v2, arm64 |
 | 🍣 **Skipjack** | CentOS Stream 10 | `ghcr.io/tuna-os/skipjack` | GNOME, KDE, COSMIC, Niri | x86_64, arm64 |
 | 🎣 **Bonito** | Fedora 44 | `ghcr.io/tuna-os/bonito` | GNOME, KDE, COSMIC, Niri | x86_64, arm64 |
 | 🔒 **Redfin** | Red Hat Enterprise Linux 10 | *Local-Build Only* | GNOME, KDE, COSMIC, Niri, XFCE | x86_64, arm64 |
 | 🐟 **Grouper** | Ubuntu 26.04 | `ghcr.io/tuna-os/grouper` | GNOME, KDE, Niri, XFCE | x86_64 |
 | 🚀 **Marlin** | Arch Linux (Rolling) | `ghcr.io/tuna-os/marlin` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64 |
 | 🐡 **Flounder** | Debian 13 (Trixie) | `ghcr.io/tuna-os/flounder` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64 |
-| ☢️ **Flounder Sid** | Debian Sid (Unstable) | `ghcr.io/tuna-os/flounder-sid` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64 |
-| 🐉 **Bonito Rawhide** | Fedora Rawhide | `ghcr.io/tuna-os/bonito-rawhide` | GNOME, KDE, Niri, XFCE | x86_64, arm64 |
-| 🦎 **Sailfin** | openSUSE Tumbleweed | `ghcr.io/tuna-os/sailfin` | GNOME, KDE, Niri, XFCE | x86_64 |
-| 🐧 **Guppy** | Gentoo Linux | `ghcr.io/tuna-os/guppy` | GNOME, KDE | x86_64 |
+| ☢️ **Flounder Sid** | Debian Sid (Unstable) | `ghcr.io/tuna-os/flounder:*-sid` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64 |
+| 🐉 **Bonito Rawhide** | Fedora Rawhide | `ghcr.io/tuna-os/bonito:*-rawhide` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64, arm64 |
+| 🦈 **Sailfin** | openSUSE Tumbleweed | `ghcr.io/tuna-os/sailfin` | GNOME, KDE, Niri, XFCE | x86_64 |
+| 🌈 **Guppy** | Gentoo Linux | `ghcr.io/tuna-os/guppy` | GNOME, KDE | x86_64 |
 
 > [!NOTE]
 > **Redfin (RHEL 10)** is local-build only due to EULA restrictions. To build it locally, run `just build redfin <desktop>` (see [rhel-setup.md](https://github.com/tuna-os/tunaOS/blob/main/docs/rhel-setup.md)).
@@ -82,7 +105,7 @@ Image tags are constructed as `<desktop>[-hardware]`:
 
 ---
 
-## 📋 System Requirements
+## System requirements
 
 | Component | Minimum | Recommended |
 |-----------|---------|-------------|
@@ -92,20 +115,25 @@ Image tags are constructed as `<desktop>[-hardware]`:
 
 ---
 
-## 🛠️ Installation
+## Installation
 
 ### Use a pre-built ISO
 
-ISOs are published every two weeks for `gnome` and `gnome-hwe` flavors of Yellowfin and Albacore:
+Browse the currently published installation media on the download page:
 
-| Variant | GNOME | GNOME (HWE) |
-|---------|-------|-------------|
-| **Albacore** | [albacore-gnome-latest.iso](https://download.tunaos.org/live-isos/albacore-gnome-latest.iso) | [albacore-gnome-hwe-latest.iso](https://download.tunaos.org/live-isos/albacore-gnome-hwe-latest.iso) |
-| **Yellowfin** | [yellowfin-gnome-latest.iso](https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso) | [yellowfin-gnome-hwe-latest.iso](https://download.tunaos.org/live-isos/yellowfin-gnome-hwe-latest.iso) |
+**[📦 tunaos.org/download](https://tunaos.org/download)**
 
 ### Build your own ISO or VM image
 
-Use [tacklebox](https://github.com/tuna-os/tacklebox) to build ISOs:
+**In your browser — no tools, no root, nothing uploaded:**
+
+**[🛠️ tunaos.org/iso-builder](https://tunaos.org/iso-builder)** — point it
+at any TunaOS image (or your own bootc image), pick your flatpaks, and it
+authors a bootable live ISO entirely in WebAssembly using the same
+[tacklebox](https://github.com/tuna-os/tacklebox) engine CI uses.
+[User guide](https://tunaos.org/docs/iso-builder).
+
+**Or locally with [tacklebox](https://github.com/tuna-os/tacklebox):**
 
 ```bash
 # ISO (requires root)
@@ -138,7 +166,7 @@ If you're already running a compatible bootc system:
 sudo bootc switch ghcr.io/tuna-os/yellowfin:gnome
 ```
 
-## 🔐 Container Registry Authentication
+## Container registry authentication
 
 Images are published on GitHub Container Registry (GHCR). To pull images with `bootc` or `podman`:
 
@@ -152,10 +180,6 @@ gh auth token | podman login ghcr.io -u YOUR_USERNAME --password-stdin
 
 See [GitHub Container Registry docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) for more details.
 
-## 🧪 Current Status
-
-> **Note:** These images are in active development. Yellowfin and Albacore are the most mature variants. Bonito (Fedora) still needs work.
-
 ## Contributing
 
 Contributions welcome! See [`CONTRIBUTING.md`](https://github.com/tuna-os/tunaOS/blob/main/CONTRIBUTING.md) for:
@@ -164,7 +188,7 @@ Contributions welcome! See [`CONTRIBUTING.md`](https://github.com/tuna-os/tunaOS
 - Pull request guidelines
 - Architecture overview
 
-## 🤝 Community & Support
+## Community and support
 
 - 🐛 **Report Issues:** [GitHub Issues](https://github.com/tuna-os/tunaOS/issues)
 - [m] **Chat**: [#tunaos:reilly.asia](https://matrix.to/#/%23tunaos:reilly.asia)
@@ -173,11 +197,12 @@ Related Communities:
 - 🎮 **Discord:** [Universal Blue Community](https://discord.gg/WEu6BdFEtp)
 - 💬 **AlmaLinux Atomic SIG:** [AlmaLinux Atomic SIG](https://chat.almalinux.org/almalinux/channels/sigatomic)
 
-## 📚 Documentation
+## Documentation
 
 ### Project Docs
 - [TunaOS Blog](https://tunaos.org/blog/modern-enterprise-linux-desktops-with-tunaos) — launch announcement and design philosophy comparison
 - [Contributor Guide](https://github.com/tuna-os/tunaOS/blob/main/CONTRIBUTING.md) — how to set up, build, and contribute
+- [Roll Your Own Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/ROLL_YOUR_OWN.md) — build your own custom TunaOS variant
 - [Agent Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/AGENT_GUIDE.md) — complete architecture and contributor reference
 - [Build Pipeline](https://github.com/tuna-os/tunaOS/blob/main/docs/build-pipeline.md) — CI/CD workflow overview
 - [Testing Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/TESTING.md) — ISO end-to-end test harness

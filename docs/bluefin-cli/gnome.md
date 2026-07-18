@@ -1,36 +1,65 @@
 ---
 sidebar_position: 6
-title: "GNOME Extensions"
+title: "gnome"
 ---
 
-# 🖥️ GNOME Extensions
+*A curated collection of GNOME Circle and community applications available as Flatpaks.*
 
-Bluefin CLI can install and manage GNOME Shell extensions and desktop customization tools:
-
-```bash
-bluefin-cli bling toggle gnome-extensions
-```
-
-## What's available
-
-| Extension | Purpose |
-|---|---|
-| [AppIndicator](https://extensions.gnome.org/extension/615/) | System tray icons |
-| [Blur My Shell](https://extensions.gnome.org/extension/3193/) | Blur effect for UI elements |
-| [Dash to Dock](https://extensions.gnome.org/extension/307/) | Transforms dash into a dock |
-| [GSConnect](https://extensions.gnome.org/extension/1319/) | KDE Connect integration |
-| [Just Perfection](https://extensions.gnome.org/extension/3843/) | Fine-tune GNOME UI |
-| [Tiling Assistant](https://extensions.gnome.org/extension/3733/) | Window tiling |
-
-## Managing extensions
-
-```bash
-# List installed extensions
-bluefin-cli status
-
-# Toggle extension category
-bluefin-cli bling toggle gnome-extensions
-
-# Enable/disable specific extensions
-gnome-extensions enable blur-my-shell@aunetx
-```
+- `Biblioteca`
+- `Damask`
+- `Dialect`
+- `EarTag`
+- `Elastic`
+- `Fotema`
+- `Authenticator`
+- `Decoder`
+- `Chess Clock`
+- `Eyedropper`
+- `RNote`
+- `Wike`
+- `Curtail`
+- `Foliate`
+- `Drawing`
+- `G4Music`
+- `TextSnatcher`
+- `Blanket`
+- `AudioSharing`
+- `Fragments`
+- `Fretboard`
+- `Calligraphy`
+- `Collision`
+- `Tuba`
+- `Cartridges`
+- `Dino`
+- `Komikku`
+- `PDF Metadata Editor`
+- `Khronos`
+- `List`
+- `Mousai`
+- `Converter`
+- `NewsFlash`
+- `Monophony`
+- `Smile`
+- `Bustle`
+- `Piper`
+- `Gaphor`
+- `Emblem`
+- `Icon Library`
+- `Buffer`
+- `Pulp`
+- `Teleport`
+- `Notify`
+- `Apostrophe`
+- `Identity`
+- `Health`
+- `Podcasts`
+- `Solanum`
+- `Citations`
+- `Iotas`
+- `PikaBackup`
+- `Cavalier`
+- `Tube Converter`
+- `Commit`
+- `Eloquent`
+- `Tangram`
+- `Cawbird`
