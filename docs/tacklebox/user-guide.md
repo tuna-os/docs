@@ -14,7 +14,7 @@ add/remove/update after the fact.
 It is one static Go binary. Building media needs root (loop devices,
 `mkfs`, mounts) and `podman` (images are read from local container
 storage or pulled). A pure-Go, root-free core is landing (#95) that
-also powers the [browser ISO builder](https://tunaos-iso-builder.trogdor30001.workers.dev).
+also powers the [browser ISO builder](https://iso.tunaos.org).
 
 ```text
 tacklebox build      Build media (disk image / USB / ISO) from a recipe
@@ -179,7 +179,7 @@ pull, overlay-semantics unpack, desktop introspection, live-user
 baking, EROFS live root, FAT32 ESP, and ISO9660/Rock Ridge/El Torito —
 all validated against the kernel and firmware. `cmd/purebuild` is the
 native CLI over that core; `cmd/tbwasm` compiles the same code to
-WebAssembly for the [browser builder](https://tunaos-iso-builder.trogdor30001.workers.dev)
+WebAssembly for the [browser builder](https://iso.tunaos.org)
 (see the tunaOS repo's `docs/iso-builder-guide.md` for its user guide).
 
 ## 9. Troubleshooting

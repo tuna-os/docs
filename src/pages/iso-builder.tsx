@@ -3,7 +3,7 @@ import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 
-const APP_URL = 'https://tunaos-iso-builder.trogdor30001.workers.dev';
+const APP_URL = 'https://iso.tunaos.org';
 
 const FEATURES: {emoji: string; title: string; blurb: string}[] = [
   {

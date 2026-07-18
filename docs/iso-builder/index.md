@@ -8,10 +8,10 @@ status: alpha
 
 :::tip[Try it]
 The builder has a landing page at [tunaos.org/iso-builder](/iso-builder) and runs at
-[https://tunaos-iso-builder.trogdor30001.workers.dev](https://tunaos-iso-builder.trogdor30001.workers.dev).
+[https://iso.tunaos.org](https://iso.tunaos.org).
 :::
 
-> ⚠️ **Alpha** — experimental preview at a test URL; interfaces and limits below will change.
+> ⚠️ **Alpha** — experimental preview; interfaces and limits below will change.
 
 Build a live, bootable TunaOS ISO from any bootable container image —
 **entirely in your browser**. Nothing is uploaded anywhere: the registry
@@ -20,7 +20,7 @@ WebAssembly, using the exact same engine
 ([tacklebox](https://github.com/tuna-os/tacklebox)'s pure-Go core) that
 TunaOS CI uses to build release media.
 
-**Test deployment:** [https://tunaos-iso-builder.trogdor30001.workers.dev](https://tunaos-iso-builder.trogdor30001.workers.dev)
+**Live at:** [https://iso.tunaos.org](https://iso.tunaos.org)
 
 > Screenshots below are generated automatically by the Playwright
 > walkthrough (`prototype/iso-builder/e2e`, `npm run walkthrough`) — if
