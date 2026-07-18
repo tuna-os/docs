@@ -4,55 +4,42 @@ sidebar_position: 1
 
 # 📝 Letters
 
-Modern word processor for the GNOME desktop.
+Word processor for the GNOME desktop, part of the
+[TunaOS Office Suite](/docs/gtk-office-suite). Written in Rust with
+GTK 4 and Libadwaita; the document engine
+([`letters-core`](https://github.com/tuna-os/gtk-office-suite/tree/main/letters-core))
+is a GTK-free Rust crate whose file fidelity is verified against
+LibreOffice in CI.
 
-Letters is a modern, minimalist word processor for the GNOME desktop, with support for reading and writing DOCX, ODT, MD and HTML, using the [pandoc](https://pandoc.org) library. It can also export documents to PDF using [weasyprint](https://weasyprint.org/).
-
-> **This is a hard fork** of [Letters by Satvik Patwardhan](https://codeberg.org/eyekay/letters), maintained as part of the TunaOS GNOME office suite alongside [Tables](/docs/tables) and [Decks](/docs/decks).
+![Letters](https://raw.githubusercontent.com/tuna-os/gtk-office-suite/main/docs/screenshots/letters.png)
 
 ## Features
 
-- **Rich editing**: Bold, italic, underline, headings, lists, tables, find/replace
-- **Multi-format**: DOCX, ODT, Markdown, HTML input and output
-- **PDF export**: High-quality PDF via WeasyPrint
-- **Word count**: Live word and character count
-- **Keyboard shortcuts**: Comprehensive formatting, navigation, and editing shortcuts
-- **Libadwaita**: Clean, responsive GTK 4 interface with light/dark mode
+- **Rich editing** — bold/italic/underline/strikethrough, highlight,
+  headings 1–6, Title/Subtitle styles, lists, block quotes, code,
+  links, images, tables, find & replace, spell check
+- **Formats** — DOCX, ODT, Markdown, HTML, plain text in and out; PDF
+  export. Page size/margins, headers/footers with `{page}`, font
+  family/size/color, and line spacing round-trip
+- **Selection popover** — formatting appears where you select; the
+  status bar shows a live word count and the style at the cursor
+- **Command palette** — Ctrl+K lists every action with its shortcut
+- **Markdown macros** — type `**bold**` and it formats as you write
 
 ## Install
 
-[![Get it on Flathub](https://flathub.org/api/badge?locale=en)](https://flathub.org/apps/org.tunaos.letters/)
-
-Or from the TunaOS Flatpak remote:
-
 ```bash
 flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo
-flatpak install tuna-os org.tunaos.letters
+flatpak install tuna-os org.tunaos.letters-rust
 ```
 
-## Build
+Opens files from the command line and file manager:
+`flatpak run org.tunaos.letters-rust report.docx`
 
-```bash
-git clone https://github.com/tuna-os/letters.git
-cd letters
-just setup   # clones suite-common subproject
-just build   # builds & installs Flatpak
-just run     # launches the app
-```
+## Source
 
-## Test
-
-```bash
-just lint         # syntax check
-pytest tests/     # 81 unit tests
-```
-
-## License
-
-GPL-3.0-or-later.
-
-## Credits
-
-**Original author:** [Satvik Patwardhan](https://codeberg.org/eyekay) — the original Letters word processor, its architecture, design, and implementation.
-
-Built with GTK 4, WebKitGTK, libadwaita, pypandoc, blueprint-compiler, weasyprint, and Flatpak.
+Part of
+[tuna-os/gtk-office-suite](https://github.com/tuna-os/gtk-office-suite)
+(GPL-3.0-or-later). The name honors the original
+[Letters by Satvik Patwardhan](https://codeberg.org/eyekay/letters);
+this is a from-scratch Rust application.

@@ -3,125 +3,47 @@ sidebar_position: 2
 title: "User Guide"
 ---
 
-# 📊 Using Tables
+# 🧮 Using Tables
 
-Tables is a full-featured spreadsheet application for the GNOME desktop. This guide covers common workflows.
+Day-to-day workflow for the Tables spreadsheet.
 
-## First Run
-
-Launch Tables from the app grid:
+## Launch
 
 ```bash
-flatpack run org.tunaos.tables
+flatpak run org.tunaos.tables-rust            # blank workbook
+flatpak run org.tunaos.tables-rust budget.xlsx  # open a file
 ```
 
-Or install via the TunaOS Flatpak remote:
+The layout is Calc-style: name box + formula bar on top, the grid, and
+sheet tabs with a live selection readout at the bottom.
 
-```bash
-flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo
-flatpak install tuna-os org.tunaos.tables
-```
+## Moving around
 
-## Basic Operations
-
-### Entering Data
-
-Click any cell and start typing. Press `Enter` to move down, `Tab` to move right.
-
-| Action | Shortcut |
+| Action | How |
 |---|---|
-| Edit cell | `F2` or double-click |
-| Move down | `Enter` |
-| Move right | `Tab` |
-| Move up | `Shift+Enter` |
-| Select column | `Ctrl+Space` |
-| Select row | `Shift+Space` |
-| Fill down | `Ctrl+D` |
-| Fill right | `Ctrl+R` |
+| Jump to a cell | **Ctrl+G**, type `C6`, Enter |
+| Move the selection | arrow keys |
+| Extend the selection | Shift+arrows, Shift+click, or drag |
+| Back to the grid from the formula bar | Escape |
 
-### Formulas
+Select more than one cell and the bottom-right readout shows
+**range · Sum · Avg · Count** live.
 
-Tables supports ~400 functions via HyperFormula. Start a formula with `=`:
+## Editing
 
-```text
-=SUM(A1:A10)
-=IF(B1>100, "High", "Low")
-=VLOOKUP(C1, D1:E10, 2, FALSE)
-=AVERAGE(A1:A5)
-```
+Type in the formula bar and press **Enter** — the value or formula
+commits and focus returns to the grid. Formulas start with `=`
+(IronCalc engine: SUM, AVERAGE, IF, string functions, cross-references,
+absolute refs — the OpenFormula corpus runs at 107/107). **Delete**
+clears the active cell. **Ctrl+Z / Ctrl+Shift+Z** undo/redo.
 
-### Working with Sheets
+Toolbar actions (also in the **Ctrl+K** palette): cycle number format
+(currency, percent, date, scientific), cycle cell borders, merge
+cells, insert chart, export PDF.
 
-- **Add sheet**: Click `+` in the sheet tab bar
-- **Rename**: Double-click a sheet tab
-- **Reorder**: Drag sheet tabs left or right
-- **Color**: Right-click a tab → Tab Color
+## Files
 
-## Formatting
-
-### Cell Formatting
-
-```text
-Bold:      Ctrl+B
-Italic:    Ctrl+I
-Underline: Ctrl+U
-Alignment: Toolbar buttons (L/C/R)
-Borders:   Toolbar → Borders menu
-```
-
-### Number Formats
-
-Right-click a cell → Format Cells → choose:
-
-| Format | Example |
-|---|---|
-| General | 1234.56 |
-| Number | 1,234.56 |
-| Currency | $1,234.56 |
-| Percentage | 12.35% |
-| Date | 2026-06-29 |
-
-## Charts
-
-Select data and insert a chart:
-
-1. Select the data range
-2. Click **Insert → Chart**
-3. Choose type: Bar, Line, or Pie
-4. The chart embeds in the sheet and exports to XLSX
-
-## Data Tools
-
-### Sort & Filter
-
-```text
-Select range → Data → Sort
-Select range → Data → Filter
-```
-
-### Freeze Panes
-
-```text
-Select cell below/right of freeze point → View → Freeze Panes
-```
-
-### Merge Cells
-
-```text
-Select cells → Format → Merge Cells
-```
-
-## File Support
-
-| Format | Read | Write | Notes |
-|---|---|---|---|
-| XLSX | ✅ | ✅ | Excel format with charts |
-| CSV | ✅ | ✅ | Comma-separated values |
-| ODS | ✅ | ✅ | OpenDocument Spreadsheet |
-| XLS | ✅ | ❌ | Legacy Excel (read only) |
-
-## See Also
-
-- [Office Suite](/gtk-office-suite) — Tables, Decks, Letters overview
-- [Decks](/decks) — presentation app
-- [Letters](/letters) — word processor
+XLSX read/write; ODS and CSV import. Formulas are saved as live
+formulas — LibreOffice Calc recalculates them. Number formats, merged
+cells, frozen panes, and column widths persist. Column edges drag to
+resize; double-click auto-fits.

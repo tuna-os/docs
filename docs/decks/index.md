@@ -4,48 +4,39 @@ sidebar_position: 1
 
 # 📽️ Decks
 
-Presentation application for the TunaOS GNOME office suite.
+Presentations for the GNOME desktop, part of the
+[TunaOS Office Suite](/docs/gtk-office-suite). Written in Rust with
+GTK 4 and Libadwaita; slides render on a Cairo canvas and text styling
+shares the same run model as Letters, so styled text moves between the
+apps losslessly.
 
-Powered by [Fabric.js](http://fabricjs.com/) for slide editing and [Reveal.js](https://revealjs.com/) for fullscreen presentations. Reads and writes PPTX and ODP files using [python-pptx](https://python-pptx.readthedocs.io/) and [odfpy](https://github.com/eea/odfpy). Exports to PDF via [Pillow](https://python-pillow.org/).
-
-Shares the [suite-common](https://github.com/tuna-os/suite-common) scaffold with [Letters](/docs/letters) and [Tables](/docs/tables).
+![Decks](https://raw.githubusercontent.com/tuna-os/gtk-office-suite/main/docs/screenshots/decks.png)
 
 ## Features
 
-- **Canvas editing**: Text boxes, shapes, images on a Fabric.js canvas
-- **Slide management**: Add, delete, duplicate, reorder slides via sidebar
-- **Layouts**: Blank, Title, Title+Content, Two-Column presets
-- **Transitions**: Fade, Slide, Convex, Concave, Zoom (per-slide)
-- **Present mode**: Fullscreen via Reveal.js with B/W/. blank shortcuts
-- **Undo/Redo**: 30-level canvas action history (Ctrl+Z / Ctrl+Shift+Z)
-- **Export**: Multi-page PDF
-- **Keyboard shortcuts**: Familiar shortcuts (Ctrl+M, Ctrl+Shift+D, F5, Home, End)
+- **PPTX read/write** — text boxes (with per-run bold/italic/underline,
+  font size, color), shapes, images, slide backgrounds, and speaker
+  notes survive a round-trip through LibreOffice Impress (proven in CI)
+- **Editing** — slide strip with add/delete/reorder, object inspector
+  (position/size), drag with snap-to-grid, double-click text editing,
+  speaker-notes pane
+- **Presenting** — presenter pill (previous/present/next), fullscreen
+  mode with keyboard navigation and transitions (F5)
+- **Command palette** — Ctrl+K lists every action with its shortcut;
+  the status readout shows slide *x/y* and object count
 
 ## Install
 
 ```bash
 flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo
-flatpak install tuna-os org.tunaos.decks
+flatpak install tuna-os org.tunaos.decks-rust
 ```
 
-## Build
+Opens files from the command line and file manager:
+`flatpak run org.tunaos.decks-rust talk.pptx`
 
-```bash
-git clone https://github.com/tuna-os/decks.git
-cd decks
-just setup   # clones suite-common + vendors JS engines
-just build   # builds & installs Flatpak
-just run     # launches
-```
+## Source
 
-## Test
-
-```bash
-just lint       # syntax check
-just l1test     # 11 adapter round-trip tests
-just guitest    # AT-SPI dogtail GUI test
-```
-
-## License
-
-GPL-3.0-or-later. Vendored JS engines: MIT (fabric.js), MIT (reveal.js).
+Part of
+[tuna-os/gtk-office-suite](https://github.com/tuna-os/gtk-office-suite)
+(GPL-3.0-or-later).

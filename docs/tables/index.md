@@ -4,50 +4,39 @@ sidebar_position: 1
 
 # 📊 Tables
 
-Spreadsheet application for the TunaOS GNOME office suite.
+Spreadsheet for the GNOME desktop, part of the
+[TunaOS Office Suite](/docs/gtk-office-suite). Written in Rust with
+GTK 4 and Libadwaita; formulas are evaluated by
+[IronCalc](https://ironcalc.com) (OpenFormula conformance measured at
+107/107 in our corpus), rendered on a Cairo canvas.
 
-Powered by [Jspreadsheet CE](https://jspreadsheet.com/) and [HyperFormula](https://hyperformula.handsontable.com/) with ~400 functions. Reads and writes CSV, XLSX, and ODS files using [openpyxl](https://openpyxl.readthedocs.io/), [python-calamine](https://github.com/tafia/calamine), and [odfpy](https://github.com/eea/odfpy).
-
-Shares the [suite-common](https://github.com/tuna-os/suite-common) scaffold with [Letters](/docs/letters) and [Decks](/docs/decks).
+![Tables](https://raw.githubusercontent.com/tuna-os/gtk-office-suite/main/docs/screenshots/tables.png)
 
 ## Features
 
-- **Formulas**: ~400 functions (SUM, IF, VLOOKUP, etc.) via HyperFormula
-- **Multi-sheet**: workbook tabs, sheet navigation
-- **Formatting**: Bold, Italic, Underline, Alignment (L/C/R), cell borders
-- **Charts**: Bar, Line, Pie charts embedded in XLSX (openpyxl)
-- **Data tools**: Sort, filter, freeze panes, merge cells, number formatting
-- **Fill**: Fill down (Ctrl+D), fill right (Ctrl+R)
-- **Selection**: Ctrl+Space (column), Shift+Space (row)
-- **Keyboard shortcuts**: Familiar shortcuts (Ctrl+B/I/U, PgUp/PgDn, etc.)
+- **Formulas** — IronCalc engine; formulas stay live through
+  save/reload (LibreOffice Calc recalculates our files — proven in CI)
+- **Formats** — XLSX read/write; ODS and CSV import. Number formats,
+  merged cells, frozen panes, and column widths persist
+- **Selection that works like a spreadsheet** — drag, Shift+click,
+  Shift+arrows; live **Sum · Avg · Count** in the status bar; name box
+  with **Ctrl+G** "Go to Cell"; Escape returns from the formula bar to
+  the grid
+- **Command palette** — Ctrl+K lists every action with its shortcut
+- Multi-sheet, sort, borders, merge, validation, charts (bar/line/pie)
 
 ## Install
 
 ```bash
 flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo
-flatpak install tuna-os org.tunaos.tables
+flatpak install tuna-os org.tunaos.tables-rust
 ```
 
-## Build
+Opens files from the command line and file manager:
+`flatpak run org.tunaos.tables-rust budget.xlsx`
 
-```bash
-git clone https://github.com/tuna-os/tables.git
-cd tables
-just setup   # clones suite-common + vendors JS engines
-just build   # builds & installs Flatpak
-just run     # launches
-```
+## Source
 
-## Test
-
-```bash
-just lint          # syntax check
-just l1test        # 20 adapter round-trip tests
-just guitest       # AT-SPI dogtail GUI test
-just formulatest   # HyperFormula vector conformance
-just shortcuttest  # keyboard shortcut verification
-```
-
-## License
-
-GPL-3.0-or-later. Vendored JS engines: MIT (jspreadsheet-ce, jsuites), GPL-3.0 (hyperformula).
+Part of
+[tuna-os/gtk-office-suite](https://github.com/tuna-os/gtk-office-suite)
+(GPL-3.0-or-later).

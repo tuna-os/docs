@@ -3,94 +3,63 @@ sidebar_position: 1
 sidebar_label: "Office Suite"
 ---
 
-# 🏢 TunaOS GTK Office Suite
+# 🏢 TunaOS Office Suite
 
-A complete, native office suite for GNOME — built in **Rust** and **GTK 4** with **Libadwaita**. Three apps, one shared scaffold, all distributed as Flatpaks.
+A native office suite for GNOME — three apps written in **Rust** with
+**GTK 4** and **Libadwaita**, sharing one document-engine foundation,
+distributed as Flatpaks.
 
-| App | Description | Status | Install |
-|---|---|---|---|
-| [**Tables**](/tables) 📊 | Spreadsheet — 400+ functions, CSV/XLSX/ODS | Active | `flatpak install tuna-os io.github.hanthor.tables` |
-| [**Decks**](/decks) 📽️ | Presentations — PPTX/ODP, Reveal.js export | Active | `flatpak install tuna-os io.github.hanthor.decks` |
-| [**Letters**](/letters) 📝 | Word processor — DOCX/ODT/MD/HTML, PDF export | Active | `flatpak install tuna-os net.codelogistics.letters` |
+| App | Description | Install |
+|---|---|---|
+| [**Letters**](/docs/letters) 📝 | Word processor — DOCX, ODT, Markdown, HTML, PDF export | `flatpak install tuna-os org.tunaos.letters-rust` |
+| [**Tables**](/docs/tables) 📊 | Spreadsheet — XLSX, ODS, CSV, IronCalc formula engine | `flatpak install tuna-os org.tunaos.tables-rust` |
+| [**Decks**](/docs/decks) 📽️ | Presentations — PPTX, present mode, speaker notes | `flatpak install tuna-os org.tunaos.decks-rust` |
 
-## ✨ Why a Rust Office Suite?
-
-Most Linux office suites are either:
-- **Monolithic C++** (LibreOffice) — powerful but heavy, slow to start
-- **Web-based** (Google Docs, OnlyOffice) — not native, requires a browser
-- **Proprietary** (WPS Office) — not open source
-
-TunaOS's office suite is different:
-- **🦀 Rust** — memory-safe, fast, and modern
-- **🎨 GTK 4 + Libadwaita** — native GNOME look and feel
-- **📦 Flatpak** — sandboxed, auto-updating, dependency-free
-- **🔗 Shared scaffold** — common chrome, WebKit bridge, and file I/O via `suite-common`
-- **🧩 Interchangeable engines** — each app uses best-in-class libraries under the hood
-
-## 🚀 Quick Install
-
-Add the TunaOS Flatpak remote and install any app:
+## 🚀 Quick install
 
 ```bash
-flatpak remote-add tuna-os oci+https://tuna-os.github.io/flatpak-index
+flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo
 
-# Install all three
-flatpak install tuna-os io.github.hanthor.tables
-flatpak install tuna-os io.github.hanthor.decks
-flatpak install tuna-os net.codelogistics.letters
+flatpak install tuna-os org.tunaos.letters-rust
+flatpak install tuna-os org.tunaos.tables-rust
+flatpak install tuna-os org.tunaos.decks-rust
 ```
 
-## 📊 Tables (Spreadsheet)
+Installable `.flatpak` bundles are also attached to each
+[GitHub release](https://github.com/tuna-os/gtk-office-suite/releases).
 
-A full-featured spreadsheet application powered by:
-- [Jspreadsheet CE](https://jspreadsheet.com/) — spreadsheet grid engine
-- [HyperFormula](https://hyperformula.handsontable.com/) — 400+ calculation functions
-- [openpyxl](https://openpyxl.readthedocs.io/) / [python-calamine](https://github.com/tafia/calamine) — XLSX read/write
-- [odfpy](https://github.com/eea/odfpy) — ODS format support
+## Screenshots
 
-## 📽️ Decks (Presentations)
+Regenerated automatically from the real apps by CI:
 
-Create and present slide decks with:
-- [Fabric.js](http://fabricjs.com/) — canvas-based slide editing
-- [Reveal.js](https://revealjs.com/) — fullscreen HTML presentations
-- [python-pptx](https://python-pptx.readthedocs.io/) — PPTX read/write
-- [Pillow](https://python-pillow.org/) — PDF export
+![Letters](https://raw.githubusercontent.com/tuna-os/gtk-office-suite/main/docs/screenshots/letters.png)
 
-## 📝 Letters (Word Processor)
+![Tables](https://raw.githubusercontent.com/tuna-os/gtk-office-suite/main/docs/screenshots/tables.png)
 
-A distraction-free writing experience with:
-- [pandoc](https://pandoc.org) — universal document conversion
-- [weasyprint](https://weasyprint.org/) — PDF export with CSS styling
-- DOCX, ODT, Markdown, and HTML support
+![Decks](https://raw.githubusercontent.com/tuna-os/gtk-office-suite/main/docs/screenshots/decks.png)
 
-> Letters is a **hard fork** of the [original Letters](https://codeberg.org/eyekay/letters) by Satvik Patwardhan, maintained as part of the TunaOS office suite.
+## Why this suite
 
-## 🛠️ Contributing
+- **🦀 Pure Rust engines** — each app's document model lives in a
+  GTK-free core crate (`letters-core`, `tables-core`, `decks-core`)
+  with the UI as a thin shell. The formula engine is
+  [IronCalc](https://ironcalc.com); DOCX I/O is
+  [rdocx](https://github.com/tensorbee/rdocx).
+- **📏 Measured LibreOffice parity, not claimed** — every persisting
+  feature is proven by tests that run our files through a headless
+  LibreOffice in CI: 65 oracle tests, LibreOffice-authored corpora, and
+  a CommonMark round-trip ratchet at 630/652. See
+  [PARITY.md](https://github.com/tuna-os/gtk-office-suite/blob/main/docs/PARITY.md).
+- **⌨️ Powerful without clutter** — a Ctrl+K command palette lists every
+  action with its shortcut in all three apps; selection raises the
+  formatting you need; status bars are live (word count and style in
+  Letters, Sum/Avg/Count in Tables, slide/object readout in Decks).
+- **🎨 GNOME native** — libadwaita chrome, adaptive layouts, AT-SPI
+  accessible; the smoke-test suite drives the apps through a screen
+  reader's eyes on every push.
 
-All three apps are written in **Rust** with **GTK 4** and **Libadwaita** bindings. They share the `suite-common` scaffold and `suite-common-rust` libraries.
+## Source
 
-Good first contributions:
-- Add a unit test
-- Improve error handling
-- Fix an accessibility issue
-- Translate UI strings
-- Write documentation
-
-### Development setup
-
-```bash
-# Clone the shared scaffold and an app
-git clone https://github.com/tuna-os/suite-common.git
-git clone https://github.com/tuna-os/tables.git
-cd tables
-
-# Build and run
-cargo build
-cargo run
-```
-
-## 🔗 See also
-
-- [Flatpak Index](/flatpak) — all TunaOS Flatpaks
-- [Corral](/corral) — VM management for development environments
-- [Tacklebox](/tacklebox) — multi-boot media creator
+[github.com/tuna-os/gtk-office-suite](https://github.com/tuna-os/gtk-office-suite) —
+GPL-3.0-or-later. The roadmap lives in
+[docs/ROADMAP.md](https://github.com/tuna-os/gtk-office-suite/blob/main/docs/ROADMAP.md).
