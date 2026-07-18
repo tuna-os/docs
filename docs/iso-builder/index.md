@@ -35,7 +35,7 @@ TunaOS CI uses to build release media.
 
 2. **Enter a bootable container image.** Anything OCI works as long as
    the image is bootc-style (kernel under `/usr/lib/modules`):
-   - `tuna-os/guppy:base` — a TunaOS image on GHCR (short form)
+   - `tuna-os/sailfin:base` — a TunaOS image on GHCR (short form)
    - `ghcr.io/you/your-os:tag` — any GHCR image (fetched via the
      TunaOS CORS relay)
    - `quay.io/…` / other registries — fetched directly; works when the
@@ -53,9 +53,11 @@ TunaOS CI uses to build release media.
 
 4. **Tune under Advanced (optional).**
    - **Volume label** — the ISO's `CDLABEL`.
-   - **Flatpak preload list** — prefilled per detected desktop (GNOME
-     and KDE have their own lists; niri/xfce default to GNOME's).
-     Embedded into the ISO as `/LiveOS/flatpak-preload.json` for the
+   - **Flatpak preload list** — a checklist prefilled per detected
+     desktop (GNOME and KDE have their own defaults; niri/xfce use
+     GNOME's). Untick anything you don't want, and use the **Flathub
+     search box** to autocomplete and add more apps. The final list is
+     embedded into the ISO as `/LiveOS/flatpak-preload.json` for the
      live environment to consume.
    - **tbox initramfs URL** — see [Bootability](#bootability) below.
 
@@ -73,16 +75,17 @@ pre-configured build:
 
 | Param | Meaning | Example |
 |---|---|---|
-| `image` | image to pre-fill and auto-inspect | `?image=tuna-os/guppy:base` |
+| `image` | image to pre-fill | `?image=tuna-os/sailfin:base` |
+| `autorun` | `1` starts the inspect immediately on load (without it, params only pre-fill — a link never starts a multi-GB pull by itself) | `&autorun=1` |
 | `flatpaks` | comma-separated app IDs replacing the default list | `&flatpaks=org.example.App,org.mozilla.firefox` |
 | `label` | volume label | `&label=MYOS` |
 | `initrd` | URL of a tbox-enabled initramfs to embed | `&initrd=https://…/initramfs.img` |
 
 Example:
-`…workers.dev/?image=ghcr.io/you/your-os:stable&label=YOUROS`
+`https://iso.tunaos.org/?image=ghcr.io/you/your-os:stable&label=YOUROS`
 
-The "Share a preset" line at the bottom of the page always shows the
-params for the current form state.
+The **Share a preset** link at the bottom of the page always encodes the
+current form state — click it to test, or hit **Copy** to share it.
 
 ## Bootability
 
