@@ -35,7 +35,7 @@ toolbar and shortcuts do the same:
 | Bullet / numbered list | Ctrl+Shift+8 / Ctrl+Shift+7 |
 | Align left / center / right / justify | Ctrl+L / Ctrl+E / Ctrl+R / Ctrl+J |
 | Insert link | Ctrl+Shift+K |
-| Font size bigger / smaller | Ctrl+Shift+> / Ctrl+Shift+< |
+| Font size bigger / smaller | `Ctrl+Shift+>` / `Ctrl+Shift+<` |
 | Paragraph style (Normal, Heading 1–6, Title, Subtitle, Code, Quote) | toolbar dropdown or palette |
 
 Markdown macros work as you type: `**bold**`, `*italic*`, `# heading`,
