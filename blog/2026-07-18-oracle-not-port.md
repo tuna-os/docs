@@ -53,8 +53,8 @@ regress; raising it is the definition of progress):
 3. **Vendored permissive corpora.** The CommonMark spec's 652 examples run
    as a round-trip-idempotence torture test for the document model
    (594/652), and 107 table-driven cases keyed to ODF OpenFormula measure
-   the spreadsheet engine (98/107 — the nine reds are a precise upstream
-   contribution list for IronCalc, every one a clean `#NAME?`).
+   the spreadsheet engine (107/107 — nine of those started as reds, every
+   one a clean `#NAME?` that turned out to be already fixed on IronCalc main — the ratchet pinned the gap, upstream closed it).
 
 The corpus pays for itself constantly. It caught table text being silently
 dropped by our DOCX reader, speaker notes that had never once survived a
@@ -93,7 +93,7 @@ off a scoreboard instead of taking on faith.
 |---|---|
 | LibreOffice-authored parity — Letters | 109/109 |
 | LibreOffice-authored parity — Decks | 9/9 |
-| OpenFormula conformance — Tables | 98/107 |
+| OpenFormula conformance — Tables | 107/107 |
 | CommonMark round-trip idempotence | 594/652 |
 | DOCX round-trip fidelity suite | 15/15 |
 | soffice oracles (Writer/Calc/Impress, both directions) | green, gating |
@@ -111,9 +111,9 @@ hundred lines of test harness, and it converts "we aim to be compatible"
 into a number that moves.
 
 *Code: [tuna-os/gtk-office-suite](https://github.com/tuna-os/gtk-office-suite)
-(GPL-3.0-or-later). The spreadsheet core is on crates.io as
+(GPL-3.0-or-later that turned out to be already fixed on IronCalc main — the ratchet pinned the gap, upstream closed it). The spreadsheet core is on crates.io as
 [tables-core](https://crates.io/crates/tables-core), alongside
 [suite-common-core](https://crates.io/crates/suite-common-core) and
 [suite-export](https://crates.io/crates/suite-export); the document model
 follows as `letters-core` once its rdocx additions land upstream
-([tensorbee/rdocx#6](https://github.com/tensorbee/rdocx/pull/6)).*
+([tensorbee/rdocx#6](https://github.com/tensorbee/rdocx/pull/6) that turned out to be already fixed on IronCalc main — the ratchet pinned the gap, upstream closed it).*
