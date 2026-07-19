@@ -360,7 +360,7 @@
       "Name": "tuna-os/tuna-installer-cosmic",
       "Images": [
         {
-          "Digest": "sha256:34ea373572187a59800cbfec282e1cd25d980e188b5f25bedb2550bf736cb90f",
+          "Digest": "sha256:4156e0970fc5493780d3647cf8d1b4e9aaf76d2fdaebb329333775e2cdba91d3",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -375,13 +375,13 @@
             "org.flatpak.installed-size": "250574848",
             "org.flatpak.commit-metadata.xa.download-size": "AAAAAASwSyoAdA==",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAA7veAAAdA==",
-            "org.flatpak.download-size": "74155644",
+            "org.flatpak.download-size": "74154937",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyQ29zbWljL3g4Nl82NC9tYXN0ZXIALQBhcw==",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyQ29zbWljL3g4Nl82NC9tYXN0ZXIAAHM=",
             "org.flatpak.ref": "app/org.tunaos.InstallerCosmic/x86_64/master",
-            "org.flatpak.subject": "Built from aeb1092a2fa5ef56d7b4f9429b2284350d9df50c",
-            "org.flatpak.commit": "afb3408ea064ffb911dde442ad008e59a5390b835233468d942db569b93d0617",
-            "org.flatpak.timestamp": "1784439496"
+            "org.flatpak.subject": "Built from 5aeea614498c229ab9a9a541ceed3c5be7d5d183",
+            "org.flatpak.commit": "55bbf03eb93741da57638e4a0323d5600430277f65f30c29393214d849652ea1",
+            "org.flatpak.timestamp": "1784446017"
           }
         }
       ]
