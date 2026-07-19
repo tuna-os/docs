@@ -330,7 +330,7 @@
       "Name": "tuna-os/tuna-installer-kde",
       "Images": [
         {
-          "Digest": "sha256:171fcea4170711a3a0f9147ae3e86871d755163edd52e2f064bea7cf0ba8f627",
+          "Digest": "sha256:907acd70dd309953fc6c8ef79fe20fed90b817a5706bd38a8a48ba17fab98218",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -345,13 +345,13 @@
             "org.flatpak.installed-size": "237437952",
             "org.flatpak.commit-metadata.xa.download-size": "AAAAAARkryAAdA==",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAA4nBAAAdA==",
-            "org.flatpak.download-size": "69201717",
+            "org.flatpak.download-size": "69201998",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyS2RlL3g4Nl82NC9tYXN0ZXIAKgBhcw==",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyS2RlL3g4Nl82NC9tYXN0ZXIAAHM=",
             "org.flatpak.ref": "app/org.tunaos.InstallerKde/x86_64/master",
-            "org.flatpak.subject": "Built from 6f6fe4727751f19cc1a7a5207e08072604a0e32b",
-            "org.flatpak.commit": "7df92f34c5cdd662b08581f859be84135005646496ab16291b52ad252d3feaa8",
-            "org.flatpak.timestamp": "1784439420"
+            "org.flatpak.subject": "Built from adc6d1bb622c02fe11a64bbb8ccb663d8bcfd923",
+            "org.flatpak.commit": "cabd0a378cf96581c6a59b176d80eb72588b68b7e693509adbcae6828cc9aeea",
+            "org.flatpak.timestamp": "1784445916"
           }
         }
       ]
