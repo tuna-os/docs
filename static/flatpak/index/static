@@ -390,7 +390,7 @@
       "Name": "tuna-os/tuna-installer-niri",
       "Images": [
         {
-          "Digest": "sha256:f8ecad7f155150b357e544b5022e0842f9cd9cec438b934e48a3327a98e8daca",
+          "Digest": "sha256:68d42c92c84912a4715148b6031e8b097a4cac13708d67371c9536660cb35342",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -402,16 +402,16 @@
             "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy50dW5hb3MuSW5zdGFsbGVyTmlyaQpydW50aW1lPW9yZy5rZGUuUGxhdGZvcm0veDg2XzY0LzYuOQpzZGs9b3JnLmtkZS5TZGsveDg2XzY0LzYuOQpjb21tYW5kPXR1bmEtaW5zdGFsbGVyLW5pcmkKCltDb250ZXh0XQpzaGFyZWQ9aXBjO25ldHdvcms7CnNvY2tldHM9d2F5bGFuZDsKZGV2aWNlcz1hbGw7CmZpbGVzeXN0ZW1zPXhkZy1jb25maWcva2RlZ2xvYmFsczpybztob3N0OwoKW1Nlc3Npb24gQnVzIFBvbGljeV0KY29tLmNhbm9uaWNhbC5BcHBNZW51LlJlZ2lzdHJhcj10YWxrCm9yZy5rZGUua2NvbmZpZy5ub3RpZnk9dGFsawpvcmcua2RlLktHbG9iYWxTZXR0aW5ncz10YWxrCm9yZy5mcmVlZGVza3RvcC5GbGF0cGFrPXRhbGsKb3JnLmtkZS5rZGVjb25uZWN0PXRhbGsKCltTeXN0ZW0gQnVzIFBvbGljeV0Kb3JnLmZyZWVkZXNrdG9wLlBvbGljeUtpdDE9dGFsawoKW0V4dGVuc2lvbiBvcmcudHVuYW9zLkluc3RhbGxlck5pcmkuRGVidWddCmRpcmVjdG9yeT1saWIvZGVidWcKYXV0b2RlbGV0ZT10cnVlCm5vLWF1dG9kb3dubG9hZD10cnVlCgpbQnVpbGRdCmJ1aWx0LWV4dGVuc2lvbnM9b3JnLnR1bmFvcy5JbnN0YWxsZXJOaXJpLkRlYnVnOwAAcw==",
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.InstallerNiri\nruntime=org.kde.Platform/x86_64/6.9\nsdk=org.kde.Sdk/x86_64/6.9\ncommand=tuna-installer-niri\n\n[Context]\nshared=ipc;network;\nsockets=wayland;\ndevices=all;\nfilesystems=xdg-config/kdeglobals:ro;host;\n\n[Session Bus Policy]\ncom.canonical.AppMenu.Registrar=talk\norg.kde.kconfig.notify=talk\norg.kde.KGlobalSettings=talk\norg.freedesktop.Flatpak=talk\norg.kde.kdeconnect=talk\n\n[System Bus Policy]\norg.freedesktop.PolicyKit1=talk\n\n[Extension org.tunaos.InstallerNiri.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.InstallerNiri.Debug;",
-            "org.flatpak.installed-size": "243763200",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAASIlrwAdA==",
-            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAA6HiAAAdA==",
-            "org.flatpak.download-size": "71544760",
+            "org.flatpak.installed-size": "243767808",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAASIm6wAdA==",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAA6HmgAAdA==",
+            "org.flatpak.download-size": "71545194",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyTmlyaS94ODZfNjQvbWFzdGVyACsAYXM=",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyTmlyaS94ODZfNjQvbWFzdGVyAABz",
             "org.flatpak.ref": "app/org.tunaos.InstallerNiri/x86_64/master",
-            "org.flatpak.subject": "Built from 73ceee266d0cb21cd242bdc528f70390f6c3819b",
-            "org.flatpak.commit": "146ecda1b19311a96e154ac6a760c9ba1e817fd613269b7ed54c42ea18f62185",
-            "org.flatpak.timestamp": "1784446229"
+            "org.flatpak.subject": "Built from 4233ba313e62892d0ded18228f36f4bd80836790",
+            "org.flatpak.commit": "d0d87b6a0696ec691b97fd4ccd4c7f27551ec5452d9d1a498270988e59a02272",
+            "org.flatpak.timestamp": "1784482336"
           }
         }
       ]
