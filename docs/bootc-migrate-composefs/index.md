@@ -114,7 +114,7 @@ and a live phase-by-phase progress view with scrollable logs:
 sudo bootc-migrate-composefs tui
 ```
 
-![bootc-migrate-composefs TUI wizard](docs/images/tui-review.png)
+![bootc-migrate-composefs TUI wizard](https://raw.githubusercontent.com/tuna-os/bootc-migrate-composefs/main/docs/images/tui-review.png)
 
 The wizard defaults to `--dry-run` and only builds the equivalent CLI
 invocation shown on the Review screen — it doesn't need root just to browse;
