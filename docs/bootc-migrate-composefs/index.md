@@ -33,7 +33,8 @@ tar xzf bmc.tar.gz
 sudo install -m755 bootc-migrate-composefs /usr/local/bin/
 ```
 
-<details><summary>…or pull the container image</summary>
+<details>
+<summary>…or pull the container image</summary>
 
 A minimal image ships the same binary, useful when GitHub Releases is rate-limited/blocked, or to `COPY --from=` it into another Containerfile:
 
@@ -45,7 +46,8 @@ sudo install -m755 bootc-migrate-composefs /usr/local/bin/
 ```
 </details>
 
-<details><summary>…or build from source (needs Rust)</summary>
+<details>
+<summary>…or build from source (needs Rust)</summary>
 
 ```bash
 git clone https://github.com/tuna-os/bootc-migrate-composefs

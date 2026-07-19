@@ -320,9 +320,9 @@ async function deleteVM(page, name) { ... }
 | Unit test count | 100+ (up from ~35) |
 | Handler coverage | 100% of routes have ≥1 test |
 | Integration smoke test | create → SSH → delete passes reliably |
-| CI gate | `go test ./...` runs in <30s on PR |
+| CI gate | `go test ./...` runs in &lt;30s on PR |
 | Frontend regression | critical paths covered by Playwright |
-| Flake rate | <5% for integration tests (skip on capability mismatch) |
+| Flake rate | &lt;5% for integration tests (skip on capability mismatch) |
 
 ---
 
