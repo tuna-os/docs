@@ -1,0 +1,129 @@
+# Imports the installer click-through walkthrough screenshots from the
+# latest tuna-os/tunaOS `Installer Smoke` run and regenerates the
+# installer-walkthrough user guide page. Runs from THIS repo so its
+# GITHUB_TOKEN can commit — no cross-repo push token needed (the reason
+# the tunaOS-side publish job 403'd).
+#
+# Each new release's smoke run produces fresh walkthrough-<flavor>-NN.png
+# artifacts; this pulls the newest and commits them, and the commit
+# triggers the site redeploy — so every release lands a current
+# walkthrough automatically.
+name: import-installer-walkthrough
+
+on:
+  schedule:
+    # Daily — picks up the newest weekly/on-release smoke run.
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "Specific tunaOS Installer Smoke run id (blank = latest successful)"
+        required: false
+        type: string
+
+concurrency:
+  group: import-installer-walkthrough
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'tuna-os/docs' }}
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SRC_REPO: tuna-os/tunaOS
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve source run
+        id: run
+        run: |
+          if [ -n "${{ inputs.run_id }}" ]; then
+            RID="${{ inputs.run_id }}"
+          else
+            RID=$(gh run list -R "$SRC_REPO" --workflow "Installer Smoke" \
+              --status success --limit 1 --json databaseId -q '.[0].databaseId')
+          fi
+          [ -n "$RID" ] || { echo "no successful Installer Smoke run found"; exit 0; }
+          echo "rid=$RID" >> "$GITHUB_OUTPUT"
+          echo "Using run $RID"
+
+      - name: Download walkthrough artifacts
+        if: steps.run.outputs.rid != ''
+        run: |
+          mkdir -p shots
+          gh run download "${{ steps.run.outputs.rid }}" -R "$SRC_REPO" \
+            --pattern 'installer-smoke-*' --dir shots || true
+          find shots -name 'walkthrough-*.png' -o -name 'installer-*.png' | head -50 || true
+
+      - name: Regenerate the walkthrough user guide
+        if: steps.run.outputs.rid != ''
+        run: |
+          set -euo pipefail
+          DEST="docs/tunaos/installer-walkthrough"
+          IMG="$DEST/img"
+          rm -rf "$IMG"; mkdir -p "$IMG"
+
+          # Collect per-flavor frames (walkthrough-<flavor>-NN.png), and the
+          # single desktop shot (installer-<flavor>.png) as a fallback.
+          shopt -s nullglob
+          declare -A FLAVORS
+          for f in $(find shots -name 'walkthrough-*.png' -o -name 'installer-*.png' | sort); do
+            base=$(basename "$f")
+            case "$base" in
+              walkthrough-*) fl=$(echo "$base" | sed -E 's/walkthrough-([a-z]+)-[0-9]+\.png/\1/') ;;
+              installer-*)   fl=$(echo "$base" | sed -E 's/installer-([a-z]+)\.png/\1/') ;;
+              *) continue ;;
+            esac
+            cp "$f" "$IMG/$base"
+            FLAVORS[$fl]=1
+          done
+
+          DATE=$(date -u +%Y-%m-%d)
+          {
+            echo "---"
+            echo "sidebar_label: Installer Walkthrough"
+            echo "---"
+            echo
+            echo "# Installer Walkthrough"
+            echo
+            echo "Screen-by-screen walkthroughs of the TunaOS installer for each"
+            echo "desktop, captured automatically from the live ISO by CI"
+            echo "(last updated ${DATE}). Regenerated every release."
+            echo
+            for fl in $(echo "${!FLAVORS[@]}" | tr ' ' '\n' | sort); do
+              echo "## ${fl^^}"
+              echo
+              frames=$(ls "$IMG"/walkthrough-${fl}-*.png 2>/dev/null | sort || true)
+              if [ -n "$frames" ]; then
+                n=1
+                for fr in $frames; do
+                  echo "**Step ${n}**"
+                  echo
+                  echo "![${fl} installer step ${n}](./img/$(basename "$fr"))"
+                  echo
+                  n=$((n+1))
+                done
+              elif [ -f "$IMG/installer-${fl}.png" ]; then
+                echo "![${fl} installer](./img/installer-${fl}.png)"
+                echo
+              fi
+            done
+          } > "$DEST/index.md"
+          echo "generated $DEST/index.md"
+
+      - name: Commit if changed
+        if: steps.run.outputs.rid != ''
+        run: |
+          git config user.name "tunaos-ci"
+          git config user.email "ci@tunaos.org"
+          git add docs/tunaos/installer-walkthrough
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "docs: refresh installer walkthrough from ${SRC_REPO} run ${{ steps.run.outputs.rid }}"
+            git push
+          fi

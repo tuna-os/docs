@@ -68,6 +68,18 @@ TunaOS CI uses to build release media.
    system partition, and ISO9660/El Torito container are all authored
    in WASM.
 
+## Role in the bootc Landscape
+
+The `bootc` (bootable containers) model packages fully bootable system trees inside standard OCI container images. While this solves OS distribution and transactional updates, it introduces a bootstrapping problem: bare metal hardware cannot boot directly from an OCI registry.
+
+Traditionally, generating installation media (like an ISO) requires Red Hat's `bootc-image-builder`—a heavy, containerized tool running under `podman` or `docker` that requires root-level loopback mounting and device access.
+
+The TunaOS ISO Builder shifts this entire paradigm:
+
+*   **Client-Side Assembly:** By compiling the core Go-based `tacklebox` filesystem engine to WebAssembly, compilation is offloaded to the user's browser. There is **zero server-side compute cost** for the registry host.
+*   **Edge Customization:** Users can inject Flatpaks, custom repositories, and initramfs overlays at the time of compilation, decoupling generic base images from custom bare-metal installations.
+*   **Platform Democratization:** Anyone on Windows, macOS, or ChromeOS can build a bootable ISO inside a standard sandboxed browser tab without needing to install privileged tools or setup container runtimes locally.
+
 ## Share a preset — URL parameters
 
 The builder is deep-linkable, so any project can point users at a
