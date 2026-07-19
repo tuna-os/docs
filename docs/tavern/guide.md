@@ -12,7 +12,7 @@ Tavern is a graphical Homebrew client for Linux — a native GTK4 "App Store" fo
 Launch Tavern from the app grid:
 
 ```bash
-flatpak run dev.hanthor.Tavern
+flatpak run org.tunaos.tavern
 ```
 
 Or from the terminal (if installed via Homebrew cask):
@@ -29,7 +29,7 @@ The main window shows:
 
 ## Searching for Packages
 
-Type in the search bar to search across 6,000+ formulae and casks:
+Press **Ctrl+F** (or the header-bar search button) to search across tens of thousands of formulae and casks:
 
 ```bash
 # Search for "node"
@@ -44,9 +44,9 @@ Linux users: macOS-only casks are automatically filtered out.
 1. **Search** for the package
 2. Click on it to view details (description, version, dependencies)
 3. Click the **Install** button
-4. Watch progress in the task manager (bottom panel)
+4. Watch progress inline on the package tile, or open the task panel from the header bar
 
-Packages install in parallel — multiple installs at once with a global progress indicator.
+Operations are queued and run one at a time (Homebrew holds a global lock); each shows live per-phase progress, and the header-bar task button tracks the queue.
 
 ## Managing Installed Packages
 
@@ -66,6 +66,29 @@ Click the **Installed** tab to see everything on your system.
 1. Find the package in Installed view
 2. Click the **Remove** button
 3. Confirm
+
+### Pin a version
+
+Open a package's details page and toggle the **pin** button to keep its
+installed version — pinned formulae and casks are skipped by Update All
+and excluded from update prompts.
+
+## Font Previews
+
+Font casks (`font-*`) show a **Font Preview** card on their details page:
+alphabet and pangram samples rendered in the actual typeface once the
+font is installed.
+
+## Preferences & Shortcuts
+
+- **Ctrl+comma** — Preferences (background update checks and their interval)
+- **Ctrl+F** — jump to search
+- **Ctrl+O** — open a Brewfile
+- **Ctrl+R** — refresh package lists
+- **Ctrl+?** — keyboard shortcuts overview
+
+Tavern also registers as a **GNOME Shell search provider** — search for any
+package straight from the Activities overview.
 
 ## Using Brewfiles
 
