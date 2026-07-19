@@ -270,7 +270,7 @@
       "Name": "hanthor/tables",
       "Images": [
         {
-          "Digest": "sha256:f56ea8d618bbcc9fd767dff639f1a706f6ff00a5eccf99292ab15e28b14a8652",
+          "Digest": "sha256:0291c7e8ee3ed2dbf063775acd65533dde4e9005aa101a9631307ee7166dc796",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -283,15 +283,15 @@
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.tables\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=tables\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\n\n[Extension org.tunaos.tables.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.tables.Debug;",
             "org.flatpak.installed-size": "7001600",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAAjzjUAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAAjzjYAdA==",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAABq1gAAdA==",
-            "org.flatpak.download-size": "2185552",
+            "org.flatpak.download-size": "2185523",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MudGFibGVzL3g4Nl82NC9tYXN0ZXIAJABhcw==",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MudGFibGVzL3g4Nl82NC9tYXN0ZXIAAHM=",
             "org.flatpak.ref": "app/org.tunaos.tables/x86_64/master",
-            "org.flatpak.subject": "Built from 85ee0ea5512de3adbe357b8582e8be3cdc02c3f0",
-            "org.flatpak.commit": "cada2a00c66d78a5a9e1943003e1f96639681b251c79aa8dada6dc6d7d323b61",
-            "org.flatpak.timestamp": "1784439518"
+            "org.flatpak.subject": "Built from 7ea91d6ddaaf07d397f55d14524da23881c20f0a",
+            "org.flatpak.commit": "8e03fbdd8816a87bf1f7c4e4a19c119a825440bc05a6e06ac25fb814440a56c6",
+            "org.flatpak.timestamp": "1784445719"
           }
         }
       ]
