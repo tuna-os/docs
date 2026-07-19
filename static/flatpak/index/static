@@ -240,7 +240,7 @@
       "Name": "hanthor/letters",
       "Images": [
         {
-          "Digest": "sha256:fb2153ca889fd2145b9ad009297dc0de67fc76ee5e2f0802ce61fb5396d02ee5",
+          "Digest": "sha256:01b779afd5f238a5ecd40cecfc1f5e964e3297ec8a7704e662aa492c816d99a2",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -255,13 +255,13 @@
             "org.flatpak.installed-size": "212888576",
             "org.flatpak.commit-metadata.xa.download-size": "AAAAAAL6cR8AdA==",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAywbAAAdA==",
-            "org.flatpak.download-size": "49589464",
+            "org.flatpak.download-size": "49589400",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MubGV0dGVycy94ODZfNjQvbWFzdGVyACUAYXM=",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MubGV0dGVycy94ODZfNjQvbWFzdGVyAABz",
             "org.flatpak.ref": "app/org.tunaos.letters/x86_64/master",
-            "org.flatpak.subject": "Built from e14796c1c982691c5201d02be3279ae254bbe344",
-            "org.flatpak.commit": "641997e87db5f78c210d6f676e5b3f36da93515f6401d019e352604be9c95847",
-            "org.flatpak.timestamp": "1784440157"
+            "org.flatpak.subject": "Built from bd88cb46d3a0861d9133ee82074c53339e0da49e",
+            "org.flatpak.commit": "4a709bc2c8cab6f799d3a9f3feee96f3ea062c467cb1d2757199b80dba64d513",
+            "org.flatpak.timestamp": "1784445823"
           }
         }
       ]
