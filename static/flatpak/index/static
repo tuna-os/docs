@@ -210,7 +210,7 @@
       "Name": "hanthor/decks",
       "Images": [
         {
-          "Digest": "sha256:d57e4db19deae1534afd4714ce176d56001dbdd380759ebaa5aa7e13515d22eb",
+          "Digest": "sha256:f8525b342c1a551d3787ef041a26f6b080067d174eafa6543d35ecdf2d6be85d",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -223,15 +223,15 @@
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.decks\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=decks\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=dri;\n\n[Extension org.tunaos.decks.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.decks.Debug;",
             "org.flatpak.installed-size": "39621120",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAADU5SwAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAADU5S8AdA==",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAJckgAAdA==",
-            "org.flatpak.download-size": "13688808",
+            "org.flatpak.download-size": "13688839",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuZGVja3MveDg2XzY0L21hc3RlcgAjAGFz",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuZGVja3MveDg2XzY0L21hc3RlcgAAcw==",
             "org.flatpak.ref": "app/org.tunaos.decks/x86_64/master",
-            "org.flatpak.subject": "Built from 13c42761270d722b26a066fe11dcb640e1c9d1bf",
-            "org.flatpak.commit": "c0bedd477fd02500b43ec2da779eb55f4a018638841d6357ef58e9524c178326",
-            "org.flatpak.timestamp": "1783771043"
+            "org.flatpak.subject": "Built from 515231d6ef22b4e499022ed1ff65a92c4d70019a",
+            "org.flatpak.commit": "6d4589387ef3a6f21fc82b4c2c0acb2e34f016852752e7a05916fac395b43a7a",
+            "org.flatpak.timestamp": "1784439590"
           }
         }
       ]
