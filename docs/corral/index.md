@@ -82,7 +82,6 @@ install corral ~/.local/bin/
 ```bash
 go install github.com/tuna-os/corral@latest
 ```
-
 </details>
 
 <details>
@@ -94,7 +93,6 @@ cd corral
 go build -o corral .
 install corral ~/.local/bin/
 ```
-
 </details>
 
 <details>
@@ -108,7 +106,6 @@ podman cp corral-extract:/usr/local/bin/corral .
 podman rm corral-extract
 install corral ~/.local/bin/
 ```
-
 </details>
 
 Optional: `corral completion fish | source` (bash/zsh/fish, via Cobra).

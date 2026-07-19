@@ -1,10 +1,23 @@
 ---
 sidebar_position: 4
-title: "AI Bundle"
+title: "ai"
 ---
 
-sidebar_position: 4
-title: "AI Bundle"
+The following AI-related tools are available in the `ai` bundle.
 
-sidebar_position: 4
-title: "AI Bundle"
+- `aichat`
+- `block-goose-cli`
+- `crush`
+- `gemini-cli`
+- `kimi-cli`
+- `llm`
+- `mistral-vibe`
+- `mods`
+- `opencode`
+- `qwen-code`
+- `ramalama`
+- `whisper-cpp`
+- `claude-code` (cask)
+- `codex` (cask)
+- `copilot-cli` (cask)
+- `lm-studio-linux` (cask)
