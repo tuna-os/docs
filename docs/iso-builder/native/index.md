@@ -45,6 +45,13 @@ drive the way a package manager manages packages:
   writing" (Linux only for now) and the app boots the freshly-written
   drive in a throwaway QEMU VM to confirm it actually reaches userspace,
   instead of trusting a zero exit code alone.
+- **Debug view into macOS's helper VM.** Its write path boots a
+  headless VM behind the scenes — click "View VM console (debug)"
+  while an operation is running to see its actual screen in your
+  browser via a bundled [noVNC](https://novnc.com) client, for the rare
+  case something goes wrong in a way SSH-streamed logs don't capture.
+
+  ![noVNC viewer connected to the helper VM](./img/04-vm-viewer.png)
 
 ## How it actually writes the drive, per platform
 

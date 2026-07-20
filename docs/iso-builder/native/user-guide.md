@@ -80,6 +80,29 @@ panic or never gets there, you'll see that instead of a false "success."
 This costs real time — a full VM boot, on top of the write itself — so
 it's opt-in rather than the default.
 
+## 4b. (macOS only) View the VM console while it's running
+
+macOS's write path boots a headless helper VM — there's no window for
+it by default, only streamed log lines. If something goes wrong in a
+way that doesn't come through cleanly as SSH output (a kernel panic, a
+hung boot, cloud-init failing silently), click **View VM console
+(debug)** while an operation is in progress to open the VM's actual
+screen in your browser:
+
+![noVNC viewer connected and rendering a live framebuffer](./img/04-vm-viewer.png)
+
+*This screenshot shows the real viewer — the same
+[`native/vncviewer`](https://github.com/tuna-os/iso-builder/tree/main/native/vncviewer)
+code the app ships, genuinely connected end-to-end (WebSocket → Go
+proxy → VNC) — pointed at a demo pattern for illustration rather than
+a live write, so the "Connected to x11vnc" status bar and rendered
+gradient are real, not mocked up.*
+
+The button only works while a VM is actually running (start a write,
+verify, update, or remove first, then open the viewer); it isn't shown
+at all on Linux or Windows, where there's no VM in the write path to
+look at.
+
 ## 5. Write
 
 Click **Write to drive** (or **Add to drive**). Progress streams into
