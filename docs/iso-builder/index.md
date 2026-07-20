@@ -11,6 +11,12 @@ The builder has a landing page at [tunaos.org/iso-builder](/iso-builder) and run
 [https://iso.tunaos.org](https://iso.tunaos.org).
 :::
 
+:::info[Want a persistent, updatable drive instead of a one-shot ISO?]
+See the [Native App](/docs/iso-builder/native) — a cross-platform desktop app that writes
+a real multi-boot USB drive directly, with add/update/remove after the
+fact, on Linux, macOS, and Windows.
+:::
+
 > ⚠️ **Alpha** — experimental preview; interfaces and limits below will change.
 
 Build a live, bootable TunaOS ISO from any bootable container image —
