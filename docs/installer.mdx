@@ -4,7 +4,7 @@ sidebar_position: 7
 
 # Installer
 
-import InstallerWalkthrough from '@site/src/components/InstallerWalkthrough';
+import InstallerWalkthrough, {numberedSteps} from '@site/src/components/InstallerWalkthrough';
 
 <InstallerWalkthrough
   title="See it before you run it"
@@ -17,9 +17,41 @@ import InstallerWalkthrough from '@site/src/components/InstallerWalkthrough';
   prefix="cosmic_"
 />
 
-TunaOS ships with **TunaOS First Setup**, a graphical installer built with GTK4 and Libadwaita. It runs automatically when you boot from a live ISO and guides you through installing TunaOS to disk, then setting up your system on first boot.
+The four independent installer frontends (KDE, COSMIC, Niri, XFCE) are also
+captured weekly by an automated smoke test, which boots each one and
+nudges through it with OCR-verified screenshots at every step:
 
-> TunaOS First Setup is a fork of [Vanilla OS First Setup](https://github.com/Vanilla-OS/first-setup), adapted for bootc-based installation on Enterprise Linux.
+<InstallerWalkthrough
+  title="KDE frontend"
+  subtitle="Automated launch-and-navigate capture on the KDE variant."
+  prefix="smoke-kde_"
+  steps={numberedSteps(9)}
+/>
+
+<InstallerWalkthrough
+  title="Niri frontend"
+  subtitle="Automated launch-and-navigate capture on the Niri variant."
+  prefix="smoke-niri_"
+  steps={numberedSteps(9)}
+/>
+
+<InstallerWalkthrough
+  title="XFCE frontend"
+  subtitle="Automated launch-and-navigate capture on the XFCE variant."
+  prefix="smoke-xfce_"
+  steps={numberedSteps(9)}
+/>
+
+TunaOS installs via **bootc-installer**, no longer a single GTK4/Libadwaita
+app. It's now a family of independent frontends — one per desktop (KDE,
+COSMIC, Niri, XFCE) — each built for that desktop's own toolkit (Qt Widgets,
+Iced, TUI, GTK3) so the installer looks and feels native to the session it
+runs in, rather than one GNOME-styled app dropped into every desktop. All of
+them drive the same `fisherman` bootc install backend.
+
+> The steps below describe the installation flow common to all frontends.
+> Exact widget layout differs per frontend — see the captures above for
+> what each one actually looks like.
 
 ---
 
@@ -151,4 +183,10 @@ sudo systemd-cryptenroll --tpm2-device=auto --wipe-slot=tpm2 /dev/your-disk
 
 ## Source
 
-The installer source is available at [github.com/tuna-os/first-setup](https://github.com/tuna-os/first-setup).
+Each frontend is its own repo, all driving the same `fisherman` bootc install backend:
+
+- [tuna-os/bootc-installer](https://github.com/tuna-os/bootc-installer) — GNOME/Libadwaita, the default flow captured above
+- [tuna-os/tuna-installer-kde](https://github.com/tuna-os/tuna-installer-kde) — Qt6 Widgets
+- [tuna-os/tuna-installer-cosmic](https://github.com/tuna-os/tuna-installer-cosmic) — Iced/Rust
+- [tuna-os/tuna-installer-niri](https://github.com/tuna-os/tuna-installer-niri) — TUI
+- [tuna-os/tuna-installer-xfce](https://github.com/tuna-os/tuna-installer-xfce) — GTK3
