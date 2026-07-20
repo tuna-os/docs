@@ -31,11 +31,17 @@ drive the way a package manager manages packages:
 - **Plug in a USB drive.** The app detects whether it's blank or already
   has TunaOS environments on it, and defaults accordingly — "Write to
   drive" for a blank stick, "Add to drive" for one it recognizes.
-- **Pick from the real curated catalog** — the same variants the browser
-  [ISO Builder](/docs/iso-builder) offers, across GNOME, KDE Plasma, COSMIC, Niri, and
-  XFCE.
+- **Pick from a real, multi-project catalog** — a card per entry with
+  that project's real logo, name, and description, not a plain
+  dropdown. TunaOS's own variants (the same set the browser
+  [ISO Builder](/docs/iso-builder) offers, across GNOME, KDE Plasma,
+  COSMIC, Niri, and XFCE), plus curated images from Project Bluefin,
+  Universal Blue (Aurora, Bazzite, Bluefin DX), and Zirconium — every
+  reference checked live against the publishing project's actual
+  registry, not guessed.
 
   ![Curated image catalog](./img/02-os-catalog.png)
+  ![Multi-org catalog entries with real project logos](./img/05-multi-org-catalog.png)
 
 - **Day-2 lifecycle, not just day-1.** Once a drive is managed, a
   "Manage this drive" panel appears with **Verify**, **Update**, and

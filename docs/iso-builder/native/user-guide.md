@@ -36,15 +36,28 @@ below.
 
 ## 2. Choose an OS
 
-Open the app. The **1. Choose an OS** dropdown lists the same curated
-catalog the browser [ISO Builder](/docs/iso-builder) offers — real TunaOS variants
-across every desktop TunaOS ships.
+Open the app. The **1. Choose an OS** list shows a real card per
+entry — logo, name, and a short description — starting with TunaOS's
+own curated variants across every desktop TunaOS ships (the same set
+the browser [ISO Builder](/docs/iso-builder) offers):
 
-![OS catalog dropdown, open](./img/02-os-catalog.png)
+![OS catalog, scrolled to a card mid-list](./img/02-os-catalog.png)
 
-Pick one. The dropdown collapses to show your selection:
+Click a card to select it — it highlights to confirm your choice:
 
-![An OS selected](./img/03-os-selected.png)
+![An OS card selected, showing the highlight](./img/03-os-selected.png)
+
+Scroll further and the catalog isn't TunaOS-only: it also curates real
+images from a few other bootc/ublue-style projects — Project Bluefin,
+Universal Blue (Aurora, Bazzite, Bluefin DX), and Zirconium — each with
+that project's own real logo, not a generic placeholder:
+
+![Multi-org catalog entries — Bazzite, Zirconium, Zirconium Hawaii, each with the real project logo](./img/05-multi-org-catalog.png)
+
+Every image reference in the catalog is checked live against the
+publishing project's actual container registry before being added —
+see [`native/catalog.go`](https://github.com/tuna-os/iso-builder/blob/main/native/catalog.go)
+for exactly which tags were verified and when.
 
 ## 3. Choose a drive
 
