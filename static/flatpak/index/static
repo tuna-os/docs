@@ -420,7 +420,7 @@
       "Name": "tuna-os/mandelbrot",
       "Images": [
         {
-          "Digest": "sha256:b9e090a79f427d56e07f700488d3382de0dea0129cb3a182a07aead6251e2ff1",
+          "Digest": "sha256:91178a7288df874c81d02253d6002d02629c009fc36e7c7b3a3090f09c11a0e6",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -434,13 +434,13 @@
             "org.flatpak.installed-size": "76058624",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAASIkAAAdA==",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.mandelbrot\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=fractal\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;pulseaudio;wayland;\ndevices=dri;\n\n[Extension org.tunaos.mandelbrot.Locale]\ndirectory=share/runtime/locale\nautodelete=true\nlocale-subset=true\n\n[Extension org.tunaos.mandelbrot.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.mandelbrot.Locale;org.tunaos.mandelbrot.Debug;",
-            "org.flatpak.timestamp": "1784825616",
-            "org.flatpak.download-size": "29037344",
-            "org.flatpak.commit": "592afe38c04ee0a3c29686a3c9732391ca92a66516402f28e36e2fe3e9c4206f",
-            "org.flatpak.subject": "Built from 06a7293da502fc76cb94d1fab7c511c7f467f5db",
+            "org.flatpak.timestamp": "1784828637",
+            "org.flatpak.download-size": "29037376",
+            "org.flatpak.commit": "74930c4b93d51cee8009662c723c4f6025feb877b31baa5e47a5bfe18bef9582",
+            "org.flatpak.subject": "Built from 5f0df009e422d0dc4792f70b9d01fc1db8b5c091",
             "org.flatpak.body": "Name: org.tunaos.mandelbrot\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MubWFuZGVsYnJvdC94ODZfNjQvbWFzdGVyAABz",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAG7tncAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAG7tnEAdA==",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MubWFuZGVsYnJvdC94ODZfNjQvbWFzdGVyACgAYXM="
           }
         }
