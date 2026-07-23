@@ -420,7 +420,7 @@
       "Name": "tuna-os/mandelbrot",
       "Images": [
         {
-          "Digest": "sha256:a6c71a03fde369ea1f817b0a3e9f9961e8985e4a08f19a668c7205a4fd7d0f2d",
+          "Digest": "sha256:4f913f1636d0f065e0de3fef0d041591b2784467f884eba35914658202362abd",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -431,16 +431,16 @@
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy50dW5hb3MubWFuZGVsYnJvdApydW50aW1lPW9yZy5nbm9tZS5QbGF0Zm9ybS94ODZfNjQvNTAKc2RrPW9yZy5nbm9tZS5TZGsveDg2XzY0LzUwCmNvbW1hbmQ9ZnJhY3RhbAoKW0NvbnRleHRdCnNoYXJlZD1pcGM7bmV0d29yazsKc29ja2V0cz1mYWxsYmFjay14MTE7cHVsc2VhdWRpbzt3YXlsYW5kOwpkZXZpY2VzPWRyaTsKCltFeHRlbnNpb24gb3JnLnR1bmFvcy5tYW5kZWxicm90LkxvY2FsZV0KZGlyZWN0b3J5PXNoYXJlL3J1bnRpbWUvbG9jYWxlCmF1dG9kZWxldGU9dHJ1ZQpsb2NhbGUtc3Vic2V0PXRydWUKCltFeHRlbnNpb24gb3JnLnR1bmFvcy5tYW5kZWxicm90LkRlYnVnXQpkaXJlY3Rvcnk9bGliL2RlYnVnCmF1dG9kZWxldGU9dHJ1ZQpuby1hdXRvZG93bmxvYWQ9dHJ1ZQoKW0J1aWxkXQpidWlsdC1leHRlbnNpb25zPW9yZy50dW5hb3MubWFuZGVsYnJvdC5Mb2NhbGU7b3JnLnR1bmFvcy5tYW5kZWxicm90LkRlYnVnOwAAcw==",
             "org.flatpak.ref": "app/org.tunaos.mandelbrot/x86_64/master",
-            "org.flatpak.installed-size": "76058624",
-            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAASIkAAAdA==",
+            "org.flatpak.installed-size": "76058112",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAASIjgAAdA==",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.mandelbrot\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=fractal\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;pulseaudio;wayland;\ndevices=dri;\n\n[Extension org.tunaos.mandelbrot.Locale]\ndirectory=share/runtime/locale\nautodelete=true\nlocale-subset=true\n\n[Extension org.tunaos.mandelbrot.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.mandelbrot.Locale;org.tunaos.mandelbrot.Debug;",
-            "org.flatpak.timestamp": "1784830671",
-            "org.flatpak.download-size": "29037345",
-            "org.flatpak.commit": "4dd795523ac86864929264c6d4a3f5601d3e6de5be8f89332f7ccae3b72dea79",
-            "org.flatpak.subject": "Built from 470a631cb77b66a970aabec9c6b0dcf9d5c511e8",
+            "org.flatpak.timestamp": "1784831383",
+            "org.flatpak.download-size": "29037184",
+            "org.flatpak.commit": "d3ac53b5f60ca563a26dd95ec71483ec2a31ffdd0a1125c42706b86290fd6de2",
+            "org.flatpak.subject": "Built from f6d3095e3439b8acab64437f74eb25470b9aab7b",
             "org.flatpak.body": "Name: org.tunaos.mandelbrot\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MubWFuZGVsYnJvdC94ODZfNjQvbWFzdGVyAABz",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAG7tnEAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAG7tY4AdA==",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MubWFuZGVsYnJvdC94ODZfNjQvbWFzdGVyACgAYXM="
           }
         }
