@@ -97,7 +97,7 @@ jobs:
             for fl in $(echo "${!FLAVORS[@]}" | tr ' ' '\n' | sort); do
               echo "## ${fl^^}"
               echo
-              frames=$(ls "$IMG"/walkthrough-${fl}-*.png 2>/dev/null | sort || true)
+              frames=$(find "$IMG" -maxdepth 1 -name "walkthrough-${fl}-*.png" 2>/dev/null | sort || true)
               if [ -n "$frames" ]; then
                 n=1
                 for fr in $frames; do
