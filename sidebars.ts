@@ -92,6 +92,7 @@ const sidebars: SidebarsConfig = {
         {type: 'category', label: '📝 Letters', link: {type: 'doc', id: 'letters/index'}, items: ['letters/guide']},
         {type: 'category', label: '📽️ Decks', link: {type: 'doc', id: 'decks/index'}, items: ['decks/guide']},
         {type: 'category', label: '🗺️ Mariner', link: {type: 'doc', id: 'mariner/index'}, items: []},
+        {type: 'category', label: '🌀 Mandelbrot', link: {type: 'doc', id: 'mandelbrot/index'}, items: []},
       ],
     },
     {type: 'html', value: '<div class="sidebar-section-label">Community</div>', defaultStyle: true},

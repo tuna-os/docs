@@ -220,6 +220,43 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    id: 'mandelbrot',
+    emoji: '🌀',
+    name: 'Mandelbrot',
+    status: 'alpha',
+    tagline: 'The GNOME-native Matrix client, evolved — calling, sliding sync, and QR login. Forked from Fractal.',
+    lede:
+      'Mandelbrot is a friendly fork of GNOME Fractal that pushes further into the modern Matrix feature set: native MatrixRTC voice & video calling, simplified sliding sync, QR login, threads, and polls — all in a fast Rust + GTK 4 + Libadwaita app that keeps everything you love about Fractal.',
+    accent: '#1a5fb4',
+    accent2: '#62a0ea',
+    repo: 'https://github.com/tuna-os/mandelbrot',
+    docs: '/docs/mandelbrot',
+    flathub: 'org.tunaos.mandelbrot',
+    logo: 'https://raw.githubusercontent.com/tuna-os/mandelbrot/main/data/icons/org.tunaos.mandelbrot.svg',
+    stats: [
+      {label: 'Toolkit', value: 'GTK 4 · Libadwaita'},
+      {label: 'Engine', value: 'matrix-rust-sdk'},
+      {label: 'Install', value: 'Flatpak'},
+    ],
+    features: [
+      {emoji: '📞', title: 'Native calls (in progress)', text: 'MatrixRTC voice & video calling with fully native GNOME UI — no embedded browser.'},
+      {emoji: '🔐', title: 'Full E2EE', text: 'Cross-signing, QR & emoji verification, key backup, and recovery — inherited from Fractal.'},
+      {emoji: '⚡', title: 'Sliding sync (planned)', text: 'Simplified sliding sync for instant startup and a snappy room list on large accounts.'},
+      {emoji: '📱', title: 'QR login (planned)', text: 'Scan a code from another device and you are in — no password typing.'},
+      {emoji: '💬', title: 'Rich messaging', text: 'Reactions, edits, replies, read receipts, typing, location sharing, and media viewing.'},
+      {emoji: '🖥️', title: 'Adaptive GNOME design', text: 'A native Libadwaita interface that fits large desktops and small phone screens alike.'},
+    ],
+    install: [
+      {label: 'Flatpak (TunaOS remote)', code: 'flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo\nflatpak install tuna-os org.tunaos.mandelbrot'},
+      {label: 'Build from source', code: 'git clone https://github.com/tuna-os/mandelbrot\ncd mandelbrot\nflatpak-builder --user --install build org.tunaos.mandelbrot.json'},
+    ],
+    screenshots: [
+      {src: 'https://raw.githubusercontent.com/tuna-os/mandelbrot/main/screenshots/main.png', alt: 'Mandelbrot main window'},
+      {src: 'https://raw.githubusercontent.com/tuna-os/mandelbrot/main/screenshots/media-history.png', alt: 'Media history of a Matrix room'},
+      {src: 'https://raw.githubusercontent.com/tuna-os/mandelbrot/main/screenshots/adaptive.png', alt: 'Adaptive interface on small screens'},
+    ],
+  },
+  {
     id: 'bluefin-cli',
     emoji: '⌨️',
     name: 'bluefin-cli',
