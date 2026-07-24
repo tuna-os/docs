@@ -39,8 +39,8 @@ Full feature documentation:
 ## Installation
 
 ```sh
-flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo
-flatpak install tuna-os org.tunaos.mandelbrot
+flatpak remote-add --user --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo
+flatpak install --user tuna-os org.tunaos.mandelbrot
 ```
 
 Mandelbrot runs on the GNOME 50 runtime, so you also need the
@@ -49,7 +49,7 @@ Mandelbrot runs on the GNOME 50 runtime, so you also need the
 
 Added the `tuna-os` remote before it moved to tunaos.org? `--if-not-exists` keeps
 your old one and the install will say nothing matches. Fix it with
-`flatpak remote-modify tuna-os --url=oci+https://tunaos.org/flatpak`.
+`flatpak remote-modify --user tuna-os --url=oci+https://tunaos.org/flatpak`.
 
 ## Reporting issues
 

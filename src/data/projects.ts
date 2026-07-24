@@ -247,7 +247,7 @@ export const PROJECTS: Project[] = [
       {emoji: '🔐', title: 'Full E2EE', text: 'Cross-signing, QR & emoji verification, key backup, and recovery — inherited from Fractal.'},
     ],
     install: [
-      {label: 'Flatpak (TunaOS remote)', code: 'flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo\nflatpak install tuna-os org.tunaos.mandelbrot'},
+      {label: 'Flatpak (TunaOS remote)', code: 'flatpak remote-add --user --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo\nflatpak install --user tuna-os org.tunaos.mandelbrot'},
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/mandelbrot\ncd mandelbrot\nflatpak-builder --user --install build org.tunaos.mandelbrot.json'},
     ],
     screenshots: [
