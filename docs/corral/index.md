@@ -21,12 +21,30 @@ corral ssh web        # from this machine, your laptop, or your phone's terminal
 
 VMs are cattle. Stop treating each one like a networking project.
 
+![Corral demo tour — datacenter view, tag filters, VM summary, live actions, cluster health](docs/screenshots/demo.gif)
+
+*↑ that's `corral web --demo` — try the whole dashboard yourself in 30 seconds, no cluster needed.*
+
+<details><summary>Screenshots: datacenter view, VM summary with live CPU, mobile view</summary>
+
+![Corral web dashboard — Proxmox-style datacenter view](docs/screenshots/dashboard.png)
+
+![VM summary with live CPU sparkline](docs/screenshots/vm-summary.png)
+
+<img src="docs/screenshots/dashboard-mobile.png" alt="Mobile view" width="390">
+</details>
+
 ## Why you'll like it
 
 - **Same commands everywhere.** `create` / `start` / `ssh` / `viewer` /
   `clone` / `delete` work identically whether the VM is local QEMU/KVM or
   KubeVirt on your cluster. Corral remembers which is which — you never
   specify it again.
+- **Your OS is a container image.** Point Corral at a *bootable container*
+  (`corral create dev --bootc ghcr.io/...`) and it builds the OS disk
+  on-cluster with `bootc install to-disk`, then boots it as a first-class VM.
+  `corral bootc upgrade` rolls the VM to the image's next build — your VM
+  fleet updates like containers do. No other VM platform has this.
 - **Containers (CT) — distrobox on Kubernetes.** Proxmox-style pet pods
   alongside VMs (`corral ct create`). A privileged CT seeds a full root
   filesystem onto its own volume and `chroot`s into it on boot — `apt` /
@@ -66,8 +84,17 @@ VMs are cattle. Stop treating each one like a networking project.
 
 ## Install
 
-Grab the prebuilt binary (rolling release, rebuilt from `main` on every push
-— not a CI artifact, so no GitHub login or expiry):
+One line — detects OS/arch, installs the rolling-release binary to
+`~/.local/bin`, and wires up shell completions (bash/zsh/fish):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/tuna-os/corral/main/scripts/install.sh | sh
+```
+
+<details><summary>…or grab the binary yourself</summary>
+
+Rolling release, rebuilt from `main` on every push — not a CI artifact, so
+no GitHub login or expiry:
 
 ```bash
 curl -fsSL -o corral \
@@ -75,17 +102,16 @@ curl -fsSL -o corral \
 chmod +x corral
 install corral ~/.local/bin/
 ```
+</details>
 
-<details>
-<summary>…or via <code>go install</code></summary>
+<details><summary>…or via <code>go install</code></summary>
 
 ```bash
 go install github.com/tuna-os/corral@latest
 ```
 </details>
 
-<details>
-<summary>…or build from source</summary>
+<details><summary>…or build from source</summary>
 
 ```bash
 git clone https://github.com/tuna-os/corral
@@ -95,8 +121,7 @@ install corral ~/.local/bin/
 ```
 </details>
 
-<details>
-<summary>…or pull the container image</summary>
+<details><summary>…or pull the container image</summary>
 
 The same image that runs `corral web` in-cluster also ships the CLI binary:
 
@@ -114,6 +139,17 @@ Development tasks run through [`just`](https://github.com/casey/just): `just`
 lists them — `build`, `test`, `vet`, `ci` (the pre-push gate), and
 `regen-catalog` (refresh the Universal Blue / Bluefin / TunaOS bootc catalog
 from ghcr, dropping anything not rebuilt in ~60 days).
+
+## Try it in 30 seconds — no cluster needed
+
+`--demo` runs everything against a built-in fake cluster (a varied VM fleet,
+containers, nodes, live metrics — start/stop/create/delete all work):
+
+```bash
+corral --demo                # the TUI, populated
+corral web --demo            # the Proxmox-style dashboard at http://127.0.0.1:8006
+corral list --demo           # any CLI command works too
+```
 
 ## Quick start
 

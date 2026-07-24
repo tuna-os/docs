@@ -30,6 +30,30 @@ podman pull ghcr.io/tuna-os/xfce-linux:latest
 sudo bootc switch ghcr.io/tuna-os/xfce-linux:latest
 ```
 
+## Verifying Signatures
+
+OCI images and live ISOs are signed keylessly with [cosign](https://github.com/sigstore/cosign)
+via GitHub Actions OIDC (Sigstore/Fulcio) — no long-lived signing key to leak or rotate.
+
+**OCI images:**
+
+```bash
+cosign verify ghcr.io/tuna-os/xfce-linux:latest \
+  --certificate-identity-regexp 'https://github.com/tuna-os/xfce-linux/\.github/workflows/build-multirunner\.yml@.*' \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com
+```
+
+**Live ISOs** (`.sig`/`.cert` are published alongside each dated ISO, e.g.
+`xfce-linux-live-<date>-<sha>.iso.sig`):
+
+```bash
+cosign verify-blob xfce-linux-live-<date>-<sha>.iso \
+  --certificate xfce-linux-live-<date>-<sha>.iso.cert \
+  --signature xfce-linux-live-<date>-<sha>.iso.sig \
+  --certificate-identity-regexp 'https://github.com/tuna-os/xfce-linux/\.github/workflows/build-iso\.yml@.*' \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com
+```
+
 ## Docs
 
 - [XFCE Linux on tunaos.org](https://tunaos.org/docs/xfce-linux)
