@@ -239,12 +239,12 @@ export const PROJECTS: Project[] = [
       {label: 'Install', value: 'Flatpak'},
     ],
     features: [
-      {emoji: '📞', title: 'Native calls (in progress)', text: 'MatrixRTC voice & video calling with fully native GNOME UI — no embedded browser.'},
+      {emoji: '📞', title: 'Native calls', text: 'End-to-end encrypted MatrixRTC voice & video calling with fully native GNOME UI — no embedded browser. Experimental.'},
+      {emoji: '⚡', title: 'Sliding sync', text: 'Simplified sliding sync (MSC4186) for instant startup, with automatic classic-sync fallback.'},
+      {emoji: '📱', title: 'QR login', text: 'Sign in by scanning a code from another device, or link a new device from settings.'},
+      {emoji: '🧵', title: 'Threads & polls', text: 'Adaptive thread panel with per-thread drafts; create, vote on, and end polls.'},
+      {emoji: '🎙️', title: 'Voice messages', text: 'Record and send voice messages with live level metering and waveforms.'},
       {emoji: '🔐', title: 'Full E2EE', text: 'Cross-signing, QR & emoji verification, key backup, and recovery — inherited from Fractal.'},
-      {emoji: '⚡', title: 'Sliding sync (planned)', text: 'Simplified sliding sync for instant startup and a snappy room list on large accounts.'},
-      {emoji: '📱', title: 'QR login (planned)', text: 'Scan a code from another device and you are in — no password typing.'},
-      {emoji: '💬', title: 'Rich messaging', text: 'Reactions, edits, replies, read receipts, typing, location sharing, and media viewing.'},
-      {emoji: '🖥️', title: 'Adaptive GNOME design', text: 'A native Libadwaita interface that fits large desktops and small phone screens alike.'},
     ],
     install: [
       {label: 'Flatpak (TunaOS remote)', code: 'flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo\nflatpak install tuna-os org.tunaos.mandelbrot'},
