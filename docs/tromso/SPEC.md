@@ -3,6 +3,13 @@ sidebar_position: 5
 title: "Spec"
 ---
 
+> **Note:** `tuna-os/kde-build-meta` was consolidated directly into this repo's
+> `elements/` tree (junction removed, repo archived) — the "two-repo model"
+> described below is historical. All KDE `.bst` elements now live in this repo.
+> The rest of this doc's directory diagrams/workflow steps referencing the old
+> junction predate that change; see `AGENTS.md`'s "Single-Repo Model" section
+> for the current state.
+
 ## Overview
 
 Aurora Tromso is a bootable OCI/bootc image running KDE Plasma 6. It is built with
@@ -10,12 +17,8 @@ Aurora Tromso is a bootable OCI/bootc image running KDE Plasma 6. It is built wi
 methodology as [GNOME OS](https://gitlab.gnome.org/GNOME/gnome-build-meta) and
 [Project Bluefin dakota](https://github.com/projectbluefin/dakota).
 
-The project uses a two-repo model:
-
-| Repo | Role |
-|------|------|
-| [`tuna-os/tromso`](https://github.com/tuna-os/tromso) | This repo — Aurora-specific layers, OCI composition, CI |
-| [`hanthor/kde-build-meta`](https://github.com/hanthor/kde-build-meta) | KDE `.bst` elements — Qt6, Frameworks, Plasma, Apps, base image |
+All KDE `.bst` elements (Qt6, Frameworks, Plasma, Apps, base image) live directly in
+this repo's `elements/` tree — see `AGENTS.md` for the current structure.
 
 Reference sources used during development:
 
@@ -190,7 +193,7 @@ GitHub Actions runner
 Triggers: push to `main` (elements/**, project.conf, include/**), daily at 06:00 UTC, manual dispatch.
 
 **Experimental parallel workflow**: `.github/workflows/build-tromso-multirunner.yml`
-Splits the build into 10 parallel chunks across GitHub runners using `scripts/ci-build-matrix.py`.
+Splits the build into 10 parallel chunks across GitHub runners using the shared [tuna-os/bst-ci](https://github.com/tuna-os/bst-ci) reusable workflow (`scripts/ci-build-matrix.py` no longer lives in this repo).
 Triggered manually or by daily schedule.
 
 ---

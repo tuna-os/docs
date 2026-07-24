@@ -5,7 +5,7 @@ sidebar_label: "Tavern"
 status: stable
 ---
 
-[![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](https://github.com/tuna-os/Tavern/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
 
 Tavern is a modern, fast, and beautiful Homebrew client for Linux, built with **Python**, **GTK 4**, and **Libadwaita**. It provides a premium "App Store" experience for managing your Homebrew formulae and casks.
 
@@ -32,17 +32,17 @@ On macOS this installs `Tavern.app`; on Linux it installs a prebuilt AppImage an
 ## 📸 Screenshot Walkthrough
 
 ### Main window
-![Main window](https://raw.githubusercontent.com/tuna-os/Tavern/main/data/screenshots/main-window.png)
+![Main window](data/screenshots/main-window.png)
 
 ### Search workflow
-![GNOME search](https://raw.githubusercontent.com/tuna-os/Tavern/main/data/screenshots/gnome%20search.png)
-![Search results](https://raw.githubusercontent.com/tuna-os/Tavern/main/data/screenshots/search%20results.png)
+![GNOME search](data/screenshots/gnome%20search.png)
+![Search results](data/screenshots/search%20results.png)
 
 ### Package details
-![App view](https://raw.githubusercontent.com/tuna-os/Tavern/main/data/screenshots/App%20View.png)
+![App view](data/screenshots/App%20View.png)
 
 ### Taps browser
-![Tap view](https://raw.githubusercontent.com/tuna-os/Tavern/main/data/screenshots/Tap%20View.png)
+![Tap view](data/screenshots/Tap%20View.png)
 
 ## ✨ Features
 

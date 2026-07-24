@@ -18,67 +18,91 @@ A powerful, modern CLI tool for managing shell configuration and development env
 - **�️ Wallpapers**: Install desktop wallpaper collections from ublue-os/tap
 - **🎨 Starship Themes**: Browse and apply Starship prompt themes
 - **📊 Status Command**: View configuration and installed tools at a glance
+- **🩺 Doctor**: `bluefin-cli doctor` diagnoses setup problems with fix hints
+- **🎨 Theme Flavors**: `bluefin-cli theme <flavor>` pins a Catppuccin flavor (latte, frappe, macchiato, mocha) or follows your terminal with `auto`
+- **⬆ Self-Update**: `bluefin-cli update` for script installs — sha256-verified against the release checksums; package-manager installs are pointed at the right upgrade command
+- **🏠 My Brewfile**: one file describes your machine's packages — `brew`/`cask` lines plus `winget`/`scoop`/`choco` on Windows. `bluefin-cli brewfile dump` captures what's installed, `add`/`remove` edit it, `install` applies everything; the TUI's Install Apps → My Brewfile does all of it interactively with per-package management. Extra recipes in `~/.config/bluefin-cli/bundles/*.Brewfile` appear alongside the curated bundles
+- **📦 Profiles**: `bluefin-cli profile export > setup.json` on one machine, `profile import setup.json` on another — shells, tools, and theme replayed exactly
+- **🦕 A fully native TUI**: persistent shell with breadcrumbs, fuzzy filtering (`/`), a `ctrl+p` command palette, and a dot-matrix dino running the header — plus a hidden surprise for those who find it
 
 ## 🚀 Installation
 
-### Windows (PowerShell) - Recommended
+### One-liner (Linux / macOS)
 
-Build and install from source:
-
-```powershell
-git clone https://github.com/hanthor/bluefin-cli.git
-cd bluefin-cli
-go build -o bluefin-cli.exe .
-
-# Optional: move to a permanent location on PATH
-
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-New-Item -ItemType Directory -Force "$HOME\\bin" | Out-Null
-Move-Item .\\bluefin-cli.exe "$HOME\\bin\\bluefin-cli.exe" -Force
-$env:PATH = "$HOME\\bin;$env:PATH"
+```bash
+curl -fsSL https://raw.githubusercontent.com/tuna-os/bluefin-cli/main/install.sh | sh
 ```
 
-Enable shell integration for both `pwsh` and Windows PowerShell profiles:
+### One-liner (Windows PowerShell)
+
+```powershell
+irm https://raw.githubusercontent.com/tuna-os/bluefin-cli/main/install.ps1 | iex
+```
+
+Then enable shell integration:
 
 ```powershell
 bluefin-cli shell powershell on
 ```
 
-### macOS / Linux (Go Install)
-
-```bash
-go install github.com/hanthor/bluefin-cli@latest
-```
-
-### Build from Source (Any OS)
-
-**Prerequisites:**
-- Go 1.21 or later
-
-```bash
-git clone https://github.com/hanthor/bluefin-cli.git
-cd bluefin-cli
-go build -o bluefin-cli .
-```
-
-On Windows, use `go build -o bluefin-cli.exe .`.
-
-### Homebrew (Experimental)
+### Homebrew (Linux / macOS)
 
 ```bash
 brew tap ublue-os/homebrew-experimental-tap
 brew install bluefin-cli
 ```
 
-### Winget (Planned)
-
-Once published to Winget, installation will be:
+### Winget (Windows)
 
 ```powershell
 winget install --id Hanthor.BluefinCLI --exact
 ```
 
-Maintainers: automated Winget submission is configured in `.github/workflows/winget.yml`.
+### Scoop (Windows)
+
+```powershell
+scoop bucket add tuna-os https://github.com/tuna-os/scoop-bucket
+scoop install bluefin-cli
+```
+
+### deb / rpm (Debian, Ubuntu, Fedora, openSUSE…)
+
+Every release ships native packages — grab the one for your distro from the
+[latest release](https://github.com/tuna-os/bluefin-cli/releases/latest):
+
+```bash
+# Debian/Ubuntu
+sudo dpkg -i bluefin-cli_<version>_linux_amd64.deb
+# Fedora & friends
+sudo rpm -i bluefin-cli_<version>_linux_amd64.rpm
+```
+
+### AUR (Arch)
+
+```bash
+yay -S bluefin-cli-bin
+```
+
+### Go Install
+
+```bash
+go install github.com/tuna-os/bluefin-cli@latest
+```
+
+### Build from Source (Any OS)
+
+**Prerequisites:**
+- Go 1.25 or later
+
+```bash
+git clone https://github.com/tuna-os/bluefin-cli.git
+cd bluefin-cli
+go build -o bluefin-cli .
+```
+
+On Windows, use `go build -o bluefin-cli.exe .`.
+
+Maintainers: package publishing (Homebrew tap, Winget, Scoop) is automated by GoReleaser on release; `.github/workflows/winget.yml` is a manual fallback for re-submitting a Winget version.
 
 ## 📖 Usage
 
@@ -106,6 +130,19 @@ View your current configuration and installed tools:
 bluefin-cli status
 ```
 
+#### Diagnose Problems
+
+```bash
+bluefin-cli doctor
+```
+
+#### Update
+
+```bash
+bluefin-cli update          # self-update (script installs)
+bluefin-cli update --check  # just check
+```
+
 ## ✨ Shell Experience
 
 Bluefin CLI includes a "Shell Experience" module (formerly "bling") that configures your shell with modern tools and aliases.
@@ -116,11 +153,9 @@ To enable the shell experience:
 bluefin-cli shell bash on
 # or
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli shell zsh on
 # or
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli shell fish on
 ```
 
@@ -148,17 +183,14 @@ Toggle MOTD for shells:
 ```bash
 # Enable for all shells
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli motd toggle all on
 
 # Enable for specific shell
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli motd toggle zsh on
 
 # Disable MOTD
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli motd toggle all off
 ```
 
@@ -169,12 +201,10 @@ Install curated Homebrew bundles:
 ```bash
 # List available bundles
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install list
 
 # Install specific bundle
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install ai       # AI tools
 bluefin-cli install cli      # CLI essentials
 bluefin-cli install fonts    # Development fonts
@@ -182,7 +212,6 @@ bluefin-cli install k8s      # Kubernetes tools
 
 # Interactive mode
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install
 ```
 
@@ -193,42 +222,34 @@ Install desktop wallpaper collections:
 ```bash
 # Interactive selection
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install wallpapers
 
 # Install specific wallpaper casks
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install wallpapers bluefin-wallpapers aurora-wallpapers bazzite-wallpapers
 
 # Non-interactive test run: apply theme + enable all automation
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install wallpapers bluefin-wallpapers --yes
 
 # Non-interactive with explicit controls
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install wallpapers bluefin-wallpapers --non-interactive --apply-theme --theme Bluefin --enable-mode-sync --enable-auto-dark-light --trigger-source polling
 
 # Use startup-only mode sync (no minute polling task)
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install wallpapers bluefin-wallpapers --non-interactive --enable-mode-sync --trigger-source startup
 
 # Auto Dark Mode integration mode (startup sync + external mode-change utility)
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install wallpapers bluefin-wallpapers --non-interactive --enable-mode-sync --trigger-source autodarkmode
 
 # Cleanup Windows sync artifacts/state/tasks generated by wallpaper integration
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install wallpapers cleanup
 
 # Full reset for testing: cleanup + uninstall known wallpaper casks + local wallpaper folders
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 bluefin-cli install wallpapers cleanup --all
 
 ```
@@ -341,12 +362,10 @@ just build
 ```bash
 # Run tests in container
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 just test
 
 # Run tests locally
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 go test ./...
 ```
 

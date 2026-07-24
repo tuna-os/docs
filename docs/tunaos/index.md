@@ -206,6 +206,7 @@ Related Communities:
 - [Agent Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/AGENT_GUIDE.md) — complete architecture and contributor reference
 - [Build Pipeline](https://github.com/tuna-os/tunaOS/blob/main/docs/build-pipeline.md) — CI/CD workflow overview
 - [Testing Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/TESTING.md) — ISO end-to-end test harness
+- [Secure Boot](https://github.com/tuna-os/tunaOS/blob/main/docs/SECURE-BOOT.md) — which variants support Secure Boot out of the box
 - [Improvement Plan](https://github.com/tuna-os/tunaOS/blob/main/docs/IMPROVEMENT_PLAN.md) — roadmap and development progress
 - [Redfin Setup](https://github.com/tuna-os/tunaOS/blob/main/docs/rhel-setup.md) — RHEL 10 local-build instructions
 - [Developer Docs](https://tunaos.org/docs/dev/introduction) — build and contribution guide
