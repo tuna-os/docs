@@ -43,6 +43,14 @@ flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.fl
 flatpak install tuna-os org.tunaos.mandelbrot
 ```
 
+Mandelbrot runs on the GNOME 50 runtime, so you also need the
+[Flathub remote](https://flathub.org/setup) (or another source for
+`org.gnome.Platform//50`).
+
+Added the `tuna-os` remote before it moved to tunaos.org? `--if-not-exists` keeps
+your old one and the install will say nothing matches. Fix it with
+`flatpak remote-modify tuna-os --url=oci+https://tunaos.org/flatpak`.
+
 ## Reporting issues
 
 Please report issues with core messaging that also reproduce in Fractal to the
