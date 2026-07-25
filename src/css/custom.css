@@ -18,6 +18,23 @@
   --tuna-silver: #a0a0a0;
   --tuna-dark-blue: #002b5c;
   --tuna-light-blue: #e6f3ff;
+
+  /* Shared palette with iso.tunaos.org (app/public/index.html). Keep these in
+     sync — the two sites sit behind one nav bar and must read as one product. */
+  --tuna-panel: #ffffff;
+  --tuna-border: #cfe3f7;
+  --tuna-dim: #5a7492;
+  --tuna-header-bg: #002b5c;
+  --tuna-header-fg: #ffffff;
+  --tuna-header-link: #cfe3f7;
+
+  /* The navy header bar is the site's signature element — identical in both
+     themes on the builder, so match that here rather than letting Infima
+     invert it. */
+  --ifm-navbar-background-color: var(--tuna-header-bg);
+  --ifm-navbar-link-color: var(--tuna-header-link);
+  --ifm-navbar-link-hover-color: var(--tuna-header-fg);
+  --ifm-navbar-shadow: 0 1px 0 var(--tuna-border);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -33,6 +50,45 @@
   --tuna-silver: #c0c0c0;
   --tuna-dark-blue: #00152e;
   --tuna-light-blue: #003366;
+
+  /* Dark palette from iso.tunaos.org's :root (its default is dark). */
+  --tuna-panel: #002b5c;
+  --tuna-border: #1a4a7a;
+  --tuna-dim: #94b8dc;
+  --tuna-header-bg: #001a38;
+
+  /* Deep navy page/surface, matching the builder's --bg / --panel. */
+  --ifm-background-color: #00152e;
+  --ifm-background-surface-color: #002b5c;
+  --ifm-navbar-background-color: var(--tuna-header-bg);
+  --ifm-toc-border-color: var(--tuna-border);
+  --ifm-navbar-shadow: 0 1px 0 var(--tuna-border);
+}
+
+/* ── Header bar, matching iso.tunaos.org's .site-header ────────────────────
+   Navy bar in both themes, white brand, dimmed links that brighten on hover,
+   and an accent underline on the active item. */
+.navbar__title,
+.navbar__brand {
+  color: var(--tuna-header-fg);
+  font-weight: 700;
+}
+
+.navbar__link {
+  font-size: 0.92rem;
+}
+
+.navbar__link--active {
+  color: var(--tuna-header-fg);
+  border-bottom: 2px solid var(--ifm-color-primary);
+  padding-bottom: 2px;
+}
+
+/* The toggle and mobile-menu glyphs sit on navy in BOTH themes, so force the
+   light-on-dark treatment Infima would otherwise only apply in dark mode. */
+.navbar__toggle,
+.navbar__items--right .clean-btn {
+  color: var(--tuna-header-link);
 }
 
 .hero--primary {
