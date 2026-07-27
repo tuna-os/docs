@@ -5,3 +5,4 @@ Homepage=https://tunaos.org
 Comment=TunaOS Flatpak repository
 Description=GNOME office suite — Tables, Letters, Decks
 Icon=https://avatars.githubusercontent.com/u/196050174
+DefaultBranch=master

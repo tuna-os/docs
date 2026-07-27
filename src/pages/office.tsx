@@ -10,49 +10,25 @@ const APPS = [
     id: 'letters',
     name: 'Letters',
     emoji: '📝',
-    flatpak: 'org.tunaos.letters',
-    summary: 'Modern word processor for the GNOME desktop.',
-    features: ['DOCX, ODT, Markdown, HTML I/O', 'PDF export via WeasyPrint', 'Live word count', 'Find/replace, tables, lists'],
+    flatpak: 'org.tunaos.letters-rust',
+    summary: 'Pure Rust GTK4 word processor for the GNOME desktop — no WebKit.',
+    features: ['Native DOCX + ODT I/O', 'CommonMark-faithful Markdown', 'Footnotes, autosave, crash recovery', 'Ctrl+K command palette'],
   },
   {
     id: 'tables',
     name: 'Tables',
     emoji: '📊',
-    flatpak: 'org.tunaos.tables',
-    summary: 'GNOME spreadsheet with ~400 Excel-compatible functions.',
-    features: ['~400 formulas via HyperFormula', 'XLSX, ODS, CSV', 'Charts, sort, filter, freeze panes', 'Excel-compatible keyboard shortcuts'],
+    flatpak: 'org.tunaos.tables-rust',
+    summary: 'Pure Rust GTK4 spreadsheet — no WebKit.',
+    features: ['83 formulas via ironcalc_base', 'XLSX, XLS, ODS', 'Fill handle, named ranges, row filtering', 'Excel-compatible keyboard shortcuts'],
   },
   {
     id: 'decks',
     name: 'Decks',
     emoji: '📽️',
-    flatpak: 'org.tunaos.decks',
-    summary: 'GNOME presentation app with Fabric.js and Reveal.js.',
-    features: ['Fabric.js canvas editing', 'Reveal.js fullscreen present mode', 'PPTX, ODP I/O', '30-level undo/redo'],
-  },
-  {
-    id: 'tables-rust',
-    name: 'Tables (Rust)',
-    emoji: '🦀',
-    flatpak: 'org.tunaos.tables-rust',
-    summary: 'Pure Rust GTK4 spreadsheet — no WebKit.',
-    features: ['Pure Rust + GTK4', 'Native performance', 'No WebKit dependency', 'Lightning fast'],
-  },
-  {
-    id: 'letters-rust',
-    name: 'Letters (Rust)',
-    emoji: '🦀',
-    flatpak: 'org.tunaos.letters-rust',
-    summary: 'Pure Rust GTK4 word processor — no WebKit.',
-    features: ['Pure Rust + GTK4', 'Native performance', 'No WebKit dependency', 'Lightning fast'],
-  },
-  {
-    id: 'decks-rust',
-    name: 'Decks (Rust)',
-    emoji: '🦀',
     flatpak: 'org.tunaos.decks-rust',
     summary: 'Pure Rust GTK4 presentation app — no WebKit.',
-    features: ['Pure Rust + GTK4', 'Native performance', 'No WebKit dependency', 'Lightning fast'],
+    features: ['Native GTK canvas editing', 'Master slides from PPTX', 'Object inspector + presenter pill', 'Multi-page PDF export'],
   },
 ];
 
@@ -145,8 +121,6 @@ export default function Office(): ReactNode {
             maxWidth: 700, margin: '0 auto',
           }}>
             <code>{'flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo'}</code>
-            {'\n'}<code>{'flatpak install tuna-os org.tunaos.letters org.tunaos.tables org.tunaos.decks'}</code>
-            {'\n'}<code>{'# Rust variants (no WebKit, pure GTK4)'}</code>
             {'\n'}<code>{'flatpak install tuna-os org.tunaos.letters-rust org.tunaos.tables-rust org.tunaos.decks-rust'}</code>
           </pre>
           <p style={{marginTop: '1rem'}}>

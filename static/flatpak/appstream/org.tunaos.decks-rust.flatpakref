@@ -3,6 +3,6 @@ Name=org.tunaos.decks-rust
 Branch=master
 Title=org.tunaos.decks-rust from tuna-os
 IsRuntime=false
-Url=oci+https://tuna-os.github.io/flatpak-index
+Url=oci+https://tunaos.org/flatpak
 SuggestRemoteName=tuna-os
 RuntimeRepo=https://tunaos.org/flatpak/tuna-os.flatpakrepo

@@ -5,24 +5,24 @@ import Link from '@docusaurus/Link';
 
 const APPS = [
   {
-    id: 'org.tunaos.letters',
+    id: 'org.tunaos.letters-rust',
     name: 'Letters',
     emoji: '📝',
-    description: 'Modern word processor — DOCX, ODT, Markdown, PDF export.',
+    description: 'Pure Rust GTK4 word processor — DOCX, ODT, Markdown, PDF export.',
     docs: '/letters',
   },
   {
-    id: 'org.tunaos.tables',
+    id: 'org.tunaos.tables-rust',
     name: 'Tables',
     emoji: '📊',
-    description: 'GNOME spreadsheet — ~400 Excel-compatible functions.',
+    description: 'Pure Rust GTK4 spreadsheet — 83 Excel-compatible functions.',
     docs: '/tables',
   },
   {
-    id: 'org.tunaos.decks',
+    id: 'org.tunaos.decks-rust',
     name: 'Decks',
     emoji: '📽️',
-    description: 'Presentation app — Fabric.js canvas + Reveal.js fullscreen.',
+    description: 'Pure Rust GTK4 presentation app — native canvas editing.',
     docs: '/decks',
   },
   {
@@ -45,30 +45,6 @@ const APPS = [
     emoji: '🖥️',
     description: 'Graphical OS installer for bootc-based systems.',
     docs: 'https://github.com/projectbluefin/bootc-installer',
-  },
-];
-
-const RUST_APPS = [
-  {
-    id: 'org.tunaos.letters-rust',
-    name: 'Letters (Rust)',
-    emoji: '📝',
-    description: 'Native GTK4 word processor — pure Rust, no Python required.',
-    docs: '/letters',
-  },
-  {
-    id: 'org.tunaos.tables-rust',
-    name: 'Tables (Rust)',
-    emoji: '📊',
-    description: 'Native GTK4 spreadsheet — pure Rust, no Python required.',
-    docs: '/tables',
-  },
-  {
-    id: 'org.tunaos.decks-rust',
-    name: 'Decks (Rust)',
-    emoji: '📽️',
-    description: 'Native GTK4 presentation app — pure Rust, no Python required.',
-    docs: '/decks',
   },
 ];
 
@@ -150,19 +126,6 @@ export default function Flatpak(): ReactNode {
           </div>
         </section>
 
-        <section style={{marginBottom: '3rem'}}>
-          <Heading as="h2">🦀 Rust previews</Heading>
-          <p style={{color: 'var(--ifm-color-emphasis-600)', marginBottom: '1rem'}}>
-            Native GTK4 rewrites — no Python or WebKit dependency. Lighter and faster.
-            Feature parity with the Python versions is in progress.
-          </p>
-          <div style={{display: 'flex', flexDirection: 'column', gap: '0.75rem'}}>
-            {RUST_APPS.map((app) => (
-              <AppCard key={app.id} app={app} badge="Preview" />
-            ))}
-          </div>
-        </section>
-
         <section style={{marginTop: '3rem'}}>
           <Heading as="h2">Install an app</Heading>
           <p>Once the remote is added:</p>
@@ -171,11 +134,11 @@ export default function Flatpak(): ReactNode {
             padding: '1.25rem', borderRadius: 8,
             fontSize: '0.95rem',
           }}>
-            <code>flatpak install tuna-os org.tunaos.letters</code>
+            <code>flatpak install tuna-os org.tunaos.letters-rust</code>
           </pre>
           <p style={{marginTop: '0.5rem'}}>
-            Replace <code>org.tunaos.letters</code> with any app ID above.{' '}
-            <a href="https://github.com/tuna-os/hanthor-rust">Rust source →</a>
+            Replace <code>org.tunaos.letters-rust</code> with any app ID above.{' '}
+            <a href="https://github.com/tuna-os/gtk-office-suite">Source →</a>
           </p>
         </section>
 

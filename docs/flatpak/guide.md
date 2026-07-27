@@ -11,33 +11,17 @@ TunaOS publishes Flatpak applications through a custom OCI remote, providing san
 
 | App | Description | Flatpak ID | Source |
 |---|---|---|---|
-| **Tables** 📊 | Spreadsheet app (400+ functions) | `org.tunaos.tables` | [GitHub](https://github.com/tuna-os/tables) |
-| **Decks** 📽️ | Presentation app | `org.tunaos.decks` | [GitHub](https://github.com/tuna-os/decks) |
-| **Letters** 📝 | Word processor | `org.tunaos.letters` | [GitHub](https://github.com/tuna-os/letters) |
+| **Tables** 📊 | Pure Rust GTK4 spreadsheet | `org.tunaos.tables-rust` | [GitHub](https://github.com/tuna-os/gtk-office-suite) |
+| **Decks** 📽️ | Pure Rust GTK4 presentation app | `org.tunaos.decks-rust` | [GitHub](https://github.com/tuna-os/gtk-office-suite) |
+| **Letters** 📝 | Pure Rust GTK4 word processor | `org.tunaos.letters-rust` | [GitHub](https://github.com/tuna-os/gtk-office-suite) |
 | **Tavern** 🍺 | Homebrew GUI client | `dev.hanthor.Tavern` | [GitHub](https://github.com/tuna-os/Tavern) |
-
-### Rust Previews (lighter, faster)
-
-Native GTK4 Rust rewrites are available with a `-rust` suffix:
-
-```bash
-flatpak install tuna-os org.tunaos.tables-rust
-flatpak install tuna-os org.tunaos.decks-rust
-flatpak install tuna-os org.tunaos.letters-rust
-```
 
 ## Adding the Remote
 
 ### One-time setup
 
 ```bash
-flatpak remote-add tuna-os https://docs.tuna-os.org/flatpak/tuna-os.flatpakrepo
-```
-
-Or via the OCI registry directly:
-
-```bash
-flatpak remote-add --if-not-exists tuna-os oci+https://tuna-os.github.io/flatpak-index
+flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo
 ```
 
 ### Verify the remote
@@ -52,13 +36,10 @@ flatpak remotes | grep tuna-os
 
 ```bash
 # Single app
-flatpak install tuna-os org.tunaos.tables
+flatpak install tuna-os org.tunaos.tables-rust
 
 # Multiple apps at once
-flatpak install tuna-os org.tunaos.tables org.tunaos.decks org.tunaos.letters
-
-# Rust preview
-flatpak install tuna-os org.tunaos.tables-rust
+flatpak install tuna-os org.tunaos.tables-rust org.tunaos.decks-rust org.tunaos.letters-rust
 ```
 
 ### GUI installation
@@ -82,7 +63,7 @@ flatpak list --app
 ### Remove an app
 
 ```bash
-flatpak uninstall org.tunaos.tables
+flatpak uninstall org.tunaos.tables-rust
 ```
 
 ### Check for updates
@@ -95,13 +76,13 @@ flatpak update --check
 
 | Problem | Fix |
 |---|---|
-| `Remote \"tuna-os\" not found` | Add the remote first: `flatpak remote-add tuna-os https://docs.tuna-os.org/flatpak/tuna-os.flatpakrepo` |
-| App won't launch | Try `flatpak run org.tunaos.tables --log-level=debug` |
+| `Remote \"tuna-os\" not found` | Add the remote first: `flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo` |
+| App won't launch | Try `flatpak run org.tunaos.tables-rust --log-level=debug` |
 | Update fails | Run `flatpak repair` then `flatpak update` |
 | Permission denied | Flatpaks are sandboxed. Use Flatseal to manage permissions |
 
 ## See Also
 
-- [Office Suite](/gtk-office-suite) — Tables, Decks, Letters overview
+- [Office Suite](/office) — Tables, Decks, Letters overview
 - [Tavern Guide](/tavern/guide) — Homebrew GUI user guide
 - [Flatpak Documentation](https://docs.flatpak.org) — official Flatpak docs

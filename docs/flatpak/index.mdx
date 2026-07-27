@@ -15,27 +15,27 @@ Install GNOME office apps directly from our Flatpak remote.
 This is a one-time step:
 
 ```bash
-flatpak remote-add tuna-os https://docs.tuna-os.org/flatpak/tuna-os.flatpakrepo
+flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo
 ```
 
 ## 2. Install apps
 
-### Python versions (stable)
+Pure Rust GTK4 apps — no Python or WebKit dependency.
 
 <Tabs>
-  <TabItem value="tables" label="🧮 Tables">
+  <TabItem value="tables-rust" label="🧮 Tables">
     ```bash
-    flatpak install tuna-os org.tunaos.tables
+    flatpak install tuna-os org.tunaos.tables-rust
     ```
   </TabItem>
-  <TabItem value="decks" label="🎬 Decks">
+  <TabItem value="decks-rust" label="🎬 Decks">
     ```bash
-    flatpak install tuna-os org.tunaos.decks
+    flatpak install tuna-os org.tunaos.decks-rust
     ```
   </TabItem>
-  <TabItem value="letters" label="📄 Letters">
+  <TabItem value="letters-rust" label="📄 Letters">
     ```bash
-    flatpak install tuna-os org.tunaos.letters
+    flatpak install tuna-os org.tunaos.letters-rust
     ```
   </TabItem>
 </Tabs>
@@ -43,27 +43,5 @@ flatpak remote-add tuna-os https://docs.tuna-os.org/flatpak/tuna-os.flatpakrepo
 Or install all three at once:
 
 ```bash
-flatpak install tuna-os org.tunaos.tables org.tunaos.decks org.tunaos.letters
+flatpak install tuna-os org.tunaos.tables-rust org.tunaos.decks-rust org.tunaos.letters-rust
 ```
-
-### 🦀 Rust versions (preview)
-
-Native GTK4 rewrites — no Python or WebKit required. Lighter and faster, feature parity in progress.
-
-<Tabs>
-  <TabItem value="tables-rust" label="🧮 Tables (Rust)">
-    ```bash
-    flatpak install tuna-os org.tunaos.tables-rust
-    ```
-  </TabItem>
-  <TabItem value="decks-rust" label="🎬 Decks (Rust)">
-    ```bash
-    flatpak install tuna-os org.tunaos.decks-rust
-    ```
-  </TabItem>
-  <TabItem value="letters-rust" label="📄 Letters (Rust)">
-    ```bash
-    flatpak install tuna-os org.tunaos.letters-rust
-    ```
-  </TabItem>
-</Tabs>
