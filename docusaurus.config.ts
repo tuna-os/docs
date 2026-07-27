@@ -185,6 +185,10 @@ const config: Config = {
               href: 'https://matrix.to/#/%23tunaos:reilly.asia',
             },
             {
+              label: 'Discord',
+              href: 'https://discord.gg/MXSTqB8Nv',
+            },
+            {
               label: 'Universal Blue Discord',
               href: 'https://discord.gg/WEu6BdFEtp',
             },

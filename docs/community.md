@@ -12,6 +12,7 @@ Welcome to the TunaOS community! Whether you're a user, contributor, or just cur
 | Platform | Purpose | Link |
 |---|---|---|
 | **Matrix** | Primary chat — ask questions, share setups | [#tunaos:reilly.asia](https://matrix.to/#/%23tunaos:reilly.asia) |
+| **Discord** | TunaOS's own Discord server | [Join Discord](https://discord.gg/MXSTqB8Nv) |
 | **GitHub Discussions** | Ideas, Q&A, feature requests | [Start a discussion](https://github.com/tuna-os/tunaOS/discussions) |
 | **GitHub Issues** | Bug reports, feature tracking | [Open an issue](https://github.com/tuna-os/tunaOS/issues) |
 | **Universal Blue Discord** | Larger bootc/atomic desktop community | [Join Discord](https://discord.gg/WEu6BdFEtp) |
