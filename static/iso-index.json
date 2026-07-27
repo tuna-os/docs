@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-27T02:24:35.336Z",
+  "generatedAt": "2026-07-27T09:39:25.688Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 152,
+  "count": 154,
   "categories": [
     {
       "id": "live-isos",
@@ -1289,8 +1289,28 @@
       "blurb": "",
       "icon": "📀",
       "order": 99,
-      "checksums": "https://download.tunaos.org/tacklebox/bazzite-gnome-SHA256SUMS-20260722-23cdc6e",
+      "checksums": "https://download.tunaos.org/tacklebox/SHA256SUMS-20260727-36ae6d6",
       "isos": [
+        {
+          "category": "tacklebox",
+          "name": "tacklebox-poc-dedup-latest",
+          "path": "tacklebox/tacklebox-poc-dedup-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-latest.iso",
+          "size": 1810169856,
+          "modified": "2026-07-27T08:43:39.057141651Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "tacklebox-poc-perenv-latest",
+          "path": "tacklebox/tacklebox-poc-perenv-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-latest.iso",
+          "size": 2934636544,
+          "modified": "2026-07-27T08:42:37.046128230Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "tacklebox",
           "name": "bazzite-gnome-latest",
@@ -1323,23 +1343,23 @@
         },
         {
           "category": "tacklebox",
-          "name": "tacklebox-poc-dedup-latest",
-          "path": "tacklebox/tacklebox-poc-dedup-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-latest.iso",
-          "size": 1761017856,
-          "modified": "2026-07-20T09:20:52.011430472Z",
+          "name": "tacklebox-poc-dedup-20260727-36ae6d6",
+          "path": "tacklebox/tacklebox-poc-dedup-20260727-36ae6d6.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-20260727-36ae6d6.iso",
+          "size": 1810169856,
+          "modified": "2026-07-27T08:43:39.057141651Z",
           "arch": "",
-          "latest": true
+          "latest": false
         },
         {
           "category": "tacklebox",
-          "name": "tacklebox-poc-perenv-latest",
-          "path": "tacklebox/tacklebox-poc-perenv-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-latest.iso",
-          "size": 2865168384,
-          "modified": "2026-07-20T09:19:54.020406032Z",
+          "name": "tacklebox-poc-perenv-20260727-36ae6d6",
+          "path": "tacklebox/tacklebox-poc-perenv-20260727-36ae6d6.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-20260727-36ae6d6.iso",
+          "size": 2934636544,
+          "modified": "2026-07-27T08:42:37.046128230Z",
           "arch": "",
-          "latest": true
+          "latest": false
         },
         {
           "category": "tacklebox",
