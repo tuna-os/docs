@@ -460,7 +460,7 @@
       "Name": "tuna-os/dualcut",
       "Images": [
         {
-          "Digest": "sha256:9c5c4c3a8c26d1f1238f9b5e2c1c2857f2e9aedca47f868ceabb8383b351f8e3",
+          "Digest": "sha256:249daee1edb68f795db1fbf959ce3ab0a0b2d04fb678cec341cbf91cb83be670",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -474,18 +474,18 @@
             "org.flatpak.installed-size": "144212992",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAiYhAAAdA==",
             "org.flatpak.metadata": "[Application]\nname=io.github.hanthor.Dualcut\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=dualcut\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;pulseaudio;wayland;\ndevices=dri;\nfilesystems=home;\n\n[Environment]\nGST_PLUGIN_PATH=/app/lib/gstreamer-1.0\n\n[Extension org.freedesktop.Platform.ffmpeg-full]\ndirectory=lib/ffmpeg\nadd-ld-path=.\nversion=25.08\n\n[Extension io.github.hanthor.Dualcut.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=io.github.hanthor.Dualcut.Debug;",
-            "org.flatpak.timestamp": "1785152402",
-            "org.flatpak.download-size": "69878016",
-            "org.flatpak.commit": "6fd7f0763cbb80a1f4017b1902672432f3bbf2c8078cd314011c0ae6773a7267",
-            "org.flatpak.subject": "Built from ae23ab1be3211579047445c9d39decb1607a909b",
+            "org.flatpak.timestamp": "1785154211",
+            "org.flatpak.download-size": "69877776",
+            "org.flatpak.commit": "d3568381a65ac63854c0ba03f0b8da02efa343d78928cdf14ade93694eacc0af",
+            "org.flatpak.subject": "Built from 5e25db910583bfaa4a7fe6d2723c40b09a38d5bd",
             "org.flatpak.body": "Name: io.github.hanthor.Dualcut\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL2lvLmdpdGh1Yi5oYW50aG9yLkR1YWxjdXQveDg2XzY0L21hc3RlcgAAcw==",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAQsKXMAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAQsKMUAdA==",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL2lvLmdpdGh1Yi5oYW50aG9yLkR1YWxjdXQveDg2XzY0L21hc3RlcgAsAGFz"
           }
         },
         {
-          "Digest": "sha256:c345741b738a90747e6a312551b3730f81a5826a5376c08c7af8c55d026f6236",
+          "Digest": "sha256:e4bcf6cd2d55821c375ab15e998def38fe8706c68441cc3d0d25523a2efa5d40",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "arm64",
@@ -499,13 +499,13 @@
             "org.flatpak.installed-size": "187405312",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAsrlAAAdA==",
             "org.flatpak.metadata": "[Application]\nname=io.github.hanthor.Dualcut\nruntime=org.gnome.Platform/aarch64/50\nsdk=org.gnome.Sdk/aarch64/50\ncommand=dualcut\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;pulseaudio;wayland;\ndevices=dri;\nfilesystems=home;\n\n[Environment]\nGST_PLUGIN_PATH=/app/lib/gstreamer-1.0\n\n[Extension org.freedesktop.Platform.ffmpeg-full]\ndirectory=lib/ffmpeg\nadd-ld-path=.\nversion=25.08\n\n[Extension io.github.hanthor.Dualcut.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=io.github.hanthor.Dualcut.Debug;",
-            "org.flatpak.timestamp": "1785152451",
-            "org.flatpak.download-size": "76189704",
-            "org.flatpak.commit": "a857e6a5437962fa61f1594264a47b78a2bdb81dc539dba867ad1d715ab4afd9",
-            "org.flatpak.subject": "Built from ae23ab1be3211579047445c9d39decb1607a909b",
+            "org.flatpak.timestamp": "1785154143",
+            "org.flatpak.download-size": "76189583",
+            "org.flatpak.commit": "c94ef21cf0e25357fc41c43700d6ef0cf12f1938029ca46200606ae9394d4b84",
+            "org.flatpak.subject": "Built from 5e25db910583bfaa4a7fe6d2723c40b09a38d5bd",
             "org.flatpak.body": "Name: io.github.hanthor.Dualcut\nArch: aarch64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL2lvLmdpdGh1Yi5oYW50aG9yLkR1YWxjdXQvYWFyY2g2NC9tYXN0ZXIAAHM=",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAASM1+kAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAASM3JsAdA==",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL2lvLmdpdGh1Yi5oYW50aG9yLkR1YWxjdXQvYWFyY2g2NC9tYXN0ZXIALQBhcw=="
           }
         }
