@@ -1,0 +1,36 @@
+# Sanity-checks the tuna-os Flatpak remote: DefaultBranch set, every
+# expected app present with its required architectures, and every
+# appstream/*.flatpakref resolves to a live index entry.
+#
+# Runs against the working tree on PRs/pushes that touch static/flatpak/**
+# (catches breakage before it deploys) and against the live served remote
+# nightly (catches CDN/proxy drift after deploy).
+
+name: Flatpak Remote Sanity Check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'static/flatpak/**'
+  pull_request:
+    paths:
+      - 'static/flatpak/**'
+  schedule:
+    - cron: '0 12 * * *'  # daily at 12:00 UTC, well after any overnight publish jobs
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Check ${{ github.event_name == 'schedule' && 'live remote' || 'working tree' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check working tree
+        if: github.event_name != 'schedule'
+        run: python3 .github/scripts/check-flatpak-remote.py
+
+      - name: Check live remote
+        if: github.event_name == 'schedule'
+        run: python3 .github/scripts/check-flatpak-remote.py --base-url https://tunaos.org/flatpak
