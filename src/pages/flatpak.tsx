@@ -5,21 +5,21 @@ import Link from '@docusaurus/Link';
 
 const APPS = [
   {
-    id: 'org.tunaos.letters-rust',
+    id: 'org.tunaos.letters',
     name: 'Letters',
     emoji: '📝',
     description: 'Pure Rust GTK4 word processor — DOCX, ODT, Markdown, PDF export.',
     docs: '/letters',
   },
   {
-    id: 'org.tunaos.tables-rust',
+    id: 'org.tunaos.tables',
     name: 'Tables',
     emoji: '📊',
     description: 'Pure Rust GTK4 spreadsheet — 83 Excel-compatible functions.',
     docs: '/tables',
   },
   {
-    id: 'org.tunaos.decks-rust',
+    id: 'org.tunaos.decks',
     name: 'Decks',
     emoji: '📽️',
     description: 'Pure Rust GTK4 presentation app — native canvas editing.',
@@ -134,10 +134,10 @@ export default function Flatpak(): ReactNode {
             padding: '1.25rem', borderRadius: 8,
             fontSize: '0.95rem',
           }}>
-            <code>flatpak install tuna-os org.tunaos.letters-rust</code>
+            <code>flatpak install tuna-os org.tunaos.letters</code>
           </pre>
           <p style={{marginTop: '0.5rem'}}>
-            Replace <code>org.tunaos.letters-rust</code> with any app ID above.{' '}
+            Replace <code>org.tunaos.letters</code> with any app ID above.{' '}
             <a href="https://github.com/tuna-os/gtk-office-suite">Source →</a>
           </p>
         </section>

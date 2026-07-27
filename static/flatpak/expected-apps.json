@@ -1,9 +1,9 @@
 {
   "_comment": "Source of truth for the flatpak sanity check (.github/scripts/check-flatpak-remote.py). archs listed are required; missing ones fail the check, missing 'archs_planned' only warn.",
   "apps": [
-    {"name": "tuna-os/letters-rust", "id": "org.tunaos.letters-rust", "archs": ["amd64"], "archs_planned": ["arm64"]},
-    {"name": "tuna-os/tables-rust", "id": "org.tunaos.tables-rust", "archs": ["amd64"], "archs_planned": ["arm64"]},
-    {"name": "tuna-os/decks-rust", "id": "org.tunaos.decks-rust", "archs": ["amd64"], "archs_planned": ["arm64"]},
+    {"name": "tuna-os/letters", "id": "org.tunaos.letters", "archs": ["amd64", "arm64"]},
+    {"name": "tuna-os/tables", "id": "org.tunaos.tables", "archs": ["amd64", "arm64"]},
+    {"name": "tuna-os/decks", "id": "org.tunaos.decks", "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/mariner", "id": "org.tunaos.mariner", "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/mandelbrot", "id": "org.tunaos.mandelbrot", "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/tavern", "id": "org.tunaos.tavern", "archs": ["amd64"]},

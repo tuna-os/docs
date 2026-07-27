@@ -30,6 +30,7 @@ const SKIP = new Set([
   'images', 'packages', 'egg', 'dakota',  // buildstream infra
   'demo-repository', '.github', 'docs',  // boilerplate / this repo
   'first-setup', 'thinkpad-x13s-gnome-build-meta',  // internal
+  'tables', 'letters', 'decks',  // archived Python apps, superseded by gtk-office-suite
 ]);
 
 // Per-repo filter: only sync these root doc files (case-insensitive match).

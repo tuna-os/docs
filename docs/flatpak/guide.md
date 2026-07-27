@@ -11,9 +11,9 @@ TunaOS publishes Flatpak applications through a custom OCI remote, providing san
 
 | App | Description | Flatpak ID | Source |
 |---|---|---|---|
-| **Tables** 📊 | Pure Rust GTK4 spreadsheet | `org.tunaos.tables-rust` | [GitHub](https://github.com/tuna-os/gtk-office-suite) |
-| **Decks** 📽️ | Pure Rust GTK4 presentation app | `org.tunaos.decks-rust` | [GitHub](https://github.com/tuna-os/gtk-office-suite) |
-| **Letters** 📝 | Pure Rust GTK4 word processor | `org.tunaos.letters-rust` | [GitHub](https://github.com/tuna-os/gtk-office-suite) |
+| **Tables** 📊 | Pure Rust GTK4 spreadsheet | `org.tunaos.tables` | [GitHub](https://github.com/tuna-os/gtk-office-suite) |
+| **Decks** 📽️ | Pure Rust GTK4 presentation app | `org.tunaos.decks` | [GitHub](https://github.com/tuna-os/gtk-office-suite) |
+| **Letters** 📝 | Pure Rust GTK4 word processor | `org.tunaos.letters` | [GitHub](https://github.com/tuna-os/gtk-office-suite) |
 | **Tavern** 🍺 | Homebrew GUI client | `dev.hanthor.Tavern` | [GitHub](https://github.com/tuna-os/Tavern) |
 
 ## Adding the Remote
@@ -36,10 +36,10 @@ flatpak remotes | grep tuna-os
 
 ```bash
 # Single app
-flatpak install tuna-os org.tunaos.tables-rust
+flatpak install tuna-os org.tunaos.tables
 
 # Multiple apps at once
-flatpak install tuna-os org.tunaos.tables-rust org.tunaos.decks-rust org.tunaos.letters-rust
+flatpak install tuna-os org.tunaos.tables org.tunaos.decks org.tunaos.letters
 ```
 
 ### GUI installation
@@ -63,7 +63,7 @@ flatpak list --app
 ### Remove an app
 
 ```bash
-flatpak uninstall org.tunaos.tables-rust
+flatpak uninstall org.tunaos.tables
 ```
 
 ### Check for updates
@@ -77,7 +77,7 @@ flatpak update --check
 | Problem | Fix |
 |---|---|
 | `Remote \"tuna-os\" not found` | Add the remote first: `flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo` |
-| App won't launch | Try `flatpak run org.tunaos.tables-rust --log-level=debug` |
+| App won't launch | Try `flatpak run org.tunaos.tables --log-level=debug` |
 | Update fails | Run `flatpak repair` then `flatpak update` |
 | Permission denied | Flatpaks are sandboxed. Use Flatseal to manage permissions |
 

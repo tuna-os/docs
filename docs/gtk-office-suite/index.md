@@ -11,18 +11,18 @@ distributed as Flatpaks.
 
 | App | Description | Install |
 |---|---|---|
-| [**Letters**](/docs/letters) 📝 | Word processor — DOCX, ODT, Markdown, HTML, PDF export | `flatpak install tuna-os org.tunaos.letters-rust` |
-| [**Tables**](/docs/tables) 📊 | Spreadsheet — XLSX, ODS, CSV, IronCalc formula engine | `flatpak install tuna-os org.tunaos.tables-rust` |
-| [**Decks**](/docs/decks) 📽️ | Presentations — PPTX, present mode, speaker notes | `flatpak install tuna-os org.tunaos.decks-rust` |
+| [**Letters**](/letters) 📝 | Word processor — DOCX, ODT, Markdown, HTML, PDF export | `flatpak install tuna-os org.tunaos.letters` |
+| [**Tables**](/tables) 📊 | Spreadsheet — XLSX, ODS, CSV, IronCalc formula engine | `flatpak install tuna-os org.tunaos.tables` |
+| [**Decks**](/decks) 📽️ | Presentations — PPTX, present mode, speaker notes | `flatpak install tuna-os org.tunaos.decks` |
 
 ## 🚀 Quick install
 
 ```bash
 flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo
 
-flatpak install tuna-os org.tunaos.letters-rust
-flatpak install tuna-os org.tunaos.tables-rust
-flatpak install tuna-os org.tunaos.decks-rust
+flatpak install tuna-os org.tunaos.letters
+flatpak install tuna-os org.tunaos.tables
+flatpak install tuna-os org.tunaos.decks
 ```
 
 Installable `.flatpak` bundles are also attached to each
