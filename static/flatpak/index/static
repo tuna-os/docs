@@ -455,6 +455,61 @@
           }
         }
       ]
+    },
+    {
+      "Name": "tuna-os/dualcut",
+      "Images": [
+        {
+          "Digest": "sha256:9c5c4c3a8c26d1f1238f9b5e2c1c2857f2e9aedca47f868ceabb8383b351f8e3",
+          "MediaType": "application/vnd.oci.image.manifest.v1+json",
+          "OS": "linux",
+          "Architecture": "amd64",
+          "Tags": [
+            "latest"
+          ],
+          "Labels": {
+            "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
+            "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPWlvLmdpdGh1Yi5oYW50aG9yLkR1YWxjdXQKcnVudGltZT1vcmcuZ25vbWUuUGxhdGZvcm0veDg2XzY0LzUwCnNkaz1vcmcuZ25vbWUuU2RrL3g4Nl82NC81MApjb21tYW5kPWR1YWxjdXQKCltDb250ZXh0XQpzaGFyZWQ9aXBjO25ldHdvcms7CnNvY2tldHM9ZmFsbGJhY2steDExO3B1bHNlYXVkaW87d2F5bGFuZDsKZGV2aWNlcz1kcmk7CmZpbGVzeXN0ZW1zPWhvbWU7CgpbRW52aXJvbm1lbnRdCkdTVF9QTFVHSU5fUEFUSD0vYXBwL2xpYi9nc3RyZWFtZXItMS4wCgpbRXh0ZW5zaW9uIG9yZy5mcmVlZGVza3RvcC5QbGF0Zm9ybS5mZm1wZWctZnVsbF0KZGlyZWN0b3J5PWxpYi9mZm1wZWcKYWRkLWxkLXBhdGg9Lgp2ZXJzaW9uPTI1LjA4CgpbRXh0ZW5zaW9uIGlvLmdpdGh1Yi5oYW50aG9yLkR1YWxjdXQuRGVidWddCmRpcmVjdG9yeT1saWIvZGVidWcKYXV0b2RlbGV0ZT10cnVlCm5vLWF1dG9kb3dubG9hZD10cnVlCgpbQnVpbGRdCmJ1aWx0LWV4dGVuc2lvbnM9aW8uZ2l0aHViLmhhbnRob3IuRHVhbGN1dC5EZWJ1ZzsAAHM=",
+            "org.flatpak.ref": "app/io.github.hanthor.Dualcut/x86_64/master",
+            "org.flatpak.installed-size": "144212992",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAiYhAAAdA==",
+            "org.flatpak.metadata": "[Application]\nname=io.github.hanthor.Dualcut\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=dualcut\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;pulseaudio;wayland;\ndevices=dri;\nfilesystems=home;\n\n[Environment]\nGST_PLUGIN_PATH=/app/lib/gstreamer-1.0\n\n[Extension org.freedesktop.Platform.ffmpeg-full]\ndirectory=lib/ffmpeg\nadd-ld-path=.\nversion=25.08\n\n[Extension io.github.hanthor.Dualcut.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=io.github.hanthor.Dualcut.Debug;",
+            "org.flatpak.timestamp": "1785152402",
+            "org.flatpak.download-size": "69878016",
+            "org.flatpak.commit": "6fd7f0763cbb80a1f4017b1902672432f3bbf2c8078cd314011c0ae6773a7267",
+            "org.flatpak.subject": "Built from ae23ab1be3211579047445c9d39decb1607a909b",
+            "org.flatpak.body": "Name: io.github.hanthor.Dualcut\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
+            "org.flatpak.commit-metadata.xa.ref": "YXBwL2lvLmdpdGh1Yi5oYW50aG9yLkR1YWxjdXQveDg2XzY0L21hc3RlcgAAcw==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAQsKXMAdA==",
+            "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL2lvLmdpdGh1Yi5oYW50aG9yLkR1YWxjdXQveDg2XzY0L21hc3RlcgAsAGFz"
+          }
+        },
+        {
+          "Digest": "sha256:c345741b738a90747e6a312551b3730f81a5826a5376c08c7af8c55d026f6236",
+          "MediaType": "application/vnd.oci.image.manifest.v1+json",
+          "OS": "linux",
+          "Architecture": "arm64",
+          "Tags": [
+            "latest"
+          ],
+          "Labels": {
+            "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
+            "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPWlvLmdpdGh1Yi5oYW50aG9yLkR1YWxjdXQKcnVudGltZT1vcmcuZ25vbWUuUGxhdGZvcm0vYWFyY2g2NC81MApzZGs9b3JnLmdub21lLlNkay9hYXJjaDY0LzUwCmNvbW1hbmQ9ZHVhbGN1dAoKW0NvbnRleHRdCnNoYXJlZD1pcGM7bmV0d29yazsKc29ja2V0cz1mYWxsYmFjay14MTE7cHVsc2VhdWRpbzt3YXlsYW5kOwpkZXZpY2VzPWRyaTsKZmlsZXN5c3RlbXM9aG9tZTsKCltFbnZpcm9ubWVudF0KR1NUX1BMVUdJTl9QQVRIPS9hcHAvbGliL2dzdHJlYW1lci0xLjAKCltFeHRlbnNpb24gb3JnLmZyZWVkZXNrdG9wLlBsYXRmb3JtLmZmbXBlZy1mdWxsXQpkaXJlY3Rvcnk9bGliL2ZmbXBlZwphZGQtbGQtcGF0aD0uCnZlcnNpb249MjUuMDgKCltFeHRlbnNpb24gaW8uZ2l0aHViLmhhbnRob3IuRHVhbGN1dC5EZWJ1Z10KZGlyZWN0b3J5PWxpYi9kZWJ1ZwphdXRvZGVsZXRlPXRydWUKbm8tYXV0b2Rvd25sb2FkPXRydWUKCltCdWlsZF0KYnVpbHQtZXh0ZW5zaW9ucz1pby5naXRodWIuaGFudGhvci5EdWFsY3V0LkRlYnVnOwAAcw==",
+            "org.flatpak.ref": "app/io.github.hanthor.Dualcut/aarch64/master",
+            "org.flatpak.installed-size": "187405312",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAsrlAAAdA==",
+            "org.flatpak.metadata": "[Application]\nname=io.github.hanthor.Dualcut\nruntime=org.gnome.Platform/aarch64/50\nsdk=org.gnome.Sdk/aarch64/50\ncommand=dualcut\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;pulseaudio;wayland;\ndevices=dri;\nfilesystems=home;\n\n[Environment]\nGST_PLUGIN_PATH=/app/lib/gstreamer-1.0\n\n[Extension org.freedesktop.Platform.ffmpeg-full]\ndirectory=lib/ffmpeg\nadd-ld-path=.\nversion=25.08\n\n[Extension io.github.hanthor.Dualcut.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=io.github.hanthor.Dualcut.Debug;",
+            "org.flatpak.timestamp": "1785152451",
+            "org.flatpak.download-size": "76189704",
+            "org.flatpak.commit": "a857e6a5437962fa61f1594264a47b78a2bdb81dc539dba867ad1d715ab4afd9",
+            "org.flatpak.subject": "Built from ae23ab1be3211579047445c9d39decb1607a909b",
+            "org.flatpak.body": "Name: io.github.hanthor.Dualcut\nArch: aarch64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
+            "org.flatpak.commit-metadata.xa.ref": "YXBwL2lvLmdpdGh1Yi5oYW50aG9yLkR1YWxjdXQvYWFyY2g2NC9tYXN0ZXIAAHM=",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAASM1+kAdA==",
+            "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL2lvLmdpdGh1Yi5oYW50aG9yLkR1YWxjdXQvYWFyY2g2NC9tYXN0ZXIALQBhcw=="
+          }
+        }
+      ]
     }
   ]
 }
