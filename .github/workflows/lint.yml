@@ -19,7 +19,7 @@ permissions:
 jobs:
   markdown-lint:
     name: Markdown Lint
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
@@ -40,7 +40,7 @@ jobs:
   # Check for broken internal links using a lightweight markdown link checker
   js-syntax:
     name: Node.js Syntax & Tests
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
@@ -88,7 +88,7 @@ jobs:
 
   link-check:
     name: Internal Link Check
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 

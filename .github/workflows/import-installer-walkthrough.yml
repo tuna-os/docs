@@ -30,7 +30,7 @@ permissions:
 
 jobs:
   import:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     if: ${{ github.repository == 'tuna-os/docs' }}
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
