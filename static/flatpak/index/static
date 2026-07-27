@@ -460,7 +460,7 @@
       "Name": "tuna-os/dualcut",
       "Images": [
         {
-          "Digest": "sha256:3a46a8647dec3f18f9dfc50dc14158b89f4615430928e2331176091c54fb35b3",
+          "Digest": "sha256:ad9d47d443c5ae160ab7f783c99b1f49652540fa1fd1bcd2876812545dc144aa",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -471,21 +471,21 @@
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy50dW5hb3MuZHVhbGN1dApydW50aW1lPW9yZy5nbm9tZS5QbGF0Zm9ybS94ODZfNjQvNTAKc2RrPW9yZy5nbm9tZS5TZGsveDg2XzY0LzUwCmNvbW1hbmQ9ZHVhbGN1dAoKW0NvbnRleHRdCnNoYXJlZD1pcGM7bmV0d29yazsKc29ja2V0cz1mYWxsYmFjay14MTE7cHVsc2VhdWRpbzt3YXlsYW5kOwpkZXZpY2VzPWRyaTsKZmlsZXN5c3RlbXM9aG9tZTsKCltFbnZpcm9ubWVudF0KR1NUX1BMVUdJTl9QQVRIPS9hcHAvbGliL2dzdHJlYW1lci0xLjAKCltFeHRlbnNpb24gb3JnLmZyZWVkZXNrdG9wLlBsYXRmb3JtLmZmbXBlZy1mdWxsXQpkaXJlY3Rvcnk9bGliL2ZmbXBlZwphZGQtbGQtcGF0aD0uCnZlcnNpb249MjUuMDgKCltFeHRlbnNpb24gb3JnLnR1bmFvcy5kdWFsY3V0LkRlYnVnXQpkaXJlY3Rvcnk9bGliL2RlYnVnCmF1dG9kZWxldGU9dHJ1ZQpuby1hdXRvZG93bmxvYWQ9dHJ1ZQoKW0J1aWxkXQpidWlsdC1leHRlbnNpb25zPW9yZy50dW5hb3MuZHVhbGN1dC5EZWJ1ZzsAAHM=",
             "org.flatpak.ref": "app/org.tunaos.dualcut/x86_64/master",
-            "org.flatpak.installed-size": "144213504",
-            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAiYhgAAdA==",
+            "org.flatpak.installed-size": "144217600",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAiYlgAAdA==",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.dualcut\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=dualcut\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;pulseaudio;wayland;\ndevices=dri;\nfilesystems=home;\n\n[Environment]\nGST_PLUGIN_PATH=/app/lib/gstreamer-1.0\n\n[Extension org.freedesktop.Platform.ffmpeg-full]\ndirectory=lib/ffmpeg\nadd-ld-path=.\nversion=25.08\n\n[Extension org.tunaos.dualcut.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.dualcut.Debug;",
-            "org.flatpak.timestamp": "1785167922",
-            "org.flatpak.download-size": "69873884",
-            "org.flatpak.commit": "1f6dae6cfd6a70454db026a90c319ce41dae098714dc547ac7e8437f0b995926",
-            "org.flatpak.subject": "Built from ec6f84075002be130adc886e11b806321ea51827",
+            "org.flatpak.timestamp": "1785185004",
+            "org.flatpak.download-size": "69877778",
+            "org.flatpak.commit": "8179b493444a98a661aa2751c3f8131ad934cfc216082a3b72ddf799e4c43b64",
+            "org.flatpak.subject": "Built from d6d8b3efd2ad6275d88187872a4ea92930347707",
             "org.flatpak.body": "Name: org.tunaos.dualcut\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuZHVhbGN1dC94ODZfNjQvbWFzdGVyAABz",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAQsIWoAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAQsKwwAdA==",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuZHVhbGN1dC94ODZfNjQvbWFzdGVyACUAYXM="
           }
         },
         {
-          "Digest": "sha256:c561ead3a7af48cea0d959a5aa2f90ed3ba4cb728db3a5bc965882d0827254ef",
+          "Digest": "sha256:01846a6ea2ddccc240c29e982c1c39d2a60a8f73a6f5d8c81c13716703957fb1",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "arm64",
@@ -499,13 +499,13 @@
             "org.flatpak.installed-size": "187405824",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAsrlgAAdA==",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.dualcut\nruntime=org.gnome.Platform/aarch64/50\nsdk=org.gnome.Sdk/aarch64/50\ncommand=dualcut\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;pulseaudio;wayland;\ndevices=dri;\nfilesystems=home;\n\n[Environment]\nGST_PLUGIN_PATH=/app/lib/gstreamer-1.0\n\n[Extension org.freedesktop.Platform.ffmpeg-full]\ndirectory=lib/ffmpeg\nadd-ld-path=.\nversion=25.08\n\n[Extension org.tunaos.dualcut.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.dualcut.Debug;",
-            "org.flatpak.timestamp": "1785167927",
-            "org.flatpak.download-size": "76189497",
-            "org.flatpak.commit": "a4dbdd332dc9b3f09d4613a8118b402ce3e6f3e7c0e46fc8f59f09f05e90528b",
-            "org.flatpak.subject": "Built from ec6f84075002be130adc886e11b806321ea51827",
+            "org.flatpak.timestamp": "1785184916",
+            "org.flatpak.download-size": "76192825",
+            "org.flatpak.commit": "44c255432ad05cef05c080f5fe094f9c87c5e993d4c1d5e3db9c6115d03c4c6b",
+            "org.flatpak.subject": "Built from d6d8b3efd2ad6275d88187872a4ea92930347707",
             "org.flatpak.body": "Name: org.tunaos.dualcut\nArch: aarch64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuZHVhbGN1dC9hYXJjaDY0L21hc3RlcgAAcw==",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAASM3fYAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAASM9coAdA==",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuZHVhbGN1dC9hYXJjaDY0L21hc3RlcgAmAGFz"
           }
         }
