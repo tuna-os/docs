@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-28T08:24:07.719Z",
+  "generatedAt": "2026-07-28T13:51:14.019Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 154,
+  "count": 155,
   "categories": [
     {
       "id": "live-isos",
@@ -1289,8 +1289,18 @@
       "blurb": "",
       "icon": "📀",
       "order": 99,
-      "checksums": "https://download.tunaos.org/tacklebox/SHA256SUMS-20260727-36ae6d6",
+      "checksums": "https://download.tunaos.org/tacklebox/bazzite-aio-SHA256SUMS-20260728-36ae6d6",
       "isos": [
+        {
+          "category": "tacklebox",
+          "name": "bazzite-aio-latest",
+          "path": "tacklebox/bazzite-aio-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-aio-latest.iso",
+          "size": 16791371776,
+          "modified": "2026-07-28T08:48:01.019832820Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "tacklebox",
           "name": "tacklebox-poc-dedup-latest",
@@ -1333,13 +1343,13 @@
         },
         {
           "category": "tacklebox",
-          "name": "bazzite-aio-latest",
-          "path": "tacklebox/bazzite-aio-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/bazzite-aio-latest.iso",
-          "size": 16792354816,
-          "modified": "2026-07-21T08:25:38.045985801Z",
+          "name": "bazzite-aio-20260728-36ae6d6",
+          "path": "tacklebox/bazzite-aio-20260728-36ae6d6.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-aio-20260728-36ae6d6.iso",
+          "size": 16791371776,
+          "modified": "2026-07-28T08:48:01.019832820Z",
           "arch": "",
-          "latest": true
+          "latest": false
         },
         {
           "category": "tacklebox",
