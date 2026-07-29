@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-29T02:02:38.103Z",
+  "generatedAt": "2026-07-29T08:30:08.892Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 155,
+  "count": 156,
   "categories": [
     {
       "id": "live-isos",
@@ -1289,8 +1289,18 @@
       "blurb": "",
       "icon": "📀",
       "order": 99,
-      "checksums": "https://download.tunaos.org/tacklebox/bazzite-aio-SHA256SUMS-20260728-36ae6d6",
+      "checksums": "https://download.tunaos.org/tacklebox/bazzite-kde-SHA256SUMS-20260729-e1be09e",
       "isos": [
+        {
+          "category": "tacklebox",
+          "name": "bazzite-kde-latest",
+          "path": "tacklebox/bazzite-kde-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-kde-latest.iso",
+          "size": 13454802944,
+          "modified": "2026-07-29T07:56:11.077597635Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "tacklebox",
           "name": "bazzite-aio-latest",
@@ -1333,13 +1343,13 @@
         },
         {
           "category": "tacklebox",
-          "name": "bazzite-kde-latest",
-          "path": "tacklebox/bazzite-kde-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/bazzite-kde-latest.iso",
+          "name": "bazzite-kde-20260729-e1be09e",
+          "path": "tacklebox/bazzite-kde-20260729-e1be09e.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-kde-20260729-e1be09e.iso",
           "size": 13454802944,
-          "modified": "2026-07-22T08:27:29.051797256Z",
+          "modified": "2026-07-29T07:56:11.077597635Z",
           "arch": "",
-          "latest": true
+          "latest": false
         },
         {
           "category": "tacklebox",
