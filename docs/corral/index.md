@@ -2,20 +2,21 @@
 sidebar_position: 1
 sidebar_label: "corral"
 
-status: unknown
+status: alpha
 ---
 
 **Herd your VMs — and containers — into your tailnet.**
 
-You have VMs in two places: quick ones on your laptop, big ones on the
-Kubernetes cluster in the closet. Two sets of tooling, two networking
-stories, and none of it reachable from the couch.
+You have VMs on a laptop, in one or more Kubernetes clusters, on an Incus
+server, and behind libvirt over SSH. Corral keeps those contexts—and remote
+Corral peers—in one inventory without erasing where each machine belongs.
 
-Corral fixes that. One command, two backends, and every VM lands inside the
-one network all your devices already share — your Tailscale tailnet.
+Corral fixes that. The same CLI, TUI, and web dashboard operate four built-in
+backends. Tailscale is a first-class route, not a requirement; direct private
+networking and ordinary Kubernetes ingress work too.
 
 ```bash
-corral create web --kubevirt --container-disk quay.io/containerdisks/fedora:42
+corral create web --backend kubevirt --context homelab --container-disk quay.io/containerdisks/fedora:42
 corral ssh web        # from this machine, your laptop, or your phone's terminal
 ```
 
@@ -23,10 +24,9 @@ VMs are cattle. Stop treating each one like a networking project.
 
 ## Why you'll like it
 
-- **Same commands everywhere.** `create` / `start` / `ssh` / `viewer` /
-  `clone` / `delete` work identically whether the VM is local QEMU/KVM or
-  KubeVirt on your cluster. Corral remembers which is which — you never
-  specify it again.
+- **One multi-context fleet.** QEMU/KVM, KubeVirt, Incus, and libvirt share
+  lifecycle verbs and canonical identities. `corral context use` changes the
+  default destination; `--context` and `--backend` keep one-offs explicit.
 - **Containers (CT) — distrobox on Kubernetes.** Proxmox-style pet pods
   alongside VMs (`corral ct create`). A privileged CT seeds a full root
   filesystem onto its own volume and `chroot`s into it on boot — `apt` /
@@ -116,6 +116,10 @@ lists them — `build`, `test`, `vet`, `ci` (the pre-push gate), and
 from ghcr, dropping anything not rebuilt in ~60 days).
 
 ## Quick start
+
+Start with the screenshot-led [TUI and Web UI walkthrough](interfaces.md),
+then see [Backends, contexts, and peers](contexts.md) and the
+[command guide](command-reference.md).
 
 ```bash
 # Local VM on this machine (QEMU/KVM, runs as a systemd user service)

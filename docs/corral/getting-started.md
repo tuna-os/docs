@@ -3,13 +3,13 @@ sidebar_position: 2
 title: "Getting Started"
 ---
 
-# 🚀 Getting Started with Corral
+# Getting Started with Corral
 
 This guide walks you through your first VM with Corral — from build to boot to SSH — using the local QEMU/KVM backend. No Kubernetes cluster required.
 
 ## Prerequisites
 
-- A Linux machine with `go` 1.22+ installed
+- A Linux machine; Go is needed only when building from source
 - [`qemu-system-x86_64`](https://www.qemu.org/) and `kvm` (`apt install qemu-system-x86 qemu-utils` or equivalent)
 - A [Tailscale](https://tailscale.com) account (optional but recommended)
 - `sudo` access for `/dev/kvm`
@@ -34,7 +34,7 @@ Corral can create VMs on your local machine (QEMU/KVM backend) or on a Kubernete
 
 ```bash
 # Create a Fedora 42 VM named "devbox"
-./corral create devbox --qemu --container-disk quay.io/containerdisks/fedora:42
+./corral create devbox --backend qemu --container-disk quay.io/containerdisks/fedora:42
 ```
 
 This will:
@@ -47,7 +47,7 @@ This will:
 
 ```bash
 ./corral create devbox \
-  --qemu \
+  --backend qemu \
   --cpus 4 \
   --memory 8 \
   --disk 40 \
@@ -82,7 +82,7 @@ export TS_AUTHKEY="tskey-auth-xxxxxxxx"
 
 # Create a VM that joins the tailnet automatically
 ./corral create web \
-  --qemu \
+  --backend qemu \
   --container-disk quay.io/containerdisks/fedora:42
 ```
 
@@ -131,9 +131,24 @@ To expose the web UI on your tailnet:
 ./corral web --addr "$(tailscale ip -4):8006"
 ```
 
+## Add remote backends
+
+```bash
+corral context add homelab --backend kubevirt --context homelab-admin
+corral context add lab-incus --backend incus --context lab
+corral context add hypervisor --backend libvirt --context qemu+ssh://admin@hypervisor/system
+corral context use homelab
+corral list
+```
+
+Incus uses the authentication of its existing named remote. Libvirt's SSH URI
+uses OpenSSH. See [Backends, contexts, and peers](contexts.md) for the complete
+model.
+
 ## Next Steps
 
-- Try the **KubeVirt backend**: `./corral create web --kubevirt --container-disk ...`
+- Try the **KubeVirt backend**: `./corral create web --backend kubevirt --container-disk ...`
+- Follow the [TUI and Web UI walkthrough](interfaces.md)
 - Install the **bootc plugin**: `./corral plugin install bootc` then `./corral bootc create dev --image ghcr.io/tuna-os/yellowfin:gnome`
 - Browse the plugin marketplace: `./corral plugin search`
 - Read the [full specification](https://github.com/tuna-os/corral/blob/main/SPEC.md)
