@@ -27,5 +27,5 @@ Part of the [TunaOS](https://tunaos.org) ecosystem.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+See [CONTRIBUTING.md](https://github.com/tuna-os/Tavern/blob/main/CONTRIBUTING.md).
 

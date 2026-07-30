@@ -19,6 +19,7 @@ status: stable
 [![GitHub Stars](https://img.shields.io/github/stars/tuna-os/tunaOS?style=for-the-badge)](https://github.com/tuna-os/tunaOS/stargazers)
 [![Issues](https://img.shields.io/github/issues/tuna-os/tunaOS?style=for-the-badge)](https://github.com/tuna-os/tunaOS/issues)
 [![Adopters](https://img.shields.io/badge/adopters-0_entries-2ea44f?style=for-the-badge)](https://github.com/tuna-os/tunaOS/blob/main/ADOPTERS.md)
+[![Discord](https://img.shields.io/badge/Discord-join-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/MXSTqB8Nv)
 
 </div>
 
@@ -71,6 +72,7 @@ _Generated from the latest completed main-branch build for each variant. A cell 
 | 🐟 **Albacore** | AlmaLinux 10 (RHEL 10) | `ghcr.io/tuna-os/albacore` | GNOME, KDE, COSMIC, Niri | x86_64, x86_64/v2, arm64 |
 | 🍣 **Skipjack** | CentOS Stream 10 | `ghcr.io/tuna-os/skipjack` | GNOME, KDE, COSMIC, Niri | x86_64, arm64 |
 | 🎣 **Bonito** | Fedora 44 | `ghcr.io/tuna-os/bonito` | GNOME, KDE, COSMIC, Niri | x86_64, arm64 |
+| 🐦 **Hummingbird** | Fedora Hummingbird (experimental) | `ghcr.io/tuna-os/hummingbird` | Base only | x86_64, arm64 |
 | 🔒 **Redfin** | Red Hat Enterprise Linux 10 | *Local-Build Only* | GNOME, KDE, COSMIC, Niri, XFCE | x86_64, arm64 |
 | 🐟 **Grouper** | Ubuntu 26.04 | `ghcr.io/tuna-os/grouper` | GNOME, KDE, Niri, XFCE | x86_64 |
 | 🚀 **Marlin** | Arch Linux (Rolling) | `ghcr.io/tuna-os/marlin` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64 |
@@ -192,6 +194,7 @@ Contributions welcome! See [`CONTRIBUTING.md`](https://github.com/tuna-os/tunaOS
 
 - 🐛 **Report Issues:** [GitHub Issues](https://github.com/tuna-os/tunaOS/issues)
 - [m] **Chat**: [#tunaos:reilly.asia](https://matrix.to/#/%23tunaos:reilly.asia)
+- 🎮 **Discord:** [TunaOS](https://discord.gg/MXSTqB8Nv)
 
 Related Communities:
 - 🎮 **Discord:** [Universal Blue Community](https://discord.gg/WEu6BdFEtp)
@@ -206,6 +209,7 @@ Related Communities:
 - [Agent Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/AGENT_GUIDE.md) — complete architecture and contributor reference
 - [Build Pipeline](https://github.com/tuna-os/tunaOS/blob/main/docs/build-pipeline.md) — CI/CD workflow overview
 - [Testing Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/TESTING.md) — ISO end-to-end test harness
+- [Secure Boot](https://github.com/tuna-os/tunaOS/blob/main/docs/SECURE-BOOT.md) — which variants support Secure Boot out of the box
 - [Improvement Plan](https://github.com/tuna-os/tunaOS/blob/main/docs/IMPROVEMENT_PLAN.md) — roadmap and development progress
 - [Redfin Setup](https://github.com/tuna-os/tunaOS/blob/main/docs/rhel-setup.md) — RHEL 10 local-build instructions
 - [Developer Docs](https://tunaos.org/docs/dev/introduction) — build and contribution guide
