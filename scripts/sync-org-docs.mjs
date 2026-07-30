@@ -122,6 +122,14 @@ function sanitizeHtml(content) {
     // A `<` used as less-than: `<30s`, `<5%`. A JSX tag name cannot start with
     // a digit or whitespace, so anything that does is arithmetic, not markup.
     s = s.replace(/<(?=[\d\s=])/g, '&lt;');
+    // Void elements. HTML lets <img src="…"> stand alone; JSX has no void
+    // elements, so MDX keeps looking for </img> and reports the mismatch
+    // against whatever closes next — the error names </details>, several
+    // lines away from the actual cause.
+    s = s.replace(
+      /<(img|br|hr|input|meta|link|source|col|area|base|embed|track|wbr)\b([^>]*?)\s*\/?>/gi,
+      (_, tag, attrs) => `<${tag}${attrs.trimEnd()} />`,
+    );
     return s;
   });
   return c;
@@ -148,6 +156,14 @@ function fixRelativeLinks(content, repo) {
   let c = content.replace(
     /!\[([^\]]*)\]\((?!https?:|#|\/|data:)([^)\s]+)([^)]*)\)/g,
     (m, alt, p, rest) => (IMAGE.test(p) ? `![${alt}](${raw}/${clean(p)}${rest})` : m),
+  );
+  // Raw HTML <img src="…">. Markdown image syntax is handled above, but
+  // README files also use HTML tags for the width attribute, and a relative
+  // src there is just as broken. Site-absolute /img/… paths belong to this
+  // repo's static/ and are left alone.
+  c = c.replace(
+    /(<img\b[^>]*?\bsrc=")(?!https?:|\/|data:)([^"]+)(")/gi,
+    (_, pre, p, post) => `${pre}${raw}/${clean(p)}${post}`,
   );
   // Links to files that live in the source repo.
   c = c.replace(

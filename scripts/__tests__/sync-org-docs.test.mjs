@@ -146,6 +146,33 @@ test('drops align attributes on divs', () => {
   assert.match(sanitizeHtml('<div align="center">\n'), /<div>/);
 });
 
+test('self-closes a void img tag', () => {
+  const out = sanitizeHtml('<img src="a.png" alt="x" width="390">\n');
+  assert.match(out, /<img src="a\.png" alt="x" width="390" \/>/);
+});
+
+test('leaves an already self-closed void tag alone', () => {
+  const src = '<img src="a.png" />\n';
+  assert.equal(sanitizeHtml(src), src);
+});
+
+test('self-closes every void element', () => {
+  for (const tag of ['br', 'hr', 'input', 'meta', 'link', 'source']) {
+    assert.match(sanitizeHtml(`<${tag}>\n`), new RegExp(`<${tag} />`), `${tag} not closed`);
+  }
+});
+
+test('does not touch a void tag inside a fence', () => {
+  const src = '```html\n<img src="a.png">\n```\n';
+  assert.equal(sanitizeHtml(src), src);
+});
+
+test('does not treat a shell placeholder as a tag', () => {
+  // `corral ct create <name> --image <img>` lives in a fenced block.
+  const src = '```\ncorral ct create <name> --image <img>\n```\n';
+  assert.equal(sanitizeHtml(src), src);
+});
+
 // ── fixRelativeLinks ──────────────────────────────────────────────────────────
 //
 // Images need bytes, not a page: github.com/…/blob/… answers text/html, so an
@@ -202,6 +229,21 @@ test('sends a bare relative .md link to the blob URL', () => {
 
 test('leaves an anchor link alone', () => {
   const src = '[top](#heading)\n';
+  assert.equal(fixRelativeLinks(src, 'corral'), src);
+});
+
+test('rewrites a relative src on a raw HTML img tag', () => {
+  const out = fixRelativeLinks('<img src="docs/screenshots/a.png" width="390">\n', 'corral');
+  assert.match(out, /src="https:\/\/raw\.githubusercontent\.com\/tuna-os\/corral\/main\/docs\/screenshots\/a\.png"/);
+});
+
+test('leaves an absolute src on an img tag alone', () => {
+  const src = '<img src="https://example.com/a.png" />\n';
+  assert.equal(fixRelativeLinks(src, 'corral'), src);
+});
+
+test('leaves a site-absolute img src alone, it belongs to static/', () => {
+  const src = '<img src="/img/screenshots/a.png" alt="x" />\n';
   assert.equal(fixRelativeLinks(src, 'corral'), src);
 });
 
