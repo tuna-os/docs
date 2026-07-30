@@ -11,7 +11,7 @@ translated live onto KubeVirt. Proxmox ecosystem tools — the Terraform
 KubeVirt VMs without knowing corral exists.
 
 Implementation: `pkg/proxmox` (verified against `bpg/proxmox` v0.109.0).
-ADR: [adr/0001-k8s-rbac-to-proxmox-privileges.md](https://github.com/tuna-os/corral/blob/main/adr/0001-k8s-rbac-to-proxmox-privileges.md).
+ADR: [adr/0001-k8s-rbac-to-proxmox-privileges.md](https://github.com/tuna-os/corral/blob/main/docs/adr/0001-k8s-rbac-to-proxmox-privileges.md).
 
 ## Two ways to run it
 

@@ -247,6 +247,42 @@ test('leaves a site-absolute img src alone, it belongs to static/', () => {
   assert.equal(fixRelativeLinks(src, 'corral'), src);
 });
 
+// A relative path resolves against the file that contains it, not the repo
+// root. docs/user-guide.md saying `screenshots/a.png` means
+// docs/screenshots/a.png. Getting this wrong yields a 404 that still builds,
+// because Docusaurus does not validate remote images.
+
+test('resolves a relative image against the source subdirectory', () => {
+  const out = fixRelativeLinks('![Fleet](screenshots/generated/web-fleet.png)\n', 'corral', 'docs');
+  assert.match(out, /main\/docs\/screenshots\/generated\/web-fleet\.png/);
+});
+
+test('resolves ../ back out of the source subdirectory', () => {
+  const out = fixRelativeLinks('![x](../assets/a.png)\n', 'corral', 'docs');
+  assert.match(out, /main\/assets\/a\.png/);
+  assert.doesNotMatch(out, /\.\./);
+});
+
+test('resolves a nested source subdirectory', () => {
+  const out = fixRelativeLinks('![x](img/a.png)\n', 'tunaOS', 'docs/book/src');
+  assert.match(out, /main\/docs\/book\/src\/img\/a\.png/);
+});
+
+test('a README at the repo root is unaffected', () => {
+  const out = fixRelativeLinks('![x](docs/screenshots/a.png)\n', 'corral', '');
+  assert.match(out, /main\/docs\/screenshots\/a\.png/);
+});
+
+test('resolves an HTML img src against the source subdirectory', () => {
+  const out = fixRelativeLinks('<img src="screenshots/a.png" />\n', 'corral', 'docs');
+  assert.match(out, /main\/docs\/screenshots\/a\.png/);
+});
+
+test('resolves a relative .md link against the source subdirectory', () => {
+  const out = fixRelativeLinks('[spec](design/spec.md)\n', 'corral', 'docs');
+  assert.match(out, /blob\/main\/docs\/design\/spec\.md/);
+});
+
 test('leaves a site-absolute link alone', () => {
   const src = '[guide](/docs/corral/user-guide)\n';
   assert.equal(fixRelativeLinks(src, 'corral'), src);

@@ -66,7 +66,7 @@ flowchart TD
 
 Access the Proxmox-style Web UI at `http://localhost:8006` or via `corral web`.
 
-![Automated unified fleet capture](https://raw.githubusercontent.com/tuna-os/corral/main/screenshots/generated/web-fleet.png)
+![Automated unified fleet capture](https://raw.githubusercontent.com/tuna-os/corral/main/docs/screenshots/generated/web-fleet.png)
 
 ![Datacenter View](https://raw.githubusercontent.com/tuna-os/corral/main/docs/screenshots/dashboard.png)
 
@@ -117,7 +117,7 @@ accent).
 
 Launch the interactive Bubble Tea TUI by running `corral` with no arguments (or explore in demo mode with `corral --demo`).
 
-![Automated Corral TUI capture](https://raw.githubusercontent.com/tuna-os/corral/main/screenshots/generated/tui-fleet.png)
+![Automated Corral TUI capture](https://raw.githubusercontent.com/tuna-os/corral/main/docs/screenshots/generated/tui-fleet.png)
 
 The left side is a unified, searchable fleet. Wide terminals add a details
 pane with canonical ID, backend/context, placement, address, resources, and
@@ -241,7 +241,7 @@ corral doctor
 In a multi-context setup it diagnoses every configured QEMU, KubeVirt, Incus,
 and libvirt target. Use `corral doctor --context NAME` for one target. The
 complete capability matrix and direct-versus-relayed networking behavior are
-documented in [backend-support.md](https://github.com/tuna-os/corral/blob/main/backend-support.md).
+documented in [backend-support.md](https://github.com/tuna-os/corral/blob/main/docs/backend-support.md).
 
 ```
 ✓ KubeVirt installed (v1.8.2)

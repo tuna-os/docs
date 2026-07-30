@@ -3,8 +3,8 @@ sidebar_position: 8
 title: "kubevirt proxmox setup"
 ---
 
-> Full project docs: [README.md](https://github.com/tuna-os/corral/blob/main/../README.md), [SPEC.md](https://github.com/tuna-os/corral/blob/main/../SPEC.md),
-> [API reference](https://github.com/tuna-os/corral/blob/main/api.md), [architecture](https://github.com/tuna-os/corral/blob/main/architecture.md)
+> Full project docs: [README.md](https://github.com/tuna-os/corral/blob/main/README.md), [SPEC.md](https://github.com/tuna-os/corral/blob/main/SPEC.md),
+> [API reference](https://github.com/tuna-os/corral/blob/main/docs/api.md), [architecture](https://github.com/tuna-os/corral/blob/main/docs/architecture.md)
 
 This guide turns a plain Kubernetes cluster into a Proxmox-style virtualization
 host: a web UI with in-browser consoles, live CPU/RAM scaling, snapshots,
@@ -99,7 +99,7 @@ kubectl label ns longhorn-system pod-security.kubernetes.io/enforce=privileged -
 
 Longhorn needs `open-iscsi`/`iscsid` on every node. On normal Linux:
 `apt install open-iscsi && systemctl enable --now iscsid`. **On Talos Linux**
-it's a system extension — see [`talos-k8s/longhorn/README.md`](https://github.com/tuna-os/corral/blob/main/../../talos-k8s/longhorn/README.md)
+it's a system extension — see [`talos-k8s/longhorn/README.md`](https://github.com/tuna-os/corral/blob/main/talos-k8s/longhorn/README.md)
 (image-factory schematic with `siderolabs/iscsi-tools` + a `/var/lib/longhorn`
 kubelet mount).
 

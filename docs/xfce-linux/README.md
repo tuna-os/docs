@@ -191,10 +191,10 @@ Boot Flow
 
 ## Documentation
 
-- **[PROJECT_STATUS.md](https://github.com/tuna-os/xfce-linux/blob/main/PROJECT_STATUS.md)** — Current project state and progress
-- **[technical/BUILD_METRICS.md](https://github.com/tuna-os/xfce-linux/blob/main/technical/BUILD_METRICS.md)** — Build statistics and performance
-- **[technical/BOOT_TESTING.md](https://github.com/tuna-os/xfce-linux/blob/main/technical/BOOT_TESTING.md)** — Testing methodology and results
-- **[technical/SOLUTIONS_AND_ANALYSIS.md](https://github.com/tuna-os/xfce-linux/blob/main/technical/SOLUTIONS_AND_ANALYSIS.md)** — 5 export solutions with analysis
+- **[PROJECT_STATUS.md](https://github.com/tuna-os/xfce-linux/blob/main/docs/PROJECT_STATUS.md)** — Current project state and progress
+- **[technical/BUILD_METRICS.md](https://github.com/tuna-os/xfce-linux/blob/main/docs/technical/BUILD_METRICS.md)** — Build statistics and performance
+- **[technical/BOOT_TESTING.md](https://github.com/tuna-os/xfce-linux/blob/main/docs/technical/BOOT_TESTING.md)** — Testing methodology and results
+- **[technical/SOLUTIONS_AND_ANALYSIS.md](https://github.com/tuna-os/xfce-linux/blob/main/docs/technical/SOLUTIONS_AND_ANALYSIS.md)** — 5 export solutions with analysis
 
 ## License
 
@@ -208,8 +208,8 @@ See individual components for specific license details.
 
 ## Contributing
 
-1. Review [PROJECT_STATUS.md](https://github.com/tuna-os/xfce-linux/blob/main/PROJECT_STATUS.md) for current state
-2. Check [technical/SOLUTIONS_AND_ANALYSIS.md](https://github.com/tuna-os/xfce-linux/blob/main/technical/SOLUTIONS_AND_ANALYSIS.md) for known issues
+1. Review [PROJECT_STATUS.md](https://github.com/tuna-os/xfce-linux/blob/main/docs/PROJECT_STATUS.md) for current state
+2. Check [technical/SOLUTIONS_AND_ANALYSIS.md](https://github.com/tuna-os/xfce-linux/blob/main/docs/technical/SOLUTIONS_AND_ANALYSIS.md) for known issues
 3. Test changes with `just build && just boot-vm`
 4. Document changes in appropriate docs/technical/*.md file
 

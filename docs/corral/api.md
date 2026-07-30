@@ -3,8 +3,8 @@ sidebar_position: 3
 title: "api"
 ---
 
-> Full project docs: [README.md](https://github.com/tuna-os/corral/blob/main/../README.md), [SPEC.md](https://github.com/tuna-os/corral/blob/main/../SPEC.md),
-> [architecture](https://github.com/tuna-os/corral/blob/main/architecture.md), [setup guide](https://github.com/tuna-os/corral/blob/main/kubevirt-proxmox-setup.md)
+> Full project docs: [README.md](https://github.com/tuna-os/corral/blob/main/README.md), [SPEC.md](https://github.com/tuna-os/corral/blob/main/SPEC.md),
+> [architecture](https://github.com/tuna-os/corral/blob/main/docs/architecture.md), [setup guide](https://github.com/tuna-os/corral/blob/main/docs/kubevirt-proxmox-setup.md)
 
 The Corral web UI serves a REST API at port 8006 (`corral web`), plus
 WebSocket bridges for VNC and serial consoles. All responses are JSON unless
@@ -389,7 +389,7 @@ metrics-server is absent.
 The caller's tailnet identity and privilege, for the UI to show the logged-in
 user and switch to read-only for non-admins. Identity comes from the Tailscale
 ingress headers; admin is governed by `CORRAL_ADMINS` (see
-[ADR-0003](https://github.com/tuna-os/corral/blob/main/adr/0003-identity-source.md)).
+[ADR-0003](https://github.com/tuna-os/corral/blob/main/docs/adr/0003-identity-source.md)).
 
 **Response**: `{"login": "alice@github", "name": "Alice", "admin": true, "enforced": false}`
 

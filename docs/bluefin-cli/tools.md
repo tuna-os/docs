@@ -22,7 +22,7 @@ These are modern shell replacements and enhancements that are managed via the `s
 You can install these bundles using `bluefin-cli install <bundle>`.
 
 ### AI Tools (`ai`)
-- [AI Tools List](https://github.com/tuna-os/bluefin-cli/blob/main/ai.md)
+- [AI Tools List](https://github.com/tuna-os/bluefin-cli/blob/main/docs/ai.md)
 
 ### Artwork (`artwork`)
 - `aurora-wallpapers`
@@ -56,7 +56,7 @@ You can install these bundles using `bluefin-cli install <bundle>`.
 - [zoxide](https://github.com/ajeetdsouza/zoxide): Shell extension to navigate your filesystem faster
 
 ### CNCF Tools (`cncf`)
-- [CNCF Tools List](https://github.com/tuna-os/bluefin-cli/blob/main/cncf.md)
+- [CNCF Tools List](https://github.com/tuna-os/bluefin-cli/blob/main/docs/cncf.md)
 
 ### Experimental IDE (`experimental-ide`)
 *Note: These are experimental casks.*
@@ -107,4 +107,4 @@ You can install these bundles using `bluefin-cli install <bundle>`.
 - [syft](https://github.com/anchore/syft): CLI for generating a Software Bill of Materials from container images
 
 ### Full GNOME Desktop (`full-desktop`)
-- [GNOME Tools List](https://github.com/tuna-os/bluefin-cli/blob/main/gnome.md)
+- [GNOME Tools List](https://github.com/tuna-os/bluefin-cli/blob/main/docs/gnome.md)
