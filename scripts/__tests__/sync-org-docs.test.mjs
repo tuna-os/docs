@@ -6,59 +6,28 @@
 // script. Clone/git/gh operations are not tested here — those are
 // integration/end-to-end concerns.
 //
+// These import the real functions. The previous harness read the script as
+// text and re-derived each function with `eval`, falling back to an inline
+// copy when that failed. It always failed, so every case printed
+// "skipped (function not extractable)" and the file exited 0: a suite that
+// reported success while running nothing, and which could not have caught a
+// regression in the script even when the eval worked, because it tested a
+// copy. sync-org-docs.mjs now exports its helpers and guards main() behind a
+// run-as-command check, so there is nothing left to work around.
+//
 // Usage:
 //   node scripts/__tests__/sync-org-docs.test.mjs
 
 import { strict as assert } from 'node:assert';
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
-
-// ── Import the module under test ──────────────────────────────────────────────
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const scriptPath = join(__dirname, '..', 'sync-org-docs.mjs');
-
-// Since sync-org-docs.mjs is a script (not an ES module with exports),
-// we eval the source to extract its functions for testing.
-// This avoids needing to refactor the script to export its helpers.
-let scriptSource;
-try {
-  scriptSource = readFileSync(scriptPath, 'utf8');
-} catch (e) {
-  console.error(`Cannot read script at ${scriptPath}: ${e.message}`);
-  process.exit(1);
-}
-
-// NOTE: the original harness tried `new Function(scriptSource)` to capture
-// the script's internals — that can never work here (the shebang line and
-// ESM `import` statements are both syntax errors in a function body), and
-// its result was never used: the tests below re-derive the pure functions
-// from the source text instead. The dead wrapper made the whole suite fail
-// at load time.
-
-// The script uses top-level function declarations — new Function won't capture them.
-// Instead, let's reimplement the pure functions based on the source to test
-// the logic independently. We export the tested implementations by eval'ing
-// individual function definitions.
-
-function extractFunction(name) {
-  // Match 'function <name>(...)' or '<name> = (...) =>'
-  const regex = new RegExp(
-    `(?:^|\\n)\\s*(?:export\\s+)?(?:function\\s+${name}|const\\s+${name}\\s*=|let\\s+${name}\\s*=|var\\s+${name}\\s*=)\\s*([^]*?)(?=\\n\\S|$)`,
-    'm'
-  );
-  const match = scriptSource.match(regex);
-  if (!match) {
-    throw new Error(`Could not extract function '${name}' from script`);
-  }
-  // Get the full match and build a standalone function
-  const block = match[0];
-  try {
-    return (0, eval)(`(function() {\n${block}\nreturn ${name};\n})()`);
-  } catch (e) {
-    throw new Error(`Failed to eval '${name}': ${e.message}`);
-  }
-}
+import {
+  sanitizeHtml,
+  fixRelativeLinks,
+  onProse,
+  frontmatter,
+  subFrontmatter,
+  getStatusBanner,
+  slugify,
+} from '../sync-org-docs.mjs';
 
 // ── Test helpers ──────────────────────────────────────────────────────────────
 let pass = 0;
@@ -75,203 +44,219 @@ function test(name, fn) {
   }
 }
 
-function summary() {
-  console.log(`\n${pass} passed, ${fail} failed`);
-  if (fail > 0) process.exit(1);
-}
-
-// ── If we can't extract functions, test by evaluating logic inline ────────────
-
-// We define the helper functions manually for testing based on reading the source.
-// In a production setup, the script should be refactored to export these.
-
-// From the script:
-// function sanitizeHtml(content) { ... }
-// function fixRelativeLinks(content, repo) { ... }
-// function frontmatter(title, position, slug, status) { ... }
-// function subFrontmatter(title, position) { ... }
-// function getStatusBanner(status) { ... }
-// function slugify(name) { ... }
-
-// Extract and test each pure function
-let sanitizeHtml, fixRelativeLinks, frontmatter, subFrontmatter;
-let getStatusBanner, slugify;
-
-try {
-  sanitizeHtml = extractFunction('sanitizeHtml');
-  fixRelativeLinks = extractFunction('fixRelativeLinks');
-  frontmatter = extractFunction('frontmatter');
-  subFrontmatter = extractFunction('subFrontmatter');
-  getStatusBanner = extractFunction('getStatusBanner');
-  slugify = extractFunction('slugify');
-} catch (e) {
-  console.warn(`Warning: could not extract functions (${e.message}).`);
-  console.warn('Falling back to inline reimplementation for testing.');
-}
-
-// ── Tests ─────────────────────────────────────────────────────────────────────
-
 console.log('\n📋 sync-org-docs tests\n');
 
-if (typeof sanitizeHtml === 'function') {
-  test('sanitizeHtml strips <picture> blocks', () => {
-    const input = '<picture><source srcset="x.webp"><img alt="test" src="x.png"></picture>';
-    const result = sanitizeHtml(input);
-    assert.ok(!result.includes('<picture>'), 'Should remove <picture> tags');
-    assert.ok(!result.includes('<source'), 'Should remove <source> tags');
-  });
+// ── onProse: the fence guard ──────────────────────────────────────────────────
+//
+// Every MDX-safety rewrite is a regex over `<`, and the synced files are
+// mostly shell. `cmd <input` in a bash sample and `<30s` in a prose table look
+// identical to a regex, but only one may be escaped. A rewrite that reaches
+// into a fence yields a site that builds and documents commands that do not
+// run — strictly worse than the build failure it replaced.
 
-  test('sanitizeHtml removes HTML comments with markdown', () => {
-    const input = 'Hello<!-- this has **markdown** inside -->World';
-    const result = sanitizeHtml(input);
-    assert.equal(result, 'HelloWorld', 'Should strip comments');
-  });
+console.log('onProse');
 
-  test('sanitizeHtml removes div align attributes', () => {
-    const input = '<div align="center">content</div>';
-    const result = sanitizeHtml(input);
-    assert.ok(result.includes('<div>'), 'Should remove align attribute');
-    assert.ok(!result.includes('align='), 'Should not contain align=');
-    assert.ok(result.includes('</div>'), 'Should keep closing tag');
-  });
+test('leaves fenced blocks untouched', () => {
+  const src = 'prose\n\n```bash\ngit log --since=<30d>\n```\n\nmore prose\n';
+  const out = onProse(src, (s) => s.replace(/</g, '&lt;'));
+  assert.match(out, /--since=<30d>/, 'fenced code was rewritten');
+});
 
-  test('sanitizeHtml escapes email angle brackets', () => {
-    const input = 'Contact <user@example.com> for help';
-    const result = sanitizeHtml(input);
-    assert.ok(!result.includes('<user@'), 'Should escape angle brackets around email');
-    assert.ok(result.includes('&lt;'), 'Should use HTML entities');
-  });
+test('leaves inline code untouched but still rewrites prose', () => {
+  const out = onProse('run `foo <bar>` when x < y\n', (s) => s.replace(/</g, '&lt;'));
+  assert.match(out, /`foo <bar>`/, 'inline code was rewritten');
+  assert.match(out, /x &lt; y/, 'prose was not rewritten');
+});
 
-  test('sanitizeHtml handles multiple sanitizations', () => {
-    const input = [
-      '<picture><img alt="x" src="y.jpg"></picture>',
-      '<div align="left">text</div>',
-      '<!-- comment -->',
-      'Email: <dev@tunaos.org>',
-    ].join('\n');
-    const result = sanitizeHtml(input);
-    assert.ok(!result.includes('<picture>'), 'Removes picture');
-    assert.ok(result.includes('<div>'), 'Strips align');
-    assert.ok(!result.includes('<!--'), 'Removes comments');
-    assert.ok(result.includes('&lt;'), 'Escapes brackets');
-  });
-} else {
-  console.log('  ⚠ sanitizeHtml tests skipped (function not extractable)');
-}
+test('handles tilde fences', () => {
+  const src = '~~~\na <30 b\n~~~\n';
+  assert.equal(onProse(src, (s) => s.replace(/</g, '&lt;')), src);
+});
 
-if (typeof fixRelativeLinks === 'function') {
-  test('fixRelativeLinks converts .md links to GitHub URLs', () => {
-    const input = '[docs](./CONTRIBUTING.md)';
-    const result = fixRelativeLinks(input, 'tacklebox');
-    const expected = '[docs](https://github.com/tuna-os/tacklebox/blob/main/CONTRIBUTING.md)';
-    assert.equal(result, expected);
-  });
+// ── sanitizeHtml ──────────────────────────────────────────────────────────────
+//
+// The source repos are not wrong: one-line <details><summary>, autolinks and
+// `<30s` are all correct GitHub-flavoured markdown. MDX reads a bare `<` as
+// the start of a JSX tag, so the same text is a syntax error here.
 
-  test('fixRelativeLinks converts ../ links', () => {
-    const input = '[back](../ARCHITECTURE.md)';
-    const result = fixRelativeLinks(input, 'tacklebox');
-    assert.ok(result.includes('https://github.com/tuna-os/tacklebox/blob/main/ARCHITECTURE.md'));
-  });
+console.log('\nsanitizeHtml');
 
-  test('fixRelativeLinks converts image references', () => {
-    const input = '![logo](./logo.png)';
-    const result = fixRelativeLinks(input, 'tacklebox');
-    assert.ok(result.includes('github.com/tuna-os/tacklebox/blob/main/logo.png'));
-  });
+test('splits one-line details/summary across lines', () => {
+  const out = sanitizeHtml('<details><summary>More</summary>\n\ntext\n\n</details>\n');
+  assert.match(out, /<details>\n<summary>More<\/summary>/);
+});
 
-  test('fixRelativeLinks preserves absolute and anchor links', () => {
-    const input = '[GitHub](https://github.com) [section](#intro)';
-    const result = fixRelativeLinks(input, 'tacklebox');
-    assert.ok(result.includes('https://github.com'));
-    assert.ok(result.includes('#intro'));
-  });
-} else {
-  console.log('  ⚠ fixRelativeLinks tests skipped (function not extractable)');
-}
+test('leaves an already-split details/summary alone', () => {
+  const src = '<details>\n<summary>More</summary>\n\ntext\n\n</details>\n';
+  assert.equal(sanitizeHtml(src), src);
+});
 
-if (typeof frontmatter === 'function') {
-  test('frontmatter generates correct YAML frontmatter', () => {
-    const result = frontmatter('Tacklebox', 1, 'tacklebox', 'stable');
-    assert.ok(result.includes('sidebar_position: 1'));
-    assert.ok(result.includes('sidebar_label: "Tacklebox"'));
-    assert.ok(result.includes('status: stable'));
-    assert.ok(result.startsWith('---'));
-    assert.ok(result.endsWith('---\n\n'));
-  });
+test('keeps the indent when splitting details/summary', () => {
+  const out = sanitizeHtml('  <details><summary>x</summary>\n');
+  assert.match(out, /^ {2}<details>\n {2}<summary>x<\/summary>/);
+});
 
-  test('frontmatter handles unknown status', () => {
-    const result = frontmatter('Foo', 5, 'foo');
-    assert.ok(result.includes('status: unknown'));
-  });
-} else {
-  console.log('  ⚠ frontmatter tests skipped (function not extractable)');
-}
+test('turns an autolink into a markdown link', () => {
+  const out = sanitizeHtml('see <https://example.com/a> ok\n');
+  assert.match(out, /\[https:\/\/example\.com\/a\]\(https:\/\/example\.com\/a\)/);
+});
 
-if (typeof subFrontmatter === 'function') {
-  test('subFrontmatter generates correct sub-page frontmatter', () => {
-    const result = subFrontmatter('Architecture', 3);
-    assert.ok(result.includes('sidebar_position: 3'));
-    assert.ok(result.includes('title: "Architecture"'));
-    assert.ok(result.startsWith('---'));
-  });
-} else {
-  console.log('  ⚠ subFrontmatter tests skipped (function not extractable)');
-}
+test('does not rewrite an autolink inside a fence', () => {
+  const src = '```\ncurl <https://example.com>\n```\n';
+  assert.equal(sanitizeHtml(src), src);
+});
 
-if (typeof getStatusBanner === 'function') {
-  test('getStatusBanner returns correct banner for alpha', () => {
-    const result = getStatusBanner('alpha');
-    assert.ok(result.includes('Alpha'));
-    assert.ok(result.includes('not production-ready'));
-  });
+test('leaves an ordinary markdown link alone', () => {
+  const src = '[text](https://example.com)\n';
+  assert.equal(sanitizeHtml(src), src);
+});
 
-  test('getStatusBanner returns correct banner for stable', () => {
-    const result = getStatusBanner('stable');
-    assert.equal(result, null, 'Stable should have no banner');
-  });
+test('escapes less-than before a digit', () => {
+  assert.match(sanitizeHtml('| CI | runs in <30s |\n'), /&lt;30s/);
+});
 
-  test('getStatusBanner returns correct banner for internal', () => {
-    const result = getStatusBanner('internal');
-    assert.ok(result.includes('Internal'));
-  });
+test('escapes less-than before whitespace', () => {
+  assert.match(sanitizeHtml('a < b\n'), /a &lt; b/);
+});
 
-  test('getStatusBanner returns correct banner for deprecated', () => {
-    const result = getStatusBanner('deprecated');
-    assert.ok(result.includes('Deprecated'));
-  });
+test('does not escape a real HTML tag', () => {
+  const src = '<div>hi</div>\n';
+  assert.equal(sanitizeHtml(src), src);
+});
 
-  test('getStatusBanner returns null for unknown status', () => {
-    const result = getStatusBanner('unknown');
-    assert.equal(result, null);
-  });
+test('leaves less-than in a fenced shell sample', () => {
+  const src = '```bash\ntest $x -lt 5 && cmd <input.txt\n```\n';
+  assert.equal(sanitizeHtml(src), src);
+});
 
-  test('getStatusBanner returns null for missing status', () => {
-    const result = getStatusBanner(undefined);
-    assert.equal(result, null);
-  });
-} else {
-  console.log('  ⚠ getStatusBanner tests skipped (function not extractable)');
-}
+test('escapes an email-style autolink', () => {
+  assert.match(sanitizeHtml('<12345+bot@users.noreply.github.com>\n'), /&lt;12345\+bot@/);
+});
 
-if (typeof slugify === 'function') {
-  test('slugify converts CamelCase to lowercase with hyphens', () => {
-    assert.equal(slugify('TunaOS'), 'tunaos');
-  });
+test('leaves an HTML comment inside a fence', () => {
+  const src = '```html\n<!-- keep me -->\n```\n';
+  assert.equal(sanitizeHtml(src), src);
+});
 
-  test('slugify handles special characters', () => {
-    assert.equal(slugify('bluefin-cli'), 'bluefin-cli');
-  });
+test('removes an HTML comment in prose', () => {
+  assert.doesNotMatch(sanitizeHtml('a\n<!-- drop -->\nb\n'), /drop/);
+});
 
-  test('slugify replaces underscores', () => {
-    assert.equal(slugify('github_copr'), 'github-copr');
-  });
+test('drops align attributes on divs', () => {
+  assert.match(sanitizeHtml('<div align="center">\n'), /<div>/);
+});
 
-  test('slugify collapses multiple hyphens', () => {
-    const result = slugify('a--b---c');
-    assert.ok(!result.includes('--'), 'Should collapse hyphens');
-  });
-} else {
-  console.log('  ⚠ slugify tests skipped (function not extractable)');
-}
+// ── fixRelativeLinks ──────────────────────────────────────────────────────────
+//
+// Images need bytes, not a page: github.com/…/blob/… answers text/html, so an
+// image pointed at it renders broken. raw.githubusercontent.com answers
+// image/png.
 
-summary();
+console.log('\nfixRelativeLinks');
+
+test('gives a bare relative image a raw.githubusercontent URL', () => {
+  const out = fixRelativeLinks('![Fleet](docs/screenshots/web-fleet.png)\n', 'corral');
+  assert.equal(
+    out.trim(),
+    '![Fleet](https://raw.githubusercontent.com/tuna-os/corral/main/docs/screenshots/web-fleet.png)',
+  );
+});
+
+test('strips ./ from a relative image path', () => {
+  const out = fixRelativeLinks('![x](./a/b.png)\n', 'corral');
+  assert.match(out, /raw\.githubusercontent\.com\/tuna-os\/corral\/main\/a\/b\.png/);
+  assert.doesNotMatch(out, /main\/\.\//);
+});
+
+test('never points an image at a blob URL', () => {
+  const out = fixRelativeLinks('![x](./a.png)\n![y](b/c.svg)\n', 'corral');
+  assert.doesNotMatch(out, /!\[[^\]]*\]\(https:\/\/github\.com/);
+});
+
+test('covers every image extension the repos use', () => {
+  for (const ext of ['png', 'svg', 'jpg', 'jpeg', 'gif', 'webp']) {
+    const out = fixRelativeLinks(`![x](img/a.${ext})\n`, 'corral');
+    assert.match(out, /raw\.githubusercontent\.com/, `${ext} was not rewritten`);
+  }
+});
+
+test('leaves an absolute image URL alone', () => {
+  const src = '![badge](https://github.com/tuna-os/x/actions/workflows/ci.yml/badge.svg)\n';
+  assert.equal(fixRelativeLinks(src, 'corral'), src);
+});
+
+test('keeps an image title attribute', () => {
+  const out = fixRelativeLinks('![x](a.png "the title")\n', 'corral');
+  assert.match(out, /main\/a\.png "the title"\)/);
+});
+
+test('sends a relative .md link to the blob URL', () => {
+  const out = fixRelativeLinks('[docs](./CONTRIBUTING.md)\n', 'corral');
+  assert.match(out, /github\.com\/tuna-os\/corral\/blob\/main\/CONTRIBUTING\.md/);
+});
+
+test('sends a bare relative .md link to the blob URL', () => {
+  const out = fixRelativeLinks('[roadmap](ROADMAP.md)\n', 'corral');
+  assert.match(out, /github\.com\/tuna-os\/corral\/blob\/main\/ROADMAP\.md/);
+});
+
+test('leaves an anchor link alone', () => {
+  const src = '[top](#heading)\n';
+  assert.equal(fixRelativeLinks(src, 'corral'), src);
+});
+
+test('leaves a site-absolute link alone', () => {
+  const src = '[guide](/docs/corral/user-guide)\n';
+  assert.equal(fixRelativeLinks(src, 'corral'), src);
+});
+
+// ── frontmatter ───────────────────────────────────────────────────────────────
+
+console.log('\nfrontmatter');
+
+test('emits position, label and status', () => {
+  const fm = frontmatter('Corral', 101, 'corral', 'stable');
+  assert.match(fm, /sidebar_position: 101/);
+  assert.match(fm, /sidebar_label: "Corral"/);
+  assert.match(fm, /status: stable/);
+});
+
+test('falls back to unknown status', () => {
+  assert.match(frontmatter('X', 1, 'x', null), /status: unknown/);
+});
+
+test('subFrontmatter emits a title', () => {
+  const fm = subFrontmatter('Testing', 5);
+  assert.match(fm, /sidebar_position: 5/);
+  assert.match(fm, /title: "Testing"/);
+});
+
+// ── getStatusBanner ───────────────────────────────────────────────────────────
+
+console.log('\ngetStatusBanner');
+
+test('returns a banner for each known status', () => {
+  for (const s of ['alpha', 'experimental', 'beta', 'internal', 'deprecated']) {
+    assert.ok(getStatusBanner(s), `no banner for ${s}`);
+  }
+});
+
+test('returns null for stable and for an unknown status', () => {
+  assert.equal(getStatusBanner('stable'), null);
+  assert.equal(getStatusBanner('nonsense'), null);
+});
+
+// ── slugify ───────────────────────────────────────────────────────────────────
+
+console.log('\nslugify');
+
+test('lowercases and collapses separators', () => {
+  assert.equal(slugify('Bluefin_CLI'), 'bluefin-cli');
+  assert.equal(slugify('XFCE Linux'), 'xfce-linux');
+  assert.equal(slugify('tunaOS'), 'tunaos');
+});
+
+// ── summary ───────────────────────────────────────────────────────────────────
+
+console.log(`\n${pass} passed, ${fail} failed`);
+if (fail > 0) process.exit(1);

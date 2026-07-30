@@ -9,6 +9,7 @@
 import {execSync} from 'node:child_process';
 import {existsSync, readFileSync, readdirSync, writeFileSync, mkdirSync} from 'node:fs';
 import {join, dirname} from 'node:path';
+import {pathToFileURL} from 'node:url';
 
 // Projects that get their own doc section. Add a slug → label entry to
 // give a repo a human-readable name; repos not listed here still get
@@ -64,18 +65,65 @@ function slugify(name) {
   return name.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
 }
 
+// onProse applies fn to the prose of a markdown document, leaving fenced code
+// blocks and inline-code spans exactly as they were.
+//
+// Every MDX-safety rewrite below is a regex over `<`, and README files are
+// mostly shell. `--since=<30d>` in a bash sample and `<30s` in a prose table
+// look identical to a regex; only one of them may be escaped. Rewriting inside
+// a fence produces a site that builds and documents commands that do not run,
+// which is worse than the build failure it replaces.
+function onProse(content, fn) {
+  // Split on fenced blocks, keeping the fences as separator captures so the
+  // odd-indexed parts are code and pass through untouched.
+  const parts = content.split(/(^```[\s\S]*?^```$|^~~~[\s\S]*?^~~~$)/gm);
+  return parts
+    .map((part, i) => {
+      if (i % 2 === 1) return part; // a fenced block
+      // Same again for inline `code` spans within the prose.
+      return part
+        .split(/(`[^`\n]*`)/g)
+        .map((span, j) => (j % 2 === 1 ? span : fn(span)))
+        .join('');
+    })
+    .join('');
+}
+
 function sanitizeHtml(content) {
-  // Strip HTML that MDX can't parse (picture tags, unclosed void elements, etc.)
+  // Make GitHub-flavoured markdown parse as MDX.
+  //
+  // The source repos are not wrong: `<details><summary>x</summary>`, autolinks
+  // and `<30s` are all correct GFM and render properly on GitHub. MDX reads a
+  // bare `<` as the start of a JSX tag, so the same text is a syntax error
+  // here. That makes this the sync boundary's problem, not something to push
+  // back onto ten upstream repos which would only regress the next time
+  // somebody writes ordinary markdown.
   let c = content;
   // Replace <picture>...</picture> blocks with just the img tag
   c = c.replace(/<picture>[\s\S]*?<img\s[^>]*alt="([^"]*)"[^>]*>[\s\S]*?<\/picture>/gi, '![]');
   // Remove align attributes on divs that confuse MDX
   c = c.replace(/<div\s+align="[^"]*">/gi, '<div>');
   // Remove HTML comments that contain markdown (breaks MDX)
-  c = c.replace(/<!--[\s\S]*?-->/g, '');
-  // Escape angle brackets in non-HTML contexts that MDX interprets as JSX
-  // E.g., <email@domain> or <number+name@domain>
-  c = c.replace(/<(\d+[+]?[^>]*@[^>]+)>/g, '&lt;$1&gt;');
+  c = onProse(c, (s) => s.replace(/<!--[\s\S]*?-->/g, ''));
+
+  c = onProse(c, (s) => {
+    // <details><summary>x</summary> on one line: MDX parses the whole line as
+    // a paragraph, so <details> is still open when the paragraph ends. The
+    // same tags on separate lines parse as a block and accept markdown inside.
+    s = s.replace(
+      /^([ \t]*)<details>[ \t]*<summary>([\s\S]*?)<\/summary>[ \t]*$/gm,
+      '$1<details>\n$1<summary>$2</summary>',
+    );
+    // Autolinks: <https://example.com> is CommonMark, but MDX sees a tag whose
+    // name starts with `/`. The link text is the URL either way.
+    s = s.replace(/<((?:https?|ftp):\/\/[^\s<>]+)>/g, '[$1]($1)');
+    // <email@domain> or <number+name@domain>
+    s = s.replace(/<(\d+[+]?[^>]*@[^>]+)>/g, '&lt;$1&gt;');
+    // A `<` used as less-than: `<30s`, `<5%`. A JSX tag name cannot start with
+    // a digit or whitespace, so anything that does is arithmetic, not markup.
+    s = s.replace(/<(?=[\d\s=])/g, '&lt;');
+    return s;
+  });
   return c;
 }
 
@@ -86,25 +134,30 @@ function fixRelativeLinks(content, repo) {
   // Strategy: links that start with ./  or ../ and end with .md or .rst
   // get the full GitHub URL.
   const base = `https://github.com/${ORG}/${repo}/blob/main`;
+  // Images need bytes, not a page. github.com/…/blob/… answers text/html, so
+  // an <img> pointed at it renders broken; raw.githubusercontent.com answers
+  // image/png. Only the site's own assets can use a repo-relative path, and
+  // the synced files' assets are not copied into this repo.
+  const raw = `https://raw.githubusercontent.com/${ORG}/${repo}/main`;
+  const IMAGE = /\.(?:png|svg|jpe?g|gif|webp)$/i;
+  const clean = (p) => p.replace(/^\.\//, '');
+
+  // Images first, so the link rules below cannot claim them.
+  // Both ./-prefixed and bare relative paths; absolute URLs, anchors and
+  // site-absolute paths are left alone.
   let c = content.replace(
-    /]\((\.[^)]*\.(?:md|rst|png|svg|jpg))\)/gi,
-    (_, p) => {
-      const clean = p.replace(/^\.\//, '');
-      return `](${base}/${clean})`;
-    },
+    /!\[([^\]]*)\]\((?!https?:|#|\/|data:)([^)\s]+)([^)]*)\)/g,
+    (m, alt, p, rest) => (IMAGE.test(p) ? `![${alt}](${raw}/${clean(p)}${rest})` : m),
+  );
+  // Links to files that live in the source repo.
+  c = c.replace(
+    /]\((\.[^)]*\.(?:md|rst))\)/gi,
+    (_, p) => `](${base}/${clean(p)})`,
   );
   // Also fix bare relative paths without leading ./
   c = c.replace(
     /]\(((?!https?:|#|\/)[^)]*\.(?:md|rst))\)/gi,
     (_, p) => `](${base}/${p})`,
-  );
-  // Fix image references
-  c = c.replace(
-    /!\[([^\]]*)\]\((\.[^)]+)\)/g,
-    (_, alt, p) => {
-      const clean = p.replace(/^\.\//, '');
-      return `![${alt}](${base}/${clean})`;
-    },
   );
   return c;
 }
@@ -226,4 +279,18 @@ function main() {
   }
 }
 
-main();
+export {
+  sanitizeHtml,
+  fixRelativeLinks,
+  onProse,
+  frontmatter,
+  subFrontmatter,
+  getStatusBanner,
+  slugify,
+};
+
+// Only clone and rewrite when run as a command. The transforms above are
+// imported by the tests, which must not touch the network.
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main();
+}
