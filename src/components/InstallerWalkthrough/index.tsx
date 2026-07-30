@@ -26,6 +26,26 @@ export const DEFAULT_STEPS: WalkthroughStep[] = [
   {file: '06_done', title: 'Done', blurb: 'Reboot into your new system. Updates arrive as complete images.'},
 ];
 
+// installer-smoke.yml captures these for kde/cosmic/niri/xfce: an automated
+// OCR-driven pass that nudges focus forward a fixed number of times and
+// screenshots each resulting frame, rather than a hand-choreographed path
+// through named pages. Frame count and content differ per frontend, so these
+// get generic step labels instead of the semantic ones above — captioning
+// them as "Disk Selection" etc. would claim a match to the actual on-screen
+// content that OCR alone cannot guarantee.
+export function numberedSteps(count: number): WalkthroughStep[] {
+  return Array.from({length: count}, (_, i) => {
+    const n = String(i).padStart(2, '0');
+    return {
+      file: n,
+      title: i === 0 ? 'Launch' : `Step ${i}`,
+      blurb: i === 0
+        ? 'The installer frontend on first render.'
+        : 'Captured after nudging focus to the next control and activating it.',
+    };
+  });
+}
+
 function shotUrl(prefix: string, file: string): string {
   return `${SHOT_BASE}/${prefix}${file}-latest.png`;
 }
