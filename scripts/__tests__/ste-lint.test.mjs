@@ -198,6 +198,18 @@ test('a paragraph is not an instruction', () => {
   assert.equal(found[0].procedural, false);
 });
 
+test('a list stuck to a paragraph is split from it', () => {
+  // Markdown needs no blank line between them, and joining the two produced a
+  // finding for a seven-word noun cluster that was really three bullets.
+  const found = blocks('Give these three items:\n- Full name\n- Username\n- Password');
+  assert.equal(found.length, 4, JSON.stringify(found));
+  assert.equal(found[0].procedural, true, 'items come first, and are instructions');
+  const lead = found.find((b) => !b.procedural);
+  assert.ok(lead && lead.text.startsWith('Give these'), JSON.stringify(found));
+  assert.ok(found.every((b) => !b.text.includes('Username Password')),
+    'bullets must not be concatenated: ' + JSON.stringify(found));
+});
+
 // ── generated-file detection ──────────────────────────────────────────────────
 
 test('a synced file is recognised as generated', () => {

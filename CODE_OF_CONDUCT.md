@@ -1,3 +1,4 @@
+<!-- ste-disable-file: this is the Contributor Covenant v2.1, quoted as published. People trust it because the wording is identical across every project that adopts it, so rewriting it would make it a different document wearing the same name. -->
 
 # Contributor Covenant Code of Conduct
 

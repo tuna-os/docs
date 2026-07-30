@@ -134,14 +134,32 @@ export function blocks(prose) {
 
     const lines = trimmed.split('\n');
     const listItem = /^\s*(?:[-*+]|\d+[.)])\s+/;
-    if (lines.every((l) => listItem.test(l) || /^\s+/.test(l))) {
-      for (const line of lines) {
+
+    // A chunk can be a paragraph, a list, or a paragraph with a list stuck to
+    // it — Markdown does not need a blank line between them. Joining those
+    // into one "sentence" produced findings like a seven-word noun cluster
+    // made of three separate bullets, so the lead-in and the items are
+    // separated here.
+    const lead = [];
+    let seenItem = false;
+    for (const line of lines) {
+      if (listItem.test(line)) {
+        seenItem = true;
         const text = line.replace(listItem, '').trim();
         if (text) out.push({text, procedural: true});
+        continue;
       }
-      continue;
+      if (seenItem) {
+        // A continuation line of the previous item.
+        const previous = out[out.length - 1];
+        if (previous) previous.text += ' ' + line.trim();
+        continue;
+      }
+      lead.push(line.trim());
     }
-    out.push({text: trimmed.replace(/\n/g, ' '), procedural: false});
+    if (lead.length) {
+      out.push({text: lead.join(' '), procedural: false});
+    }
   }
   return out;
 }
