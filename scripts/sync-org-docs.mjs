@@ -7,7 +7,7 @@
 //   node scripts/sync-org-docs.mjs
 
 import {execSync} from 'node:child_process';
-import {existsSync, readFileSync, readdirSync, writeFileSync, mkdirSync} from 'node:fs';
+import {existsSync, readFileSync, readdirSync, writeFileSync, mkdirSync, rmSync} from 'node:fs';
 import {join, dirname} from 'node:path';
 import {pathToFileURL} from 'node:url';
 
@@ -207,8 +207,9 @@ function main() {
 
     console.log(`\n📥 ${repo} → docs/${slug}/`);
 
+    let dir;
     try {
-      const dir = cloneRepo(repo);
+      dir = cloneRepo(repo);
       const targetDir = join(DOCS_DIR, slug);
       mkdirSync(targetDir, {recursive: true});
 
@@ -275,6 +276,12 @@ function main() {
       }
     } catch (e) {
       console.error(`  ✗ Failed: ${e.message}`);
+    } finally {
+      // Each repo is cloned into its own mktemp -d and was never removed, so
+      // a full run left ~25 shallow clones behind. On the CI runner that is
+      // invisible because the runner is thrown away; run it twice on a
+      // workstation with a 2G /tmp and the disk fills.
+      if (dir) rmSync(dir, {recursive: true, force: true});
     }
   }
 }
