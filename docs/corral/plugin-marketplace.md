@@ -82,6 +82,6 @@ are a working reference.
 ## First-party plugins
 
 The maintained catalog and its maturity are documented in
-[first-party-plugins.md](https://github.com/tuna-os/corral/blob/main/first-party-plugins.md). First-party means published
+[first-party-plugins.md](https://github.com/tuna-os/corral/blob/main/docs/first-party-plugins.md). First-party means published
 by tuna-os through the curated marketplace; it does not grant the plugin more
 runtime privilege than an external plugin.

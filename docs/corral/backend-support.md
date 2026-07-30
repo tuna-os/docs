@@ -22,7 +22,7 @@ Use `corral context get`, `corral context use NAME`, and the persistent
 scripts should use the canonical ID printed by `corral list`.
 
 First-party workflow plugins have a separate support matrix in
-[first-party-plugins.md](https://github.com/tuna-os/corral/blob/main/first-party-plugins.md). Plugins must declare their
+[first-party-plugins.md](https://github.com/tuna-os/corral/blob/main/docs/first-party-plugins.md). Plugins must declare their
 supported backends; “installed” is not evidence that a workflow works on every
 inventory target.
 

@@ -135,12 +135,21 @@ function sanitizeHtml(content) {
   return c;
 }
 
-function fixRelativeLinks(content, repo) {
+// fixRelativeLinks rewrites repo-relative links and images to absolute URLs.
+//
+// srcDir is the directory the file was read from, relative to the repo root —
+// '' for a README, 'docs' for a file synced out of docs/. A relative path
+// resolves against the file that contains it, not against the repo root, so
+// docs/user-guide.md saying `screenshots/a.png` means docs/screenshots/a.png.
+// Ignoring srcDir produced URLs that 404: the site still built, because
+// Docusaurus only validates repo-local images, and shipped broken ones.
+function fixRelativeLinks(content, repo, srcDir = '') {
   // Convert relative repo links to absolute GitHub links.
   // [something](./foo.md) → [something](https://github.com/tuna-os/<repo>/blob/main/foo.md)
   // But keep intra-doc links within the Docusaurus site as-is.
   // Strategy: links that start with ./  or ../ and end with .md or .rst
   // get the full GitHub URL.
+  const prefix = srcDir ? `${srcDir.replace(/\/+$/, '')}/` : '';
   const base = `https://github.com/${ORG}/${repo}/blob/main`;
   // Images need bytes, not a page. github.com/…/blob/… answers text/html, so
   // an <img> pointed at it renders broken; raw.githubusercontent.com answers
@@ -148,7 +157,17 @@ function fixRelativeLinks(content, repo) {
   // the synced files' assets are not copied into this repo.
   const raw = `https://raw.githubusercontent.com/${ORG}/${repo}/main`;
   const IMAGE = /\.(?:png|svg|jpe?g|gif|webp)$/i;
-  const clean = (p) => p.replace(/^\.\//, '');
+  // Resolve a path written inside srcDir against the repo root, collapsing
+  // the ./ and ../ segments the way the source repo's own renderer would.
+  const clean = (p) => {
+    const out = [];
+    for (const seg of (prefix + p).split('/')) {
+      if (seg === '' || seg === '.') continue;
+      if (seg === '..') out.pop();
+      else out.push(seg);
+    }
+    return out.join('/');
+  };
 
   // Images first, so the link rules below cannot claim them.
   // Both ./-prefixed and bare relative paths; absolute URLs, anchors and
@@ -173,7 +192,7 @@ function fixRelativeLinks(content, repo) {
   // Also fix bare relative paths without leading ./
   c = c.replace(
     /]\(((?!https?:|#|\/)[^)]*\.(?:md|rst))\)/gi,
-    (_, p) => `](${base}/${p})`,
+    (_, p) => `](${base}/${clean(p)})`,
   );
   return c;
 }
@@ -236,7 +255,7 @@ function main() {
       if (existsSync(readmePath)) {
         let content = readFileSync(readmePath, 'utf8');
         content = sanitizeHtml(content);
-        content = fixRelativeLinks(content, repo);
+        content = fixRelativeLinks(content, repo, '');
         // Remove the leading # Title (Docusaurus uses frontmatter for title)
         content = content.replace(/^# .*\n\n?/, '');
         const statusBanner = getStatusBanner(meta.status || 'unknown');
@@ -264,7 +283,7 @@ function main() {
         }
         let content = readFileSync(join(dir, file), 'utf8');
         content = sanitizeHtml(content);
-        content = fixRelativeLinks(content, repo);
+        content = fixRelativeLinks(content, repo, '');
         content = content.replace(/^# .*\n\n?/, '');
         const title = upper.charAt(0) + upper.slice(1).toLowerCase();
         content = subFrontmatter(title, localPos++) + content;
@@ -282,7 +301,7 @@ function main() {
           if (!file.endsWith('.md') && !file.endsWith('.rst')) continue;
           let content = readFileSync(join(docsDir, file), 'utf8');
           content = sanitizeHtml(content);
-          content = fixRelativeLinks(content, repo);
+          content = fixRelativeLinks(content, repo, docsSubdir);
           content = content.replace(/^# .*\n\n?/, '');
           const title = file.replace(/\.(md|rst)$/, '').replace(/[-_]/g, ' ');
           content = subFrontmatter(title, localPos++) + content;

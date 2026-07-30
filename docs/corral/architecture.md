@@ -3,8 +3,8 @@ sidebar_position: 4
 title: "architecture"
 ---
 
-> Full project docs: [README.md](https://github.com/tuna-os/corral/blob/main/../README.md), [SPEC.md](https://github.com/tuna-os/corral/blob/main/../SPEC.md),
-> [API reference](https://github.com/tuna-os/corral/blob/main/api.md), [testing plan](https://github.com/tuna-os/corral/blob/main/testing.md), [setup guide](https://github.com/tuna-os/corral/blob/main/kubevirt-proxmox-setup.md)
+> Full project docs: [README.md](https://github.com/tuna-os/corral/blob/main/README.md), [SPEC.md](https://github.com/tuna-os/corral/blob/main/SPEC.md),
+> [API reference](https://github.com/tuna-os/corral/blob/main/docs/api.md), [testing plan](https://github.com/tuna-os/corral/blob/main/docs/testing.md), [setup guide](https://github.com/tuna-os/corral/blob/main/docs/kubevirt-proxmox-setup.md)
 
 ## Package map
 
@@ -249,7 +249,7 @@ The `deploy/corral-web.yaml` manifest:
 Tailnet membership *is* the authentication — never bind a public interface.
 Authorization is an `adminGate` middleware: `CORRAL_ADMINS` (tailnet logins)
 gates mutating requests, with everyone else read-only (see
-[ADR-0003](https://github.com/tuna-os/corral/blob/main/adr/0003-identity-source.md)). Unset = single-user/open.
+[ADR-0003](https://github.com/tuna-os/corral/blob/main/docs/adr/0003-identity-source.md)). Unset = single-user/open.
 
 ## Plugin system
 

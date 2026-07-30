@@ -4,7 +4,7 @@ title: "vdi"
 ---
 
 `corral-vdi` is the Phase 1 implementation of
-[RFC-0001](https://github.com/tuna-os/corral/blob/main/rfc/0001-vdi-plugin.md): static desktop pools, built by cloning
+[RFC-0001](https://github.com/tuna-os/corral/blob/main/docs/rfc/0001-vdi-plugin.md): static desktop pools, built by cloning
 an already-built VM, with manual (CLI-driven) assignment. No broker, no
 self-serve web page, no idle reclaim yet — those are later phases, tracked
 in [issue #69](https://github.com/tuna-os/corral/issues/69). What's here is
@@ -100,7 +100,7 @@ corral vdi pool delete devpool
 `corral vdi connect <member>` prints instructions — it does **not** yet
 pick a protocol and open a session for you. That one-click behavior is
 Phase 2 territory (see the RFC), and specifically depends on
-[ADR-0002](https://github.com/tuna-os/corral/blob/main/adr/0002-browser-rdp-via-ironrdp.md) phase 2 (in-browser RDP)
+[ADR-0002](https://github.com/tuna-os/corral/blob/main/docs/adr/0002-browser-rdp-via-ironrdp.md) phase 2 (in-browser RDP)
 landing first, so Windows members get the same one-click experience VNC
 already gives Linux members. Until then:
 
@@ -149,6 +149,6 @@ already gives Linux members. Until then:
   sources work today; Containers (CT) pooling is exploratory (RFC's Phase
   4 territory).
 
-None of this is hidden — see [RFC-0001](https://github.com/tuna-os/corral/blob/main/rfc/0001-vdi-plugin.md) for the
+None of this is hidden — see [RFC-0001](https://github.com/tuna-os/corral/blob/main/docs/rfc/0001-vdi-plugin.md) for the
 full phased plan and [issue #69](https://github.com/tuna-os/corral/issues/69)
 for what's tracked next.
