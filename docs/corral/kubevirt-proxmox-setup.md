@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 8
 title: "kubevirt proxmox setup"
 ---
 
@@ -27,7 +27,8 @@ itself — you install the KubeVirt stack, then run Corral against it.
 | Backup / export (download a disk image) | `VMExport` gate |
 | Live migration | RWX/migratable storage **and same-CPU-vendor nodes** |
 | Templates, instancetypes, image library, events/metrics | (built into Corral) |
-| Secondary NICs | Multus + a NetworkAttachmentDefinition |
+| Secondary NIC on the LAN | Multus + a NetworkAttachmentDefinition |
+| LAN access without a new NIC | a LoadBalancer-Service controller — Cilium (L2/BGP) or MetalLB |
 | Boot a container image as a VM (`corral bootc`) | the `bootc` extension |
 
 Corral detects what the cluster supports (`GET /api/capabilities`) and
@@ -52,7 +53,7 @@ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/$VER/kub
 kubectl -n kubevirt wait kv kubevirt --for=condition=Available --timeout=10m
 
 # CDI (containerized data importer — imports ISOs/images into PVCs)
-CDI=$(curl -fsSL https://github.com/kubevirt/containerized-data-importer/releases/latest | grep -oP 'v[0-9.]+' | head -1)
+CDI=$(basename $(curl -fsSL -o /dev/null -w '%{url_effective}' https://github.com/kubevirt/containerized-data-importer/releases/latest))
 kubectl apply -f https://github.com/kubevirt/containerized-data-importer/releases/download/$CDI/cdi-operator.yaml
 kubectl apply -f https://github.com/kubevirt/containerized-data-importer/releases/download/$CDI/cdi-cr.yaml
 ```
@@ -224,16 +225,19 @@ corral web        # local web UI on 127.0.0.1:8006
 corral list
 ```
 
-## 6. (Optional) Secondary networks — Multus
+## 6. (Optional) LAN access for VMs
 
 By default a KubeVirt VM only gets a NATed pod-network interface: outbound
 internet works, but nothing on your actual LAN can reach it, and it can't
 reach LAN-only devices either (a smartwatch, a NAS, a router admin panel).
-For a real LAN IP, install
-[Multus](https://github.com/k8snetworkplumbingwg/multus-cni) and create a
-`NetworkAttachmentDefinition`. Multus changes the CNI chain — do it in a
-maintenance window. Example macvlan NAD (set `master` to each node's uplink;
-note nodes may name interfaces differently):
+Corral has two ways to fix that, depending on what your cluster already runs.
+
+### 6a. A real secondary NIC — Multus
+
+Install [Multus](https://github.com/k8snetworkplumbingwg/multus-cni) and
+create a `NetworkAttachmentDefinition`. Multus changes the CNI chain — do it
+in a maintenance window. Example macvlan NAD (set `master` to each node's
+uplink; note nodes may name interfaces differently):
 
 ```yaml
 apiVersion: k8s.cni.cncf.io/v1
@@ -257,7 +261,34 @@ corral addnic myvm --network-nad tailvm/lan --iface net1   # explicit, if there'
 Or use Corral's **Add NIC** (Hardware → Network) in the web UI. `--lan`/
 `corral addnic` only auto-picks a NAD when exactly one exists on the
 cluster — with several, pass `--network-nad` explicitly so a VM never ends
-up bridged onto the wrong network by a guess.
+up bridged onto the wrong network by a guess. The NAD's `config` can wrap
+any CNI plugin — macvlan/ipvlan/bridge/sriov — Multus is just the KubeVirt
+attachment mechanism, not a networking technology in itself.
+
+### 6b. No new interface — a LoadBalancer Service (Cilium or MetalLB)
+
+If you'd rather not touch the CNI chain at all, `--lan-service` exposes a
+VM's ports through a plain `type: LoadBalancer` Service instead — reusing
+the same proxy Deployment `corral create`'s tailnet exposure already runs,
+just fronted by a second Service with no vendor-specific annotations. Any
+controller that fulfills LoadBalancer Services assigns it an external IP the
+same way:
+
+- **Cilium** with [L2 Announcement](https://docs.cilium.io/en/stable/network/l2-announcements/)
+  (flat network, ARP-based) or the [BGP Control Plane](https://docs.cilium.io/en/stable/network/bgp-control-plane/)
+  (peers with your router/switch — needed if the LAN spans an L3 boundary),
+  plus a `CiliumLoadBalancerIPPool` to hand out addresses from.
+- **[MetalLB](https://metallb.io/)** on any other CNI (Calico, Flannel, …) —
+  same Service-based contract, its own L2/BGP modes.
+
+```bash
+corral create myvm --kubevirt --image fedora --lan-service   # new VM
+corral lanservice myvm                                        # existing VM
+kubectl get svc myvm-lan -n tailvm                             # external IP once a controller assigns one
+```
+
+Without an LB-IPAM controller installed, `myvm-lan` just sits `<pending>`
+forever — same as any other LoadBalancer Service on a cluster without one.
 
 ## 7. Extensions (the marketplace)
 
