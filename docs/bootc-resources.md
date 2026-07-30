@@ -2,6 +2,8 @@
 sidebar_position: 9
 ---
 
+<!-- ste-disable-file: this page is a bibliography. The link text reproduces the titles of external talks, guides and repositories, and rewriting a title misquotes its author. -->
+
 # Bootc Resources
 
 Curated links and references for working with bootable containers — from concepts to production.
@@ -10,8 +12,50 @@ Curated links and references for working with bootable containers — from conce
 
 - [bootc-dev/bootc](https://github.com/bootc-dev/bootc) — the official project repo. Start here for the high-level overview.
 - [Getting Started with Bootable Containers](https://docs.fedoraproject.org/en-US/bootc/getting-started/) — Fedora's guide covering core concepts, benefits, and first steps.
-- [What are Bootable Containers?](https://www.youtube.com/watch?v=cBom7aDuy9w) — IBM Tech video intro.
-- [Flock 2024: Bootable Containers Deep Dive](https://www.youtube.com/watch?v=uNZuYBq5XfI) — Dan Walsh on image-based OS.
+
+## Talks and Recordings
+
+Newest first. Every link below was checked against the video's own metadata,
+so the titles are the ones the speakers gave them.
+
+### 2026
+
+- [Project Lightning Talk: What's Exciting Now In Bootc, And What's Next?](https://www.youtube.com/watch?v=txFg5kPwQvY)
+  — Colin Walters at KubeCon + CloudNativeCon Europe 2026 (CNCF). Soft reboots,
+  factory reset, the `bcvk` tool for local VMs, then composefs and verified
+  container storage with Secure Boot and custom keys.
+- [Contribfest: Get Started Contributing to bootc](https://kccnceu2026.sched.com/event/2EF7a/)
+  — Joseph Marrero Corchado, Laura Santamaria, Preethi Thomas, Alice Frosi and
+  Colin Walters at KubeCon EU 2026. A working session, not a recording.
+- [Reproducible, Immutable, Bootable: Exploring bootc with Podman Desktop](https://www.youtube.com/playlist?list=PLU1vS0speL2Z6ye8yTW9lWG-GlairkWA0)
+  — DevConf.IN 2026. How container build methods make an OCI image into a
+  Linux system that boots and updates.
+- [DevConf.CZ 2026 live streams](https://www.youtube.com/playlist?list=PLMmZih2q_v3I)
+  — the full playlist. It holds the 2026 bootable-container sessions.
+
+### 2025
+
+- [Bootable Containers in Action: Hands on with Deploying AI Workloads](https://www.youtube.com/watch?v=KDOySCVhphI)
+  — Carol Chen and Cedric Clyburn at CentOS Connect 2025.
+- [From Container to Bare Metal: Redefining OS Build with bootc – VP Bank](https://www.youtube.com/watch?v=acKbf3V3rJk)
+  — Chainguard's "In Containers We Trust" series, August 2025. A production
+  account from a bank.
+- [What are Bootc and bootable containers?](https://www.youtube.com/watch?v=1p1pCoHFkP0)
+  — Dan Walsh and Colin Walters, March 2025.
+- [Bootable Containers and Image Mode: Transforming Linux OS Management with Bootc](https://archive.fosdem.org/2025/schedule/event/fosdem-2025-4513-bootable-containers-and-image-mode-transforming-linux-os-management-with-bootc/)
+  — FOSDEM 2025. Image-based deployment, boot integrity, and management.
+
+### 2024
+
+- [Keynote: What if you could boot a container?](https://www.youtube.com/watch?v=ERVyBc_fElY)
+  — Dan Walsh, Stef Walter and Colin Walters at DevConf.CZ 2024. The talk that
+  introduced bootc to a wide audience.
+- [Flock 2024: Bootable Containers — A deep dive into image based OS](https://www.youtube.com/watch?v=uNZuYBq5XfI)
+  — Dan Walsh at Flock 2024.
+- [Bootc: Getting Started with Bootable Containers](https://www.youtube.com/watch?v=bf1xqjLeA9M)
+  — Valentin Rothberg for the Fedora Project, September 2024.
+- [What Are Bootable Containers? Podman, Containerization & Edge Use Cases](https://www.youtube.com/watch?v=cBom7aDuy9w)
+  — IBM Technology. A short introduction.
 
 ## How It Works
 

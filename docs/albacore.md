@@ -5,12 +5,12 @@ sidebar_position: 2
 # Albacore (AlmaLinux)
 
 :::tip[Visual overview]
-Prefer a visual tour? See the **[Albacore overview →](/albacore)** landing page.
+Prefer a visual tour? See the **[Albacore overview →](/albacore)** start page.
 :::
 
 **Based on:** [AlmaLinux 10.0](https://almalinux.org/blog/2025-05-27-welcoming-almalinux-10/)
 
-Albacore is the flagship stable variant of TunaOS, providing a rock-solid enterprise-grade desktop experience built on the AlmaLinux foundation.
+Albacore is the flagship stable variant of TunaOS. It gives a solid desktop for the enterprise, experience built on the AlmaLinux foundation.
 
 ## Features
 
@@ -22,7 +22,7 @@ Albacore is the flagship stable variant of TunaOS, providing a rock-solid enterp
 
 ## Downloads
 
-Pre-built ISOs are published every two weeks for GNOME flavors. Other flavors are available as container images only.
+Every two weeks, TunaOS publishes pre-built ISOs for the GNOME flavors. Other flavors are available as container images only.
 
 ### GNOME (Standard)
 The standard experience for most users.
@@ -67,7 +67,9 @@ Adds NVIDIA drivers and CUDA for AI, graphics, and VFX workloads. (Formerly "GDX
 
 ## Installation
 
-We recommend using the `Justfile` in the [TunaOS repository](https://github.com/tuna-os/tunaOS) for building your own images.
+We recommend the `Justfile` in the
+[TunaOS repository](https://github.com/tuna-os/tunaOS). Use it to build your
+own images.
 
 ### Using Container Image
 ```bash

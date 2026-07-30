@@ -8,7 +8,7 @@ import InstallerWalkthrough, {numberedSteps} from '@site/src/components/Installe
 
 <InstallerWalkthrough
   title="See it before you run it"
-  subtitle="These are real captures — a workflow boots a freshly built live ISO in QEMU every week, walks the installer, and publishes every step."
+  subtitle="These are real captures. Each week a workflow boots a new live ISO in QEMU, moves through the installer, and publishes each step."
 />
 
 <InstallerWalkthrough
@@ -17,9 +17,10 @@ import InstallerWalkthrough, {numberedSteps} from '@site/src/components/Installe
   prefix="cosmic_"
 />
 
-The four independent installer frontends (KDE, COSMIC, Niri, XFCE) are also
-captured weekly by an automated smoke test, which boots each one and
-nudges through it with OCR-verified screenshots at every step:
+There are four independent frontends: KDE, COSMIC, Niri and XFCE. A smoke
+test captures each one every week. The test boots the frontend, then moves
+through it. It makes a screenshot at each step and reads the screen with OCR
+to make sure the step is correct.
 
 <InstallerWalkthrough
   title="KDE frontend"
@@ -42,34 +43,38 @@ nudges through it with OCR-verified screenshots at every step:
   steps={numberedSteps(9)}
 />
 
-TunaOS installs via **bootc-installer**, no longer a single GTK4/Libadwaita
-app. It's now a family of independent frontends — one per desktop (KDE,
-COSMIC, Niri, XFCE) — each built for that desktop's own toolkit (Qt Widgets,
-Iced, TUI, GTK3) so the installer looks and feels native to the session it
-runs in, rather than one GNOME-styled app dropped into every desktop. All of
-them drive the same `fisherman` bootc install backend.
+TunaOS installs with **bootc-installer**. This is no longer one GTK4 and
+Libadwaita application. There is now one frontend for each desktop: KDE,
+COSMIC, Niri and XFCE.
 
-> The steps below describe the installation flow common to all frontends.
-> Exact widget layout differs per frontend — see the captures above for
-> what each one actually looks like.
+Each frontend uses the toolkit of its desktop. KDE uses Qt Widgets, COSMIC
+uses Iced, Niri uses a TUI, and XFCE uses GTK3. Thus the installer agrees
+with the session that it runs in. Before, each desktop received the same
+application, in the GNOME style. All frontends use the same `fisherman` bootc install
+backend.
+
+> The steps that follow are the same for each frontend. But the position of
+> the controls is different in each one. The captures above show you the
+> appearance of each frontend.
 
 ---
 
 ## Part 1: Installing to Disk
 
-When you boot from a live ISO, the installer launches automatically and detects the live environment via the `tunaos.live=1` kernel parameter.
+When you boot from a live ISO, the installer starts automatically. It finds
+the live environment with the `tunaos.live=1` kernel parameter.
 
 ### Step 1 — Welcome
 
 The welcome screen shows your variant's name and emoji and gives you three options:
 
 - **Install** — begin the installation wizard
-- **Try** — close the installer and explore the live desktop before committing
+- **Try** — close the installer and examine the live desktop first
 - **Accessibility** — open GNOME accessibility settings
 
 ### Step 2 — Disk Selection
 
-Choose the disk to install to and configure partitioning options.
+Choose the disk for the installation, then set the partition options.
 
 #### Filesystem
 
@@ -78,39 +83,49 @@ Choose the disk to install to and configure partitioning options.
 | Albacore, Skipjack | XFS, ext4 | XFS |
 | Yellowfin, Bonito | XFS, Btrfs, Btrfs (subvolumes), ext4 | Btrfs (subvolumes) |
 
-> Btrfs is not available on EL-based variants (Albacore, Skipjack) due to limited kernel support.
+> Btrfs is not available on the EL-based variants, Albacore and Skipjack.
+> Their kernel gives only limited support for it.
 
 #### Full Disk Encryption (FDE)
 
-Toggle **Encrypt this disk** to enable LUKS full disk encryption. You will be prompted to set and confirm a passphrase.
+Set **Encrypt this disk** to on. This starts LUKS encryption of the full
+disk. The installer then asks you for a passphrase two times.
 
 #### TPM Unlock
 
-If your system has a TPM 2.0 chip, you can enable **TPM unlock** to automatically decrypt the disk on boot without entering a passphrase each time. Requires FDE to be enabled.
+If your system has a TPM 2.0 chip, you can set **TPM unlock** to on. The
+system then decrypts the disk automatically at each boot, and you do not
+give the passphrase each time. This option needs FDE.
 
-> ⚠️ The entire target disk will be erased. Make sure you have backups before continuing.
+> ⚠️ The installer erases all data on the target disk. Make a backup first.
 
 ### Step 3 — Confirm
 
-Review your choices (disk, filesystem, encryption) and confirm. This is the last chance to go back before data is written.
+Examine your choices of disk, filesystem and encryption, then confirm. This
+is the last point where you can go back. After this, the installer writes to
+the disk.
 
 ### Step 4 — Installation
 
-The installer runs `bootc install to-disk` with experimental unified storage enabled. Progress is shown on screen. This typically takes 5–15 minutes depending on your hardware and internet connection.
+The installer runs `bootc install to-disk`. Experimental unified storage is
+on. The screen shows the progress. This usually needs 5 to 15 minutes. The
+speed of your hardware and your network changes this time.
 
 ### Step 5 — Done
 
-Once complete, you are prompted to reboot. Remove the USB drive before the system restarts.
+When the installation is complete, the installer asks you to reboot. Remove
+the USB drive before the system starts again.
 
 ---
 
 ## Part 2: First Boot Setup
 
-After rebooting into your new installation, First Setup runs once to configure your system.
+Boot your new installation. First Setup then runs one time and configures
+your system.
 
 ### Language
 
-Select your preferred language. This sets the system locale.
+Select the language that you want. This sets the system locale.
 
 ### Keyboard Layout
 
@@ -118,7 +133,7 @@ Choose your keyboard layout.
 
 ### Timezone & Location
 
-Set your timezone, used for the system clock.
+Set your timezone. The system clock uses it.
 
 ### Hostname
 
@@ -137,21 +152,26 @@ Choose between light and dark mode for the GNOME desktop.
 
 ### Applications
 
-Select additional Flatpak applications to install from Flathub. Core apps are already included in the image.
+Select more Flatpak applications from Flathub. The image already contains
+the core applications.
 
 ### Setup Progress
 
-Selected apps and system-level configuration are applied. This may take a few minutes.
+First Setup installs the applications that you selected and applies the
+system configuration. This can need some minutes.
 
 ### Done
 
-Your system is ready. First Setup will not run again on subsequent boots.
+Your system is ready. First Setup does not run again at the next boots.
 
 ---
 
 ## Recovery Key
 
-If you enabled Full Disk Encryption, a **recovery key** is generated and shown after installation. Store this somewhere safe — it can unlock your disk if you forget your passphrase or TPM unlock fails.
+If you set Full Disk Encryption to on, the installer makes a **recovery
+key**. It shows the key after the installation. Keep the key in a safe
+place. The key unlocks your disk if you forget the passphrase, or if TPM
+unlock does not operate.
 
 ---
 
@@ -159,21 +179,27 @@ If you enabled Full Disk Encryption, a **recovery key** is generated and shown a
 
 ### Installer doesn't launch on boot
 
-Make sure you're booting from the ISO in UEFI mode. The live environment requires UEFI; legacy BIOS boot is not supported.
+Make sure that you boot from the ISO in UEFI mode. The live environment
+needs UEFI. It does not support a legacy BIOS boot.
 
 ### No disks shown in disk selection
 
-The installer only lists whole block devices. If you're running in a VM, ensure a virtual disk is attached. Existing partitions on a disk are not shown individually — the whole disk is selected and repartitioned.
+The installer shows only full block devices. In a VM, attach a virtual
+disk first. The installer does not show the partitions of a
+disk one by one. It selects the full disk and makes new partitions on it.
 
 ### Installation fails or stalls
 
-- Check that you have a working internet connection — the installer pulls the container image during install
-- Ensure the target disk has at least 20 GB free
-- Check [GitHub Issues](https://github.com/tuna-os/tunaOS/issues) for known problems
+- Make sure that your network connection operates. The installer gets the
+  container image during the installation
+- Make sure that the target disk has 20 GB or more of free space
+- Examine [GitHub Issues](https://github.com/tuna-os/tunaOS/issues) for
+  known problems
 
 ### TPM unlock not working after install
 
-TPM unlock binds to the current secure boot state. If you change secure boot settings after installation, re-enroll with:
+TPM unlock uses the secure boot state at the time of the installation. If
+you change the secure boot settings later, enroll again:
 
 ```bash
 sudo systemd-cryptenroll --tpm2-device=auto --wipe-slot=tpm2 /dev/your-disk
@@ -183,7 +209,8 @@ sudo systemd-cryptenroll --tpm2-device=auto --wipe-slot=tpm2 /dev/your-disk
 
 ## Source
 
-Each frontend is its own repo, all driving the same `fisherman` bootc install backend:
+Each frontend has its own repository. All of them use the same `fisherman`
+bootc install backend:
 
 - [tuna-os/bootc-installer](https://github.com/tuna-os/bootc-installer) — GNOME/Libadwaita, the default flow captured above
 - [tuna-os/tuna-installer-kde](https://github.com/tuna-os/tuna-installer-kde) — Qt6 Widgets

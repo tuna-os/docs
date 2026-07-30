@@ -86,6 +86,30 @@ jobs:
           exit $FAILED
 
 
+  ste:
+    name: Simplified Technical English
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '20'
+
+      - name: Rule tests
+        run: node scripts/__tests__/ste-lint.test.mjs
+
+      # A budget rather than zero. Conformance is being converted file by file,
+      # and a gate that fails on day one gets disabled on day two — so the
+      # number only ever goes down. Lower it whenever a batch of prose lands.
+      #
+      # Generated docs under docs/<slug>/ are skipped: sync-org-docs.mjs
+      # overwrites them from each source repo, so the fix belongs upstream.
+      - name: STE budget
+        run: |
+          node scripts/ste-lint.mjs --summary
+          node scripts/ste-lint.mjs --max "$(cat .ste-budget)" >/dev/null
+
   link-check:
     name: Internal Link Check
     runs-on: blacksmith-4vcpu-ubuntu-2404

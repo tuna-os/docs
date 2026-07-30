@@ -6,15 +6,16 @@ date: 2026-07-19
 tags: [corral, kubevirt, qemu, virtualization, announcement]
 ---
 
-I love Proxmox. I've run it for years. But Proxmox is a *distribution* — it
-owns the whole machine, it's welded to Debian, and if your infrastructure has
-moved on to Kubernetes it's a second world you have to maintain next to the
-first.
+I love Proxmox. I have run it for years. But Proxmox is a *distribution*. It
+owns the full machine, and Debian holds it tight. If your infrastructure has
+moved to Kubernetes, Proxmox becomes a second world. You must maintain it next
+to the first one.
 
-[Corral](https://github.com/tuna-os/corral) is my answer to a question that
-kept nagging me: what if the Proxmox experience — the datacenter tree, the
-create wizard, one-click consoles, VMs and containers side by side — was just
-a single static binary you point at whatever you already have?
+[Corral](https://github.com/tuna-os/corral) is my answer to a question I could
+not put down. The Proxmox experience has a datacenter tree, a create wizard,
+consoles that open with one click, and VMs beside containers. What if all of it
+were one static binary? You would point that binary at the infrastructure you
+have.
 
 ![Corral demo tour](https://raw.githubusercontent.com/tuna-os/corral/main/docs/screenshots/demo.gif)
 
@@ -24,17 +25,16 @@ The short version:
 
 - **Got a Kubernetes cluster?** Corral drives KubeVirt through `kubectl` and
   `virtctl` — no operator to install, no agent, no CRDs of its own.
-- **Just a laptop?** The same commands run VMs on local QEMU/KVM under
-  systemd, and as of this week the same dashboard shows them under a "local"
-  node.
+- **Only a laptop?** The same commands run VMs on local QEMU/KVM under
+  systemd. From this week, the same dashboard shows them under a "local" node.
 - **Got Tailscale?** Every VM lands on your tailnet automatically — SSH from
   your phone, VNC from the couch.
 
 One binary. `create` / `start` / `ssh` / `viewer` / `clone` / `delete` work
 identically on both backends, and Corral remembers which VM lives where.
-There's a TUI for quick jobs, a Proxmox-style web dashboard for everything
-else, and a Proxmox API compatibility layer if your Terraform provider
-expects one.
+There is a TUI for quick jobs, and a Proxmox-style web dashboard for
+everything else. There is also a compatibility layer for the Proxmox API, if
+your Terraform provider needs one.
 
 And to be clear about what "one binary" means: the CLI, the TUI, *and* the
 web UI are all in it. `brew install hanthor/tap/corral` and you have the
@@ -48,15 +48,19 @@ corral --demo        # the TUI
 corral web --demo    # the dashboard, on Proxmox's port naturally (8006)
 ```
 
-`--demo` boots an in-memory fake cluster *inside* the binary: three nodes,
-eight VMs in every state you'd meet in real life (running, stopped, paused,
-mid-install, a paused Windows desktop, an ephemeral scratch VM with a TTL
-counting down), two containers, live CPU metrics. It's not a mockup — the
-real CLI, TUI, and web UI run their actual code paths against it, and the
-state is live: stop a VM in the dashboard and watch the TUI agree.
+`--demo` boots a fake cluster in memory, *inside* the binary. It has three
+nodes and eight VMs. Those VMs show each state you meet in real life. Some run and some do not. One shows a pause, one shows a part-installed system,
+and one shows a Windows desktop at a pause. One more is an ephemeral scratch VM whose TTL
+decreases.
 
-I built it so I could polish the interfaces without burning a cluster, and it
-turned out to be the best onboarding tool Corral has. It's also how CI drives
+The demo cluster also has two containers and live CPU metrics.
+
+This is not a mockup. The real CLI, the real TUI, and the real web UI run
+their own code against it, and the state is live. Stop a VM in the dashboard,
+and the TUI agrees.
+
+I built it to improve the interfaces without a cluster, and it became the best
+introduction to Corral that we have. It's also how CI drives
 the frontend now — a headless browser clicks through the real dashboard
 against `--demo` on every change.
 
@@ -88,12 +92,12 @@ has a devcontainer.json.
 v0.1.x, five weeks old. The KubeVirt backend is the most exercised path;
 local QEMU in the web UI landed this week (lifecycle + info; consoles still
 route through the CLI). Windows VMs, GPU passthrough, and scheduled
-snapshots/backups exist as plugins of varying maturity.
+snapshots and backups are plugins. They are not all equally mature.
 
-If you run VMs on Kubernetes and miss the way Proxmox *feels*, or you run
-Proxmox and wish it were one binary instead of an operating system: give
-`corral --demo` thirty seconds. That's the pitch.
+Do you run VMs on Kubernetes, and miss the way Proxmox *feels*? Or do you run
+Proxmox, and want one binary in place of an operating system? Give
+`corral --demo` thirty seconds. That is the pitch.
 
 Corral is Apache-2.0 at
-[github.com/tuna-os/corral](https://github.com/tuna-os/corral) — stars very
-welcome, they're the gate to homebrew-core.
+[github.com/tuna-os/corral](https://github.com/tuna-os/corral). Stars are
+welcome: they are the gate to homebrew-core.

@@ -5,7 +5,7 @@ sidebar_position: 3
 # Yellowfin (AlmaLinux Kitten)
 
 :::tip[Visual overview]
-Prefer a visual tour? See the **[Yellowfin overview →](/yellowfin)** landing page.
+Prefer a visual tour? See the **[Yellowfin overview →](/yellowfin)** start page.
 :::
 
 **Based on:** [AlmaLinux Kitten 10](https://almalinux.org/blog/2024-11-20-introducing-almalinux-kitten-10/)
@@ -22,7 +22,7 @@ Yellowfin is the "developer's daily drive" variant of TunaOS. It tracks AlmaLinu
 
 ## Downloads
 
-Pre-built ISOs are published every two weeks for GNOME flavors. Other flavors are available as container images only.
+TunaOS publishes pre-built ISOs for the GNOME flavors every two weeks. Other flavors are available as container images only.
 
 ### GNOME (Standard)
 **Image:** `ghcr.io/tuna-os/yellowfin:gnome`

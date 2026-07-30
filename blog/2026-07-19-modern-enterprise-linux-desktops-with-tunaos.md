@@ -6,23 +6,59 @@ tags: [tunaos, almalinux, bootc, enterprise, announcement]
 date: 2026-07-19
 ---
 
-Enterprise Linux has a desktop problem. RHEL, AlmaLinux, and CentOS Stream are built for servers — rock-solid, long-lived, boringly stable — and that's exactly right for a fleet of production hosts. It's the wrong set of tradeoffs for the machine a developer or admin actually sits in front of every day. So most EL shops end up running Fedora or Ubuntu on the desktop and something else entirely in the datacenter, which means two package ecosystems, two update cadences, two sets of "why doesn't this work the same way" tickets.
+Enterprise Linux has a problem with the desktop. RHEL, AlmaLinux and CentOS
+Stream are made for servers. They are strong, they have a long life, and they
+are stable to the point of tedium. For a fleet of production hosts, this is
+correct. But it is not correct for the machine that a developer or an
+administrator uses each day.
 
-TunaOS exists to close that gap: real desktop environments, built as `bootc` images directly on top of the Enterprise Linux base your servers already run.
+Thus most EL sites use Fedora or Ubuntu on the desktop, and something fully
+different in the datacenter. The result is two package ecosystems and two
+update rates. It is also two sets of tickets that ask why the same operation
+is different on the two systems.
+
+TunaOS closes this gap. It gives you true desktop environments as `bootc`
+images. They are built directly on the Enterprise Linux base that your
+servers use now.
 
 <!-- truncate -->
 
-## Same base, actual desktop
+## The same base, with a true desktop
 
-**Albacore** is the flagship variant — AlmaLinux 10, which tracks RHEL 10 rebuild-for-rebuild. On top of that base you get a real choice of desktop: GNOME, KDE Plasma, COSMIC, or Niri, each shipped as its own `bootc` image (`ghcr.io/tuna-os/albacore:gnome`, `:kde`, `:cosmic`, `:niri`, plus `-hwe` and `-nvidia` variants for newer hardware). Sibling variants track the rest of the EL family — **Yellowfin** (AlmaLinux Kitten 10, the rolling preview of what becomes the next AlmaLinux major), **Skipjack** (CentOS Stream 10), and **Redfin** (RHEL 10 itself, local-build only due to licensing).
+**Albacore** is the primary variant. Its base is AlmaLinux 10, which follows
+RHEL 10 rebuild for rebuild.
 
-None of this is a fork or a compatibility shim. It's the actual AlmaLinux/RHEL package set and lifecycle, with a desktop layered on in the same container-image pipeline used for everything else in `bootc`'s world.
+On that base you have a true choice of desktop: GNOME, KDE Plasma, COSMIC or
+Niri. Each desktop is its own `bootc` image: `ghcr.io/tuna-os/albacore:gnome`,
+`:kde`, `:cosmic` and `:niri`. There are also `-hwe` and `-nvidia` images for
+more recent hardware.
 
-## What bootc actually buys you
+Other variants follow the remainder of the EL family. **Yellowfin** uses
+AlmaLinux Kitten 10, the preview of the next major AlmaLinux. **Skipjack**
+uses CentOS Stream 10. **Redfin** uses RHEL 10 itself, and its license lets you
+build it only locally.
 
-The image *is* the update. `bootc status` shows you the exact container reference you're booted into; `bootc upgrade` pulls the next one, stages it, and reboots into it — or rolls back to the previous deployment if something's wrong, the same way `rpm-ostree` did on Fedora Silverblue, except the artifact is a normal OCI image you can build, scan, and push through the same registry and CI tooling as everything else your team ships.
+This is not a fork, and it is not a compatibility layer. It is the true
+AlmaLinux and RHEL package set, with the same lifecycle. A desktop goes on
+top of it. The pipeline that makes the image is the usual `bootc` pipeline.
 
-For an EL shop, that's the part that matters: your desktop images can go through the same pipeline discipline as your server images. Pin a known-good digest for a training lab. Roll a security fix org-wide by pushing a new tag. Diff two deployments to see exactly what changed. None of that requires learning a second toolchain — it's the one you already run in production.
+## What bootc gives you
+
+The image *is* the update. `bootc status` shows the exact container reference
+that you booted. `bootc upgrade` gets the next image, prepares it, and reboots
+into it. If there is a fault, it returns to the previous deployment.
+
+`rpm-ostree` on Fedora Silverblue did the same. But here the artifact is an
+ordinary OCI image. You build it, scan it, and push it with the same registry
+and the same CI tools as each other product of your team.
+
+For an EL site, this is the important part. Your desktop images can use the
+same pipeline rules as your server images. Hold a known-good digest for a
+training laboratory. Push a new tag to send a security fix to all machines.
+Compare two deployments to see the exact changes.
+
+For none of this do you need a second toolchain. It is the toolchain that you
+already use in production.
 
 ## Try it
 
@@ -32,6 +68,10 @@ Downloads are live at [tunaos.org/download](https://tunaos.org/download), or pul
 podman pull ghcr.io/tuna-os/albacore:gnome
 ```
 
-See the [variant table](/docs/tunaos/) for the full matrix of bases, desktops, and hardware tags, and [Managing TunaOS with Bootc](/docs/tunaos/bootc-usage) for day-to-day `bootc` usage once you're running it.
+The [variant table](/docs/tunaos/) gives the full set of bases, desktops and
+hardware tags. The [bootc usage guide](/docs/tunaos/bootc-usage) shows the
+daily `bootc` commands.
 
-If you hit something that doesn't work, or the download page gives you trouble, tell us in [Discussions](https://github.com/tuna-os/tunaOS/discussions) — that's exactly what it's there for.
+Tell us if something does not operate, or if you have trouble with the
+download page. Write to us in [Discussions](https://github.com/tuna-os/tunaOS/discussions). That is what
+it is for.

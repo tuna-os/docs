@@ -6,86 +6,98 @@ tags: [office-suite, rust, gtk, testing, letters, tables, decks]
 date: 2026-07-18
 ---
 
-We're building a GNOME-native office suite in Rust — **Letters** (writing),
-**Tables** (spreadsheets), **Decks** (presentations) — GTK4/libadwaita,
-shipped as Flatpaks. This post is about the part other projects might want
-to steal: how a small codebase competes with thirty years of office-suite
-engineering without porting a line of it.
+We write a GNOME-native office suite in Rust. It has three applications:
+**Letters** for text, **Tables** for spreadsheets, and **Decks** for
+presentations. They use GTK4 and libadwaita, and we release them as Flatpaks.
+
+This post is about one part that other projects can copy. It shows how a small
+codebase competes with thirty years of office-suite work, and does not port
+one line of it.
 
 <!-- truncate -->
 ## The problem with "compatible with Word"
 
-Every alternative office suite makes a compatibility claim, and almost none
-can say what it means. LibreOffice earned its claim with three decades of
-accumulated test documents and bug archaeology. We had eleven thousand lines
-of Rust and a test suite that — we discovered on day one — had literally
-never run: the CI badge was green because `pytest || true` swallowed the
-fact that pytest wasn't installed. Under that badge, both the spreadsheet
-and the presentation app had shipped in a state where they could not launch
-at all, the word processor's save shortcut was a silent no-op, and speaker
-notes were discarded on every save.
+Each alternative office suite makes a claim about compatibility. Almost none of
+them can say what the claim means. LibreOffice earned its claim across three
+decades. It has a large set of test documents, and a long history of bug
+reports.
 
-So this is first a story about honest CI. But red tests only tell you what
-you already thought to check. The interesting question is: how do you check
-against *reality* — the files people actually have?
+We had eleven thousand lines of Rust, and a test suite. On day one we found
+that the test suite had never run. The badge for CI stayed green. `pytest ||
+true` hid one fact: the runner had no pytest.
+
+Under that badge, the spreadsheet application and the presentation application
+could not start at all. The save shortcut in the word processor did nothing.
+Each save discarded the speaker notes.
+
+So this is first a story about honest CI. But red tests tell you only what you
+already thought to test. The more interesting question is different: how do
+you test against the files that people have?
 
 ## Let LibreOffice grade the homework
 
-Our answer: **run LibreOffice headless in CI as an oracle, and never port
-its code, tests, or data.**
+Our answer: **run LibreOffice headless in CI as an oracle. Do not port its
+code, its tests, or its data.**
 
-Three mechanisms, all ratcheted (a pass count that CI refuses to let
-regress; raising it is the definition of progress):
+There are three mechanisms. Each one has a ratchet: CI holds a count of the
+tests that pass, and refuses to let the count fall. To raise the count is the
+definition of progress.
 
-1. **LO-authored corpora.** Test scenarios are written as HTML; headless
-   Writer converts them to .docx *at test time*; our engine must extract
-   the same text and styles from what LibreOffice wrote. Nothing is
-   vendored — the corpus regenerates on every run. 109 scenarios for
-   Letters, currently 109/109. For Decks, where there's no cheap authoring
-   input, scenarios go *through* the oracle: we write .pptx, Impress
-   imports and re-exports it in its own grammar, our reader reads
-   LibreOffice's version back. 9/9, including styled runs and speaker notes.
+1. **Corpora that LibreOffice writes.** We write the test scenarios in HTML.
+   At test time, headless Writer makes them into `.docx` files. Our engine must
+   then extract the same text and the same styles from the file that
+   LibreOffice wrote. We vendor nothing, and the corpus regenerates on each
+   run. Letters has 109 scenarios and passes 109 of them.
 
-2. **Round-trip oracles.** Every file our engines write must open in
-   Writer/Calc/Impress and survive conversion with identical content.
-   Both directions gate every commit.
+   Decks has no cheap input format to author from, so its scenarios go
+   *through* the oracle instead. We write a `.pptx` file. Impress imports it,
+   then exports it again in its own grammar. Our reader then reads the version
+   that LibreOffice made. Decks passes 9 of 9, which includes styled runs and
+   speaker notes.
 
-3. **Vendored permissive corpora.** The CommonMark spec's 652 examples run
-   as a round-trip-idempotence torture test for the document model
-   (594/652), and 107 table-driven cases keyed to ODF OpenFormula measure
-   the spreadsheet engine (107/107 — nine of those started as reds, every
-   one a clean `#NAME?` that turned out to be already fixed on IronCalc main — the ratchet pinned the gap, upstream closed it).
+2. **Round-trip oracles.** Writer, Calc, or Impress must open each file that
+   our engines write. The content must survive the conversion without a
+   change. Both directions gate each commit.
 
-The corpus pays for itself constantly. It caught table text being silently
-dropped by our DOCX reader, speaker notes that had never once survived a
-save, and — our favorite — a regression *we introduced while adding image
-support*, flagged by the ratchet twenty minutes after writing the bug.
+3. **Vendored permissive corpora.** The 652 examples in the CommonMark
+   specification test the document model for round-trip idempotence, and 594
+   pass. Another 107 table-driven cases come from ODF OpenFormula, and they
+   measure the spreadsheet engine. All 107 pass. Nine of them started red.
+   Each one was a clean `#NAME?`, and IronCalc main had the fix already. The
+   ratchet held the gap open until upstream closed it.
+
+The corpus pays for itself continuously. It found table text that our DOCX
+reader dropped in silence. It found speaker notes that had never survived one
+save. Best of all, it found a fault that we added ourselves while we added
+support for images. The ratchet reported it twenty minutes after we wrote it.
 
 ## A document engine is smaller than you think
 
-The scary part of a word processor is supposedly the document engine.
-It turned out to be roughly 2,500 lines of Rust, because the big costs
-live elsewhere and Rust's ecosystem or the platform already pays them:
+People think the document engine is the difficult part of a word processor. It
+came to about 2,500 lines of Rust. The large costs are elsewhere, and
+Rust's ecosystem or the platform pays them for us:
 
-- **Text layout is Pango's job.** Line breaking, shaping, bidi — the
-  platform does it, the same as every GNOME app. LibreOffice built its own
-  because it predates usable system text stacks. We refuse to.
-- **Format plumbing is a library.** OOXML packaging/XML lives in
-  [rdocx](https://github.com/tensorbee/rdocx) (we contributed the read
-  getters and hyperlink/image write support our fidelity tests demanded),
-  spreadsheet evaluation in [IronCalc](https://github.com/ironcalc/ironcalc),
-  Markdown in pulldown-cmark, PDF export in Typst-as-a-library.
-- **What's left is the actual engine**: a paragraphs-of-styled-runs model
-  with enforced invariants, offset addressing deliberately identical to
-  GtkTextBuffer's (so the widget bridge is a thin adapter), and format
-  converters whose honesty is measured by the machinery above. That model
-  is shared: Decks' text boxes carry the same `Run`/`RunStyle` types as
-  Letters.
+- **Pango does the text layout.** The platform breaks the lines, shapes the
+  glyphs, and handles bidirectional text, as it does for each GNOME
+  application. LibreOffice wrote its own because it is older than any usable
+  system text stack. We refuse to.
+- **A library reads and writes the formats.** The OOXML package and its XML live
+  in [rdocx](https://github.com/tensorbee/rdocx). We contributed the read
+  getters, and the write support for hyperlinks and images that our fidelity
+  tests needed. [IronCalc](https://github.com/ironcalc/ironcalc) evaluates the
+  spreadsheets, pulldown-cmark reads the Markdown, and Typst-as-a-library
+  exports the PDFs.
+- **What remains is the engine.** It is a model of paragraphs that hold styled
+  runs, with invariants the code enforces. It addresses offsets in
+  deliberately the same way as GtkTextBuffer, which makes the bridge to the
+  widget a thin adapter. The machinery above measures how honest
+  the format converters are. Decks and Letters share the model: the text boxes
+  in Decks carry the same `Run` and `RunStyle` types as Letters.
 
-Explicitly out of scope until each item earns an architecture decision:
-fields, macros, mail merge, change tracking, frames with text flow. The
-target is the documents people actually make, with fidelity you can read
-off a scoreboard instead of taking on faith.
+Some work stays out of scope until it earns an architecture decision: fields,
+macros, mail merge, tracked changes, and frames that flow text. Our target is
+the documents that people make. You can read the fidelity off a scoreboard.
+You do not have to trust us.
 
 ## The scoreboard, today
 
@@ -99,21 +111,21 @@ off a scoreboard instead of taking on faith.
 | soffice oracles (Writer/Calc/Impress, both directions) | green, gating |
 | Workspace tests | 150, zero failures |
 
-Every number prints into the CI job summary on every push, and none of
-them is allowed to go down.
+Each number prints into the CI job summary on each push. None of them can go
+down.
 
 ## Steal this
 
-If you maintain anything that reads or writes someone else's file format,
-the pattern is portable: find the reference implementation, run it headless
-in CI, make it author your corpus, and ratchet the pass count. It's a few
-hundred lines of test harness, and it converts "we aim to be compatible"
-into a number that moves.
+The pattern moves to any project that reads or writes a file format that
+somebody else defined. Find the reference implementation. Run it headless in
+CI. Make it write your corpus, and put a ratchet on the count of tests that
+pass. It costs a few hundred lines of test harness, and it turns "we aim to be
+compatible" into a number that moves.
 
-*Code: [tuna-os/gtk-office-suite](https://github.com/tuna-os/gtk-office-suite)
-(GPL-3.0-or-later that turned out to be already fixed on IronCalc main — the ratchet pinned the gap, upstream closed it). The spreadsheet core is on crates.io as
-[tables-core](https://crates.io/crates/tables-core), alongside
+*Code: [tuna-os/gtk-office-suite](https://github.com/tuna-os/gtk-office-suite),
+GPL-3.0-or-later. The spreadsheet core is on crates.io as
+[tables-core](https://crates.io/crates/tables-core), together with
 [suite-common-core](https://crates.io/crates/suite-common-core) and
-[suite-export](https://crates.io/crates/suite-export); the document model
-follows as `letters-core` once its rdocx additions land upstream
-([tensorbee/rdocx#6](https://github.com/tensorbee/rdocx/pull/6) that turned out to be already fixed on IronCalc main — the ratchet pinned the gap, upstream closed it).*
+[suite-export](https://crates.io/crates/suite-export). The document model
+follows as `letters-core` when upstream accepts its additions to rdocx
+([tensorbee/rdocx#6](https://github.com/tensorbee/rdocx/pull/6)).*

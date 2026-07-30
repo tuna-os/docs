@@ -5,7 +5,7 @@ sidebar_position: 6
 # Grouper (Ubuntu)
 
 :::tip[Visual overview]
-Prefer a visual tour? See the **[Grouper overview →](/grouper)** landing page.
+Prefer a visual tour? See the **[Grouper overview →](/grouper)** start page.
 :::
 
 **Based on:** [Ubuntu 26.04](https://ubuntu.com/)
@@ -14,13 +14,15 @@ Grouper brings the bootc model to the most familiar base in Linux: Ubuntu. Atomi
 
 ## Features
 
-- 🧪 **Experimental by design**: The proving ground for the Ubuntu bootc story — composefs root, apt-built desktops, and the newest ideas land here first.
+- 🧪 **Experimental by design**: Where we prove the Ubuntu bootc work. It has a
+  composefs root and apt-built desktops, and the newest ideas come here first.
 - 🍺 **Baked-in Homebrew**: Standard across all TunaOS variants.
-- 📦 **Flatpak First**: Optimized for a fully containerized desktop experience.
+- 📦 **Flatpak First**: Tuned for a desktop where containers hold the applications.
 
 ## Status
 
-Grouper is currently **Experimental**. It is not recommended for production use but is the proving ground for the Ubuntu bootc story.
+Grouper is **Experimental** now. We do not recommend it for production. It is where we prove the Ubuntu bootc
+work.
 
 ## Downloads
 

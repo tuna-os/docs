@@ -6,17 +6,27 @@ sidebar_position: 1
 
 ## Modern Cloud-Native Enterprise Linux
 
-TunaOS is a collection of **Bootc-based desktop operating systems** built on the rock-solid foundation of Enterprise Linux 10 (AlmaLinux and CentOS Stream). It is a fork of [Bluefin LTS](https://github.com/ublue-os/bluefin-lts), modernized for the next generation of enterprise desktops.
+TunaOS is a set of desktop operating systems that use **Bootc**. Enterprise
+Linux 10 is the base: AlmaLinux and CentOS Stream. TunaOS is a fork of
+[Bluefin LTS](https://github.com/ublue-os/bluefin-lts) for the next generation
+of enterprise desktops.
 
-Our mission is to combine the **stability and long-term support** of Enterprise Linux with the **freshness and modern tooling** that today's developers and workstation users demand.
+Enterprise Linux gives **stability and long-term support**. Developers and
+workstation users also need **new tools**. TunaOS supplies both.
 
 ## ✨ Why TunaOS?
 
-- 🖥️ **Latest GNOME**: We backport GNOME 50 to Enterprise Linux (the `gnome50` image), so you can have the latest desktop features alongside the rock-stable distro GNOME — without sacrificing system stability.
-- 🍺 **Baked-in Homebrew**: Homebrew is pre-installed, giving you instant access to a massive library of CLI tools and fonts.
-- 📦 **Bootc Technology**: Built using modern container technology for immutable, reliable, and easily reproducible systems.
-- 🏢 **Enterprise DNA**: Based on AlmaLinux 10 and CentOS 10, providing a foundation supported for up to 10 years.
-- 🛍️ **Flathub Enabled**: Enjoy a full suite of desktop applications immediately with Flathub enabled out-of-the-box.
+- 🖥️ **Latest GNOME**: The `gnome50` image adds GNOME 50 to Enterprise Linux.
+  You get the newest desktop features and the stable distribution GNOME. The
+  system stays stable.
+- 🍺 **Baked-in Homebrew**: Homebrew is installed. You get immediate access to
+  a large library of command-line tools and fonts.
+- 📦 **Bootc Technology**: Modern container technology makes the system
+  immutable, reliable, and easy to reproduce.
+- 🏢 **Enterprise DNA**: AlmaLinux 10 and CentOS 10 are the base. Support
+  continues for as many as 10 years.
+- 🛍️ **Flathub Enabled**: Flathub is on at installation. A full set of desktop
+  applications is available immediately.
 
 ## 🐠 Available Variants
 
@@ -29,42 +39,53 @@ Our mission is to combine the **stability and long-term support** of Enterprise 
 
 ## 🚀 Specialized Editions
 
-For our primary variants (Albacore and Yellowfin), we offer specialized editions:
+Albacore and Yellowfin are the primary variants. Each one has these editions:
 
-- **Regular**: The balanced, standard experience.
-- **DX (Developer Experience)**: Pre-configured for software development (`libvirt`, `docker`, `vscode`, etc.).
-- **NVIDIA**: Optimized for AI, Graphics, and VFX with NVIDIA drivers + CUDA (the `-nvidia` flavor, formerly "GDX").
-- **HWE (Hardware Enablement)**: For the latest hardware requiring newer kernels.
+- **Regular**: The standard edition.
+- **DX (Developer Experience)**: Set up for software development. It includes
+  `libvirt`, `docker`, and `vscode`.
+- **NVIDIA**: The `-nvidia` flavor. It has NVIDIA drivers and CUDA for AI,
+  graphics, and VFX work. The previous name was "GDX".
+- **HWE (Hardware Enablement)**: For new hardware that needs a later kernel.
 
 ### 🎨 Desktop Flavors
 
-We now offer specialized desktop environment flavors to suit your workflow:
+Four desktop environments are available:
 
-- **GNOME 50**: The next generation of GNOME, pushing the boundaries of the desktop experience.
-- **KDE Plasma**: A powerful, customizable desktop environment for power users.
-- **COSMIC**: The brand new, Rust-based desktop environment from System76.
-- **Niri**: A unique, scrollable tiling compositor for a fresh take on window management.
+- **GNOME 50**: The next generation of GNOME.
+- **KDE Plasma**: A desktop environment with many options, for power users.
+- **COSMIC**: The new desktop environment from System76. It uses Rust.
+- **Niri**: A scrollable tiling compositor. It manages windows differently.
 
 ## 📚 Next Steps
 
-Ready to dive in?
+To start:
 
-1.  **[System Requirements](system-requirements)** - Check if your hardware is supported.
-2.  **[Installation Guide](installation)** - Learn how to install TunaOS.
-3.  **[Download ISOs](/download)** - Get started with pre-built images.
+1.  **[System Requirements](system-requirements)** - Make sure the system
+    supports your hardware.
+2.  **[Installation Guide](installation)** - Read how to install TunaOS.
+3.  **[Download ISOs](/download)** - Get a pre-built image.
 
 ## 🧰 Beyond the OS
 
-TunaOS is more than its images — it's an ecosystem of tools that build, install, and
-distribute them:
+TunaOS is more than its images. It is a set of tools that build the images,
+install them, and distribute them:
 
-- **[Tacklebox](/docs/tacklebox)** — orchestrates multi-boot USBs, disk images, and deduplicated ISOs from OCI images.
-- **[Tromsø](tromso/index)** (KDE), **[XFCE Linux](xfce-linux/index)**, and **[Dakota](https://github.com/projectbluefin/dakota)** (GNOME) — "distroless" desktops built via a declarative BuildStream pipeline on top of the [Freedesktop SDK](https://freedesktop-sdk.io/).
-- **[COPR Builds](/docs/copr)** — the RPM build system that backports GNOME 50 to EL10.
-- **[Tavern](/docs/tavern)** and **[bluefin-cli](/docs/bluefin-cli)** — desktop and shell tooling.
+- **[Tacklebox](/docs/tacklebox)** — makes multi-boot USB drives, disk images,
+  and deduplicated ISOs from OCI images.
+- **[Tromsø](tromso/index)** (KDE), **[XFCE Linux](xfce-linux/index)**, and
+  **[Dakota](https://github.com/projectbluefin/dakota)** (GNOME) — "distroless"
+  desktops. A declarative BuildStream pipeline makes them on top of the
+  [Freedesktop SDK](https://freedesktop-sdk.io/).
+- **[COPR Builds](/docs/copr)** — the RPM build system. It adds GNOME 50 to
+  EL10.
+- **[Tavern](/docs/tavern)** and **[bluefin-cli](/docs/bluefin-cli)** — tools
+  for the desktop and the shell.
 
-See the full list on the **[Projects page →](/projects)**.
+The **[Projects page →](/projects)** has the full list.
 
 ---
 
-*TunaOS is a labor of love by James, inspired by [Project Bluefin](https://projectbluefin.io) and the [Universal Blue](https://universal-blue.org/) community.*
+*TunaOS is a labor of love by James. [Project Bluefin](https://projectbluefin.io)
+and the [Universal Blue](https://universal-blue.org/) community are its
+inspiration.*

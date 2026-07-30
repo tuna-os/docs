@@ -4,14 +4,16 @@ sidebar_position: 1
 
 # 🐟 remora
 
-**Local layering for bootc systems, the container-native way.**
+**A container-native way to add local layers to bootc systems.**
 
-A remora rides along on a bigger fish. This one rides along on your TunaOS
-image: it keeps a small manifest of packages and customizations, builds them
-into a local derived image, and rebases your system to it — rebuilding
-automatically whenever the base image updates. It's the answer to "how do I
-just install a package?" on an image-based system, and it gives the same
-answer on every TunaOS variant: **dnf, zypper, pacman, apt, portage (emerge), and apk**.
+A remora fish travels with a larger fish. This tool travels with your TunaOS
+image. It holds a small manifest of your packages and your changes. It builds
+a local derived image from that manifest. Then it rebases your system to the
+new image. When the base image changes, remora builds the local image again.
+
+On an image-based system, users ask how to install one package. remora is the
+answer, and the answer is the same on each TunaOS variant: **dnf, zypper,
+pacman, apt, portage (emerge), and apk**.
 
 ```bash
 sudo remora init                 # one-time setup
@@ -34,9 +36,10 @@ remora ships preinstalled on TunaOS images. Source:
                             bootc switch --transport=containers-storage
 ```
 
-Your system keeps updating exactly like stock TunaOS — except the update is
-rebuilt locally with your layers on top first. Nothing is mutated in place;
-every change is a new image, every rollback is `bootc rollback`.
+Your system updates in the same way as a stock TunaOS system. There is one
+difference: remora first builds the update again, with your layers on top.
+remora changes nothing in place. Each change makes a new image, and
+`bootc rollback` reverses each change.
 
 ## The manifest
 
@@ -71,10 +74,11 @@ Remove anytime with `sudo remora shims --remove`.
 
 ## uupd integration
 
-If [uupd](https://github.com/ublue-os/uupd) is present (it is, on TunaOS
-desktop images), `remora init` hooks rebuilds into it with a plain systemd
-drop-in: uupd's schedule, battery/network gating, and reboot handling drive
-everything. No extra timers, no dependencies in either direction.
+TunaOS desktop images include [uupd](https://github.com/ublue-os/uupd). When
+uupd is on the system, `remora init` connects the rebuilds to it with a
+systemd drop-in. uupd then controls all of it: the schedule, the limits on
+battery and network use, and the reboots. remora adds no other timers, and
+neither tool depends on the other.
 
 ## Commands
 

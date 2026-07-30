@@ -4,7 +4,8 @@ sidebar_position: 8
 
 # System Requirements
 
-Before installing TunaOS, ensure your system meets the following requirements.
+Before you install TunaOS, make sure that your system obeys these
+requirements.
 
 ## Hardware Requirements
 
@@ -38,7 +39,7 @@ Before installing TunaOS, ensure your system meets the following requirements.
 ### x86_64_v2 (Legacy Compatibility)
 - Older CPUs from before 2013
 - Available for Albacore and Yellowfin variants
-- Slightly reduced performance optimizations
+- Performance is a little lower
 
 ### ARM64
 - Apple Silicon Macs (M1, M2, M3, etc.)
@@ -50,31 +51,31 @@ Before installing TunaOS, ensure your system meets the following requirements.
 
 ### Disk Space Usage
 - **Base installation**: ~15-20 GB
-- **With applications**: 25-30 GB typical usage
+- **With applications**: 25-30 GB in usual conditions
 - **Developer tools** (DX variant): +5-10 GB
 - **Graphics tools** (NVIDIA variant): +10-15 GB
 
 ### Storage Types
 - **SSD recommended**: Better performance and responsiveness
 - **HDD supported**: Minimum 7200 RPM for acceptable performance
-- **NVMe**: Optimal performance for development workflows
+- **NVMe**: The best performance for development work
 
 ## Memory Requirements by Variant
 
 ### Regular Edition
 - **Minimum**: 4 GB RAM
 - **Recommended**: 8 GB RAM
-- **Optimal**: 16 GB+ RAM
+- **Best**: 16 GB or more of RAM
 
 ### DX (Developer Experience)
 - **Minimum**: 6 GB RAM
 - **Recommended**: 16 GB RAM
-- **Optimal**: 32 GB+ RAM (for VMs and containers)
+- **Best**: 32 GB or more of RAM, for VMs and containers
 
 ### NVIDIA (NVIDIA drivers + CUDA)
 - **Minimum**: 8 GB RAM
 - **Recommended**: 16 GB RAM
-- **Optimal**: 32 GB+ RAM (for AI/ML workloads)
+- **Best**: 32 GB or more of RAM, for AI and ML work
 
 ## Graphics Requirements
 
@@ -107,7 +108,7 @@ Before installing TunaOS, ensure your system meets the following requirements.
 ### Bandwidth Recommendations
 - **Minimum**: 10 Mbps for comfortable updates
 - **Recommended**: 25 Mbps+ for development workflows
-- **Optimal**: 100 Mbps+ for container workflows
+- **Best**: 100 Mbps or more, for work with containers
 
 ## UEFI/BIOS Requirements
 
@@ -128,7 +129,7 @@ Before installing TunaOS, ensure your system meets the following requirements.
 - Many ARM single-board computers
 
 ### Known Limitations
-- Very old hardware may require x86_64_v2 variants
+- Old hardware can need the x86_64_v2 variants
 - Some proprietary hardware may need additional drivers
 - WiFi adapters may need firmware packages
 
@@ -143,14 +144,16 @@ Before installing TunaOS, ensure your system meets the following requirements.
 - [ ] Verify hardware compatibility
 - [ ] Backup important data
 - [ ] Check internet connection
-- [ ] Download appropriate ISO variant
+- [ ] Download the correct ISO variant
 - [ ] Prepare installation media (USB drive)
 - [ ] Review installation method
 
 ### Choosing Your Variant
 - **Albacore**: Enterprise stability (AlmaLinux 10)
 - **Yellowfin**: Upstream compatibility (AlmaLinux Kitten 10)
-- **Bonito**: Cutting-edge (Fedora 44) - *Development*
+- **Bonito**: The newest software, from Fedora 44 - *Development*
 - **Skipjack**: CentOS base - *Development*
 
-Need help deciding? Check our [installation guide](installation) or ask in our [Matrix chat](https://matrix.to/#/%23tunaos:reilly.asia).
+Do you need help with the choice? Read the
+[installation guide](installation), or ask in the
+[Matrix chat](https://matrix.to/#/%23tunaos:reilly.asia).

@@ -9,9 +9,9 @@ tags: [corral, kubevirt, qemu, incus, libvirt, virtualization]
 My VMs have escaped the cluster.
 
 Some are local QEMU machines on a laptop. Some live in KubeVirt clusters.
-There is an Incus server that is too useful to replace, a libvirt host reached
-over SSH, and sometimes a second Corral running inside Kubernetes where the
-local machine cannot reach the Kubernetes API at all.
+One Incus server is too useful to replace. One libvirt host answers over SSH.
+Sometimes a second Corral operates inside Kubernetes, because the local
+machine has no route to the Kubernetes API.
 
 Corral now treats all of them as one fleet.
 
@@ -37,7 +37,7 @@ corral list
 
 The selected context is the default destination for an unqualified create. It
 does not make the other machines disappear. `corral list`, the TUI, and the
-web dashboard keep aggregating the fleet. Scripts can stay unambiguous with
+web dashboard continue to show the full fleet. Scripts can stay unambiguous with
 `--backend` and `--context`.
 
 Incus and libvirt authentication also remain boring, which is a feature.
@@ -47,7 +47,7 @@ SSH config. There is no second password database to synchronize.
 
 ## The TUI became a command deck
 
-Running `corral` bare opens the terminal interface. It can fuzzy-search every
+`corral` with no arguments opens the terminal interface. It can fuzzy-search every
 canonical identity, cycle contexts with Tab, show backend capabilities, and
 run scoped Doctor checks. Unsupported actions do not tempt you and then fail;
 they are absent from that instance's action list.
@@ -64,7 +64,7 @@ Enter opens the full action list, and `?` shows the command deck.
 `corral web` is not a separate management product. It reads the same contexts,
 registry, plugins, and peers as the CLI and TUI. The dashboard has bulk actions,
 tag filters, create flows, health checks, extensions, live consoles, and the
-backend-specific controls each VM can actually support.
+backend-specific controls that each VM supports.
 
 ![Corral's VM summary](/img/screenshots/corral/web-vm-summary.png)
 
@@ -94,8 +94,8 @@ corral --demo
 corral web --demo
 ```
 
-The screenshots in this post are generated from those real demo surfaces by
-`scripts/capture-docs.mjs`: Chromium drives the dashboard and `tmux` drives the
+`scripts/capture-docs.mjs` makes the screenshots in this post from those real
+demo surfaces. Chromium drives the dashboard and `tmux` drives the
 Bubble Tea application. Documentation images are now refreshable test output,
 not a collection of mystery PNGs from somebody's laptop.
 

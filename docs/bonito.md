@@ -5,7 +5,7 @@ sidebar_position: 5
 # Bonito (Fedora)
 
 :::tip[Visual overview]
-Prefer a visual tour? See the **[Bonito overview →](/bonito)** landing page.
+Prefer a visual tour? See the **[Bonito overview →](/bonito)** start page.
 :::
 
 **Based on:** [Fedora 44](https://fedoraproject.org/)
@@ -14,14 +14,15 @@ Bonito is the most experimental variant of TunaOS, based on Fedora 44. It provid
 
 ## Features
 
-- 🏎️ **Bleeding Edge**: Based on Fedora 44, with the latest possible kernel and userland.
+- 🏎️ **Newest software**: Fedora 44 is the base. The kernel and the userland are
+the most recent available.
 - 🧪 **Experimental**: A playground for the newest features of the TunaOS project.
 - 🍺 **Baked-in Homebrew**: Standard across all TunaOS variants.
-- 📦 **Flatpak First**: Optimized for a fully containerized desktop experience.
+- 📦 **Flatpak First**: Tuned for a desktop where containers hold the applications.
 
 ## Status
 
-Bonito is currently **Experimental**. It is not recommended for production use but is great for testing and experiencing the future of the Linux desktop.
+Bonito is **Experimental** now. We do not recommend it for production. It is good if you want to test the future of the Linux desktop.
 
 ## Downloads
 
