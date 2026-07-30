@@ -285,6 +285,17 @@ const clusterBreakers = new Set([
   'read', 'reads', 'write', 'writes', 'start', 'starts', 'stop', 'stops',
   'install', 'installs', 'boot', 'boots', 'open', 'opens', 'close', 'closes',
   'select', 'selects', 'click', 'press', 'enter', 'type', 'choose', 'chooses',
+  'answer', 'answers', 'operate', 'operates', 'hold', 'holds', 'carry',
+  'carries', 'send', 'sends', 'move', 'moves', 'turn', 'turns', 'become',
+  'becomes', 'stay', 'stays', 'remain', 'remains', 'mean', 'means', 'include',
+  'includes', 'contain', 'contains', 'support', 'supports', 'provide',
+  'provides', 'allow', 'allows', 'prevent', 'prevents', 'report', 'reports',
+  'return', 'returns', 'apply', 'applies', 'change', 'changes', 'create',
+  'creates', 'delete', 'deletes', 'remove', 'removes', 'replace', 'replaces',
+  'wants', 'lives', 'live', 'ships', 'ship',
+  // more prepositions
+  'inside', 'outside', 'beyond', 'toward', 'towards', 'upon', 'past',
+  'behind', 'beside', 'near', 'off', 'up', 'down', 'out', 'back',
   // adverbs and qualifiers
   'not', 'also', 'only', 'now', 'here', 'there', 'more', 'most', 'less',
   'least', 'very', 'too', 'well', 'still', 'yet', 'again', 'once', 'always',
