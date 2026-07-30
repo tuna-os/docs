@@ -5,23 +5,24 @@ sidebar_position: 4
 # Skipjack (CentOS)
 
 :::tip[Visual overview]
-Prefer a visual tour? See the **[Skipjack overview →](/skipjack)** landing page.
+Prefer a visual tour? See the **[Skipjack overview →](/skipjack)** start page.
 :::
 
 **Based on:** [CentOS Stream 10](https://www.centos.org/centos-stream-10/)
 
-Skipjack is the upstream-tracking variant of TunaOS based on CentOS Stream 10. It serves as a testing ground for features that will eventually land in RHEL and AlmaLinux.
+Skipjack is the TunaOS variant that follows upstream. CentOS Stream 10 is its
+base. It is where we test the features that go into RHEL and AlmaLinux later.
 
 ## Features
 
 - 🖥️ **Modern GNOME**: A current GNOME desktop on Enterprise Linux, with GNOME 50 available via the `gnome50` image.
 - 🍺 **Baked-in Homebrew**: Access thousands of CLI tools and fonts immediately.
-- 🌊 **CentOS Stream 10**: The cutting-edge of the RHEL ecosystem.
+- 🌊 **CentOS Stream 10**: The newest part of the RHEL ecosystem.
 - 🛠️ **Developer Focus**: Ideal for developers who want to stay ahead of the enterprise curve.
 
 ## Downloads
 
-Skipjack is currently in active development. Pre-built ISOs are periodically available.
+Skipjack is in active development now. Pre-built ISOs are periodically available.
 
 **Image:** `ghcr.io/tuna-os/skipjack:latest`
 
