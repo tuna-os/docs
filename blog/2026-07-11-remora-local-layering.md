@@ -8,45 +8,46 @@ date: 2026-07-11
 
 # Remora: The Fish That Rides Your Image
 
-Every image-based distro eventually gets the same question: "okay but how do
-I just install a package." So here's my answer to that. It's called remora,
-it's local layering done the container-native way, and it works the same on
-every variant we ship, whether the base is running dnf, zypper, pacman, apt,
+Users of each image-based distribution ask the same question. How do you
+install one package? This is my answer. Its name is remora. It adds local
+layers in the container-native way. It operates in the same manner on each
+variant that we release, and the base can use dnf, zypper, pacman, apt,
 emerge, or apk.
 
 ```bash
 sudo remora install htop
 ```
 
-That's the whole interface. That's it.
+That is the full interface.
 
 <!-- truncate -->
 
-## Why the old answers weren't good enough
+## Why the old answers were not sufficient
 
-On most image-based systems the answer was `rpm-ostree install`, which bolts
-package layering onto the ostree deployment. It works, technically. But it's
-slow, it's rpm-only, and it kind of fights the whole point of an image-based
-system — your "image" quietly stops matching anything anyone else has, and
-there's no Containerfile anywhere that explains how you got there.
+On most image-based systems the answer was `rpm-ostree install`. That command
+adds package layers to the ostree deployment. It operates, but it is slow, it
+accepts only RPMs, and it opposes the idea of an image-based system. Your
+"image" quietly becomes different from every other person's image, and no
+Containerfile records how it got there.
 
-Meanwhile the bootc crowd had already figured out a better way to do this,
-I just hadn't seen anyone package it up properly. The Universal Blue forums,
-akdev1l's [zerolayer](https://github.com/akdev1l/zerolayer), repos like
-[renner0e/server](https://github.com/renner0e/server) — they all landed on
-the same trick: run the image factory yourself, locally. Keep a Containerfile
-that derives `FROM` your base, rebuild it on a timer with `Pull=newer`, and
-`bootc switch` to whatever comes out. Your customizations become a normal
-image build — you can inspect it, reproduce it, roll it back, whatever.
+The bootc community had found a better method. I had not seen a tool that
+made the method easy. Three sources found the same trick: the Universal Blue
+forums, akdev1l's [zerolayer](https://github.com/akdev1l/zerolayer), and
+repositories such as [renner0e/server](https://github.com/renner0e/server).
+The trick is to operate the image factory yourself, on your own machine.
 
-The pattern's right. It just had bad ergonomics — basically "go maintain a
-git repo of build scripts on your server." Remora is that same pattern but
-it feels like using a package manager instead.
+Keep a Containerfile that derives `FROM` your base. Build it again on a timer
+with `Pull=newer`. Then use `bootc switch` to move to the result. Your changes
+become a usual image build. You can examine it, make it again, or reverse it.
 
-## What it actually does
+The pattern is correct. Only its ergonomics were bad, because it told you to
+maintain a git repository of build scripts on your server. remora is the same
+pattern, but it feels like a package manager.
 
-A remora is the fish that hitches a ride on a bigger fish, hence the name.
-This one hitches onto whatever image you're currently booted from:
+## What it does
+
+A remora is the fish that travels with a larger fish, and that is the name's
+origin. This tool travels with the image that your system booted:
 
 ```
 /etc/remora/remora.yaml ──► generated Containerfile ──► podman quadlet (Pull=newer)
@@ -58,38 +59,39 @@ This one hitches onto whatever image you're currently booted from:
                                      bootc switch --transport=containers-storage
 ```
 
-`sudo remora init` sets the whole thing up. `remora install` / `remora
-remove` just edit a small YAML file and rebuild. When upstream ships a new
-base image, the next rebuild grabs it and puts your layers back on top, so
-you're never stuck on an old base and you never lose your changes either.
-Every change is a new image, and rolling back is just `bootc rollback` like
-normal.
+`sudo remora init` prepares all of it. `remora install` and `remora remove`
+change a small YAML file, then build the image again. When upstream releases
+a new base image, the next build gets it and puts your layers back on top. You
+cannot become stuck on an old base, and you cannot lose your changes. Each
+change makes a new image, and `bootc rollback` reverses a change as usual.
 
-Need more than packages? Drop scripts in `/etc/remora/build_files/`, overlay
-files with `/etc/remora/system_files/`, or use `extra_run` in the manifest
-for extra repos and keys. If you want something weirder, go for it — a
-[BuildStream](https://buildstream.build/) `bst build` step is just another
-build script as far as remora's concerned. It's not trying to wrap your
-tools, it's just giving them somewhere to live in the image build.
+Do you need more than packages? You have three methods. Put scripts in
+`/etc/remora/build_files/`. Overlay files with `/etc/remora/system_files/`.
+Use `extra_run` in the manifest for more repositories and keys.
+
+You can do stranger things too. To remora, a [BuildStream](https://buildstream.build/)
+`bst build` step is one more build script. remora does not try to contain your
+tools. It gives them a place in the image build.
 
 ## One tool, six package managers
 
-We ship [13 variants across every major Linux family](/blog/13-fishes-in-the-sea),
-so something that only worked on Fedora was never going to cut it. Remora
-figures out the base's package manager and builds accordingly — dnf on
-Yellowfin, zypper on Sailfin, pacman on Marlin, apt on Flounder and Grouper,
-emerge on Guppy, apk on Alpine bases. Cache mounts are per-manager so rebuilds
-stay fast, and there's a `bootc container lint` gate so a broken image never
-makes it to your bootloader.
+We release [13 variants across each major Linux family](/blog/13-fishes-in-the-sea).
+A tool for Fedora alone was never enough. remora finds the base's package
+manager and builds correctly for it. It uses dnf on Yellowfin, zypper on
+Sailfin, and pacman on Marlin. It uses apt on Flounder and Grouper, emerge on
+Guppy, and apk on Alpine bases.
 
-Your `remora.yaml` doesn't know or care which fish it's riding.
+Each manager has its own cache mount, so builds stay fast. A
+`bootc container lint` gate stops a bad image before your bootloader gets it.
 
-## `dnf install` finally tells you the truth
+Your `remora.yaml` does not know which fish carries it, and does not need to.
 
-This is my favorite part, not gonna lie. On an image-based system, `dnf
-install` against the host has always just been broken — you'd get some
-confusing read-only filesystem error and be left to figure out why on your
-own. Now:
+## `dnf install` now tells you the truth
+
+This part pleases me most. On an image-based system, `dnf install` against the
+host was always broken. You got an error about a read-only file
+system, and the error explained nothing. You then had to find the cause
+yourself. Now:
 
 ```
 $ sudo dnf install htop
@@ -99,39 +101,39 @@ Package changes are layered onto your image with remora:
 Run that now? [y/N]
 ```
 
-`sudo remora shims` puts these interceptors in `/usr/local/bin` — it's
-opt-in, you can remove them cleanly, and they don't touch anything they
-didn't create themselves. Only the commands that'd actually change something
-get caught; `dnf search`, `pacman -Q`, `apt show` all just pass through
-normally. Twenty years of muscle memory now points you at the right thing
-instead of just failing on you.
+`sudo remora shims` puts these interceptors in `/usr/local/bin`. You choose
+whether to add them, you can remove them fully, and they touch nothing that
+they did not make. They catch only the commands that would change something:
+`dnf search`, `pacman -Q`, and `apt show` continue as usual. Twenty years of
+muscle memory now points you at the correct tool.
 
 ## Updates go through uupd
 
-We already use [uupd](https://github.com/ublue-os/uupd) for updates —
-battery-aware, doesn't hammer you on metered connections, respects
-inhibitors, all the stuff you'd want. Remora doesn't try to reinvent any of
-that. If uupd's around, `remora init` drops in a two-line systemd override so
-every uupd run rebuilds your local image first, then hands it off to uupd's
-normal process. No new daemon, nothing depending on anything it shouldn't,
-no second update schedule you have to keep track of in your head.
+We already use [uupd](https://github.com/ublue-os/uupd) for updates. It knows
+the battery state, it does not overload a metered connection, and it obeys
+inhibitors. remora does not do that work again. When uupd is on the system,
+`remora init` adds a two-line systemd override. Each uupd run then builds your
+local image first and gives the result to uupd's usual process. remora adds no
+daemon, no dependency in either direction, and no second schedule for you to
+remember.
 
 ## Try it
 
-Comes preinstalled on TunaOS images already. It's also just a static binary
-if you're on [some other bootc system](https://github.com/tuna-os/remora):
+TunaOS images include it. It is also a static binary for
+[other bootc systems](https://github.com/tuna-os/remora):
 
 ```bash
 sudo remora init
 sudo remora install htop cmatrix
-sudo remora enable        # rebuild automatically
+sudo remora enable        # build again automatically
 remora status
 ```
 
-Docs are [here](/docs/remora/), source is at
-[tuna-os/remora](https://github.com/tuna-os/remora). Worth repeating: this is
-built on the local-image-factory pattern the Universal Blue community,
-zerolayer, and renner0e already worked out. I just tried to make it feel
-like a package manager instead of a git repo you babysit.
+The [documentation](/docs/remora/) has more, and the source is at
+[tuna-os/remora](https://github.com/tuna-os/remora). This point is worth a
+second statement. The pattern of a local image factory comes from the
+Universal Blue community, from zerolayer, and from renner0e. I only tried to
+make it feel like a package manager, and not like a git repository that you
+tend.
 
 The fish rides on. 🐟
