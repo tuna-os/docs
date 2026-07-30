@@ -15,7 +15,7 @@ import {
   checkSentenceLength, checkPassiveVoice, checkGerunds,
   checkUnapprovedWords, checkNounCluster, checkParagraphLength,
 } from '../ste-rules.mjs';
-import {stripNonProse, blocks, lintText, isGenerated} from '../ste-lint.mjs';
+import {stripNonProse, blocks, lintText, isGenerated, generatedDirs} from '../ste-lint.mjs';
 
 let passed = 0;
 let failed = 0;
@@ -208,6 +208,18 @@ test('a synced file is recognised as generated', () => {
 
 test('a hand-written file is not generated', () => {
   assert.ok(!isGenerated('See [the guide](./guide.md) for more.'));
+});
+
+test('generated trees are found whole, not file by file', () => {
+  // The fingerprint only lands in files that had a relative link, so a synced
+  // tree holds marked and unmarked files side by side. Checking per file left
+  // 51 synced files being reported — and their fixes belong upstream, where
+  // the next sync would otherwise revert them.
+  const dirs = generatedDirs();
+  assert.ok(dirs.size > 0, 'no generated trees found in a repo that syncs org docs');
+  for (const dir of dirs) {
+    assert.ok(dir.includes('/docs/'), `unexpected generated tree: ${dir}`);
+  }
 });
 
 // ── end to end ────────────────────────────────────────────────────────────────

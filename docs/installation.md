@@ -4,7 +4,8 @@ sidebar_position: 6
 
 # Installation Guide
 
-TunaOS images can be installed in several ways, depending on your needs and preferences.
+You can install TunaOS images in several ways. Select the method that
+agrees with your needs.
 
 ## System Requirements
 
@@ -24,7 +25,8 @@ TunaOS images can be installed in several ways, depending on your needs and pref
 
 ### Method 1: Download Pre-built ISOs
 
-ISOs for GNOME and GNOME-HWE are published every two weeks to [download.tunaos.org](https://download.tunaos.org/live-isos/).
+TunaOS publishes ISOs for GNOME and GNOME-HWE every two weeks to
+[download.tunaos.org](https://download.tunaos.org/live-isos/).
 
 | Variant | GNOME | GNOME (HWE) |
 |---------|-------|-------------|
@@ -54,7 +56,7 @@ just build-iso albacore-nvidia
 
 ### Method 3: Container Runtime
 
-For testing or container-based workflows:
+For tests, or for work with containers:
 
 ```bash
 # Pull your preferred variant
@@ -90,7 +92,7 @@ After installation, TunaOS provides:
 #### NVIDIA (formerly GDX)
 - NVIDIA drivers and CUDA
 - AI/ML development tools
-- Graphics and video editing software
+- Software for graphics and video
 
 #### HWE (Hardware Enablement)
 - Specialized kernel and drivers for recent hardware
@@ -105,8 +107,8 @@ After installation, TunaOS provides:
 
 ### Installation Problems
 - Verify ISO integrity after download
-- Use a different USB creation tool (Ventoy, Rufus, dd)
-- Check available disk space
+- Use a different tool to write the USB drive: Ventoy, Rufus, or dd
+- Make sure that the disk has enough free space
 
 ### Getting Help
 - 🐛 **Report Issues**: [GitHub Issues](https://github.com/tuna-os/tunaOS/issues)

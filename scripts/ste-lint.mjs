@@ -35,10 +35,63 @@ export function isGenerated(content) {
   return GENERATED_MARKER.test(content);
 }
 
+// generatedDirs finds the docs/<slug>/ trees that sync-org-docs.mjs owns.
+//
+// Per-file detection is not enough on its own: the fingerprint only appears in
+// files that happened to contain a relative link, so a synced tree can hold
+// half-marked and unmarked files side by side. One marked file means the whole
+// directory came from another repository, and none of it should be rewritten
+// here — the next sync would revert the work.
+export function generatedDirs(root = ROOT) {
+  const dirs = new Set();
+  let entries = [];
+  try {
+    entries = readdirSync(join(root, 'docs'));
+  } catch {
+    return dirs;
+  }
+  for (const entry of entries) {
+    const dir = join(root, 'docs', entry);
+    let stat;
+    try {
+      stat = statSync(dir);
+    } catch {
+      continue;
+    }
+    if (!stat.isDirectory()) continue;
+    for (const file of walk(dir)) {
+      if (isGenerated(readFileSync(file, 'utf8'))) {
+        dirs.add(dir);
+        break;
+      }
+    }
+  }
+  return dirs;
+}
+
+// A file may opt out with a reason, on its first line:
+//   <!-- ste-disable-file: this page is a list of external titles -->
+// and a region may opt out between markers:
+//   <!-- ste-disable: quoted release notes -->  ...  <!-- ste-enable -->
+//
+// The reason is required. An escape hatch with no explanation becomes the
+// default, and then the checker measures nothing.
+const DISABLE_FILE = /<!--\s*ste-disable-file:\s*(.+?)\s*-->/;
+const DISABLE_BLOCK = /<!--\s*ste-disable:\s*.+?\s*-->[\s\S]*?<!--\s*ste-enable\s*-->/g;
+
+// disabledReason returns why a file opted out, or null.
+export function disabledReason(content) {
+  const match = content.match(DISABLE_FILE);
+  return match ? match[1] : null;
+}
+
 // stripNonProse removes everything the rules must not see. Order matters:
 // fenced code first, or a fence containing a heading confuses the rest.
 export function stripNonProse(markdown) {
   let text = markdown;
+
+  // Regions the author opted out of, with a reason.
+  text = text.replace(DISABLE_BLOCK, '');
 
   // Front matter.
   text = text.replace(/^---\n[\s\S]*?\n---\n/, '');
@@ -162,11 +215,19 @@ function main() {
   let total = 0;
   let skipped = 0;
   const perFile = [];
+  const optedOut = [];
+  const generated = includeGenerated ? new Set() : generatedDirs();
 
   for (const file of targets) {
     const content = readFileSync(file, 'utf8');
-    if (!includeGenerated && isGenerated(content)) {
+    const inGeneratedTree = [...generated].some((d) => file.startsWith(d + '/'));
+    if (!includeGenerated && (inGeneratedTree || isGenerated(content))) {
       skipped++;
+      continue;
+    }
+    const reason = disabledReason(content);
+    if (reason) {
+      optedOut.push({file: relative(ROOT, file), reason});
       continue;
     }
     const findings = lintText(content);
@@ -190,6 +251,9 @@ function main() {
   }
 
   console.log(`\n${total} finding(s) across ${perFile.length} file(s)`);
+  for (const {file, reason} of optedOut) {
+    console.log(`opted out: ${file} — ${reason}`);
+  }
   if (skipped) {
     console.log(`${skipped} generated file(s) skipped — their prose is authored upstream ` +
       `(pass --include-generated to check them anyway)`);
