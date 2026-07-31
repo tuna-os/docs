@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-31T08:41:05.967Z",
+  "generatedAt": "2026-07-31T14:36:59.664Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 158,
+  "count": 160,
   "categories": [
     {
       "id": "live-isos",
@@ -1309,8 +1309,18 @@
       "blurb": "",
       "icon": "📀",
       "order": 99,
-      "checksums": "https://download.tunaos.org/tacklebox/bazzite-gnome-SHA256SUMS-20260729-e1be09e",
+      "checksums": "https://download.tunaos.org/tacklebox/pure-yellowfin-niri-SHA256SUMS-20260731-4fa6041",
       "isos": [
+        {
+          "category": "tacklebox",
+          "name": "pure-yellowfin-niri-latest",
+          "path": "tacklebox/pure-yellowfin-niri-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/pure-yellowfin-niri-latest.iso",
+          "size": 9538693120,
+          "modified": "2026-07-31T12:34:11.169892931Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "tacklebox",
           "name": "bazzite-gnome-latest",
@@ -1360,6 +1370,16 @@
           "modified": "2026-07-27T08:42:37.046128230Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "pure-yellowfin-niri-20260731-4fa6041",
+          "path": "tacklebox/pure-yellowfin-niri-20260731-4fa6041.iso",
+          "url": "https://download.tunaos.org/tacklebox/pure-yellowfin-niri-20260731-4fa6041.iso",
+          "size": 9538693120,
+          "modified": "2026-07-31T12:34:11.169892931Z",
+          "arch": "",
+          "latest": false
         },
         {
           "category": "tacklebox",
