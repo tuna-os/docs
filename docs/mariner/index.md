@@ -5,21 +5,21 @@ status: alpha
 ---
 
 :::tip[Visual overview]
-Prefer a visual tour? See the **[Mariner overview →](/mariner)** landing page.
+Prefer a visual tour? See the **[Mariner overview →](/mariner)** page.
 :::
 
 **Mariner** is a GTK4 + libadwaita file manager for the GNOME desktop. It drives
-the same widgets as GNOME Files (Nautilus), so it looks and behaves like home —
-then adds type-ahead navigation, dual-pane split view, a Quick Look preview, a
-command palette, full-text search, and a built-in disk analyzer on top.
+the same widgets as GNOME Files (Nautilus), so it looks and behaves like home.
+It also adds type-ahead navigation, dual-pane split view, a Quick Look preview,
+a command palette, full-text search, and a built-in disk analyzer.
 
 ## ✨ Key Features
 
 * **⌨️ Type-ahead navigation** — start typing and Mariner jumps straight to the matching file.
-* **🪟 Dual-pane split view** (`F3`) — two folders side by side; copy/move between them without juggling windows.
+* **🪟 Dual-pane split view** (`F3`) — two folders side by side; copy/move between them without extra windows.
 * **👀 Quick Look preview** (`Space`) — instant preview for images, video, audio, text, and code.
 * **⌘ Command palette** (`Ctrl+P`) — run any command or jump to a recent folder.
-* **🔍 Full-text search** (`Ctrl+F`) — file *contents*, not just names, with an optional ripgrep-powered filter.
+* **🔍 Full-text search** (`Ctrl+F`) — file *contents*, not only names, with an optional ripgrep-powered filter.
 * **📊 Built-in disk analyzer** — see what's eating your disk space without a separate app.
 
 ## Installation
@@ -39,7 +39,7 @@ paru -S mariner-git      # or: yay -S mariner-git
 
 ### From source
 
-Requires Node ≥ 22.18, GTK ≥ 4.16, and libadwaita ≥ 1.5:
+Needs Node ≥ 22.18, GTK ≥ 4.16, and libadwaita ≥ 1.5:
 
 ```bash
 git clone https://github.com/tuna-os/mariner.git
@@ -50,8 +50,8 @@ npm start
 
 ## Status
 
-Mariner is currently **Beta** — the big features above are stable daily-driver
-material; permission editing in the Properties dialog is still on the roadmap.
+Mariner is now **Beta** — the big features above are stable daily-driver
+material; permission edits in the Properties dialog are still on the roadmap.
 
 ## Links
 
