@@ -10,7 +10,7 @@ Prefer a visual tour? See the **[Yellowfin overview →](/yellowfin)** start pag
 
 **Based on:** [AlmaLinux Kitten 10](https://almalinux.org/blog/2024-11-20-introducing-almalinux-kitten-10/)
 
-Yellowfin is the "developer's daily drive" variant of TunaOS. It tracks AlmaLinux Kitten, which is the upstream-tracking, more experimental branch of AlmaLinux. This variant is closest to the upstream Bluefin LTS experience.
+Yellowfin is the "developer's daily drive" variant of TunaOS. It tracks AlmaLinux Kitten, the more experimental branch of AlmaLinux that follows upstream more closely. This variant is closest to the experience of upstream Bluefin LTS.
 
 ## Features
 
@@ -22,7 +22,7 @@ Yellowfin is the "developer's daily drive" variant of TunaOS. It tracks AlmaLinu
 
 ## Downloads
 
-TunaOS publishes pre-built ISOs for the GNOME flavors every two weeks. Other flavors are available as container images only.
+TunaOS publishes its pre-built ISOs for the GNOME flavors every two weeks. Other flavors are available as container images only.
 
 ### GNOME (Standard)
 **Image:** `ghcr.io/tuna-os/yellowfin:gnome`

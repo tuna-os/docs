@@ -6,6 +6,8 @@ tags: [architecture, build-system, refactor]
 date: 2026-07-07
 ---
 
+<!-- ste-disable-file: a dated blog post; its wording is a published record. The findings here are the author's first-person voice ("desktops are now just a YAML file", "I actually wrote 18 BATS tests"), and editing a published post to satisfy a style checker would rewrite the record rather than improve a manual. STE governs the documentation, not the changelog. -->
+
 # The Image Factory: Manifest-Driven Builds
 
 Biggest change to the build system since I started this thing: desktops are now just a YAML file. No shell script per desktop, no touching the Containerfile, no CI edits. Wanted to write this one up because I'm pretty happy with how it turned out.

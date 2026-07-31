@@ -5,7 +5,7 @@ title: "App Guide"
 
 # 📦 Using TunaOS Flatpaks
 
-TunaOS publishes Flatpak applications through a custom OCI remote, providing sandboxed, auto-updating apps for the GNOME desktop.
+TunaOS publishes its Flatpak applications through a custom OCI remote. Each app runs in a sandbox, updates itself automatically, and targets the GNOME desktop.
 
 ## What's Available
 
@@ -84,5 +84,5 @@ flatpak update --check
 ## See Also
 
 - [Office Suite](/office) — Tables, Decks, Letters overview
-- [Tavern Guide](/tavern/guide) — Homebrew GUI user guide
+- [Tavern Guide](/tavern/guide) — guide to the Homebrew GUI
 - [Flatpak Documentation](https://docs.flatpak.org) — official Flatpak docs

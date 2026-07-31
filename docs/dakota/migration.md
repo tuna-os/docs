@@ -7,7 +7,7 @@ sidebar_label: "Migrating from Bluefin"
 
 [`bootc-migrate-composefs`](https://github.com/tuna-os/bootc-migrate-composefs)
 converts an in-place, already-installed **OSTree-backed Bluefin** system into
-a **ComposeFS-backed Dakota** system — no reinstall, and `/home`, `/var`,
+a **ComposeFS-backed Dakota** system. There is no reinstall: `/home`, `/var`,
 `/etc` customizations, flatpaks, container storage, and user accounts all
 survive the trip.
 
@@ -24,8 +24,8 @@ sudo bootc-migrate-composefs tui
 
 It walks through target image selection, a plain-English review of exactly
 what's about to happen, and a live phase-by-phase progress view with
-scrollable logs. Browsing the wizard doesn't require root — only pressing
-**Run** does, since that's when it actually spawns the migration.
+scrollable logs. You do not need root to browse the wizard. Only **Run**
+needs root, because the wizard spawns the migration at that point.
 
 <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem'}}>
   <img src="/img/screenshots/dakota-migrate-welcome.png" alt="Welcome screen" />
@@ -66,9 +66,9 @@ until you've rebooted and confirmed everything works.
 :::
 
 For the full phase-by-phase breakdown, filesystem support (Bluefin LTS/XFS,
-LVM, LUKS, dedicated `/var`), rollback, and troubleshooting, see the
+LVM, LUKS, dedicated `/var`), rollback, and how to fix problems, see the
 [project README](https://github.com/tuna-os/bootc-migrate-composefs#usage--end-to-end-walkthrough).
 
 ## See also
 
-- [Dakota](/docs/dakota) — the image you're migrating to
+- [Dakota](/docs/dakota) — the image you move to
