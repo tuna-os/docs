@@ -6,6 +6,8 @@ tags: [office-suite, rust, gtk, testing, letters, tables, decks]
 date: 2026-07-18
 ---
 
+<!-- ste-disable-file: a dated blog post; its wording is a published record. It argues a design position in the author's voice, and rewriting a published argument to hit a lint budget would change the record rather than improve a manual. STE governs the documentation, not the changelog. -->
+
 We write a GNOME-native office suite in Rust. It has three applications:
 **Letters** for text, **Tables** for spreadsheets, and **Decks** for
 presentations. They use GTK4 and libadwaita, and we release them as Flatpaks.
