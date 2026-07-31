@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-31T02:11:23.531Z",
+  "generatedAt": "2026-07-31T08:41:05.967Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 157,
+  "count": 158,
   "categories": [
     {
       "id": "live-isos",
@@ -1070,6 +1070,26 @@
           "modified": "2026-03-27T10:45:01.959284680Z",
           "arch": "aarch64",
           "latest": true
+        }
+      ]
+    },
+    {
+      "id": "browser-iso",
+      "label": "Browser Iso",
+      "blurb": "",
+      "icon": "📀",
+      "order": 99,
+      "checksums": null,
+      "isos": [
+        {
+          "category": "browser-iso",
+          "name": "flounder-xfce",
+          "path": "browser-iso/30597566765/flounder-xfce.iso",
+          "url": "https://download.tunaos.org/browser-iso/30597566765/flounder-xfce.iso",
+          "size": 5678063616,
+          "modified": "2026-07-31T02:30:35.133334691Z",
+          "arch": "",
+          "latest": false
         }
       ]
     },
