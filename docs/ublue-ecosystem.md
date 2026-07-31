@@ -9,7 +9,7 @@ TunaOS is part of the broader **Universal Blue** ecosystem — a family of [boot
 
 ## What is Universal Blue?
 
-[Universal Blue](https://universal-blue.org/) is an open-source project that provides custom, immutable desktop OS images built on Fedora and Enterprise Linux using bootc technology. It's the upstream home of [Bluefin](https://projectbluefin.io), the project TunaOS is forked from.
+[Universal Blue](https://universal-blue.org/) is an open-source project that provides custom, immutable OS images for the desktop, built on Fedora and Enterprise Linux with bootc technology. It's the upstream home of [Bluefin](https://projectbluefin.io), the project that TunaOS forked from.
 
 ### Key Universal Blue Projects
 

@@ -1,12 +1,12 @@
 # Contributing
 
-Thanks for your interest in contributing! This project is part of the [TunaOS](https://tunaos.org) ecosystem.
+Thanks for your interest! This project is part of the [TunaOS](https://tunaos.org) ecosystem.
 
 ## Getting Started
 
 1. Fork the repo and clone it locally.
 2. Read the project README and docs on [tunaos.org](https://tunaos.org).
-3. Open an issue to discuss your change before submitting a PR.
+3. Open an issue to discuss your change before you send a PR.
 
 ## Pull Requests
 

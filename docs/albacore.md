@@ -22,7 +22,7 @@ Albacore is the flagship stable variant of TunaOS. It gives a solid desktop for 
 
 ## Downloads
 
-Every two weeks, TunaOS publishes pre-built ISOs for the GNOME flavors. Other flavors are available as container images only.
+Every two weeks, TunaOS publishes its pre-built ISOs for the GNOME flavors. Other flavors are available as container images only.
 
 ### GNOME (Standard)
 The standard experience for most users.
