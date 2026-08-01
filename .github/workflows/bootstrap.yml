@@ -27,7 +27,7 @@ jobs:
     if: ${{ github.repository == 'tuna-os/docs' }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
 

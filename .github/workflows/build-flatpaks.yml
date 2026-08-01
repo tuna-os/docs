@@ -49,7 +49,7 @@ jobs:
             branch: master
     steps:
       - name: Checkout ${{ matrix.app.repo }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: ${{ matrix.app.repo }}
           ref: ${{ matrix.app.branch || 'main' }}
@@ -79,7 +79,7 @@ jobs:
     needs: build
     runs-on: blacksmith-4vcpu-ubuntu-2404
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Download all OCI artifacts
         uses: actions/download-artifact@v4
