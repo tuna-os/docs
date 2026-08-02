@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-01T19:00:20.881Z",
+  "generatedAt": "2026-08-02T02:09:50.779Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 160,
+  "count": 164,
   "categories": [
     {
       "id": "live-isos",
@@ -11,6 +11,26 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "marlin-kde-latest",
+          "path": "live-isos/marlin-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-kde-latest.iso",
+          "size": 5465047040,
+          "modified": "2026-08-01T22:10:32.728938685Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-gnome-latest",
+          "path": "live-isos/marlin-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-gnome-latest.iso",
+          "size": 5132386304,
+          "modified": "2026-08-01T22:10:07.933643753Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "albacore-latest",
@@ -170,6 +190,26 @@
           "modified": "2026-07-13T08:42:20.889979022Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-kde--x86_64",
+          "path": "live-isos/marlin-kde--x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-kde--x86_64.iso",
+          "size": 5465047040,
+          "modified": "2026-08-01T22:10:32.728938685Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-gnome--x86_64",
+          "path": "live-isos/marlin-gnome--x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-gnome--x86_64.iso",
+          "size": 5132386304,
+          "modified": "2026-08-01T22:10:07.933643753Z",
+          "arch": "x86_64",
+          "latest": false
         },
         {
           "category": "live-isos",
