@@ -24,7 +24,7 @@ permissions:
 
 jobs:
   update-index:
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     # Forks won't have the R2 secret; skip rather than fail.
     if: ${{ github.repository == 'tuna-os/docs' }}
     steps:

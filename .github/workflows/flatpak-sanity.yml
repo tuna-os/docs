@@ -23,7 +23,7 @@ on:
 jobs:
   check:
     name: Check ${{ github.event_name == 'schedule' && 'live remote' || 'working tree' }}
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
 
