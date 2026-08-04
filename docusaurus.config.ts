@@ -43,6 +43,18 @@ const config: Config = {
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: 'warn',
 
+  markdown: {
+    // Every page is parsed as MDX, where `<!-- ... -->` is a syntax error.
+    // This compat flag turns HTML comments into MDX comments, and it was on by
+    // default until `future.v4` started disabling it in Docusaurus 3.10 — which
+    // broke the build on the `<!-- truncate -->` marker in every blog post and
+    // on the `<!-- ste-disable-file: ... -->` pragmas scripts/ste-lint.mjs
+    // reads. Writing `{/* ... */}` instead is not a drop-in replacement: an
+    // MDX comment survives createExcerpt(), so a leading pragma becomes the
+    // page's meta description.
+    mdx1Compat: {comments: true},
+  },
+
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
