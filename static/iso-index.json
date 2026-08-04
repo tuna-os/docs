@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-04T08:28:19.565Z",
+  "generatedAt": "2026-08-04T13:56:40.085Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 164,
+  "count": 165,
   "categories": [
     {
       "id": "live-isos",
@@ -1349,8 +1349,18 @@
       "blurb": "",
       "icon": "📀",
       "order": 99,
-      "checksums": "https://download.tunaos.org/tacklebox/pure-yellowfin-niri-SHA256SUMS-20260731-4fa6041",
+      "checksums": "https://download.tunaos.org/tacklebox/bazzite-aio-SHA256SUMS-20260804-74264fb",
       "isos": [
+        {
+          "category": "tacklebox",
+          "name": "bazzite-aio-latest",
+          "path": "tacklebox/bazzite-aio-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-aio-latest.iso",
+          "size": 16798515200,
+          "modified": "2026-08-04T08:35:54.064819544Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "tacklebox",
           "name": "pure-yellowfin-niri-latest",
@@ -1383,16 +1393,6 @@
         },
         {
           "category": "tacklebox",
-          "name": "bazzite-aio-latest",
-          "path": "tacklebox/bazzite-aio-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/bazzite-aio-latest.iso",
-          "size": 16791371776,
-          "modified": "2026-07-28T08:48:01.019832820Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "tacklebox",
           "name": "tacklebox-poc-dedup-latest",
           "path": "tacklebox/tacklebox-poc-dedup-latest.iso",
           "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-latest.iso",
@@ -1410,6 +1410,16 @@
           "modified": "2026-07-27T08:42:37.046128230Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-aio-20260804-74264fb",
+          "path": "tacklebox/bazzite-aio-20260804-74264fb.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-aio-20260804-74264fb.iso",
+          "size": 16798515200,
+          "modified": "2026-08-04T08:35:54.064819544Z",
+          "arch": "",
+          "latest": false
         },
         {
           "category": "tacklebox",
