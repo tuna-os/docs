@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-05T01:57:04.174Z",
+  "generatedAt": "2026-08-05T08:27:08.515Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 165,
+  "count": 166,
   "categories": [
     {
       "id": "live-isos",
@@ -1410,6 +1410,16 @@
           "modified": "2026-07-27T08:42:37.046128230Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-kde-20260805-74264fb",
+          "path": "tacklebox/bazzite-kde-20260805-74264fb.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-kde-20260805-74264fb.iso",
+          "size": 13460373504,
+          "modified": "2026-08-05T08:06:23.097681411Z",
+          "arch": "",
+          "latest": false
         },
         {
           "category": "tacklebox",
