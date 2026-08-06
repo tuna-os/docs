@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-06T13:51:27.607Z",
+  "generatedAt": "2026-08-06T23:53:53.206Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 167,
+  "count": 168,
   "categories": [
     {
       "id": "live-isos",
@@ -1121,6 +1121,16 @@
       "order": 99,
       "checksums": null,
       "isos": [
+        {
+          "category": "browser-iso",
+          "name": "aurora-stable",
+          "path": "browser-iso/31127910346/aurora-stable.iso",
+          "url": "https://download.tunaos.org/browser-iso/31127910346/aurora-stable.iso",
+          "size": 9163413504,
+          "modified": "2026-08-06T22:14:57.493307145Z",
+          "arch": "",
+          "latest": false
+        },
         {
           "category": "browser-iso",
           "name": "flounder-xfce",
