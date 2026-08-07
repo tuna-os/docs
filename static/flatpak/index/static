@@ -120,7 +120,7 @@
       "Name": "tuna-os/tuna-installer-xfce",
       "Images": [
         {
-          "Digest": "sha256:c58190e7c6771bbed78efb21ea53d28da4f1dae35883e73280074d70118eee76",
+          "Digest": "sha256:91a67e9d56d438f953810604a164516aba8bd54d8ea196f0f7c3869d7f9771ab",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -135,13 +135,13 @@
             "org.flatpak.installed-size": "237333504",
             "org.flatpak.commit-metadata.xa.download-size": "AAAAAARkJCAAdA==",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAA4lbAAAdA==",
-            "org.flatpak.download-size": "69168116",
+            "org.flatpak.download-size": "69168182",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyWGZjZS94ODZfNjQvbWFzdGVyACsAYXM=",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyWGZjZS94ODZfNjQvbWFzdGVyAABz",
             "org.flatpak.ref": "app/org.tunaos.InstallerXfce/x86_64/master",
-            "org.flatpak.subject": "Built from 6e1a10d1fec90352afbf4edce6218a3373f0f827",
-            "org.flatpak.commit": "4e37b2d080c833ac61f878d67bc48841543926b0e410304ca01421cdb1b8b9a0",
-            "org.flatpak.timestamp": "1786110554"
+            "org.flatpak.subject": "Built from a97fce404942c7c8d398bab7d1eca2a6bc2337c2",
+            "org.flatpak.commit": "f245da189463871a2845868c4be699cca3f959270e0a13b4cd39d41ea2e15252",
+            "org.flatpak.timestamp": "1786135658"
           }
         }
       ]
