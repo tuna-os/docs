@@ -9,6 +9,9 @@ of static websites.
 yarn
 ```
 
+All standard tasks (`install`, `build`, `test`, `lint`) are also available
+via [`just`](https://github.com/casey/just) — see `just --list`.
+
 ## Local Development
 
 ```bash
