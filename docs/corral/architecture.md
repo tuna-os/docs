@@ -19,6 +19,7 @@ cmd/              Cobra CLI (root, subcommands, TUI)
 ├── config.go     corral config (show, set auth key)
 ├── web.go        corral web (--addr, serve embedded SPA)
 ├── tui.go        Bubble Tea TUI (VMs + Containers side by side; VM and CT action menus, clone input state)
+├── tui_views.go  TUI views at parity with the web UI (snapshots via pkg/snapshot, events, template mark, CT scaling)
 ├── plugin.go     corral plugin (search, install, list, remove)
 ├── doctor.go     corral doctor (cluster diagnostics)
 ├── helpers.go    shared CLI helpers (flags, namespace resolution)
@@ -31,8 +32,11 @@ pkg/              Library code (importable)
 ├── catalog/      curated OS image catalog (containerdisks)
 ├── config/       ~/.config/tailvm/config.yaml reader (Tailscale auth key)
 ├── cronops/      shared CronJob/RBAC manifest builders for scheduled-op plugins (backup, snapsched, schedule)
+├── backend/      the parity matrix + conformance tests; see docs/backend-parity.md
 ├── ct/           Containers (CT) — pet pods, not KubeVirt VMs; see docs/adr/0005
 │   └── ct.go       Create/Start/Stop/Delete/List/Exists, distrobox-style persistent-rootfs bootstrap for privileged CTs
+├── proxmoxbe/    Proxmox VE as a backend — HTTPS API + token; see docs/adr/0009
+│                 (pkg/proxmox is the compat server — the other direction)
 ├── doctor/       cluster diagnostics + auto-fix (namespace, CDI, KubeVirt, GPU/PCI passthrough, StorageClass perf, etc.)
 ├── kubevirt/     KubeVirt backend (the heavy lifter)
 │   ├── client.go          VM CRUD, SSH via virtctl, cloud-init, registry
@@ -55,7 +59,7 @@ pkg/              Library code (importable)
     │                     doctor, plugins, NADs, NICs, images, instancetypes, datavolumes, boot options, ISO upload
     └── static/
         ├── index.html    dark SPA shell, create dialog (6 source types), CT create dialog, build dialog
-        ├── app.js        API client, tree (Server View/Folder View, VMs+CTs merged), VM/CT detail panels
+        ├── app.js        API client, tree (Server/Namespace/Pool views, VMs+CTs merged), VM/CT detail panels
         │                 (Summary/Hardware/Options/Snapshots/Events/Console/Terminal), create wizards,
         │                 image library + import, bootc build streaming, mobile drawer
         ├── icons.js      inline Heroicon SVGs

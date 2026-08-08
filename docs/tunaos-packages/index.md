@@ -78,11 +78,14 @@ python3 scripts/parse-build-order.py build-order.yml --validate
 
 ## Tideforge and cross-distro packaging
 
-Tideforge is being developed on a separate, in-progress package-factory branch
-as a single-recipe abstraction for straightforward packages across RPM, DEB,
-and Pacman targets. It must prove source, build, install, and runtime parity
-before it replaces any native EL10 GNOME packaging. Native specs remain the
-authoritative production path for EL10-specific compatibility work until then.
+Tideforge is a single-recipe abstraction for straightforward packages across
+RPM, DEB, and Pacman targets. Supported targets, the upstream-source policy,
+and the migration away from COPRs and PPAs are defined in
+[the package-factory contract](https://github.com/tuna-os/tunaos-packages/blob/main/docs/PACKAGE_FACTORY.md).
+
+It must prove source, build, install, and runtime parity before it replaces any
+native EL10 GNOME packaging. Native specs remain the authoritative production
+path for EL10-specific compatibility work until then.
 
 ## Release policy
 

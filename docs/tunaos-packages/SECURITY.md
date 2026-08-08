@@ -19,7 +19,7 @@ repository target the following RPM delivery channels:
 
 Instead, report them privately via GitHub Security Advisories:
 
-1. Go to the [Security tab](https://github.com/tuna-os/github-copr/security)
+1. Go to the [Security tab](https://github.com/tuna-os/tunaos-packages/security)
 2. Click **Report a vulnerability**
 3. Provide a detailed description of the issue, including steps to reproduce
 

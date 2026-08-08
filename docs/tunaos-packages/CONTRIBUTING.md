@@ -6,7 +6,7 @@ title: "Contributing"
 ## Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR_USER/github-copr.git`
+2. Clone your fork: `git clone https://github.com/YOUR_USER/tunaos-packages.git`
 3. Create a feature branch: `git checkout -b my-feature`
 
 ## Adding a New Package

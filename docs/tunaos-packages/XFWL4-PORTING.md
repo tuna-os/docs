@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 9
 title: "XFWL4 PORTING"
 ---
 
@@ -200,10 +200,10 @@ each packaging skeleton has to solve them again:
    crates.io *and* the smithay git source to it. Debian and Arch builds are
    also network-isolated by policy, so both need the same treatment.
 
-3. **An upstream patch is required.** `WlrBufferConstraints.dma`'s cfg gate
-   omits the udev feature while three call sites guard it under udev — a
-   udev-only build (ours) fails to compile without
-   `0001-fix-dma-cfg-gate-for-udev-backend.patch`.
+3. **Upstream now includes the udev cfg gate as of commit 5c2802c.** The
+   old `0001-fix-dma-cfg-gate-for-udev-backend.patch` is no longer needed —
+   `wlr_screencopy.rs` now gates `dma` behind `#[cfg(any(feature = "udev",
+   feature = "winit"))]`.
 
 4. **Feature flags are not default.** Build with
    `--no-default-features --features udev,egl,xwayland,smithay/renderer_pixman,smithay/renderer_gl`.
