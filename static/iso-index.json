@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-08T06:41:28.775Z",
+  "generatedAt": "2026-08-08T12:35:15.430Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 179,
+  "count": 184,
   "categories": [
     {
       "id": "live-isos",
@@ -11,6 +11,36 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "albacore-niri-nvidia-latest",
+          "path": "live-isos/albacore-niri-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-niri-nvidia-latest.iso",
+          "size": 7355891712,
+          "modified": "2026-08-08T06:07:55.106569058Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-kde-nvidia-latest",
+          "path": "live-isos/albacore-kde-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-kde-nvidia-latest.iso",
+          "size": 7831552000,
+          "modified": "2026-08-08T06:07:18.794627484Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-cosmic-nvidia-latest",
+          "path": "live-isos/albacore-cosmic-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-cosmic-nvidia-latest.iso",
+          "size": 7335116800,
+          "modified": "2026-08-08T06:05:24.346946322Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "albacore-gnome-nvidia-latest",
@@ -240,6 +270,26 @@
           "modified": "2026-07-13T08:42:20.889979022Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-niri-nvidia-10.2-x86_64",
+          "path": "live-isos/albacore-niri-nvidia-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-niri-nvidia-10.2-x86_64.iso",
+          "size": 7355891712,
+          "modified": "2026-08-08T06:07:55.106569058Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-kde-nvidia-10.2-x86_64",
+          "path": "live-isos/albacore-kde-nvidia-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-kde-nvidia-10.2-x86_64.iso",
+          "size": 7831552000,
+          "modified": "2026-08-08T06:07:18.794627484Z",
+          "arch": "x86_64",
+          "latest": false
         },
         {
           "category": "live-isos",
