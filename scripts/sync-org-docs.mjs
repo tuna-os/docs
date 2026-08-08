@@ -41,6 +41,34 @@ const ROOT_DOC_FILTER = {
   'github-copr': ['README.md', 'ARCHITECTURE.md'],
 };
 
+// docs/<slug>/ trees that are written by hand here and must never be
+// overwritten from an upstream README, even though a repo of the same name
+// exists in the org.
+//
+// These survived only by accident: each maps to a repo that fell past the
+// first page of the unpaginated repo listing, so the sync never reached it
+// (#103). Paginating the listing reaches them all, and the write path is
+// unconditional — writeFileSync, no comparison, no prompt — so without this
+// set the first paginated run would replace every page below with its
+// upstream README and drop the site-specific content.
+//
+// What makes each one hand-authored, so a future reader can re-check rather
+// than trust the list:
+//   mariner          — :::tip pointing at the /mariner showcase page (#61)
+//   gtk-office-suite — landing page for three apps, one repo
+//   mandelbrot       — site-specific prose, no upstream equivalent
+//   remora           — site-specific prose, no upstream equivalent
+//   dakota           — :::tip plus an external-project banner (repo is also
+//                      in SKIP; listed here so the protection does not rest
+//                      on a SKIP entry that exists for a different reason)
+const HAND_AUTHORED = new Set([
+  'mariner',
+  'gtk-office-suite',
+  'mandelbrot',
+  'remora',
+  'dakota',
+]);
+
 // Repos whose docs/ folder should NOT be synced (too noisy / internal).
 const SKIP_DOCS_DIR = new Set();
 
@@ -51,6 +79,11 @@ const DOCS_SUBDIR = {
 
 const ORG = 'tuna-os';
 const DOCS_DIR = 'docs';
+
+// GitHub's REST list endpoints page. 100 is the maximum per_page; 30 is the
+// default, and therefore the number this script used to stop at.
+const PER_PAGE = 100;
+const DEFAULT_PAGE_SIZE = 30;
 
 function cloneRepo(repo) {
   const tmp = execSync('mktemp -d', {encoding: 'utf8'}).trim();
@@ -226,12 +259,119 @@ function getStatusBanner(status) {
   return banners[status] || null;
 }
 
-function main() {
-  // Discover repos from the org
-  const repos = execSync(
-    `gh api orgs/${ORG}/repos --jq '.[].name'`,
+// listOrgRepos returns every repo name in the org, across every page.
+//
+// The call this replaced was `gh api orgs/<org>/repos --jq '.[].name'` with no
+// --paginate, so GitHub answered with the default first page — 30 names — and
+// the loop below simply never reached the rest (#103). Nothing failed and
+// nothing was logged: a short list is indistinguishable from a small org,
+// which is the whole reason it went unnoticed.
+//
+// Two properties of `gh --paginate --jq` decide how this is written:
+//
+//   * gh applies the jq filter to each page separately and concatenates the
+//     results — it does not build one document out of the pages. So the filter
+//     has to be a per-page filter. `.[].name` is one, and yields one name per
+//     line across every page. A whole-document filter (`length`, `map(...)`,
+//     `.[0]`) would answer once per page and look like it had worked.
+//   * a repo can appear twice if the org list shifts between page requests, so
+//     the names are de-duplicated rather than trusted to be unique.
+function listOrgRepos(exec = execSync) {
+  const out = exec(
+    `gh api "orgs/${ORG}/repos?per_page=${PER_PAGE}" --paginate --jq '.[].name'`,
     {encoding: 'utf8'},
-  ).trim().split('\n').filter(n => n && !SKIP.has(n));
+  );
+  return [...new Set(String(out).split('\n').map((n) => n.trim()).filter(Boolean))];
+}
+
+// orgPublicRepoCount reads how many public repos the org says it has.
+//
+// This is a second, independent source of truth for "how long should the
+// listing be". Any token can see every public repo of a public org, so a
+// listing shorter than this number was cut short — that is a fact about the
+// listing, not a heuristic. Returns null when the count cannot be read, so a
+// missing cross-check degrades to the weaker signals below instead of failing
+// the sync.
+function orgPublicRepoCount(exec = execSync) {
+  try {
+    const n = Number(
+      String(exec(`gh api orgs/${ORG} --jq '.public_repos'`, {encoding: 'utf8'})).trim(),
+    );
+    return Number.isFinite(n) && n > 0 ? n : null;
+  } catch {
+    return null;
+  }
+}
+
+// checkListing looks for the fingerprints of a truncated repo listing.
+//
+// Paginating the call fixes today's truncation. It does not make tomorrow's
+// visible: the failure mode of #103 is that the wrong answer is a well-formed
+// shorter list, so the only defence is to state out loud what a plausible
+// answer looks like and complain when the listing is not one.
+//
+// `count` is the raw listing length, before SKIP is applied — SKIP removes
+// repos that do exist, so filtering first would mask a real shortfall.
+function checkListing(count, publicRepos = null, perPage = PER_PAGE) {
+  const fatal = [];
+  const warnings = [];
+
+  if (count === 0) {
+    fatal.push(
+      `the ${ORG} repo listing came back empty. An empty org is not a real ` +
+      'answer here, so treat this as a failed listing rather than as nothing to do.',
+    );
+  }
+  if (publicRepos !== null && count < publicRepos) {
+    fatal.push(
+      `the listing holds ${count} repos but ${ORG} reports ${publicRepos} public ` +
+      'repos, and every token can see every public repo of a public org. The ' +
+      'listing is truncated — check that --paginate survived on the gh api call.',
+    );
+  }
+  if (count > 0 && count === DEFAULT_PAGE_SIZE) {
+    warnings.push(
+      `exactly ${DEFAULT_PAGE_SIZE} repos — GitHub's default page size, and the ` +
+      'exact signature of the bug in #103. Verify this is a coincidence.',
+    );
+  } else if (count > 0 && count % perPage === 0) {
+    warnings.push(
+      `exactly ${count} repos, a whole multiple of the ${perPage}-per-page size. ` +
+      'That is what a listing that stopped at a page boundary looks like.',
+    );
+  }
+  return {fatal, warnings};
+}
+
+function main() {
+  // Discover repos from the org.
+  const listed = listOrgRepos();
+  const publicRepos = orgPublicRepoCount();
+  const {fatal, warnings} = checkListing(listed.length, publicRepos);
+
+  console.log(
+    `🔎 ${listed.length} repos listed in ${ORG}` +
+    (publicRepos === null
+      ? ' (org repo count unavailable — cross-check skipped)'
+      : ` (org reports ${publicRepos} public)`),
+  );
+  for (const w of warnings) console.warn(`⚠️  suspicious repo listing: ${w}`);
+  for (const f of fatal) console.error(`✗ ${f}`);
+  if (fatal.length) process.exit(1);
+
+  // A slug in HAND_AUTHORED that matches nothing on disk protects nothing, and
+  // does it quietly — the same shape of bug as the truncation above.
+  for (const slug of HAND_AUTHORED) {
+    if (!existsSync(join(DOCS_DIR, slug))) {
+      console.warn(`⚠️  HAND_AUTHORED lists '${slug}', but docs/${slug}/ does not exist`);
+    }
+  }
+
+  const skipped = listed.filter((n) => SKIP.has(n));
+  const repos = listed.filter((n) => !SKIP.has(n));
+  let synced = 0;
+  let protectedDirs = 0;
+  const failures = [];
 
   const sidebar = [];
   let globalPos = 100; // start after existing docs
@@ -239,6 +379,12 @@ function main() {
   for (const repo of repos) {
     const meta = PROJECTS[repo] || {label: repo, icon: '📄', slug: slugify(repo)};
     const slug = meta.slug || slugify(repo);
+
+    if (HAND_AUTHORED.has(slug)) {
+      protectedDirs++;
+      console.log(`\n🖐 ${repo} → docs/${slug}/ is hand-authored — left alone`);
+      continue;
+    }
 
     console.log(`\n📥 ${repo} → docs/${slug}/`);
 
@@ -309,7 +455,9 @@ function main() {
           console.log(`  ✓ docs/${file}`);
         }
       }
+      synced++;
     } catch (e) {
+      failures.push(`${repo}: ${e.message}`);
       console.error(`  ✗ Failed: ${e.message}`);
     } finally {
       // Each repo is cloned into its own mktemp -d and was never removed, so
@@ -318,6 +466,23 @@ function main() {
       // workstation with a 2G /tmp and the disk fills.
       if (dir) rmSync(dir, {recursive: true, force: true});
     }
+  }
+
+  // Say what the run actually covered. Until now a run that reached a third of
+  // the org and a run that reached all of it printed the same thing and exited
+  // 0, so partial coverage could only be noticed by spotting an absence.
+  console.log(
+    `\n📊 ${listed.length} listed · ${skipped.length} in SKIP · ` +
+    `${protectedDirs} hand-authored · ${synced} synced · ${failures.length} failed`,
+  );
+  if (failures.length) {
+    for (const f of failures) console.error(`  ✗ ${f}`);
+    console.error(
+      `✗ ${failures.length} of ${synced + failures.length} attempted repos did not sync. ` +
+      'Exiting non-zero: ' +
+      'a run that covered part of the org must not report success.',
+    );
+    process.exit(1);
   }
 }
 
@@ -329,6 +494,12 @@ export {
   subFrontmatter,
   getStatusBanner,
   slugify,
+  listOrgRepos,
+  orgPublicRepoCount,
+  checkListing,
+  HAND_AUTHORED,
+  PER_PAGE,
+  DEFAULT_PAGE_SIZE,
 };
 
 // Only clone and rewrite when run as a command. The transforms above are
