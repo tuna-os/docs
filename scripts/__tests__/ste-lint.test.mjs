@@ -10,12 +10,21 @@
 //   node scripts/__tests__/ste-lint.test.mjs
 
 import {strict as assert} from 'node:assert';
+import {existsSync, mkdirSync, mkdtempSync, writeFileSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {basename, dirname, join} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {
   splitSentences, countWords,
   checkSentenceLength, checkPassiveVoice, checkGerunds,
   checkUnapprovedWords, checkNounCluster, checkParagraphLength,
 } from '../ste-rules.mjs';
 import {stripNonProse, blocks, lintText, isGenerated, generatedDirs} from '../ste-lint.mjs';
+import {frontmatter, subFrontmatter, HAND_AUTHORED} from '../sync-org-docs.mjs';
+
+// generatedDirs takes a root, so the tests can build trees instead of asserting
+// against whatever the last sync happened to leave on disk.
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 let passed = 0;
 let failed = 0;
@@ -210,27 +219,99 @@ test('a list stuck to a paragraph is split from it', () => {
     'bullets must not be concatenated: ' + JSON.stringify(found));
 });
 
-// ── generated-file detection ──────────────────────────────────────────────────
+// ── generated-tree detection ──────────────────────────────────────────────────
+//
+// Whether a tree is generated decides whether its findings are this repo's debt
+// or another repo's, so the cases below cover both ways of getting it wrong.
+// Under-detection puts prose nobody here may edit into the budget (#102);
+// over-detection takes prose this repo does own out of the checker entirely,
+// which is the quieter and worse failure.
 
-test('a synced file is recognised as generated', () => {
-  // sync-org-docs.mjs rewrites relative links to absolute GitHub URLs; nothing
-  // hand-written carries that shape.
+test('the rewritten-link mark is recognised', () => {
   assert.ok(isGenerated('See [README](https://github.com/tuna-os/corral/blob/main/../README.md)'));
 });
 
-test('a hand-written file is not generated', () => {
+test('a plain relative link does not carry the mark', () => {
   assert.ok(!isGenerated('See [the guide](./guide.md) for more.'));
 });
 
-test('generated trees are found whole, not file by file', () => {
-  // The fingerprint only lands in files that had a relative link, so a synced
-  // tree holds marked and unmarked files side by side. Checking per file left
-  // 51 synced files being reported — and their fixes belong upstream, where
-  // the next sync would otherwise revert them.
-  const dirs = generatedDirs();
-  assert.ok(dirs.size > 0, 'no generated trees found in a repo that syncs org docs');
-  for (const dir of dirs) {
-    assert.ok(dir.includes('/docs/'), `unexpected generated tree: ${dir}`);
+// A tree fixture: docs/<slug>/ holding the named files, under a temp root.
+function fixture(trees) {
+  const root = mkdtempSync(join(tmpdir(), 'ste-lint-'));
+  for (const [slug, files] of Object.entries(trees)) {
+    mkdirSync(join(root, 'docs', slug), {recursive: true});
+    for (const [name, body] of Object.entries(files)) {
+      writeFileSync(join(root, 'docs', slug, name), body);
+    }
+  }
+  return root;
+}
+
+const slugsOf = (root) => [...generatedDirs(root)].map((d) => basename(d)).sort();
+
+// What the sync writes into a tree it creates.
+const syncedIndex = frontmatter('Widget', 1, 'widget', 'alpha') + 'The widget starts.\n';
+const syncedPage = subFrontmatter('Contributing', 2) + 'Open a pull request.\n';
+
+test('a tree is generated when its index page came from the sync', () => {
+  const root = fixture({widget: {'index.md': syncedIndex}});
+  assert.deepEqual(slugsOf(root), ['widget']);
+});
+
+test('a synced tree with no rewritten links at all is still found', () => {
+  // The #102 regression. Seven synced files held no relative link, so the old
+  // fingerprint never landed anywhere in their trees and 28 findings against
+  // prose owned by another repo sat in this repo's budget.
+  const root = fixture({
+    'dakota-iso': {'index.md': syncedIndex, 'CONTRIBUTING.md': syncedPage},
+  });
+  assert.deepEqual(slugsOf(root), ['dakota-iso']);
+});
+
+test('the whole tree is claimed, not only the marked file', () => {
+  const root = fixture({
+    widget: {'index.md': syncedIndex, 'guide.md': 'Plain prose, no front matter.\n'},
+  });
+  const dirs = [...generatedDirs(root)];
+  assert.equal(dirs.length, 1);
+  assert.ok(existsSync(join(dirs[0], 'guide.md')));
+});
+
+test('a hand-written page that links to GitHub is not a generated tree', () => {
+  // docs/faq.md and docs/community.md link to tunaOS/blob/main/CONTRIBUTING.md
+  // by hand. Reading that as "the sync wrote this" is how prose this repo owns
+  // stopped being checked.
+  const root = fixture({
+    guides: {'index.md': 'See [CONTRIBUTING](https://github.com/tuna-os/tunaOS/blob/main/CONTRIBUTING.md).\n'},
+  });
+  assert.deepEqual(slugsOf(root), []);
+});
+
+test('front matter a person typed is not the sync template', () => {
+  // docs/mariner/index.md: the same three keys, no blank line before status.
+  const handWritten = '---\nsidebar_position: 1\nsidebar_label: "Mariner"\nstatus: alpha\n---\n\nMariner is a file manager.\n';
+  const root = fixture({mariner2: {'index.md': handWritten}});
+  assert.deepEqual(slugsOf(root), []);
+});
+
+test('a HAND_AUTHORED tree is never generated', () => {
+  // The sync refuses to overwrite these, so this repo is answerable for their
+  // prose. Both lists come from sync-org-docs.mjs, so they cannot disagree.
+  const slug = [...HAND_AUTHORED][0];
+  const root = fixture({[slug]: {'index.md': syncedIndex}});
+  assert.deepEqual(slugsOf(root), [], `${slug} is hand-authored and must be checked`);
+});
+
+test('this repo\'s own synced trees are found', () => {
+  const found = new Set(slugsOf(ROOT));
+  assert.ok(found.size > 0, 'no generated trees found in a repo that syncs org docs');
+  // The seven files from #102, by tree.
+  for (const slug of ['dakota-iso', 'dakota-x13s', 'xfce-linux-iso', 'bonito-x13s',
+    'ubuntu-26-04-iso', 'tromso-iso']) {
+    assert.ok(found.has(slug), `docs/${slug}/ is synced and must not be in the budget`);
+  }
+  for (const slug of HAND_AUTHORED) {
+    assert.ok(!found.has(slug), `docs/${slug}/ is hand-authored and must be checked`);
   }
 });
 

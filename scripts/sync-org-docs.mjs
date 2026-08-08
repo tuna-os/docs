@@ -241,6 +241,33 @@ status: ${status || 'unknown'}
 `;
 }
 
+// SYNCED_INDEX matches the front matter frontmatter() writes, and only that.
+//
+// This is the one mark every docs/<slug>/ tree this script creates carries: the
+// index page is written from the upstream README before anything else, and its
+// front matter is built here rather than copied from the source repo. The blank
+// line before `status:` is part of the template above and is what separates it
+// from front matter a person typed — see docs/mariner/index.md, which has the
+// same three keys with no blank line.
+//
+// Anything that reads this as "the tree is generated" is reading a fact about
+// how the file was produced. That is deliberately not the same question as
+// "does this file link to GitHub", which is what ste-lint used to ask and which
+// any hand-written page may answer yes to.
+//
+// The matcher is written out rather than derived from the template, so a change
+// to frontmatter() does not silently change what counts as generated. The test
+// in scripts/__tests__/sync-org-docs.test.mjs feeds frontmatter()'s real output
+// through isSyncedIndex, so the two cannot drift apart quietly: edit one and
+// that test fails.
+const SYNCED_INDEX = /^---\nsidebar_position: \d+\nsidebar_label: "[^"]*"\n\nstatus: \S+\n---\n/;
+
+// isSyncedIndex reports whether a document's front matter was written by this
+// script's frontmatter() rather than by a person.
+function isSyncedIndex(content) {
+  return SYNCED_INDEX.test(content);
+}
+
 function subFrontmatter(title, position) {
   return `---
 sidebar_position: ${position}
@@ -492,6 +519,7 @@ export {
   onProse,
   frontmatter,
   subFrontmatter,
+  isSyncedIndex,
   getStatusBanner,
   slugify,
   listOrgRepos,
