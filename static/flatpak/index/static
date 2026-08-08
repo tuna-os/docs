@@ -515,7 +515,7 @@
       "Name": "tuna-os/finupdate",
       "Images": [
         {
-          "Digest": "sha256:6be638229f5fd2fe44997e4dece65c5849055aefc5bfbca9e06ec7be7cb4a82a",
+          "Digest": "sha256:cc90879b5d535ab43e8d992a5117d36e2476ef5f3190b6a769b5f01169b9836f",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -526,21 +526,21 @@
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy50dW5hb3MuZmludXBkYXRlCnJ1bnRpbWU9b3JnLmdub21lLlBsYXRmb3JtL3g4Nl82NC81MApzZGs9b3JnLmdub21lLlNkay94ODZfNjQvNTAKY29tbWFuZD1maW51cGRhdGUKCltDb250ZXh0XQpzaGFyZWQ9aXBjO25ldHdvcms7CnNvY2tldHM9ZmFsbGJhY2steDExO3dheWxhbmQ7CmRldmljZXM9ZHJpOwpmaWxlc3lzdGVtcz14ZGctY2FjaGUvZmludXBkYXRlOmNyZWF0ZTtob3N0LW9zOnJvOwoKW1Nlc3Npb24gQnVzIFBvbGljeV0Kb3JnLmZyZWVkZXNrdG9wLkZsYXRwYWs9dGFsawpvcmcudHVuYW9zLmZpbnVwZGF0ZT1vd24KCltFeHRlbnNpb24gb3JnLnR1bmFvcy5maW51cGRhdGUuRGVidWddCmRpcmVjdG9yeT1saWIvZGVidWcKYXV0b2RlbGV0ZT10cnVlCm5vLWF1dG9kb3dubG9hZD10cnVlCgpbQnVpbGRdCmJ1aWx0LWV4dGVuc2lvbnM9b3JnLnR1bmFvcy5maW51cGRhdGUuRGVidWc7AABz",
             "org.flatpak.ref": "app/org.tunaos.finupdate/x86_64/master",
-            "org.flatpak.installed-size": "9163776",
-            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAACL1AAAdA==",
+            "org.flatpak.installed-size": "9164288",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAACL1gAAdA==",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.finupdate\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=finupdate\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=xdg-cache/finupdate:create;host-os:ro;\n\n[Session Bus Policy]\norg.freedesktop.Flatpak=talk\norg.tunaos.finupdate=own\n\n[Extension org.tunaos.finupdate.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.finupdate.Debug;",
-            "org.flatpak.timestamp": "1786175557",
-            "org.flatpak.download-size": "3728005",
-            "org.flatpak.commit": "c66d65e327800756b9806ec77fd2c13f3fa0a21d905ab74d558e156fc6378336",
-            "org.flatpak.subject": "Built from 5a91208f4a3bdf0b4cc370d1650565e77c11aa84",
+            "org.flatpak.timestamp": "1786175587",
+            "org.flatpak.download-size": "3728215",
+            "org.flatpak.commit": "4c198dc071a3b95768758f21e75eb8c79a35c88591edb1fb31018e3f3bec7113",
+            "org.flatpak.subject": "Built from 12c86d21dcdf5e1b372235525ba7b93ffcdf4110",
             "org.flatpak.body": "Name: org.tunaos.finupdate\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuZmludXBkYXRlL3g4Nl82NC9tYXN0ZXIAAHM=",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAA4+UYAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAA4+fwAdA==",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuZmludXBkYXRlL3g4Nl82NC9tYXN0ZXIAJwBhcw=="
           }
         },
         {
-          "Digest": "sha256:8a419f1d38a491475b2dbc7efa8b81f189ed62323e2a2b93f6a9200354cf3e3a",
+          "Digest": "sha256:5ecfb77f3a47b6f8a6a589ef0a8a5df5334d067c296a16b79e48dc97e0c74495",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "arm64",
@@ -554,13 +554,13 @@
             "org.flatpak.installed-size": "8344576",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAB/VAAAdA==",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.finupdate\nruntime=org.gnome.Platform/aarch64/50\nsdk=org.gnome.Sdk/aarch64/50\ncommand=finupdate\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=xdg-cache/finupdate:create;host-os:ro;\n\n[Session Bus Policy]\norg.freedesktop.Flatpak=talk\norg.tunaos.finupdate=own\n\n[Extension org.tunaos.finupdate.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.finupdate.Debug;",
-            "org.flatpak.timestamp": "1786175513",
-            "org.flatpak.download-size": "3493027",
-            "org.flatpak.commit": "a4ef4c5be51a28652ef8e78d637294fd35eb40cc86c6947c51c7b15655236fc6",
-            "org.flatpak.subject": "Built from 5a91208f4a3bdf0b4cc370d1650565e77c11aa84",
+            "org.flatpak.timestamp": "1786175548",
+            "org.flatpak.download-size": "3493100",
+            "org.flatpak.commit": "81d1dac640c4b925bb2a548dcbeb93f190c32153336634f580f765bc4d7b7098",
+            "org.flatpak.subject": "Built from 12c86d21dcdf5e1b372235525ba7b93ffcdf4110",
             "org.flatpak.body": "Name: org.tunaos.finupdate\nArch: aarch64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuZmludXBkYXRlL2FhcmNoNjQvbWFzdGVyAABz",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAA1ZUsAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAA1ZUoAdA==",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuZmludXBkYXRlL2FhcmNoNjQvbWFzdGVyACgAYXM="
           }
         }
