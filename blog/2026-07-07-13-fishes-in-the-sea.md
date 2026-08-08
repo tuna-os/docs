@@ -57,7 +57,7 @@ Everything's named after a fish, because I like fish and also because "AlmaLinux
 | 🐟 [**Albacore**](/albacore) | <img src="/img/os/almalinux.svg" width="20" /> [AlmaLinux 10](https://almalinux.org) | Production |
 | 🍣 [**Skipjack**](/skipjack) | <img src="/img/os/centos.svg" width="20" /> [CentOS Stream 10](https://centos.org) | Production |
 | 🔒 [**Redfin**](/redfin) | <img src="/img/os/rhel.svg" width="20" /> [RHEL 10](https://redhat.com) | Local-build |
-| 🎣 [**Bonito**](/bonito) | <img src="/img/os/fedora.svg" width="20" /> [Fedora 44](https://fedoraproject.org) | Production |
+| 🎣 [**Bonito**](/bonito) | <img src="/img/os/fedora.svg" width="20" /> [Fedora 44](https://fedoraproject.org) | Experimental |
 | 🐉 [**Bonito Rawhide**](/bonito-rawhide) | <img src="/img/os/fedora.svg" width="20" /> [Fedora Rawhide](https://fedoraproject.org) | Production |
 | 🐟 [**Grouper**](/grouper) | <img src="/img/os/ubuntu.svg" width="20" /> [Ubuntu 26.04](https://ubuntu.com) | Experimental |
 | 🐡 [**Flounder**](/flounder) | <img src="/img/os/debian.svg" width="20" /> [Debian Trixie (13)](https://debian.org) | Production |
