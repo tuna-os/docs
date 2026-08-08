@@ -28,6 +28,7 @@ import {
   onProse,
   frontmatter,
   subFrontmatter,
+  isSyncedIndex,
   getStatusBanner,
   slugify,
   listOrgRepos,
@@ -314,6 +315,50 @@ test('subFrontmatter emits a title', () => {
   const fm = subFrontmatter('Testing', 5);
   assert.match(fm, /sidebar_position: 5/);
   assert.match(fm, /title: "Testing"/);
+});
+
+// ── isSyncedIndex ─────────────────────────────────────────────────────────────
+//
+// ste-lint asks isSyncedIndex which docs/<slug>/ trees this script owns, and
+// skips those trees because the next sync overwrites them. The matcher is
+// written out separately from the template it matches, so these cases feed the
+// template's real output through it: change frontmatter() without changing the
+// matcher and this fails, instead of a tree quietly leaving or entering the
+// style budget.
+
+console.log('\nisSyncedIndex');
+
+test('matches what frontmatter() writes', () => {
+  assert.ok(isSyncedIndex(frontmatter('Corral', 101, 'corral', 'stable')));
+  assert.ok(isSyncedIndex(frontmatter('X', 1, 'x', null)), 'including the unknown-status default');
+});
+
+test('matches an index page with its body and status banner', () => {
+  const page = frontmatter('Tromsø', 1, 'tromso', 'alpha') +
+    getStatusBanner('alpha') + '\n\nThe image builds with BuildStream.\n';
+  assert.ok(isSyncedIndex(page));
+});
+
+test('rejects front matter a person typed', () => {
+  // docs/mariner/index.md — the same three keys, no blank line before status.
+  assert.ok(!isSyncedIndex(
+    '---\nsidebar_position: 1\nsidebar_label: "Mariner"\nstatus: alpha\n---\n\nMariner.\n',
+  ));
+});
+
+test('rejects a subpage template', () => {
+  // subFrontmatter is sidebar_position plus a quoted title, which is also what
+  // a hand-written page uses — docs/flatpak/guide.md has exactly that shape and
+  // no upstream repo. Only the index template decides.
+  assert.ok(!isSyncedIndex(subFrontmatter('Contributing', 2)));
+});
+
+test('rejects a page with no front matter', () => {
+  assert.ok(!isSyncedIndex('# Mandelbrot\n\nA Matrix client.\n'));
+});
+
+test('rejects front matter that is not at the start of the file', () => {
+  assert.ok(!isSyncedIndex('Intro paragraph.\n\n' + frontmatter('X', 1, 'x', 'alpha')));
 });
 
 // ── getStatusBanner ───────────────────────────────────────────────────────────

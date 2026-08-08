@@ -1,16 +1,30 @@
 name: Lint
 
+# scripts/** and .ste-budget are here because this workflow is what runs them:
+# js-syntax runs scripts/**/*.test.mjs, and the ste job runs scripts/ste-lint.mjs
+# against the budget in .ste-budget. Without them a change to the checker, to its
+# tests, or to the number they are measured against merged with no job having
+# looked at it.
+#
+# blog/** is deliberately still absent, and that is a gap rather than a decision:
+# ste-lint counts blog posts towards the budget wherever it runs, so a blog-only
+# PR can push the total over the budget and only be caught by the next PR that
+# happens to touch docs/**. Adding it is correct and is left to a separate change.
 on:
   pull_request:
     paths:
       - 'docs/**'
       - '*.md'
+      - 'scripts/**'
+      - '.ste-budget'
       - '.github/workflows/lint.yml'
   push:
     branches: [main]
     paths:
       - 'docs/**'
       - '*.md'
+      - 'scripts/**'
+      - '.ste-budget'
   workflow_dispatch:
 
 permissions:
@@ -105,6 +119,10 @@ jobs:
       #
       # Generated docs under docs/<slug>/ are skipped: sync-org-docs.mjs
       # overwrites them from each source repo, so the fix belongs upstream.
+      # Which trees those are is decided by the sync's own index-page template,
+      # not guessed from the links a file happens to contain (#102). The run
+      # prints the list, so a tree that enters or leaves the budget is visible
+      # in the log rather than only in the total.
       - name: STE budget
         run: |
           node scripts/ste-lint.mjs --summary
