@@ -60,7 +60,7 @@
       "Name": "tuna-os/tavern",
       "Images": [
         {
-          "Digest": "sha256:a02f4fb146a19dc7524f8add0bf548f51e82e25337ca0b7c4cacc19f811aba8f",
+          "Digest": "sha256:dca3caec2917a53c88637ea271912a62249c3f8ed9a1a1cb568e256e89dc694b",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -74,13 +74,13 @@
             "org.flatpak.installed-size": "519680",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAAH7gAAdA==",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.tavern\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=tavern\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=home;/home/linuxbrew:ro;\n\n[Session Bus Policy]\norg.freedesktop.Flatpak=talk\norg.tunaos.tavern.SearchProvider=own\n\n[Environment]\nHOMEBREW_NO_AUTO_UPDATE=1\n",
-            "org.flatpak.timestamp": "1784587563",
-            "org.flatpak.download-size": "147027",
-            "org.flatpak.commit": "2a2146d3d52e0708f607dec6e640796efd14d786e979d0a9aad8426b993e0355",
-            "org.flatpak.subject": "Built from 6b9d20a76487e4582fb01972c77f22947d95765d",
+            "org.flatpak.timestamp": "1786155456",
+            "org.flatpak.download-size": "147023",
+            "org.flatpak.commit": "74d066563e4da9a849df3f610c41c6ce4044ad5832e3be5232e1678f567955a5",
+            "org.flatpak.subject": "Built from 8a62e44825a3e9c57168025cfbb77159764f6e15",
             "org.flatpak.body": "Name: org.tunaos.tavern\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MudGF2ZXJuL3g4Nl82NC9tYXN0ZXIAAHM=",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAAChFMAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAAChFEAdA==",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MudGF2ZXJuL3g4Nl82NC9tYXN0ZXIAJABhcw=="
           }
         }
