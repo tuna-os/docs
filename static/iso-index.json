@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-04T13:56:40.085Z",
+  "generatedAt": "2026-08-08T01:08:36.422Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 165,
+  "count": 170,
   "categories": [
     {
       "id": "live-isos",
@@ -11,6 +11,16 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "yellowfin-kde-nvidia-latest",
+          "path": "live-isos/yellowfin-kde-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-nvidia-latest.iso",
+          "size": 7583039488,
+          "modified": "2026-08-07T21:38:43.526024705Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "albacore-latest",
@@ -190,6 +200,16 @@
           "modified": "2026-07-13T08:42:20.889979022Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-kde-nvidia-10-x86_64",
+          "path": "live-isos/yellowfin-kde-nvidia-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-nvidia-10-x86_64.iso",
+          "size": 7583039488,
+          "modified": "2026-08-07T21:38:43.526024705Z",
+          "arch": "x86_64",
+          "latest": false
         },
         {
           "category": "live-isos",
@@ -1123,6 +1143,16 @@
       "isos": [
         {
           "category": "browser-iso",
+          "name": "aurora-stable",
+          "path": "browser-iso/31127910346/aurora-stable.iso",
+          "url": "https://download.tunaos.org/browser-iso/31127910346/aurora-stable.iso",
+          "size": 9163413504,
+          "modified": "2026-08-06T22:14:57.493307145Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "browser-iso",
           "name": "flounder-xfce",
           "path": "browser-iso/30597566765/flounder-xfce.iso",
           "url": "https://download.tunaos.org/browser-iso/30597566765/flounder-xfce.iso",
@@ -1349,8 +1379,28 @@
       "blurb": "",
       "icon": "📀",
       "order": 99,
-      "checksums": "https://download.tunaos.org/tacklebox/bazzite-aio-SHA256SUMS-20260804-74264fb",
+      "checksums": "https://download.tunaos.org/tacklebox/bazzite-gnome-SHA256SUMS-20260805-74264fb",
       "isos": [
+        {
+          "category": "tacklebox",
+          "name": "bazzite-gnome-latest",
+          "path": "tacklebox/bazzite-gnome-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-gnome-latest.iso",
+          "size": 12086083584,
+          "modified": "2026-08-05T09:56:59.080234940Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-kde-latest",
+          "path": "tacklebox/bazzite-kde-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-kde-latest.iso",
+          "size": 13460373504,
+          "modified": "2026-08-05T08:06:23.097681411Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "tacklebox",
           "name": "bazzite-aio-latest",
@@ -1373,26 +1423,6 @@
         },
         {
           "category": "tacklebox",
-          "name": "bazzite-gnome-latest",
-          "path": "tacklebox/bazzite-gnome-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/bazzite-gnome-latest.iso",
-          "size": 12080578560,
-          "modified": "2026-07-29T09:56:24.097144953Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "tacklebox",
-          "name": "bazzite-kde-latest",
-          "path": "tacklebox/bazzite-kde-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/bazzite-kde-latest.iso",
-          "size": 13454802944,
-          "modified": "2026-07-29T07:56:11.077597635Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "tacklebox",
           "name": "tacklebox-poc-dedup-latest",
           "path": "tacklebox/tacklebox-poc-dedup-latest.iso",
           "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-latest.iso",
@@ -1410,6 +1440,26 @@
           "modified": "2026-07-27T08:42:37.046128230Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-gnome-20260805-74264fb",
+          "path": "tacklebox/bazzite-gnome-20260805-74264fb.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-gnome-20260805-74264fb.iso",
+          "size": 12086083584,
+          "modified": "2026-08-05T09:56:59.080234940Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-kde-20260805-74264fb",
+          "path": "tacklebox/bazzite-kde-20260805-74264fb.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-kde-20260805-74264fb.iso",
+          "size": 13460373504,
+          "modified": "2026-08-05T08:06:23.097681411Z",
+          "arch": "",
+          "latest": false
         },
         {
           "category": "tacklebox",
