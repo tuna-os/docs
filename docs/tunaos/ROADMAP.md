@@ -3,7 +3,7 @@ sidebar_position: 3
 title: "Roadmap"
 ---
 
-**Last updated**: 2026-07-01 | **Maintainer**: tuna-os (hanthor)
+**Last updated**: 2026-08-08 (correction) | **Maintainer**: tuna-os (hanthor)
 
 ---
 
@@ -13,7 +13,7 @@ Bring a modern, cloud-native experience to the Enterprise Linux Desktop. tunaOS 
 
 ---
 
-## Current Status (July 2026)
+## Current Status (August 2026)
 
 ### Active Variants
 
@@ -33,15 +33,15 @@ Bring a modern, cloud-native experience to the Enterprise Linux Desktop. tunaOS 
 
 CI pipeline builds are green on amd64, amd64-v2, and arm64 for core variants.
 
-⚠️ **ACTIVE INCIDENT**: ISO downloads broken (#543, #561). Zero downloadable releases since June 8, 2026 (23 days). Only GNOME tags exist. KDE, COSMIC, Niri, XFCE have installer repos but no release tags.
+✅ **Downloads VERIFIED WORKING** (2026-08-08): tunaos.org/download serves 170 ISOs from R2 (newest 08-07, HTTP 200 GB-scale). ⚠️ **Remaining gap**: GitHub Releases page silently stale since 07-12 — daily Generate Release skips on SBOM artifact-name mismatch (`sbom-*-gnome-*` → `sbom-*-<flavor>-*`); release tags are empty shells. See #1106. #936 (tacklebox pin) still open as live-boot fix hold.
 
 ### Community
 
-- 47 stars, 2 forks
+- 55 stars, 2 forks
 - CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md published (June 2026)
 - Discussions enabled
 - Multi-agent development active (architect, guide, sec-check, quality, CI, outreach)
-- 34+ community outreach issues filed
+- 34+ community outreach issues filed; product-readiness gate (#563) resolved
 
 ---
 
@@ -69,27 +69,28 @@ CI pipeline builds are green on amd64, amd64-v2, and arm64 for core variants.
 
 ---
 
-## Q3 2026 (July–September) — "Expand" 🔴 BLOCKED
+## Q3 2026 (July–September) — "Expand" 🟡 IN PROGRESS
 
 **Theme**: Expand variant coverage, harden architecture, grow community.
 
-⚠️ **Q3 blocked by**: ISO downloads broken (#543, #561), only GNOME shipping, Q3 milestone empty (#562), outreach outpacing product (#563).
+**Mid-quarter update (2026-08-08)**: Q3 milestone populated; CI green; **downloads verified working** (170 ISOs, newest 08-07). Remaining gaps: Bonito (Fedora 44) GA (#272), external contributor onboarding, GitHub Releases page asset gap (#1106).
 
 | Goal | Owner | Tracking | Status |
 |------|-------|----------|--------|
-| **Fix ISO downloads** | ci-maintainer | #543, #561 | 🔴 BLOCKER |
-| Bonito (Fedora 44) GA | ci-maintainer | — | ⬜ Not started |
-| Ship KDE, COSMIC, Niri, XFCE variants | ci-maintainer | #562 | ⬜ Not started |
-| Containerfile deduplication | architect | #305 | 🟡 In progress |
-| Hardcoded registry → configurable | architect | #304 | 🟡 In progress |
-| Justfile modular decomposition | architect | #308 | 🟡 In progress |
-| Migration guide (Silverblue/Kinoite/UB) | guide | #273 | ⬜ Not started |
+| **Fix ISO downloads** | ci-maintainer | #543, #561 | ✅ Done — downloads verified working (R2, 08-07) |
+| Bonito (Fedora 44) GA | ci-maintainer | #272 | 🟡 In progress (Q3 milestone) |
+| Ship KDE, COSMIC, Niri, XFCE variants | ci-maintainer | #285 | ✅ Done — all desktops downloadable on tunaos.org |
+| GitHub Releases page carries ISO assets | ci-maintainer | #1106 | 🟡 Gap — SBOM-name skip since 07-12 |
+| Containerfile deduplication | architect | #305 | ✅ Done |
+| Hardcoded registry → configurable | architect | #304 | ✅ Done |
+| Justfile modular decomposition | architect | #308 | ✅ Done |
+| Migration guide (Silverblue/Kinoite/UB) | guide | #273 | ✅ Done (MIGRATION.md) |
 | mdBook → tunaos.org centralized | guide | — | ✅ Done |
-| Semantic versioning adoption | strategist | #274 | ⬜ Not started |
+| Versioning policy documented | strategist | #274 | ✅ Done (VERSIONING.md, date-based + tiers) |
 | External contributor onboarding | guide | — | ⬜ Not started |
-| Weekly boot report as build gate | ci-maintainer | #285 | 🟡 In progress |
-| Outreach sequencing | strategist | #563 | 🔴 Gap |
-| Populate Q3 milestone | strategist | #562 | 🔴 Gap |
+| Weekly boot report as build gate | ci-maintainer | #989 | 🟡 In progress |
+| Outreach sequencing | strategist | #563 | ✅ Done (gate lifted) |
+| Populate Q3 milestone | strategist | #562 | ✅ Done (2026-08-08, 9 issues) |
 
 ---
 
@@ -103,9 +104,10 @@ CI pipeline builds are green on amd64, amd64-v2, and arm64 for core variants.
 | Upstream snapshot automation | ci-maintainer | #307 |
 | Branch protection + required CI | strategist | CI health |
 | Supply chain hardening | sec-check | #212, #301 |
-| Release automation | ci-maintainer | CI health, semver |
+| Release automation | ci-maintainer | CI health, VERSIONING.md |
 | Community governance model | strategist | — |
 | Package signing / SBOM | sec-check | Supply chain |
+| Bonito (Fedora 44) GA carryover | ci-maintainer | #272 |
 
 ---
 
@@ -138,4 +140,4 @@ This roadmap is maintained by the strategist agent. Updates published after majo
 See [SECURITY.md](https://github.com/tuna-os/tunaOS/blob/main/SECURITY.md) for vulnerability reporting.
 
 ---
-*Generated by strategist agent at ACMM L6. Updated for Q3 2026 start. Signed-off-by: hanthor-hive-agent[bot] &lt;290068839+hanthor-hive-agent[bot]@users.noreply.github.com&gt;*
+*Generated by strategist agent at ACMM L6. Updated 2026-08-08 for Q3 mid-quarter. Signed-off-by: hanthor-hive-agent[bot] &lt;290068839+hanthor-hive-agent[bot]@users.noreply.github.com&gt;*

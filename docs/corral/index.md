@@ -66,7 +66,9 @@ VMs are cattle. Stop treating each one like a networking project.
   bootable container image and boots it as a VM. Browse/install from the web
   UI's **Extensions** tab too. The core binary stays lean.
 - **Point-and-shoot TUI.** Run `corral` bare for a Bubble Tea interface:
-  pick a VM, hit Start / Stop / SSH / VNC / Delete, or toggle which ports
+  pick a VM, hit Start / Stop / SSH / VNC / Delete, browse and restore
+  **snapshots** on any backend that has them, read a VM's **events**, mark a
+  **template**, resize CPU/RAM (VMs *and* CTs), or toggle which ports
   (SSH, VNC, RDP, HTTP, …) are published to the tailnet as
   `<name>-vm.your-tailnet.ts.net`.
 - **A Proxmox-style web UI.** `corral web` serves a dark, mobile-friendly
@@ -91,6 +93,18 @@ One line — detects OS/arch, installs the rolling-release binary to
 ```bash
 curl -fsSL https://raw.githubusercontent.com/tuna-os/corral/main/scripts/install.sh | sh
 ```
+
+<details>
+<summary>…or via <code>brew</code> (Linux &amp; macOS)</summary>
+
+Tagged releases land in the [tuna-os tap](https://github.com/tuna-os/homebrew-tap),
+so `brew upgrade` keeps you current. The formula is `corral-vm` (homebrew/core
+already has an unrelated `corral`), but it still installs the `corral` command:
+
+```bash
+brew install tuna-os/tap/corral-vm
+```
+</details>
 
 <details>
 <summary>…or grab the binary yourself</summary>
@@ -139,6 +153,19 @@ install corral ~/.local/bin/
 </details>
 
 Optional: `corral completion fish | source` (bash/zsh/fish, via Cobra).
+
+**Run the dashboard as a service.** One command installs a systemd unit so
+`corral web` starts at boot and restarts on failure:
+
+```bash
+corral web service install                  # per-user unit (no root)
+corral web service install --system \        # or machine-wide (run under sudo)
+  --addr "$(tailscale ip -4):8006"
+corral web service status                    # / uninstall / print
+```
+
+Per-user units need lingering to run while logged out:
+`sudo loginctl enable-linger "$USER"`.
 
 Development tasks run through [`just`](https://github.com/casey/just): `just`
 lists them — `build`, `test`, `vet`, `ci` (the pre-push gate), and
