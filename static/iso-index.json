@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-07T18:46:11.350Z",
+  "generatedAt": "2026-08-08T01:08:36.422Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 168,
+  "count": 170,
   "categories": [
     {
       "id": "live-isos",
@@ -11,6 +11,16 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "yellowfin-kde-nvidia-latest",
+          "path": "live-isos/yellowfin-kde-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-nvidia-latest.iso",
+          "size": 7583039488,
+          "modified": "2026-08-07T21:38:43.526024705Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "albacore-latest",
@@ -190,6 +200,16 @@
           "modified": "2026-07-13T08:42:20.889979022Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-kde-nvidia-10-x86_64",
+          "path": "live-isos/yellowfin-kde-nvidia-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-nvidia-10-x86_64.iso",
+          "size": 7583039488,
+          "modified": "2026-08-07T21:38:43.526024705Z",
+          "arch": "x86_64",
+          "latest": false
         },
         {
           "category": "live-isos",
