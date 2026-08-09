@@ -8,7 +8,7 @@ import {VARIANTS} from './src/data/variants';
 
 // Navbar dropdowns derive from the same shared data as the /projects grid
 // and each project's own landing page — a hand-maintained 3rd/4th copy of
-// this list is exactly how bootc-migrate-composefs and Grouper went missing
+// this list is exactly how bootc-migrate and Grouper went missing
 // from menus that already listed every one of their siblings.
 const variantNavItems = VARIANTS.map((v) => ({
   to: `/${v.id}`,
