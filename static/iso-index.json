@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-09T18:32:13.103Z",
+  "generatedAt": "2026-08-10T01:16:15.879Z",
   "baseUrl": "https://download.tunaos.org",
   "count": 184,
   "categories": [
@@ -11,6 +11,56 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "skipjack-latest",
+          "path": "live-isos/skipjack-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-latest.iso",
+          "size": 7072120832,
+          "modified": "2026-08-09T23:56:49.037316410Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-latest",
+          "path": "live-isos/yellowfin-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-latest.iso",
+          "size": 6959923200,
+          "modified": "2026-08-09T23:55:34.002306390Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-latest",
+          "path": "live-isos/albacore-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-latest.iso",
+          "size": 8650096640,
+          "modified": "2026-08-09T23:55:08.065550506Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-latest",
+          "path": "live-isos/bonito-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-latest.iso",
+          "size": 8290762752,
+          "modified": "2026-08-09T23:54:14.023782176Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-latest",
+          "path": "live-isos/bonito-rawhide-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-latest.iso",
+          "size": 7368671232,
+          "modified": "2026-08-09T23:52:53.017861915Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "albacore-niri-nvidia-latest",
@@ -133,56 +183,6 @@
         },
         {
           "category": "live-isos",
-          "name": "albacore-latest",
-          "path": "live-isos/albacore-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-latest.iso",
-          "size": 6530269184,
-          "modified": "2026-08-03T00:21:51.029491171Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "yellowfin-latest",
-          "path": "live-isos/yellowfin-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-latest.iso",
-          "size": 5694947328,
-          "modified": "2026-08-03T00:20:31.009805754Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-latest",
-          "path": "live-isos/bonito-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-latest.iso",
-          "size": 6278217728,
-          "modified": "2026-08-03T00:17:53.094314165Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-rawhide-latest",
-          "path": "live-isos/bonito-rawhide-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-latest.iso",
-          "size": 6287851520,
-          "modified": "2026-08-03T00:17:51.048504266Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-latest",
-          "path": "live-isos/skipjack-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-latest.iso",
-          "size": 5756485632,
-          "modified": "2026-07-27T00:24:42.097606115Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
           "name": "skipjack-community-latest",
           "path": "live-isos/skipjack-community-latest.iso",
           "url": "https://download.tunaos.org/live-isos/skipjack-community-latest.iso",
@@ -270,6 +270,56 @@
           "modified": "2026-07-13T08:42:20.889979022Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-10-x86_64",
+          "path": "live-isos/skipjack-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-10-x86_64.iso",
+          "size": 7072120832,
+          "modified": "2026-08-09T23:56:49.037316410Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-10-x86_64",
+          "path": "live-isos/yellowfin-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-10-x86_64.iso",
+          "size": 6959923200,
+          "modified": "2026-08-09T23:55:34.002306390Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-10.2-x86_64",
+          "path": "live-isos/albacore-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-10.2-x86_64.iso",
+          "size": 8650096640,
+          "modified": "2026-08-09T23:55:08.065550506Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-43-x86_64",
+          "path": "live-isos/bonito-43-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-43-x86_64.iso",
+          "size": 8290762752,
+          "modified": "2026-08-09T23:54:14.023782176Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-45-x86_64",
+          "path": "live-isos/bonito-rawhide-45-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-45-x86_64.iso",
+          "size": 7368671232,
+          "modified": "2026-08-09T23:52:53.017861915Z",
+          "arch": "x86_64",
+          "latest": false
         },
         {
           "category": "live-isos",
@@ -388,56 +438,6 @@
           "url": "https://download.tunaos.org/live-isos/yellowfin-kde-nvidia-10-x86_64.iso",
           "size": 7583039488,
           "modified": "2026-08-07T21:38:43.526024705Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "albacore-10.2-x86_64",
-          "path": "live-isos/albacore-10.2-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-10.2-x86_64.iso",
-          "size": 6530269184,
-          "modified": "2026-08-03T00:21:51.029491171Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "yellowfin-10-x86_64",
-          "path": "live-isos/yellowfin-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-10-x86_64.iso",
-          "size": 5694947328,
-          "modified": "2026-08-03T00:20:31.009805754Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-43-x86_64",
-          "path": "live-isos/bonito-43-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-43-x86_64.iso",
-          "size": 6278217728,
-          "modified": "2026-08-03T00:17:53.094314165Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-rawhide-45-x86_64",
-          "path": "live-isos/bonito-rawhide-45-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-45-x86_64.iso",
-          "size": 6287851520,
-          "modified": "2026-08-03T00:17:51.048504266Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-10-x86_64",
-          "path": "live-isos/skipjack-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-10-x86_64.iso",
-          "size": 5756485632,
-          "modified": "2026-07-27T00:24:42.097606115Z",
           "arch": "x86_64",
           "latest": false
         },
