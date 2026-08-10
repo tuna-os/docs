@@ -5,7 +5,7 @@ sidebar_label: "Migrating from Bluefin"
 
 # Migrating an existing Bluefin to Dakota (ComposeFS)
 
-[`bootc-migrate-composefs`](https://github.com/tuna-os/bootc-migrate-composefs)
+[`bootc-migrate`](https://github.com/tuna-os/bootc-migrate)
 converts an in-place, already-installed **OSTree-backed Bluefin** system into
 a **ComposeFS-backed Dakota** system. There is no reinstall: `/home`, `/var`,
 `/etc` customizations, flatpaks, container storage, and user accounts all
@@ -19,7 +19,7 @@ whole time, and the migration is reversible up until you run `commit`.
 The easiest way in is the terminal wizard — no flags to remember:
 
 ```bash
-sudo bootc-migrate-composefs tui
+sudo bootc-migrate tui
 ```
 
 It walks through target image selection, a plain-English review of exactly
@@ -41,22 +41,22 @@ needs root, because the wizard spawns the migration at that point.
 ```bash
 # 1. Get the migrator
 curl -fsSL -o bmc.tar.gz \
-  https://github.com/tuna-os/bootc-migrate-composefs/releases/latest/download/bootc-migrate-composefs-x86_64-unknown-linux-gnu.tar.gz
+  https://github.com/tuna-os/bootc-migrate/releases/latest/download/bootc-migrate-x86_64-unknown-linux-gnu.tar.gz
 tar xzf bmc.tar.gz
-sudo install -m755 bootc-migrate-composefs /usr/local/bin/
+sudo install -m755 bootc-migrate /usr/local/bin/
 
 # 2. Dry-run — makes no changes, just checks your system is ready
-sudo bootc-migrate-composefs --target-image ghcr.io/projectbluefin/dakota:stable --dry-run
+sudo bootc-migrate --target-image ghcr.io/projectbluefin/dakota:stable --dry-run
 
 # 3. Migrate (~5–25 min depending on cache/network)
-sudo bootc-migrate-composefs --target-image ghcr.io/projectbluefin/dakota:stable
+sudo bootc-migrate --target-image ghcr.io/projectbluefin/dakota:stable
 
 # 4. Reboot — the new composefs entry is the default
 sudo systemctl reboot
 
 # 5. Confirm, then make it permanent
 cat /proc/cmdline | grep -o 'composefs=[0-9a-f]*'
-sudo bootc-migrate-composefs commit   # one-way; removes the OSTree fallback
+sudo bootc-migrate commit   # one-way; removes the OSTree fallback
 ```
 
 :::warning
@@ -67,7 +67,7 @@ until you've rebooted and confirmed everything works.
 
 For the full phase-by-phase breakdown, filesystem support (Bluefin LTS/XFS,
 LVM, LUKS, dedicated `/var`), rollback, and how to fix problems, see the
-[project README](https://github.com/tuna-os/bootc-migrate-composefs#usage--end-to-end-walkthrough).
+[project README](https://github.com/tuna-os/bootc-migrate#usage--end-to-end-walkthrough).
 
 ## See also
 

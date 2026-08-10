@@ -1,7 +1,6 @@
 import type {ReactNode} from 'react';
-import ProjectLanding from '@site/src/components/ProjectLanding';
-import {getProject} from '@site/src/data/projects';
+import {Redirect} from '@docusaurus/router';
 
 export default function BootcMigrateComposefsPage(): ReactNode {
-  return <ProjectLanding project={getProject('bootc-migrate-composefs')!} />;
+  return <Redirect to="/bootc-migrate" />;
 }

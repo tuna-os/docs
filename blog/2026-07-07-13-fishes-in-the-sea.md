@@ -39,7 +39,7 @@ sudo bootc switch ghcr.io/tuna-os/marlin:kde-hwe
 
 :::note
 
-`bootc switch` works within the same storage backend — both source and target images must use either ComposeFS or OSTree. Cross-backend migration (e.g. OSTree &rarr; ComposeFS) requires [`bootc-migrate-composefs`](https://github.com/tuna-os/bootc-migrate-composefs) `[alpha]`.
+`bootc switch` works within the same storage backend — both source and target images must use either ComposeFS or OSTree. Cross-backend migration (e.g. OSTree &rarr; ComposeFS) requires [`bootc-migrate`](https://github.com/tuna-os/bootc-migrate) `[alpha]`.
 
 :::
 
@@ -114,7 +114,7 @@ Same story as XFCE — no dedicated layer yet. If you want to be the person who 
 
 - Getting CI actually green across all 12 variants on all platforms (we're not there yet, not going to pretend otherwise)
 - More desktops — [Hyprland](https://hyprland.org/), [Sway](https://swaywm.org/), [Budgie](https://buddiesofbudgie.org/) are basically just a manifest file away at this point
-- Cross-backend migration — [`bootc-migrate-composefs`](https://github.com/tuna-os/bootc-migrate-composefs) (alpha) does OSTree &rarr; ComposeFS in place, cross-family (AlmaLinux &rarr; Arch) is the next hard problem
+- Cross-backend migration — [`bootc-migrate`](https://github.com/tuna-os/bootc-migrate) (alpha) does OSTree &rarr; ComposeFS in place, cross-family (AlmaLinux &rarr; Arch) is the next hard problem
 - Letting people contribute a desktop definition without having to touch the actual build scripts
 
 ## Credit where it's due
