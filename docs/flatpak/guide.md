@@ -84,5 +84,5 @@ flatpak update --check
 ## See Also
 
 - [Office Suite](/office) — Tables, Decks, Letters overview
-- [Tavern Guide](/tavern/guide) — guide to the Homebrew GUI
+- [Tavern Guide](/docs/tavern/guide) — guide to the Homebrew GUI
 - [Flatpak Documentation](https://docs.flatpak.org) — official Flatpak docs
