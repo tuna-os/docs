@@ -6,14 +6,14 @@ name: Lint
 # tests, or to the number they are measured against merged with no job having
 # looked at it.
 #
-# blog/** is deliberately still absent, and that is a gap rather than a decision:
-# ste-lint counts blog posts towards the budget wherever it runs, so a blog-only
-# PR can push the total over the budget and only be caught by the next PR that
-# happens to touch docs/**. Adding it is correct and is left to a separate change.
+# blog/** is here for the same reason: ste-lint counts blog posts towards the
+# budget wherever it runs, so without the filter a blog-only PR could push the
+# total over the budget and only be caught by the next PR touching docs/**.
 on:
   pull_request:
     paths:
       - 'docs/**'
+      - 'blog/**'
       - '*.md'
       - 'scripts/**'
       - '.ste-budget'
@@ -22,6 +22,7 @@ on:
     branches: [main]
     paths:
       - 'docs/**'
+      - 'blog/**'
       - '*.md'
       - 'scripts/**'
       - '.ste-budget'

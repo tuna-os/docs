@@ -6,8 +6,8 @@ sidebar_label: "Office Suite"
 # 🏢 TunaOS Office Suite
 
 A native office suite for GNOME — three apps written in **Rust** with
-**GTK 4** and **Libadwaita**, sharing one document-engine foundation,
-distributed as Flatpaks.
+**GTK 4** and **Libadwaita**. They use a common document engine and
+we distribute them as Flatpaks.
 
 | App | Description | Install |
 |---|---|---|
@@ -45,17 +45,17 @@ Regenerated automatically from the real apps by CI:
   with the UI as a thin shell. The formula engine is
   [IronCalc](https://ironcalc.com); DOCX I/O is
   [rdocx](https://github.com/tensorbee/rdocx).
-- **📏 Measured LibreOffice parity, not claimed** — every persisting
-  feature is proven by tests that run our files through a headless
-  LibreOffice in CI: 65 oracle tests, LibreOffice-authored corpora, and
-  a CommonMark round-trip ratchet at 630/652. See
+- **📏 Measured LibreOffice parity, not claimed** — tests prove every
+  feature. We test files with headless LibreOffice in CI.
+  We maintain 65 oracle tests, LibreOffice corpora, and a CommonMark
+  round-trip ratchet at 630/652. See
   [PARITY.md](https://github.com/tuna-os/gtk-office-suite/blob/main/docs/PARITY.md).
-- **⌨️ Powerful without clutter** — a Ctrl+K command palette lists every
-  action with its shortcut in all three apps; selection raises the
-  formatting you need; status bars are live (word count and style in
-  Letters, Sum/Avg/Count in Tables, slide/object readout in Decks).
+- **⌨️ Strong without clutter** — a Ctrl+K command palette lists every
+  action with its shortcut in all three apps. Selection shows the format
+  controls you need. Status bars are live (word count and style in Letters,
+  Sum/Avg/Count in Tables, slide/object readout in Decks).
 - **🎨 GNOME native** — libadwaita chrome, adaptive layouts, AT-SPI
-  accessible; the smoke-test suite drives the apps through a screen
+  accessible. The smoke-test suite drives the apps through a screen
   reader's eyes on every push.
 
 ## Source

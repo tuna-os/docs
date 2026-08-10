@@ -6,6 +6,8 @@ tags: [tunaos, contributing, community, good-first-issue, onboarding]
 date: 2026-08-08
 ---
 
+<!-- ste-disable-file: a dated blog post; its wording is a published record. The findings here are the author's first-person voice, and editing a published post to satisfy a style checker would rewrite the record rather than improve a manual. STE governs the documentation, not the changelog. -->
+
 TunaOS is a small project with an outsized goal: an enterprise-grade, cloud-native
 desktop that tracks current software without abandoning Enterprise Linux
 lifecycles. It is built by a small core team — and it should not stay that way.
