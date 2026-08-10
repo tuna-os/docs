@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-10T01:16:15.879Z",
+  "generatedAt": "2026-08-10T12:55:31.275Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 184,
+  "count": 186,
   "categories": [
     {
       "id": "live-isos",
@@ -11,6 +11,26 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "marlin-kde-latest",
+          "path": "live-isos/marlin-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-kde-latest.iso",
+          "size": 5480382464,
+          "modified": "2026-08-10T05:56:36.789024249Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-gnome-latest",
+          "path": "live-isos/marlin-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-gnome-latest.iso",
+          "size": 5148246016,
+          "modified": "2026-08-10T05:55:40.142459678Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "skipjack-latest",
@@ -153,26 +173,6 @@
         },
         {
           "category": "live-isos",
-          "name": "marlin-kde-latest",
-          "path": "live-isos/marlin-kde-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-kde-latest.iso",
-          "size": 5486936064,
-          "modified": "2026-08-08T04:51:20.780024728Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-gnome-latest",
-          "path": "live-isos/marlin-gnome-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-gnome-latest.iso",
-          "size": 5148246016,
-          "modified": "2026-08-08T04:50:22.777562202Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
           "name": "yellowfin-kde-nvidia-latest",
           "path": "live-isos/yellowfin-kde-nvidia-latest.iso",
           "url": "https://download.tunaos.org/live-isos/yellowfin-kde-nvidia-latest.iso",
@@ -270,6 +270,26 @@
           "modified": "2026-07-13T08:42:20.889979022Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-kde--x86_64",
+          "path": "live-isos/marlin-kde--x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-kde--x86_64.iso",
+          "size": 5480382464,
+          "modified": "2026-08-10T05:56:36.789024249Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-gnome--x86_64",
+          "path": "live-isos/marlin-gnome--x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-gnome--x86_64.iso",
+          "size": 5148246016,
+          "modified": "2026-08-10T05:55:40.142459678Z",
+          "arch": "x86_64",
+          "latest": false
         },
         {
           "category": "live-isos",
@@ -408,26 +428,6 @@
           "url": "https://download.tunaos.org/live-isos/yellowfin-cosmic-nvidia-10-x86_64.iso",
           "size": 6957367296,
           "modified": "2026-08-08T05:31:29.556805924Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-kde--x86_64",
-          "path": "live-isos/marlin-kde--x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-kde--x86_64.iso",
-          "size": 5486936064,
-          "modified": "2026-08-08T04:51:20.780024728Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-gnome--x86_64",
-          "path": "live-isos/marlin-gnome--x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-gnome--x86_64.iso",
-          "size": 5148246016,
-          "modified": "2026-08-08T04:50:22.777562202Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -1519,8 +1519,28 @@
       "blurb": "",
       "icon": "📀",
       "order": 99,
-      "checksums": "https://download.tunaos.org/tacklebox/bazzite-gnome-SHA256SUMS-20260805-74264fb",
+      "checksums": "https://download.tunaos.org/tacklebox/SHA256SUMS-20260810-32e3ff7",
       "isos": [
+        {
+          "category": "tacklebox",
+          "name": "tacklebox-poc-dedup-latest",
+          "path": "tacklebox/tacklebox-poc-dedup-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-latest.iso",
+          "size": 1795358720,
+          "modified": "2026-08-10T06:20:53.018936691Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "tacklebox-poc-perenv-latest",
+          "path": "tacklebox/tacklebox-poc-perenv-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-latest.iso",
+          "size": 2915958784,
+          "modified": "2026-08-10T06:19:50.044178277Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "tacklebox",
           "name": "bazzite-gnome-latest",
@@ -1563,23 +1583,23 @@
         },
         {
           "category": "tacklebox",
-          "name": "tacklebox-poc-dedup-latest",
-          "path": "tacklebox/tacklebox-poc-dedup-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-latest.iso",
-          "size": 1810169856,
-          "modified": "2026-07-27T08:43:39.057141651Z",
+          "name": "tacklebox-poc-dedup-20260810-32e3ff7",
+          "path": "tacklebox/tacklebox-poc-dedup-20260810-32e3ff7.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-20260810-32e3ff7.iso",
+          "size": 1795358720,
+          "modified": "2026-08-10T06:20:53.018936691Z",
           "arch": "",
-          "latest": true
+          "latest": false
         },
         {
           "category": "tacklebox",
-          "name": "tacklebox-poc-perenv-latest",
-          "path": "tacklebox/tacklebox-poc-perenv-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-latest.iso",
-          "size": 2934636544,
-          "modified": "2026-07-27T08:42:37.046128230Z",
+          "name": "tacklebox-poc-perenv-20260810-32e3ff7",
+          "path": "tacklebox/tacklebox-poc-perenv-20260810-32e3ff7.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-20260810-32e3ff7.iso",
+          "size": 2915958784,
+          "modified": "2026-08-10T06:19:50.044178277Z",
           "arch": "",
-          "latest": true
+          "latest": false
         },
         {
           "category": "tacklebox",
