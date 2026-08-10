@@ -1,3 +1,4 @@
+import type {ReactNode} from 'react';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 
@@ -96,7 +97,7 @@ const SPONSOR_SECTIONS = [
   },
 ];
 
-export default function Support(): JSX.Element {
+export default function Support(): ReactNode {
   return (
     <Layout
       title="Support"
