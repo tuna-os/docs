@@ -279,7 +279,7 @@ function main() {
   for (const file of targets) {
     const content = readFileSync(file, 'utf8');
     const inGeneratedTree = [...generated].some((d) => file.startsWith(d + '/'));
-    if (!includeGenerated && (inGeneratedTree || isGenerated(content))) {
+    if (!includeGenerated && inGeneratedTree) {
       skipped++;
       continue;
     }

@@ -6,6 +6,8 @@ tags: [tunaos, immutable, bootc, atomic, enterprise, comparison]
 date: 2026-08-08
 ---
 
+<!-- ste-disable-file: a dated blog post; its wording is a published record. The findings here are the author's first-person voice, and editing a published post to satisfy a style checker would rewrite the record rather than improve a manual. STE governs the documentation, not the changelog. -->
+
 The "immutable desktop" space is crowded and the terminology is muddy. Fedora
 Silverblue, Bluefin, Aurora, Vanilla OS, NixOS, openSUSE MicroOS, Endless OS,
 and a growing list of bootc-based images all claim the same high ground:

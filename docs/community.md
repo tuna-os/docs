@@ -5,7 +5,7 @@ sidebar_label: "Community"
 
 # 🌐 Community
 
-Welcome to the TunaOS community! Whether you're a user, contributor, or just curious, here's how to get involved.
+Welcome to the TunaOS community! Whether you are a user, contributor, or curious, here is how to participate.
 
 ## 🗣️ Chat & Discussion
 
@@ -34,7 +34,7 @@ All contributors must follow our [Code of Conduct](https://github.com/tuna-os/tu
 
 If your organization uses TunaOS, we'd love to know!
 
-- Add your org to **[ADOPTERS.md](https://github.com/tuna-os/tunaOS/blob/main/ADOPTERS.md)** — just open a PR
+- Add your org to **[ADOPTERS.md](https://github.com/tuna-os/tunaOS/blob/main/ADOPTERS.md)** — open a PR
 - Share your setup in [GitHub Discussions](https://github.com/tuna-os/tunaOS/discussions)
 - Write a case study or blog post (we'll help promote it!)
 
@@ -50,7 +50,7 @@ If your organization uses TunaOS, we'd love to know!
 
 ## 🐠 Related Communities
 
-TunaOS is inspired by and builds upon these projects and communities:
+These projects and communities inspire TunaOS and provide its base:
 
 - [Project Bluefin](https://projectbluefin.io) — upstream bootc desktop
 - [Universal Blue](https://universal-blue.org/) — bootc image ecosystem
@@ -61,4 +61,4 @@ TunaOS is inspired by and builds upon these projects and communities:
 
 ---
 
-*Join us! Every contribution, no matter how small, helps build better Enterprise Linux desktops.*
+*Join us! Every contribution, no matter how small, helps build better desktops for Enterprise Linux.*

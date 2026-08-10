@@ -13,11 +13,11 @@ TunaOS is a collection of bootc-based, immutable desktop operating system images
 
 **Is TunaOS a Linux distribution?**
 
-Yes — but not in the traditional sense. TunaOS images are bootable OCI containers, not traditional packages. You pull and switch images like containers, while getting a full desktop experience.
+Yes — but not in the traditional sense. TunaOS images are bootable OCI containers, not traditional packages. You pull images and switch between them like containers to receive a full desktop experience.
 
 **Is TunaOS free?**
 
-Yes. TunaOS is open source under the Apache 2.0 license.
+Yes. Apache 2.0 licenses TunaOS as open source.
 
 ## Installation
 
@@ -78,7 +78,7 @@ Example: `ghcr.io/tuna-os/yellowfin:gnome-gdx-hwe`
 | Older/light (4GB) | XFCE | ~600 MB |
 | Minimal/VM | XFCE or Niri | ~400-600 MB |
 
-**Can I switch desktop environments without reinstalling?**
+**Can I switch desktop environments without a fresh installation?**
 
 Yes! Use `bootc switch`:
 
@@ -116,7 +116,7 @@ This pulls the latest image and reboots into it. Rollback is one command: `sudo 
 
 **How can I contribute?**
 
-See [CONTRIBUTING.md](https://github.com/tuna-os/tunaOS/blob/main/CONTRIBUTING.md). Good first steps:
+See `CONTRIBUTING.md`. Good first steps:
 - Try a TunaOS variant and report issues
 - Improve documentation
 - Look for `good-first-issue` labels in TunaOS repos
@@ -130,12 +130,12 @@ Open an issue on the relevant GitHub repository. For general issues, use [tuna-o
 
 **What is bootc?**
 
-[bootc](https://github.com/bootc-dev/bootc) is a CNCF Sandbox project for bootable container images. Instead of traditional package-based OS updates, the entire OS is a container image that you pull, switch to, and reboot. Learn more in the [Bootc Guide](tunaos/bootc-usage.md).
+[bootc](https://github.com/bootc-dev/bootc) is a CNCF Sandbox project for bootable container images. Instead of package-based OS updates, the entire OS is a container image that you pull, switch to, and reboot. Learn more in the [Bootc Guide](tunaos/bootc-usage.md).
 
 **How are images built?**
 
-TunaOS images are built in GitHub Actions using Containerfiles. See [Building TunaOS](tunaos/building.md) and [CI/CD](tunaos/ci-cd.md).
+TunaOS images are built in GitHub Actions using Containerfiles. See [Build Guide](tunaos/building.md) and [CI/CD](tunaos/ci-cd.md).
 
 **Does TunaOS support Secure Boot?**
 
-Yes. TunaOS images support UEFI Secure Boot through the standard shim mechanism provided by the base OS.
+Yes. The base OS provides a standard shim mechanism that enables UEFI Secure Boot.

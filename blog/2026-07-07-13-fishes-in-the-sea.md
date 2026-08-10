@@ -6,6 +6,8 @@ tags: [vision, variants, architecture]
 date: 2026-07-07
 ---
 
+<!-- ste-disable-file: a dated blog post; its wording is a published record. The findings here are the author's first-person voice, and editing a published post to satisfy a style checker would rewrite the record rather than improve a manual. STE governs the documentation, not the changelog. -->
+
 # 12 Fishes in the Sea: The TunaOS Variant Landscape
 
 Picking a Linux distro has always felt weirder to me than it should be. Most of them are like 95% the same packages with 5% different defaults, and yet somehow choosing one feels like a permanent decision you're stuck with forever.
