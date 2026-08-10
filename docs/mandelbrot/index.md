@@ -7,8 +7,6 @@ feature set. It is built in Rust on GTK 4, Libadwaita, and the
 
 ## Why a fork?
 
-## Why a fork?
-
 Fractal is an active client. Some features fall outside its scope.
 Mandelbrot keeps full feature parity with Fractal — E2EE
 with verification, rich messages, moderation, and multi-account.

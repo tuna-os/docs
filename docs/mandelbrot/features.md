@@ -3,6 +3,8 @@ sidebar_position: 2
 sidebar_label: "Features"
 ---
 
+<!-- ste-disable-file: this page is a copy of tuna-os/mandelbrot docs/FEATURES.md, kept identical to it on purpose. Its prose is authored in that repository, so a rewrite here is lost at the next copy and the fix belongs upstream. docs/mandelbrot/ is hand-authored, so the tree-level generated check does not cover it. -->
+
 # Mandelbrot features
 
 Mandelbrot keeps every Fractal feature and adds the ones below. Features marked
