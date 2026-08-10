@@ -8,7 +8,7 @@ import {ISO_BASE_URL} from '@site/src/utils/isoNaming';
 import styles from './styles.module.css';
 
 type Variant = string;
-type Desktop = 'gnome' | 'gnome50' | 'kde' | 'cosmic' | 'niri';
+type Desktop = 'gnome' | 'gnome50' | 'kde' | 'cosmic' | 'niri' | 'pantheon';
 type Edition = 'standard' | 'nvidia' | 'hwe' | 'cachyos';
 type Product = 'tunaos' | 'dakota' | 'tromso' | 'xfce';
 type StepId = 'product' | 'variant' | 'desktop' | 'edition' | 'result';
@@ -110,6 +110,12 @@ const DESKTOP_OPTIONS: Option<Desktop>[] = [
     label: 'Niri',
     description: 'Unique scrollable tiling Wayland compositor. For the keyboard-driven power user.',
   },
+  {
+    value: 'pantheon',
+    emoji: '🏛️',
+    label: 'Pantheon',
+    description: 'The elegant, minimal elementary OS desktop.',
+  },
 ];
 
 // Catalog of every possible edition; which ones actually apply to a given
@@ -152,6 +158,21 @@ function getEditionOptions(variantId: Variant | undefined): Option<Edition>[] {
   return [EDITION_CATALOG.standard, ...extra.map((e) => EDITION_CATALOG[e])];
 }
 
+// Only offer desktops a variant actually ships (from the same VARIANTS data
+// that drives its landing page). Base-only variants like Hummingbird end up
+// with an empty list, which skips the desktop step entirely.
+function getDesktopOptions(variantId: Variant | undefined): Option<Desktop>[] {
+  if (!variantId) return DESKTOP_OPTIONS;
+  const variant = VARIANTS.find((v) => v.id === variantId);
+  if (!variant) return DESKTOP_OPTIONS;
+  const tags = new Set(variant.desktops.map((d) => d.tag));
+  return DESKTOP_OPTIONS.filter((o) => tags.has(o.value));
+}
+
+function hasDesktopOptions(variantId: Variant | undefined): boolean {
+  return getDesktopOptions(variantId).length > 0;
+}
+
 const STEP_LABELS: Record<StepId, string> = {
   product: 'Product',
   variant: 'Base',
@@ -181,7 +202,7 @@ function getNextStep(step: StepId, sel: Selection): StepId {
     if (sel.product === 'tunaos') return 'variant';
     return 'result'; // skip to result for non-tunaOS products
   }
-  if (step === 'variant') return 'desktop';
+  if (step === 'variant') return hasDesktopOptions(sel.variant) ? 'desktop' : 'result';
   if (step === 'desktop') return hasExtraEditions(sel.variant) ? 'edition' : 'result';
   if (step === 'edition') return 'result';
   return 'result';
@@ -193,14 +214,16 @@ function getPrevStep(step: StepId, sel: Selection): StepId | null {
   if (step === 'edition') return 'desktop';
   if (step === 'result') {
     if (sel.product !== 'tunaos') return 'product';
-    return hasExtraEditions(sel.variant) ? 'edition' : 'desktop';
+    return hasDesktopOptions(sel.variant) ? (hasExtraEditions(sel.variant) ? 'edition' : 'desktop') : 'variant';
   }
   return null;
 }
 
 function buildImageName(sel: Selection): string {
   const variant = sel.variant ?? 'albacore';
-  const desktop = sel.desktop ?? 'gnome';
+  // Base-only variants (e.g. Hummingbird) have no desktop step; fall back to
+  // their sole published flavor tag instead of a desktop that doesn't exist.
+  const desktop = sel.desktop ?? (getDesktopOptions(sel.variant)[0]?.value ?? 'base');
   return `ghcr.io/tuna-os/${variant}:${desktop}${editionSuffix(sel.edition)}`;
 }
 
@@ -225,13 +248,14 @@ function getDocsUrl(sel: Selection): string {
   if (sel.product === 'tromso') return '/tromso';
   if (sel.product === 'xfce') return '/xfce-linux';
   const variant = sel.variant ?? 'albacore';
-  const desktop = sel.desktop ?? 'gnome';
+  const desktop = sel.desktop ?? (getDesktopOptions(sel.variant)[0]?.value ?? 'base');
   return `/docs/${variant}#${desktop}${editionSuffix(sel.edition)}`;
 }
 
 function getVisibleSteps(sel: Selection): StepId[] {
   if (sel.product !== 'tunaos') return ['product', 'result'];
-  const steps: StepId[] = ['product', 'variant', 'desktop'];
+  const steps: StepId[] = ['product', 'variant'];
+  if (hasDesktopOptions(sel.variant)) steps.push('desktop');
   if (hasExtraEditions(sel.variant)) steps.push('edition');
   steps.push('result');
   return steps;
@@ -390,7 +414,8 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
         </div>
         <h3 className={styles.resultTitle}>Your TunaOS Image</h3>
         <p className={styles.resultSummary}>
-          {variantOpt?.label} · {desktopOpt?.label}
+          {variantOpt?.label}
+          {desktopOpt ? ` · ${desktopOpt?.label}` : ''}
           {editionOpt && editionOpt.value !== 'standard' ? ` · ${editionOpt.label}` : ''}
         </p>
       </div>
@@ -514,7 +539,7 @@ export default function ImagePicker(): ReactNode {
                   />
                 ))}
               {step === 'desktop' &&
-                DESKTOP_OPTIONS.map((opt) => (
+                getDesktopOptions(sel.variant).map((opt) => (
                   <OptionCard
                     key={opt.value}
                     option={opt}

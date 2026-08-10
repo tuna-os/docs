@@ -68,6 +68,7 @@ export const ALL_DESKTOPS: Desktop[] = [
   {emoji: '🚀', name: 'COSMIC', tag: 'cosmic', blurb: "System76's Rust-built next-gen desktop."},
   {emoji: '⚡', name: 'Niri', tag: 'niri', blurb: 'A scrollable-tiling Wayland compositor for keyboard-driven flow.'},
   {emoji: '🐭', name: 'XFCE', tag: 'xfce', blurb: 'The classic lightweight desktop — ported to Wayland with the new xfwl4 compositor.'},
+  {emoji: '🏛️', name: 'Pantheon', tag: 'pantheon', blurb: 'elementary OS\'s elegant, minimal desktop — GNOME apps, own shell.'},
 ];
 
 const HOMEBREW: Feature = {
@@ -240,6 +241,34 @@ export const VARIANTS: Variant[] = [
     ],
   },
   {
+    id: 'gurnard',
+    platforms: ['amd64', 'arm64'],
+    editions: [],
+    emoji: '🐟',
+    name: 'Gurnard',
+    base: 'Ubuntu 24.04',
+    baseUrl: 'https://ubuntu.com',
+    blurb: 'Ubuntu 24.04 LTS with the Pantheon desktop.',
+    lede: 'Gurnard pairs the Ubuntu 24.04 LTS base with elementary OS\'s Pantheon desktop — a familiar, elegant Ubuntu with an atomic bootc core.',
+    accent: '#7b62ff',
+    accent2: '#a08cff',
+    stats: [
+      {label: 'Status', value: 'Experimental'},
+      {label: 'Base', value: 'Ubuntu 24.04 LTS'},
+      {label: 'Arch', value: 'x86_64 + arm64'},
+    ],
+    desktops: ALL_DESKTOPS.filter((d) => d.tag === 'pantheon'),
+    features: [BOOTC, HOMEBREW, FLATHUB, {
+      emoji: '🏛️',
+      title: 'Pantheon desktop',
+      text: 'The elegant, minimal elementary OS desktop on the most familiar LTS base in Linux.',
+    }],
+    flavors: [
+      {name: 'Base', image: 'ghcr.io/tuna-os/gurnard:base'},
+      {name: 'Pantheon', image: 'ghcr.io/tuna-os/gurnard:pantheon'},
+    ],
+  },
+  {
     id: 'grouper',
     platforms: ['amd64'],
     editions: [],
@@ -268,6 +297,33 @@ export const VARIANTS: Variant[] = [
       {name: 'KDE Plasma', image: 'ghcr.io/tuna-os/grouper:kde'},
       {name: 'Niri', image: 'ghcr.io/tuna-os/grouper:niri'},
       {name: 'XFCE', image: 'ghcr.io/tuna-os/grouper:xfce'},
+    ],
+  },
+  {
+    id: 'hummingbird',
+    platforms: ['amd64', 'arm64'],
+    editions: [],
+    emoji: '🐦',
+    name: 'Hummingbird',
+    base: 'Fedora Hummingbird',
+    baseUrl: 'https://fedoraproject.org',
+    blurb: 'Container-native Fedora Hummingbird, hardened for secure boot.',
+    lede: 'Hummingbird is Fedora Hummingbird — a container-native, hardened bootc distribution with the CKI ARK kernel, rebuilt on the TunaOS base-image pipeline.',
+    accent: '#2563eb',
+    accent2: '#7dd3fc',
+    stats: [
+      {label: 'Status', value: 'Experimental'},
+      {label: 'Base', value: 'Fedora Hummingbird'},
+      {label: 'Arch', value: 'x86_64 + arm64'},
+    ],
+    desktops: [],
+    features: [BOOTC, HOMEBREW, FLATHUB, {
+      emoji: '🧪',
+      title: 'Experimental base',
+      text: 'A proving ground for the container-native Fedora Hummingbird base — desktop flavors are still being validated (see the hummingbird desktop gap notes).',
+    }],
+    flavors: [
+      {name: 'Base', image: 'ghcr.io/tuna-os/hummingbird:base'},
     ],
   },
   {
