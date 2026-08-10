@@ -150,7 +150,7 @@
       "Name": "tuna-os/tuna-installer-kde",
       "Images": [
         {
-          "Digest": "sha256:9332202cba24a026b510e7490f08dc18e5a115b9597d74e2d419cfcbe6c4dd28",
+          "Digest": "sha256:705059c5dae594b86228690eb2fa46f2c8884454120030f7993db4e5f124e5cf",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -163,15 +163,15 @@
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.InstallerKde\nruntime=org.kde.Platform/x86_64/6.9\nsdk=org.kde.Sdk/x86_64/6.9\ncommand=tuna-installer-kde\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;wayland;\ndevices=all;\nfilesystems=xdg-config/kdeglobals:ro;host;\n\n[Session Bus Policy]\ncom.canonical.AppMenu.Registrar=talk\norg.kde.kconfig.notify=talk\norg.kde.KGlobalSettings=talk\norg.freedesktop.Flatpak=talk\norg.kde.kdeconnect=talk\n\n[System Bus Policy]\norg.freedesktop.PolicyKit1=talk\n\n[Extension org.tunaos.InstallerKde.Locale]\ndirectory=share/runtime/locale\nautodelete=true\nlocale-subset=true\n\n[Extension org.tunaos.InstallerKde.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.InstallerKde.Locale;org.tunaos.InstallerKde.Debug;",
             "org.flatpak.installed-size": "242401280",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAR9knwAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAR9kdUAdA==",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAA5ywAAAdA==",
-            "org.flatpak.download-size": "70794493",
+            "org.flatpak.download-size": "70794859",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyS2RlL3g4Nl82NC9tYXN0ZXIAKgBhcw==",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyS2RlL3g4Nl82NC9tYXN0ZXIAAHM=",
             "org.flatpak.ref": "app/org.tunaos.InstallerKde/x86_64/master",
-            "org.flatpak.subject": "Built from 6212cc25eef9b158af5b50c9cb6742be1df79a62",
-            "org.flatpak.commit": "6455e3b22b145d2ff8b9f18289da55ae18086cd17651174a38be0214fad921f6",
-            "org.flatpak.timestamp": "1786216865"
+            "org.flatpak.subject": "Built from 4f150249ea5e4847cc4db77abebf4c84d3d5600e",
+            "org.flatpak.commit": "d8fff4529fa9d87cfd5756a6ccc737ccb3ecc3addf6512ad6168a618301bd069",
+            "org.flatpak.timestamp": "1786334547"
           }
         }
       ]
