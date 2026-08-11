@@ -24,6 +24,7 @@ Yes. Apache 2.0 licenses TunaOS as open source.
 **How do I install TunaOS?**
 
 Two ways:
+
 1. **Fresh install** — Download an ISO from [tunaos.org/download](https://tunaos.org/download) and write it to USB
 2. **Switch from an existing bootc system** — `sudo bootc switch ghcr.io/tuna-os/yellowfin:gnome && sudo reboot`
 
@@ -34,45 +35,65 @@ TunaOS uses bootc which manages the bootloader. Dual-boot is possible but not th
 **Which variant should I choose?**
 
 | Need | Variant | Base |
-|---|---|---|
+| --- | --- | --- |
 | Latest EL | Yellowfin | AlmaLinux Kitten 10 |
 | Stable EL | Albacore | AlmaLinux 10 |
 | Upstream EL | Skipjack | CentOS Stream 10 |
 | Fedora | Bonito | Fedora 44 |
+| Ubuntu + Pantheon | Gurnard | Ubuntu 24.04 LTS |
+| Ubuntu | Grouper | Ubuntu 26.04 |
+| Arch (Rolling) | Marlin | Arch Linux |
+| Debian | Flounder | Debian 13 (Trixie) |
+| openSUSE | Sailfin | openSUSE Tumbleweed |
+| Gentoo | Guppy | Gentoo Linux |
 | GNOME | Any `:gnome` tag | — |
 | KDE Plasma | Any `:kde` or Tromsø | — |
 | COSMIC | Any `:cosmic` tag | — |
+| Pantheon | Any `:pantheon` tag (Gurnard) | — |
 | Lightweight | XFCE Linux | freedesktop-sdk |
 | Tiling WM | Any `:niri` tag | — |
+| RHEL (local build) | Redfin | RHEL 10 |
+
+> The full, current variant matrix (including experimental variants such as
+> Hummingbird, Bonito Rawhide, and Flounder Sid) lives on the
+> [variant pages](https://tunaos.org/).
 
 ## Variants
 
 **What's the difference between Yellowfin, Albacore, Skipjack, and Bonito?**
 
 They differ by base OS:
+
 - **Yellowfin** — AlmaLinux Kitten 10 (closest to upstream CentOS Stream)
 - **Albacore** — AlmaLinux 10 (stable Enterprise Linux)
 - **Skipjack** — CentOS Stream 10 (RHEL upstream)
 - **Bonito** — Fedora 44 (latest packages, ARM64 support)
 
-All four support the same desktop environments and hardware variants.
+All four support the same desktop environments and hardware variants. Desktop
+availability differs across the wider variant family, though. Gurnard ships
+**Base + Pantheon** (elementary OS's desktop). Grouper, Flounder, and Marlin add
+XFCE to the core GNOME/KDE/COSMIC/Niri set. See the variant page for the exact
+desktop × architecture matrix.
 
-**What does `-hwe`, `-gdx`, and `-gdx-hwe` mean?**
+**What does `-hwe` and `-nvidia` mean?**
 
 | Suffix | Meaning |
-|---|---|
+| --- | --- |
 | `-hwe` | Hardware Enablement — newer kernel for newer hardware |
-| `-gdx` | NVIDIA drivers + CUDA for GPU/AI workloads |
-| `-gdx-hwe` | NVIDIA/CUDA on the HWE kernel |
+| `-nvidia` | NVIDIA drivers + CUDA for GPU/AI workloads |
+| `-nvidia-hwe` | NVIDIA/CUDA on the HWE kernel |
 
-Example: `ghcr.io/tuna-os/yellowfin:gnome-gdx-hwe`
+Example: `ghcr.io/tuna-os/yellowfin:gnome-nvidia-hwe`
+
+> The `-nvidia` suffix replaced the legacy `-gdx` suffix — `-gdx` tags no
+> longer exist.
 
 ## Desktop Environments
 
 **Which desktop environment is best for my hardware?**
 
 | Hardware | Recommended | RAM usage |
-|---|---|---|
+| --- | --- | --- |
 | Modern (16GB+) | GNOME or KDE | ~1-1.2 GB |
 | Mid-range (8GB) | COSMIC or KDE | ~0.8-1 GB |
 | Older/light (4GB) | XFCE | ~600 MB |
@@ -117,6 +138,7 @@ This pulls the latest image and reboots into it. Rollback is one command: `sudo 
 **How can I contribute?**
 
 See `CONTRIBUTING.md`. Good first steps:
+
 - Try a TunaOS variant and report issues
 - Improve documentation
 - Look for `good-first-issue` labels in TunaOS repos
