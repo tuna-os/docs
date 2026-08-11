@@ -16,9 +16,8 @@ workstation users also need **new tools**. TunaOS supplies both.
 
 ## ✨ Why TunaOS?
 
-- 🖥️ **Latest GNOME**: The `gnome50` image adds GNOME 50 to Enterprise Linux.
-  You get the newest desktop features and the stable distribution GNOME. The
-  system stays stable.
+- 🖥️ **Latest GNOME**: The newest GNOME on a stable base, with the
+  Enterprise Linux toolchain. You get new desktop features and a stable system.
 - 🍺 **Baked-in Homebrew**: Homebrew is installed. You get immediate access to
   a large library of command-line tools and fonts.
 - 📦 **Bootc Technology**: Modern container technology makes the system
@@ -42,20 +41,20 @@ workstation users also need **new tools**. TunaOS supplies both.
 Albacore and Yellowfin are the primary variants. Each one has these editions:
 
 - **Regular**: The standard edition.
-- **DX (Developer Experience)**: Set up for software development. It includes
-  `libvirt`, `docker`, and `vscode`.
 - **NVIDIA**: The `-nvidia` flavor. It has NVIDIA drivers and CUDA for AI,
   graphics, and VFX work. The previous name was "GDX".
 - **HWE (Hardware Enablement)**: For new hardware that needs a later kernel.
 
 ### 🎨 Desktop Flavors
 
-Four desktop environments are available:
+Six desktop environments are available:
 
-- **GNOME 50**: The next generation of GNOME.
+- **GNOME**: The polished default — latest GNOME, backported to Enterprise Linux.
 - **KDE Plasma**: A desktop environment with many options, for power users.
 - **COSMIC**: The new desktop environment from System76. It uses Rust.
 - **Niri**: A scrollable tiling compositor. It manages windows differently.
+- **XFCE**: The classic lightweight desktop, on the new xfwl4 Wayland compositor.
+- **Pantheon**: elementary OS's simple, minimal desktop (Gurnard).
 
 ## 📚 Next Steps
 

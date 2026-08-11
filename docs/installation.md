@@ -33,7 +33,7 @@ TunaOS publishes ISOs for GNOME and GNOME-HWE every two weeks to
 | **Albacore** (AlmaLinux 10) | [albacore-gnome-latest.iso](https://download.tunaos.org/live-isos/albacore-gnome-latest.iso) | [albacore-gnome-hwe-latest.iso](https://download.tunaos.org/live-isos/albacore-gnome-hwe-latest.iso) |
 | **Yellowfin** (AlmaLinux Kitten 10) | [yellowfin-gnome-latest.iso](https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso) | [yellowfin-gnome-hwe-latest.iso](https://download.tunaos.org/live-isos/yellowfin-gnome-hwe-latest.iso) |
 
-Other flavors (KDE, COSMIC, Niri, NVIDIA, DX) are available as container images — see the variant pages for details.
+Other flavors (KDE, COSMIC, Niri, XFCE, NVIDIA, HWE) are available as container images — see the variant pages for details.
 
 ### Method 2: Build Your Own ISO
 
@@ -82,12 +82,6 @@ After installation, TunaOS provides:
 4. Check out the [Project Bluefin documentation](https://docs.projectbluefin.io) for general usage
 
 ### Variant-Specific Features
-
-#### DX (Developer Experience)
-- libvirt virtualization
-- Docker containers
-- VSCode IDE
-- Development toolchains
 
 #### NVIDIA (formerly GDX)
 - NVIDIA drivers and CUDA

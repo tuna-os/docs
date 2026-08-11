@@ -52,7 +52,7 @@ requirements.
 ### Disk Space Usage
 - **Base installation**: ~15-20 GB
 - **With applications**: 25-30 GB in usual conditions
-- **Developer tools** (DX variant): +5-10 GB
+- **Developer tools**: +5-10 GB
 - **Graphics tools** (NVIDIA variant): +10-15 GB
 
 ### Storage Types
@@ -66,11 +66,6 @@ requirements.
 - **Minimum**: 4 GB RAM
 - **Recommended**: 8 GB RAM
 - **Best**: 16 GB or more of RAM
-
-### DX (Developer Experience)
-- **Minimum**: 6 GB RAM
-- **Recommended**: 16 GB RAM
-- **Best**: 32 GB or more of RAM, for VMs and containers
 
 ### NVIDIA (NVIDIA drivers + CUDA)
 - **Minimum**: 8 GB RAM
@@ -86,7 +81,7 @@ requirements.
 
 ### Discrete Graphics
 
-#### For Regular/DX Variants
+#### For Regular Variants
 - Any modern GPU with open-source drivers
 - NVIDIA cards (with nouveau drivers)
 - AMD Radeon cards (with AMDGPU drivers)
