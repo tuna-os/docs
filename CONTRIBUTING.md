@@ -17,10 +17,10 @@ Thanks for your interest! This project is part of the [TunaOS](https://tunaos.or
 ## Blog Posts
 
 - Blog posts live in `blog/` with a `YYYY-MM-DD-<slug>.md` filename.
-- Each post's frontmatter `slug:` must be **unique** across `blog/` — a duplicate
-  slug shadows the other post at the same URL and breaks canonical links. If you
-  are rewriting a post, reuse the existing file (update it in place) rather than
-  adding a second file with the same slug.
+- Each post's `slug:` must be unique across `blog/`.
+- A duplicate slug shadows the other post at the same URL and breaks canonical links.
+- If you rewrite a post, reuse the existing file (update it in place).
+- Do not add a second file with the same slug.
 
 ## Questions?
 
