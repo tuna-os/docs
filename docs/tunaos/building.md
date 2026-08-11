@@ -59,7 +59,6 @@ just build <variant> <flavor>
 |--------|-------------|
 | `base` | No desktop environment |
 | `gnome` | GNOME desktop |
-| `gnome50` | GNOME 50 (latest) |
 | `kde` | KDE Plasma |
 | `cosmic` | COSMIC desktop |
 | `niri` | Niri tiling compositor |
