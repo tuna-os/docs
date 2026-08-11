@@ -23,6 +23,13 @@ brew tap hanthor/homebrew-tap && brew install --cask hanthor/tap/tavern
 ```
 On macOS this installs `Tavern.app`; on Linux it installs a prebuilt AppImage and symlinks it as `tavern` on your PATH.
 
+> [!NOTE]
+> The Homebrew cask is currently published from the maintainer's personal tap
+> (`hanthor/homebrew-tap`); migration to the org tap
+> (`tuna-os/homebrew-tap`) is tracked in
+> [tuna-os/Tavern#79](https://github.com/tuna-os/Tavern/issues/79). The
+> Flatpak above is the org-published channel.
+
 > [!IMPORTANT]
 > **⚠️ Attribution & Disclaimer**
 > Tavern is a **completely AI-generated** project and limited in it's use to just Homebrew. The UI design is a heavy "tribute" (read: shameless ripoff) of [Bazaar](https://github.com/kolunmi/bazaar), which is the best App Store for Linux. If you like this design, you should definitely check out the original project, made by humans and consider supporting the fine folks that make it.

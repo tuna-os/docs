@@ -14,7 +14,7 @@ TunaOS publishes its Flatpak applications through a custom OCI remote. Each app 
 | **Tables** 📊 | Pure Rust GTK4 spreadsheet | `org.tunaos.tables` | [GitHub](https://github.com/tuna-os/gtk-office-suite) |
 | **Decks** 📽️ | Pure Rust GTK4 presentation app | `org.tunaos.decks` | [GitHub](https://github.com/tuna-os/gtk-office-suite) |
 | **Letters** 📝 | Pure Rust GTK4 word processor | `org.tunaos.letters` | [GitHub](https://github.com/tuna-os/gtk-office-suite) |
-| **Tavern** 🍺 | Homebrew GUI client | `dev.hanthor.Tavern` | [GitHub](https://github.com/tuna-os/Tavern) |
+| **Tavern** 🍺 | Homebrew GUI client | `org.tunaos.tavern` | [GitHub](https://github.com/tuna-os/Tavern) |
 
 ## Adding the Remote
 
