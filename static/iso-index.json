@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-11T06:56:32.186Z",
+  "generatedAt": "2026-08-11T12:51:52.795Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 186,
+  "count": 187,
   "categories": [
     {
       "id": "live-isos",
@@ -1519,8 +1519,18 @@
       "blurb": "",
       "icon": "📀",
       "order": 99,
-      "checksums": "https://download.tunaos.org/tacklebox/SHA256SUMS-20260810-32e3ff7",
+      "checksums": "https://download.tunaos.org/tacklebox/bazzite-aio-SHA256SUMS-20260811-230652e",
       "isos": [
+        {
+          "category": "tacklebox",
+          "name": "bazzite-aio-latest",
+          "path": "tacklebox/bazzite-aio-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-aio-latest.iso",
+          "size": 16798515200,
+          "modified": "2026-08-11T06:42:56.054086178Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "tacklebox",
           "name": "tacklebox-poc-dedup-latest",
@@ -1563,16 +1573,6 @@
         },
         {
           "category": "tacklebox",
-          "name": "bazzite-aio-latest",
-          "path": "tacklebox/bazzite-aio-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/bazzite-aio-latest.iso",
-          "size": 16798515200,
-          "modified": "2026-08-04T08:35:54.064819544Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "tacklebox",
           "name": "pure-yellowfin-niri-latest",
           "path": "tacklebox/pure-yellowfin-niri-latest.iso",
           "url": "https://download.tunaos.org/tacklebox/pure-yellowfin-niri-latest.iso",
@@ -1580,6 +1580,16 @@
           "modified": "2026-07-31T12:34:11.169892931Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-aio-20260811-230652e",
+          "path": "tacklebox/bazzite-aio-20260811-230652e.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-aio-20260811-230652e.iso",
+          "size": 16798515200,
+          "modified": "2026-08-11T06:42:56.054086178Z",
+          "arch": "",
+          "latest": false
         },
         {
           "category": "tacklebox",
