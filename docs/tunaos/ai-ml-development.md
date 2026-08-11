@@ -5,33 +5,33 @@ title: "AI/ML Development"
 
 # 🤖 AI/ML Development on TunaOS
 
-TunaOS GDX variants ship NVIDIA drivers and CUDA pre-installed, making them ready for GPU-accelerated AI/ML workloads out of the box. This guide covers setting up and running common AI/ML tools.
+TunaOS `-nvidia` variants ship NVIDIA drivers and CUDA pre-installed, making them ready for GPU-accelerated AI/ML workloads out of the box. This guide covers setting up and running common AI/ML tools.
 
 ## Choosing the Right Variant
 
-For AI/ML work, use the `-gdx` or `-gdx-hwe` variants:
+For AI/ML work, use the `-nvidia` or `-nvidia-hwe` variants:
 
 ```bash
 # GNOME with NVIDIA + CUDA (stable kernel)
-ghcr.io/tuna-os/yellowfin:gnome-gdx
+ghcr.io/tuna-os/yellowfin:gnome-nvidia
 
 # GNOME with NVIDIA + CUDA (hardware enablement kernel)
-ghcr.io/tuna-os/yellowfin:gnome-gdx-hwe
+ghcr.io/tuna-os/yellowfin:gnome-nvidia-hwe
 
 # KDE Plasma with NVIDIA + CUDA
-ghcr.io/tuna-os/albacore:kde-gdx
+ghcr.io/tuna-os/albacore:kde-nvidia
 ```
 
-Switch to a GDX variant:
+Switch to an `-nvidia` variant:
 
 ```bash
-sudo bootc switch ghcr.io/tuna-os/yellowfin:gnome-gdx
+sudo bootc switch ghcr.io/tuna-os/yellowfin:gnome-nvidia
 sudo systemctl reboot
 ```
 
 ## Verify GPU Access
 
-After booting a GDX variant, verify your GPU is accessible:
+After booting an `-nvidia` variant, verify your GPU is accessible:
 
 ```bash
 # NVIDIA driver
@@ -68,7 +68,7 @@ curl -fsSL https://ollama.ai/install.sh | sh
 ollama pull llama3.2
 ollama run llama3.2 "Write a haiku about TunaOS"
 
-# Run with GPU acceleration (automatic on GDX)
+# Run with GPU acceleration (automatic on `-nvidia`)
 ollama run mistral
 ```
 
@@ -166,7 +166,7 @@ nvidia-smi --query-gpu=memory.used,memory.free,memory.total --format=csv
 
 | Problem | Fix |
 |---|---|
-| `nvidia-smi` not found | Ensure you're running a GDX variant: `bootc status` |
+| `nvidia-smi` not found | Ensure you're running an `-nvidia` variant: `bootc status` |
 | CUDA out of memory | Reduce batch size or check other processes: `nvidia-smi` |
 | Container can't see GPU | Add `--device nvidia.com/gpu=all` to `podman run` |
 | No GPU in PyTorch | Reinstall PyTorch with CUDA: `pip install torch --index-url https://download.pytorch.org/whl/cu124` |

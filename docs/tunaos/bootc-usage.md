@@ -39,7 +39,7 @@ sudo bootc switch ghcr.io/tuna-os/albacore:kde
 sudo systemctl reboot
 
 # Switch to Yellowfin with GNOME + NVIDIA drivers
-sudo bootc switch ghcr.io/tuna-os/yellowfin:gnome-gdx
+sudo bootc switch ghcr.io/tuna-os/yellowfin:gnome-nvidia
 sudo systemctl reboot
 
 # Switch to Skipjack with COSMIC desktop

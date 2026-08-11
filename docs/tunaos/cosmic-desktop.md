@@ -17,7 +17,7 @@ Pull any of these COSMIC variants:
 # Yellowfin (AlmaLinux Kitten 10)
 ghcr.io/tuna-os/yellowfin:cosmic
 ghcr.io/tuna-os/yellowfin:cosmic-hwe
-ghcr.io/tuna-os/yellowfin:cosmic-gdx
+ghcr.io/tuna-os/yellowfin:cosmic-nvidia
 
 # Albacore (AlmaLinux 10)
 ghcr.io/tuna-os/albacore:cosmic
