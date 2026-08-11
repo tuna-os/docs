@@ -54,8 +54,8 @@ const sidebars: SidebarsConfig = {
       label: '🧱 BuildStream Desktops',
       collapsed: false,
       items: [
-        {type: 'category', label: 'Tromsø', link: {type: 'doc', id: 'tromso/index'}, items: ['tromso/getting-started', 'tromso/SPEC']},
-        {type: 'category', label: 'XFCE Linux', className: 'sidebar-alpha', link: {type: 'doc', id: 'xfce-linux/index'}, items: ['xfce-linux/getting-started', 'xfce-linux/README', 'xfce-linux/PROJECT_STATUS', 'xfce-linux/CONTRIBUTING']},
+        {type: 'category', label: 'Tromsø', link: {type: 'doc', id: 'tromso/index'}, items: ['tromso/getting-started', 'tromso/SPEC', 'tromso/ROADMAP', 'tromso/SECURITY', 'tromso/CONTRIBUTING', 'tromso/ci-and-iso-pipeline']},
+        {type: 'category', label: 'XFCE Linux', className: 'sidebar-alpha', link: {type: 'doc', id: 'xfce-linux/index'}, items: ['xfce-linux/getting-started', 'xfce-linux/README', 'xfce-linux/PROJECT_STATUS', 'xfce-linux/CONTRIBUTING', 'xfce-linux/ROADMAP', 'xfce-linux/SECURITY', 'xfce-linux/ci-and-iso-pipeline']},
       ],
     },
     {
@@ -63,20 +63,20 @@ const sidebars: SidebarsConfig = {
       label: '🛠 Tools',
       collapsed: false,
       items: [
-        {type: 'category', label: 'Tacklebox', link: {type: 'doc', id: 'tacklebox/index'}, items: ['tacklebox/user-guide', 'tacklebox/getting-started', 'tacklebox/ARCHITECTURE', 'tacklebox/github-iso-setup', 'tacklebox/TODO']},
+        {type: 'category', label: 'Tacklebox', link: {type: 'doc', id: 'tacklebox/index'}, items: ['tacklebox/user-guide', 'tacklebox/getting-started', 'tacklebox/ARCHITECTURE', 'tacklebox/github-iso-setup', 'tacklebox/TODO', 'tacklebox/ROADMAP', 'tacklebox/SECURITY', 'tacklebox/CONTRIBUTING', 'tacklebox/opfs-streaming-handoff']},
         {type: 'category', label: 'ISO Builder', link: {type: 'doc', id: 'iso-builder/index'}, items: [{type: 'category', label: 'Native App', link: {type: 'doc', id: 'iso-builder/native/index'}, items: ['iso-builder/native/user-guide']}]},
         {type: 'category', label: '🐟 remora', link: {type: 'doc', id: 'remora/index'}, items: []},
         {
           type: 'category',
           label: '🤠 Corral',
           link: {type: 'doc', id: 'corral/index'},
-          items: ['corral/getting-started', 'corral/interfaces', 'corral/contexts', 'corral/command-reference', 'corral/vdi', 'corral/containers', 'corral/backup', 'corral/bootc', 'corral/windows', 'corral/gpu', 'corral/snapsched', 'corral/schedule', 'corral/proxmox'],
+          items: ['corral/getting-started', 'corral/user-guide', 'corral/interfaces', 'corral/contexts', 'corral/command-reference', 'corral/vdi', 'corral/containers', 'corral/backup', 'corral/bootc', 'corral/windows', 'corral/gpu', 'corral/snapsched', 'corral/schedule', 'corral/proxmox', 'corral/SPEC', 'corral/architecture', 'corral/api', 'corral/backend-support', 'corral/backend-parity', 'corral/ci-boot-gate', 'corral/first-party-plugins', 'corral/kubevirt-proxmox-setup', 'corral/plugin-marketplace', 'corral/proxmox-api', 'corral/testing'],
         },
         {
           type: 'category',
           label: 'bluefin-cli',
           link: {type: 'doc', id: 'bluefin-cli/index'},
-          items: ['bluefin-cli/ai', 'bluefin-cli/cncf', 'bluefin-cli/gnome', 'bluefin-cli/menus', 'bluefin-cli/tools', 'bluefin-cli/vanilla-vs-extra', 'bluefin-cli/ROADMAP'],
+          items: ['bluefin-cli/ai', 'bluefin-cli/cncf', 'bluefin-cli/gnome', 'bluefin-cli/menus', 'bluefin-cli/tools', 'bluefin-cli/vanilla-vs-extra', 'bluefin-cli/ROADMAP', 'bluefin-cli/CONTRIBUTING'],
         },
         {
           type: 'category',
@@ -86,6 +86,23 @@ const sidebars: SidebarsConfig = {
         },
         {type: 'category', label: 'COPR Builds', link: {type: 'doc', id: 'copr/index'}, items: ['copr/ARCHITECTURE', 'copr/gnome49-centos-bootc']},
         {type: 'category', label: '📦 Flatpak', link: {type: 'doc', id: 'flatpak/index'}, items: ['flatpak/guide']},
+        {type: 'category', label: '📦 tunaos-packages', link: {type: 'doc', id: 'tunaos-packages/index'}, items: ['tunaos-packages/ARCHITECTURE', 'tunaos-packages/PACKAGE_FACTORY', 'tunaos-packages/PATCH_POLICY', 'tunaos-packages/SECURITY', 'tunaos-packages/TIDEFORGE-READINESS', 'tunaos-packages/UPSTREAM_PARITY', 'tunaos-packages/XFWL4-PORTING', 'tunaos-packages/gnome49-centos-bootc', 'tunaos-packages/hummingbird-desktop-gap', 'tunaos-packages/CONTRIBUTING']},
+        {type: 'category', label: '🐧 Ubuntu', link: {type: 'doc', id: 'ubuntu/index'}, items: ['ubuntu/CONTRIBUTING', 'ubuntu/SECURITY']},
+        {type: 'category', label: '🖥️ bootc-installer-tui', link: {type: 'doc', id: 'bootc-installer-tui/index'}, items: ['bootc-installer-tui/CONTRIBUTING']},
+        {type: 'category', label: '🧱 chunkah', link: {type: 'doc', id: 'chunkah/index'}, items: ['chunkah/CONTRIBUTING']},
+      ],
+    },
+    {
+      type: 'category',
+      label: '🗂 Images & ISOs',
+      collapsed: false,
+      items: [
+        {type: 'doc', id: 'tromso-iso/index', label: 'Tromsø ISO'},
+        {type: 'doc', id: 'dakota-iso/index', label: 'Dakota ISO'},
+        {type: 'doc', id: 'xfce-linux-iso/index', label: 'XFCE Linux ISO'},
+        {type: 'doc', id: 'ubuntu-26-04-iso/index', label: 'Ubuntu 26.04 ISO'},
+        {type: 'doc', id: 'bonito-x13s/index', label: 'Bonito X13s'},
+        {type: 'doc', id: 'dakota-x13s/index', label: 'Dakota X13s'},
       ],
     },
     {
