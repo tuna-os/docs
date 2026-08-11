@@ -135,7 +135,7 @@ export const PROJECTS: Project[] = [
     ],
     install: [
       {label: 'Run the wizard', code: 'sudo bootc-migrate tui'},
-      {label: 'Download the binary', code: 'curl -fsSL -o bmc.tar.gz \\\n  https://github.com/tuna-os/bootc-migrate/releases/latest/download/bootc-migrate-composefs-x86_64-unknown-linux-gnu.tar.gz\ntar xzf bmc.tar.gz\nsudo install -m755 bootc-migrate-composefs /usr/local/bin/bootc-migrate'},
+      {label: 'Download the binary', code: 'curl -fsSL -o bmc.tar.gz \\\n  https://github.com/tuna-os/bootc-migrate/releases/latest/download/bootc-migrate-x86_64-unknown-linux-gnu.tar.gz\ntar xzf bmc.tar.gz\nsudo install -m755 bootc-migrate /usr/local/bin/bootc-migrate'},
     ],
     screenshots: [
       {src: '/img/screenshots/dakota-migrate-welcome.png', alt: 'TUI wizard welcome screen'},

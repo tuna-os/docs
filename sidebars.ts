@@ -84,12 +84,6 @@ const sidebars: SidebarsConfig = {
           link: {type: 'doc', id: 'bootc-migrate/index'},
           items: ['bootc-migrate/architecture', 'bootc-migrate/filesystem-support', 'bootc-migrate/luks-testing', 'bootc-migrate/testing', 'bootc-migrate/references', 'bootc-migrate/ROADMAP', 'bootc-migrate/CONTRIBUTING', 'bootc-migrate/cfs-cli-generations'],
         },
-        {
-          type: 'category',
-          label: 'bootc-migrate-composefs',
-          link: {type: 'doc', id: 'bootc-migrate-composefs/index'},
-          items: ['bootc-migrate-composefs/architecture', 'bootc-migrate-composefs/filesystem-support', 'bootc-migrate-composefs/luks-testing', 'bootc-migrate-composefs/CONTRIBUTING'],
-        },
         {type: 'category', label: 'COPR Builds', link: {type: 'doc', id: 'copr/index'}, items: ['copr/ARCHITECTURE', 'copr/gnome49-centos-bootc']},
         {type: 'category', label: '📦 Flatpak', link: {type: 'doc', id: 'flatpak/index'}, items: ['flatpak/guide']},
       ],
