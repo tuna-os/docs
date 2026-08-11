@@ -120,7 +120,7 @@ Homebrew taps are additional package repositories:
 ```bash
 # View current taps in the Taps view
 # Add a tap:
-brew tap hanthor/homebrew-tap
+brew tap tuna-os/homebrew-tap
 
 # Remove a tap from Tavern's Taps view
 ```
