@@ -40,6 +40,7 @@ const sidebars: SidebarsConfig = {
         'tunaos/ROADMAP',
         'tunaos/CONTRIBUTING',
         'tunaos/SECURITY',
+        'tunaos/hacktoberfest-2026',
         {
           type: 'category',
           label: 'Developer Guide',
