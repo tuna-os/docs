@@ -15,7 +15,7 @@ base. It is where we test the features that go into RHEL and AlmaLinux later.
 
 ## Features
 
-- 🖥️ **Modern GNOME**: A current GNOME desktop on Enterprise Linux, with GNOME 50 available via the `gnome50` image.
+- 🖥️ **Modern GNOME**: A current GNOME desktop on Enterprise Linux.
 - 🍺 **Baked-in Homebrew**: Access thousands of CLI tools and fonts immediately.
 - 🌊 **CentOS Stream 10**: The newest part of the RHEL ecosystem.
 - 🛠️ **Developer Focus**: Ideal for developers who want to stay ahead of the enterprise curve.

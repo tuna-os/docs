@@ -29,7 +29,7 @@ TunaOS started as a **fork of Bluefin LTS** with a focus on:
 |---|---|---|
 | **Base OS** | AlmaLinux 10 | AlmaLinux 10 / CentOS Stream 10 / Fedora |
 | **Desktops** | GNOME | GNOME, KDE, COSMIC, Niri, XFCE |
-| **NVIDIA** | Supported | Supported (GDX variants) |
+| **NVIDIA** | Supported | Supported (`-nvidia` variants) |
 | **Homebrew** | Optional | Baked into every image |
 | **TunaOS tools** | No | Tacklebox, Corral, Tavern, Office Suite |
 | **Target audience** | General developers | Enterprise + Platform Engineering |
@@ -47,7 +47,7 @@ TunaOS started as a **fork of Bluefin LTS** with a focus on:
 2. **Enterprise Linux focus** — AlmaLinux and CentOS Stream as primary bases
 3. **Own tool ecosystem** — Tacklebox (media), Corral (VMs), Tavern (Homebrew GUI)
 4. **Rust office suite** — Tables, Decks, Letters
-5. **GDX variants** — NVIDIA/CUDA pre-configured for AI/ML
+5. **`-nvidia` variants** — NVIDIA/CUDA pre-configured for AI/ML
 6. **Bootc CNCF Sandbox** — TunaOS is a reference bootc implementation
 
 ## Cross-Promotion Opportunities
