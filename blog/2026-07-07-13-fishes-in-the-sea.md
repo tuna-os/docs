@@ -55,18 +55,18 @@ Everything's named after a fish, because I like fish and also because "AlmaLinux
 
 | Variant | Base Distribution | Status |
 | :--- | :--- | :--- |
-| 🐠  [**Yellowfin**](/yellowfin) | <img src="/img/os/almalinux.svg" width="20" /> [AlmaLinux Kitten 10](https://almalinux.org) | Production |
-| 🐟 [**Albacore**](/albacore) | <img src="/img/os/almalinux.svg" width="20" /> [AlmaLinux 10](https://almalinux.org) | Production |
-| 🍣 [**Skipjack**](/skipjack) | <img src="/img/os/centos.svg" width="20" /> [CentOS Stream 10](https://centos.org) | Production |
+| 🐠  [**Yellowfin**](/yellowfin) | <img src="/img/os/almalinux.svg" width="20" /> [AlmaLinux Kitten 10](https://almalinux.org) | Stable |
+| 🐟 [**Albacore**](/albacore) | <img src="/img/os/almalinux.svg" width="20" /> [AlmaLinux 10](https://almalinux.org) | Stable |
+| 🍣 [**Skipjack**](/skipjack) | <img src="/img/os/centos.svg" width="20" /> [CentOS Stream 10](https://centos.org) | Beta |
 | 🔒 [**Redfin**](/redfin) | <img src="/img/os/rhel.svg" width="20" /> [RHEL 10](https://redhat.com) | Local-build |
-| 🎣 [**Bonito**](/bonito) | <img src="/img/os/fedora.svg" width="20" /> [Fedora 44](https://fedoraproject.org) | Experimental |
-| 🐉 [**Bonito Rawhide**](/bonito-rawhide) | <img src="/img/os/fedora.svg" width="20" /> [Fedora Rawhide](https://fedoraproject.org) | Production |
-| 🐟 [**Grouper**](/grouper) | <img src="/img/os/ubuntu.svg" width="20" /> [Ubuntu 26.04](https://ubuntu.com) | Experimental |
-| 🐡 [**Flounder**](/flounder) | <img src="/img/os/debian.svg" width="20" /> [Debian Trixie (13)](https://debian.org) | Production |
-| ☢️ [**Flounder Sid**](/flounder-sid) | <img src="/img/os/debian.svg" width="20" /> [Debian Sid](https://debian.org) | Production |
-| 🚀 [**Marlin**](/marlin) | <img src="/img/os/arch.svg" width="20" /> [Arch Linux](https://archlinux.org) | Production |
-| 🦈 [**Sailfin**](/sailfin) | <img src="/img/os/opensuse.svg" width="20" /> [openSUSE Tumbleweed](https://opensuse.org) | Production |
-| 🌈 [**Guppy**](/guppy) | <img src="/img/os/gentoo.svg" width="20" /> [Gentoo Linux](https://gentoo.org) | Production |
+| 🎣 [**Bonito**](/bonito) | <img src="/img/os/fedora.svg" width="20" /> [Fedora 44](https://fedoraproject.org) | Beta |
+| 🐉 [**Bonito Rawhide**](/bonito-rawhide) | <img src="/img/os/fedora.svg" width="20" /> [Fedora Rawhide](https://fedoraproject.org) | Beta |
+| 🐟 [**Grouper**](/grouper) | <img src="/img/os/ubuntu.svg" width="20" /> [Ubuntu 26.04](https://ubuntu.com) | Beta |
+| 🐡 [**Flounder**](/flounder) | <img src="/img/os/debian.svg" width="20" /> [Debian Trixie (13)](https://debian.org) | Beta |
+| ☢️ [**Flounder Sid**](/flounder-sid) | <img src="/img/os/debian.svg" width="20" /> [Debian Sid](https://debian.org) | Beta |
+| 🚀 [**Marlin**](/marlin) | <img src="/img/os/arch.svg" width="20" /> [Arch Linux](https://archlinux.org) | Beta |
+| 🦈 [**Sailfin**](/sailfin) | <img src="/img/os/opensuse.svg" width="20" /> [openSUSE Tumbleweed](https://opensuse.org) | Beta |
+| 🌈 [**Guppy**](/guppy) | <img src="/img/os/gentoo.svg" width="20" /> [Gentoo Linux](https://gentoo.org) | Beta |
 
 Most variants get the same 5 desktops: <img src="/img/desktops/gnome.svg" width="18" /> [GNOME](https://www.gnome.org/), <img src="/img/desktops/kde.svg" width="18" /> [KDE Plasma](https://kde.org/), <img src="/img/desktops/cosmic.svg" width="18" /> [COSMIC](https://system76.com/cosmic), <img src="/img/desktops/niri.svg" width="18" /> [Niri](https://github.com/YaLTeR/niri) + <img src="/img/desktops/dms.svg" width="18" /> [DMS](https://github.com/avengemedia/dms), and <img src="/img/desktops/xfce.svg" width="18" /> [XFCE](https://xfce.org/) on Wayland. Guppy ships 2 (GNOME, KDE). Sailfin ships 4 (no COSMIC). Stack a custom kernel or NVIDIA drivers on top of any of them if you want.
 
