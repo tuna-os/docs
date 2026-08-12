@@ -15,6 +15,19 @@ TunaOS publishes its Flatpak applications through a custom OCI remote. Each app 
 | **Decks** 📽️ | Pure Rust GTK4 presentation app | `org.tunaos.decks` | [GitHub](https://github.com/tuna-os/gtk-office-suite) |
 | **Letters** 📝 | Pure Rust GTK4 word processor | `org.tunaos.letters` | [GitHub](https://github.com/tuna-os/gtk-office-suite) |
 | **Tavern** 🍺 | Homebrew GUI client | `org.tunaos.tavern` | [GitHub](https://github.com/tuna-os/Tavern) |
+| **Mariner** 🛠️ | System update & maintenance tool for GNOME | `org.tunaos.mariner` | [GitHub](https://github.com/tuna-os/mariner) |
+| **Finupdate** 🔄 | GTK4/libadwaita update frontend (bootc/flatpak/brew/distrobox) | `org.tunaos.finupdate` | [GitHub](https://github.com/tuna-os/finupdate) |
+| **Mandelbrot** 🌀 | GNOME fractal explorer | `org.tunaos.mandelbrot` | [GitHub](https://github.com/tuna-os/mandelbrot) |
+| **Dualcut** ✂️ | ISO/disk image utility | `org.tunaos.dualcut` | [GitHub](https://github.com/tuna-os/dualcut) |
+| **TunaOS Installer (COSMIC)** 🚀 | Live-ISO installer frontend | `org.tunaos.InstallerCosmic` | [GitHub](https://github.com/tuna-os/tuna-installer-cosmic) |
+| **TunaOS Installer (KDE)** 🌊 | Live-ISO installer frontend | `org.tunaos.InstallerKde` | [GitHub](https://github.com/tuna-os/tuna-installer-kde) |
+| **TunaOS Installer (Niri)** ⚡ | Live-ISO installer frontend | `org.tunaos.InstallerNiri` | [GitHub](https://github.com/tuna-os/tuna-installer-niri) |
+| **TunaOS Installer (XFCE)** 🐭 | Live-ISO installer frontend | `org.tunaos.InstallerXfce` | [GitHub](https://github.com/tuna-os/tuna-installer-xfce) |
+| **bootc-installer** 💾 | Terminal installer for bootc images | `org.bootcinstaller.Installer` | [GitHub](https://github.com/tuna-os/bootc-installer) |
+
+> The list above mirrors the apps published to the tuna-os OCI index
+> (`tunaos.org/flatpak/index/static`). Installer frontends are also
+> preinstalled on the matching TunaOS live ISOs.
 
 ## Adding the Remote
 
@@ -40,6 +53,11 @@ flatpak install tuna-os org.tunaos.tables
 
 # Multiple apps at once
 flatpak install tuna-os org.tunaos.tables org.tunaos.decks org.tunaos.letters
+
+# Everything on the remote
+flatpak install tuna-os org.tunaos.tables org.tunaos.decks org.tunaos.letters \
+  org.tunaos.tavern org.tunaos.mariner org.tunaos.finupdate \
+  org.tunaos.mandelbrot org.tunaos.dualcut
 ```
 
 ### GUI installation
