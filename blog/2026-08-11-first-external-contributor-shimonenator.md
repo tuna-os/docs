@@ -4,7 +4,7 @@ title: "Our First External Contributor Is Now a Repeat Contributor — Thank You
 authors: [james]
 tags: [tunaos, community, contributors, thank-you, onboarding]
 date: 2026-08-11
-draft: true
+draft: false
 ---
 
 <!-- ste-disable-file: community acknowledgment post; first-person maintainer voice intended. -->
