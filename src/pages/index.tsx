@@ -202,9 +202,9 @@ function PipelineBand(): ReactNode {
     },
     {
       emoji: '⚙',
-      name: 'github-copr',
-      desc: 'A self-hosted, mock-based RPM build system with GitHub Actions and Cloudflare R2 — builds the packages EL10 doesn’t ship yet (GNOME 50, the XFCE Wayland stack) and its apt-world sibling debian-copr.',
-      to: 'https://github.com/tuna-os/github-copr',
+      name: 'tunaos-packages',
+      desc: "TunaOS's package factory — builds, tests, signs, and publishes RPM and DEB repositories with GitHub Actions and Cloudflare R2 (the packages EL10 doesn't ship yet: GNOME 50, the XFCE Wayland stack).",
+      to: 'https://github.com/tuna-os/tunaos-packages',
       external: true,
     },
   ];

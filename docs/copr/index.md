@@ -8,8 +8,8 @@ status: internal
 > 🔧 **Internal tooling** — used by the TunaOS build pipeline. Not user-facing.
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://github.com/tuna-os/github-copr/blob/main/CODE_OF_CONDUCT.md)
-[![Security Policy](https://img.shields.io/badge/Security-Policy-7b68ee.svg)](https://github.com/tuna-os/github-copr/blob/main/SECURITY.md)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://github.com/tuna-os/tunaos-packages/blob/main/CODE_OF_CONDUCT.md)
+[![Security Policy](https://img.shields.io/badge/Security-Policy-7b68ee.svg)](https://github.com/tuna-os/tunaos-packages/blob/main/SECURITY.md)
 
 RPM packages bringing GNOME 50 to CentOS Stream 10 (EL10), hosted on
 [COPR](https://copr.fedorainfracloud.org/coprs/jreilly1821/c10s-gnome-50/).
@@ -38,7 +38,7 @@ Our GitHub repo (main)   ──▶┘
 - **8 packages** require a modified spec checked into this repo (see below).
 - **1 package** (`gnome50-el10-compat`) is EL10-specific, not in Fedora at all.
 
-Build method per package is tracked in [`COPR-AUDIT.md`](https://github.com/tuna-os/github-copr/blob/main/COPR-AUDIT.md).
+Build method per package is tracked in [`COPR-AUDIT.md`](https://github.com/tuna-os/tunaos-packages/blob/main/COPR-AUDIT.md).
 
 ## Modified Specs (Diverge from Rawhide)
 
@@ -232,7 +232,7 @@ gnome-settings-daemon, nautilus, meson, glycin, mozjs140, gi-docgen,
 localsearch, tinysparql, libnotify, avahi, cairo, blueprint-compiler, …
 ```
 
-Full per-package audit with exact diffs: [`COPR-AUDIT.md`](https://github.com/tuna-os/github-copr/blob/main/COPR-AUDIT.md)
+Full per-package audit with exact diffs: [`COPR-AUDIT.md`](https://github.com/tuna-os/tunaos-packages/blob/main/COPR-AUDIT.md)
 
 ## Local Development
 
@@ -245,12 +245,12 @@ just copr-status                               # Check recent build status
 just copr-logs <build-id>                      # Download and view build logs
 ```
 
-See [`CLAUDE.md`](https://github.com/tuna-os/github-copr/blob/main/CLAUDE.md) for the full build workflow, known EL10 quirks, and
+See [`AGENTS.md`](https://github.com/tuna-os/tunaos-packages/blob/main/AGENTS.md) for the full build workflow, known EL10 quirks, and
 debugging tips.
 
 ## Known EL10 Runtime Issues
 
-All addressed by installing `gnome50-el10-compat`. See [`workarounds/README.md`](https://github.com/tuna-os/github-copr/blob/main/workarounds/README.md)
+All addressed by installing `gnome50-el10-compat`. See [`workarounds/README.md`](https://github.com/tuna-os/tunaos-packages/blob/main/workarounds/README.md)
 for details.
 
 | Issue | Fix |

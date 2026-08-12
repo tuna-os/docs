@@ -39,7 +39,7 @@ just build yellowfin gnome
 
 **Cause:** CentOS Stream 10 ships gnome-shell 48.x; TunaOS installs gnome-shell 49.x from COPR. The older `gnome-shell-common` package contains files that conflict.
 
-**Status:** Fixed upstream in `tuna-os/github-copr#23` (Obsoletes: gnome-shell-common). Rebuild expected to resolve.
+**Status:** Fixed upstream in `tuna-os/tunaos-packages#23` (Obsoletes: gnome-shell-common). Rebuild expected to resolve.
 
 **Workaround (if rebuilding before COPR update):**
 ```bash
