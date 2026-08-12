@@ -19,7 +19,10 @@ const PROJECTS = {
   tacklebox:   {label: 'Tacklebox',        icon: '🧰', slug: 'tacklebox',       status: 'stable'},
   tromso:      {label: 'Tromsø',           icon: '🏔️', slug: 'tromso',           status: 'alpha'},
   'xfce-linux': {label: 'XFCE Linux',      icon: '🖥️', slug: 'xfce-linux',      status: 'alpha'},
-  'github-copr': {label: 'COPR Builds',    icon: '🔧', slug: 'copr',            status: 'internal'},
+  // NOTE: 'github-copr' was renamed to 'tunaos-packages'; the listing picks
+  // it up under its real name (default slug 'tunaos-packages'). docs/copr/
+  // is now hand-maintained (GNOME 50 COPR build guide) and must not be
+  // overwritten by the renamed repo's README.
   Tavern:      {label: 'Tavern',          icon: '🍺', slug: 'tavern',          status: 'stable'},
   'bluefin-cli': {label: 'bluefin-cli',   icon: '⌨️', slug: 'bluefin-cli',      status: 'stable'},
 };
@@ -38,7 +41,6 @@ const SKIP = new Set([
 // Empty array = sync all root .md files.
 const ROOT_DOC_FILTER = {
   tunaOS: ['README.md', 'ROADMAP.md', 'SECURITY.md', 'CONTRIBUTING.md'],
-  'github-copr': ['README.md', 'ARCHITECTURE.md'],
 };
 
 // docs/<slug>/ trees that are written by hand here and must never be
@@ -70,12 +72,19 @@ const HAND_AUTHORED = new Set([
 ]);
 
 // Repos whose docs/ folder should NOT be synced (too noisy / internal).
-const SKIP_DOCS_DIR = new Set();
+const SKIP_DOCS_DIR = new Set([
+  // tunaOS's docs/ holds developer/maintainer references (AGENT_GUIDE.md,
+  // CI_SPEC.md, TESTING.md, …) that are deliberately NOT part of the
+  // user-facing site (see tuna-os/tunaos docs/README.md). The old
+  // DOCS_SUBDIR 'docs/book/src' value silently no-opped after the in-repo
+  // mdBook was removed; this makes that intent explicit and protects the
+  // hand-authored docs/tunaos/ pages (introduction.md, building.md, …) from
+  // being bulk-synced over.
+  'tunaOS',
+]);
 
 // Per-repo subdirectory to sync instead of docs/ (for repos with nested doc structure).
-const DOCS_SUBDIR = {
-  tunaOS: 'docs/book/src',
-};
+const DOCS_SUBDIR = {};
 
 const ORG = 'tuna-os';
 const DOCS_DIR = 'docs';
@@ -467,7 +476,7 @@ function main() {
       // ── docs/ folder (recursive) ──
       const docsSubdir = DOCS_SUBDIR[repo] || 'docs';
       const docsDir = join(dir, docsSubdir);
-      if (existsSync(docsDir) && readdirSync(docsDir).length > 0) {
+      if (!SKIP_DOCS_DIR.has(repo) && existsSync(docsDir) && readdirSync(docsDir).length > 0) {
         for (const file of readdirSync(docsDir).sort()) {
           // Skip mdBook metadata files
           if (file === 'SUMMARY.md') continue;
