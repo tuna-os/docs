@@ -20,9 +20,9 @@ building a whole new desktop flavor.
 
 We now curate a **[`good first issue`](https://github.com/tuna-os/tunaOS/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)** backlog: tasks that are deliberately small, well-scoped, and safe to attempt without deep knowledge of the image factory. Right now that includes:
 
-- **Bonito status parity** — the wiki says the Fedora-based Bonito variant is experimental; a recent blog post called it production. Pick one and make the docs agree.
-- **Docs script fixes** — `ste-lint` under-detects synced trees (28 findings hiding), and the org-docs sync only reads the first 30 repos (not paginated).
-- **Test coverage** — two build scripts in the docs repo have no unit tests.
+- **ARM laptop hardware** — the README System Requirements don't document supported ARM hardware (ThinkPad X13s, Apple Silicon) yet ([tunaOS#1385](https://github.com/tuna-os/tunaOS/issues/1385)).
+- **Verifying downloads** — the README has no checksums/SBOM verification section for the published ISOs ([tunaOS#1366](https://github.com/tuna-os/tunaOS/issues/1366)).
+- **Pantheon desktop docs** — the new Gurnard (Ubuntu + Pantheon) variant needs a desktop guide and the `pantheon` suffix documented ([tunaOS#1351](https://github.com/tuna-os/tunaOS/issues/1351), [tunaOS#1350](https://github.com/tuna-os/tunaOS/issues/1350)).
 
 Each issue carries the `help wanted` label too, which signals "external contribution explicitly welcome." Comment on the issue when you pick it up — that prevents double work, and it gets you a response faster.
 
