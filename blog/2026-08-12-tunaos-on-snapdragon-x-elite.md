@@ -4,7 +4,7 @@ title: "TunaOS on Snapdragon X Elite laptops — daily-driver Linux on the X13s"
 authors: [james]
 tags: [tunaos, x13s, snapdragon, arm, qualcomm, bootc, immutable]
 date: 2026-08-12
-draft: true
+draft: false
 ---
 
 <!-- ste-disable-file: announcement post for a new hardware story; first-person maintainer voice intended. -->

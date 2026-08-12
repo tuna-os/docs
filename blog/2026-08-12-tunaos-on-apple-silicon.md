@@ -4,7 +4,7 @@ title: "TunaOS on Apple Silicon — bootc images for M1/M2 Macs"
 authors: [james]
 tags: [tunaos, asahi, apple-silicon, arm, bootc, immutable]
 date: 2026-08-12
-draft: true
+draft: false
 ---
 
 <!-- ste-disable-file: announcement post for a new hardware story; first-person maintainer voice intended. -->
