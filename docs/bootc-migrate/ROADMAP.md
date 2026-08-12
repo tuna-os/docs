@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 2
 title: "Roadmap"
 ---
 
@@ -31,9 +31,11 @@ covers every proposed probe.
 
 **In progress, with an explicit boundary between what's landed and what's
 deliberately deferred** — each of M2, M3, and M5 shipped a pure/unit-testable
-"skeleton" slice, then stopped before the part that needs either boot-critical
-live-system mutation or an interactive UI this codebase can't yet validate in
-CI. See each milestone below for the specific line and why.
+"skeleton" slice first. M2 stopped there, ahead of boot-critical live-system
+mutation CI cannot validate; M3 and M5 have since grown their live halves,
+but those run on paths no CI cell reaches (no cross-base E2E cell, no NVRAM
+mutation, no TUI assertions), so they are landed-but-unproven rather than
+done. See each milestone below for the specific line and why.
 
 ## Milestones
 
@@ -81,26 +83,48 @@ E2E-iteration budget and explicit sign-off on the risk.
 **Exit criteria (not yet met)**: a GRUB2 bluefin VM re-bases, boots via
 sd-boot, survives a kernel update, and `--undo` restores GRUB cleanly.
 
-### M3 — Cross-base re-base (scenario C) — **part 1 done, part 2 blocked**
+### M3 — Cross-base re-base (scenario C) — **both parts landed, neither exercised by CI**
 
 [#67](https://github.com/tuna-os/bootc-migrate-composefs/issues/67) part 1
 (remap planner + apply walk over the staged deployment) is done and wired
 into `OstreeDeploy`, gated by `is_cross_base` + `--accept-cross-base`.
 
-Part 2 (a `mergetc`-style `/etc` merge conflict policy for cross-base
-re-bases) is **blocked, not merely deferred**: `OstreeDeploy` and `ImageSwap`
-both delegate `/etc` merging to `bootc switch`'s native OSTree merge, not to
-`mergetc`, so there is no live caller for a `mergetc` cross-base extension
-yet. Revisit once either route grows its own `/etc`-merge seam.
+Part 2 (the cross-base `/etc` conflict policy) was previously recorded here
+as *blocked*: `OstreeDeploy` and `ImageSwap` delegate `/etc` merging to
+`bootc switch`, not to `mergetc`, so there was no caller for a `mergetc`
+cross-base extension. That is still true of `mergetc` — and it turned out to
+be the wrong question. The blocker was stated in terms of the *call site*;
+the *inputs* were never missing. `bootc switch` stages without rebooting, so
+afterwards the source's defaults (`<booted>/usr/etc`), the user's live
+`/etc`, and the target's defaults (`<staged>/usr/etc`) all still sit on disk
+beside the merge's own output (`<staged>/etc`).
+
+So the policy landed as `bootc-migrate-core::etc_conflict`: a narrow
+**post-merge reconciliation pass**, not a second merge. It rewrites only the
+paths where all three inputs disagree — the conflict class the native merge
+cannot reason about, because within one base lineage "keep the user's value"
+is the right answer and across two it is not — and leaves every other path
+exactly as `bootc switch` produced it. Target defaults win; the displaced
+value is preserved as a `.rebase-old` sidecar (the same convention #15
+introduced in `mergetc`); machine-describing paths and the identity DBs are
+reported but never replaced. This is the same "adjust the staged deployment
+before first boot" seam part 1's remap already uses.
+
+**What is not proven**: no CI cell is cross-base — all four E2E scenarios are
+Fedora-family → Fedora-family, so `is_cross_base` is false and neither part 1
+nor part 2 executes in CI at all. Both are unit-tested (planning, exemptions,
+sidecar naming, report/JSON, and a collect→plan→apply round trip over real
+trees) and neither has run on a real cross-base system.
 
 Related: [#80](https://github.com/tuna-os/bootc-migrate-composefs/issues/80)
 confirmed (via reading ostree's `merge_configuration_from()` source directly)
 that `bootc switch`'s native merge does plain whole-*file* 3-way merge with
 **no** identity-DB (`passwd`/`group`/etc.) key-level reconciliation — the
-exact class of problem `mergetc`'s union-merge exists to prevent. This is a
-real gap in the `OstreeDeploy` route, tracked separately since fixing it
-means either an upstream ostree/bootc change or new compensating logic, not a
-`mergetc` cross-base extension.
+exact class of problem `mergetc`'s union-merge exists to prevent. The
+`etc_conflict` pass deliberately does **not** close that gap: it holds the
+identity DBs exempt (it has no union-merge to rescue them either) and keeps
+the existing advisory warning. #80 still needs either an upstream
+ostree/bootc change or its own compensating logic.
 
 **Exit criteria (not yet met)**: fedora-family → centos-family E2E cell with
 a populated `/var`: correct ownership after reboot, report lists every
@@ -120,33 +144,57 @@ generation, and retiring the pinned legacy builder, have not been picked up.
 bootc anywhere (host, target, builder); `BMC_CFS_BUILDER` becomes a no-op
 escape hatch.
 
-### M5 — Desktop & UX (scenario E + human factors) — **computable cores landed, interactive/live pieces deferred**
+### M5 — Desktop & UX (scenario E + human factors) — **computable cores landed; the interactive/live pieces exist but are unvalidated**
 
-Three issues, same shape: the pure/reusable core shipped; the interactive
-TUI and (for #31) live NVRAM mutation did not, because neither is
-exercisable by this project's build/clippy/test/fmt + E2E loop — a passing
-CI run can't demonstrate a checklist UI works, and #31's remaining scope
-(deleting/renaming boot entries) is the same unvalidatable-boot-mutation
-class of risk as #65.
+Three issues, same shape: the pure/reusable core shipped first and is
+unit-tested. The interactive checklists (#15, #31) and #31's live NVRAM
+mutation have since been built on top, but neither is exercisable by this
+project's build/clippy/test/fmt + E2E loop — a passing CI run cannot
+demonstrate that a checklist UI works, and no E2E cell mutates NVRAM. Both
+carry that caveat in their module docs and need manual/corral-VM
+validation; #31's `efibootmgr` path is the same class of risk as #65 and
+should not be trusted until it has been run on a real UEFI system.
 
 - [#68](https://github.com/tuna-os/bootc-migrate-composefs/issues/68) — DE
-  config stash/restore (GNOME dconf/gnome-shell, KDE kdeglobals/plasma/…),
-  a best-effort portable-preference extractor, and the
+  config stash/restore (GNOME dconf/gnome-shell, KDE kdeglobals/plasma,
+  COSMIC, niri, XFCE), a best-effort portable-preference extractor, and the
   `pre-switch.d`/`post-switch.d` hook contract are done, unit-tested, and
   exposed as `bootc-rebase de-migrate stash|restore`. Target-image DE
-  *detection* (needs registry streaming, and realistically needs M3's
-  cross-base hardening landed first since cross-DE is usually also
-  cross-image) and wiring into the live `rebase` flow are not implemented.
+  detection now streams session files, session binaries, and any
+  display-manager default session out of the registry (`de_detect`), the
+  same decision function classifies the running host, and `rebase
+  --de-migrate` (off by default) stashes every human account's outgoing DE
+  config before staging and restores a matching stash on the way back. The
+  decision logic is table-driven-tested offline; what has *not* run is a
+  cross-DE E2E cell (Bluefin GNOME → an Aurora/KDE image) asserting the
+  stash exists on a real system and survives the reboot — that and the
+  portable subset actually being applied by a hook still need live
+  validation.
 - [#15](https://github.com/tuna-os/bootc-migrate-composefs/issues/15) — the
   factory-vs-live `/etc` diff computation is done, exposed as
-  `bootc-migrate etc-drift` (table or JSON). The interactive
-  checklist UI and its wiring into Phase 4's merge decision are not
-  implemented.
+  `bootc-migrate etc-drift` (table or JSON). The interactive checklist UI
+  (`etc-drift --interactive`, or `--review-drift` as "Phase 0.5" ahead of a
+  live migration) and its wiring into Phase 4's merge decision
+  (`EtcDriftManifest` / `merge_etc_files_with_overrides`, unit-tested) are
+  now implemented. The checklist's terminal event loop itself is the one
+  piece that can't be proven by compile+unit-test — same as this project's
+  other interactive-only work — and needs manual/corral-VM validation.
 - [#31](https://github.com/tuna-os/bootc-migrate-composefs/issues/31) — the
   UEFI boot-entry audit (dead/generic-label/duplicate/firmware-managed
   classification) is done, read-only, exposed as `bootc-rebase boot-entries`.
-  Interactive selection, live entry removal, and branding-rename (which is a
-  delete+recreate, so the same NVRAM-mutation risk) are not implemented.
+  Interactive selection, live entry removal, and branding-rename are now
+  implemented too, taken on with explicit sign-off on the NVRAM-mutation
+  risk rather than deferred again. The split follows the mitigation below:
+  the whole decision — which entries may be deleted or renamed, and which
+  refusals stop a plan — is a pure, table-tested planner
+  (`boot_cleanup::plan`), and the `efibootmgr` executor
+  (`boot_cleanup::live`) only performs what the planner approved. Dry-run
+  is the default; `--apply` requires a typed confirmation and writes a
+  restorable NVRAM snapshot first; `--undo` replays it. What has **not**
+  run is the `efibootmgr` path itself: no E2E cell mutates NVRAM, so entry
+  deletion, the create-before-delete rename, and `--undo` need a real UEFI
+  machine or a corral VM before they are trusted — as does the checklist's
+  terminal event loop, like this project's other interactive-only work.
 
 **Exit criteria (not yet met)**: bluefin↔aurora-style switch preserves user
 data untouched, stashes/restores DE state, swaps DE-scoped flatpaks on
@@ -166,12 +214,12 @@ graph TD
   M0["M0 MVP hardening — done"] --> M1["M1 same-backend engine — done"]
   M1 --> M2["M2 #65 migrate-bootloader — skeleton done, live mutation deferred"]
   M1 --> M3P1["M3 #67 pt1 remap — done, wired into OstreeDeploy"]
-  M3P1 --> M3P2["M3 #67 pt2 mergetc cross-base — blocked, no live caller"]
+  M3P1 --> M3P2["M3 #67 pt2 /etc conflict policy — landed post-switch, no cross-base E2E cell"]
   M1 --> GAP80["#80 identity-DB merge gap — confirmed, tracked separately"]
   M1 --> M4["M4 NativeStore selection / retire legacy builder — not started"]
   M1 --> M5A["M5 #68 DE stash/restore — skeleton done, detection+wiring deferred"]
-  M1 --> M5B["M5 #15 etc-drift report — done, TUI deferred"]
-  M1 --> M5C["M5 #31 boot-entry audit — done, cleanup+branding deferred"]
+  M1 --> M5B["M5 #15 etc-drift report + TUI + Phase 4 wiring — done, TUI needs manual validation"]
+  M1 --> M5C["M5 #31 boot-entry audit + cleanup/branding — planner tested, NVRAM path needs a UEFI VM"]
 ```
 
 ## Risks & standing mitigations
@@ -212,3 +260,8 @@ graph TD
 - DE settings: **stash/restore, never translate** (#68)
 - Boot-critical or UI-only remaining scope gets a documented plan on its
   issue, not a best-effort implementation without validation (#65, #31, #15)
+- When boot-critical scope *is* taken on (#31's cleanup): split the
+  decision from the execution, so every safety rule is a pure unit test and
+  the executor holds no policy; back up before mutating; make the
+  destructive step opt-in and human-gated; and never remove the path back
+  to a bootable state (#31)
