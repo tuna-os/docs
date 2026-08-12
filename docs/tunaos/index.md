@@ -234,7 +234,7 @@ Related Communities:
 - [Secure Boot](https://github.com/tuna-os/tunaOS/blob/main/docs/SECURE-BOOT.md) — which variants support Secure Boot out of the box
 - [Improvement Plan](https://github.com/tuna-os/tunaOS/blob/main/docs/IMPROVEMENT_PLAN.md) — roadmap and development progress
 - [Redfin Setup](https://github.com/tuna-os/tunaOS/blob/main/docs/rhel-setup.md) — RHEL 10 local-build instructions
-- [Developer Docs](https://tunaos.org/docs/dev/introduction) — build and contribution guide
+- [Developer Docs](https://tunaos.org/docs/tunaos/building) — build and contribution guide
 
 ### Policies & Planning
 - [Roadmap](https://github.com/tuna-os/tunaOS/blob/main/ROADMAP.md) — project direction and feature status
