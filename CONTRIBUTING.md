@@ -21,7 +21,7 @@ Thanks for your interest! This project is part of the [TunaOS](https://tunaos.or
 - A duplicate slug shadows the other post at the same URL and breaks canonical links.
 - If you rewrite a post, reuse the existing file (update it in place).
 - Do not add a second file with the same slug.
-- **Publish before you merge.** A post is visible on tunaos.org/blog only when it has no `draft: true` in its frontmatter. Merge posts with `draft: false` (or no draft field) unless you schedule them for a future date (for example, the Q3 recap publishes 08-22). If you leave `draft: true` after the merge, the post stays hidden — flip the flag in the same PR that merges it.
+- **Publish before you merge.** A post is visible on tunaos.org/blog only when it has no `draft: true` in its frontmatter. Merge posts with `draft: false` (or no draft field) unless you schedule them for a future date (for example, 08-22). If you leave `draft: true` after the merge, the post stays hidden — flip the flag in the same PR.
 
 ## Questions?
 
