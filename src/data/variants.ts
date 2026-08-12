@@ -113,11 +113,12 @@ export const VARIANTS: Variant[] = [
     accent: '#0b6e4f',
     accent2: '#0ea5e9',
     stats: [
+      {label: 'Status', value: 'Stable'},
       {label: 'Support', value: '10 years'},
       {label: 'Cadence', value: 'Enterprise-stable'},
       {label: 'Arch', value: 'x86_64 · aarch64'},
     ],
-    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/github-copr#65
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/tunaos-packages#65
 
     features: [BOOTC, HOMEBREW, FLATHUB, HWE, NVIDIA, {
       emoji: '🛡️',
@@ -147,11 +148,12 @@ export const VARIANTS: Variant[] = [
     accent: '#d97706',
     accent2: '#f59e0b',
     stats: [
+      {label: 'Status', value: 'Stable'},
       {label: 'Base', value: 'Kitten 10'},
       {label: 'Cadence', value: 'Fresh + stable'},
       {label: 'Microarch', value: 'x86_64_v2 builds'},
     ],
-    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/github-copr#65
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/tunaos-packages#65
 
     features: [BOOTC, HOMEBREW, FLATHUB, HWE, NVIDIA, {
       emoji: '🐱',
@@ -181,11 +183,12 @@ export const VARIANTS: Variant[] = [
     accent: '#7c3aed',
     accent2: '#a855f7',
     stats: [
+      {label: 'Status', value: 'Beta'},
       {label: 'Base', value: 'CentOS Stream 10'},
       {label: 'Cadence', value: 'Rolling preview'},
       {label: 'Role', value: 'Next-RHEL testing'},
     ],
-    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/github-copr#65
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/tunaos-packages#65
 
     features: [BOOTC, HOMEBREW, FLATHUB, HWE, {
       emoji: '🔭',
@@ -217,6 +220,7 @@ export const VARIANTS: Variant[] = [
     accent: '#2563eb',
     accent2: '#38bdf8',
     stats: [
+      {label: 'Status', value: 'Beta'},
       {label: 'Base', value: 'Fedora 44'},
       {label: 'Cadence', value: 'Bleeding edge'},
       {label: 'Kernel', value: 'Latest mainline'},
@@ -282,7 +286,7 @@ export const VARIANTS: Variant[] = [
     accent: '#e95420',
     accent2: '#f5a623',
     stats: [
-      {label: 'Status', value: 'Experimental'},
+      {label: 'Status', value: 'Beta'},
       {label: 'Backend', value: 'composefs'},
       {label: 'Arch', value: 'x86_64'},
     ],
@@ -367,7 +371,7 @@ export const VARIANTS: Variant[] = [
     accent: '#1793d1',
     accent2: '#33aaff',
     stats: [
-      {label: 'Status', value: 'Production'},
+      {label: 'Status', value: 'Beta'},
       {label: 'Cadence', value: 'Rolling-release'},
       {label: 'Arch', value: 'x86_64'},
     ],
@@ -394,7 +398,7 @@ export const VARIANTS: Variant[] = [
     accent: '#a80030',
     accent2: '#d70a53',
     stats: [
-      {label: 'Status', value: 'Production'},
+      {label: 'Status', value: 'Beta'},
       {label: 'Cadence', value: 'Debian stable'},
       {label: 'Arch', value: 'x86_64'},
     ],
@@ -421,7 +425,7 @@ export const VARIANTS: Variant[] = [
     accent: '#003554',
     accent2: '#005082',
     stats: [
-      {label: 'Status', value: 'Production'},
+      {label: 'Status', value: 'Beta'},
       {label: 'Cadence', value: 'Debian unstable'},
       {label: 'Arch', value: 'x86_64'},
     ],
@@ -448,7 +452,7 @@ export const VARIANTS: Variant[] = [
     accent: '#1b4332',
     accent2: '#2d6a4f',
     stats: [
-      {label: 'Status', value: 'Production'},
+      {label: 'Status', value: 'Beta'},
       {label: 'Cadence', value: 'Rawhide'},
       {label: 'Arch', value: 'x86_64 · aarch64'},
     ],
@@ -474,7 +478,7 @@ export const VARIANTS: Variant[] = [
     accent: '#73ba1f',
     accent2: '#93d93f',
     stats: [
-      {label: 'Status', value: 'Production'},
+      {label: 'Status', value: 'Beta'},
       {label: 'Cadence', value: 'openSUSE rolling'},
       {label: 'Arch', value: 'x86_64'},
     ],
@@ -500,7 +504,7 @@ export const VARIANTS: Variant[] = [
     accent: '#4e3a65',
     accent2: '#6b5883',
     stats: [
-      {label: 'Status', value: 'Production'},
+      {label: 'Status', value: 'Beta'},
       {label: 'Cadence', value: 'Gentoo stable'},
       {label: 'Arch', value: 'x86_64'},
     ],

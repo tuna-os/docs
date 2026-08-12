@@ -4,7 +4,7 @@ title: "Announcing Gurnard — Ubuntu 24.04 LTS with the Pantheon desktop"
 authors: [james]
 tags: [tunaos, gurnard, ubuntu, pantheon, elementary, bootc, immutable]
 date: 2026-08-12
-draft: true
+draft: false
 ---
 
 <!-- ste-disable-file: announcement post for a new variant; first-person maintainer voice intended. -->

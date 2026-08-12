@@ -34,7 +34,7 @@ workstation users also need **new tools**. TunaOS supplies both.
 | **[Albacore](albacore)** | AlmaLinux 10 | **Flagship** Stable Enterprise Desktop |
 | **[Yellowfin](yellowfin)** | AlmaLinux Kitten | Developers / Daily Drivers |
 | **[Skipjack](skipjack)** | CentOS Stream 10 | Upstream Testing |
-| **[Bonito](bonito)** | Fedora 44 | Bleeding Edge / Experimental |
+| **[Bonito](bonito)** | Fedora 44 | Beta (published for testing) |
 
 ## 🚀 Specialized Editions
 

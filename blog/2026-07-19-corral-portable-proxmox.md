@@ -37,7 +37,7 @@ everything else. There is also a compatibility layer for the Proxmox API, if
 your Terraform provider needs one.
 
 And to be clear about what "one binary" means: the CLI, the TUI, *and* the
-web UI are all in it. `brew install hanthor/tap/corral` and you have the
+web UI are all in it. `brew install tuna-os/tap/corral-vm` and you have the
 whole product — there's no separate web package or frontend build to deploy.
 
 ## Try it in 30 seconds, literally no cluster
