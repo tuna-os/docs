@@ -71,7 +71,7 @@ const sidebars: SidebarsConfig = {
           type: 'category',
           label: '🤠 Corral',
           link: {type: 'doc', id: 'corral/index'},
-          items: ['corral/getting-started', 'corral/user-guide', 'corral/interfaces', 'corral/contexts', 'corral/command-reference', 'corral/vdi', 'corral/containers', 'corral/backup', 'corral/bootc', 'corral/windows', 'corral/gpu', 'corral/snapsched', 'corral/schedule', 'corral/proxmox', 'corral/SPEC', 'corral/architecture', 'corral/api', 'corral/backend-support', 'corral/backend-parity', 'corral/ci-boot-gate', 'corral/first-party-plugins', 'corral/kubevirt-proxmox-setup', 'corral/plugin-marketplace', 'corral/proxmox-api', 'corral/testing'],
+          items: ['corral/getting-started', 'corral/user-guide', 'corral/interfaces', 'corral/contexts', 'corral/command-reference', 'corral/vdi', 'corral/containers', 'corral/backup', 'corral/bootc', 'corral/windows', 'corral/gpu', 'corral/snapsched', 'corral/schedule', 'corral/proxmox', 'corral/ROADMAP', 'corral/SPEC', 'corral/architecture', 'corral/api', 'corral/backend-support', 'corral/backend-parity', 'corral/ci-boot-gate', 'corral/first-party-plugins', 'corral/kubevirt-proxmox-setup', 'corral/plugin-marketplace', 'corral/proxmox-api', 'corral/testing'],
         },
         {
           type: 'category',
