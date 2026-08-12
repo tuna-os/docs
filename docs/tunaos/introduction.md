@@ -79,7 +79,6 @@ For hardware variants:
 | Tag | Desktop |
 |-----|---------|
 | `gnome` | GNOME (stable) |
-| `gnome50` | GNOME 50 (latest) |
 | `kde` | KDE Plasma |
 | `cosmic` | COSMIC Desktop |
 | `niri` | Niri (tiling Wayland compositor) |
