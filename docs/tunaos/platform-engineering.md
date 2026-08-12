@@ -18,7 +18,7 @@ TunaOS is built for platform engineers. Every aspect — from the immutable boot
 | Developer tooling | Homebrew pre-installed, Tavern GUI, Bluefin CLI |
 | VM management | Corral — QEMU/KVM and KubeVirt backends |
 | USB provisioning | Tacklebox — multi-boot media creation |
-| GPU workloads | GDX variants with NVIDIA/CUDA |
+| GPU workloads | `-nvidia` variants with NVIDIA/CUDA (formerly GDX) |
 | Desktop choice | GNOME, KDE, COSMIC, Niri, XFCE |
 
 ## Immutable Infrastructure
