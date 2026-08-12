@@ -24,7 +24,7 @@ We're still early but it's moving fast:
 
 - 47 stars on GitHub. That is not many, but the number goes up
 - 4 desktop variants across a handful of base OS options
-- `-nvidia` variants with NVIDIA/CUDA baked in if you're doing AI/ML stuff (the suffix was renamed from the legacy `-gdx`)
+- `-nvidia` variants with NVIDIA/CUDA baked in if you're doing AI/ML stuff (formerly the `-gdx` suffix)
 - A Rust-based office suite — Tables, Decks, Letters — because why not
 - Some ecosystem tools too: Corral for VMs, Tacklebox for multi-boot USBs, Tavern as a Homebrew GUI
 
