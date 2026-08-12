@@ -20,7 +20,7 @@ New here? Start with issues tagged **[good first issue](https://github.com/tuna-
 Ways to contribute without touching the build pipeline:
 
 - **Docs & guides** — the [docs site](https://github.com/tuna-os/docs) has its own `good first issue` backlog and takes content PRs for guides, FAQs, and variant pages
-- **Community** — help triage [open issues](https://github.com/tuna-os/tunaOS/issues), answer questions in [Matrix](https://matrix.to/#/%23tunaos:reilly.asia), or improve the [adopters list](ADOPTERS.md) if your org uses TunaOS
+- **Community** — help triage [open issues](https://github.com/tuna-os/tunaOS/issues), answer questions in [Matrix](https://matrix.to/#/%23tunaos:reilly.asia), or improve the [adopters list](https://github.com/tuna-os/tunaOS/blob/main/ADOPTERS.md) if your org uses TunaOS
 - **Labels** — issues tagged `help wanted` are explicitly open for external contribution
 
 When you pick an issue, say so in a comment (prevents double work) and ask in Matrix if you get stuck — someone is usually around.
@@ -80,7 +80,7 @@ Key scripts:
 - `build_scripts/desktop/install-desktop.sh` — generic DE installer (reads YAML)
 - `build_scripts/lib.sh` — shared helpers (OS detection, pkg abstraction)
 
-Full architecture: [`docs/AGENT_GUIDE.md`](docs/AGENT_GUIDE.md)
+Full architecture: [`docs/AGENT_GUIDE.md`](https://github.com/tuna-os/tunaOS/blob/main/docs/AGENT_GUIDE.md)
 
 ## Pull Request Process
 
@@ -100,10 +100,10 @@ just verify-disk image.qcow2  # QEMU boot verification
 
 ## Documentation
 
-- [Vision](VISION.md) — project philosophy
-- [Agent Guide](docs/AGENT_GUIDE.md) — architecture reference
-- [Pipeline](docs/PIPELINE.md) — CI/CD details
-- [Testing](docs/TESTING.md) — test harness
+- [Vision](https://github.com/tuna-os/tunaOS/blob/main/VISION.md) — project philosophy
+- [Agent Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/AGENT_GUIDE.md) — architecture reference
+- [Pipeline](https://github.com/tuna-os/tunaOS/blob/main/docs/PIPELINE.md) — CI/CD details
+- [Testing](https://github.com/tuna-os/tunaOS/blob/main/docs/TESTING.md) — test harness
 
 ## Community
 

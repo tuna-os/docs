@@ -31,14 +31,14 @@ Bring a modern, cloud-native experience to the Enterprise Linux Desktop. tunaOS 
 | Hummingbird | Fedora Hummingbird (container-native bootc) | Base, GNOME, KDE, COSMIC, Niri | Experimental (see #1341) |
 | Gurnard | Ubuntu 24.04 Noble | Base, Pantheon | Experimental (see #1341) |
 
-**Status terms** follow [VARIANT-LIFECYCLE.md](VARIANT-LIFECYCLE.md): `Stable`
+**Status terms** follow [VARIANT-LIFECYCLE.md](https://github.com/tuna-os/tunaOS/blob/main/VARIANT-LIFECYCLE.md): `Stable`
 means GA, `Beta` means published for testing on tunaos.org/download. This
 table is the canonical per-variant status; tunaos.org wiki and blog copy must
 track it. Notably **Bonito is Beta** (GA tracked in [#272](https://github.com/tuna-os/tunaos/issues/272)) — it is neither "Production" nor "Experimental".
 
 > **Experimental** (per maintainer #1315): Hummingbird and Gurnard/Pantheon are
 > configured in `.github/build-config.yml` and building, but predate the
-> admission gate in [VARIANT-LIFECYCLE.md](VARIANT-LIFECYCLE.md) (#1196) — they
+> admission gate in [VARIANT-LIFECYCLE.md](https://github.com/tuna-os/tunaOS/blob/main/VARIANT-LIFECYCLE.md) (#1196) — they
 > have no named owner or acceptance criteria yet. They are tracked in
 > [#1341](https://github.com/tuna-os/tunaos/issues/1341); the 2026-08-22 Q3
 > checkpoint (#1299) decides staff vs. descope. README coverage is tracked in
@@ -57,7 +57,7 @@ CI pipeline builds are green on amd64, amd64-v2, and arm64 for core variants.
 - Discussions enabled
 - Multi-agent development active (architect, guide, sec-check, quality, CI, outreach)
 - 34+ community outreach issues filed; product-readiness gate (#563) resolved
-- ⚠️ Adoption metrics untracked — no usage/telemetry data on the 179 downloadable ISOs (#1174); **plan published 08-10** ([ADOPTION-METRICS.md](./ADOPTION-METRICS.md)) — first monthly download/usage snapshot targeted 2026-11-01 (Q4 "Mature")
+- ⚠️ Adoption metrics untracked — no usage/telemetry data on the 179 downloadable ISOs (#1174); **plan published 08-10** ([ADOPTION-METRICS.md](https://github.com/tuna-os/tunaOS/blob/main/ADOPTION-METRICS.md)) — first monthly download/usage snapshot targeted 2026-11-01 (Q4 "Mature")
 - 🟡 ROADMAP coverage improving — template merged into .github project-starter (PR #13); tunaos-packages, protota, iso-builder, corral seeded (08-10/08-11); 9/42 authorized repos now carry a ROADMAP.md, bootc-installer pending PR #13; wootc/mandelbrot/letters/remora/mariner/fisherman still unplanned (#1295)
 - 🟢 **First external contributor engaged 08-10**: shimonenator landed docs on EL10/OBS design (fixes #777) and image-factory completion gate — first non-maintainer, non-agent commits; retention tracked as funnel proxy (#1317)
 - 🟡 **Flavor equality mandate (08-11)**: maintainer directive #1315 — all supported flavors are equal tiers; GNOME-first framing and cadence to be retired (#1316)
@@ -131,7 +131,7 @@ CI pipeline builds are green on amd64, amd64-v2, and arm64 for core variants.
 
 **Planning started (2026-08-08)**: Q4 milestone #3 created; tracking issue #1159 open. **All 9 Q4 goals now tracked** (#1167 branch protection, #1168 governance, #1186 release automation, #1187 package signing/SBOM). Stale dependency refs (#306/#307/#212/#301 closed) still flagged in #1159 — new trackers needed for Tacklebox decoupling and Upstream snapshot automation. Extended 08-08 evening: adoption metrics (#1174) and variant lifecycle policy (#1175) added as strategist-owned goals.
 
-**Progress note (2026-08-11)**: keyless Cosign signing + signed SBOM attestations **landed 08-10** for published ISOs and container images (#1303, #1305) — first Q4 supply-chain deliverable. Remaining scope for #1187: signed SBOMs for **every** release artifact across all flavors (blocked on Releases cadence parity #1254) and tunaos-packages artifacts. Package sourcing policy (#1319/#1323) drafted as [PACKAGE-SOURCING.md](./PACKAGE-SOURCING.md) — source inventory feeds the #1187 attestation graph in Q4.
+**Progress note (2026-08-11)**: keyless Cosign signing + signed SBOM attestations **landed 08-10** for published ISOs and container images (#1303, #1305) — first Q4 supply-chain deliverable. Remaining scope for #1187: signed SBOMs for **every** release artifact across all flavors (blocked on Releases cadence parity #1254) and tunaos-packages artifacts. Package sourcing policy (#1319/#1323) drafted as [PACKAGE-SOURCING.md](https://github.com/tuna-os/tunaOS/blob/main/PACKAGE-SOURCING.md) — source inventory feeds the #1187 attestation graph in Q4.
 
 | Goal | Owner | Dependencies |
 |------|-------|--------------|
@@ -168,7 +168,7 @@ Items requiring architectural investment before they become blockers:
 
 ## How to Contribute
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for development setup, build instructions, and PR process.
+See [CONTRIBUTING.md](https://github.com/tuna-os/tunaOS/blob/main/CONTRIBUTING.md) for development setup, build instructions, and PR process.
 
 Priorities listed above — pick an issue labeled `good first issue` or comment on a goal you'd like to own. First external contribution landed 2026-08-10 (shimonenator) — contributors are welcome on docs, packaging, and architecture-track issues (#1308 seeds a starter backlog).
 
@@ -178,7 +178,7 @@ Priorities listed above — pick an issue labeled `good first issue` or comment 
 
 This roadmap is maintained by the strategist agent. Updates published after major milestones or quarterly. Propose changes via PR to this file with issue reference.
 
-See [SECURITY.md](./SECURITY.md) for vulnerability reporting.
+See [SECURITY.md](https://github.com/tuna-os/tunaOS/blob/main/SECURITY.md) for vulnerability reporting.
 
 ---
-*Generated by strategist agent at ACMM L6. Updated 2026-08-11 for flavor equality mandate (#1315) + first external contributor (#1317). Signed-off-by: hanthor-hive-agent[bot] <290068839+hanthor-hive-agent[bot]@users.noreply.github.com>*
+*Generated by strategist agent at ACMM L6. Updated 2026-08-11 for flavor equality mandate (#1315) + first external contributor (#1317). Signed-off-by: hanthor-hive-agent[bot] &lt;290068839+hanthor-hive-agent[bot]@users.noreply.github.com&gt;*
