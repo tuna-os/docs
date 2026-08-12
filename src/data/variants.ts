@@ -117,7 +117,7 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Enterprise-stable'},
       {label: 'Arch', value: 'x86_64 · aarch64'},
     ],
-    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/github-copr#65
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/tunaos-packages#65
 
     features: [BOOTC, HOMEBREW, FLATHUB, HWE, NVIDIA, {
       emoji: '🛡️',
@@ -151,7 +151,7 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Fresh + stable'},
       {label: 'Microarch', value: 'x86_64_v2 builds'},
     ],
-    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/github-copr#65
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/tunaos-packages#65
 
     features: [BOOTC, HOMEBREW, FLATHUB, HWE, NVIDIA, {
       emoji: '🐱',
@@ -185,7 +185,7 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Rolling preview'},
       {label: 'Role', value: 'Next-RHEL testing'},
     ],
-    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/github-copr#65
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/tunaos-packages#65
 
     features: [BOOTC, HOMEBREW, FLATHUB, HWE, {
       emoji: '🔭',
