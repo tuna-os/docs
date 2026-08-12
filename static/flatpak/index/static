@@ -60,7 +60,7 @@
       "Name": "tuna-os/tavern",
       "Images": [
         {
-          "Digest": "sha256:b2c3e09d21ae2f5cdd376a9b3c66c442e935baa91c6855b3c29e2fe8e6b3f001",
+          "Digest": "sha256:bd08fefa01165abf8f68ce067b6389ea7b0ec40537deac2b133526c309e92442",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -74,10 +74,10 @@
             "org.flatpak.installed-size": "520192",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAAH8AAAdA==",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.tavern\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=tavern\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=home;/home/linuxbrew:ro;\n\n[Session Bus Policy]\norg.freedesktop.Flatpak=talk\norg.tunaos.tavern.SearchProvider=own\n\n[Environment]\nHOMEBREW_NO_AUTO_UPDATE=1\n",
-            "org.flatpak.timestamp": "1786576739",
+            "org.flatpak.timestamp": "1786576742",
             "org.flatpak.download-size": "147178",
-            "org.flatpak.commit": "6a05ca610b42e20eb8c56f196e156a013e182ef38f4b90e71671ef0203e03f7f",
-            "org.flatpak.subject": "Built from 8fc5d724b1cf4cb383f22e704c2a741b2f70d974",
+            "org.flatpak.commit": "d8ef679c2c0662cc5fea03104008327c2921b787bdd8767294827ca90040bf29",
+            "org.flatpak.subject": "Built from a610b1d83cfb0c85ce3363dded28d5d7d184dd68",
             "org.flatpak.body": "Name: org.tunaos.tavern\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MudGF2ZXJuL3g4Nl82NC9tYXN0ZXIAAHM=",
             "org.flatpak.commit-metadata.xa.download-size": "AAAAAAAChOwAdA==",
