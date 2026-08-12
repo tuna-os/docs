@@ -1,7 +1,13 @@
 ---
-sidebar_position: 5
+sidebar_position: 2
 title: "Spec"
 ---
+
+> **Note:** `tuna-os/kde-build-meta` was consolidated directly into this repo's
+> `elements/` tree (junction removed, repo archived) — the "two-repo model"
+> described below is historical. All KDE `.bst` elements now live in this repo;
+> the diagrams below reflect the current single-repo state. See `AGENTS.md`'s
+> "Single-Repo Model" section for details.
 
 ## Overview
 
@@ -154,22 +160,18 @@ BuildStream does not automatically propagate CMake config files through `depends
 If `foo.bst` calls `find_package(KF6Bar)` at configure time, then `kde/frameworks/bar.bst`
 **must** appear in `foo.bst`'s `build-depends`, even if it's already in `depends`.
 
-### Updating a pinned element
+### Updating KDE elements
 
-There is no second repo to keep in sync — elements live in this repo:
+All KDE elements live in this repo now (the `kde-build-meta` junction was removed), so updating a KDE stack element is an ordinary commit to `elements/kde/…` — no separate repo or junction-bump step:
 
 ```bash
-# 1. Edit the .bst element (or its source ref) under elements/
-# 2. Update the pinned git ref / tarball SHA256 in the element
-# 3. Commit + push tromso
 cd /path/to/tromso
-TMPDIR=/var/tmp git commit -m "Update <element> to <upstream> <ref>"
+# edit elements/kde/<stack>/<element>.bst (bump url/ref, patch, etc.)
+TMPDIR=/var/tmp git commit -m "Update <element> to <version>"
 git push origin main
 ```
 
-The only remaining junction is `elements/freedesktop-sdk.bst` (and the
-BuildStream plugins under `elements/plugins/`); it is pinned by ref and
-tracked with `track-bst-sources.yml`.
+For the `freedesktop-sdk` base SDK junction, bump `elements/freedesktop-sdk.bst` (`url`, `ref`, `base-dir`) the same way.
 
 ---
 
@@ -204,4 +206,4 @@ that have not yet been written:
 | `openrazer-daemon` | DKMS-based; needs special handling |
 | `yubikey-full-disk-encryption` | Hardware security key disk encryption |
 | `vpl-gpu-rt` | Intel VPL GPU runtime |
-| Python bindings (Shiboken6/PySide6) | Requires packaging from scratch |
+| Python bindings (Shiboken6/PySide6) | Requires packaging from scratch — see [investigation](https://github.com/tuna-os/tromso/blob/main/docs/kde-python-bindings-investigation.md) (#2) for what that entails |
