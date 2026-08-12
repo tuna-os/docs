@@ -47,6 +47,23 @@ bluefin-cli shell powershell on
 
 ### Homebrew (Linux / macOS)
 
+The formula is published automatically by GoReleaser to the
+[`tuna-os/homebrew-tap`](https://github.com/tuna-os/homebrew-tap) tap on every
+release ([#15](https://github.com/tuna-os/bluefin-cli/issues/15)):
+
+```bash
+brew tap tuna-os/tap
+brew install bluefin-cli
+```
+
+> **Status (2026-08-11):** the tuna-os tap currently ships only `corral-vm.rb` —
+> the `bluefin-cli` formula has not been published by the release pipeline yet
+> (see [#141](https://github.com/tuna-os/bluefin-cli/issues/141)). Until it
+> appears, use `ublue-os/homebrew-experimental-tap` below.
+
+It is also available from `ublue-os/homebrew-experimental-tap`, synced from the
+source-build formula in [`contrib/homebrew/bluefin-cli.rb`](contrib/homebrew/bluefin-cli.rb):
+
 ```bash
 brew tap ublue-os/homebrew-experimental-tap
 brew install bluefin-cli
@@ -58,6 +75,12 @@ brew install bluefin-cli
 winget install --id Hanthor.BluefinCLI --exact
 ```
 
+### Chocolatey (Windows)
+
+```powershell
+choco install bluefin-cli
+```
+
 ### Scoop (Windows)
 
 ```powershell
@@ -65,10 +88,16 @@ scoop bucket add tuna-os https://github.com/tuna-os/scoop-bucket
 scoop install bluefin-cli
 ```
 
+> **Status (2026-08-11):** `tuna-os/scoop-bucket` has no manifests yet — the
+> manifest is published by the release pipeline and is currently pending
+> ([#141](https://github.com/tuna-os/bluefin-cli/issues/141)).
+
 ### deb / rpm (Debian, Ubuntu, Fedora, openSUSE…)
 
-Every release ships native packages — grab the one for your distro from the
-[latest release](https://github.com/tuna-os/bluefin-cli/releases/latest):
+Releases are configured to ship native packages (`nfpm`) — grab the one for
+your distro from the
+[latest release](https://github.com/tuna-os/bluefin-cli/releases/latest)
+when it is present:
 
 ```bash
 # Debian/Ubuntu
@@ -103,6 +132,17 @@ go build -o bluefin-cli .
 On Windows, use `go build -o bluefin-cli.exe .`.
 
 Maintainers: package publishing (Homebrew tap, Winget, Scoop) is automated by GoReleaser on release; `.github/workflows/winget.yml` is a manual fallback for re-submitting a Winget version.
+
+Scoop publishing requires the `SCOOP_BUCKET_TOKEN` repository secret (a fine-grained PAT with write access to `tuna-os/scoop-bucket`), without which the Scoop manifest upload step is safely skipped during release workflows. See [docs/release-publishing.md](https://github.com/tuna-os/bluefin-cli/blob/main/docs/release-publishing.md) for details.
+
+Homebrew tap publishing requires the `HOMEBREW_TAP_TOKEN` repository secret (a fine-grained PAT with write access to `tuna-os/homebrew-tap`), without which the formula upload step is safely skipped during release workflows. See [docs/release-publishing.md](https://github.com/tuna-os/bluefin-cli/blob/main/docs/release-publishing.md) for details.
+
+Homebrew release process: on every tagged release GoReleaser publishes the
+binary formula to `tuna-os/homebrew-tap` (requires the `HOMEBREW_TAP_TOKEN`
+secret). External taps that build from source, such as
+`ublue-os/homebrew-experimental-tap`, must be synced manually — bump `url` and
+`sha256` in [`contrib/homebrew/bluefin-cli.rb`](contrib/homebrew/bluefin-cli.rb)
+and open a PR in that tap.
 
 ## 📖 Usage
 
