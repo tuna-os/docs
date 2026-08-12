@@ -30,6 +30,23 @@ podman pull ghcr.io/tuna-os/xfce-linux:latest
 sudo bootc switch ghcr.io/tuna-os/xfce-linux:latest
 ```
 
+## Stable release channel
+
+The first stable channel is published only after the nightly image, matching
+live ISO, plain install, and LUKS install checks are green. Once promoted,
+the immutable image is available at:
+
+```bash
+podman pull ghcr.io/tuna-os/xfce-linux:stable
+sudo bootc switch ghcr.io/tuna-os/xfce-linux:stable
+```
+
+The stable live ISO and checksum are published under
+`https://pub-<configured-r2-domain>/xfce-linux/stable/` as
+`xfce-linux-live-latest.iso` and `xfce-linux-live-latest.iso-CHECKSUM`.
+The promotion workflow verifies both objects before reporting the release
+ready, so downstream download pages can safely point at those stable names.
+
 ## Verifying Signatures
 
 OCI images and live ISOs are signed keylessly with [cosign](https://github.com/sigstore/cosign)
@@ -62,4 +79,3 @@ cosign verify-blob xfce-linux-live-<date>-<sha>.iso \
 ## License
 
 Apache 2.0 — see [LICENSE](LICENSE).
-
