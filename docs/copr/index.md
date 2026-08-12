@@ -7,7 +7,7 @@ status: internal
 
 > 🔧 **Internal tooling** — used by the TunaOS build pipeline. Not user-facing.
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/tuna-os/tunaos-packages/blob/main/LICENSE)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://github.com/tuna-os/tunaos-packages/blob/main/CODE_OF_CONDUCT.md)
 [![Security Policy](https://img.shields.io/badge/Security-Policy-7b68ee.svg)](https://github.com/tuna-os/tunaos-packages/blob/main/SECURITY.md)
 
@@ -212,7 +212,7 @@ to Fedora:
 ```
 # Must use local spec (SCM or SRPM upload):
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/tuna-os/tunaos-packages/blob/main/LICENSE)
 glib2               → SRPM   src/gnome-50/glib2/
 gdm                 → SCM    src/gnome-50/gdm/
 gjs                 → SCM    src/gnome-50/gjs/
@@ -224,7 +224,7 @@ gnome50-el10-compat → SRPM   src/deps/gnome50-el10-compat/
 
 # Everything else uses Fedora Rawhide dist-git directly:
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/tuna-os/tunaos-packages/blob/main/LICENSE)
 mutter, gnome-shell, gtk4, libadwaita, pipewire, pango, fontconfig,
 xdg-desktop-portal, xdg-desktop-portal-gnome, gobject-introspection,
 gsettings-desktop-schemas, gnome-session, gnome-control-center,
