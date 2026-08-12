@@ -8,7 +8,7 @@ title: "Security"
 TunaOS images are built daily with weekly ISO publications. Images are
 published with per-flavor tags (e.g. `gnome`, `kde`, `gnome-hwe`).
 Only the most recent build of each flavor is actively supported.
-See [VERSIONING.md](https://github.com/tuna-os/tunaOS/blob/main/VERSIONING.md) for the full tagging scheme.
+See [VERSIONING.md](VERSIONING.md) for the full tagging scheme.
 
 | Variant | Base OS | Status |
 |---|---|---|
@@ -37,14 +37,22 @@ You can expect:
 
 TunaOS images are:
 - Built in CI from pinned base images (see `image-versions.yaml`)
-- Signed with [cosign](https://github.com/sigstore/cosign) (public key: `cosign.pub`)
+- Signed keylessly with [Sigstore Cosign](https://github.com/sigstore/cosign)
+  using the protected TunaOS GitHub Actions workflow identity
 - Scanned for vulnerabilities via GitHub's built-in scanning
-- Published as SBOM-attested OCI images
+- Published with signed SPDX SBOM attestations
+
+There is no long-lived TunaOS signing key or password to leak or rotate.
+Fulcio issues a short-lived certificate for the GitHub Actions OIDC identity,
+and the signature is recorded in Sigstore's transparency infrastructure. See
+[`docs/VERIFY-ARTIFACTS.md`](docs/VERIFY-ARTIFACTS.md) for verification commands.
 
 ## Supply Chain Security
 
 - Base images pinned by digest in `image-versions.yaml`
 - Third-party GitHub Actions pinned to commit SHAs
+- Release promotion requires successful keyless signature and SBOM-attestation
+  verification against the expected repository workflow and protected ref
 - Build secrets use BuildKit secret mounts, never environment variables
 - RPM packages from official AlmaLinux/CentOS/Fedora repositories and verified COPRs
 
@@ -56,4 +64,4 @@ We follow coordinated disclosure:
 3. Fix is deployed to new builds
 4. Advisory is published after deployment
 
-See [`docs/AGENT_GUIDE.md`](https://github.com/tuna-os/tunaOS/blob/main/docs/AGENT_GUIDE.md) for full build architecture details.
+See [`docs/AGENT_GUIDE.md`](docs/AGENT_GUIDE.md) for full build architecture details.
