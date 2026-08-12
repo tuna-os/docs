@@ -5,7 +5,7 @@ sidebar_label: "ubuntu"
 status: unknown
 ---
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/tuna-os/ubuntu/blob/main/LICENSE)
 
 **Ubuntu-based bootc OCI images and live installable ISOs.**
 
@@ -36,5 +36,5 @@ sudo bootc switch ghcr.io/tuna-os/ubuntu:26.04
 
 ## License
 
-Apache 2.0 — see [LICENSE](LICENSE).
+Apache 2.0 — see [LICENSE](https://github.com/tuna-os/ubuntu/blob/main/LICENSE).
 
