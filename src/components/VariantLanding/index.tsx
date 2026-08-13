@@ -65,6 +65,11 @@ function Hero({variant, isoNames}: {variant: Variant; isoNames: Set<string> | nu
           <Link className={clsx('button button--lg', styles.btnGhost)} to={`/docs/${variant.id}`}>
             Full docs 📖
           </Link>
+          {variant.id === 'gurnard' && (
+            <Link className={clsx('button button--lg', styles.btnGhost)} to="/docs/gurnard/pantheon-shortcuts">
+              Pantheon shortcuts ⌨️
+            </Link>
+          )}
         </div>
       </div>
     </header>
