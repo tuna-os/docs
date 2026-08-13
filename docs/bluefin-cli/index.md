@@ -5,7 +5,7 @@ sidebar_label: "bluefin-cli"
 status: stable
 ---
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/tuna-os/bluefin-cli/blob/main/LICENSE)
 
 A powerful, modern CLI tool for managing shell configuration and development environment customization. Built with beautiful TUIs using [Charm](https://charm.sh/) libraries.
 
@@ -62,7 +62,7 @@ brew install bluefin-cli
 > appears, use `ublue-os/homebrew-experimental-tap` below.
 
 It is also available from `ublue-os/homebrew-experimental-tap`, synced from the
-source-build formula in [`contrib/homebrew/bluefin-cli.rb`](contrib/homebrew/bluefin-cli.rb):
+source-build formula in [`contrib/homebrew/bluefin-cli.rb`](https://github.com/tuna-os/bluefin-cli/blob/main/contrib/homebrew/bluefin-cli.rb):
 
 ```bash
 brew tap ublue-os/homebrew-experimental-tap
@@ -141,7 +141,7 @@ Homebrew release process: on every tagged release GoReleaser publishes the
 binary formula to `tuna-os/homebrew-tap` (requires the `HOMEBREW_TAP_TOKEN`
 secret). External taps that build from source, such as
 `ublue-os/homebrew-experimental-tap`, must be synced manually — bump `url` and
-`sha256` in [`contrib/homebrew/bluefin-cli.rb`](contrib/homebrew/bluefin-cli.rb)
+`sha256` in [`contrib/homebrew/bluefin-cli.rb`](https://github.com/tuna-os/bluefin-cli/blob/main/contrib/homebrew/bluefin-cli.rb)
 and open a PR in that tap.
 
 ## 📖 Usage

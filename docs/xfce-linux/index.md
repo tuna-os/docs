@@ -7,7 +7,7 @@ status: alpha
 
 > ⚠️ **Alpha** — early development. Not production-ready. APIs and behaviour may change without notice.
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/tuna-os/xfce-linux/blob/main/LICENSE)
 
 **XFCE Wayland OCI image built with BuildStream** — a lightweight, immutable desktop OS image with the XFCE desktop environment.
 
@@ -78,4 +78,4 @@ cosign verify-blob xfce-linux-live-<date>-<sha>.iso \
 
 ## License
 
-Apache 2.0 — see [LICENSE](LICENSE).
+Apache 2.0 — see [LICENSE](https://github.com/tuna-os/xfce-linux/blob/main/LICENSE).

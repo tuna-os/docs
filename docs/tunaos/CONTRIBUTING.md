@@ -112,4 +112,4 @@ just verify-disk image.qcow2  # QEMU boot verification
 
 ## License
 
-[Apache 2.0](LICENSE)
+[Apache 2.0](https://github.com/tuna-os/tunaOS/blob/main/LICENSE)
