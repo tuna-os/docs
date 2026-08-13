@@ -36,6 +36,7 @@ import {
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
 } from '../sync-org-docs.mjs';
+import {findCaseCollisions} from '../check-doc-collisions.mjs';
 
 // ── Test helpers ──────────────────────────────────────────────────────────────
 let pass = 0;
@@ -529,6 +530,23 @@ test('passes --paginate and per_page to gh', () => {
 test('de-duplicates names repeated across a page boundary', () => {
   const names = withPath(stubGh([['a', 'b'], ['b', 'c']]), () => listOrgRepos());
   assert.deepEqual(names, ['a', 'b', 'c']);
+});
+
+// ── case-collision guard ─────────────────────────────────────────────────────
+
+console.log('\ncase-collision guard');
+
+test('finds paths that differ only by case', () => {
+  const collisions = findCaseCollisions([
+    'docs/tacklebox/USER-GUIDE.md',
+    'docs/tacklebox/user-guide.md',
+    'docs/tacklebox/index.md',
+  ], 'docs');
+  assert.deepEqual(collisions, [['tacklebox/USER-GUIDE.md', 'tacklebox/user-guide.md']]);
+});
+
+test('allows distinct documentation paths', () => {
+  assert.deepEqual(findCaseCollisions(['docs/a.md', 'docs/b.md'], 'docs'), []);
 });
 
 test('an unpaginated gh yields only page 1 — the regression this guards', () => {

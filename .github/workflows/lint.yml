@@ -84,6 +84,9 @@ jobs:
           done
           exit $FAILED
 
+      - name: Check case-colliding documentation paths
+        run: node scripts/check-doc-collisions.mjs
+
       - name: Run unit tests
         run: |
           echo "=== Running unit tests ==="
