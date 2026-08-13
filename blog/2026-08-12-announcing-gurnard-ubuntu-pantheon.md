@@ -42,8 +42,7 @@ packaging surface and we want your bug reports while they're cheap to fix.
 ## How to try it
 
 ```bash
-# Pull and run with a container runtime, or boot directly via bootc
-bootc container copy ghcr.io/tuna-os/gurnard:pantheon
+sudo bootc switch ghcr.io/tuna-os/gurnard:pantheon
 ```
 
 Or browse the [Gurnard variant page](https://tunaos.org/gurnard) for install
@@ -51,12 +50,13 @@ instructions and image tags.
 
 ## Part of a growing line
 
-Gurnard joins the catalog alongside **Hummingbird** (🐦, Fedora Hummingbird
-rebased with the CKI ARK kernel and hardened for secure boot) — both new
-variants in the last week, and both reminders that TunaOS is not one desktop's
-project. Every major base and desktop pairing we can ship atomically, we will.
+Gurnard joins the catalog alongside **Hummingbird** (🐦, a container-native
+bootc rebase of Fedora Hummingbird) — both new variants in the last week, and
+both reminders that TunaOS is not one desktop's project. Every major base and
+desktop pairing we can ship atomically, we will.
 
 Questions, feedback, or a first contribution? We're on
 [Matrix](https://matrix.to/#/%23tunaos:reilly.asia) and issues are open in
-[github.com/tuna-os/tunaOS](https://github.com/tuna-os/tunaOS) — good-first-issue
-labels are coming to the backlog soon.
+[github.com/tuna-os/tunaOS](https://github.com/tuna-os/tunaOS) —
+[`good first issue`](https://github.com/tuna-os/tunaOS/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+and `help wanted` labels are live on the backlog.
