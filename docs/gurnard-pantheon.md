@@ -15,44 +15,43 @@ OS on Gurnard, and where to get help.
 
 :::caution[Experimental]
 Gurnard is an **Experimental** variant (see the [ROADMAP](https://github.com/tuna-os/tunaos/blob/main/ROADMAP.md))
-— the surface is new and still settling. If something looks wrong, a bug
-report is welcome and useful; see "Reporting issues" below.
+— the surface is new and still changes often. If something looks wrong, a bug
+report is welcome and useful; see "Bug reports" below.
 :::
 
 ## What Pantheon is
 
-Pantheon is a Wayland/GTK desktop built from scratch for elementary OS —
-calm, minimal, and opinionated by design, rather than a customized GNOME or
-KDE. On Gurnard it's the same Pantheon codebase, running on top of Ubuntu
-24.04 LTS instead of elementary OS's own base, wrapped in TunaOS's atomic
-bootc core (one image, one transaction, rollback on failure).
+Pantheon is a Wayland/GTK desktop built from scratch for elementary OS:
+calm, minimal, and opinionated by design, not a customized GNOME or KDE.
+On Gurnard it is the same Pantheon codebase on top of Ubuntu 24.04 LTS
+instead of elementary OS's own base. TunaOS wraps it in an atomic bootc
+core: one image, one transaction, rollback on failure.
 
 ## How Gurnard differs from elementary OS
 
 - **Base system**: Ubuntu 24.04 LTS under Pantheon, not elementary OS's own
   base. Package management, kernel, and system services follow TunaOS's
   bootc model — atomic image updates via `sudo bootc upgrade`, not `apt
-  upgrade` on the running system.
-- **AppCenter is not included.** elementary's curated AppCenter store is
-  elementary-specific infrastructure and does not ship on Gurnard. Install
-  apps from Flathub instead (pre-enabled — see below).
-- **Homebrew and Flathub are baked in**, matching every other TunaOS
-  variant, which elementary OS does not ship by default.
+  upgrade` on a live system.
+- **Gurnard does not ship AppCenter.** elementary's curated AppCenter store
+  is elementary-specific infrastructure and does not ship on Gurnard.
+  Install apps from Flathub instead (pre-enabled — see below).
+- **Homebrew and Flathub ship in the image**, like every other TunaOS
+  variant. Stock elementary OS does not ship either one by default.
 
 ## First steps
 
 - **Application launcher**: press the `Super` (Windows) key to open Pantheon's
   application launcher, then type to search installed apps.
-- **Workspaces**: Pantheon's multitasking view (swipe up on a trackpad, or
-  the workspace shortcut in Pantheon's default keybindings) shows all open
-  windows and workspaces at once — the standard way to switch context
-  without a taskbar.
+- **Workspaces**: the Pantheon overview shows all open windows and workspaces
+  at once. It is how you switch context without a taskbar. Swipe up on a
+  trackpad, or use the workspace shortcut in Pantheon's default keybindings.
 - **Dock**: Pantheon's dock sits at the bottom of the screen by default.
   Right-click the dock for its settings, or open **System Settings → Dock**
   to adjust position, size, and auto-hide behavior.
-- **System Settings**: the gear icon in the top-right corner (or search for
-  "Settings" via the launcher) is Pantheon's control center — displays,
-  keyboard, network, and the dock all live there.
+- **System Settings**: the gear icon in the top-right corner opens Pantheon's
+  control center. You can also search for "Settings" in the launcher.
+  Displays, keyboard, network, and the dock all live there.
 
 ## Installing apps
 
@@ -63,13 +62,13 @@ apps the same way as any other TunaOS variant:
 flatpak install flathub org.gnome.TextEditor
 ```
 
-or use the **GNOME Software** / app-store equivalent bundled with the image,
-which is backed by Flathub.
+or open the **GNOME Software** app store in the image, which also installs
+from Flathub.
 
-## Reporting issues
+## Bug reports
 
-Pantheon-on-Gurnard is a new packaging surface, and bug reports while it's
-cheap to fix are genuinely wanted (see the
+Pantheon on Gurnard is new, and we want bug reports early, while a fix is
+cheap (see the
 [Gurnard launch announcement](https://tunaos.org/blog/announcing-gurnard-ubuntu-pantheon)).
 File issues in
 [github.com/tuna-os/tunaOS](https://github.com/tuna-os/tunaOS/issues), and
@@ -82,6 +81,6 @@ tag them `gurnard` so they're easy to find. Include:
 
 ## See also
 
-- [Gurnard overview](/gurnard) — variant landing page, downloads, image tags
-- [Announcing Gurnard](https://tunaos.org/blog/announcing-gurnard-ubuntu-pantheon) — launch blog post
-- [elementary OS docs](https://elementaryos.stackexchange.com/) — general Pantheon UX questions not specific to Gurnard's bootc packaging
+- [Gurnard overview](/gurnard) — variant start page, downloads, image tags
+- [Gurnard launch announcement](https://tunaos.org/blog/announcing-gurnard-ubuntu-pantheon) — the blog post for the release
+- [elementary OS docs](https://elementaryos.stackexchange.com/) — Pantheon questions that are not specific to Gurnard
