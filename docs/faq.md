@@ -60,11 +60,11 @@ TunaOS uses bootc which manages the bootloader. Dual-boot is possible but not th
 
 **Does TunaOS run on Apple Silicon Macs?**
 
-Yes, on M1/M2 Macs, via [bootc-installer-asahi](https://github.com/tuna-os/bootc-installer-asahi) — a macOS-driven installer that hands off to [Asahi Linux](https://asahilinux.org/)'s recoveryOS to boot a TunaOS bootc image. This is an **experimental** install path; only images that pass a golden-manifest verification harness are offered (currently Bonito and Grouper). M3 and newer Macs aren't supported yet — that follows Asahi upstream's own hardware support. See [docs/ASAHI-HARDWARE-TIERS.md](https://github.com/tuna-os/tunaOS/blob/main/docs/ASAHI-HARDWARE-TIERS.md) for testing status.
+Yes, on M1 and M2 Macs, with [bootc-installer-asahi](https://github.com/tuna-os/bootc-installer-asahi). The installer runs on macOS, then hands off to [Asahi Linux](https://asahilinux.org/) recoveryOS, which boots a TunaOS bootc image. This install path is **experimental**: it offers only the images that pass a golden-manifest check, which now means Bonito and Grouper. M3 and newer Macs are not supported yet, because Asahi upstream does not support them yet. For hardware tiers and test status, see [docs/ASAHI-HARDWARE-TIERS.md](https://github.com/tuna-os/tunaOS/blob/main/docs/ASAHI-HARDWARE-TIERS.md).
 
-**Does TunaOS run on Snapdragon X Elite laptops?**
+**Does TunaOS run on laptops with Snapdragon X Elite?**
 
-Yes, on X13s-class devices (Snapdragon X Elite / SC8380, e.g. the Lenovo ThinkPad X13s), via the Bonito and Dakota variants — see the [Bonito X13s guide](/docs/bonito-x13s) and [Dakota X13s guide](/docs/dakota-x13s) for install steps and current hardware status. Other Snapdragon X Elite laptops (Dell XPS 13, Surface Pro 11, Yoga Slim 7x) aren't confirmed working yet — X13s is the only device with a published, tested guide so far.
+Yes, on X13s-class devices such as the Lenovo ThinkPad X13s (Snapdragon X Elite, SC8380). Use the Bonito or Dakota variant, and follow the [Bonito X13s guide](/docs/bonito-x13s) or the [Dakota X13s guide](/docs/dakota-x13s) for install steps and hardware status. Other laptops with Snapdragon X Elite have no confirmed status yet: the Dell XPS 13, the Surface Pro 11, and the Yoga Slim 7x. The X13s is the only device with a published guide today.
 
 ## Variants
 
