@@ -32,7 +32,7 @@ project uses in production. For the CLI, paste a direct ISO URL with
 
 :::tip[PVC sizing is automatic]
 Corral detects the ISO's real size via an HTTP HEAD request and sizes its
-import PVC accordingly, with a safety margin. (Older versions hardcoded a
+PVC (the imported volume) accordingly, with a safety margin. (Older versions hardcoded a
 6GB PVC for every ISO — harmless for small Linux install images, broken
 for anything bigger. Fixed after a real Windows 11 import crash-looped for
 hours against an undersized PVC before anyone noticed — see
