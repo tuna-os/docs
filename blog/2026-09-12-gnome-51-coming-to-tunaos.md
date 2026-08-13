@@ -12,7 +12,7 @@ draft: true
 GNOME 51.0 ships **September 12, 2026** — and TunaOS is packaging it for
 Enterprise Linux *before* the upstream release lands. The GNOME 51 build
 tier in [tunaos-packages](https://github.com/tuna-os/tunaos-packages) is
-already built out and being wired into our COPR backport pipeline, so the
+already built out through the project's native RPM build chain, so the
 Albacore and Yellowfin GNOME variants can pick it up on the upstream
 schedule instead of waiting for an EL point release.
 
@@ -44,10 +44,12 @@ promotion.
 
 1. **On a TunaOS GNOME variant** (Albacore or Yellowfin), updates land
    through the normal atomic pipeline — `sudo bootc upgrade` after the
-   tier reaches the published COPR tags.
-2. **On EL10 directly** — the backports land in the TunaOS COPR, so
-   AlmaLinux 10 / CentOS Stream 10 users can pick up GNOME 51 packages
-   without switching distributions.
+   tier reaches the published TunaOS package repository.
+2. **On EL10 directly** — the backports publish to the TunaOS RPM
+   repository (native builds, not a COPR — see the
+   [tunaos-packages README](https://github.com/tuna-os/tunaos-packages#readme)
+   for current setup instructions), so AlmaLinux 10 / CentOS Stream 10
+   users can pick up GNOME 51 packages without switching distributions.
 3. **Package by package** — the tier is public and incremental; each
    component builds independently, so test coverage can start as soon as
    the first tiers go green.
