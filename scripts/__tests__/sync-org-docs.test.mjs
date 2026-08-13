@@ -296,6 +296,64 @@ test('leaves a site-absolute link alone', () => {
   assert.equal(fixRelativeLinks(src, 'corral'), src);
 });
 
+// Repo-relative links that are not .md/.rst files used to fall through the
+// regexes unchanged and ship as 404s on the docs site (#135). A LICENSE, a
+// YAML file, a release-list link and an anchored .md link all live in the
+// source repo, so each has to resolve against github.com.
+
+test('sends a bare LICENSE link to the blob URL', () => {
+  const out = fixRelativeLinks('[License](LICENSE)\n', 'tunaOS');
+  assert.equal(
+    out.trim(),
+    '[License](https://github.com/tuna-os/tunaOS/blob/main/LICENSE)',
+  );
+});
+
+test('sends dual-license filenames to the blob URL', () => {
+  const out = fixRelativeLinks('[MIT](LICENSE-MIT) or [Apache](LICENSE-APACHE)\n', 'bootc-migrate');
+  assert.match(out, /blob\/main\/LICENSE-MIT/);
+  assert.match(out, /blob\/main\/LICENSE-APACHE/);
+});
+
+test('points a releases link at the GitHub releases page', () => {
+  const out = fixRelativeLinks('[Releases](../../releases)\n', 'bootc-migrate');
+  assert.equal(
+    out.trim(),
+    '[Releases](https://github.com/tuna-os/bootc-migrate/releases)',
+  );
+});
+
+test('sends a relative YAML link to the blob URL', () => {
+  const out = fixRelativeLinks(
+    '[`manifests/package-factory.yaml`](../manifests/package-factory.yaml)\n',
+    'tunaos-packages',
+    'docs',
+  );
+  assert.equal(
+    out.trim(),
+    '[`manifests/package-factory.yaml`](https://github.com/tuna-os/tunaos-packages/blob/main/manifests/package-factory.yaml)',
+  );
+});
+
+test('rewrites the path of an anchored .md link and keeps the anchor', () => {
+  const out = fixRelativeLinks('[CLAUDE.md](CLAUDE.md#adding-a-new-page)\n', 'Tavern');
+  assert.equal(
+    out.trim(),
+    '[CLAUDE.md](https://github.com/tuna-os/Tavern/blob/main/CLAUDE.md#adding-a-new-page)',
+  );
+});
+
+test('sends a bare non-markdown file link to the blob URL', () => {
+  const out = fixRelativeLinks(
+    '[formula](contrib/homebrew/bluefin-cli.rb)\n',
+    'bluefin-cli',
+  );
+  assert.equal(
+    out.trim(),
+    '[formula](https://github.com/tuna-os/bluefin-cli/blob/main/contrib/homebrew/bluefin-cli.rb)',
+  );
+});
+
 // ── frontmatter ───────────────────────────────────────────────────────────────
 
 console.log('\nfrontmatter');

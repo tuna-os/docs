@@ -189,8 +189,9 @@ function fixRelativeLinks(content, repo, srcDir = '') {
   // Convert relative repo links to absolute GitHub links.
   // [something](./foo.md) → [something](https://github.com/tuna-os/<repo>/blob/main/foo.md)
   // But keep intra-doc links within the Docusaurus site as-is.
-  // Strategy: links that start with ./  or ../ and end with .md or .rst
-  // get the full GitHub URL.
+  // Strategy: any repo-relative link (./, ../, or bare) is resolved against
+  // the repo root and rewritten to github.com — not just .md/.rst links, so
+  // LICENSE, package-factory.yaml and CLAUDE.md#anchor stop shipping as 404s.
   const prefix = srcDir ? `${srcDir.replace(/\/+$/, '')}/` : '';
   const base = `https://github.com/${ORG}/${repo}/blob/main`;
   // Images need bytes, not a page. github.com/…/blob/… answers text/html, so
@@ -226,15 +227,42 @@ function fixRelativeLinks(content, repo, srcDir = '') {
     /(<img\b[^>]*?\bsrc=")(?!https?:|\/|data:)([^"]+)(")/gi,
     (_, pre, p, post) => `${pre}${raw}/${clean(p)}${post}`,
   );
-  // Links to files that live in the source repo.
+  // Rewrite repo-relative markdown links to absolute URLs.
+  //
+  // A repo-relative link can point at a markdown file, a plain file
+  // (LICENSE, package-factory.yaml), the GitHub release list (../../releases),
+  // or carry an anchor (CLAUDE.md#adding-a-new-page). All of those live in
+  // the source repo, not on the docs site, so they must resolve against
+  // github.com — the previous .md/.rst-only regexes left the rest 404ing
+  // (#135).
+  const github = `https://github.com/${ORG}/${repo}`;
   c = c.replace(
-    /]\((\.[^)]*\.(?:md|rst))\)/gi,
-    (_, p) => `](${base}/${clean(p)})`,
-  );
-  // Also fix bare relative paths without leading ./
-  c = c.replace(
-    /]\(((?!https?:|#|\/)[^)]*\.(?:md|rst))\)/gi,
-    (_, p) => `](${base}/${clean(p)})`,
+    /(?<!!)\]\(([^()\s][^()]*)\)/g,
+    (m, target) => {
+      // An anchor belongs to the destination, not to the path that has to
+      // be resolved against the repo root.
+      const hash = target.indexOf('#');
+      const path = hash === -1 ? target : target.slice(0, hash);
+      const anchor = hash === -1 ? '' : target.slice(hash);
+
+      // Absolute URLs, angle-bracket targets, mailto:/data:/ftp: links,
+      // pure anchors and site-absolute paths are not repo-relative.
+      if (
+        path === '' ||
+        path.startsWith('<') ||
+        /^(?:[a-z][a-z0-9+.-]*:|\/)/i.test(path)
+      ) {
+        return m;
+      }
+
+      const cleaned = clean(path);
+      if (cleaned === '') return m;
+
+      // `releases` is the GitHub releases page, not a file in the repo.
+      if (cleaned === 'releases') return `](${github}/releases${anchor})`;
+
+      return `](${base}/${cleaned}${anchor})`;
+    },
   );
   return c;
 }

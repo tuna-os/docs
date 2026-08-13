@@ -100,7 +100,7 @@ partition**, the tool handles those automatically — see
 > scenarios — btrfs, ext4, LUKS+XFS, and LVM-on-LUKS with a dedicated `/var` —
 > run in CI on every push to `main` (migration, commit, deep-clean, and
 > `bootc status` / `upgrade --check` all green). Prebuilt binaries are on the
-> [Releases](../../releases) page. Don't point this at a machine you can't
+> [Releases](https://github.com/tuna-os/bootc-migrate/releases) page. Don't point this at a machine you can't
 > reinstall, but the core path is stable.
 
 ## Interactive wizard (TUI)
@@ -540,8 +540,8 @@ should follow [AGENTS.md](https://github.com/tuna-os/bootc-migrate/blob/main/AGE
 
 ## License
 
-Licensed under either of [Apache License, Version 2.0](LICENSE-APACHE) or
-[MIT license](LICENSE-MIT) at your option.
+Licensed under either of [Apache License, Version 2.0](https://github.com/tuna-os/bootc-migrate/blob/main/LICENSE-APACHE) or
+[MIT license](https://github.com/tuna-os/bootc-migrate/blob/main/LICENSE-MIT) at your option.
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in this project by you, as defined in the Apache-2.0 license, shall

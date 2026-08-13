@@ -18,7 +18,7 @@ targets, and publishes only validated repositories to Cloudflare R2.
 | Arch | pkg.tar.zst | pacman | scaffold |
 
 The authoritative target and R2-path contract is
-[`manifests/package-factory.yaml`](../manifests/package-factory.yaml).
+[`manifests/package-factory.yaml`](https://github.com/tuna-os/tunaos-packages/blob/main/manifests/package-factory.yaml).
 
 ## Upstream source policy
 
