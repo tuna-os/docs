@@ -6,7 +6,7 @@ status: unknown
 ---
 
 Live bootable ISO for **Ubuntu 26.04 "Resolute Raccoon"** desktop, based on the
-[`ghcr.io/tuna-os/ubuntu:26.04`](https://github.com/tuna-os/ubuntu)
+[`ghcr.io/hanthor/ubuntu-26.04-desktop-bootc`](https://github.com/hanthor/ubuntu-26.04-desktop-bootc)
 bootc image. Uses the same [dakota-iso](https://github.com/tuna-os/dakota-iso)
 systemd-boot + dmsquash-live pipeline.
 
@@ -28,7 +28,7 @@ Boot the ISO, open a terminal, and run:
 
 ```bash
 sudo bootc install to-disk \
-  --source-imgref ghcr.io/tuna-os/ubuntu:26.04 \
+  --source-imgref ghcr.io/hanthor/ubuntu-26.04-desktop-bootc:latest \
   /dev/sda
 ```
 

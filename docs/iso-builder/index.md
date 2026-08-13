@@ -1,149 +1,114 @@
 ---
 sidebar_position: 1
-sidebar_label: "ISO Builder"
+sidebar_label: "iso-builder"
 
-status: alpha
+status: unknown
 ---
 
+Build a bootable **live ISO** from any bootable container image — **entirely in your browser**. No server, no upload: the same engine that CI uses ([tacklebox](https://github.com/tuna-os/tacklebox)) is compiled to WebAssembly and runs client-side.
 
-:::tip[Try it]
-The builder has a landing page at [tunaos.org/iso-builder](/iso-builder) and runs at
-[https://iso.tunaos.org](https://iso.tunaos.org).
-:::
+**Live:** [https://iso.tunaos.org](https://iso.tunaos.org)
 
-:::info[Want a persistent, updatable drive instead of a one-shot ISO?]
-See the [Native App](/docs/iso-builder/native) — a cross-platform desktop app that writes
-a real multi-boot USB drive directly, with add/update/remove after the
-fact, on Linux, macOS, and Windows.
-:::
+---
 
-> ⚠️ **Alpha** — experimental preview; interfaces and limits below will change.
+## The Intended Experience
 
-Build a live, bootable TunaOS ISO from any bootable container image —
-**entirely in your browser**. Nothing is uploaded anywhere: the registry
-pull, filesystem authoring, and ISO assembly all run locally in
-WebAssembly, using the exact same engine
-([tacklebox](https://github.com/tuna-os/tacklebox)'s pure-Go core) that
-TunaOS CI uses to build release media.
+1. **Pick a Base & Desktop:** Select your base (AlmaLinux Kitten, Fedora, Debian, etc.) and desktop environment (GNOME, KDE Plasma, COSMIC, Niri, XFCE).
+2. **Instant Inspection:** The builder downloads metadata and inspects the image layers in seconds.
+3. **Build ISO:** Click build, and a custom bootable ISO is streamed directly to your local storage.
 
-**Live at:** [https://iso.tunaos.org](https://iso.tunaos.org)
+Everything else — preloading Flatpaks, layering system packages ([remora](https://github.com/tuna-os/remora)), custom repos, or pointing to a custom registry relay — lives under **Advanced** and is entirely opt-in.
 
-> Screenshots below are generated automatically by the Playwright
-> walkthrough (`prototype/iso-builder/e2e`, `npm run walkthrough`) — if
-> the app changes, rerun it and commit the refreshed images.
+---
 
-## Quick start
+## How It Works (Architecture)
 
-1. **Open the builder.** You'll see the image input and an Advanced
-   panel.
+The builder is a **serverless, client-side application** designed to bypass traditional resource limitations when handling multi-gigabyte container images in web browsers:
 
-   ![Home screen](./img/01-home.png)
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Local Disk
+    participant Browser as Browser Client (tbox.wasm)
+    participant Relay as CORS Relay (relay.tunaos.org)
+    participant Registry as GHCR (ghcr.io)
 
-2. **Enter a bootable container image.** Anything OCI works as long as
-   the image is bootc-style (kernel under `/usr/lib/modules`):
-   - `tuna-os/sailfin:base` — a TunaOS image on GHCR (short form)
-   - `ghcr.io/you/your-os:tag` — any GHCR image (fetched via the
-     TunaOS CORS relay)
-   - `quay.io/…` / other registries — fetched directly; works when the
-     registry sends CORS headers
-
-   ![Image entered](./img/02-image-entered.png)
-
-3. **Inspect.** The engine pulls the manifest, unpacks every layer
-   in-browser (whiteouts and hardlinks handled like a real container
-   runtime), and shows what it found: the **desktop environment**
-   (detected from the image's session files), kernel version,
-   systemd-boot presence, and file count.
-
-   ![Inspected image with facts](./img/03-inspected.png)
-
-4. **Tune under Advanced (optional).**
-   - **Volume label** — the ISO's `CDLABEL`.
-   - **Flatpak preload list** — a checklist prefilled per detected
-     desktop (GNOME and KDE have their own defaults; niri/xfce use
-     GNOME's). Untick anything you don't want, and use the **Flathub
-     search box** to autocomplete and add more apps. The final list is
-     embedded into the ISO as `/LiveOS/flatpak-preload.json` for the
-     live environment to consume.
-   - **tbox initramfs URL** — see [Bootability](#bootability) below.
-
-   ![Advanced panel](./img/04-advanced.png)
-
-5. **Build ISO.** The ISO streams straight to disk (File System Access
-   API; falls back to a regular download). The EROFS live root, FAT EFI
-   system partition, and ISO9660/El Torito container are all authored
-   in WASM.
-
-## Role in the bootc Landscape
-
-The `bootc` (bootable containers) model packages fully bootable system trees inside standard OCI container images. While this solves OS distribution and transactional updates, it introduces a bootstrapping problem: bare metal hardware cannot boot directly from an OCI registry.
-
-Traditionally, generating installation media (like an ISO) requires Red Hat's `bootc-image-builder`—a heavy, containerized tool running under `podman` or `docker` that requires root-level loopback mounting and device access.
-
-The TunaOS ISO Builder shifts this entire paradigm:
-
-*   **Client-Side Assembly:** By compiling the core Go-based `tacklebox` filesystem engine to WebAssembly, compilation is offloaded to the user's browser. There is **zero server-side compute cost** for the registry host.
-*   **Edge Customization:** Users can inject Flatpaks, custom repositories, and initramfs overlays at the time of compilation, decoupling generic base images from custom bare-metal installations.
-*   **Platform Democratization:** Anyone on Windows, macOS, or ChromeOS can build a bootable ISO inside a standard sandboxed browser tab without needing to install privileged tools or setup container runtimes locally.
-
-## Share a preset — URL parameters
-
-The builder is deep-linkable, so any project can point users at a
-pre-configured build:
-
-| Param | Meaning | Example |
-|---|---|---|
-| `image` | image to pre-fill | `?image=tuna-os/sailfin:base` |
-| `autorun` | `1` starts the inspect immediately on load (without it, params only pre-fill — a link never starts a multi-GB pull by itself) | `&autorun=1` |
-| `flatpaks` | comma-separated app IDs replacing the default list | `&flatpaks=org.example.App,org.mozilla.firefox` |
-| `label` | volume label | `&label=MYOS` |
-| `initrd` | URL of a tbox-enabled initramfs to embed | `&initrd=https://…/initramfs.img` |
-
-Example:
-`https://iso.tunaos.org/?image=ghcr.io/you/your-os:stable&label=YOUROS`
-
-The **Share a preset** link at the bottom of the page always encodes the
-current form state — click it to test, or hit **Copy** to share it.
-
-## Bootability
-
-A live ISO needs an initramfs containing tacklebox's live-boot modules
-(`tbox-live` — they mount the ISO, the EROFS root, and assemble the
-overlay). Two paths:
-
-- **Supply a tbox initramfs URL** (Advanced → initramfs URL): the ISO
-  is then fully live-bootable, identical in layout to CI-built media.
-  CI-published per-variant initramfs artifacts are planned; until then
-  build one locally (`dracut --add "tbox-live tbox-root"` inside the
-  image) and host it anywhere fetchable.
-- **No URL supplied**: the ISO carries the image's stock initramfs. It
-  boots firmware → bootloader → kernel, but stops before the live
-  desktop (the stock initramfs doesn't know how to assemble a live
-  root). The builder shows a warning banner in this mode.
-
-## Current limits (MVP)
-
-- **Memory**: the unpacked image and the EROFS live in browser memory —
-  base images are fine; large desktop images need the planned
-  OPFS-backed store.
-- **Flatpak preload** is a manifest the live environment consumes at
-  boot, not a baked flatpak deployment.
-- **Registries** other than GHCR must send CORS headers (most don't);
-  GHCR works for any public image via the relay.
-
-## Testing
-
-`prototype/iso-builder/e2e` holds the Playwright suite:
-
-```sh
-cd prototype/iso-builder/e2e
-npm install && npx playwright install chromium
-npx playwright test                # UI + real inspect flow
-npm run walkthrough                # regenerates the doc screenshots
-TBOX_E2E_FULL=1 npx playwright test  # + full ISO build & PVD check
+    User->>Browser: Select Image & click Build
+    Browser->>Relay: HTTP GET /token
+    Relay->>Registry: Request anonymous read token
+    Registry-->>Relay: Token payload
+    Relay-->>Browser: CORS-enabled Token
+    Browser->>Relay: HTTP GET /manifests/tag
+    Relay->>Registry: Proxy manifest fetch
+    Registry-->>Relay: Manifest JSON
+    Relay-->>Browser: CORS-enabled Manifest
+    Browser->>Relay: HTTP GET /blobs/digest (Streamed)
+    Relay->>Registry: Proxy blob fetch
+    Registry-->>Relay: Layer gzip/zstd chunks
+    Relay-->>Browser: CORS-enabled streams
+    Note over Browser: tacklebox WASM decodes tar headers, unpacks overlay, writes EROFS/FAT filesystem
+    Browser->>User: Stream ISO chunks via File System Access API
 ```
 
-The `iso-builder-e2e` workflow runs the same suite in CI on changes to
-`prototype/iso-builder/**`.
+### Key Technical Pillars
+1. **Stateless CORS Relay (`worker/`):** Docker registries like GHCR do not emit browser `Access-Control-Allow-Origin` headers. The Cloudflare Worker shims the CORS preflight requests and adds edge caching (`cf: { cacheEverything: true }`) for immutable blob digests to absorb repeating downloads.
+2. **Back-to-Front Tar Scanning:** Decodes layer tars in reverse order (topmost first) to identify the kernel and initramfs in seconds, enabling it to abort connection streams early rather than pulling gigabytes of unnecessary data.
+3. **File System Access API Streaming:** Instead of buffering the final multi-gigabyte ISO in browser tab memory (which easily triggers OOM tab crashes), it streams chunks directly to disk via `showSaveFilePicker()`. Browsers without this support (Safari, Firefox) fall back to memory buffering with a warning.
 
-*Part of the [Tuna OS](https://github.com/tuna-os) ecosystem.*
+---
+
+## Layout
+
+| Path | Description |
+|------|-------------|
+| `app/public/` | Static web application assets. `tbox.wasm` is tacklebox compiled for `GOOS=js GOARCH=wasm`. |
+| `app/wrangler.jsonc` | Cloudflare Pages deployment configuration. Deployed to `iso.tunaos.org`. |
+| `worker/` | `cors-shim.js` — Cloudflare Worker shim (`relay.tunaos.org`) proxying GHCR + Flathub/package search APIs. |
+| `e2e/` | Playwright test suite driving the real WASM engine against live container registries. |
+| `legacy/` | Original stage 1–3 prototype files (`erofs.js`, `scanner.js`, `unpack.js`) kept for reference. |
+
+---
+
+## Develop
+
+```sh
+# Build the WASM engine first (not committed to git — see "Updating the WASM Engine")
+GOOS=js GOARCH=wasm go build -o app/public/tbox.wasm ./cmd/tbwasm   # from the pinned tacklebox checkout
+cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" app/public/
+
+# Serve the app locally
+cd app/public && python3 -m http.server 8080   # → http://localhost:8080
+
+# E2E Setup & Execution
+cd e2e && npm ci && npx playwright install --with-deps chromium
+npx playwright test --grep-invert @full        # Runs UI & inspect network flow
+```
+
+> [!IMPORTANT]
+> Playwright tests run in a persistent browser context located in `~/tmp/` instead of `/tmp`. This ensures Chrome doesn't run out of storage space when downloading real image layers on Linux environments that limit `/tmp` to a small `tmpfs` RAM disk.
+
+---
+
+## Deploy
+
+```sh
+cd app    && npx wrangler deploy   # Deploys to Pages (iso.tunaos.org)
+cd worker && npx wrangler deploy   # Deploys to Workers (relay.tunaos.org)
+```
+
+*Note: Requires `CLOUDFLARE_API_TOKEN` configured in your environment with Workers and Pages deployment scope.*
+
+---
+
+## Updating the WASM Engine
+
+`app/public/tbox.wasm` is built from the [tacklebox](https://github.com/tuna-os/tacklebox) repository:
+
+```sh
+GOOS=js GOARCH=wasm go build -o tbox.wasm ./cmd/tbwasm
+```
+
+When updating the WASM file, always ensure you copy the matching `wasm_exec.js` from your Go installation:
+```sh
+cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" app/public/
+```

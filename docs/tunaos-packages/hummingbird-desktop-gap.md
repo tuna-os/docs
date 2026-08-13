@@ -1,5 +1,5 @@
 ---
-sidebar_position: 11
+sidebar_position: 16
 title: "hummingbird desktop gap"
 ---
 
@@ -179,6 +179,111 @@ pass, then a second full pass.  The mock config keeps Fedora Rawhide as a
 priority-99 buildroot fallback precisely so the first pass has headers to build
 against; Rawhide is never a repository on a produced image.
 
+## Finding 6 — the gap is a runtime closure, and Python pays for it
+
+Re-measured 2026-08-08, after tier `niri-00` failed eight python-\* packages
+identically in runs 31231968581, 31242725235 and 31248093019.  Hummingbird's
+index had moved on (revision `1786137625`, primary sha256
+`3c2eaf99d82289b58747895801df4d7a9e5fbe4328899d7e93626b5ffb0f0c68`, 16617
+`(name, evr, arch)` tuples) but the Python column had not:
+
+| | hummingbird | Fedora Rawhide (45) | Fedora 44 |
+|---|---|---|---|
+| python3 | 3.14.6-2.2.hum1 | 3.15.0~rc1-1.fc45 | 3.14.6-1.fc44 |
+
+Rawhide has been through the Python 3.15 rebuild; Hummingbird has not.  Every
+noarch Python module carries `Requires: python(abi) = <x.y>`, so this is not a
+soft version skew — **8919 of Rawhide's 66644 binary packages transitively
+require `python(abi) = 3.15`** and cannot enter this buildroot at all.
+
+Hummingbird ships a *partial* Python stack: `pyproject-rpm-macros`,
+`python-srpm-macros 3.14`, `python3-devel`, `python3-setuptools 83.0.0`,
+`python3-pip 26.2`, `python3-packaging`, `python3-pytest`, `python3-pathspec`,
+`python3-pluggy` — and not one PEP 517 build backend.  No `flit-core`,
+`hatchling`, `poetry-core`, `wheel`, `installer`, `build`, `editables`,
+`trove-classifiers`, `Cython` or `expandvars`.  So `%pyproject_buildrequires`
+emits a capability whose only provider is a Rawhide 3.15 build, and dnf5 says:
+
+```
+python3-flit-core-3.12.0-12.fc45.noarch requires python(abi) = 3.15,
+  but none of the providers can be installed
+installed package python3-pip-26.2-0.1.hum1.noarch requires python(abi) = 3.14
+```
+
+**Why the build order never listed them.** `measure-hummingbird-gap.py`
+computes `closure()` over runtime `Requires:` only.  BuildRequires are used to
+*order* that set, never to extend it — `tier_sources().link()` drops a
+requirement whose provider is not already in the runtime-derived build set:
+
+```python
+dependency = binary_to_source.get(provider)
+...
+if dependency and dependency in sources and dependency != source:
+    edges[source].add(dependency)
+```
+
+A build backend never appears in any runtime closure, so it was never a
+candidate.  Reading the same Rawhide *source* index the tier ordering already
+uses, **60 build-only providers carrying `python(abi)` are needed by the 670
+packages and are in neither Hummingbird nor the build order** — `Cython`,
+`gi-docgen` (30 consumers), `python-docutils` (14), `python-sphinx` (12),
+`python-wheel` (10), `python-build` (8), `python-dbusmock` (8),
+`python-setuptools_scm` (7) and so on.  This is not specific to `niri-00`; it
+reaches every desktop.
+
+**Why building them all is not the answer on its own.** Fedora's specs
+BuildRequire their test suites, and `--nocheck` skips `%check` without removing
+a single `BuildRequires`.  Taking the transitive BuildRequires closure of just
+the eight `niri-00` packages, following only edges that Rawhide cannot satisfy
+because of the ABI split, yields **640 source packages** — `python-build` alone
+pulls `filelock`, `pyproject-hooks`, `pytest-mock`, `pytest-rerunfailures`,
+`pytest-xdist`, `setuptools_scm`, `virtualenv` and `uv`.  That is a Python mass
+rebuild, not a tier.
+
+**What was pinned instead.**  638 of those 640 already exist in Fedora 44 at
+`python(abi) = 3.14` — the same interpreter version Hummingbird ships.  (The
+two that do not are `python-roman-numerals` and `python-vcs-versioning`, both
+new in Rawhide's Sphinx chain.)  So `mock/hummingbird-ci.cfg` pins Fedora 44 at
+priority 50, `includepkgs=python3-*,flit`: below Hummingbird, so the
+interpreter, setuptools, pip and pytest still come from the target; above
+Rawhide, so a 3.14 module beats a 3.15 one; and confined by `includepkgs`, so
+no Fedora 44 C library can enter the chroot and the soname split in Finding 3
+is untouched.  With that pin, none of the eight — and none of the PEP 517
+bootstrap tiers added alongside them — has a remaining unsatisfiable
+`python(abi)` BuildRequires.
+
+The pin is temporary by construction: it must be removed when Hummingbird's own
+`python3` reaches 3.15, or it would build 3.14 modules for a 3.15 target.
+`tests/test_hummingbird_python_abi_pin.py` asserts the priority ordering, the
+`includepkgs` confinement and the presence of that expiry note.
+
+## Finding 7 — the base-image component audit (#228)
+
+Audited against `quay.io/hummingbird-community/bootc-os:latest`: the base
+image carries **262 packages** (a minimal bootc container OS with the CKI ARK
+kernel) and ships `NetworkManager` (1.54.3-3.fc43) — and none of the desktop
+submodules the editions need.  The manifest now declares that audit as data:
+`components:` in `manifests/hummingbird-desktops.yaml` names each base-image
+gap and the desktop edition that must install it, and
+`scripts/validate-hummingbird-catalog.py` fails any commit that drops a
+component from its desktop's `install_packages`:
+
+| desktop | audited components | coverage |
+|---|---|---|
+| gnome | `NetworkManager-openvpn-gnome`, `NetworkManager-openconnect-gnome`, `NetworkManager-wwan`, `gnome-keyring`, `nautilus`, `xdg-desktop-portal-gnome`, `xdg-desktop-portal-gtk` | all in `install_packages` |
+| kde | `xdg-desktop-portal-kde` | in `install_packages` |
+| niri | `NetworkManager-tui`, `blueman`, `brightnessctl`, `playerctl`, `pavucontrol`, `gnome-keyring`, `nautilus`, `xdg-desktop-portal-gnome`, `xdg-desktop-portal-gtk`, `SwayNotificationCenter`, `waybar`, `fuzzel` | all in `install_packages` |
+| xfce | `greetd`, `gtkgreet`, `cage`, `xdg-desktop-portal-gtk` | `greetd`/`gtkgreet`/`cage` added with this fix |
+
+`greetd` + `gtkgreet` + `cage` are the XFCE Wayland greetd login path from the
+upstream parity register (`docs/UPSTREAM_PARITY.md`); they were missing from
+the xfce edition and are added here.  `gtkgreet` is a project recipe
+(`packages/gtkgreet`), `greetd` is rebuilt from `src/hummingbird/greetd`, and
+`cage` is a Fedora distro package.  The COSMIC/Niri/DMS COPR suites stay out
+of the produced image (parity rule 1) and are rebuilt as project recipes; the
+Tideforge test-cell request for Hummingbird stage 1+ desktop layers is a build-
+pipeline item, not a manifest change.
+
 ## What was NOT verified
 
 Honesty about the boundary of the measurement:
@@ -196,3 +301,16 @@ Honesty about the boundary of the measurement:
   else shortest name" (`choose_provider`).  A different choice would move a few
   source packages in or out of the list.
 * `x86_64` only.  `aarch64` is a separate index and has not been measured.
+* Finding 6 is index arithmetic, not a build.  **No mock chroot was created and
+  no package was rebuilt with the Fedora 44 pin in place.**  What is verified is
+  that every `python(abi)`-carrying BuildRequires of the eight `niri-00`
+  packages and of the PEP 517 bootstrap tiers has a provider in Fedora 44 at
+  `python(abi) = 3.14` whose version satisfies the recorded constraint
+  (`poetry-core >= 2` → 2.3.0, `cython >= 3.2` → 3.2.4, `flit-core >= 3.11 < 4`
+  → 3.12.0, `blinker >= 1.4` → 1.9.0, `cssselect >= 0.7` → 1.4.0).  Whether
+  dnf5 composes the transaction the priority table predicts can only be
+  established by a real run of the workflow.
+* Finding 6's `python(abi)` reachability is computed with the same
+  `choose_provider` rule as the rest of this document, and treats
+  `(A if B)`-guarded rich dependencies as inert — every one of them in this set
+  is `(python3dist(tomli) if python3-devel < 3.11)`, which is false here.

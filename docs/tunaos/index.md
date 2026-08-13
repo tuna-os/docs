@@ -18,7 +18,7 @@ status: stable
 [![License](https://img.shields.io/github/license/tuna-os/tunaOS?style=for-the-badge)](https://github.com/tuna-os/tunaOS/blob/main/LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/tuna-os/tunaOS?style=for-the-badge)](https://github.com/tuna-os/tunaOS/stargazers)
 [![Issues](https://img.shields.io/github/issues/tuna-os/tunaOS?style=for-the-badge)](https://github.com/tuna-os/tunaOS/issues)
-[![Adopters](https://img.shields.io/badge/adopters-0_entries-2ea44f?style=for-the-badge)](https://github.com/tuna-os/tunaOS/blob/main/ADOPTERS.md)
+[![Adopters](https://img.shields.io/badge/adopters-15_entries-2ea44f?style=for-the-badge)](https://github.com/tuna-os/tunaOS/blob/main/ADOPTERS.md)
 [![Discord](https://img.shields.io/badge/Discord-join-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/MXSTqB8Nv)
 
 </div>
@@ -31,8 +31,8 @@ TunaOS builds **bootc-based desktop operating systems** with atomic updates and 
 
 ### Features
 
-- **Modern Desktops**: GNOME, KDE Plasma, COSMIC, and Niri — your choice, on Enterprise Linux
-- **Latest GNOME**: Don't get stuck on a 3-year-old GNOME. We backport the latest desktop features to the Enterprise Desktop
+- **Modern Desktops**: GNOME, KDE Plasma, COSMIC, Niri, and XFCE — equal first-class options across distribution bases
+- **Up-to-Date Desktop Stack**: Fresh desktop features and updates backported to Enterprise and community bases
 - **Homebrew**: Baked into the image — all your CLI apps and fonts are just a `brew` command away
 - **Flathub by Default**: Full Flathub access out of the box — get any Flatpak available on the net
 - **HWE Option**: Hardware Enablement kernel for newer hardware support
@@ -72,9 +72,10 @@ _Generated from the latest completed main-branch build for each variant. A cell 
 | 🐟 **Albacore** | AlmaLinux 10 (RHEL 10) | `ghcr.io/tuna-os/albacore` | GNOME, KDE, COSMIC, Niri | x86_64, x86_64/v2, arm64 |
 | 🍣 **Skipjack** | CentOS Stream 10 | `ghcr.io/tuna-os/skipjack` | GNOME, KDE, COSMIC, Niri | x86_64, arm64 |
 | 🎣 **Bonito** | Fedora 44 | `ghcr.io/tuna-os/bonito` | GNOME, KDE, COSMIC, Niri | x86_64, arm64 |
-| 🐦 **Hummingbird** | Fedora Hummingbird (experimental) | `ghcr.io/tuna-os/hummingbird` | Base only | x86_64, arm64 |
+| 🐦 **Hummingbird** | Fedora Hummingbird (experimental) | `ghcr.io/tuna-os/hummingbird` | Base, GNOME, KDE, COSMIC, Niri | x86_64, arm64 |
 | 🔒 **Redfin** | Red Hat Enterprise Linux 10 | *Local-Build Only* | GNOME, KDE, COSMIC, Niri, XFCE | x86_64, arm64 |
 | 🐟 **Grouper** | Ubuntu 26.04 | `ghcr.io/tuna-os/grouper` | GNOME, KDE, Niri, XFCE | x86_64 |
+| 🐟 **Gurnard** | Ubuntu 24.04 (Noble Numbat, experimental) | `ghcr.io/tuna-os/gurnard` | Base, Pantheon | x86_64, arm64 |
 | 🚀 **Marlin** | Arch Linux (Rolling) | `ghcr.io/tuna-os/marlin` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64 |
 | 🐡 **Flounder** | Debian 13 (Trixie) | `ghcr.io/tuna-os/flounder` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64 |
 | ☢️ **Flounder Sid** | Debian Sid (Unstable) | `ghcr.io/tuna-os/flounder:*-sid` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64 |
@@ -95,6 +96,7 @@ Image tags are constructed as `<desktop>[-hardware]`:
    * `cosmic`: COSMIC Desktop
    * `niri`: Niri (tiling Wayland compositor)
    * `xfce`: XFCE (Wayland experimental)
+   * `pantheon`: Pantheon desktop (elementary OS) — Gurnard variant, experimental
    * `base`: Plain system image with no desktop environment pre-installed (available for most variants)
 
 2. **Hardware Suffixes** (append to any desktop suffix):
@@ -114,6 +116,14 @@ Image tags are constructed as `<desktop>[-hardware]`:
 | **CPU** | x86_64, ARM64 | x86_64, ARM64 |
 | **RAM** | 4 GB | 8 GB+ |
 | **Storage** | 20 GB | 50 GB+ |
+
+### Supported hardware (ARM laptops)
+
+| Hardware | Status | Docs |
+|----------|--------|------|
+| Snapdragon X Elite (e.g. Lenovo ThinkPad X13s) | Supported | [docs.tunaos.org/bonito-x13s](https://github.com/tuna-os/docs/tree/main/docs/bonito-x13s), [docs.tunaos.org/dakota-x13s](https://github.com/tuna-os/docs/tree/main/docs/dakota-x13s) |
+| Apple Silicon (M1, M2) | Supported via [Asahi Linux](https://asahilinux.org/) | [bootc-installer-asahi](https://github.com/tuna-os/bootc-installer-asahi) |
+| Apple Silicon (M3 and newer) | Not yet supported | — |
 
 ---
 
@@ -167,6 +177,42 @@ If you're already running a compatible bootc system:
 ```bash
 sudo bootc switch ghcr.io/tuna-os/yellowfin:gnome
 ```
+
+### Verifying downloads
+
+TunaOS images and ISOs are keylessly signed (Sigstore Cosign, GitHub Actions
+OIDC identity — no project key or password) and published with SBOMs, so you
+can verify what you're running instead of trusting the download blindly.
+
+**ISOs** ship with a `.iso.sha256` checksum and a `.iso.sigstore.json`
+verification bundle alongside the image:
+
+```bash
+sha256sum --check --strict tunaos-example.iso.sha256
+
+cosign verify-blob tunaos-example.iso \
+  --bundle tunaos-example.iso.sigstore.json \
+  --certificate-identity \
+    "https://github.com/tuna-os/tunaOS/.github/workflows/reusable-build-artifacts.yml@refs/heads/main" \
+  --certificate-oidc-issuer \
+    "https://token.actions.githubusercontent.com"
+```
+
+**Container images** are signed by digest, with a signed SPDX SBOM
+attestation attached to each platform image:
+
+```bash
+digest=$(skopeo inspect docker://ghcr.io/tuna-os/yellowfin:gnome | jq -r .Digest)
+cosign verify "ghcr.io/tuna-os/yellowfin@${digest}" \
+  --certificate-identity \
+    "https://github.com/tuna-os/tunaOS/.github/workflows/reusable-build-image.yml@refs/heads/main" \
+  --certificate-oidc-issuer \
+    "https://token.actions.githubusercontent.com"
+```
+
+Full commands, the SBOM-attestation example, and the exact trust boundary
+(which identities/issuers are accepted and why) are in
+[docs/VERIFY-ARTIFACTS.md](https://github.com/tuna-os/tunaOS/blob/main/docs/VERIFY-ARTIFACTS.md).
 
 ## Container registry authentication
 
@@ -226,10 +272,13 @@ Related Communities:
 
 ### Project Docs
 - [TunaOS Blog](https://tunaos.org/blog/modern-enterprise-linux-desktops-with-tunaos) — launch announcement and design philosophy comparison
+- [Vision](https://github.com/tuna-os/tunaOS/blob/main/VISION.md) — project philosophy: erasing the mystique of the Linux distribution
+- [Goal](https://github.com/tuna-os/tunaOS/blob/main/GOAL.md) — current objective: LUKS E2E fisherman migration
 - [Contributor Guide](https://github.com/tuna-os/tunaOS/blob/main/CONTRIBUTING.md) — how to set up, build, and contribute
 - [Roll Your Own Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/ROLL_YOUR_OWN.md) — build your own custom TunaOS variant
 - [Agent Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/AGENT_GUIDE.md) — complete architecture and contributor reference
 - [Build Pipeline](https://github.com/tuna-os/tunaOS/blob/main/docs/build-pipeline.md) — CI/CD workflow overview
+- [mkosi Investigation](https://github.com/tuna-os/tunaOS/blob/main/docs/mkosi-investigation.md) — mkosi as a build backend and DDI output: findings, not a production change (#999)
 - [Testing Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/TESTING.md) — ISO end-to-end test harness
 - [Secure Boot](https://github.com/tuna-os/tunaOS/blob/main/docs/SECURE-BOOT.md) — which variants support Secure Boot out of the box
 - [Improvement Plan](https://github.com/tuna-os/tunaOS/blob/main/docs/IMPROVEMENT_PLAN.md) — roadmap and development progress
@@ -238,10 +287,15 @@ Related Communities:
 
 ### Policies & Planning
 - [Roadmap](https://github.com/tuna-os/tunaOS/blob/main/ROADMAP.md) — project direction and feature status
+- [Q3 2026 Checkpoint](https://github.com/tuna-os/tunaOS/blob/main/Q3_CHECKPOINT-2026-08-22.md) — decision sheet for the Q3 "Expand Coverage" milestone (#1299)
+- [Variant Lifecycle Policy](https://github.com/tuna-os/tunaOS/blob/main/VARIANT-LIFECYCLE.md) — Stable/Beta/Alpha admission gates and deprecation rules
+- [RFC Process](https://github.com/tuna-os/tunaOS/blob/main/RFC-PROCESS.md) — how RFCs are proposed, reviewed, and decided
+- [Package Sourcing Policy](https://github.com/tuna-os/tunaOS/blob/main/PACKAGE-SOURCING.md) — package origin rules, Tideforge-first, and allowlist (#1319)
 - [Versioning](https://github.com/tuna-os/tunaOS/blob/main/VERSIONING.md) — tag scheme and stability tiers
 - [Migration Guide](https://github.com/tuna-os/tunaOS/blob/main/MIGRATION.md) — switching from other distros
 - [Security Policy](https://github.com/tuna-os/tunaOS/blob/main/SECURITY.md) — vulnerability reporting and supported versions
 - [Adopters](https://github.com/tuna-os/tunaOS/blob/main/ADOPTERS.md) — organizations using TunaOS
+- [Adoption Metrics](https://github.com/tuna-os/tunaOS/blob/main/ADOPTION-METRICS.md) — how adoption is measured and reported (#1174)
 - [Code of Conduct](https://github.com/tuna-os/tunaOS/blob/main/CODE_OF_CONDUCT.md) — community standards
 
 ### Community & Governance

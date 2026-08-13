@@ -75,6 +75,12 @@ brew tap hanthor/homebrew-tap
 brew install --cask hanthor/tap/tavern
 ```
 
+> [!NOTE]
+> This is the maintainer-published channel: the cask lives in the personal
+> `hanthor/homebrew-tap`, not the org-owned `tuna-os/homebrew-tap`
+> (migration tracked in [tuna-os/Tavern#79](https://github.com/tuna-os/Tavern/issues/79)).
+> On Linux the [Flatpak](#quick-install) is the org-published, recommended install.
+
 The cask handles both platforms: `Tavern.app` on macOS and a prebuilt AppImage on Linux, so you don't need Tavern's build dependencies on your machine. If you'd prefer a sandboxed install on Linux, use the Flatpak instead (see below).
 
 ### Prerequisites
