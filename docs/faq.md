@@ -58,6 +58,14 @@ TunaOS uses bootc which manages the bootloader. Dual-boot is possible but not th
 > Hummingbird, Bonito Rawhide, and Flounder Sid) lives on the
 > [variant pages](https://tunaos.org/).
 
+**Does TunaOS run on Apple Silicon Macs?**
+
+Yes, on M1/M2 Macs, via [bootc-installer-asahi](https://github.com/tuna-os/bootc-installer-asahi) — a macOS-driven installer that hands off to [Asahi Linux](https://asahilinux.org/)'s recoveryOS to boot a TunaOS bootc image. This is an **experimental** install path; only images that pass a golden-manifest verification harness are offered (currently Bonito and Grouper). M3 and newer Macs aren't supported yet — that follows Asahi upstream's own hardware support. See [docs/ASAHI-HARDWARE-TIERS.md](https://github.com/tuna-os/tunaOS/blob/main/docs/ASAHI-HARDWARE-TIERS.md) for testing status.
+
+**Does TunaOS run on Snapdragon X Elite laptops?**
+
+Yes, on X13s-class devices (Snapdragon X Elite / SC8380, e.g. the Lenovo ThinkPad X13s), via the Bonito and Dakota variants — see the [Bonito X13s guide](/docs/bonito-x13s) and [Dakota X13s guide](/docs/dakota-x13s) for install steps and current hardware status. Other Snapdragon X Elite laptops (Dell XPS 13, Surface Pro 11, Yoga Slim 7x) aren't confirmed working yet — X13s is the only device with a published, tested guide so far.
+
 ## Variants
 
 **What's the difference between Yellowfin, Albacore, Skipjack, and Bonito?**
