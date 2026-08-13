@@ -8,20 +8,20 @@ sidebar_position: 9
 Prefer a visual tour? See the **[Marlin overview →](/marlin)** start page.
 :::
 
-**Based on:** [Arch Linux](https://archlinux.org/) (rolling release)
+**Based on:** [Arch Linux](https://archlinux.org/) (continuous updates, no fixed releases)
 
 **Status:** Beta
 
-Marlin is TunaOS's rolling-release variant, built on Arch Linux. Because Arch
-ships upstream packages with essentially no delay, Marlin runs the newest
-GNOME, KDE Plasma, and kernel builds in the catalog — at the cost of the
-stability guarantees the Enterprise Linux variants (Albacore, Yellowfin)
-provide. bootc itself isn't packaged for Arch yet, so Marlin builds it from
-source as part of the image.
+Marlin is the TunaOS variant that follows Arch Linux, which updates
+continuously and has no fixed releases. Arch ships upstream packages with
+almost no delay, so Marlin has the newest GNOME, KDE Plasma, and kernel
+builds in the catalog. In exchange, it does not give the stability guarantees
+of the Enterprise Linux variants (Albacore and Yellowfin). Arch has no bootc
+package yet, so Marlin builds bootc from source in the image.
 
 ## Features
 
-- 🚀 **Rolling release**: Tracks Arch Linux directly — no backport lag.
+- 🚀 **Continuous updates**: Marlin gets new Arch packages with no backport delay.
 - 🍺 **Baked-in Homebrew**: Access thousands of CLI tools and fonts immediately.
 - ⚡ **CachyOS kernel overlay**: Optional `-cachyos` flavors add the
   performance-tuned CachyOS kernel on top of the standard Arch base.
@@ -30,8 +30,8 @@ source as part of the image.
 
 ## Downloads
 
-TunaOS publishes pre-built ISOs for the GNOME and KDE flavors. Other flavors
-are available as container images only.
+TunaOS publishes its pre-built ISOs for the GNOME and KDE flavors. Other
+flavors are available as container images only.
 
 ### GNOME (Standard)
 **Image:** `ghcr.io/tuna-os/marlin:gnome`
@@ -69,10 +69,10 @@ Adds `nvidia-open-dkms` and CUDA for AI, graphics, and VFX workloads, via pacman
 **Images:** `ghcr.io/tuna-os/marlin:gnome-nvidia`, `:kde-nvidia`, `:cosmic-nvidia`, `:niri-nvidia`, `:xfce-nvidia`
 
 :::note[Apple Silicon]
-A `gnome-asahi` image is published but is **not** a supported way to run
-Marlin on Apple Silicon: the upstream `asahi-alarm` kernel package it
-depends on ships only 5 device trees and is missing the GPU driver module,
-so the image doesn't boot on real Apple Silicon hardware
+TunaOS publishes a `gnome-asahi` image, but it is **not** a supported way to
+run Marlin on Apple Silicon. The upstream `asahi-alarm` kernel package gives
+only 5 device trees and no GPU driver module. So the image does not boot on
+Apple Silicon
 ([tuna-os/tunaOS#911](https://github.com/tuna-os/tunaOS/issues/911)). For
 Apple Silicon, use [bootc-installer-asahi](https://github.com/tuna-os/bootc-installer-asahi)
 with a supported variant instead.
@@ -97,11 +97,13 @@ just build-iso marlin
 
 ## Known limitations
 
-- **Disk encryption (LUKS + TPM2 auto-unlock)** is not available on Marlin
-  today: Arch's `pacman` has no `tpm2-tools`/`tpm2-tss` package, so the
-  dracut TPM2 probe finds nothing and the module is omitted
-  ([tuna-os/tunaOS#714](https://github.com/tuna-os/tunaOS/issues/714)).
-- **Apple Silicon (`gnome-asahi`)** is unsupported — see the note above.
+- **No disk encryption**: Marlin has no LUKS with TPM2 auto-unlock today.
+  Arch's `pacman` has no `tpm2-tools` or `tpm2-tss` package, so the dracut
+  TPM2 probe finds nothing. See
+  [tuna-os/tunaOS#714](https://github.com/tuna-os/tunaOS/issues/714).
+- **Apple Silicon (`gnome-asahi`)**: see the note above; use
+  [bootc-installer-asahi](https://github.com/tuna-os/bootc-installer-asahi)
+  instead.
 
 ## Community Support
 
