@@ -323,7 +323,7 @@ function getStatusBanner(status) {
   return banners[status] || null;
 }
 
-// listOrgRepos returns every repo name in the org, across every page.
+// listOrgRepos returns every active repo name in the org, across every page.
 //
 // The call this replaced was `gh api orgs/<org>/repos --jq '.[].name'` with no
 // --paginate, so GitHub answered with the default first page — 30 names — and
@@ -342,24 +342,28 @@ function getStatusBanner(status) {
 //     the names are de-duplicated rather than trusted to be unique.
 function listOrgRepos(exec = execSync) {
   const out = exec(
-    `gh api "orgs/${ORG}/repos?per_page=${PER_PAGE}" --paginate --jq '.[].name'`,
+    `gh api "orgs/${ORG}/repos?per_page=${PER_PAGE}" --paginate --jq '.[] | select(.archived == false) | .name'`,
     {encoding: 'utf8'},
   );
   return [...new Set(String(out).split('\n').map((n) => n.trim()).filter(Boolean))];
 }
 
-// orgPublicRepoCount reads how many public repos the org says it has.
+// orgPublicRepoCount reads how many active public repos the org says it has.
 //
 // This is a second, independent source of truth for "how long should the
-// listing be". Any token can see every public repo of a public org, so a
-// listing shorter than this number was cut short — that is a fact about the
-// listing, not a heuristic. Returns null when the count cannot be read, so a
-// missing cross-check degrades to the weaker signals below instead of failing
-// the sync.
+// listing be". Any token can see every active public repo of a public org, so
+// a listing shorter than this number was cut short — that is a fact about the
+// listing, not a heuristic. --slurp is required because --paginate otherwise
+// runs jq once per page and would produce one count per page. Returns null
+// when the count cannot be read, so a missing cross-check degrades to the
+// weaker signals below instead of failing the sync.
 function orgPublicRepoCount(exec = execSync) {
   try {
     const n = Number(
-      String(exec(`gh api orgs/${ORG} --jq '.public_repos'`, {encoding: 'utf8'})).trim(),
+      String(exec(
+        `gh api "orgs/${ORG}/repos?per_page=${PER_PAGE}" --paginate --slurp --jq 'map(.[] | select(.archived == false)) | length'`,
+        {encoding: 'utf8'},
+      )).trim(),
     );
     return Number.isFinite(n) && n > 0 ? n : null;
   } catch {
