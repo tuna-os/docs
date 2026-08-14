@@ -29,7 +29,11 @@ const sidebars: SidebarsConfig = {
         {type: 'link', label: 'Bonito Rawhide — Fedora Rawhide', href: '/bonito-rawhide'},
         {type: 'link', label: 'Sailfin — openSUSE Tumbleweed', href: '/sailfin'},
         {type: 'link', label: 'Guppy — Gentoo Linux', href: '/guppy'},
+<<<<<<< HEAD
         {type: 'category', label: 'Reference docs', collapsed: true, items: ['albacore', 'yellowfin', 'bonito', 'skipjack', 'grouper', 'gurnard-pantheon']},
+=======
+        {type: 'category', label: 'Reference docs', collapsed: true, items: ['albacore', 'yellowfin', 'bonito', 'skipjack', 'grouper', 'marlin', 'gurnard-pantheon']},
+>>>>>>> origin/main
       ],
     },
     {
