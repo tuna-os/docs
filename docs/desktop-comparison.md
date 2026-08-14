@@ -39,4 +39,4 @@ desktop listed as a related product is not automatically a TunaOS variant.
 
 - [System requirements](./system-requirements.md)
 - [Installation guide](./installation.md)
-- [Managing images with bootc](./tunaos/bootc-usage.md)
+- [Manage images with bootc](./tunaos/bootc-usage.md)
