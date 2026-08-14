@@ -60,7 +60,7 @@ Six desktop environments are available:
 
 To start:
 
-1.  **[Choosing Your Variant](choosing-a-variant)** - Pick the right base and desktop for your needs.
+1.  **[Pick Your Variant](choosing-a-variant)** - Choose the right base and desktop for your needs.
 2.  **[System Requirements](system-requirements)** - Make sure the system supports your hardware.
 3.  **[Installation Guide](installation)** - Read how to install TunaOS.
 4.  **[Download ISOs](/download)** - Get a pre-built image.

@@ -15,11 +15,11 @@ This decision guide helps you pick the right variant for your hardware, stabilit
 If you are not sure where to start, follow these recommended paths:
 
 - **Workstation / Daily Driver (Maximum Stability):** Choose **[Albacore](/albacore)** (AlmaLinux 10). It provides a 10-year enterprise support lifecycle, rock-solid stability, and optional `-nvidia` or `-hwe` (Hardware Enablement) kernel editions.
-- **Developer / Fresh Packages on Enterprise Base:** Choose **[Yellowfin](/yellowfin)** (AlmaLinux Kitten 10). It tracks newer packages and kernels ahead of stable Enterprise Linux while maintaining enterprise compatibility.
-- **Upstream RHEL Preview:** Choose **[Skipjack](/skipjack)** (CentOS Stream 10). It tracks upstream CentOS Stream for testing and previewing future Enterprise Linux releases.
-- **Bleeding-Edge Fedora:** Choose **[Bonito](/bonito)** (Fedora 44). For users who want the latest mainline kernel, Mesa drivers, and desktop toolchains on an immutable base.
-- **elementary OS Desktop:** Choose **[Gurnard](/gurnard)** (Ubuntu 24.04 LTS with Pantheon). Combines the elegant elementary OS desktop experience with an LTS base.
-- **Arch Linux Rolling:** Choose **[Marlin](/marlin)** (Arch Linux). Rolling-release base with the newest packages on composefs-native bootc.
+- **Developer / Fresh Packages on Enterprise Base:** Choose **[Yellowfin](/yellowfin)** (AlmaLinux Kitten 10). It tracks newer packages and kernels ahead of stable Enterprise Linux and keeps enterprise compatibility.
+- **Upstream RHEL Preview:** Choose **[Skipjack](/skipjack)** (CentOS Stream 10). It tracks the upstream CentOS Stream so you can test and preview future releases of Enterprise Linux.
+- **Newest Fedora:** Choose **[Bonito](/bonito)** (Fedora 44). For users who want the latest mainline kernel, Mesa drivers, and desktop toolchains on an immutable base.
+- **elementary OS Desktop:** Choose **[Gurnard](/gurnard)** (Ubuntu 24.04 LTS with Pantheon). It gives you the elementary OS desktop on an LTS base.
+- **Arch Linux:** Choose **[Marlin](/marlin)** (Arch Linux). Newest packages on a composefs-native bootc base with continuous updates.
 - **Apple Silicon (ARM64):** Choose **[Asahi images](/blog/2026-08-12-tunaos-on-apple-silicon)** available across supported multi-arch bases (Albacore, Yellowfin, Bonito, Gurnard).
 
 > **Not sure?** Start with **[Albacore](/albacore)** — the flagship variant designed as a rock-solid daily driver for most users.
@@ -57,8 +57,8 @@ Each variant offers desktop flavors tailored to different workflows:
 - **KDE Plasma:** Feature-rich, endlessly customizable desktop for power users.
 - **COSMIC:** Next-generation Rust-built desktop from System76.
 - **Niri:** Keyboard-driven, scrollable-tiling Wayland compositor.
-- **XFCE:** Lightweight classic desktop ported to Wayland via the new `xfwl4` compositor.
-- **Pantheon:** elementary OS's minimal, elegant desktop (featured on [Gurnard](/gurnard)).
+- **XFCE:** A lightweight classic desktop that runs on Wayland via the new `xfwl4` compositor.
+- **Pantheon:** elementary OS's minimal, simple desktop (featured on [Gurnard](/gurnard)).
 
 ---
 
