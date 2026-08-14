@@ -183,6 +183,13 @@ ls /var/home/linuxbrew/bin/brew
 bootc rollback
 ```
 
+### Secure Boot or UEFI verification errors
+
+For `Verification failed`, an unexpected firmware boot menu, or an NVIDIA
+module rejected under Secure Boot, follow the [Secure Boot and UEFI
+verification guide](../secure-boot). Start with `bootctl status`,
+`mokutil --sb-state`, and the kernel journal before changing firmware keys.
+
 ## Logs and Diagnostics
 
 ### Where to find logs

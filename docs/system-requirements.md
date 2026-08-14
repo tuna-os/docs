@@ -116,6 +116,9 @@ requirements.
 - **TPM**: Optional but recommended
 - **Intel TXT/AMD SVM**: Supported for virtualization
 
+See the [Secure Boot and UEFI verification guide](secure-boot) for per-base
+verification steps, MOK enrollment, and troubleshooting.
+
 ## Compatibility Notes
 
 ### Supported Hardware
