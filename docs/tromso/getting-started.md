@@ -58,13 +58,14 @@ Tromsø ships KDE Plasma with a clean, default configuration:
 
 ### Key KDE Features
 
+For a practical keybinding reference, see the [Plasma keyboard shortcuts](plasma-shortcuts.md) cheat sheet.
+
 | Feature | How to Access |
 |---|---|
-| Virtual Desktops | `Ctrl+F1`-`F4` or Overview (`Meta+W`) |
-| KRunner | `Alt+Space` — app launcher, calculator, file search |
-| Window Tiling | Drag to edges or use `Meta+Arrow` |
-| Widgets | Right-click desktop → Add Widgets |
-| Dark Mode | System Settings → Appearance → Theme |
+| KRunner | `Alt+Space` or `Alt+F2` — app launcher, calculator, and file search |
+| Window tiling | Drag windows to screen edges or use the KWin `Meta+Arrow` bindings |
+| Widgets | Right-click the desktop → **Add Widgets** |
+| Dark mode | **System Settings → Appearance → Global Theme** |
 
 ## Customization
 
