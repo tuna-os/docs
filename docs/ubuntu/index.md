@@ -2,8 +2,18 @@
 sidebar_position: 1
 sidebar_label: "ubuntu"
 
-status: unknown
+status: archived
 ---
+
+:::caution[Archived]
+
+The `tuna-os/ubuntu` repository was **archived on 2026-08-12**.
+This page is kept for historical reference only; no new builds are
+published from this repo. Ubuntu 26.04 images are now built and published
+from the main [tunaOS](https://github.com/tuna-os/tunaOS) pipeline as the
+[Grouper](/grouper) variant — see [tunaos.org/download](https://tunaos.org/download)
+for current builds.
+:::
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/tuna-os/ubuntu/blob/main/LICENSE)
 
