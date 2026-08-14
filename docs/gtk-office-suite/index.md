@@ -17,11 +17,11 @@ we distribute them as Flatpaks.
 
 ## Which one do I want?
 
-- **Writing a letter, report, or README?** Letters — it round-trips real
+- **Write a letter, report, or README?** Letters — it round-trips real
   DOCX/ODT structure, not a flattened text dump.
-- **Tracking numbers, a budget, or anything with formulas?** Tables — type
+- **Track numbers, a budget, or anything with formulas?** Tables — type
   `=SUM(...)` straight into a cell, IronCalc does the rest.
-- **Building slides for a talk?** Decks — PPTX/ODP in and out, with
+- **Build slides for a talk?** Decks — PPTX/ODP in and out, with
   per-slide notes and a present mode.
 
 Each app page below has the concrete menu paths, keyboard shortcuts, and

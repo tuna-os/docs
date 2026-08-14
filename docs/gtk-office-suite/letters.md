@@ -13,9 +13,9 @@ under a GTK4/Libadwaita shell. Install it first — see the
 
 - **New document**: launch Letters, or open a new tab from the header bar.
 - **Open**: the file picker accepts **`.md`**, **`.txt`**, **`.html`**,
-  **`.docx`**, and **`.odt`**. Opening a `.docx`/`.odt` round-trips through
-  the real format's paragraph, run, and table structure — not a flattened
-  text dump.
+  **`.docx`**, and **`.odt`**. When you open a `.docx`/`.odt`, it
+  round-trips through the real format's paragraph, run, and table
+  structure — not a flattened text dump.
 - **Save**: pick a filename with the extension you want. The extension
   decides the writer: `.docx` and `.odt` write the real format via the
   `letters-core::docx`/`odt` modules; anything else (including `.txt`)
@@ -25,8 +25,8 @@ under a GTK4/Libadwaita shell. Install it first — see the
 ## Formatting and structure
 
 Everything is reachable from the command palette (**Ctrl+K**) or the
-selection toolbar — the actions below are the ones behind those UI paths,
-if you'd rather know the underlying name:
+selection toolbar. The actions below are the ones behind those UI paths,
+if you want to know the action name:
 
 | What | Action |
 |---|---|
@@ -39,12 +39,12 @@ if you'd rather know the underlying name:
 | Headers, page setup | `app.edit-headers`, `app.page-setup` |
 
 Press **Ctrl+?** anytime for the full shortcuts overlay — it's generated
-from the same action list, so it never drifts from what's actually bound.
+from the same action list, so it never drifts from what's bound.
 
 ## Export to PDF
 
 **Ctrl+K → "Export as PDF…"** (`app.export-pdf`) renders the document
-through a Typst-backed pipeline — a separate path from the DOCX/ODT
+through a Typst-backed pipeline. It is a separate path from the DOCX/ODT
 writers above, used specifically for print-quality PDF output.
 
 ## What's next

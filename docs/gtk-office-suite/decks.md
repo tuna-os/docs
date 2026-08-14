@@ -16,8 +16,8 @@ Decks is the presentation app (`decks-core`). Install it first — see the
 
 ## Building slides
 
-The slide list on the side is the navigation and reordering surface;
-click a slide to edit it, or use the prev/next controls to step through.
+The slide list on the side is where you navigate and reorder slides.
+Click a slide to edit it, or use the prev/next controls to step through.
 
 | What | Action |
 |---|---|
@@ -30,9 +30,9 @@ command palette (**Ctrl+K**) and the shortcuts overlay (**Ctrl+?**).
 
 ## Speaker notes
 
-Each slide has its own notes field, edited alongside the slide in the main
-window — select a slide and type in the notes area to attach speaker notes
-to it. Notes round-trip through both `.pptx` and `.odp`.
+Each slide has its own notes field in the main window. Select a slide and
+type in the notes area to attach speaker notes to it. Notes round-trip
+through both `.pptx` and `.odp`.
 
 ## Present
 

@@ -20,7 +20,7 @@ here.
 
 ## Formulas
 
-Type directly into the active cell, starting with `=` — there's no
+Type directly into the active cell, and start with `=` — there's no
 separate formula bar, the cell itself is the input:
 
 ```
@@ -30,9 +30,8 @@ separate formula bar, the cell itself is the input:
 ```
 
 IronCalc resolves references and recalculates the sheet live. The status
-bar at the bottom shows Sum/Average/Count for whatever's currently
-selected, without needing a formula at all — select a range and read it
-straight off the bar.
+bar at the bottom shows Sum/Average/Count for the selection. You don't
+need a formula at all — select a range and read it straight off the bar.
 
 ## Cells, rows, and columns
 
