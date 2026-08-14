@@ -133,8 +133,8 @@ requirements.
 - **Minimum VM specs**: 4 GB RAM, 25 GB disk
 - **Recommended VM specs**: 8 GB RAM, 50 GB disk
 
-Trying TunaOS in a VM is the recommended first step — see
-[Evaluating TunaOS in a VM](./tunaos/evaluating-in-a-vm.md) for a QEMU/KVM
+The recommended first step is to test TunaOS in a VM — see
+[Test TunaOS in a VM](./tunaos/evaluating-in-a-vm.md) for a QEMU/KVM
 walkthrough.
 
 ## Before Installation
