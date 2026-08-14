@@ -299,6 +299,27 @@ test('leaves a site-absolute link alone', () => {
   assert.equal(fixRelativeLinks(src, 'corral'), src);
 });
 
+// #263: bootc-installer/fisherman use dev, changelog-action/kde-build-meta/
+// mariner use master — hardcoding main rewrote their links to a branch that
+// does not exist for them, 404ing every repo-relative link and image.
+
+test('uses the given branch for a blob link, not a hardcoded main', () => {
+  const out = fixRelativeLinks('[docs](./CONTRIBUTING.md)\n', 'bootc-installer', '', 'dev');
+  assert.match(out, /github\.com\/tuna-os\/bootc-installer\/blob\/dev\/CONTRIBUTING\.md/);
+  assert.doesNotMatch(out, /\/blob\/main\//);
+});
+
+test('uses the given branch for a raw image URL, not a hardcoded main', () => {
+  const out = fixRelativeLinks('![x](a.png)\n', 'changelog-action', '', 'master');
+  assert.match(out, /raw\.githubusercontent\.com\/tuna-os\/changelog-action\/master\/a\.png/);
+  assert.doesNotMatch(out, /\/main\//);
+});
+
+test('defaults to main when no branch is given, for backward compatibility', () => {
+  const out = fixRelativeLinks('[docs](./CONTRIBUTING.md)\n', 'corral');
+  assert.match(out, /\/blob\/main\/CONTRIBUTING\.md/);
+});
+
 // Repo-relative links that are not .md/.rst files used to fall through the
 // regexes unchanged and ship as 404s on the docs site (#135). A LICENSE, a
 // YAML file, a release-list link and an anchored .md link all live in the

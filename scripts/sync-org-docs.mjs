@@ -95,13 +95,22 @@ const PER_PAGE = 100;
 const DEFAULT_PAGE_SIZE = 30;
 const RETRY_DELAY_MS = 5000;
 
+// Returns {dir, branch}. `git clone` with no --branch checks out the repo's
+// actual default branch (dev/master, not always main — see tuna-os/docs#263,
+// bootc-installer/changelog-action/kde-build-meta/mariner all use something
+// other than main), so read it back from the clone itself instead of
+// assuming or making a separate API call.
 function cloneRepo(repo) {
   const tmp = execSync('mktemp -d', {encoding: 'utf8'}).trim();
   execSync(`git clone --depth=1 https://github.com/${ORG}/${repo}.git ${tmp}`, {
     stdio: 'pipe',
     timeout: 60_000,
   });
-  return tmp;
+  const branch = execSync('git rev-parse --abbrev-ref HEAD', {
+    cwd: tmp,
+    encoding: 'utf8',
+  }).trim();
+  return {dir: tmp, branch};
 }
 
 function slugify(name) {
@@ -186,20 +195,25 @@ function sanitizeHtml(content) {
 // docs/user-guide.md saying `screenshots/a.png` means docs/screenshots/a.png.
 // Ignoring srcDir produced URLs that 404: the site still built, because
 // Docusaurus only validates repo-local images, and shipped broken ones.
-function fixRelativeLinks(content, repo, srcDir = '') {
+function fixRelativeLinks(content, repo, srcDir = '', branch = 'main') {
   // Convert relative repo links to absolute GitHub links.
-  // [something](./foo.md) → [something](https://github.com/tuna-os/<repo>/blob/main/foo.md)
+  // [something](./foo.md) → [something](https://github.com/tuna-os/<repo>/blob/<branch>/foo.md)
   // But keep intra-doc links within the Docusaurus site as-is.
   // Strategy: any repo-relative link (./, ../, or bare) is resolved against
   // the repo root and rewritten to github.com — not just .md/.rst links, so
   // LICENSE, package-factory.yaml and CLAUDE.md#anchor stop shipping as 404s.
+  //
+  // branch is the repo's actual default branch (tuna-os/docs#263):
+  // bootc-installer/fisherman use dev, changelog-action/kde-build-meta/mariner
+  // use master. Hardcoding main here rewrote their links to a branch that
+  // does not exist for them, 404ing every repo-relative link and image.
   const prefix = srcDir ? `${srcDir.replace(/\/+$/, '')}/` : '';
-  const base = `https://github.com/${ORG}/${repo}/blob/main`;
+  const base = `https://github.com/${ORG}/${repo}/blob/${branch}`;
   // Images need bytes, not a page. github.com/…/blob/… answers text/html, so
   // an <img> pointed at it renders broken; raw.githubusercontent.com answers
   // image/png. Only the site's own assets can use a repo-relative path, and
   // the synced files' assets are not copied into this repo.
-  const raw = `https://raw.githubusercontent.com/${ORG}/${repo}/main`;
+  const raw = `https://raw.githubusercontent.com/${ORG}/${repo}/${branch}`;
   const IMAGE = /\.(?:png|svg|jpe?g|gif|webp)$/i;
   // Resolve a path written inside srcDir against the repo root, collapsing
   // the ./ and ../ segments the way the source repo's own renderer would.
@@ -527,8 +541,9 @@ function main() {
     console.log(`\n📥 ${repo} → docs/${slug}/`);
 
     let dir;
+    let branch;
     try {
-      dir = cloneRepo(repo);
+      ({dir, branch} = cloneRepo(repo));
       const targetDir = join(DOCS_DIR, slug);
       mkdirSync(targetDir, {recursive: true});
 
@@ -539,7 +554,7 @@ function main() {
       if (existsSync(readmePath)) {
         let content = readFileSync(readmePath, 'utf8');
         content = sanitizeHtml(content);
-        content = fixRelativeLinks(content, repo, '');
+        content = fixRelativeLinks(content, repo, '', branch);
         // Remove the leading # Title (Docusaurus uses frontmatter for title)
         content = content.replace(/^# .*\n\n?/, '');
         const statusBanner = getStatusBanner(meta.status || 'unknown');
@@ -567,7 +582,7 @@ function main() {
         }
         let content = readFileSync(join(dir, file), 'utf8');
         content = sanitizeHtml(content);
-        content = fixRelativeLinks(content, repo, '');
+        content = fixRelativeLinks(content, repo, '', branch);
         content = content.replace(/^# .*\n\n?/, '');
         const title = upper.charAt(0) + upper.slice(1).toLowerCase();
         content = subFrontmatter(title, localPos++) + content;
@@ -585,7 +600,7 @@ function main() {
           if (!file.endsWith('.md') && !file.endsWith('.rst')) continue;
           let content = readFileSync(join(docsDir, file), 'utf8');
           content = sanitizeHtml(content);
-          content = fixRelativeLinks(content, repo, docsSubdir);
+          content = fixRelativeLinks(content, repo, docsSubdir, branch);
           content = content.replace(/^# .*\n\n?/, '');
           const title = file.replace(/\.(md|rst)$/, '').replace(/[-_]/g, ' ');
           content = subFrontmatter(title, localPos++) + content;
