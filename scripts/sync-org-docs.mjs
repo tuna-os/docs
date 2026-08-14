@@ -563,6 +563,8 @@ export {
   orgPublicRepoCount,
   checkListing,
   HAND_AUTHORED,
+  SKIP_DOCS_DIR,
+  DOCS_SUBDIR,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
 };
