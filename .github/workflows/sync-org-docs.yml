@@ -27,11 +27,21 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Sync docs from all tuna-os org repos
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/sync-org-docs.mjs
+
+      # Compile the generated pages before opening a PR. This keeps an
+      # MDX-incompatible upstream document from blocking the next sync PR's
+      # bootstrap checks with errors discovered only after creation.
+      - name: Build the synchronized site
+        run: npm run build
 
       - name: Create PR if changed
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
