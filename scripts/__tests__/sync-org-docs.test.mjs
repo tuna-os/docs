@@ -19,7 +19,7 @@
 //   node scripts/__tests__/sync-org-docs.test.mjs
 
 import { strict as assert } from 'node:assert';
-import { chmodSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { chmodSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import {
@@ -33,6 +33,7 @@ import {
   slugify,
   listOrgRepos,
   checkListing,
+  findCaseCollisions,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
 } from '../sync-org-docs.mjs';
@@ -481,8 +482,15 @@ case "$2" in
   *) echo "stub gh: no per_page in '$2'" >&2; exit 65 ;;
 esac
 paginate=0
-for a in "$@"; do [ "$a" = "--paginate" ] && paginate=1; done
+jq_archived=0
+prev=""
+for a in "$@"; do
+  [ "$a" = "--paginate" ] && paginate=1
+  [ "$prev" = "--jq" ] && case "$a" in *archived*) jq_archived=1 ;; esac
+  prev="$a"
+done
 [ "$paginate" = "1" ] || { echo "stub gh: called without --paginate" >&2; exit 66; }
+[ "$jq_archived" = "1" ] || { echo "stub gh: --jq filter does not mention 'archived'" >&2; exit 67; }
 last=${paginate ? pages.length - 1 : 0}
 i=0
 while [ "$i" -le "$last" ]; do
@@ -538,6 +546,70 @@ test('an unpaginated gh yields only page 1 — the regression this guards', () =
     listOrgRepos(),
   );
   assert.deepEqual(names, ['a', 'b']);
+});
+
+test('the --jq filter excludes archived repos (#154)', () => {
+  // The stub itself refuses to answer (exit 67) unless the --jq argument
+  // mentions 'archived' — so this only passes if the real call actually
+  // filters, the same way the --paginate test above only passes if the real
+  // call actually paginates. A stub that just returned a canned non-archived
+  // list would pass whether or not listOrgRepos ever asked for the filter.
+  assert.doesNotThrow(() => withPath(stubGh([page1, page2]), () => listOrgRepos()));
+});
+
+// ── findCaseCollisions: a case-insensitive filesystem sees one file, not two ───
+//
+// tacklebox/USER-GUIDE.md (synced) and tacklebox/user-guide.md (hand-authored)
+// coexisted until #153 removed the duplicate by hand — invisible on every
+// case-sensitive dev machine and CI runner, and a broken checkout on macOS.
+// A future sync run can recreate this the same way it happened the first
+// time, so this guards against the class of bug, not just that one instance.
+
+console.log('\nfindCaseCollisions');
+
+// mkTree materializes a nested {name: content | subtree} description as real
+// files under a fresh temp dir and returns that dir's path.
+function mkTree(spec, root = mkdtempSync(join(tmpdir(), 'case-collision-'))) {
+  for (const [name, value] of Object.entries(spec)) {
+    const path = join(root, name);
+    if (typeof value === 'string') {
+      writeFileSync(path, value);
+    } else {
+      mkdirSync(path, {recursive: true});
+      mkTree(value, path);
+    }
+  }
+  return root;
+}
+
+test('reports nothing for a tree with no collisions', () => {
+  const root = mkTree({tacklebox: {'user-guide.md': 'x', 'index.md': 'y'}, tromso: {'index.md': 'z'}});
+  assert.deepEqual(findCaseCollisions(root), []);
+});
+
+test('flags two files that differ only by case in the same directory', () => {
+  const root = mkTree({tacklebox: {'USER-GUIDE.md': 'synced', 'user-guide.md': 'hand-authored'}});
+  const collisions = findCaseCollisions(root);
+  assert.equal(collisions.length, 1);
+  assert.deepEqual(
+    [...collisions[0]].sort(),
+    ['tacklebox/USER-GUIDE.md', 'tacklebox/user-guide.md'],
+  );
+});
+
+test('flags a directory-name collision, not just a filename collision', () => {
+  const root = mkTree({Tromso: {'index.md': 'a'}, tromso: {'Index.md': 'b'}});
+  const collisions = findCaseCollisions(root);
+  assert.equal(collisions.length, 1);
+  assert.deepEqual(
+    [...collisions[0]].sort(),
+    ['Tromso/index.md', 'tromso/Index.md'],
+  );
+});
+
+test('does not flag files with the same case in different directories', () => {
+  const root = mkTree({tacklebox: {'index.md': 'a'}, tromso: {'index.md': 'b'}});
+  assert.deepEqual(findCaseCollisions(root), []);
 });
 
 // ── checkListing: truncation has to be loud ───────────────────────────────────

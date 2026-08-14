@@ -341,8 +341,14 @@ function getStatusBanner(status) {
 //   * a repo can appear twice if the org list shifts between page requests, so
 //     the names are de-duplicated rather than trusted to be unique.
 function listOrgRepos(exec = execSync) {
+  // select(.archived == false) drops archived/read-only repos from the
+  // listing before anything downstream sees them. Without this, an archived
+  // repo's stale README/docs keep re-landing on the live site on every sync
+  // run — SKIP only removes repos by name, so an archive after the fact
+  // (rather than a rename or a move) was invisible here (#154).
   const out = exec(
-    `gh api "orgs/${ORG}/repos?per_page=${PER_PAGE}" --paginate --jq '.[].name'`,
+    `gh api "orgs/${ORG}/repos?per_page=${PER_PAGE}" --paginate --jq ` +
+      `'.[] | select(.archived == false) | .name'`,
     {encoding: 'utf8'},
   );
   return [...new Set(String(out).split('\n').map((n) => n.trim()).filter(Boolean))];
@@ -405,6 +411,37 @@ function checkListing(count, publicRepos = null, perPage = PER_PAGE) {
     );
   }
   return {fatal, warnings};
+}
+
+// findCaseCollisions walks rootDir recursively and returns groups of file
+// paths (relative to rootDir, forward-slash separated) that are distinct but
+// become identical when lowercased.
+//
+// tacklebox/USER-GUIDE.md (synced) and tacklebox/user-guide.md (hand-authored)
+// coexisted in the tree until #153 removed the duplicate by hand. On a
+// case-sensitive filesystem (every CI runner, every Linux dev machine) that
+// is two files and nothing complains. On a case-insensitive one (macOS,
+// default-configured) it is one file silently overwriting the other on
+// checkout, and Docusaurus would serve the two source paths as duplicate
+// routes even where the filesystem itself tolerates it. A future sync run
+// can recreate this class of bug the same way the first one happened, so
+// this is a standing guard, not a one-off cleanup.
+function findCaseCollisions(rootDir) {
+  const byLower = new Map();
+  const walk = (dir, prefix) => {
+    for (const entry of readdirSync(dir, {withFileTypes: true})) {
+      const rel = prefix ? `${prefix}/${entry.name}` : entry.name;
+      if (entry.isDirectory()) {
+        walk(join(dir, entry.name), rel);
+        continue;
+      }
+      const lower = rel.toLowerCase();
+      if (!byLower.has(lower)) byLower.set(lower, []);
+      byLower.get(lower).push(rel);
+    }
+  };
+  walk(rootDir, '');
+  return [...byLower.values()].filter((paths) => paths.length > 1);
 }
 
 function main() {
@@ -548,6 +585,21 @@ function main() {
     );
     process.exit(1);
   }
+
+  // Case-collision guard (#154): run after every write, not just the ones
+  // this invocation made, so a collision introduced by a hand edit sitting
+  // next to synced content is still caught the next time sync runs.
+  const collisions = findCaseCollisions(DOCS_DIR);
+  if (collisions.length) {
+    console.error(`\n✗ ${collisions.length} case-insensitive path collision(s) under ${DOCS_DIR}/:`);
+    for (const group of collisions) console.error(`  ✗ ${group.join('  ==  ')}`);
+    console.error(
+      'These paths are distinct on a case-sensitive filesystem but identical on ' +
+      'a case-insensitive one (macOS) and are served as duplicate routes either ' +
+      'way. Remove or rename one of each pair.',
+    );
+    process.exit(1);
+  }
 }
 
 export {
@@ -562,6 +614,7 @@ export {
   listOrgRepos,
   orgPublicRepoCount,
   checkListing,
+  findCaseCollisions,
   HAND_AUTHORED,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
