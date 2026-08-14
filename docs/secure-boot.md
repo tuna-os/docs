@@ -5,11 +5,11 @@ title: "Secure Boot & UEFI Guide"
 
 # Secure Boot & UEFI Guide
 
-This guide covers TunaOS's Secure Boot posture across base distributions, how to verify your UEFI boot state, enrolling Machine Owner Keys (MOK) for NVIDIA drivers or custom kernel modules, and troubleshooting common UEFI issues.
+This guide covers the Secure Boot posture of TunaOS base distributions. It shows how to verify your UEFI boot state and enroll MOK keys for NVIDIA drivers or custom kernel modules. It also helps with common UEFI issues.
 
 ## Overview & Posture per Base Variant
 
-TunaOS images inherit their Secure Boot signatures and shim posture from their underlying base Linux distributions. All official TunaOS base images use shim loaders signed by the Microsoft UEFI CA.
+TunaOS images inherit their Secure Boot signatures and shim posture from their base Linux distributions. All official base images from TunaOS use shim loaders signed by the Microsoft UEFI CA.
 
 | Variant | Base Distribution | Secure Boot Status | Signed Shim & Kernel | Notes |
 |---------|-------------------|--------------------|----------------------|-------|
@@ -27,7 +27,7 @@ TunaOS images inherit their Secure Boot signatures and shim posture from their u
 
 ## Verifying Boot & Secure Boot State
 
-You can inspect your UEFI environment and Secure Boot status using standard command-line utilities included in TunaOS.
+You can inspect your UEFI environment and Secure Boot status with the standard command-line utilities in TunaOS.
 
 ### 1. Check Systemd-Boot & UEFI Status
 
@@ -61,7 +61,7 @@ SecureBoot enabled
 
 ### 3. Check EFI Variables via Sysfs
 
-Verify that your system booted in UEFI mode by checking for efivars:
+Verify that your system booted in UEFI mode. Check for the efivars directory:
 
 ```bash
 ls -d /sys/firmware/efi/efivars
@@ -73,11 +73,11 @@ If this directory exists, your system booted in UEFI mode.
 
 ## Enrolling MOK Keys for NVIDIA & Custom Kernel Modules
 
-When using the **NVIDIA** driver variant or building out-of-tree kernel modules via DKMS, the module binaries must be signed with a key trusted by your system's MOK (Machine Owner Key) database.
+When you use the **NVIDIA** driver variant or build out-of-tree kernel modules with DKMS, the module binaries need a signature. Use a key that your system's MOK (Machine Owner Key) database trusts.
 
 ### Automatic MOK Key Generation
 
-TunaOS NVIDIA images generate a local MOK keypair during build/install at `/etc/pki/akmods/certs/public_key.der`.
+TunaOS generates a local MOK keypair for NVIDIA images during build or install at `/etc/pki/akmods/certs/public_key.der`.
 
 ### Enrolling the Key
 
@@ -99,7 +99,7 @@ To enroll the TunaOS MOK key into your system's MOK database:
    - Enter the password created in step 2.
    - Select **Reboot**.
 
-Once enrolled, the NVIDIA kernel modules (`nvidia.ko`, `nvidia-drm.ko`, etc.) will load cleanly with Secure Boot enabled.
+After enrollment, the NVIDIA kernel modules (`nvidia.ko`, `nvidia-drm.ko`, etc.) load cleanly with Secure Boot enabled.
 
 For variant-specific driver details, see the [Installation Guide](installation.md#nvidia-formerly-gdx).
 
@@ -108,17 +108,17 @@ For variant-specific driver details, see the [Installation Guide](installation.m
 ## Common UEFI & Secure Boot Troubleshooting
 
 ### 1. "Verification failed: (0x1a) Security Violation"
-- **Cause**: The system attempted to boot a kernel or bootloader signed by an untrusted key, or Secure Boot rejected an unsigned binary.
-- **Solution**: Ensure you are running an official signed variant (e.g. Albacore, Bonito, Yellowfin). If using custom or third-party modules, follow the [MOK Key Enrollment](#enrolling-the-key) steps above.
+- **Cause**: The system attempted to boot a kernel or bootloader signed by an untrusted key. Secure Boot rejected an unsigned binary.
+- **Solution**: Use an official signed variant (for example, Albacore, Bonito, or Yellowfin). If you use custom or third-party modules, [enroll a MOK key](#enrolling-the-key).
 
 ### 2. `mokutil` returns "EFI variables are not supported on this system"
-- **Cause**: The system was booted in Legacy BIOS (CSM) mode rather than UEFI mode.
-- **Solution**: Enter your motherboard BIOS/UEFI settings, disable Legacy BIOS / CSM support, and ensure boot mode is set to **UEFI Only**.
+- **Cause**: The system booted in Legacy BIOS (CSM) mode instead of UEFI mode.
+- **Solution**: Open your motherboard BIOS/UEFI settings. Disable Legacy BIOS and CSM support, and set boot mode to **UEFI Only**.
 
 ### 3. TPM 2.0 & Measured Boot Notes
 - TunaOS supports TPM 2.0 automatic LUKS unlock via `systemd-cryptenroll`.
-- Secure Boot must be enabled for TPM 2.0 PCR 7 (Secure Boot policy state) measurements to remain stable across updates.
-- For full details on LUKS + TPM 2.0 setup, refer to the [LUKS Testing Reference](bootc-migrate/luks-testing.md).
+- Secure Boot must stay enabled. This keeps TPM 2.0 PCR 7 (Secure Boot policy state) measurements stable across updates.
+- For full details on LUKS and TPM 2.0 setup, see the [LUKS reference](bootc-migrate/luks-testing.md).
 
 ---
 
@@ -127,4 +127,4 @@ For variant-specific driver details, see the [Installation Guide](installation.m
 - [System Requirements](system-requirements.md)
 - [Installation Guide](installation.md)
 - [LUKS & TPM 2.0 Reference](bootc-migrate/luks-testing.md)
-- [Runtime Troubleshooting](tunaos/troubleshooting.md)
+- [Runtime issues](tunaos/troubleshooting.md)
