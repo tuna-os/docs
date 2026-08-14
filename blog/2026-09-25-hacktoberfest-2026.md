@@ -19,7 +19,7 @@ evening.
 
 ## How it works
 
-1. **Pick a task** — browse our [`good first issue`](https://github.com/tuna-os/tunaOS/labels/good%20first%20issue)
+1. **Pick a task** — browse our [`good first issue`](https://github.com/search?q=org%3Atuna-os+is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22&type=issues)
    labeled issues (also tagged `community`/`outreach`). The org-wide pool is
    seeded to at least 8 tasks by mid-September, spread across the docs site,
    the main repo, and the smaller tools.
