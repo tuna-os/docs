@@ -54,7 +54,7 @@ shortcuts listed — or press **Ctrl+?** for the full overlay.
 ## Export to PDF
 
 **Ctrl+K → "Export as PDF…"** (`app.export-pdf`) — a print-oriented export
-distinct from saving to `.xlsx`/`.ods`/`.csv` above; it respects the print
+distinct from a save to `.xlsx`/`.ods`/`.csv` above; it respects the print
 area if you've set one.
 
 ## What's next
