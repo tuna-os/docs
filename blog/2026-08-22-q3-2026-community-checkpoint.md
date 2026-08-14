@@ -32,11 +32,13 @@ means every desktop flavor is held to the same promotion standard, and
 non-GNOME flavors are no longer second-class citizens
 ([#1315](https://github.com/tuna-os/tunaOS/issues/1315)).
 
-**First external contributor.** [shimonenator](https://github.com/shimonenator)
-became our first repeat external contributor — documentation, packaging, and
-CI fixes landing from outside the maintainer circle. That is the single
-strongest community-health signal we have seen, and it changes how we
-onboard people ([#1338](https://github.com/tuna-os/tunaOS/issues/1338)).
+**Still looking for our first external contributor.** An early "first
+external contributor" signal we tracked this quarter turned out to be a
+misattribution — the commits were from an automated agent account, not a
+person. Correcting that publicly matters more to us than the metric would
+have: TunaOS is still a single-maintainer project by the numbers that count,
+and closing that gap is exactly why the good-first-issue backlog below
+exists.
 
 **Infrastructure.** A manifest-driven build pipeline, published multi-arch
 images, verified boot reports on every release, and a documented
