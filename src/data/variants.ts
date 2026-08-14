@@ -27,7 +27,7 @@ export type Flavor = {
 // the two are the same thing). "cachyos" is Marlin-only: a CachyOS kernel
 // overlay on the Arch base, the same shape as -hwe/-nvidia elsewhere but
 // under its own name.
-export type Edition = 'nvidia' | 'hwe' | 'cachyos';
+export type Edition = 'nvidia' | 'hwe' | 'cachyos' | 'pantheon';
 
 export type Variant = {
   id: string; // route slug + image repo, e.g. "yellowfin"
@@ -247,7 +247,7 @@ export const VARIANTS: Variant[] = [
   {
     id: 'gurnard',
     platforms: ['amd64', 'arm64'],
-    editions: [],
+    editions: ['pantheon'],
     emoji: '🐟',
     name: 'Gurnard',
     base: 'Ubuntu 24.04',

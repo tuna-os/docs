@@ -9,7 +9,7 @@ import styles from './styles.module.css';
 
 type Variant = string;
 type Desktop = 'gnome' | 'gnome50' | 'kde' | 'cosmic' | 'niri' | 'pantheon';
-type Edition = 'standard' | 'nvidia' | 'hwe' | 'cachyos';
+type Edition = 'standard' | 'nvidia' | 'hwe' | 'cachyos' | 'pantheon';
 type Product = 'tunaos' | 'dakota' | 'tromso' | 'xfce';
 type StepId = 'product' | 'variant' | 'desktop' | 'edition' | 'result';
 
@@ -150,12 +150,20 @@ const EDITION_CATALOG: Record<Edition, Option<Edition>> = {
     label: 'CachyOS kernel',
     description: 'The performance-tuned CachyOS kernel overlay on the same Arch userspace.',
   },
+  pantheon: {
+    value: 'pantheon',
+    emoji: '🏛️',
+    label: 'Pantheon',
+    description: 'The elementary OS Pantheon desktop flavor.',
+  },
 };
 
 function getEditionOptions(variantId: Variant | undefined): Option<Edition>[] {
   const variant = VARIANTS.find((v) => v.id === variantId);
   const extra = variant?.editions ?? [];
-  return [EDITION_CATALOG.standard, ...extra.map((e) => EDITION_CATALOG[e])];
+  // Pantheon is Gurnard's desktop flavor, not an additional suffix on top of
+  // a desktop selection, so it is already represented by the desktop step.
+  return [EDITION_CATALOG.standard, ...extra.filter((e) => e !== 'pantheon').map((e) => EDITION_CATALOG[e])];
 }
 
 // Only offer desktops a variant actually ships (from the same VARIANTS data
@@ -187,6 +195,7 @@ function editionSuffix(edition: Edition | undefined): string {
   if (edition === 'nvidia') return '-nvidia';
   if (edition === 'hwe') return '-hwe';
   if (edition === 'cachyos') return '-cachyos';
+  if (edition === 'pantheon') return '-pantheon';
   return '';
 }
 
