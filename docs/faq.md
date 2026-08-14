@@ -69,7 +69,7 @@ Yes, on M1 and M2 Macs, with [bootc-installer-asahi](https://github.com/tuna-os/
 
 **Does TunaOS run on laptops with Snapdragon X Elite? (Does TunaOS run on a "Copilot+ PC"?)**
 
-Yes, on X13s-class devices such as the Lenovo ThinkPad X13s (Snapdragon X Elite, SC8380) — the ARM64 hardware inside most "Copilot+ PC" laptops. Use the Bonito or Dakota variant, and follow the [Bonito X13s guide](/docs/bonito-x13s) or the [Dakota X13s guide](/docs/dakota-x13s) for install steps and hardware status. Other laptops with Snapdragon X Elite have no confirmed status yet: the Dell XPS 13, the Surface Pro 11, and the Yoga Slim 7x. The X13s is the only device with a published guide today.
+Yes, on X13s-class devices such as the Lenovo ThinkPad X13s (Snapdragon X Elite, SC8380) — the ARM64 hardware inside most "Copilot+ PC" laptops. Use the [Bonito](/bonito) variant (the ARM64 image). The dedicated [Bonito X13s](/docs/bonito-x13s) and [Dakota X13s](/docs/dakota-x13s) guide pages are **archived** — their source repos (`tuna-os/bonito-x13s`, `tuna-os/dakota-x13s`) are read-only and no longer publish new builds, so treat the hardware-status tables there as historical. Other laptops with Snapdragon X Elite have no confirmed status yet: the Dell XPS 13, the Surface Pro 11, and the Yoga Slim 7x. The X13s is the only device with a published guide today.
 
 That guide does not cover the NPU (the "AI" accelerator behind the Copilot+ name). No page here documents NPU access from Linux on this hardware yet. Treat NPU support as unconfirmed until a page for the variant says otherwise. See [tuna-os/tunaOS discussion #93](https://github.com/tuna-os/tunaOS/discussions/93) for the original question.
 
