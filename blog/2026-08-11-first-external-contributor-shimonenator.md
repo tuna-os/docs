@@ -1,20 +1,31 @@
 ---
 slug: first-external-contributor-shimonenator
-title: "Our First External Contributor Is Now a Repeat Contributor — Thank You, shimonenator"
+title: "Correction: the 'First External Contributor' Claim Below Was Wrong"
 authors: [james]
-tags: [tunaos, community, contributors, thank-you, onboarding]
+tags: [tunaos, community, contributors, thank-you, onboarding, correction]
 date: 2026-08-11
 draft: false
 ---
 
 <!-- ste-disable-file: community acknowledgment post; first-person maintainer voice intended. -->
 
-Every open-source project remembers its first outside hand. For TunaOS, that hand
-belongs to **Shimon Schwartz — shimonenator** — who has now landed five commits in
-the main repository, three of them this week. It is the first time a contributor
-outside the core team has shaped the project, and it deserves a proper thank-you.
+> **Correction (2026-08-13):** This post originally thanked "Shimon Schwartz —
+> shimonenator" as TunaOS's first external human contributor. That was wrong. The
+> account's commits are authored by a Google Antigravity agent, not a person —
+> `commit.author.name: antigravity` on every one of them, confirmed via `git log`
+> ([#1317](https://github.com/tuna-os/tunaOS/issues/1317)). There is still no first
+> external human contributor; the single-maintainer bus-factor risk this post
+> implied was easing is unchanged. We're leaving the original text below, struck
+> through, rather than deleting it — correcting a public claim matters more to us
+> than the metric would have. The [`good first issue` backlog](https://github.com/tuna-os/tunaOS/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+> this post pointed to is still real and still open, if you're looking for a way in.
 
 <!-- truncate -->
+
+~~Every open-source project remembers its first outside hand. For TunaOS, that hand
+belongs to **Shimon Schwartz — shimonenator** — who has now landed five commits in
+the main repository, three of them this week. It is the first time a contributor
+outside the core team has shaped the project, and it deserves a proper thank-you.~~
 
 ## What shimonenator has shipped
 
@@ -33,11 +44,14 @@ project can get.
 
 ## Why this matters
 
-TunaOS has a small core team, and we have been open about the single-maintainer
+~~TunaOS has a small core team, and we have been open about the single-maintainer
 bus-factor risk. A drive-by commit is nice; a contributor who comes back — five
 commits, three this week — is structural. It means the onboarding loop can work:
 the docs were readable, the issues were findable, and the work was worth coming back
-for.
+for.~~
+
+None of that follows from an agent account. The single-maintainer bus-factor risk
+is exactly what it was before this post — see [#1317](https://github.com/tuna-os/tunaOS/issues/1317).
 
 ## Want to be next?
 
@@ -47,4 +61,6 @@ and the [ways-to-contribute post](https://tunaos.org/blog/ways-to-contribute-to-
 covers every path in. The Matrix room ([#tunaos:reilly.asia](https://matrix.to/#/%23tunaos:reilly.asia))
 is where questions get answered.
 
-Thank you, Shimon — the factory is better because you showed up, and came back.
+~~Thank you, Shimon — the factory is better because you showed up, and came back.~~
+The linked issues above are still fixed, and the backlog above is still real —
+those two things just don't add up to a first external contributor.
