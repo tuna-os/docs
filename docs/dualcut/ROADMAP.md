@@ -61,7 +61,7 @@ Project
   so they live on composition-level overlay tracks with absolute timing —
   scenes for structure, overlays for anything that crosses cuts.
 - **Reusable compositions (`defs`)**: a named, parameterised set of layers —
-  a text template ("lower third: {name}, {title}"), a motion template
+  a text template ("lower third: `{name}`, `{title}`"), a motion template
   (logo sting), an intro card. Instantiated via `comp-ref` with arguments;
   editing the def updates every instance. Maps 1:1 onto GES's
   nested-timeline/`Group` support.
