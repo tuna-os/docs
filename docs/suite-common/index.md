@@ -71,7 +71,7 @@ from suite_common.window import SuiteWindow
 from suite_common.webview import SuiteWebView, build_document
 ```
 
-## Quick start (himachal)
+## Quick start
 
 ```bash
 # Run the suite-common unit tests
