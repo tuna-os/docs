@@ -28,6 +28,11 @@ Two ways:
 1. **Fresh install** — Download an ISO from [tunaos.org/download](https://tunaos.org/download) and write it to USB
 2. **Switch from an existing bootc system** — `sudo bootc switch ghcr.io/tuna-os/yellowfin:gnome && sudo reboot`
 
+**Where do I download the ISOs?**
+
+[tunaos.org/download](https://tunaos.org/download) — pick a variant and desktop flavor from the picker. If a specific ISO won't download, use this link instead:
+`https://download.tunaos.org/live-isos/<variant>-<flavor>-latest.iso` (for example, `albacore-gnome-latest.iso` or `yellowfin-gnome-latest.iso`). [tuna-os/tunaOS discussion #652](https://github.com/tuna-os/tunaOS/discussions/652) and [#561](https://github.com/tuna-os/tunaOS/issues/561) cover a real download-page outage and its fix.
+
 **Can I dual-boot TunaOS?**
 
 TunaOS uses bootc which manages the bootloader. Dual-boot is possible but not the primary use case. For multi-OS on one machine, use [Tacklebox](/docs/tacklebox/getting-started) to create a multi-boot USB.
@@ -62,9 +67,11 @@ TunaOS uses bootc which manages the bootloader. Dual-boot is possible but not th
 
 Yes, on M1 and M2 Macs, with [bootc-installer-asahi](https://github.com/tuna-os/bootc-installer-asahi). The installer runs on macOS, then hands off to [Asahi Linux](https://asahilinux.org/) recoveryOS, which boots a TunaOS bootc image. This install path is **experimental**: it offers only the images that pass a golden-manifest check, which now means Bonito and Grouper. M3 and newer Macs are not supported yet, because Asahi upstream does not support them yet. For hardware tiers and test status, see [docs/ASAHI-HARDWARE-TIERS.md](https://github.com/tuna-os/tunaOS/blob/main/docs/ASAHI-HARDWARE-TIERS.md).
 
-**Does TunaOS run on laptops with Snapdragon X Elite?**
+**Does TunaOS run on laptops with Snapdragon X Elite? (Does TunaOS run on a "Copilot+ PC"?)**
 
-Yes, on X13s-class devices such as the Lenovo ThinkPad X13s (Snapdragon X Elite, SC8380). Use the Bonito or Dakota variant, and follow the [Bonito X13s guide](/docs/bonito-x13s) or the [Dakota X13s guide](/docs/dakota-x13s) for install steps and hardware status. Other laptops with Snapdragon X Elite have no confirmed status yet: the Dell XPS 13, the Surface Pro 11, and the Yoga Slim 7x. The X13s is the only device with a published guide today.
+Yes, on X13s-class devices such as the Lenovo ThinkPad X13s (Snapdragon X Elite, SC8380) — the ARM64 hardware inside most "Copilot+ PC" laptops. Use the Bonito or Dakota variant, and follow the [Bonito X13s guide](/docs/bonito-x13s) or the [Dakota X13s guide](/docs/dakota-x13s) for install steps and hardware status. Other laptops with Snapdragon X Elite have no confirmed status yet: the Dell XPS 13, the Surface Pro 11, and the Yoga Slim 7x. The X13s is the only device with a published guide today.
+
+That guide does not cover the NPU (the "AI" accelerator behind the Copilot+ name). No page here documents NPU access from Linux on this hardware yet. Treat NPU support as unconfirmed until a page for the variant says otherwise. See [tuna-os/tunaOS discussion #93](https://github.com/tuna-os/tunaOS/discussions/93) for the original question.
 
 ## Variants
 
