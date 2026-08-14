@@ -114,7 +114,12 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         {type: 'category', label: 'Tavern', link: {type: 'doc', id: 'tavern/index'}, items: ['tavern/ROADMAP', 'tavern/CONTRIBUTING', 'tavern/guide']},
-        {type: 'doc', id: 'gtk-office-suite/index', label: '🏢 Office Suite'},
+        {
+          type: 'category',
+          label: '🏢 Office Suite',
+          link: {type: 'doc', id: 'gtk-office-suite/index'},
+          items: ['gtk-office-suite/letters', 'gtk-office-suite/tables', 'gtk-office-suite/decks'],
+        },
         {type: 'category', label: '🗺️ Mariner', link: {type: 'doc', id: 'mariner/index'}, items: []},
         {type: 'category', label: '🌀 Mandelbrot', link: {type: 'doc', id: 'mandelbrot/index'}, items: ['mandelbrot/features']},
       ],
