@@ -31,13 +31,13 @@ for static content can then serve it.
 
 ## Deployment
 
-Using SSH:
+To deploy with SSH:
 
 ```bash
 USE_SSH=true yarn deploy
 ```
 
-Not using SSH:
+To deploy without SSH:
 
 ```bash
 GIT_USER=<Your GitHub username> yarn deploy
