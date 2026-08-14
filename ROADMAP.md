@@ -23,10 +23,12 @@ starts here.
   The sync also **skips archived/read-only repos** and guards case-collisions
   so stale archived content can no longer land on the live site (#154/#220,
   merged 08-14).
-- **New top risk: GitHub API rate limits** — the 08-14 07:03Z sync truncated
+- **GitHub API rate-limit resilience fixed** — the 08-14 07:03Z sync truncated
   the org listing at 37/57 repos (pagination guard tripped) and left the live
-  site stale (tavern, debian-copr) (#242, open). The sync's per-repo budget
-  and retry behavior need hardening.
+  site stale (tavern, debian-copr) (#242, closed 08-14). The sync now retries
+  a truncated repo listing once before failing (#260, merged 08-14) — the
+  manual catch-up for tavern/debian-copr landed in #249 and the next daily
+  sync refreshes the remaining stale pages.
 - **Flatpak Index deploy restored on main** (#115, closed 08-12).
 - **404 links in synced pages fixed** — LICENSE, `../../releases`,
   package-factory and `#anchor` classes resolved source-side across the org
@@ -38,7 +40,7 @@ starts here.
 
 | Priority | Item | Tracking | Status |
 |----------|------|----------|--------|
-| P0 | Make sync-org-docs resilient to GitHub API rate limits | #242 | 🔴 Open |
+| P0 | Make sync-org-docs resilient to GitHub API rate limits | #242, #260 | ✅ Done |
 | P1 | Versioned docs for screenshots/walkthroughs (docs-artifacts pattern) | — | ⬜ Not started |
 | P2 | Variant pages track ROADMAP status (tunaos.org/wiki ↔ tunaos ROADMAP) | tunaos#1295 | 🟡 In progress |
 
@@ -68,7 +70,7 @@ starts here.
 
 | Item | Issue | Priority | Effort |
 |------|-------|----------|--------|
-| Sync resilience to GitHub API rate limits (org-listing truncation, stale site) | #242 | P1 | M |
+| Sync resilience to GitHub API rate limits (org-listing truncation, stale site) | #242, #260 | P2 | S |
 | Archived-repo pages on the live site (xfce-linux-iso, tromso-iso, dakota-iso) marked as historical | — | P2 | S |
 
 ---
