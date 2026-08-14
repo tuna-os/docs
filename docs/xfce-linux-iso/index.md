@@ -2,8 +2,17 @@
 sidebar_position: 1
 sidebar_label: "xfce-linux-iso"
 
-status: unknown
+status: archived
 ---
+
+:::caution[Archived]
+
+The `tuna-os/xfce-linux-iso` repository was **archived on 2026-05-18**.
+Live ISOs for the XFCE desktop are now built and published from the main
+[tunaOS](https://github.com/tuna-os/tunaOS) pipeline — see
+[tunaos.org/download](https://tunaos.org/download) for current builds.
+This page is kept for historical reference only.
+:::
 
 Live ISO for [xfce-linux](https://github.com/tuna-os/xfce-linux) — an immutable XFCE Wayland desktop built on freedesktop-sdk and distributed as a bootc OCI image.
 

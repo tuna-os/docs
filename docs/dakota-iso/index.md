@@ -2,8 +2,15 @@
 sidebar_position: 1
 sidebar_label: "dakota-iso"
 
-status: unknown
+status: archived
 ---
+
+:::caution[Archived]
+
+The `tuna-os/dakota-iso` repository was **archived on 2026-06-13**.
+This page is kept for historical reference only. The latest build remains
+available at the link below, but no new releases are published from this repo.
+:::
 
 [![Build and Publish](https://github.com/tuna-os/dakota-iso/actions/workflows/build-iso.yml/badge.svg)](https://github.com/tuna-os/dakota-iso/actions/workflows/build-iso.yml)
 

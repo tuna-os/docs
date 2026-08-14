@@ -2,8 +2,17 @@
 sidebar_position: 1
 sidebar_label: "tromso-iso"
 
-status: unknown
+status: archived
 ---
+
+:::caution[Archived]
+
+The `tuna-os/tromso-iso` repository was **archived on 2026-06-12**.
+Live ISOs for the KDE desktop are now built and published from the main
+[tunaOS](https://github.com/tuna-os/tunaOS) pipeline — see
+[tunaos.org/download](https://tunaos.org/download) for current builds.
+This page is kept for historical reference only.
+:::
 
 Live ISO installer for [Tromso KDE Linux](https://github.com/tuna-os/tromso) — a KDE Plasma 6 desktop built on freedesktop-sdk with bootc-powered atomic updates.
 
