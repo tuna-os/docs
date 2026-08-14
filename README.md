@@ -31,17 +31,20 @@ for static content can then serve it.
 
 ## Deployment
 
-Using SSH:
+The **`tunaos-org` Cloudflare Worker** serves the live site (tunaos.org).
+`wrangler.jsonc` mounts this repo's `build/` directory as the Worker's
+static assets, and `worker/index.js` routes requests.
+
+- **Production** — a push to `main` triggers Cloudflare Workers Builds,
+  which runs the build and publishes the new assets.
+- **Pull requests** — `.github/workflows/workers-build.yml` runs the same
+  Docusaurus and Workers build. A deploy failure then appears on the PR
+  before it reaches production.
+- **Content sync** — `.github/workflows/sync-org-docs.yml` runs daily
+  (cron `0 6 * * *`) and opens a PR when org-synced content changes.
+
+To preview the production build locally:
 
 ```bash
-USE_SSH=true yarn deploy
+yarn build
 ```
-
-Not using SSH:
-
-```bash
-GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If GitHub Pages holds the site, this command builds the website and pushes it
-to the `gh-pages` branch.
