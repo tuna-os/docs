@@ -11,7 +11,7 @@ Choose the workflow that fits how you use your computer, then use the
 [download page](/download) to find a matching image and base.
 
 The resource figures below are rough idle-use ranges, not guarantees. Apps,
-extensions, services, display scaling, and hardware drivers can change the
+extensions, services, display settings, and hardware drivers can change the
 result. Availability follows the current site catalog and image picker; a
 desktop listed as a related product is not automatically a TunaOS variant.
 
@@ -27,12 +27,12 @@ desktop listed as a related product is not automatically a TunaOS variant.
 ## Availability notes
 
 - The desktop name is not the same thing as a TunaOS **variant**. Albacore,
-  Yellowfin, Skipjack, Bonito, and the other base images are variants; GNOME,
+  Yellowfin, Skipjack, Bonito, and the other base images are variants. GNOME,
   KDE Plasma, COSMIC, Niri, and XFCE are desktop flavors layered onto them.
 - HWE, NVIDIA, and CachyOS tags are editions or hardware options, not separate
   desktop environments.
 - Availability changes as image builds mature. Start with the picker on the
-  [download page](/download), then check the selected variant’s page for the
+  [download page](/download). Then check the selected variant’s page for the
   exact image tag and architecture.
 
 ## Related guides
