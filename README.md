@@ -31,20 +31,17 @@ for static content can then serve it.
 
 ## Deployment
 
-The live site (tunaos.org) is served by the **`tunaos-org` Cloudflare Worker**.
-`wrangler.jsonc` mounts this repo's `build/` directory as the Worker's static
-assets and `worker/index.js` handles routing.
+The **`tunaos-org` Cloudflare Worker** serves the live site (tunaos.org).
+`wrangler.jsonc` mounts this repo's `build/` directory as the Worker's
+static assets, and `worker/index.js` routes requests.
 
-- **Production** — a push to `main` triggers Cloudflare Workers Builds, which
-  runs the build and publishes the new assets. No manual `deploy` command is
-  needed (and the Docusaurus GitHub Pages `yarn deploy` flow does not apply to
-  this project).
+- **Production** — a push to `main` triggers Cloudflare Workers Builds,
+  which runs the build and publishes the new assets.
 - **Pull requests** — `.github/workflows/workers-build.yml` runs the same
-  Docusaurus + Workers build so deploy failures surface on the PR before they
-  reach production.
+  Docusaurus and Workers build. A deploy failure then appears on the PR
+  before it reaches production.
 - **Content sync** — `.github/workflows/sync-org-docs.yml` runs daily
-  (cron `0 6 * * *`) to regenerate the pages synced from the org's repos and
-  opens a PR when content changed.
+  (cron `0 6 * * *`) and opens a PR when org-synced content changes.
 
 To preview the production build locally:
 
