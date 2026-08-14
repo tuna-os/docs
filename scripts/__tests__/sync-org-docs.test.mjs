@@ -33,6 +33,8 @@ import {
   slugify,
   listOrgRepos,
   checkListing,
+  SKIP_DOCS_DIR,
+  DOCS_SUBDIR,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
 } from '../sync-org-docs.mjs';
@@ -543,6 +545,18 @@ test('an unpaginated gh yields only page 1 — the regression this guards', () =
 // ── checkListing: truncation has to be loud ───────────────────────────────────
 
 console.log('\ncheckListing');
+
+// ── tunaOS source mapping ────────────────────────────────────────────────────
+// tunaOS removed its old docs/book/src mdBook tree. The site keeps the
+// docs/tunaos pages hand-authored, so the sync must not silently revive the
+// removed source mapping or overwrite that tree from tunaOS/docs.
+
+console.log('\ntunaOS source mapping');
+
+test('does not map tunaOS to the removed mdBook path', () => {
+  assert.equal(DOCS_SUBDIR.tunaOS, undefined);
+  assert.ok(SKIP_DOCS_DIR.has('tunaOS'));
+});
 
 test('accepts a listing that is longer than the org public count', () => {
   const {fatal, warnings} = checkListing(137, 130);
