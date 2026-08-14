@@ -26,11 +26,18 @@ old OSTree deployment stays in the boot menu as a fallback the whole time.
 **1. Get the migrator.** Download the latest prebuilt binary (x86_64; for arm64
 swap in `aarch64-unknown-linux-gnu`):
 
+> **Release-naming note.** This repo was renamed from `bootc-migrate-composefs`
+> to `bootc-migrate` after the v0.2.0 release. The released tarballs, the
+> binary inside them, and the container image still carry the old
+> `bootc-migrate-composefs` name — the commands below reflect what v0.2.0
+> actually ships. The next release will publish under the new `bootc-migrate`
+> name.
+
 ```bash
 curl -fsSL -o bmc.tar.gz \
-  https://github.com/tuna-os/bootc-migrate/releases/latest/download/bootc-migrate-x86_64-unknown-linux-gnu.tar.gz
+  https://github.com/tuna-os/bootc-migrate/releases/latest/download/bootc-migrate-composefs-x86_64-unknown-linux-gnu.tar.gz
 tar xzf bmc.tar.gz
-sudo install -m755 bootc-migrate /usr/local/bin/
+sudo install -m755 bootc-migrate-composefs /usr/local/bin/bootc-migrate
 ```
 
 <details>
@@ -39,10 +46,10 @@ sudo install -m755 bootc-migrate /usr/local/bin/
 A minimal image ships the same binary, useful when GitHub Releases is rate-limited/blocked, or to `COPY --from=` it into another Containerfile:
 
 ```bash
-podman create --name bmc-extract ghcr.io/tuna-os/bootc-migrate:latest
-podman cp bmc-extract:/usr/local/bin/bootc-migrate .
+podman create --name bmc-extract ghcr.io/tuna-os/bootc-migrate-composefs:latest
+podman cp bmc-extract:/usr/local/bin/bootc-migrate-composefs .
 podman rm bmc-extract
-sudo install -m755 bootc-migrate /usr/local/bin/
+sudo install -m755 bootc-migrate-composefs /usr/local/bin/bootc-migrate
 ```
 </details>
 
@@ -486,7 +493,8 @@ A Cargo workspace with three crates (see [ROADMAP.md](https://github.com/tuna-os
   built from: phases, preflight/readiness, `/etc` merge (`mergetc`), OSTree
   object scan, registry streaming, transaction (`commit`/`undo`), target-image
   capability scan (`scan`), cross-base UID/GID remap (`remap`), UEFI boot-entry
-  audit (`boot_audit`), DE config stash/restore (`de_migrate`), types.
+  audit (`boot_audit`), DE detection (`de_detect`) and config stash/restore
+  (`de_migrate`), types.
 - `crates/bootc-migrate` — **the protected MVP binary** described
   above. CLI surface (clap), `commit`/`undo`/`rollback` subcommands, the TUI
   wizard. Its four E2E cells are untouchable regression gates — this binary's
@@ -511,10 +519,11 @@ cargo build --release -p bootc-rebase
 | Subcommand | What it does | Status |
 |---|---|---|
 | `scan <image>` | Registry-streamed capability probe of a target image — composefs/ostree readiness, fs-verity requirement, transient root/etc, bootloader payload, desktops, base OS identity, sysusers, initramfs flavor, filesystem expectation, and a `Compatible: YES/NO` verdict with reasons. `--json` for machine output. | Done |
-| `rebase --target-image <image>` | Re-base the running system, routing on `--source-backend`/`--target-backend` through the strategy table below. `--plan` prints the route and exits without touching the system. | Implemented for ostree→composefs (the MVP pipeline), composefs→composefs (image swap), and ostree→ostree (native `bootc switch`, with cross-base UID/GID remap when host and target disagree on distro family — pass `--accept-cross-base` to proceed past the report) |
+| `rebase --target-image <image>` | Re-base the running system, routing on `--source-backend`/`--target-backend` through the strategy table below. `--plan` prints the route, selected phases, and bootloader policy, then exits without touching the system. | Implemented for ostree→composefs (the MVP pipeline), composefs→composefs (image swap), and ostree→ostree (native `bootc switch`, with cross-base UID/GID remap when host and target disagree on distro family — pass `--accept-cross-base` to proceed past the report) |
 | `rollback [--reboot]` | Re-order UEFI `BootOrder` back to the previous deployment. | Done |
-| `boot-entries [--json]` | Enumerate and classify UEFI boot entries: dead (loader path missing), generic-label, duplicate, firmware-managed. **Read-only** — reports what could be cleaned up; removes nothing. | Read-only audit; interactive cleanup + distro-branding rename not yet implemented ([#31](https://github.com/tuna-os/bootc-migrate-composefs/issues/31)) |
-| `de-migrate stash\|restore` | Move a user's desktop-environment config (GNOME dconf/gnome-shell, KDE kdeglobals/plasma/…) into or out of a stash directory around a cross-DE re-base — union of paths per issue [#68](https://github.com/tuna-os/bootc-migrate-composefs/issues/68), never deletes. `--run-hooks` executes `pre-switch.d`/`post-switch.d` scripts with `REBASE_FROM_DE`/`REBASE_TO_DE`/`REBASE_STASH_DIR`/`REBASE_HOME` set. `--dry-run` previews without touching anything. | Stash/restore mechanics + hook contract done; target-image DE *detection* and wiring into `rebase` itself are not yet implemented (depends on the cross-base hardening milestone landing first) |
+| `boot-entries [--json] [--interactive] [--rename-branding] [--apply] [--undo]` | Enumerate and classify UEFI boot entries: dead (loader path missing), generic-label, duplicate, firmware-managed, plus which are protected and why. **Dry-run by default** — a bare invocation is the read-only audit. `--interactive` opens a checklist (protected entries are unselectable), `--rename-branding` proposes renaming the booted entry to `PRETTY_NAME`, `--apply` writes the result to NVRAM after a typed confirmation and a restorable snapshot, and `--undo` replays that snapshot. | Audit and the cleanup **planner** are done and unit-tested (protections, the last-bootable-entry guard, and the "every entry looks dead ⇒ the ESP is wrong" refusal). The `efibootmgr` mutation path and the checklist's event loop have **no automated coverage** — no E2E cell mutates NVRAM — and need real-hardware/VM UEFI validation before they are trusted ([#31](https://github.com/tuna-os/bootc-migrate-composefs/issues/31)) |
+| `de-migrate stash\|restore` | Move a user's desktop-environment config (GNOME dconf/gnome-shell, KDE kdeglobals/plasma, COSMIC, niri, XFCE) into or out of a stash directory around a cross-DE re-base — union of paths per issue [#68](https://github.com/tuna-os/bootc-migrate-composefs/issues/68), never deletes. `--run-hooks` executes `pre-switch.d`/`post-switch.d` scripts with `REBASE_FROM_DE`/`REBASE_TO_DE`/`REBASE_STASH_DIR`/`REBASE_HOME` set. `--dry-run` previews without touching anything. | Done. Also runs automatically inside `rebase --de-migrate`; this subcommand remains the manual escape hatch for images shipping several desktops (which detection refuses to guess between) |
+| `rebase --de-migrate` | Detects the desktop environment the target image ships (registry-streamed session files, session binaries, and display-manager default session — no `podman pull`) and the one this host runs. When they differ, stashes every human account's outgoing DE config before staging and re-exposes any stash a previous re-base in the other direction left behind, running the `pre-switch.d`/`post-switch.d` hooks around each. | Done, unit-tested; **off by default** — a re-base never touches per-user desktop state unless asked to. Not yet covered by a cross-DE E2E cell |
 | `migrate-bootloader --to systemd-boot` | GRUB2 → systemd-boot conversion, standalone of a backend re-base. | **Not implemented** — the subcommand exists and always refuses; only the pure BLS-entry/kernel-arg/entry-token logic it will use has landed. Live ESP populate + NVRAM cutover + the kernel-install resync hook (without which a flipped system would silently boot stale kernels) are deliberately deferred pending explicit sign-off and a dedicated E2E cell — see [#65](https://github.com/tuna-os/bootc-migrate-composefs/issues/65) for the full implementation plan |
 
 `rebase`'s routing table (`crates/bootc-rebase/src/routing.rs` is the single

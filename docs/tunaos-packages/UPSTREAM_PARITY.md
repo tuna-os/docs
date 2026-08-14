@@ -1,5 +1,5 @@
 ---
-sidebar_position: 8
+sidebar_position: 10
 title: "UPSTREAM PARITY"
 ---
 
@@ -51,6 +51,34 @@ The ordinary long Fedora package lists from Bluefin and Aurora are not factory
 inputs.  TunaOS should compare them continuously, then consume the distribution
 packages where available.  Rebuilding a Fedora package just to duplicate it
 would increase maintenance without improving parity.
+
+## Snapshot audit (#226)
+
+`_upstream-snapshots/` holds the package declarations this register tracks —
+one YAML per upstream (`bluefin-lts`, `aurora`, `zirconium`), keyed to the
+upstream revisions in the table above and scoped to the curated parity-relevant
+packages rather than the ordinary Fedora lists.  Each declaration carries the
+disposition TunaOS intends: a source recipe, a desktop-manifest declaration, a
+named distribution package, or an explicit out-of-scope entry with a reason.
+`scripts/audit-upstream-parity.py` verifies the repository honours it:
+
+```
+scripts/audit-upstream-parity.py --strict
+scripts/audit-upstream-parity.py --report-json docs/upstream-parity-report.json
+```
+
+Any snapshot package with no disposition — or a disposition the repository
+does not honour (a declared recipe with no `packages/<name>`/`src/*/<name>`,
+an out-of-scope entry with no reason) — is an uncovered gap and fails
+`--strict`.  `tests/test_upstream_parity_audit.py` asserts the committed
+snapshots stay covered, so a recipe rename or removal without a snapshot
+update is caught in CI.
+
+The register's remaining recommendation — extracting the full installed
+package list of every published edition image on every release tag and
+failing any image with fewer packages than its base — needs container-registry
+access and belongs to the image-build pipeline; this repository's contribution
+is the recipe-side half of the contract (rules 1–4 and the inventory table).
 
 ## Delivery order
 

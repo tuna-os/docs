@@ -141,9 +141,8 @@ shellcheck/yamllint/actionlint, unit suites (BATS + pytest incl. the
 52-test luks-unlock suite and `test_iso_invariants.py` — every invariant
 assertion encodes a bug class that actually shipped), the BuildStream
 graph gate (`bst show --deps all` on the shipping target, junctions
-resolved), and `Just Parse`. `pr-build-changed.yml` additionally builds
-the elements a PR touches against the warm GHCR core CAS — informational
-until the world rebuild converges, then promote to required (xfce-linux#41).
+resolved), `Just Parse`, and `pr-build-changed.yml` (which builds the
+elements a PR touches against the warm GHCR core CAS, promoted to required in xfce-linux#41).
 
 Post-merge: salvage-enabled nightly world build → ISO boot gate
 (ready-marker + screenshot artifact) → weekly LUKS install e2e
