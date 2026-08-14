@@ -93,6 +93,7 @@ const DOCS_DIR = 'docs';
 // default, and therefore the number this script used to stop at.
 const PER_PAGE = 100;
 const DEFAULT_PAGE_SIZE = 30;
+const RETRY_DELAY_MS = 5000;
 
 function cloneRepo(repo) {
   const tmp = execSync('mktemp -d', {encoding: 'utf8'}).trim();
@@ -426,6 +427,43 @@ function checkListing(count, publicRepos = null, perPage = PER_PAGE) {
 // routes even where the filesystem itself tolerates it. A future sync run
 // can recreate this class of bug the same way the first one happened, so
 // this is a standing guard, not a one-off cleanup.
+// discoverRepos lists org repos and cross-checks the count, retrying once
+// before treating a fatal truncation as real. checkListing's job is to catch
+// a permanent regression (#103: --paginate silently dropped from the gh api
+// call) but a short listing can also come from something that clears itself
+// on the next call — GitHub secondary-rate-limiting the account mid-
+// pagination is the one that actually hit this script (#242: 37/57 repos,
+// no --paginate regression in sight). A single retry absorbs that without
+// masking a real regression: a structural bug produces the same short
+// listing on both attempts and still fails after the retry.
+function discoverRepos(exec = execSync, sleep = sleepSync) {
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    const listed = listOrgRepos(exec);
+    const publicRepos = orgPublicRepoCount(exec);
+    const {fatal, warnings} = checkListing(listed.length, publicRepos);
+    if (!fatal.length || attempt === 2) {
+      return {listed, publicRepos, fatal, warnings, attempts: attempt};
+    }
+    console.warn(
+      `⚠️  repo listing looked truncated on attempt ${attempt} ` +
+      `(${listed.length} repos) — retrying once in case this is transient ` +
+      '(e.g. secondary rate limiting mid-pagination) rather than a real ' +
+      '--paginate regression.',
+    );
+    sleep(RETRY_DELAY_MS);
+  }
+  /* istanbul ignore next -- loop above always returns by attempt 2 */
+  return undefined;
+}
+
+// Synchronous sleep so main() (all execSync, no async) can back off between
+// discovery attempts without a rewrite to async/await. Atomics.wait blocks
+// the event loop on purpose — there is nothing else for this script to do
+// while it waits.
+function sleepSync(ms) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
 function findCaseCollisions(rootDir) {
   const byLower = new Map();
   const walk = (dir, prefix) => {
@@ -446,15 +484,14 @@ function findCaseCollisions(rootDir) {
 
 function main() {
   // Discover repos from the org.
-  const listed = listOrgRepos();
-  const publicRepos = orgPublicRepoCount();
-  const {fatal, warnings} = checkListing(listed.length, publicRepos);
+  const {listed, publicRepos, fatal, warnings, attempts} = discoverRepos();
 
   console.log(
     `🔎 ${listed.length} repos listed in ${ORG}` +
     (publicRepos === null
       ? ' (org repo count unavailable — cross-check skipped)'
-      : ` (org reports ${publicRepos} public)`),
+      : ` (org reports ${publicRepos} public)`) +
+    (attempts > 1 ? ` (attempt ${attempts}/2)` : ''),
   );
   for (const w of warnings) console.warn(`⚠️  suspicious repo listing: ${w}`);
   for (const f of fatal) console.error(`✗ ${f}`);
@@ -614,10 +651,12 @@ export {
   listOrgRepos,
   orgPublicRepoCount,
   checkListing,
+  discoverRepos,
   findCaseCollisions,
   HAND_AUTHORED,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
+  RETRY_DELAY_MS,
 };
 
 // Only clone and rewrite when run as a command. The transforms above are

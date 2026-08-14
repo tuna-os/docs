@@ -33,9 +33,11 @@ import {
   slugify,
   listOrgRepos,
   checkListing,
+  discoverRepos,
   findCaseCollisions,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
+  RETRY_DELAY_MS,
 } from '../sync-org-docs.mjs';
 
 // ── Test helpers ──────────────────────────────────────────────────────────────
@@ -650,6 +652,72 @@ test('says nothing about an ordinary count with no cross-check', () => {
   const {fatal, warnings} = checkListing(47, null);
   assert.deepEqual(fatal, []);
   assert.deepEqual(warnings, []);
+});
+
+// ── discoverRepos: a truncated listing gets one retry before it's fatal ────────
+//
+// #242: the daily sync failed on a listing that held 37 of the org's 57
+// public repos — not a --paginate regression (checkListing's original job),
+// but a transient truncation (the run's own evidence pointed at secondary
+// rate limiting mid-pagination). discoverRepos absorbs a one-off like that
+// with a single retry, while still failing for good on a listing that stays
+// short every time — the shape a real --paginate regression takes.
+
+console.log('\ndiscoverRepos');
+
+// fakeExec answers the two gh calls listOrgRepos/orgPublicRepoCount make,
+// returning canned per-attempt {repoCount, publicCount} pairs. The attempt
+// counter advances on the orgPublicRepoCount call, which always runs second
+// within a single discoverRepos attempt.
+function fakeExec(attempts) {
+  let i = 0;
+  return (cmd) => {
+    const {repoCount, publicCount} = attempts[Math.min(i, attempts.length - 1)];
+    if (cmd.includes('/repos?')) {
+      return Array.from({length: repoCount}, (_, n) => `repo-${n}`).join('\n');
+    }
+    if (cmd.startsWith('gh api orgs/')) {
+      i += 1;
+      return String(publicCount);
+    }
+    throw new Error(`fakeExec: unexpected command: ${cmd}`);
+  };
+}
+
+test('does not retry when the first listing is already fine', () => {
+  const sleeps = [];
+  const result = discoverRepos(
+    fakeExec([{repoCount: 57, publicCount: 57}]),
+    (ms) => sleeps.push(ms),
+  );
+  assert.equal(result.attempts, 1);
+  assert.deepEqual(result.fatal, []);
+  assert.deepEqual(sleeps, []);
+});
+
+test('retries once and recovers from a transient truncation', () => {
+  const sleeps = [];
+  const result = discoverRepos(
+    fakeExec([
+      {repoCount: 37, publicCount: 57}, // attempt 1: truncated, same shape as #242
+      {repoCount: 57, publicCount: 57}, // attempt 2: clean
+    ]),
+    (ms) => sleeps.push(ms),
+  );
+  assert.equal(result.attempts, 2);
+  assert.equal(result.listed.length, 57);
+  assert.deepEqual(result.fatal, []);
+  assert.deepEqual(sleeps, [RETRY_DELAY_MS]);
+});
+
+test('gives up after a second attempt that is still short', () => {
+  const result = discoverRepos(
+    fakeExec([{repoCount: 30, publicCount: 57}]), // same short answer every time
+    () => {},
+  );
+  assert.equal(result.attempts, 2);
+  assert.equal(result.fatal.length, 1);
+  assert.match(result.fatal[0], /truncated/);
 });
 
 // ── summary ───────────────────────────────────────────────────────────────────
