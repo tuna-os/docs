@@ -13,22 +13,28 @@ It supports both explicit tag comparison and automatic tag discovery based on a 
 
 ```yaml
 - name: Generate Changelog
-  uses: hanthor/changelog-action@v1
+  uses: tuna-os/changelog-action@main
   with:
-    registry: ghcr.io/ublue-os/
-    cosign-key: https://raw.githubusercontent.com/ublue-os/bluefin/main/cosign.pub
-    images: bluefin bluefin-dx
+    registry: ghcr.io/tuna-os/
+    cosign-key: https://raw.githubusercontent.com/tuna-os/tunaos/main/cosign.pub
+    images: bonito skipjack
     stream: stable
     output: changelog.md
 ```
+
+> The org repo currently has no release tags — pin `@main` for now; the
+> maintainers should cut a `v1` tag (the README previously referenced
+> `hanthor/changelog-action@v1`, a personal repo, and `@v1` does not exist
+> on `tuna-os/changelog-action`).
 
 ## Inputs
 
 | Input | Description | Required | Default |
 | --- | --- | --- | --- |
-| `registry` | Container registry URL | Yes | `ghcr.io/ublue-os/` |
-| `cosign-key` | URL or path to cosign public key | Yes | |
-| `images` | Space-separated list of image names | Yes | |
+| `family` | Known image family (e.g. `bluefin`) — provides registry, cosign-key, and images automatically | No | |
+| `registry` | Container registry URL | Yes* | |
+| `cosign-key` | URL or path to cosign public key | Yes* | |
+| `images` | Space-separated list of image names (e.g. `bonito skipjack`) | Yes* | |
 | `stream` | Release stream for auto-discovery (e.g. `stable`, `latest`) | No | |
 | `prev-tag` | Previous release tag (ignored if `stream` is set) | No | |
 | `curr-tag` | Current release tag (ignored if `stream` is set) | No | |
