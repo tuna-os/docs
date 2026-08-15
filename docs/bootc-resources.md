@@ -12,6 +12,7 @@ Curated links and references for working with bootable containers — from conce
 
 - [bootc-dev/bootc](https://github.com/bootc-dev/bootc) — the official project repo. Start here for the high-level overview.
 - [Getting Started with Bootable Containers](https://docs.fedoraproject.org/en-US/bootc/getting-started/) — Fedora's guide covering core concepts, benefits, and first steps.
+- [Rollback & Update Troubleshooting](bootc-rollback.md) — what to do when an update breaks your system.
 
 ## Talks and Recordings
 

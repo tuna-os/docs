@@ -87,7 +87,7 @@ sudo systemctl reboot
 # Or during boot: select the previous entry in the systemd-boot menu
 ```
 
-The `bootc status` output always shows what the rollback target is.
+The `bootc status` output always shows what the rollback target is. For a worked example and troubleshooting boot failures, see the [Rollback & Update Troubleshooting](/docs/bootc-rollback) guide.
 
 ## Pre-Pull Images
 
