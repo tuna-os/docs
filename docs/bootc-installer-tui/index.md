@@ -2,8 +2,20 @@
 sidebar_position: 1
 sidebar_label: "bootc-installer-tui"
 
-status: unknown
+status: archived
 ---
+
+:::caution[Archived]
+
+The `tuna-os/bootc-installer-tui` repository is **archived** (read-only, last
+push 2026-07-19). This page is kept for historical reference only; the TUI
+installer is no longer under development and no new builds or releases are
+published from this repo. For current installers see
+[bootc-installer](https://github.com/tuna-os/bootc-installer) (GTK) and the
+[tuna-installer GUI frontends](https://github.com/tuna-os/tuna-installer-cosmic)
+(`cosmic`/`kde`/`niri`/`xfce`), all of which drive the same
+[fisherman](https://github.com/tuna-os/fisherman) backend.
+:::
 
 A terminal UI installer for bootc-based operating systems, powered by [fisherman](https://github.com/tuna-os/fisherman).
 

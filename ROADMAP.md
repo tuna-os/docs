@@ -71,7 +71,7 @@ starts here.
 | Item | Issue | Priority | Effort |
 |------|-------|----------|--------|
 | Sync resilience to GitHub API rate limits (org-listing truncation, stale site) | #242, #260 | P2 | S |
-| Archived-repo pages on the live site (xfce-linux-iso, tromso-iso, dakota-iso, ubuntu-26.04-iso, bonito-x13s, dakota-x13s, ubuntu, chunkah) marked as historical | #270 | P2 | S |
+| Archived-repo pages on the live site (xfce-linux-iso, tromso-iso, dakota-iso, ubuntu-26.04-iso, bonito-x13s, dakota-x13s, ubuntu, chunkah, bootc-installer-tui) marked as historical | #270 | P2 | S |
 
 ---
 
