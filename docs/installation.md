@@ -105,7 +105,7 @@ After installation, TunaOS provides:
 - Make sure that the disk has enough free space
 
 ### Post-Install Issues
-If an update breaks your system after installation, see the [Rollback & Update Troubleshooting](bootc-rollback.md) guide.
+If an update breaks your system after installation, see the [Rollback & Update guide](bootc-rollback.md).
 
 ### Getting Help
 - 🐛 **Report Issues**: [GitHub Issues](https://github.com/tuna-os/tunaOS/issues)
