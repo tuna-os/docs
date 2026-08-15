@@ -5,7 +5,7 @@ title: "Rollback & Update Troubleshooting"
 
 # 🔄 Rollback & Update Troubleshooting
 
-TunaOS uses [bootc](https://github.com/bootc-dev/bootc) to manage your system as a container image. Every update is atomic — if something goes wrong, you can roll back to the previous deployment in one command. This guide walks through the full lifecycle: updating, verifying, rolling back, and troubleshooting boot failures.
+TunaOS uses [bootc](https://github.com/bootc-dev/bootc) to manage your system as a container image. Every update is atomic — if something goes wrong, you can roll back to the previous deployment in one command. This guide covers the full lifecycle: update, verify, roll back, and fix boot failures.
 
 ## Quick Reference
 
@@ -21,12 +21,12 @@ TunaOS uses [bootc](https://github.com/bootc-dev/bootc) to manage your system as
 
 Every time you update or switch images, bootc keeps the previous deployment on disk. The boot menu shows two entries:
 
-1. **The current deployment** — what you're running now
+1. **The current deployment** — the system you use now
 2. **The rollback target** — the previous deployment
 
-When you run `bootc rollback`, bootc marks the previous deployment as the next boot target. After rebooting, the old image becomes the "current" deployment, and the problematic update becomes the rollback target.
+When you run `bootc rollback`, bootc marks the previous deployment as the next boot target. After the reboot, the old image becomes the "current" deployment, and the problematic update becomes the rollback target.
 
-> Bootc keeps the last 2 deployments by default. Older deployments are automatically cleaned up.
+> Bootc keeps the last 2 deployments by default. Bootc automatically cleans up older deployments.
 
 ## Worked Example: Update, Break, Roll Back
 
@@ -82,11 +82,11 @@ bootc status
   Queue: rollback → ghcr.io/tuna-os/yellowfin:gnome@sha256:abc123...
 ```
 
-The "Queue" line shows the rollback target — your previous working deployment.
+The "Queue" line shows the rollback target — the deployment you used before.
 
 ### Step 4: Discover a Problem
 
-Something isn't working right — a driver regression, a broken dependency, a display issue. You decide to roll back.
+Something does not work right — a driver regression, a broken dependency, or a display issue. You decide to roll back.
 
 ### Step 5: Roll Back
 
@@ -122,7 +122,7 @@ sudo bootc switch ghcr.io/tuna-os/yellowfin@sha256:abc123...
 sudo systemctl reboot
 ```
 
-To resume normal updates later, switch back to the tag:
+To resume normal updates at a later time, switch back to the tag:
 
 ```bash
 sudo bootc switch ghcr.io/tuna-os/yellowfin:gnome
@@ -134,11 +134,11 @@ If your system won't boot after an update, you have several recovery options.
 
 ### Option 1: Select Previous Deployment at Boot
 
-When the system boots, the systemd-boot menu lists available deployments. Use the arrow keys to select the previous entry and press Enter. This boots into the rollback target without running any commands.
+When the system boots, the systemd-boot menu shows the available deployments. Use the arrow keys to select the previous entry and press Enter. This boots into the rollback target without any commands.
 
 ### Option 2: Boot into a Live ISO
 
-If the boot menu itself is broken:
+If the boot menu itself fails:
 
 1. Download a TunaOS ISO from [tunaos.org/download](https://tunaos.org/download)
 2. Boot from USB
@@ -157,7 +157,7 @@ sudo bootc status --sysroot /mnt
 
 ### Option 3: Check Boot Logs
 
-From a working boot or rescue entry:
+From a good boot or rescue entry:
 
 ```bash
 # View boot logs from the current session
@@ -182,7 +182,7 @@ journalctl -b -p err
 
 ## Further Reading
 
-- [Managing TunaOS with Bootc](tunaos/bootc-usage.md) — full bootc management guide
+- [Manage TunaOS with Bootc](tunaos/bootc-usage.md) — the full guide for bootc management
 - [Bootc Resources](bootc-resources.md) — curated links and references
 - [Installation Guide](installation.md) — fresh install instructions
 - [FAQ](faq.md) — quick answers to common questions
