@@ -82,7 +82,7 @@ For a graphical experience, use **[Tavern](/tavern)** — TunaOS's native GTK4 H
 
 ```bash
 # Install Tavern via Flatpak
-flatpak remote-add --user --if-not-exists tuna-os oci+https://tuna-os.github.io/Tavern
+flatpak remote-add --user --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo
 flatpak install --user tuna-os org.tunaos.tavern
 ```
 

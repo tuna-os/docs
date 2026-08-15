@@ -147,7 +147,7 @@ brew tap tuna-os/homebrew-tap
 |---|---|
 | "Homebrew not found" | Ensure Homebrew is installed: `/bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"` |
 | No search results | Run `brew update` in the terminal to refresh the package index |
-| Flatpak won't launch | Ensure the TunaOS remote is added: `flatpak remote-add --user --if-not-exists tuna-os oci+https://tuna-os.github.io/Tavern` |
+| Flatpak won't launch | Ensure the TunaOS remote is added: `flatpak remote-add --user --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo` |
 | Packages not installing | Check `brew doctor` in terminal for Homebrew issues |
 
 ## See Also
