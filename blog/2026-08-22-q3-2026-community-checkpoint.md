@@ -52,8 +52,9 @@ so third-party repositories are explicit and reviewable.
 - **34+ outreach opportunities filed** — from conference CFPs (FOSDEM 2027
   draft is in-repo) to ecosystem partnerships (Asahi Linux, Snapdragon X Elite)
   and a DistroWatch listing draft
-- **6 good-first-issue tasks tagged** across tunaos + docs, growing toward 8
-  before [Hacktoberfest](https://hacktoberfest.com/) opens in October
+- **7 good-first-issue tasks tagged** across tunaos + docs (1 + 6), growing
+  toward 8+ before [Hacktoberfest](https://hacktoberfest.com/) opens in
+  October
 
 ## Decisions made at the checkpoint
 
