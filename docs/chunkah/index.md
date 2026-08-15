@@ -2,15 +2,22 @@
 sidebar_position: 1
 sidebar_label: "chunkah"
 
-status: unknown
+status: archived
 ---
+
+:::caution[Archived]
+
+The `tuna-os/chunkah` repository is **archived** (last push 2026-06-13).
+This page is kept for historical reference only; the tool is no longer under
+development and no new builds or releases are published from this repo.
+See [tunaos-packages](https://github.com/tuna-os/tunaos-packages) for the
+current package factory, and the
+[OCI layer tooling](https://github.com/tuna-os/tunaOS) in the main build
+pipeline for current image-layer work.
+:::
 
 An OCI building tool that takes a flat rootfs and outputs a layered OCI image
 with content-based layers.
-
-> [!NOTE]
-> chunkah is currently under heavy development and not yet ready for production.
-> Experimental usage and feedback is much appreciated!
 
 ## Table of Contents
 

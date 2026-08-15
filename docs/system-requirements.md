@@ -112,7 +112,7 @@ requirements.
 - **Legacy BIOS** (limited support)
 
 ### Security Features
-- **Secure Boot**: Supported (may need configuration)
+- **Secure Boot**: Supported — see [Secure Boot & UEFI Guide](secure-boot.md)
 - **TPM**: Optional but recommended
 - **Intel TXT/AMD SVM**: Supported for virtualization
 

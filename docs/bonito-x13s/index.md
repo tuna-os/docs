@@ -2,8 +2,16 @@
 sidebar_position: 1
 sidebar_label: "bonito-x13s"
 
-status: unknown
+status: archived
 ---
+
+:::caution[Archived]
+
+The `tuna-os/bonito-x13s` repository is **archived** (last push 2026-03-27).
+This page is kept for historical reference only; no new builds or releases
+are published from this repo. See the [Snapdragon X Elite FAQ entry](/docs/faq)
+for current guidance.
+:::
 
 A [bootc](https://containers.github.io/bootc/) image for the **Lenovo ThinkPad X13s** (Qualcomm SC8280XP, aarch64), based on [Bonito](https://github.com/tuna-os/bonito) (Fedora Atomic GNOME).
 

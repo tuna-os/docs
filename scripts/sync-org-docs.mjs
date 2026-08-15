@@ -93,14 +93,24 @@ const DOCS_DIR = 'docs';
 // default, and therefore the number this script used to stop at.
 const PER_PAGE = 100;
 const DEFAULT_PAGE_SIZE = 30;
+const RETRY_DELAY_MS = 5000;
 
+// Returns {dir, branch}. `git clone` with no --branch checks out the repo's
+// actual default branch (dev/master, not always main — see tuna-os/docs#263,
+// bootc-installer/changelog-action/kde-build-meta/mariner all use something
+// other than main), so read it back from the clone itself instead of
+// assuming or making a separate API call.
 function cloneRepo(repo) {
   const tmp = execSync('mktemp -d', {encoding: 'utf8'}).trim();
   execSync(`git clone --depth=1 https://github.com/${ORG}/${repo}.git ${tmp}`, {
     stdio: 'pipe',
     timeout: 60_000,
   });
-  return tmp;
+  const branch = execSync('git rev-parse --abbrev-ref HEAD', {
+    cwd: tmp,
+    encoding: 'utf8',
+  }).trim();
+  return {dir: tmp, branch};
 }
 
 function slugify(name) {
@@ -185,20 +195,25 @@ function sanitizeHtml(content) {
 // docs/user-guide.md saying `screenshots/a.png` means docs/screenshots/a.png.
 // Ignoring srcDir produced URLs that 404: the site still built, because
 // Docusaurus only validates repo-local images, and shipped broken ones.
-function fixRelativeLinks(content, repo, srcDir = '') {
+function fixRelativeLinks(content, repo, srcDir = '', branch = 'main') {
   // Convert relative repo links to absolute GitHub links.
-  // [something](./foo.md) → [something](https://github.com/tuna-os/<repo>/blob/main/foo.md)
+  // [something](./foo.md) → [something](https://github.com/tuna-os/<repo>/blob/<branch>/foo.md)
   // But keep intra-doc links within the Docusaurus site as-is.
   // Strategy: any repo-relative link (./, ../, or bare) is resolved against
   // the repo root and rewritten to github.com — not just .md/.rst links, so
   // LICENSE, package-factory.yaml and CLAUDE.md#anchor stop shipping as 404s.
+  //
+  // branch is the repo's actual default branch (tuna-os/docs#263):
+  // bootc-installer/fisherman use dev, changelog-action/kde-build-meta/mariner
+  // use master. Hardcoding main here rewrote their links to a branch that
+  // does not exist for them, 404ing every repo-relative link and image.
   const prefix = srcDir ? `${srcDir.replace(/\/+$/, '')}/` : '';
-  const base = `https://github.com/${ORG}/${repo}/blob/main`;
+  const base = `https://github.com/${ORG}/${repo}/blob/${branch}`;
   // Images need bytes, not a page. github.com/…/blob/… answers text/html, so
   // an <img> pointed at it renders broken; raw.githubusercontent.com answers
   // image/png. Only the site's own assets can use a repo-relative path, and
   // the synced files' assets are not copied into this repo.
-  const raw = `https://raw.githubusercontent.com/${ORG}/${repo}/main`;
+  const raw = `https://raw.githubusercontent.com/${ORG}/${repo}/${branch}`;
   const IMAGE = /\.(?:png|svg|jpe?g|gif|webp)$/i;
   // Resolve a path written inside srcDir against the repo root, collapsing
   // the ./ and ../ segments the way the source repo's own renderer would.
@@ -340,18 +355,39 @@ function getStatusBanner(status) {
 //     `.[0]`) would answer once per page and look like it had worked.
 //   * a repo can appear twice if the org list shifts between page requests, so
 //     the names are de-duplicated rather than trusted to be unique.
+//
+// Returns {names, archived}: `names` is the de-duplicated list of active
+// (non-archived) repos — what downstream actually syncs — and `archived` is
+// the count of archived repos in the same listing, kept so the truncation
+// cross-check can compare the *full* listing (active + archived) against
+// org.public_repos, which includes archived public repos. Counting only the
+// active names made a completed listing look truncated the first time twenty
+// repos were archived at once: 57 public repos became 37 active + 20 archived
+// and the guard read 37 < 57 as a --paginate regression (#278).
 function listOrgRepos(exec = execSync) {
-  // select(.archived == false) drops archived/read-only repos from the
-  // listing before anything downstream sees them. Without this, an archived
-  // repo's stale README/docs keep re-landing on the live site on every sync
-  // run — SKIP only removes repos by name, so an archive after the fact
-  // (rather than a rename or a move) was invisible here (#154).
+  // The archived flag rides along on each line (name<TAB>archived) so the
+  // listing needs only one gh call; archived/read-only repos are still
+  // dropped from `names` before anything downstream sees them. Without that
+  // an archived repo's stale README/docs keep re-landing on the live site on
+  // every sync run — SKIP only removes repos by name, so an archive after the
+  // fact (rather than a rename or a move) was invisible here (#154).
   const out = exec(
     `gh api "orgs/${ORG}/repos?per_page=${PER_PAGE}" --paginate --jq ` +
-      `'.[] | select(.archived == false) | .name'`,
+      `'.[] | "\\(.name)\\t\\(.archived)"'`,
     {encoding: 'utf8'},
   );
-  return [...new Set(String(out).split('\n').map((n) => n.trim()).filter(Boolean))];
+  const names = new Set();
+  let archived = 0;
+  for (const line of String(out).split('\n')) {
+    const [name, flag] = line.split('\t');
+    if (!name || !name.trim()) continue;
+    if (flag === 'true') {
+      archived += 1;
+      continue; // archived repos are counted but never synced (#154)
+    }
+    names.add(name.trim());
+  }
+  return {names: [...names], archived};
 }
 
 // orgPublicRepoCount reads how many public repos the org says it has.
@@ -380,9 +416,12 @@ function orgPublicRepoCount(exec = execSync) {
 // shorter list, so the only defence is to state out loud what a plausible
 // answer looks like and complain when the listing is not one.
 //
-// `count` is the raw listing length, before SKIP is applied — SKIP removes
-// repos that do exist, so filtering first would mask a real shortfall.
-function checkListing(count, publicRepos = null, perPage = PER_PAGE) {
+// `count` is the raw listing length (active + archived), before SKIP is
+// applied — SKIP removes repos that do exist, so filtering first would mask
+// a real shortfall. `archived` is how many of those repos are archived:
+// org.public_repos counts archived public repos too, so an active-only count
+// under-reports a complete listing (#278).
+function checkListing(count, publicRepos = null, perPage = PER_PAGE, archived = 0) {
   const fatal = [];
   const warnings = [];
 
@@ -394,9 +433,16 @@ function checkListing(count, publicRepos = null, perPage = PER_PAGE) {
   }
   if (publicRepos !== null && count < publicRepos) {
     fatal.push(
-      `the listing holds ${count} repos but ${ORG} reports ${publicRepos} public ` +
+      `the listing holds ${count} repos (${archived} archived, so ${count - archived} active) ` +
+      `but ${ORG} reports ${publicRepos} public ` +
       'repos, and every token can see every public repo of a public org. The ' +
       'listing is truncated — check that --paginate survived on the gh api call.',
+    );
+  }
+  if (archived > 0 && publicRepos !== null && count >= publicRepos) {
+    warnings.push(
+      `${archived} repos are archived and excluded from the sync; the listing is ` +
+      `complete (${count} repos total, org reports ${publicRepos} public).`,
     );
   }
   if (count > 0 && count === DEFAULT_PAGE_SIZE) {
@@ -426,6 +472,48 @@ function checkListing(count, publicRepos = null, perPage = PER_PAGE) {
 // routes even where the filesystem itself tolerates it. A future sync run
 // can recreate this class of bug the same way the first one happened, so
 // this is a standing guard, not a one-off cleanup.
+// discoverRepos lists org repos and cross-checks the count, retrying once
+// before treating a fatal truncation as real. checkListing's job is to catch
+// a permanent regression (#103: --paginate silently dropped from the gh api
+// call) but a short listing can also come from something that clears itself
+// on the next call — GitHub secondary-rate-limiting the account mid-
+// pagination is the one that actually hit this script (#242: 37/57 repos,
+// no --paginate regression in sight). A single retry absorbs that without
+// masking a real regression: a structural bug produces the same short
+// listing on both attempts and still fails after the retry.
+function discoverRepos(exec = execSync, sleep = sleepSync) {
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    const {names, archived} = listOrgRepos(exec);
+    const publicRepos = orgPublicRepoCount(exec);
+    const {fatal, warnings} = checkListing(
+      names.length + archived,
+      publicRepos,
+      PER_PAGE,
+      archived,
+    );
+    if (!fatal.length || attempt === 2) {
+      return {listed: names, archived, publicRepos, fatal, warnings, attempts: attempt};
+    }
+    console.warn(
+      `⚠️  repo listing looked truncated on attempt ${attempt} ` +
+      `(${names.length + archived} repos) — retrying once in case this is transient ` +
+      '(e.g. secondary rate limiting mid-pagination) rather than a real ' +
+      '--paginate regression.',
+    );
+    sleep(RETRY_DELAY_MS);
+  }
+  /* istanbul ignore next -- loop above always returns by attempt 2 */
+  return undefined;
+}
+
+// Synchronous sleep so main() (all execSync, no async) can back off between
+// discovery attempts without a rewrite to async/await. Atomics.wait blocks
+// the event loop on purpose — there is nothing else for this script to do
+// while it waits.
+function sleepSync(ms) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
 function findCaseCollisions(rootDir) {
   const byLower = new Map();
   const walk = (dir, prefix) => {
@@ -446,15 +534,14 @@ function findCaseCollisions(rootDir) {
 
 function main() {
   // Discover repos from the org.
-  const listed = listOrgRepos();
-  const publicRepos = orgPublicRepoCount();
-  const {fatal, warnings} = checkListing(listed.length, publicRepos);
+  const {listed, publicRepos, fatal, warnings, attempts} = discoverRepos();
 
   console.log(
     `🔎 ${listed.length} repos listed in ${ORG}` +
     (publicRepos === null
       ? ' (org repo count unavailable — cross-check skipped)'
-      : ` (org reports ${publicRepos} public)`),
+      : ` (org reports ${publicRepos} public)`) +
+    (attempts > 1 ? ` (attempt ${attempts}/2)` : ''),
   );
   for (const w of warnings) console.warn(`⚠️  suspicious repo listing: ${w}`);
   for (const f of fatal) console.error(`✗ ${f}`);
@@ -490,8 +577,9 @@ function main() {
     console.log(`\n📥 ${repo} → docs/${slug}/`);
 
     let dir;
+    let branch;
     try {
-      dir = cloneRepo(repo);
+      ({dir, branch} = cloneRepo(repo));
       const targetDir = join(DOCS_DIR, slug);
       mkdirSync(targetDir, {recursive: true});
 
@@ -502,7 +590,7 @@ function main() {
       if (existsSync(readmePath)) {
         let content = readFileSync(readmePath, 'utf8');
         content = sanitizeHtml(content);
-        content = fixRelativeLinks(content, repo, '');
+        content = fixRelativeLinks(content, repo, '', branch);
         // Remove the leading # Title (Docusaurus uses frontmatter for title)
         content = content.replace(/^# .*\n\n?/, '');
         const statusBanner = getStatusBanner(meta.status || 'unknown');
@@ -530,7 +618,7 @@ function main() {
         }
         let content = readFileSync(join(dir, file), 'utf8');
         content = sanitizeHtml(content);
-        content = fixRelativeLinks(content, repo, '');
+        content = fixRelativeLinks(content, repo, '', branch);
         content = content.replace(/^# .*\n\n?/, '');
         const title = upper.charAt(0) + upper.slice(1).toLowerCase();
         content = subFrontmatter(title, localPos++) + content;
@@ -548,7 +636,7 @@ function main() {
           if (!file.endsWith('.md') && !file.endsWith('.rst')) continue;
           let content = readFileSync(join(docsDir, file), 'utf8');
           content = sanitizeHtml(content);
-          content = fixRelativeLinks(content, repo, docsSubdir);
+          content = fixRelativeLinks(content, repo, docsSubdir, branch);
           content = content.replace(/^# .*\n\n?/, '');
           const title = file.replace(/\.(md|rst)$/, '').replace(/[-_]/g, ' ');
           content = subFrontmatter(title, localPos++) + content;
@@ -614,10 +702,12 @@ export {
   listOrgRepos,
   orgPublicRepoCount,
   checkListing,
+  discoverRepos,
   findCaseCollisions,
   HAND_AUTHORED,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
+  RETRY_DELAY_MS,
 };
 
 // Only clone and rewrite when run as a command. The transforms above are

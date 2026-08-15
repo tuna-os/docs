@@ -11,9 +11,21 @@ we distribute them as Flatpaks.
 
 | App | Description | Install |
 |---|---|---|
-| [**Letters**](/letters) 📝 | Word processor — DOCX, ODT, Markdown, HTML, PDF export | `flatpak install tuna-os org.tunaos.letters` |
-| [**Tables**](/tables) 📊 | Spreadsheet — XLSX, ODS, CSV, IronCalc formula engine | `flatpak install tuna-os org.tunaos.tables` |
-| [**Decks**](/decks) 📽️ | Presentations — PPTX, present mode, speaker notes | `flatpak install tuna-os org.tunaos.decks` |
+| [**Letters**](./letters.md) 📝 | Word processor — open DOCX/ODT/Markdown/HTML, save DOCX/ODT/Markdown, PDF export | `flatpak install tuna-os org.tunaos.letters` |
+| [**Tables**](./tables.md) 📊 | Spreadsheet — XLSX/XLS/ODS/CSV, IronCalc formula engine, PDF export | `flatpak install tuna-os org.tunaos.tables` |
+| [**Decks**](./decks.md) 📽️ | Presentations — PPTX/ODP, present mode, per-slide speaker notes | `flatpak install tuna-os org.tunaos.decks` |
+
+## Which one do I want?
+
+- **Write a letter, report, or README?** Letters — it round-trips real
+  DOCX/ODT structure, not a flattened text dump.
+- **Track numbers, a budget, or anything with formulas?** Tables — type
+  `=SUM(...)` straight into a cell, IronCalc does the rest.
+- **Build slides for a talk?** Decks — PPTX/ODP in and out, with
+  per-slide notes and a present mode.
+
+Each app page below has the concrete menu paths, keyboard shortcuts, and
+file-format details.
 
 ## 🚀 Quick install
 

@@ -2,10 +2,19 @@
 sidebar_position: 1
 sidebar_label: "xfce-linux-iso"
 
-status: unknown
+status: archived
 ---
 
-Live ISO for [xfce-linux](https://github.com/hanthor/xfce-linux) — an immutable XFCE Wayland desktop built on freedesktop-sdk and distributed as a bootc OCI image.
+:::caution[Archived]
+
+The `tuna-os/xfce-linux-iso` repository was **archived on 2026-05-18**.
+Live ISOs for the XFCE desktop are now built and published from the main
+[tunaOS](https://github.com/tuna-os/tunaOS) pipeline — see
+[tunaos.org/download](https://tunaos.org/download) for current builds.
+This page is kept for historical reference only.
+:::
+
+Live ISO for [xfce-linux](https://github.com/tuna-os/xfce-linux) — an immutable XFCE Wayland desktop built on freedesktop-sdk and distributed as a bootc OCI image.
 
 Modeled after [projectbluefin/dakota-iso](https://github.com/projectbluefin/dakota-iso).
 
@@ -45,7 +54,7 @@ ssh -p 2222 liveuser@localhost
 
 Three-stage container build (`xfce-linux/Containerfile`):
 
-1. **xfce-linux-ref** — pulls `ghcr.io/hanthor/xfce-linux:latest` to get kernel modules
+1. **xfce-linux-ref** — pulls `ghcr.io/tuna-os/xfce-linux:latest` to get kernel modules
 2. **initramfs-builder** — Debian stage: builds a `dmsquash-live` initramfs via dracut against xfce-linux's kernel
 3. **final** — xfce-linux: installs the new initramfs, pre-installs Flatpaks, runs `configure-live.sh`
 

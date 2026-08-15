@@ -2,8 +2,16 @@
 sidebar_position: 1
 sidebar_label: "dakota-x13s"
 
-status: unknown
+status: archived
 ---
+
+:::caution[Archived]
+
+The `tuna-os/dakota-x13s` repository is **archived** (last push 2026-04-19).
+This page is kept for historical reference only; no new builds or releases
+are published from this repo. See the [Snapdragon X Elite FAQ entry](/docs/faq)
+for current guidance.
+:::
 
 [Project Bluefin Dakota](https://github.com/projectbluefin/dakota) on the **Lenovo ThinkPad X13s** (Qualcomm SC8280XP / aarch64).
 

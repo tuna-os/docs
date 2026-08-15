@@ -6,7 +6,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Getting Started',
       collapsed: false,
-      items: ['intro', 'choosing-a-variant', 'architecture', 'installation', 'installer', 'system-requirements', 'bootc-resources', 'faq', 'ublue-ecosystem'],
+      items: ['intro', 'choosing-a-variant', 'architecture', 'installation', 'installer', 'system-requirements', 'desktop-comparison', 'bootc-resources', 'faq', 'ublue-ecosystem'],
     },
     {
       type: 'category',
@@ -48,7 +48,7 @@ const sidebars: SidebarsConfig = {
           label: 'Developer Guide',
           collapsible: true,
           collapsed: true,
-          items: ['tunaos/introduction', 'tunaos/evaluating-in-a-vm', 'tunaos/building', 'tunaos/ai-ml-development', 'tunaos/bootc-usage', 'tunaos/cosmic-desktop', 'tunaos/homebrew', 'tunaos/platform-engineering', 'tunaos/live-iso-generation', 'tunaos/installer-walkthrough/index', 'tunaos/ci-cd', 'tunaos/troubleshooting'],
+          items: ['secure-boot', 'tunaos/introduction', 'tunaos/evaluating-in-a-vm', 'tunaos/building', 'tunaos/ai-ml-development', 'tunaos/bootc-usage', 'tunaos/cosmic-desktop', 'tunaos/homebrew', 'tunaos/platform-engineering', 'tunaos/live-iso-generation', 'tunaos/installer-walkthrough/index', 'tunaos/ci-cd', 'tunaos/troubleshooting'],
         },
       ],
     },
@@ -114,7 +114,12 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         {type: 'category', label: 'Tavern', link: {type: 'doc', id: 'tavern/index'}, items: ['tavern/ROADMAP', 'tavern/CONTRIBUTING', 'tavern/guide']},
-        {type: 'doc', id: 'gtk-office-suite/index', label: '🏢 Office Suite'},
+        {
+          type: 'category',
+          label: '🏢 Office Suite',
+          link: {type: 'doc', id: 'gtk-office-suite/index'},
+          items: ['gtk-office-suite/letters', 'gtk-office-suite/tables', 'gtk-office-suite/decks'],
+        },
         {type: 'category', label: '🗺️ Mariner', link: {type: 'doc', id: 'mariner/index'}, items: []},
         {type: 'category', label: '🌀 Mandelbrot', link: {type: 'doc', id: 'mandelbrot/index'}, items: ['mandelbrot/features']},
       ],

@@ -11,20 +11,25 @@ status: unknown
 > has moved to the [gtk-office-suite](https://github.com/tuna-os/gtk-office-suite)
 > monorepo, where the canonical `suite-common` implementation is the Rust crate
 > (gtk4-rs 0.11 / libadwaita 0.9, plus the `suite-common-core` sibling). The Rust
-> apps are already distributed via Flatpak as `org.tunaos.letters-rust`,
-> `org.tunaos.tables-rust`, and `org.tunaos.decks-rust`.
+> apps are distributed via Flatpak as `org.tunaos.letters`,
+> `org.tunaos.tables`, and `org.tunaos.decks` (the historical
+> `org.tunaos.letters-rust` / `tables-rust` / `decks-rust` suffixes were
+> dropped — the plain IDs now carry the Rust builds in the tuna-os remote).
 >
 > See [gtk-office-suite#82](https://github.com/tuna-os/gtk-office-suite/issues/82)
 > for the migration plan and [tunaos#517](https://github.com/tuna-os/tunaos/issues/517)
 > for the namespace-collision tracking.
 
-Shared scaffold for the [TunaOS](https://github.com/tuna-os) GNOME office suite:
+Shared scaffold for the [TunaOS](https://github.com/tuna-os) GNOME office suite. The three apps were extracted into the archived
+[tuna-os/letters](https://github.com/tuna-os/letters), [tuna-os/tables](https://github.com/tuna-os/tables), and
+[tuna-os/decks](https://github.com/tuna-os/decks) repos; all three now live in the
+[gtk-office-suite](https://github.com/tuna-os/gtk-office-suite) monorepo (`letters/`, `tables/`, `decks/` crates):
 
-| App | Repo |
-|-----|------|
-| **Letters** | [tuna-os/letters](https://github.com/tuna-os/letters) |
-| **Tables** | [tuna-os/tables](https://github.com/tuna-os/tables) |
-| **Decks** | [tuna-os/decks](https://github.com/tuna-os/decks) |
+| App | Location |
+|-----|----------|
+| **Letters** | [tuna-os/gtk-office-suite](https://github.com/tuna-os/gtk-office-suite) `letters/` |
+| **Tables** | [tuna-os/gtk-office-suite](https://github.com/tuna-os/gtk-office-suite) `tables/` |
+| **Decks** | [tuna-os/gtk-office-suite](https://github.com/tuna-os/gtk-office-suite) `decks/` |
 
 Suite-common is extracted from Letters and consumed by all three apps as a
 [meson subproject](https://mesonbuild.com/Subprojects.html).  It provides the
@@ -66,7 +71,7 @@ from suite_common.window import SuiteWindow
 from suite_common.webview import SuiteWebView, build_document
 ```
 
-## Quick start (himachal)
+## Quick start
 
 ```bash
 # Run the suite-common unit tests

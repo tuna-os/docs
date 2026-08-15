@@ -122,7 +122,7 @@ cd tacklebox && go build -o tacklebox ./cmd/tacklebox
 **Checklist:**
 1. Verify the ISO boots in a VM first (`just demo-iso yellowfin gnome`)
 2. Check that your hardware supports UEFI boot (no legacy BIOS support)
-3. Ensure secure boot is disabled or keys are enrolled
+3. Ensure secure boot is configured or keys are enrolled (see [Secure Boot & UEFI Guide](../secure-boot.md))
 
 ## Runtime Issues
 

@@ -2,10 +2,19 @@
 sidebar_position: 1
 sidebar_label: "tromso-iso"
 
-status: unknown
+status: archived
 ---
 
-Live ISO installer for [Tromso KDE Linux](https://github.com/hanthor/tromso) — a KDE Plasma 6 desktop built on freedesktop-sdk with bootc-powered atomic updates.
+:::caution[Archived]
+
+The `tuna-os/tromso-iso` repository was **archived on 2026-06-12**.
+Live ISOs for the KDE desktop are now built and published from the main
+[tunaOS](https://github.com/tuna-os/tunaOS) pipeline — see
+[tunaos.org/download](https://tunaos.org/download) for current builds.
+This page is kept for historical reference only.
+:::
+
+Live ISO installer for [Tromso KDE Linux](https://github.com/tuna-os/tromso) — a KDE Plasma 6 desktop built on freedesktop-sdk with bootc-powered atomic updates.
 
 Based on [projectbluefin/dakota-iso](https://github.com/projectbluefin/dakota-iso).
 
@@ -13,7 +22,7 @@ Based on [projectbluefin/dakota-iso](https://github.com/projectbluefin/dakota-is
 
 Three-stage Containerfile build:
 
-1. **`tromso-ref`** — pull `ghcr.io/hanthor/tromso:latest` (kernel modules source)
+1. **`tromso-ref`** — pull `ghcr.io/tuna-os/tromso:latest` (kernel modules source)
 2. **`initramfs-builder`** — Debian: build a `dmsquash-live` initramfs against Tromso's kernel modules
 3. **`final`** — Tromso image with replaced initramfs + SDDM autologin + `tuna-installer` + flatpaks
 
@@ -53,10 +62,10 @@ sudo just workdir=/mnt iso-sd-boot tromso
 Builds trigger on:
 - Push to `tromso/**` or `justfile`
 - Daily schedule (05:00 UTC) to pick up Tromso image updates
-- `repository_dispatch` with type `oci-image-published` (triggered by `hanthor/tromso`)
+- `repository_dispatch` with type `oci-image-published` (triggered by `tuna-os/tromso`)
 - Manual `workflow_dispatch`
 
-Built ISOs are published as [GitHub Releases](https://github.com/hanthor/tromso-iso/releases).
+Built ISOs are published as [GitHub Releases](https://github.com/tuna-os/tromso-iso/releases).
 
 ## Icons & Branding
 

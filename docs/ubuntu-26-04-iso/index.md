@@ -2,11 +2,21 @@
 sidebar_position: 1
 sidebar_label: "ubuntu-26.04-iso"
 
-status: unknown
+status: archived
 ---
 
+:::caution[Archived]
+
+The `ubuntu-26.04-iso` workflow was merged into the
+[`tuna-os/ubuntu`](https://github.com/tuna-os/ubuntu) repo, which was itself
+**archived on 2026-07-11** as Ubuntu support moved out of active development.
+The download link below no longer serves a build — check
+[tunaos.org/download](https://tunaos.org/download) for the current ISO list.
+This page is kept for historical reference only.
+:::
+
 Live bootable ISO for **Ubuntu 26.04 "Resolute Raccoon"** desktop, based on the
-[`ghcr.io/hanthor/ubuntu-26.04-desktop-bootc`](https://github.com/hanthor/ubuntu-26.04-desktop-bootc)
+[`ghcr.io/tuna-os/ubuntu:26.04`](https://github.com/tuna-os/ubuntu)
 bootc image. Uses the same [dakota-iso](https://github.com/tuna-os/dakota-iso)
 systemd-boot + dmsquash-live pipeline.
 
@@ -18,8 +28,12 @@ systemd-boot + dmsquash-live pipeline.
 
 ## Download
 
+> ⚠️ **No longer served.** The Ubuntu 26.04 live ISO is no longer built or
+> published; the archived link below 404s. See
+> [tunaos.org/download](https://tunaos.org/download) for the current ISO list.
+
 ```
-https://download.tunaos.org/ubuntu-26.04/ubuntu-26.04-live-latest.iso
+https://download.tunaos.org/ubuntu-26.04/ubuntu-26.04-live-latest.iso  # dead — archived 2026-07-11
 ```
 
 ## Installing to disk
@@ -28,7 +42,7 @@ Boot the ISO, open a terminal, and run:
 
 ```bash
 sudo bootc install to-disk \
-  --source-imgref ghcr.io/hanthor/ubuntu-26.04-desktop-bootc:latest \
+  --source-imgref ghcr.io/tuna-os/ubuntu:26.04 \
   /dev/sda
 ```
 

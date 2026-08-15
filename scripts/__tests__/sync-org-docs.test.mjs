@@ -33,9 +33,11 @@ import {
   slugify,
   listOrgRepos,
   checkListing,
+  discoverRepos,
   findCaseCollisions,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
+  RETRY_DELAY_MS,
 } from '../sync-org-docs.mjs';
 
 // ── Test helpers ──────────────────────────────────────────────────────────────
@@ -297,6 +299,27 @@ test('leaves a site-absolute link alone', () => {
   assert.equal(fixRelativeLinks(src, 'corral'), src);
 });
 
+// #263: bootc-installer/fisherman use dev, changelog-action/kde-build-meta/
+// mariner use master — hardcoding main rewrote their links to a branch that
+// does not exist for them, 404ing every repo-relative link and image.
+
+test('uses the given branch for a blob link, not a hardcoded main', () => {
+  const out = fixRelativeLinks('[docs](./CONTRIBUTING.md)\n', 'bootc-installer', '', 'dev');
+  assert.match(out, /github\.com\/tuna-os\/bootc-installer\/blob\/dev\/CONTRIBUTING\.md/);
+  assert.doesNotMatch(out, /\/blob\/main\//);
+});
+
+test('uses the given branch for a raw image URL, not a hardcoded main', () => {
+  const out = fixRelativeLinks('![x](a.png)\n', 'changelog-action', '', 'master');
+  assert.match(out, /raw\.githubusercontent\.com\/tuna-os\/changelog-action\/master\/a\.png/);
+  assert.doesNotMatch(out, /\/main\//);
+});
+
+test('defaults to main when no branch is given, for backward compatibility', () => {
+  const out = fixRelativeLinks('[docs](./CONTRIBUTING.md)\n', 'corral');
+  assert.match(out, /\/blob\/main\/CONTRIBUTING\.md/);
+});
+
 // Repo-relative links that are not .md/.rst files used to fall through the
 // regexes unchanged and ship as 404s on the docs site (#135). A LICENSE, a
 // YAML file, a release-list link and an anchored .md link all live in the
@@ -463,10 +486,24 @@ console.log('\nlistOrgRepos');
 //   pages    — array of arrays of repo names, one array per API page
 //   paginate — when false, the stub ignores --paginate and answers page 1
 //              only, which is the pre-fix behaviour
-function stubGh(pages, {paginate = true, publicRepos = null} = {}) {
+function stubGh(pages, {paginate = true, publicRepos = null, archivedRepos = 0} = {}) {
   const dir = mkdtempSync(join(tmpdir(), 'gh-stub-'));
+  const total = pages.reduce((n, p) => n + p.length, 0);
+  const archivedFrom = total - archivedRepos;
+  let globalIdx = 0;
   const body = pages
-    .map((names, i) => `  ${i}) printf '%s\\n' ${names.map((n) => `'${n}'`).join(' ')} ;;`)
+    .map((names, i) => {
+      const entries = names
+        .map((n) => {
+          // The real call emits one `name<TAB>archived` line per repo; emit a
+          // literal tab so listOrgRepos parses the real shape.
+          const flag = globalIdx >= archivedFrom ? 'true' : 'false';
+          globalIdx += 1;
+          return `'${n}\t${flag}'`;
+        })
+        .join(' ');
+      return `  ${i}) printf '%s\\n' ${entries} ;;`;
+    })
     .join('\n');
   writeFileSync(
     join(dir, 'gh'),
@@ -522,7 +559,7 @@ const page1 = Array.from({length: PER_PAGE}, (_, i) => `repo-${String(i).padStar
 const page2 = Array.from({length: 37}, (_, i) => `repo-${String(i + PER_PAGE).padStart(3, '0')}`);
 
 test('collects repos from every page, not just the first', () => {
-  const names = withPath(stubGh([page1, page2]), () => listOrgRepos());
+  const {names} = withPath(stubGh([page1, page2]), () => listOrgRepos());
   assert.equal(names.length, page1.length + page2.length);
   assert.ok(names.includes('repo-000'), 'lost the first page');
   assert.ok(names.includes('repo-136'), 'lost the last page — this is #103');
@@ -535,14 +572,14 @@ test('passes --paginate and per_page to gh', () => {
 });
 
 test('de-duplicates names repeated across a page boundary', () => {
-  const names = withPath(stubGh([['a', 'b'], ['b', 'c']]), () => listOrgRepos());
+  const {names} = withPath(stubGh([['a', 'b'], ['b', 'c']]), () => listOrgRepos());
   assert.deepEqual(names, ['a', 'b', 'c']);
 });
 
 test('an unpaginated gh yields only page 1 — the regression this guards', () => {
   // Same stub with paginate off: proves the assertion above is load-bearing
   // and that a listing capped at a page still looks perfectly well-formed.
-  const names = withPath(stubGh([['a', 'b'], ['c']], {paginate: false}), () =>
+  const {names} = withPath(stubGh([['a', 'b'], ['c']], {paginate: false}), () =>
     listOrgRepos(),
   );
   assert.deepEqual(names, ['a', 'b']);
@@ -555,6 +592,16 @@ test('the --jq filter excludes archived repos (#154)', () => {
   // call actually paginates. A stub that just returned a canned non-archived
   // list would pass whether or not listOrgRepos ever asked for the filter.
   assert.doesNotThrow(() => withPath(stubGh([page1, page2]), () => listOrgRepos()));
+});
+
+test('counts archived repos so the truncation check sees the full listing (#278)', () => {
+  // The last two names are archived: they are counted but not synced.
+  const {names, archived} = withPath(
+    stubGh([['a', 'b'], ['c', 'd', 'e']], {archivedRepos: 2}),
+    () => listOrgRepos(),
+  );
+  assert.deepEqual(names, ['a', 'b', 'c']);
+  assert.equal(archived, 2);
 });
 
 // ── findCaseCollisions: a case-insensitive filesystem sees one file, not two ───
@@ -622,6 +669,24 @@ test('accepts a listing that is longer than the org public count', () => {
   assert.deepEqual(warnings, []);
 });
 
+test('accepts an active-only listing once archived repos are counted (#278)', () => {
+  // 37 active + 20 archived against an org that reports 57 public repos:
+  // the shape that broke the daily sync on 08-14. The listing is complete,
+  // so the archived count must be part of the cross-check — and its
+  // presence should be loud, just not fatal.
+  const {fatal, warnings} = checkListing(57, 57, PER_PAGE, 20);
+  assert.deepEqual(fatal, []);
+  assert.equal(warnings.length, 1);
+  assert.match(warnings[0], /archived/);
+});
+
+test('still fails when even the full listing is short of the org count', () => {
+  const {fatal} = checkListing(37, 57, PER_PAGE, 20);
+  assert.equal(fatal.length, 1);
+  assert.match(fatal[0], /truncated/);
+  assert.match(fatal[0], /archived/);
+});
+
 test('fails a listing shorter than the org public repo count', () => {
   const {fatal} = checkListing(DEFAULT_PAGE_SIZE, 57);
   assert.equal(fatal.length, 1);
@@ -650,6 +715,92 @@ test('says nothing about an ordinary count with no cross-check', () => {
   const {fatal, warnings} = checkListing(47, null);
   assert.deepEqual(fatal, []);
   assert.deepEqual(warnings, []);
+});
+
+// ── discoverRepos: a truncated listing gets one retry before it's fatal ────────
+//
+// #242: the daily sync failed on a listing that held 37 of the org's 57
+// public repos — not a --paginate regression (checkListing's original job),
+// but a transient truncation (the run's own evidence pointed at secondary
+// rate limiting mid-pagination). discoverRepos absorbs a one-off like that
+// with a single retry, while still failing for good on a listing that stays
+// short every time — the shape a real --paginate regression takes.
+
+console.log('\ndiscoverRepos');
+
+// fakeExec answers the two gh calls listOrgRepos/orgPublicRepoCount make,
+// returning canned per-attempt {repoCount, publicCount} pairs. The attempt
+// counter advances on the orgPublicRepoCount call, which always runs second
+// within a single discoverRepos attempt.
+function fakeExec(attempts) {
+  let i = 0;
+  return (cmd) => {
+    const {repoCount, publicCount, archivedRepos = 0} = attempts[Math.min(i, attempts.length - 1)];
+    if (cmd.includes('/repos?')) {
+      return Array.from(
+        {length: repoCount},
+        (_, n) => `repo-${n}\t${n >= repoCount - archivedRepos ? 'true' : 'false'}`,
+      ).join('\n');
+    }
+    if (cmd.startsWith('gh api orgs/')) {
+      i += 1;
+      return String(publicCount);
+    }
+    throw new Error(`fakeExec: unexpected command: ${cmd}`);
+  };
+}
+
+test('does not retry when the first listing is already fine', () => {
+  const sleeps = [];
+  const result = discoverRepos(
+    fakeExec([{repoCount: 57, publicCount: 57}]),
+    (ms) => sleeps.push(ms),
+  );
+  assert.equal(result.attempts, 1);
+  assert.deepEqual(result.fatal, []);
+  assert.deepEqual(sleeps, []);
+});
+
+test('does not retry when archived repos explain a short active list (#278)', () => {
+  // The real org shape: 57 repos returned, 20 of them archived, 37 active.
+  // The listing is complete — no retry, no fatal, just the archived warning.
+  const sleeps = [];
+  const result = discoverRepos(
+    fakeExec([{repoCount: 57, publicCount: 57, archivedRepos: 20}]),
+    (ms) => sleeps.push(ms),
+  );
+  assert.equal(result.attempts, 1);
+  assert.equal(result.listed.length, 37);
+  assert.equal(result.archived, 20);
+  assert.deepEqual(result.fatal, []);
+  assert.equal(result.warnings.length, 1);
+  assert.match(result.warnings[0], /archived/);
+  assert.deepEqual(sleeps, []);
+});
+
+test('retries once and recovers from a transient truncation', () => {
+  const sleeps = [];
+  const result = discoverRepos(
+    fakeExec([
+      {repoCount: 37, publicCount: 57}, // attempt 1: truncated, same shape as #242
+      {repoCount: 57, publicCount: 57}, // attempt 2: clean
+    ]),
+    (ms) => sleeps.push(ms),
+  );
+  assert.equal(result.attempts, 2);
+  assert.equal(result.listed.length, 57);
+  assert.deepEqual(result.fatal, []);
+  assert.deepEqual(sleeps, [RETRY_DELAY_MS]);
+});
+
+test('gives up after a second attempt that is still short', () => {
+  const result = discoverRepos(
+    fakeExec([{repoCount: 30, publicCount: 57}]), // same short answer every time
+    () => {},
+  );
+  assert.equal(result.attempts, 2);
+  assert.equal(result.fatal.length, 1);
+  assert.match(result.fatal[0], /truncated/);
 });
 
 // ── summary ───────────────────────────────────────────────────────────────────

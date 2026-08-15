@@ -247,7 +247,7 @@ export const VARIANTS: Variant[] = [
   {
     id: 'gurnard',
     platforms: ['amd64', 'arm64'],
-    editions: [],
+    editions: ['pantheon'],
     emoji: '🐟',
     name: 'Gurnard',
     base: 'Ubuntu 24.04',
