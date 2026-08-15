@@ -19,7 +19,7 @@ KDE Plasma 6 desktop stack. It follows the same architecture as GNOME's
 
 This repo produces a **KDE Linux OCI image** — a non-customized desktop closely replicating the
 upstream [KDE Linux MKOSI build](https://invent.kde.org/kde-linux/kde-linux). Downstream
-distribution projects (like [hanthor/tromso](https://github.com/hanthor/tromso) for Aurora)
+distribution projects (like [tuna-os/tromso](https://github.com/tuna-os/tromso) for Aurora)
 junction into this repo and layer their customizations on top.
 
 ## Package Coverage
@@ -36,7 +36,7 @@ junction into this repo and layer their customizations on top.
 ## Architecture
 
 ```
-hanthor/kde-build-meta              ← this repo
+tuna-os/kde-build-meta            ← this repo
 ├── elements/
 │   ├── kde/                        # KDE packages (Qt6, Frameworks, Plasma, Apps)
 │   ├── gnomeos-deps/               # OS runtime deps (bootc, zram, sddm configs, etc.)
@@ -51,7 +51,7 @@ hanthor/kde-build-meta              ← this repo
 ├── include/                        # Shared aliases and mirrors
 └── patches/                        # Upstream patches
 
-hanthor/tromso                      ← Aurora OCI (downstream)
+tuna-os/tromso                      ← Aurora OCI (downstream)
 ├── elements/
 │   ├── aurora/                     # Aurora customizations
 │   ├── oci/aurora.bst              # Aurora OCI image
@@ -82,7 +82,7 @@ After pushing changes to this repo, update the junction in the consuming project
 
 ```bash
 SHA=$(git rev-parse --short=7 HEAD)
-curl -sL https://github.com/hanthor/kde-build-meta/archive/${SHA}.tar.gz | tee /tmp/kbm.tar.gz | sha256sum
+curl -sL https://github.com/tuna-os/kde-build-meta/archive/${SHA}.tar.gz | tee /tmp/kbm.tar.gz | sha256sum
 tar tzf /tmp/kbm.tar.gz | head -1   # base-dir name
 ```
 
@@ -91,7 +91,7 @@ Then update the consuming project's `elements/kde-build-meta.bst`:
 kind: junction
 sources:
 - kind: tar
-  url: https://github.com/hanthor/kde-build-meta/archive/<SHA>.tar.gz
+  url: https://github.com/tuna-os/kde-build-meta/archive/<SHA>.tar.gz
   ref: <sha256>
   base-dir: kde-build-meta-<full-sha>
 ```
