@@ -355,18 +355,39 @@ function getStatusBanner(status) {
 //     `.[0]`) would answer once per page and look like it had worked.
 //   * a repo can appear twice if the org list shifts between page requests, so
 //     the names are de-duplicated rather than trusted to be unique.
+//
+// Returns {names, archived}: `names` is the de-duplicated list of active
+// (non-archived) repos — what downstream actually syncs — and `archived` is
+// the count of archived repos in the same listing, kept so the truncation
+// cross-check can compare the *full* listing (active + archived) against
+// org.public_repos, which includes archived public repos. Counting only the
+// active names made a completed listing look truncated the first time twenty
+// repos were archived at once: 57 public repos became 37 active + 20 archived
+// and the guard read 37 < 57 as a --paginate regression (#278).
 function listOrgRepos(exec = execSync) {
-  // select(.archived == false) drops archived/read-only repos from the
-  // listing before anything downstream sees them. Without this, an archived
-  // repo's stale README/docs keep re-landing on the live site on every sync
-  // run — SKIP only removes repos by name, so an archive after the fact
-  // (rather than a rename or a move) was invisible here (#154).
+  // The archived flag rides along on each line (name<TAB>archived) so the
+  // listing needs only one gh call; archived/read-only repos are still
+  // dropped from `names` before anything downstream sees them. Without that
+  // an archived repo's stale README/docs keep re-landing on the live site on
+  // every sync run — SKIP only removes repos by name, so an archive after the
+  // fact (rather than a rename or a move) was invisible here (#154).
   const out = exec(
     `gh api "orgs/${ORG}/repos?per_page=${PER_PAGE}" --paginate --jq ` +
-      `'.[] | select(.archived == false) | .name'`,
+      `'.[] | "\\(.name)\\t\\(.archived)"'`,
     {encoding: 'utf8'},
   );
-  return [...new Set(String(out).split('\n').map((n) => n.trim()).filter(Boolean))];
+  const names = new Set();
+  let archived = 0;
+  for (const line of String(out).split('\n')) {
+    const [name, flag] = line.split('\t');
+    if (!name || !name.trim()) continue;
+    if (flag === 'true') {
+      archived += 1;
+      continue; // archived repos are counted but never synced (#154)
+    }
+    names.add(name.trim());
+  }
+  return {names: [...names], archived};
 }
 
 // orgPublicRepoCount reads how many public repos the org says it has.
@@ -395,9 +416,12 @@ function orgPublicRepoCount(exec = execSync) {
 // shorter list, so the only defence is to state out loud what a plausible
 // answer looks like and complain when the listing is not one.
 //
-// `count` is the raw listing length, before SKIP is applied — SKIP removes
-// repos that do exist, so filtering first would mask a real shortfall.
-function checkListing(count, publicRepos = null, perPage = PER_PAGE) {
+// `count` is the raw listing length (active + archived), before SKIP is
+// applied — SKIP removes repos that do exist, so filtering first would mask
+// a real shortfall. `archived` is how many of those repos are archived:
+// org.public_repos counts archived public repos too, so an active-only count
+// under-reports a complete listing (#278).
+function checkListing(count, publicRepos = null, perPage = PER_PAGE, archived = 0) {
   const fatal = [];
   const warnings = [];
 
@@ -409,9 +433,16 @@ function checkListing(count, publicRepos = null, perPage = PER_PAGE) {
   }
   if (publicRepos !== null && count < publicRepos) {
     fatal.push(
-      `the listing holds ${count} repos but ${ORG} reports ${publicRepos} public ` +
+      `the listing holds ${count} repos (${archived} archived, so ${count - archived} active) ` +
+      `but ${ORG} reports ${publicRepos} public ` +
       'repos, and every token can see every public repo of a public org. The ' +
       'listing is truncated — check that --paginate survived on the gh api call.',
+    );
+  }
+  if (archived > 0 && publicRepos !== null && count >= publicRepos) {
+    warnings.push(
+      `${archived} repos are archived and excluded from the sync; the listing is ` +
+      `complete (${count} repos total, org reports ${publicRepos} public).`,
     );
   }
   if (count > 0 && count === DEFAULT_PAGE_SIZE) {
@@ -452,15 +483,20 @@ function checkListing(count, publicRepos = null, perPage = PER_PAGE) {
 // listing on both attempts and still fails after the retry.
 function discoverRepos(exec = execSync, sleep = sleepSync) {
   for (let attempt = 1; attempt <= 2; attempt += 1) {
-    const listed = listOrgRepos(exec);
+    const {names, archived} = listOrgRepos(exec);
     const publicRepos = orgPublicRepoCount(exec);
-    const {fatal, warnings} = checkListing(listed.length, publicRepos);
+    const {fatal, warnings} = checkListing(
+      names.length + archived,
+      publicRepos,
+      PER_PAGE,
+      archived,
+    );
     if (!fatal.length || attempt === 2) {
-      return {listed, publicRepos, fatal, warnings, attempts: attempt};
+      return {listed: names, archived, publicRepos, fatal, warnings, attempts: attempt};
     }
     console.warn(
       `⚠️  repo listing looked truncated on attempt ${attempt} ` +
-      `(${listed.length} repos) — retrying once in case this is transient ` +
+      `(${names.length + archived} repos) — retrying once in case this is transient ` +
       '(e.g. secondary rate limiting mid-pagination) rather than a real ' +
       '--paginate regression.',
     );
