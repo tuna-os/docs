@@ -146,7 +146,7 @@ sudo dnf install htop
 sudo bootc upgrade && sudo systemctl reboot
 ```
 
-This pulls the latest image and reboots into it. Rollback is one command: `sudo bootc rollback`.
+This pulls the latest image and reboots into it. Rollback is one command: `sudo bootc rollback`. For a full walkthrough including troubleshooting, see the [Rollback & Update Troubleshooting](bootc-rollback.md) guide.
 
 ## Community
 

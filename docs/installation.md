@@ -104,6 +104,9 @@ After installation, TunaOS provides:
 - Use a different tool to write the USB drive: Ventoy, Rufus, or dd
 - Make sure that the disk has enough free space
 
+### Post-Install Issues
+If an update breaks your system after installation, see the [Rollback & Update Troubleshooting](bootc-rollback.md) guide.
+
 ### Getting Help
 - 🐛 **Report Issues**: [GitHub Issues](https://github.com/tuna-os/tunaOS/issues)
 - 💬 **Chat**: [Matrix #tunaos:reilly.asia](https://matrix.to/#/%23tunaos:reilly.asia)
