@@ -13,7 +13,7 @@ are published from this repo. See the [Snapdragon X Elite FAQ entry](/docs/faq)
 for current guidance.
 :::
 
-A [bootc](https://containers.github.io/bootc/) image for the **Lenovo ThinkPad X13s** (Qualcomm SC8280XP, aarch64), based on [Bonito](https://github.com/tuna-os/bonito) (Fedora Atomic GNOME).
+A [bootc](https://containers.github.io/bootc/) image for the **Lenovo ThinkPad X13s** (Qualcomm SC8280XP, aarch64), based on [Bonito](https://tunaos.org/docs/bonito) (Fedora Atomic GNOME).
 
 ## Download Live ISO
 
