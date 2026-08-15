@@ -68,7 +68,7 @@ Everything's named after a fish, because I like fish and also because "AlmaLinux
 | 🦈 [**Sailfin**](/sailfin) | <img src="/img/os/opensuse.svg" width="20" /> [openSUSE Tumbleweed](https://opensuse.org) | Beta |
 | 🌈 [**Guppy**](/guppy) | <img src="/img/os/gentoo.svg" width="20" /> [Gentoo Linux](https://gentoo.org) | Beta |
 
-Most variants get the same 5 desktops: <img src="/img/desktops/gnome.svg" width="18" /> [GNOME](https://www.gnome.org/), <img src="/img/desktops/kde.svg" width="18" /> [KDE Plasma](https://kde.org/), <img src="/img/desktops/cosmic.svg" width="18" /> [COSMIC](https://system76.com/cosmic), <img src="/img/desktops/niri.svg" width="18" /> [Niri](https://github.com/YaLTeR/niri) + <img src="/img/desktops/dms.svg" width="18" /> [DMS](https://github.com/avengemedia/dms), and <img src="/img/desktops/xfce.svg" width="18" /> [XFCE](https://xfce.org/) on Wayland. Guppy ships 2 (GNOME, KDE). Sailfin ships 4 (no COSMIC). Stack a custom kernel or NVIDIA drivers on top of any of them if you want.
+Most variants get the same 5 desktops: <img src="/img/desktops/gnome.svg" width="18" /> [GNOME](https://www.gnome.org/), <img src="/img/desktops/kde.svg" width="18" /> [KDE Plasma](https://kde.org/), <img src="/img/desktops/cosmic.svg" width="18" /> [COSMIC](https://system76.com/cosmic), <img src="/img/desktops/niri.svg" width="18" /> [Niri](https://github.com/YaLTeR/niri) + <img src="/img/desktops/dms.svg" width="18" /> [DMS](https://github.com/AvengeMedia/DankMaterialShell), and <img src="/img/desktops/xfce.svg" width="18" /> [XFCE](https://xfce.org/) on Wayland. Guppy ships 2 (GNOME, KDE). Sailfin ships 4 (no COSMIC). Stack a custom kernel or NVIDIA drivers on top of any of them if you want.
 
 ## How this got easier
 
@@ -96,7 +96,7 @@ Plasma's look comes from [Aurora](https://github.com/get-aurora-dev/common)'s [`
 
 [Niri](https://github.com/YaLTeR/niri) is a scrollable-tiling compositor — windows line up horizontally on a ribbon you scroll through instead of stacking into workspaces. It's the odd one out in the lineup and probably the most "pure Wayland" thing we ship.
 
-We pair it with [DMS](https://github.com/avengemedia/dms) (DankMaterialShell) for the greeter, a control panel, and app launching. So the stack is `greetd` &rarr; Niri &rarr; DMS. DMS is still pretty early but it's enough to make Niri feel like an actual desktop and not just bare windows on a ribbon.
+We pair it with [DMS](https://github.com/AvengeMedia/DankMaterialShell) (DankMaterialShell) for the greeter, a control panel, and app launching. So the stack is `greetd` &rarr; Niri &rarr; DMS. DMS is still pretty early but it's enough to make Niri feel like an actual desktop and not just bare windows on a ribbon.
 
 Config and theming come from [Zirconium](https://github.com/zirconium-dev/zirconium), same deal as Bluefin and Aurora — one layer, applied everywhere.
 
@@ -126,7 +126,7 @@ None of this happens without a bunch of other projects doing the hard work first
 ### Infra
 
 - [bootcrew](https://github.com/bootcrew/mono) — reference bootc setups for Arch, Gentoo, openSUSE, Debian
-- [jumpvi / bootc-shindig](https://github.com/bootc-shindig) — bootc-deb packaging for Ubuntu and Debian
+- [atomic-shindig / shindig-deb](https://github.com/atomic-shindig/shindig-deb) — bootc-deb packaging for Ubuntu and Debian
 - [Universal Blue](https://universal-blue.org/) and [Project Bluefin](https://projectbluefin.io) — did the bootc desktop thing at scale before anyone else
 - [bootc](https://github.com/containers/bootc) — none of this exists without this project
 
