@@ -3,7 +3,7 @@ sidebar_position: 3
 title: "BUGS FOUND"
 ---
 
-All found by actually running the app under Broadway on `himachal` and reading
+All found by actually running the app under Broadway on the build host and reading
 what it did, rather than by inspection. Ordered by user impact.
 
 ---
@@ -17,7 +17,7 @@ reboot the GUI performed ever touched the system.
 
 * `main.rs` applied `--dev-mode` by mutating `settings.json` and calling
   `save()`. Running `finupdate --dev-mode` **once** left developer mode on
-  forever. `himachal:~/.config/finupdate/settings.json` was found with
+  forever. The build host's `~/.config/finupdate/settings.json` was found with
   `"dev_mode": true` written into it.
 * `Settings::default()` set `dev_mode: is_dev_build`, and `is_dev_build` is true
   whenever `config::PROFILE` is empty — which is the case for *any* plain
@@ -33,7 +33,7 @@ reboot the GUI performed ever touched the system.
   the point of execution.
 * Added `--no-dev-mode` so an already-polluted `settings.json` can be escaped.
 
-**Note for you:** your real config on himachal still has `dev_mode: true`. The
+**Note for you:** your real config on the build host still has `dev_mode: true`. The
 test harness now uses an isolated `XDG_CONFIG_HOME`, so it is untouched — but
 your interactive runs will keep simulating until that value is cleared.
 

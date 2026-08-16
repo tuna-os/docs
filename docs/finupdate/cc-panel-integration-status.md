@@ -203,8 +203,8 @@ session. A Fedora 44 VM running Workstation, with the patched binary copied in
 or the system Settings hot-patched in place.
 
 Neither build host has VM tooling: both are Bluefin (immutable), `libvirtd` is
-inactive and qemu/virt-install are absent, though `/dev/kvm` exists on
-himachal. So this needs either layering virt tooling onto a host, a toolbox
+inactive and qemu/virt-install are absent, though `/dev/kvm` exists on the
+build host. So this needs either layering virt tooling onto a host, a toolbox
 with qemu, or simply running the binary on a desktop machine.
 
 The two fixes above remain confirmed only by the disappearance of their

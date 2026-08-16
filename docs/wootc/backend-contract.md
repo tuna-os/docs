@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 8
 title: "backend contract"
 ---
 
@@ -20,7 +20,7 @@ axes apart. If an image misbehaves, re-run the probe before theorizing.
 including plain-ostree yellowfin. "The image mentions composefs" is not
 evidence of a composefs backend.
 
-## Measured classification (probe run 2026-07-23, himachal)
+## Measured classification (probe run 2026-07-23, runner-c)
 
 | Image | BACKEND | SEALED | Bootloader | Phase-2 path |
 |---|---|---|---|---|

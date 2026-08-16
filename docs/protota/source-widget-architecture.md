@@ -678,7 +678,7 @@ The first change set should remain deliberately small:
 6. Add `vexpand` projection so the retained boundary receives its parent
    allocation.
 7. Run `npm run build` and `npm run test:unit` locally; reserve native
-   Broadway/Playwright validation for `himachal`.
+   Broadway/Playwright validation on the build host.
 
 This sequence creates a trustworthy foundation. Each later extractor or
 renderer feature can improve a visible boundary without changing the meaning

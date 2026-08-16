@@ -3,7 +3,7 @@ sidebar_position: 4
 title: "GNOME HIG AUDIT"
 ---
 
-Audited against **gnome-spec** (`himachal:~/dev/gnome-spec`) v1.1.0 — the
+Audited against **gnome-spec** (the build host's `~/dev/gnome-spec`) v1.1.0 — the
 GNOME GUI Specification compiled from HIG v47 plus source audits of 33 GNOME
 Core/Circle apps. Section numbers below refer to `GNOME-GUI-SPEC.md`.
 

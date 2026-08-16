@@ -69,7 +69,7 @@ CI gate: `--cov-fail-under=51` (minimum unit test coverage).
 
 ## Adding images to the catalog
 
-The image catalog lives in [`fisherman/data/images.json`](https://github.com/tuna-os/bootc-installer/blob/main/fisherman/data/images.json). See the README for the full JSON schema.
+The image catalog lives in [`fisherman/data/images.json`](https://github.com/tuna-os/bootc-installer/blob/dev/fisherman/data/images.json). See the README for the full JSON schema.
 
 > `fisherman/` is a git submodule pointing to [`projectbluefin/fisherman`](https://github.com/projectbluefin/fisherman). Changes to the catalog must be committed and pushed **separately** to the fisherman repo, then the submodule pointer updated here.
 
@@ -80,7 +80,7 @@ The image catalog lives in [`fisherman/data/images.json`](https://github.com/tun
 | `fisherman/fisherman/` | Go | Root-level CLI; reads JSON recipe, executes 9-step disk install pipeline |
 | `bootc_installer/` | Python | GTK4/Adwaita GUI; collects user choices, writes recipe JSON, drives fisherman |
 
-See [CLAUDE.md](https://github.com/tuna-os/bootc-installer/blob/main/CLAUDE.md) and [AGENTS.md](https://github.com/tuna-os/bootc-installer/blob/main/AGENTS.md) for deeper architecture documentation.
+See [CLAUDE.md](https://github.com/tuna-os/bootc-installer/blob/dev/CLAUDE.md) and [AGENTS.md](https://github.com/tuna-os/bootc-installer/blob/dev/AGENTS.md) for deeper architecture documentation.
 
 ## Code style
 

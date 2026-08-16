@@ -6,7 +6,7 @@ status: unknown
 ---
 
 <div>
-    <img src="https://raw.githubusercontent.com/tuna-os/bootc-installer/main/data/icons/hicolor/scalable/apps/org.bootcinstaller.Installer.svg" height="64" />
+    <img src="https://raw.githubusercontent.com/tuna-os/bootc-installer/dev/data/icons/hicolor/scalable/apps/org.bootcinstaller.Installer.svg" height="64" />
     <h1>bootc-installer</h1>
     <p>A GTK 4 / Libadwaita Flatpak installer for <a href="https://projectbluefin.io">Project Bluefin</a> and other <a href="https://universal-blue.org">Universal Blue</a> bootc images.</p>
     <hr />
@@ -150,8 +150,8 @@ The installer drives the `fisherman` backend with a JSON recipe file. The wizard
   "hostname": "bootcos",
   "flatpaks": [],
   "user": {
-    "username": "james",
-    "fullname": "James",
+    "username": "tuna",
+    "fullname": "Tuna User",
     "password": "hunter2",
     "groups": ["wheel"]
   }
@@ -197,8 +197,8 @@ The installer drives the `fisherman` backend with a JSON recipe file. The wizard
   "hostname": "bootcos",
   "flatpaks": ["org.mozilla.firefox", "org.gnome.Console"],
   "user": {
-    "username": "james",
-    "fullname": "James",
+    "username": "tuna",
+    "fullname": "Tuna User",
     "password": "hunter2",
     "groups": ["wheel"]
   }
@@ -393,7 +393,7 @@ ExecStart=flatpak run org.bootcinstaller.Installer --autoinstall /etc/bootc-inst
 
 ## Contributing Images
 
-The installer's image catalog is defined in [`fisherman/data/images.json`](https://github.com/tuna-os/bootc-installer/blob/main/fisherman/data/images.json). Adding a new image means adding an entry to that file. The structure is a recursive tree of groups and leaves:
+The installer's image catalog is defined in [`fisherman/data/images.json`](https://github.com/projectbluefin/fisherman/blob/dev/data/images.json) (the `fisherman` backend is a git submodule pointing at projectbluefin/fisherman@dev). Adding a new image means adding an entry to that file. The structure is a recursive tree of groups and leaves:
 
 ```jsonc
 {
@@ -503,5 +503,5 @@ sudo FISHERMAN_BIN=/path/to/fisherman pytest tests/integration/test_e2e_install.
 sudo FISHERMAN_BIN=/path/to/fisherman BOOT_VERIFY=1 pytest tests/integration/test_e2e_install.py -v -s
 ```
 
-Real release qualification still requires destructive installs on lab hardware for TPM2, physical boot prompts, recovery-key/passphrase fallback, Windows slurp, and offline ISO paths. Use the repo runbook in [`.github/CI_CD_GUIDE.md`](https://github.com/tuna-os/bootc-installer/blob/main/.github/CI_CD_GUIDE.md#release-qualification-runbook) to separate what can be verified now from what remains hardware-only.
+Real release qualification still requires destructive installs on lab hardware for TPM2, physical boot prompts, recovery-key/passphrase fallback, Windows slurp, and offline ISO paths. Use the repo runbook in [`.github/CI_CD_GUIDE.md`](https://github.com/tuna-os/bootc-installer/blob/dev/.github/CI_CD_GUIDE.md#release-qualification-runbook) to separate what can be verified now from what remains hardware-only.
 

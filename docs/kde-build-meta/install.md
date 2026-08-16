@@ -36,7 +36,7 @@ In order to run GNOME OS you need UEFI to be enabled, and secure boot to be disa
 8. If the installer gives you a recovery key, your data is encrypted. Write the key down on a different device
 9. You can then continue using GNOME OS
 
-Now you should have a working GNOME OS setup on real hardware. Since GNOME OS is quite different from other Linux operating systems you should take a look at the [user guide](https://github.com/tuna-os/kde-build-meta/blob/main/docs/using.md).
+Now you should have a working GNOME OS setup on real hardware. Since GNOME OS is quite different from other Linux operating systems you should take a look at the [user guide](https://github.com/tuna-os/kde-build-meta/blob/master/docs/using.md).
 
 ## Optional: Enabling Secure Boot
 

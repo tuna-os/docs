@@ -13,7 +13,7 @@ It supports both explicit tag comparison and automatic tag discovery based on a 
 
 ```yaml
 - name: Generate Changelog
-  uses: tuna-os/changelog-action@main
+  uses: tuna-os/changelog-action@master
   with:
     registry: ghcr.io/tuna-os/
     cosign-key: https://raw.githubusercontent.com/tuna-os/tunaos/main/cosign.pub
@@ -22,7 +22,8 @@ It supports both explicit tag comparison and automatic tag discovery based on a 
     output: changelog.md
 ```
 
-> The org repo currently has no release tags — pin `@main` for now; the
+> The org repo currently has no release tags and its default branch is
+> `master` (there is no `main` branch) — pin `@master` for now; the
 > maintainers should cut a `v1` tag (the README previously referenced
 > `hanthor/changelog-action@v1`, a personal repo, and `@v1` does not exist
 > on `tuna-os/changelog-action`).

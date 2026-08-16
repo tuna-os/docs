@@ -51,7 +51,7 @@ tuna-os/kde-build-meta            ← this repo
 ├── include/                        # Shared aliases and mirrors
 └── patches/                        # Upstream patches
 
-tuna-os/tromso                      ← Aurora OCI (downstream)
+tuna-os/tromso                    ← Aurora OCI (downstream)
 ├── elements/
 │   ├── aurora/                     # Aurora customizations
 │   ├── oci/aurora.bst              # Aurora OCI image

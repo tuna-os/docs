@@ -10,7 +10,7 @@ Finupdate requires elevated privileges to interact with bootc and system managem
 ## Rule: `/etc/polkit-1/rules.d/49-finupdate.rules`
 
 ### Purpose
-Allows the `james` user and members of the `wheel` group to execute bootc commands (status, upgrade, etc.) and system reboot operations without password prompts. Designed for:
+Allows the local user and members of the `wheel` group to execute bootc commands (status, upgrade, etc.) and system reboot operations without password prompts. Designed for:
 - Automated testing in CI/CD environments
 - Development/debug mode operations
 - Non-destructive command verification (bootc status, upgrade checks)
@@ -18,8 +18,8 @@ Allows the `james` user and members of the `wheel` group to execute bootc comman
 ### Configuration
 ```javascript
 polkit.addRule(function(action, subject) {
-    // Allow james to run bootc commands without password (non-destructive for testing)
-    if (subject.user == "james") {
+    // Allow the local user to run bootc commands without password (non-destructive for testing)
+    if (subject.user == "<local-user>") {
         // All bootc operations: status, upgrade, etc.
         if (action.command && action.command.indexOf("bootc") >= 0) {
             return polkit.Result.YES;
@@ -50,9 +50,9 @@ Executed via:
 
 ### Security Notes
 
-**Scope**: Limited to the `james` user. Does not grant blanket `sudo` privileges or arbitrary root command execution.
+**Scope**: Limited to the local user. Does not grant blanket `sudo` privileges or arbitrary root command execution.
 
-**Assumptions**: This configuration assumes the `james` user is trusted with system administration. On the Dakota image, `james` already has passwordless `sudo` (NOPASSRC: ALL), so this aligns with existing security posture rather than introducing new privilege escalation.
+**Assumptions**: This configuration assumes the local user is trusted with system administration. On the Dakota image, the local user already has passwordless `sudo` (NOPASSRC: ALL), so this aligns with existing security posture rather than introducing new privilege escalation.
 
 **Non-destructive intent**: The rule authorizes operations that are necessary for update checking and management, not arbitrary system modification. The finupdate application enforces additional safeguards:
 - Dev mode prevents actual reboots
@@ -65,7 +65,7 @@ The rule is deployed during system setup or when finupdate is initialized:
 ```bash
 sudo tee /etc/polkit-1/rules.d/49-finupdate.rules > /dev/null << 'EOF'
 polkit.addRule(function(action, subject) {
-    if (subject.user == "james") {
+    if (subject.user == "<local-user>") {
         if (action.command && action.command.indexOf("bootc") >= 0) {
             return polkit.Result.YES;
         }
