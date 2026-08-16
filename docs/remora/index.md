@@ -74,7 +74,7 @@ Remove anytime with `sudo remora shims --remove`.
 
 ## uupd integration
 
-TunaOS desktop images include [uupd](https://github.com/ublue-os/uupd). When
+TunaOS desktop images include [uupd](https://github.com/tuna-os/finupdate). When
 uupd is on the system, `remora init` connects the rebuilds to it with a
 systemd drop-in. uupd then controls all of it: the schedule, the limits on
 battery and network use, and the reboots. remora adds no other timers, and

@@ -16,7 +16,7 @@ This page is kept for historical reference only.
 
 Live ISO for [xfce-linux](https://github.com/tuna-os/xfce-linux) — an immutable XFCE Wayland desktop built on freedesktop-sdk and distributed as a bootc OCI image.
 
-Modeled after [projectbluefin/dakota-iso](https://github.com/projectbluefin/dakota-iso).
+Modeled after [projectbluefin/dakota-iso](https://github.com/tuna-os/iso-builder).
 
 ## What this produces
 

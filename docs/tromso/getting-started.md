@@ -5,7 +5,7 @@ title: "Getting Started"
 
 # 🚀 Getting Started with Tromsø
 
-Tromsø is a **KDE Plasma** desktop image built from source with BuildStream. It's the KDE sibling of Project Bluefin's [Dakota](https://github.com/projectbluefin/dakota) (GNOME) — same BuildStream-from-source approach, different desktop.
+Tromsø is a **KDE Plasma** desktop image built from source with BuildStream. It's the KDE sibling of Project Bluefin's [Dakota](https://github.com/tuna-os/tunaos) (GNOME) — same BuildStream-from-source approach, different desktop.
 
 ## Available Images
 

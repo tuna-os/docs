@@ -3,7 +3,7 @@ sidebar_position: 10
 title: "uupd config"
 ---
 
-This directory captures the schema for `/etc/uupd/config.json` — the configuration file consumed by [`uupd`](https://github.com/ublue-os/uupd) on Bluefin and Universal Blue systems. Finupdate reads and writes this file when the user customizes automatic-update behavior from **Preferences → Configure Automatic Updates**.
+This directory captures the schema for `/etc/uupd/config.json` — the configuration file consumed by [`uupd`](https://github.com/tuna-os/finupdate) on Bluefin and Universal Blue systems. Finupdate reads and writes this file when the user customizes automatic-update behavior from **Preferences → Configure Automatic Updates**.
 
 ## Files
 
@@ -39,5 +39,5 @@ Each of `system`, `flatpak`, `brew`, `distrobox` accepts a `disable: boolean`. D
 
 ## See also
 
-- Upstream source: [https://github.com/ublue-os/uupd](https://github.com/ublue-os/uupd)
+- Upstream source: [https://github.com/tuna-os/finupdate](https://github.com/tuna-os/finupdate)
 - The `uupd.timer` unit (controls *when* the timer fires; not part of this config file): `/usr/lib/systemd/system/uupd.timer`

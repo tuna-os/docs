@@ -149,7 +149,7 @@ step and save 2–3 minutes per environment on the first build.
 
 `live_customize` (optional, live/ISO builds only) lists scripts that run
 inside a container of the env's image before it is squashed — the
-[dakota-iso](https://github.com/projectbluefin/dakota-iso) `configure-live.sh`
+[dakota-iso](https://github.com/tuna-os/iso-builder) `configure-live.sh`
 pattern. Use it to pre-install Flatpaks into the live squashfs, set up
 autologin/installer autostart, write polkit rules, etc. Scripts run as root
 with `CAP_SYS_ADMIN` and network; each script's directory is mounted

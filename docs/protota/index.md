@@ -73,7 +73,7 @@ See [GNOME Core source-import loop](https://github.com/tuna-os/protota/blob/main
 official-source UI inputs and explicit custom-widget boundaries.
 See [GNOME GUI Specification & Audits](https://github.com/tuna-os/protota/blob/main/docs/spec/README.md) for UI layout
 patterns, intent mappings, and per-app source audits — a vendored read-only
-snapshot of [gnome-gui-spec](https://github.com/hanthor/gnome-gui-spec), not a
+snapshot of [gnome-gui-spec](https://github.com/tuna-os/suite-common), not a
 build input.
 
 ## Pull requests

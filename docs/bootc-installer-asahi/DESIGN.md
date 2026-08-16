@@ -114,8 +114,8 @@ Why this wins:
    debug/QEMU-only (D0's own payload harness).
 3. **D2** — *(implemented, unverified on real hardware)* `--json` machine
    mode for asahi-installer: [hanthor/asahi-installer@json-machine-mode](
-   https://github.com/hanthor/asahi-installer/tree/json-machine-mode)
-   ([protocol doc](https://github.com/hanthor/asahi-installer/blob/json-machine-mode/docs/json-mode.md)).
+   https://github.com/tuna-os/bootc-installer-asahi/tree/json-machine-mode)
+   ([protocol doc](https://github.com/tuna-os/bootc-installer-asahi/blob/json-machine-mode/docs/json-mode.md)).
    Structured stdio events/answers routed through the two chokepoints every
    TTY prompt already funnels through, so the ~80 existing call sites needed
    no changes and the default TTY path is provably byte-for-byte unchanged.

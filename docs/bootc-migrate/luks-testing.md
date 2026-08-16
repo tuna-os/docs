@@ -6,7 +6,7 @@ title: "luks testing"
 The `xfs+crypt` scenario in `tests/run-e2e.sh` (`just e2e-luks`) exercises a
 LUKS-encrypted root through the full migrate-then-boot pipeline. This note
 records how it is wired and the known gaps, drawing on the reference LUKS e2e
-in [`projectbluefin/dakota-iso`](https://github.com/projectbluefin/dakota-iso)
+in [`projectbluefin/dakota-iso`](https://github.com/tuna-os/iso-builder)
 (`docs/luks-testing.md`).
 
 ## How this project's LUKS e2e differs from dakota-iso
@@ -59,7 +59,7 @@ enrolling TPM and the booting TPM must be the same device.
 
 Instead of `bootc install to-disk --block-setup tpm2-luks` (which delegates LUKS
 to bootc and ties enrollment to the install-time TPM), use the
-[`projectbluefin/fisherman`](https://github.com/projectbluefin/fisherman)
+[`projectbluefin/fisherman`](https://github.com/tuna-os/fisherman)
 process: **set up LUKS yourself, then `bootc install to-filesystem` into the
 already-opened mapper.** bootc then only sees `/dev/mapper/root` and writes
 `root=UUID=<fs-uuid>` with no LUKS parameters — you own the unlock story.

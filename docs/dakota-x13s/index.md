@@ -13,7 +13,7 @@ are published from this repo. See the [Snapdragon X Elite FAQ entry](/docs/faq)
 for current guidance.
 :::
 
-[Project Bluefin Dakota](https://github.com/projectbluefin/dakota) on the **Lenovo ThinkPad X13s** (Qualcomm SC8280XP / aarch64).
+[Project Bluefin Dakota](https://github.com/tuna-os/tunaos) on the **Lenovo ThinkPad X13s** (Qualcomm SC8280XP / aarch64).
 
 ## Download
 
@@ -75,7 +75,7 @@ Option A — PR/fork upstream dakota and add aarch64 CI:
 
 Option B — build locally (requires BuildStream):
 ```bash
-git clone https://github.com/projectbluefin/dakota
+git clone https://github.com/tuna-os/tunaos
 cd dakota
 bst --option arch aarch64 build oci/bluefin.bst
 ```
