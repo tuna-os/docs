@@ -7,7 +7,7 @@ status: unknown
 
 <p align="center">
   <a href="https://tuna-os.github.io/wootc/e2e/latest/">
-    <img src="https://raw.githubusercontent.com/tuna-os/wootc/main/pages/e2e/latest/preview.webp"
+    <img src="https://tuna-os.github.io/wootc/e2e/latest/preview.webp"
          alt="wootc end-to-end walkthrough — Windows 11 → wootc deployer → native Linux → Windows 11"
          width="760" />
   </a>
@@ -254,7 +254,7 @@ To refresh the [walkthrough](https://tuna-os.github.io/wootc/e2e/latest/) at the
 of this README, publish a passing run's clip:
 
 ```bash
-tests/e2e/publish-visual.sh --from-host himachal   # or a local artifact dir
+tests/e2e/publish-visual.sh --from-host <host>   # or a local artifact dir
 git add pages && git commit -m 'docs: refresh E2E walkthrough' && git push origin main
 ```
 

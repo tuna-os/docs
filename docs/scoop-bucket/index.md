@@ -16,6 +16,6 @@ tool releases to ship assets.
 ## Pending
 
 - `bluefin-cli` (from [tuna-os/bluefin-cli](https://github.com/tuna-os/bluefin-cli))
-  is not yet published here — releases currently ship no assets, so GoReleaser
-  has nothing to turn into a manifest. Tracked in
+  is not yet published here — releases ship binary assets since v0.10.6, but
+  the GoReleaser Scoop publisher has not produced a manifest yet. Tracked in
   [tuna-os/bluefin-cli#141](https://github.com/tuna-os/bluefin-cli/issues/141).

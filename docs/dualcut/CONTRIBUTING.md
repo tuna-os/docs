@@ -96,8 +96,7 @@ fails if they drift.
 ## Code of conduct
 
 Be respectful and constructive. Follow the same norms as the rest of the
-TunaOS organization (see [CODE_OF_CONDUCT.md](https://github.com/tuna-os/dualcut/blob/main/CODE_OF_CONDUCT.md) in the
-org-level repositories where provided).
+TunaOS organization (see the [org-level Code of Conduct](https://github.com/tuna-os/.github/blob/main/CODE_OF_CONDUCT.md)).
 
 ## Questions?
 

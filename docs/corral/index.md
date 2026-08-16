@@ -11,7 +11,8 @@ You have VMs in two places: quick ones on your laptop, big ones on the
 Kubernetes cluster in the closet. Two sets of tooling, two networking
 stories, and none of it reachable from the couch.
 
-Corral fixes that. One command, two backends, and every VM lands inside the
+Corral fixes that. One command, every backend — local QEMU/KVM, KubeVirt,
+Incus, libvirt, or a federated Corral peer — and every VM lands inside the
 one network all your devices already share — your Tailscale tailnet.
 
 ```bash
@@ -38,9 +39,11 @@ VMs are cattle. Stop treating each one like a networking project.
 ## Why you'll like it
 
 - **Same commands everywhere.** `create` / `start` / `ssh` / `viewer` /
-  `clone` / `delete` work identically whether the VM is local QEMU/KVM or
-  KubeVirt on your cluster. Corral remembers which is which — you never
-  specify it again.
+  `clone` / `delete` work identically across every backend context — local
+  QEMU/KVM, KubeVirt on your cluster, Incus, libvirt, or a federated Corral
+  peer (advertised/direct guest endpoints first, HTTP/WebSocket relay as
+  fallback — see [backend support matrix](https://github.com/tuna-os/corral/blob/main/docs/backend-support.md)). Corral
+  remembers which is which — you never specify it again.
 - **Your OS is a container image.** Point Corral at a *bootable container*
   (`corral create dev --bootc ghcr.io/...`) and it builds the OS disk
   on-cluster with `bootc install to-disk`, then boots it as a first-class VM.
@@ -464,7 +467,7 @@ logins: listed users can mutate; everyone else gets a **read-only** UI and
 mutating API calls are rejected (403). Unset = single-user/open (the default).
 Identity comes from the Tailscale ingress headers — see
 [ADR-0003](https://github.com/tuna-os/corral/blob/main/docs/adr/0003-identity-source.md). Feature roadmap:
-[`WEBUI-PLAN.md`](https://github.com/tuna-os/corral/blob/main/WEBUI-PLAN.md).
+[SPEC.md](https://github.com/tuna-os/corral/blob/main/SPEC.md) and [docs/api.md](https://github.com/tuna-os/corral/blob/main/docs/api.md).
 
 ## Command reference
 
@@ -540,7 +543,6 @@ Full design document: [SPEC.md](https://github.com/tuna-os/corral/blob/main/SPEC
 ## Documentation
 
 - **[SPEC.md](https://github.com/tuna-os/corral/blob/main/SPEC.md)** — full specification (commands, flags, types, backends, registry)
-- **[WEBUI-PLAN.md](https://github.com/tuna-os/corral/blob/main/WEBUI-PLAN.md)** — web UI architecture, Proxmox feature map, constraints
 - **[docs/api.md](https://github.com/tuna-os/corral/blob/main/docs/api.md)** — complete REST API reference
 - **[docs/architecture.md](https://github.com/tuna-os/corral/blob/main/docs/architecture.md)** — package map, design decisions, data flow, build system
 - **[docs/ci-boot-gate.md](https://github.com/tuna-os/corral/blob/main/docs/ci-boot-gate.md)** — gating CI publishes on bootc images actually booting (QEMU + KubeVirt), with field-tested troubleshooting

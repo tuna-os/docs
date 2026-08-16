@@ -4,8 +4,8 @@ title: "Architecture"
 ---
 
 How the parts fit together. For features and known bugs see
-[`TODO.md`](https://github.com/tuna-os/tacklebox/blob/main/TODO.md); for the SuperISO/tacklebox unification roadmap
-see [`../PLAN-merge.md`](https://github.com/tuna-os/tacklebox/blob/main/PLAN-merge.md).
+[`TODO.md`](https://github.com/tuna-os/tacklebox/blob/main/TODO.md); for the SuperISO lineage that Tacklebox evolved
+from, see [`README.md`](https://github.com/tuna-os/tacklebox/blob/main/README.md).
 
 ## What tacklebox does
 

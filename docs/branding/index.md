@@ -35,3 +35,9 @@ self-contained (no external refs), safe for Flatpak/live-ISO offline use.
 
 Regenerate the preview sheet with cairosvg (see `sheet.py` pattern in repo
 history / any cairosvg one-liner).
+
+## License
+
+CC-BY-4.0 — see [LICENSE](https://github.com/tuna-os/branding/blob/main/LICENSE). These marks may be used to refer to the
+TunaOS project (installers, docs, community content, etc.) with attribution;
+use does not imply endorsement by the TunaOS project.

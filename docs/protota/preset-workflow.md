@@ -158,11 +158,15 @@ the class does not have, picks the slot property the class actually offers
 strings GtkBuilder writes.
 
 Regenerate the table when targeting a newer GNOME, in a container with
-gtk4-devel and libadwaita-devel installed:
+gtk4-devel, libadwaita-devel, and gtksourceview5-devel installed:
 
 ```sh
-node scripts/extract-gtk-properties.mjs > src/data/props.json   # then convert to the .ts module
+node scripts/extract-gtk-properties.mjs > src/data/gtkProperties.ts
 ```
+
+CI (`.github/workflows/gtk-properties-freshness.yml`) regenerates this in a
+`fedora:43` container on every PR touching either file and fails on any diff,
+so the committed table can't silently drift from what the generator produces.
 
 Export has two modes, because its two purposes disagree on one point.
 `mockupToBlueprint(doc)` preserves a boundary's instance bindings, which is

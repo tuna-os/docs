@@ -103,4 +103,4 @@ sudo systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs='' /dev
 
 ## Troubleshooting
 
-See [our debugging guide](https://github.com/tuna-os/kde-build-meta/blob/main/docs/debugging.md) for common troubleshooting steps.
+See [our debugging guide](https://github.com/tuna-os/kde-build-meta/blob/master/docs/debugging.md) for common troubleshooting steps.

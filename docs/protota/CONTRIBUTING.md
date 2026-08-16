@@ -5,7 +5,7 @@ title: "Contributing"
 
 Thanks for helping with **Protota** — the GNOME HIG-compliant mockup tool for
 Adwaita app UIs. Protota renders GTK4/Libadwaita from a typed widget tree using
-real [`@gjsify/adwaita-web`](https://github.com/gjsify/adwaita-web) components,
+real [`@gjsify/adwaita-web`](https://github.com/gjsify/gjsify/tree/main/packages/web/adwaita-web) components,
 so mockups look *and behave* like real Adwaita.
 
 ## Before you start

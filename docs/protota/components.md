@@ -362,7 +362,7 @@ build with, whether from the palette, the agent API, or a Blueprint import.
 
 - **Exports as:** `—` _(no introspection data)_
 - **Slots:** —
-- **Properties:** —
+- **Properties:** `title` (string)
 - **Accepts:** any widget (generic container)
 
 ## `tab-view`

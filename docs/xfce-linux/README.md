@@ -61,7 +61,7 @@ xfce-linux/
 ├── files/                         # Build-time files
 │   ├── sources/                  # Source tarballs
 │   ├── config/                   # Configuration files
-│   └── xfce-binaries/            # Pre-built XFCE components
+│   └── xfce-binaries/            # Fetched pre-built XFCE components (gitignored)
 │
 ├── scripts/                       # Build and automation scripts
 │   ├── build/                    # Build automation

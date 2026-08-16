@@ -65,9 +65,9 @@ from the BLP tree, so it is absent rather than falsely rendered.
 
 ## Source facts to preserve
 
-Official Calculator source on Himachal is at:
+Official Calculator source on the build host is at:
 
-`/var/home/james/work/gnome-source-fixtures/gnome-calculator`
+`~/work/gnome-source-fixtures/gnome-calculator`
 
 Relevant files:
 
@@ -160,15 +160,15 @@ support only when the semantics are documented and testable.
 
 ## Recommended first investigation
 
-Run the official-source unit test on Himachal:
+Run the official-source unit test on the build host:
 
 ```sh
-cd /var/home/james/work/protota-source-loop
-OFFICIAL_SOURCE_ROOT=/var/home/james/work/gnome-source-fixtures/gnome-calculator/src/ui \
+cd ~/work/protota-source-loop
+OFFICIAL_SOURCE_ROOT=~/work/gnome-source-fixtures/gnome-calculator/src/ui \
   podman run --rm --userns=keep-id \
   -e OFFICIAL_SOURCE_ROOT=/fixtures \
   -v "$PWD":/work:Z \
-  -v /var/home/james/work/gnome-source-fixtures/gnome-calculator/src/ui:/fixtures:ro,Z \
+  -v ~/work/gnome-source-fixtures/gnome-calculator/src/ui:/fixtures:ro,Z \
   -w /work mcr.microsoft.com/playwright:v1.62.0-noble npm run test:unit
 ```
 

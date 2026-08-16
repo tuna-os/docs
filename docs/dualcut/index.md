@@ -87,3 +87,7 @@ for the canonical dependency list.
 Roadmap and status: [ROADMAP.md](https://github.com/tuna-os/dualcut/blob/main/ROADMAP.md) ·
 open work: [issues](https://github.com/tuna-os/dualcut/issues)
 
+## License
+
+GPL-3.0-only — see [LICENSE](https://github.com/tuna-os/dualcut/blob/main/LICENSE).
+

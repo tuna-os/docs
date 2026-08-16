@@ -7,7 +7,7 @@ status: unknown
 
 GNOME HIG-compliant mockup tool for Adwaita app UIs.
 
-Uses real [`@gjsify/adwaita-web`](https://github.com/gjsify/adwaita-web) web components so mockups look **and behave** like real Adwaita — not pixel replicas.
+Uses real [`@gjsify/adwaita-web`](https://github.com/gjsify/gjsify/tree/main/packages/web/adwaita-web) web components so mockups look **and behave** like real Adwaita — not pixel replicas.
 
 **Live:** https://tuna-os.github.io/protota/
 
@@ -82,3 +82,7 @@ Required checks should be allowed to complete normally. If the repository has
 no merge queue and a maintainer explicitly authorizes a protected-branch
 merge, use the approved maintainer merge path. See [AGENTS.md](https://github.com/tuna-os/protota/blob/main/AGENTS.md) for
 the exact procedure and resource-use guidance.
+
+## License
+
+Apache-2.0 — see [LICENSE](https://github.com/tuna-os/protota/blob/main/LICENSE).
