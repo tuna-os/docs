@@ -32,13 +32,18 @@ means every desktop flavor is held to the same promotion standard, and
 non-GNOME flavors are no longer second-class citizens
 ([#1315](https://github.com/tuna-os/tunaOS/issues/1315)).
 
-**Still looking for our first external contributor.** An early "first
-external contributor" signal we tracked this quarter turned out to be a
-misattribution — the commits were from an automated agent account, not a
-person. Correcting that publicly matters more to us than the metric would
-have: TunaOS is still a single-maintainer project by the numbers that count,
-and closing that gap is exactly why the good-first-issue backlog below
-exists.
+**Our first human external contributor landed a PR.** After the August
+correction ([#1317](https://github.com/tuna-os/tunaOS/issues/1317),
+[#1451](https://github.com/tuna-os/tunaOS/issues/1451)) we were honest that
+our "first contributor" story was actually an automated agent — and then the
+onboarding loop we built to fix that worked: **Sharyar Naseem
+([sharyaropensource](https://github.com/sharyaropensource)) merged the first
+human external PR** on August 15 — the bootc rollback &
+update-troubleshooting guide ([docs#284](https://github.com/tuna-os/docs/pull/284)),
+picked up from a good-first-issue task in under 24 hours
+([docs#262](https://github.com/tuna-os/docs/issues/262)). One contributor
+doesn't close the single-maintainer risk, but it proves the loop: the
+backlog, the labels, and the review path work for a stranger with a fork.
 
 **Infrastructure.** A manifest-driven build pipeline, published multi-arch
 images, verified boot reports on every release, and a documented
@@ -52,9 +57,10 @@ so third-party repositories are explicit and reviewable.
 - **34+ outreach opportunities filed** — from conference CFPs (FOSDEM 2027
   draft is in-repo) to ecosystem partnerships (Asahi Linux, Snapdragon X Elite)
   and a DistroWatch listing draft
-- **7 good-first-issue tasks tagged** across tunaos + docs (1 + 6), growing
-  toward 8+ before [Hacktoberfest](https://hacktoberfest.com/) opens in
-  October
+- **7 good-first-issue tasks tagged** in the docs repo — and the pool is
+  growing toward 8+ before [Hacktoberfest](https://hacktoberfest.com/) opens
+  in October, including core-code tasks being scoped now
+  ([#1780](https://github.com/tuna-os/tunaOS/issues/1780))
 
 ## Decisions made at the checkpoint
 
