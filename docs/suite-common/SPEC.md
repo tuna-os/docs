@@ -108,7 +108,7 @@ The Flatpak manifest mirrors `net.codelogistics.letters.json`:
 ## GNOME-GUI-spec compliance
 
 Both apps target parity with Letters' audited baseline (**85/92**, see Letters'
-`AUDIT-GNOME-GUI-SPEC.md`) using the [gnome-gui-spec](https://github.com/hanthor/gnome-gui-spec)
+`AUDIT-GNOME-GUI-SPEC.md`) using the [gnome-gui-spec](https://github.com/tuna-os/suite-common)
 tool. Compliance is a CI gate.
 
 ## Verification (per app)

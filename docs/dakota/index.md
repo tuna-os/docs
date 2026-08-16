@@ -7,7 +7,7 @@ sidebar_label: "Dakota (Bluefin)"
 Prefer a visual tour? See the **[Dakota overview →](/dakota)** page.
 :::
 
-> 🦖 **External project** — maintained by [Project Bluefin](https://projectbluefin.io). See [projectbluefin/dakota](https://github.com/projectbluefin/dakota).
+> 🦖 **External project** — maintained by [Project Bluefin](https://projectbluefin.io). See [projectbluefin/dakota](https://github.com/tuna-os/tunaos).
 
 Dakota is a freedesktop.org and GNOME OS image, designed from the ground up by Project Bluefin. It is **the reference BuildStream desktop** — the model that Tromsø and XFCE Linux follow.
 

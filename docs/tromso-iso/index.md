@@ -16,7 +16,7 @@ This page is kept for historical reference only.
 
 Live ISO installer for [Tromso KDE Linux](https://github.com/tuna-os/tromso) — a KDE Plasma 6 desktop built on freedesktop-sdk with bootc-powered atomic updates.
 
-Based on [projectbluefin/dakota-iso](https://github.com/projectbluefin/dakota-iso).
+Based on [projectbluefin/dakota-iso](https://github.com/tuna-os/iso-builder).
 
 ## Architecture
 

@@ -192,4 +192,4 @@ MIT — see [Cargo.toml](https://github.com/tuna-os/finupdate/blob/main/Cargo.to
 
 - [Project Bluefin](https://projectbluefin.io) — the desktop OS this is built for
 - [GNOME HIG](https://developer.gnome.org/hig/) — the design guidelines we follow
-- [uupd](https://github.com/ublue-os/uupd) — optional host daemon; if installed, its timer can be toggled from Preferences
+- [uupd](https://github.com/tuna-os/finupdate) — optional host daemon; if installed, its timer can be toggled from Preferences

@@ -8,7 +8,7 @@ bootc-installer for offline installation of a bootc image. It documents the
 configuration conventions the installer expects, and the OS-image-side setup
 needed to make everything work end-to-end.
 
-The reference implementation is [projectbluefin/dakota-iso](https://github.com/projectbluefin/dakota-iso).
+The reference implementation is [projectbluefin/dakota-iso](https://github.com/tuna-os/iso-builder).
 
 ---
 

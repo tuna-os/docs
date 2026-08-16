@@ -73,7 +73,7 @@ install them, and distribute them:
 - **[Tacklebox](/docs/tacklebox)** — makes multi-boot USB drives, disk images,
   and deduplicated ISOs from OCI images.
 - **[Tromsø](tromso/index)** (KDE), **[XFCE Linux](xfce-linux/index)**, and
-  **[Dakota](https://github.com/projectbluefin/dakota)** (GNOME) — "distroless"
+  **[Dakota](https://github.com/tuna-os/tunaos)** (GNOME) — "distroless"
   desktops. A declarative BuildStream pipeline makes them on top of the
   [Freedesktop SDK](https://freedesktop-sdk.io/).
 - **[COPR Builds](/docs/copr)** — the RPM build system. It adds GNOME 50 to
