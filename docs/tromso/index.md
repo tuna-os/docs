@@ -10,7 +10,7 @@ status: alpha
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/tuna-os/tromso/blob/main/LICENSE)
 
 **Aurora Tromso** is a BuildStream-based KDE Linux OCI/bootc image, modeled on Project Bluefin's
-[`projectbluefin/dakota`](https://github.com/tuna-os/tunaos). It builds KDE Plasma 6 on top
+[`projectbluefin/dakota`](https://github.com/projectbluefin/dakota). It builds KDE Plasma 6 on top
 of freedesktop-sdk and publishes a bootable OCI image to `ghcr.io/tuna-os/tromso`.
 
 **Status: Builds successfully and boots to a working KDE Plasma 6 Wayland desktop.**
@@ -135,7 +135,7 @@ cosign verify-blob tromso-live-<date>-<sha>.iso \
 ## References
 
 - **[KDE Linux](https://invent.kde.org/kde-linux/kde-linux)** — the real official KDE Linux project (mkosi + Arch, not BuildStream); tromso tracks its package selection as a reference point, not its build tooling
-- **[Project Bluefin dakota](https://github.com/tuna-os/tunaos)** — reference OCI/bootc implementation
+- **[Project Bluefin dakota](https://github.com/projectbluefin/dakota)** — reference OCI/bootc implementation
 - **[gnome-build-meta](https://gitlab.gnome.org/GNOME/gnome-build-meta)** — build patterns reference
 - **[freedesktop-sdk](https://freedesktop-sdk.io/)** — base SDK
 - **[BuildStream](https://www.buildstream.build/)** — build system

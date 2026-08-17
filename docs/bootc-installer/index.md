@@ -18,7 +18,7 @@ It supports two distinct boot stacks:
 
 | Stack | Images | Bootloader | Root FS | Layout |
 |---|---|---|---|---|
-| **systemd-boot** | [Dakota](https://github.com/tuna-os/tunaos) | systemd-boot + UKI | btrfs + composefs | 2-partition (EFI + root) |
+| **systemd-boot** | [Dakota](https://github.com/projectbluefin/dakota) | systemd-boot + UKI | btrfs + composefs | 2-partition (EFI + root) |
 | **GRUB2** | Bluefin, Bluefin-LTS, Bazzite | GRUB2 | XFS or btrfs | 3-partition (EFI + `/boot` + root) |
 
 ## Features
@@ -43,7 +43,7 @@ The `fisherman` Go backend executes a 9-step pipeline entirely from a JSON recip
 
 ### Dakota / systemd-boot images
 
-[Dakota](https://github.com/tuna-os/tunaos) is the next-generation Project Bluefin variant built on a modern sealed-image stack. The installer handles it as a first-class target with a different code path from GRUB2-based images:
+[Dakota](https://github.com/projectbluefin/dakota) is the next-generation Project Bluefin variant built on a modern sealed-image stack. The installer handles it as a first-class target with a different code path from GRUB2-based images:
 
 | Feature | Dakota |
 |---|---|
@@ -115,7 +115,7 @@ When the installer detects it is running on a live ISO (via `/etc/bootc-installe
 
 ```bash
 curl -Lo installer.flatpak \
-  https://github.com/tuna-os/bootc-installer/releases/latest/download/org.bootcinstaller.Installer.flatpak \
+  https://github.com/projectbluefin/bootc-installer/releases/latest/download/org.bootcinstaller.Installer.flatpak \
   && sudo flatpak uninstall -y org.bootcinstaller.Installer org.bootcos.Installer 2>/dev/null; sudo flatpak install --bundle -y installer.flatpak
 ```
 
@@ -123,7 +123,7 @@ curl -Lo installer.flatpak \
 
 ```bash
 curl -Lo installer-devel.flatpak \
-  https://github.com/tuna-os/bootc-installer/releases/download/latest-dev/org.bootcinstaller.Installer.Devel.flatpak \
+  https://github.com/projectbluefin/bootc-installer/releases/download/latest-dev/org.bootcinstaller.Installer.Devel.flatpak \
   && sudo flatpak uninstall -y org.bootcinstaller.Installer.Devel 2>/dev/null; sudo flatpak install --bundle -y installer-devel.flatpak
 ```
 
@@ -393,7 +393,7 @@ ExecStart=flatpak run org.bootcinstaller.Installer --autoinstall /etc/bootc-inst
 
 ## Contributing Images
 
-The installer's image catalog is defined in [`fisherman/data/images.json`](https://github.com/tuna-os/fisherman/blob/dev/data/images.json) (the `fisherman` backend is a git submodule pointing at projectbluefin/fisherman@dev). Adding a new image means adding an entry to that file. The structure is a recursive tree of groups and leaves:
+The installer's image catalog is defined in [`fisherman/data/images.json`](https://github.com/projectbluefin/fisherman/blob/dev/data/images.json) (the `fisherman` backend is a git submodule pointing at projectbluefin/fisherman@dev). Adding a new image means adding an entry to that file. The structure is a recursive tree of groups and leaves:
 
 ```jsonc
 {

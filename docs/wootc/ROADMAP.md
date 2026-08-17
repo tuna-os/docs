@@ -11,7 +11,7 @@ title: "Roadmap"
 
 Make it as easy as possible for **non-technical Windows users** to migrate to Linux **without losing any of their data**. wootc installs a real, image-based bootc Linux system into a single `root.disk` file on the existing Windows NTFS volume — no repartitioning, no backups, no point of no return. Every decision is weighed against: *would a nervous Windows user get through this without fear or data loss?*
 
-wootc is the org's **conversion front door**: it is the highest-leverage adoption channel for growing TunaOS beyond the Linux-curious audience. It is the Windows-hosted complement to the bootc-installer / tuna-installer family and drives [fisherman](https://github.com/tuna-os/fisherman) under the hood.
+wootc is the org's **conversion front door**: it is the highest-leverage adoption channel for growing TunaOS beyond the Linux-curious audience. It is the Windows-hosted complement to the bootc-installer / tuna-installer family and drives [fisherman](https://github.com/projectbluefin/fisherman) under the hood.
 
 ---
 

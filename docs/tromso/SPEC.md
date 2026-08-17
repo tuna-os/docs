@@ -14,7 +14,7 @@ title: "Spec"
 Aurora Tromso is a bootable OCI/bootc image running KDE Plasma 6. It is built with
 [BuildStream](https://www.buildstream.build/) on top of freedesktop-sdk, using the same
 methodology as [GNOME OS](https://gitlab.gnome.org/GNOME/gnome-build-meta) and
-[Project Bluefin dakota](https://github.com/tuna-os/tunaos).
+[Project Bluefin dakota](https://github.com/projectbluefin/dakota).
 
 All KDE `.bst` elements (Qt6, Frameworks, Plasma, Apps, base image) live directly in
 this repo's `elements/` tree — see `AGENTS.md` for the current structure.
@@ -24,7 +24,7 @@ Reference sources used during development:
 | Source | Purpose |
 |--------|---------|
 | [`invent.kde.org/kde-linux/kde-linux`](https://invent.kde.org/kde-linux/kde-linux) | Authoritative KDE package list and versions |
-| [`projectbluefin/dakota`](https://github.com/tuna-os/tunaos) | OCI/bootc composition patterns, Justfile |
+| [`projectbluefin/dakota`](https://github.com/projectbluefin/dakota) | OCI/bootc composition patterns, Justfile |
 | [`GNOME/gnome-build-meta`](https://gitlab.gnome.org/GNOME/gnome-build-meta) | Build infrastructure patterns (bootc, initramfs, etc.) |
 | [`freedesktop-sdk`](https://freedesktop-sdk.io/) | Base SDK — Qt6, systemd, kernel, Mesa, pipewire, etc. |
 

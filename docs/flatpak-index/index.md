@@ -32,7 +32,7 @@ The remote is served via Cloudflare Pages from the [tuna-os/docs](https://github
 | Installer (COSMIC) | `flatpak install tuna-os org.tunaos.InstallerCosmic` |
 | Installer (XFCE) | `flatpak install tuna-os org.tunaos.InstallerXfce` |
 
-> The installer frontends drive the [fisherman](https://github.com/tuna-os/fisherman)
+> The installer frontends drive the [fisherman](https://github.com/projectbluefin/fisherman)
 > bootc backend and are preinstalled on the matching TunaOS live ISOs
 > (see `build_scripts/installer-frontend.sh` in [tuna-os/tunaOS](https://github.com/tuna-os/tunaOS)).
 
