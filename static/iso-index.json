@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-17T06:42:30.157Z",
+  "generatedAt": "2026-08-17T12:32:03.181Z",
   "baseUrl": "https://download.tunaos.org",
   "count": 181,
   "categories": [
@@ -11,6 +11,16 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "marlin-gnome-latest",
+          "path": "live-isos/marlin-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-gnome-latest.iso",
+          "size": 5168562176,
+          "modified": "2026-08-17T08:39:52.883861469Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "flounder-sid-latest",
@@ -58,16 +68,6 @@
           "url": "https://download.tunaos.org/live-isos/marlin-kde-latest.iso",
           "size": 5480382464,
           "modified": "2026-08-10T05:56:36.789024249Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-gnome-latest",
-          "path": "live-isos/marlin-gnome-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-gnome-latest.iso",
-          "size": 5148246016,
-          "modified": "2026-08-10T05:55:40.142459678Z",
           "arch": "",
           "latest": true
         },
@@ -223,6 +223,16 @@
         },
         {
           "category": "live-isos",
+          "name": "marlin-gnome--x86_64",
+          "path": "live-isos/marlin-gnome--x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-gnome--x86_64.iso",
+          "size": 5168562176,
+          "modified": "2026-08-17T08:39:52.883861469Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
           "name": "flounder-sid--x86_64",
           "path": "live-isos/flounder-sid--x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/flounder-sid--x86_64.iso",
@@ -268,16 +278,6 @@
           "url": "https://download.tunaos.org/live-isos/marlin-kde--x86_64.iso",
           "size": 5480382464,
           "modified": "2026-08-10T05:56:36.789024249Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-gnome--x86_64",
-          "path": "live-isos/marlin-gnome--x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-gnome--x86_64.iso",
-          "size": 5148246016,
-          "modified": "2026-08-10T05:55:40.142459678Z",
           "arch": "x86_64",
           "latest": false
         },
