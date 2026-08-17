@@ -17,7 +17,7 @@ status: unknown
 </p>
 
 Classic GTK3/PyGObject wizard that drives the
-[fisherman](https://github.com/tuna-os/fisherman) bootc install
+[fisherman](https://github.com/projectbluefin/fisherman) bootc install
 backend. The plainest of the TunaOS installer frontends by design — see
 `DESIGN.md` (the trawl line is the entire brand budget) and the shared
 contract in `../INSTALLER-FRONTENDS.md`.

@@ -15,7 +15,7 @@ status: unknown
 
 
 **Thin Qt 6 / Kirigami wizard** that drives the
-[fisherman](https://github.com/tuna-os/fisherman) bootc install backend.
+[fisherman](https://github.com/projectbluefin/fisherman) bootc install backend.
 
 The UI is built the way KDE's own initial-setup wizard
 ([KISS](https://github.com/KDE/kiss), landing in Plasma 6.5) is built: each step

@@ -61,7 +61,7 @@ Windows 11  →  wootc.exe (arms the system)  →  reboot
    boot entry. Nothing else on the machine is touched.
 2. **Deploy (one reboot).** Under Secure Boot, the signed chain launches the
    deployer initramfs, which mounts the NTFS volume, attaches `root.disk`, and
-   uses [fisherman](https://github.com/tuna-os/fisherman) to run
+   uses [fisherman](https://github.com/projectbluefin/fisherman) to run
    `bootc install` — partitioning and populating the disk from the chosen OCI
    image, with optional LUKS/TPM2 encryption.
 3. **Boot Linux.** A dracut hook (`99wootc-boot`) attaches `root.disk` on every
