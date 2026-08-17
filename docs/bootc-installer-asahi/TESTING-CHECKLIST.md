@@ -123,7 +123,7 @@ cheapest/lowest-risk first — each step should pass before moving to the next.
 
 ## 0. Prerequisites
 - Xcode Command Line Tools (`xcode-select --install`) for `swift`/`python3`.
-- Clone this repo and `hanthor/asahi-installer` (branch `json-machine-mode`)
+- Clone this repo and `tuna-os/asahi-installer` (branch `json-machine-mode`)
   side by side.
 
 **CLT is enough to build, but not to test.** `XCTest.framework` ships inside
