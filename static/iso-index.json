@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-18T06:34:15.264Z",
+  "generatedAt": "2026-08-18T12:33:45.962Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 181,
+  "count": 182,
   "categories": [
     {
       "id": "live-isos",
@@ -11,6 +11,16 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "marlin-gnome-nvidia-latest",
+          "path": "live-isos/marlin-gnome-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-gnome-nvidia-latest.iso",
+          "size": 7984840704,
+          "modified": "2026-08-18T10:23:48.651139754Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "marlin-gnome-latest",
@@ -48,16 +58,6 @@
           "url": "https://download.tunaos.org/live-isos/marlin-latest.iso",
           "size": 6886064128,
           "modified": "2026-08-16T23:36:00.013750500Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-gnome-nvidia-latest",
-          "path": "live-isos/marlin-gnome-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-gnome-nvidia-latest.iso",
-          "size": 7984381952,
-          "modified": "2026-08-16T06:55:07.319824237Z",
           "arch": "",
           "latest": true
         },
@@ -223,6 +223,16 @@
         },
         {
           "category": "live-isos",
+          "name": "marlin-gnome-nvidia--x86_64",
+          "path": "live-isos/marlin-gnome-nvidia--x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-gnome-nvidia--x86_64.iso",
+          "size": 7984840704,
+          "modified": "2026-08-18T10:23:48.651139754Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
           "name": "marlin-gnome--x86_64",
           "path": "live-isos/marlin-gnome--x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/marlin-gnome--x86_64.iso",
@@ -258,16 +268,6 @@
           "url": "https://download.tunaos.org/live-isos/marlin--x86_64.iso",
           "size": 6886064128,
           "modified": "2026-08-16T23:36:00.013750500Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-gnome-nvidia--x86_64",
-          "path": "live-isos/marlin-gnome-nvidia--x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-gnome-nvidia--x86_64.iso",
-          "size": 7984381952,
-          "modified": "2026-08-16T06:55:07.319824237Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -1480,6 +1480,16 @@
           "modified": "2026-07-31T12:34:11.169892931Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-aio-20260818-9f67f41",
+          "path": "tacklebox/bazzite-aio-20260818-9f67f41.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-aio-20260818-9f67f41.iso",
+          "size": 16804478976,
+          "modified": "2026-08-18T07:43:33.073324886Z",
+          "arch": "",
+          "latest": false
         },
         {
           "category": "tacklebox",
