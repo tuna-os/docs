@@ -209,8 +209,8 @@ export const PROJECTS: Project[] = [
       {emoji: '🐧', title: 'Linux first', text: 'Smart filtering hides macOS-only casks on Linux; full dark-mode and responsive layouts.'},
     ],
     install: [
-      {label: 'Flatpak (Linux, recommended)', code: 'flatpak remote-add --user --if-not-exists tuna-os oci+https://tuna-os.github.io/Tavern\nflatpak install --user tuna-os dev.hanthor.Tavern'},
-      {label: 'Homebrew (macOS + Linux)', code: 'brew tap hanthor/homebrew-tap\nbrew install --cask hanthor/tap/tavern'},
+      {label: 'Flatpak (Linux, recommended)', code: 'flatpak remote-add --user --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo\nflatpak install --user tuna-os org.tunaos.Tavern'},
+      {label: 'Homebrew (macOS + Linux)', code: 'brew tap tuna-os/homebrew-tap\nbrew install --cask tuna-os/tap/tavern'},
     ],
     screenshots: [
       {src: 'https://raw.githubusercontent.com/tuna-os/Tavern/main/data/screenshots/main-window.png', alt: 'Tavern main window'},
@@ -282,8 +282,8 @@ export const PROJECTS: Project[] = [
       {emoji: '📊', title: 'Status at a glance', text: 'View your configuration and installed tools with one command.'},
     ],
     install: [
-      {label: 'macOS / Linux (Go)', code: 'go install github.com/hanthor/bluefin-cli@latest'},
-      {label: 'Homebrew (experimental)', code: 'brew tap ublue-os/homebrew-experimental-tap\nbrew install bluefin-cli'},
+      {label: 'macOS / Linux (Go)', code: 'go install github.com/tuna-os/bluefin-cli@latest'},
+      {label: 'Homebrew (experimental)', code: 'brew tap tuna-os/homebrew-tap\nbrew install bluefin-cli'},
     ],
   },
   {
