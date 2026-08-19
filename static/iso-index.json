@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-19T00:54:15.574Z",
+  "generatedAt": "2026-08-19T12:45:10.833Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 182,
+  "count": 183,
   "categories": [
     {
       "id": "live-isos",
@@ -1419,8 +1419,18 @@
       "blurb": "",
       "icon": "📀",
       "order": 99,
-      "checksums": "https://download.tunaos.org/tacklebox/SHA256SUMS-20260817-9f67f41",
+      "checksums": "https://download.tunaos.org/tacklebox/bazzite-gnome-SHA256SUMS-20260819-dca2b63",
       "isos": [
+        {
+          "category": "tacklebox",
+          "name": "bazzite-gnome-latest",
+          "path": "tacklebox/bazzite-gnome-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-gnome-latest.iso",
+          "size": 12088836096,
+          "modified": "2026-08-19T08:40:37.004233777Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "tacklebox",
           "name": "tacklebox-poc-dedup-latest",
@@ -1438,16 +1448,6 @@
           "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-latest.iso",
           "size": 2920808448,
           "modified": "2026-08-17T05:47:06.078912283Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "tacklebox",
-          "name": "bazzite-gnome-latest",
-          "path": "tacklebox/bazzite-gnome-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/bazzite-gnome-latest.iso",
-          "size": 12086083584,
-          "modified": "2026-08-12T08:43:10.033854237Z",
           "arch": "",
           "latest": true
         },
@@ -1480,6 +1480,16 @@
           "modified": "2026-07-31T12:34:11.169892931Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-gnome-20260819-dca2b63",
+          "path": "tacklebox/bazzite-gnome-20260819-dca2b63.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-gnome-20260819-dca2b63.iso",
+          "size": 12088836096,
+          "modified": "2026-08-19T08:40:37.004233777Z",
+          "arch": "",
+          "latest": false
         },
         {
           "category": "tacklebox",
