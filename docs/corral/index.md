@@ -549,6 +549,7 @@ Full design document: [SPEC.md](https://github.com/tuna-os/corral/blob/main/SPEC
 - **[docs/kubevirt-proxmox-setup.md](https://github.com/tuna-os/corral/blob/main/docs/kubevirt-proxmox-setup.md)** — from-scratch KubeVirt + Longhorn + Corral setup guide
 - **[docs/testing.md](https://github.com/tuna-os/corral/blob/main/docs/testing.md)** — testing strategy & plan (unit, integration, E2E)
 - **[docs/vdi.md](https://github.com/tuna-os/corral/blob/main/docs/vdi.md)** — VDI plugin setup guide (desktop pools)
+- **[docs/vdi-epic-status.md](https://github.com/tuna-os/corral/blob/main/docs/vdi-epic-status.md)** — VDI epic dependency chain & hardware gating status (#69)
 - **[docs/rfc/0001-vdi-plugin.md](https://github.com/tuna-os/corral/blob/main/docs/rfc/0001-vdi-plugin.md)** — VDI plugin design + phased roadmap
 
 ## Requirements

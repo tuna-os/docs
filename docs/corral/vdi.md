@@ -7,9 +7,9 @@ title: "vdi"
 [RFC-0001](https://github.com/tuna-os/corral/blob/main/docs/rfc/0001-vdi-plugin.md): static desktop pools, built by cloning
 an already-built VM, with manual (CLI-driven) assignment. No broker, no
 self-serve web page, no idle reclaim yet — those are later phases, tracked
-in [issue #69](https://github.com/tuna-os/corral/issues/69). What's here is
-real and cluster-tested: create a pool, hand a member to a user, connect,
-release it, delete the pool.
+in [issue #69](https://github.com/tuna-os/corral/issues/69) (see also
+[VDI Epic Status](https://github.com/tuna-os/corral/blob/main/docs/vdi-epic-status.md)). What's here is real and cluster-tested:
+create a pool, hand a member to a user, connect, release it, delete the pool.
 
 ## Install
 
@@ -150,5 +150,6 @@ already gives Linux members. Until then:
   4 territory).
 
 None of this is hidden — see [RFC-0001](https://github.com/tuna-os/corral/blob/main/docs/rfc/0001-vdi-plugin.md) for the
-full phased plan and [issue #69](https://github.com/tuna-os/corral/issues/69)
+full phased plan, [docs/vdi-epic-status.md](https://github.com/tuna-os/corral/blob/main/docs/vdi-epic-status.md) for the
+hardware gating and dependency chain, and [issue #69](https://github.com/tuna-os/corral/issues/69)
 for what's tracked next.
