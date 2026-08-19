@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-19T12:45:10.833Z",
+  "generatedAt": "2026-08-19T18:25:49.962Z",
   "baseUrl": "https://download.tunaos.org",
   "count": 183,
   "categories": [
@@ -16,8 +16,8 @@
           "name": "marlin-gnome-nvidia-latest",
           "path": "live-isos/marlin-gnome-nvidia-latest.iso",
           "url": "https://download.tunaos.org/live-isos/marlin-gnome-nvidia-latest.iso",
-          "size": 7984840704,
-          "modified": "2026-08-18T10:23:48.651139754Z",
+          "size": 7984709632,
+          "modified": "2026-08-19T13:44:19.455469592Z",
           "arch": "",
           "latest": true
         },
@@ -226,8 +226,8 @@
           "name": "marlin-gnome-nvidia--x86_64",
           "path": "live-isos/marlin-gnome-nvidia--x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/marlin-gnome-nvidia--x86_64.iso",
-          "size": 7984840704,
-          "modified": "2026-08-18T10:23:48.651139754Z",
+          "size": 7984709632,
+          "modified": "2026-08-19T13:44:19.455469592Z",
           "arch": "x86_64",
           "latest": false
         },
