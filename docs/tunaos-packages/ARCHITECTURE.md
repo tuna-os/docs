@@ -110,7 +110,11 @@ rpmsign --addsign *.rpm
 
 ```bash
 aws s3 sync output/ s3://bucket/repo/
-createrepo_c --update .
+# Regenerate metadata from the actual files — never `--update` against
+# repodata seeded from the published repo: --update carries pre-existing
+# entries forward without re-hashing, so a drifted checksum is republished
+# forever (#358).
+rm -rf repodata && createrepo_c .
 ```
 
 ## Storage Layout
