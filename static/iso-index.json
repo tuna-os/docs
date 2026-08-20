@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-20T06:36:01.166Z",
+  "generatedAt": "2026-08-20T12:36:07.708Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 183,
+  "count": 193,
   "categories": [
     {
       "id": "live-isos",
@@ -11,6 +11,56 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "albacore-kde-latest",
+          "path": "live-isos/albacore-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-kde-latest.iso",
+          "size": 6007619584,
+          "modified": "2026-08-20T08:41:58.471689808Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-niri-latest",
+          "path": "live-isos/albacore-niri-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-niri-latest.iso",
+          "size": 5537988608,
+          "modified": "2026-08-20T08:40:46.978441992Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-latest",
+          "path": "live-isos/albacore-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-latest.iso",
+          "size": 5744295936,
+          "modified": "2026-08-20T08:39:53.550093246Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-cosmic-latest",
+          "path": "live-isos/albacore-cosmic-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-cosmic-latest.iso",
+          "size": 5521539072,
+          "modified": "2026-08-20T08:38:29.850209680Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-xfce-latest",
+          "path": "live-isos/albacore-xfce-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-xfce-latest.iso",
+          "size": 5144051712,
+          "modified": "2026-08-20T08:38:13.074893813Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "marlin-gnome-nvidia-latest",
@@ -220,6 +270,56 @@
           "modified": "2026-08-07T21:38:43.526024705Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-kde-10.2-x86_64",
+          "path": "live-isos/albacore-kde-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-kde-10.2-x86_64.iso",
+          "size": 6007619584,
+          "modified": "2026-08-20T08:41:58.471689808Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-niri-10.2-x86_64",
+          "path": "live-isos/albacore-niri-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-niri-10.2-x86_64.iso",
+          "size": 5537988608,
+          "modified": "2026-08-20T08:40:46.978441992Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-gnome-10.2-x86_64",
+          "path": "live-isos/albacore-gnome-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-gnome-10.2-x86_64.iso",
+          "size": 5744295936,
+          "modified": "2026-08-20T08:39:53.550093246Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-cosmic-10.2-x86_64",
+          "path": "live-isos/albacore-cosmic-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-cosmic-10.2-x86_64.iso",
+          "size": 5521539072,
+          "modified": "2026-08-20T08:38:29.850209680Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-xfce-10.2-x86_64",
+          "path": "live-isos/albacore-xfce-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-xfce-10.2-x86_64.iso",
+          "size": 5144051712,
+          "modified": "2026-08-20T08:38:13.074893813Z",
+          "arch": "x86_64",
+          "latest": false
         },
         {
           "category": "live-isos",
