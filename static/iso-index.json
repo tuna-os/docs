@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-20T01:05:35.927Z",
+  "generatedAt": "2026-08-20T06:36:01.166Z",
   "baseUrl": "https://download.tunaos.org",
   "count": 183,
   "categories": [
@@ -16,8 +16,18 @@
           "name": "marlin-gnome-nvidia-latest",
           "path": "live-isos/marlin-gnome-nvidia-latest.iso",
           "url": "https://download.tunaos.org/live-isos/marlin-gnome-nvidia-latest.iso",
-          "size": 7984709632,
-          "modified": "2026-08-19T13:44:19.455469592Z",
+          "size": 7984906240,
+          "modified": "2026-08-20T04:36:20.166892183Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-kde-latest",
+          "path": "live-isos/marlin-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-kde-latest.iso",
+          "size": 5499387904,
+          "modified": "2026-08-20T03:52:19.524427542Z",
           "arch": "",
           "latest": true
         },
@@ -26,8 +36,8 @@
           "name": "marlin-gnome-latest",
           "path": "live-isos/marlin-gnome-latest.iso",
           "url": "https://download.tunaos.org/live-isos/marlin-gnome-latest.iso",
-          "size": 5168562176,
-          "modified": "2026-08-17T08:39:52.883861469Z",
+          "size": 5169152000,
+          "modified": "2026-08-20T03:49:20.796523105Z",
           "arch": "",
           "latest": true
         },
@@ -58,16 +68,6 @@
           "url": "https://download.tunaos.org/live-isos/marlin-latest.iso",
           "size": 6886064128,
           "modified": "2026-08-16T23:36:00.013750500Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-kde-latest",
-          "path": "live-isos/marlin-kde-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-kde-latest.iso",
-          "size": 5480382464,
-          "modified": "2026-08-10T05:56:36.789024249Z",
           "arch": "",
           "latest": true
         },
@@ -226,8 +226,18 @@
           "name": "marlin-gnome-nvidia--x86_64",
           "path": "live-isos/marlin-gnome-nvidia--x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/marlin-gnome-nvidia--x86_64.iso",
-          "size": 7984709632,
-          "modified": "2026-08-19T13:44:19.455469592Z",
+          "size": 7984906240,
+          "modified": "2026-08-20T04:36:20.166892183Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-kde--x86_64",
+          "path": "live-isos/marlin-kde--x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-kde--x86_64.iso",
+          "size": 5499387904,
+          "modified": "2026-08-20T03:52:19.524427542Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -236,8 +246,8 @@
           "name": "marlin-gnome--x86_64",
           "path": "live-isos/marlin-gnome--x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/marlin-gnome--x86_64.iso",
-          "size": 5168562176,
-          "modified": "2026-08-17T08:39:52.883861469Z",
+          "size": 5169152000,
+          "modified": "2026-08-20T03:49:20.796523105Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -268,16 +278,6 @@
           "url": "https://download.tunaos.org/live-isos/marlin--x86_64.iso",
           "size": 6886064128,
           "modified": "2026-08-16T23:36:00.013750500Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-kde--x86_64",
-          "path": "live-isos/marlin-kde--x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-kde--x86_64.iso",
-          "size": 5480382464,
-          "modified": "2026-08-10T05:56:36.789024249Z",
           "arch": "x86_64",
           "latest": false
         },
