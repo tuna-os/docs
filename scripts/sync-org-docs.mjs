@@ -20,9 +20,10 @@ const PROJECTS = {
   tromso:      {label: 'Tromsø',           icon: '🏔️', slug: 'tromso',           status: 'alpha'},
   'xfce-linux': {label: 'XFCE Linux',      icon: '🖥️', slug: 'xfce-linux',      status: 'alpha'},
   // NOTE: 'github-copr' was renamed to 'tunaos-packages'; the listing picks
-  // it up under its real name (default slug 'tunaos-packages'). docs/copr/
-  // is now hand-maintained (GNOME 50 COPR build guide) and must not be
-  // overwritten by the renamed repo's README.
+  // it up under its real name (default slug 'tunaos-packages'). The old
+  // docs/copr/ tree was hand-maintained leftovers from before the rename
+  // (stale GNOME version, orphaned since sync target moved to
+  // docs/tunaos-packages/) and was removed rather than kept in sync.
   Tavern:      {label: 'Tavern',          icon: '🍺', slug: 'tavern',          status: 'stable'},
   'bluefin-cli': {label: 'bluefin-cli',   icon: '⌨️', slug: 'bluefin-cli',      status: 'stable'},
 };

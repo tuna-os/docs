@@ -76,8 +76,8 @@ install them, and distribute them:
   **[Dakota](https://github.com/tuna-os/tunaos)** (GNOME) — "distroless"
   desktops. A declarative BuildStream pipeline makes them on top of the
   [Freedesktop SDK](https://freedesktop-sdk.io/).
-- **[COPR Builds](/docs/copr)** — the RPM build system. It adds GNOME 50 to
-  EL10.
+- **[tunaos-packages](/docs/tunaos-packages)** — the RPM build system. It
+  adds GNOME 50 to EL10.
 - **[Tavern](/docs/tavern)** and **[bluefin-cli](/docs/bluefin-cli)** — tools
   for the desktop and the shell.
 
