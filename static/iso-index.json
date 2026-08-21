@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-21T12:36:29.795Z",
+  "generatedAt": "2026-08-21T18:28:39.670Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 193,
+  "count": 195,
   "categories": [
     {
       "id": "live-isos",
@@ -11,6 +11,16 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "gurnard-pantheon-latest",
+          "path": "live-isos/gurnard-pantheon-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-latest.iso",
+          "size": 4326227968,
+          "modified": "2026-08-21T16:28:14.121729131Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "albacore-kde-latest",
@@ -270,6 +280,16 @@
           "modified": "2026-08-07T21:38:43.526024705Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "gurnard-pantheon-24.04-x86_64",
+          "path": "live-isos/gurnard-pantheon-24.04-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-24.04-x86_64.iso",
+          "size": 4326227968,
+          "modified": "2026-08-21T16:28:14.121729131Z",
+          "arch": "x86_64",
+          "latest": false
         },
         {
           "category": "live-isos",
