@@ -41,8 +41,29 @@ starts here.
 | Priority | Item | Tracking | Status |
 |----------|------|----------|--------|
 | P0 | Make sync-org-docs resilient to GitHub API rate limits | #242, #260 | ✅ Done |
-| P1 | Versioned docs for screenshots/walkthroughs (docs-artifacts pattern) | — | ⬜ Not started |
+| P1 | Versioned docs for screenshots/walkthroughs (docs-artifacts pattern) | #308 | ⬜ Not started |
 | P2 | Variant pages track ROADMAP status (tunaos.org/wiki ↔ tunaos ROADMAP) | tunaos#1295 | 🟡 In progress |
+
+---
+
+## Near-term Delivery Gates
+
+### Versioned installer walkthrough pilot (#308)
+
+The current installer walkthrough is refreshed in place from CI artifacts. Before
+this pattern expands to other generated visual guides, the pilot must establish:
+
+1. **Provenance** — every generated walkthrough records its source repository,
+   workflow run, commit, flavor, and capture time.
+2. **Release alignment** — the current walkthrough links to the build or release it
+   depicts, with an automated freshness signal when the two diverge.
+3. **Stable and historical views** — readers retain a convenient `latest` view and
+   at least one release-addressable snapshot.
+4. **Operating policy** — retention, rollback, and storage limits are documented
+   before adopting the pattern for another project.
+
+The pilot is complete when these gates are demonstrated for the TunaOS installer
+walkthrough and maintainers record whether to extend, revise, or stop the pattern.
 
 ---
 
@@ -57,6 +78,7 @@ starts here.
 | Org-wide sync covers every repo (fix pagination) | guide | #103, #220 | ✅ Done |
 | Flatpak landing surface green on main | ci-maintainer | #115 | ✅ Done |
 | No broken links in synced pages | guide | #135 | ✅ Done |
+| Versioned installer walkthrough pilot | guide | #308 | ⬜ Not started |
 | Variant pages track ROADMAP status (tunaos.org/wiki ↔ tunaos ROADMAP) | guide | tunaos#1295 | 🟡 In progress |
 
 ### Next Quarter (2026 Q4) — "Mature"
