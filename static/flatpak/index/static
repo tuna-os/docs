@@ -180,7 +180,7 @@
       "Name": "tuna-os/tuna-installer-cosmic",
       "Images": [
         {
-          "Digest": "sha256:f87302731aee27ccd156787a2d82d0eed4ec5239649b477ed732be2f7a7c986d",
+          "Digest": "sha256:fe83f741e1a1a3999b5faadf066e731c03c671f91820acca57bfc4b61f957166",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -192,16 +192,16 @@
             "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy50dW5hb3MuSW5zdGFsbGVyQ29zbWljCnJ1bnRpbWU9b3JnLmZyZWVkZXNrdG9wLlBsYXRmb3JtL3g4Nl82NC8yNS4wOApzZGs9b3JnLmZyZWVkZXNrdG9wLlNkay94ODZfNjQvMjUuMDgKY29tbWFuZD10dW5hLWluc3RhbGxlci1jb3NtaWMKCltDb250ZXh0XQpzaGFyZWQ9aXBjO25ldHdvcms7CnNvY2tldHM9ZmFsbGJhY2steDExO3dheWxhbmQ7CmRldmljZXM9YWxsOwpmaWxlc3lzdGVtcz1ob3N0OwoKW1Nlc3Npb24gQnVzIFBvbGljeV0Kb3JnLmZyZWVkZXNrdG9wLkZsYXRwYWs9dGFsawoKW1N5c3RlbSBCdXMgUG9saWN5XQpvcmcuZnJlZWRlc2t0b3AuUG9saWN5S2l0MT10YWxrCgpbRXh0ZW5zaW9uIG9yZy50dW5hb3MuSW5zdGFsbGVyQ29zbWljLkRlYnVnXQpkaXJlY3Rvcnk9bGliL2RlYnVnCmF1dG9kZWxldGU9dHJ1ZQpuby1hdXRvZG93bmxvYWQ9dHJ1ZQoKW0J1aWxkXQpidWlsdC1leHRlbnNpb25zPW9yZy50dW5hb3MuSW5zdGFsbGVyQ29zbWljLkRlYnVnOwAAcw==",
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.InstallerCosmic\nruntime=org.freedesktop.Platform/x86_64/25.08\nsdk=org.freedesktop.Sdk/x86_64/25.08\ncommand=tuna-installer-cosmic\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;wayland;\ndevices=all;\nfilesystems=host;\n\n[Session Bus Policy]\norg.freedesktop.Flatpak=talk\n\n[System Bus Policy]\norg.freedesktop.PolicyKit1=talk\n\n[Extension org.tunaos.InstallerCosmic.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.InstallerCosmic.Debug;",
-            "org.flatpak.installed-size": "265136640",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAUJe2EAdA==",
-            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAA/NqgAAdA==",
-            "org.flatpak.download-size": "80002124",
+            "org.flatpak.installed-size": "265163776",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAUJq2AAdA==",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAA/OFAAAdA==",
+            "org.flatpak.download-size": "80013296",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyQ29zbWljL3g4Nl82NC9tYXN0ZXIALQBhcw==",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyQ29zbWljL3g4Nl82NC9tYXN0ZXIAAHM=",
             "org.flatpak.ref": "app/org.tunaos.InstallerCosmic/x86_64/master",
-            "org.flatpak.subject": "Built from b50bfe12359c296d9eb165ffe3d34b4c40cf4d95",
-            "org.flatpak.commit": "ddd86f1964a2ade44cacc230f19c401a3be9c8b31739a9a20af660352ae9d231",
-            "org.flatpak.timestamp": "1787445098"
+            "org.flatpak.subject": "Built from d356ce73ccb14ce60b88901f6890401c948e486f",
+            "org.flatpak.commit": "857dea5cbfdc32f3ae061b16ec6f12965122adbbe0af525629b15e1682d8ea6a",
+            "org.flatpak.timestamp": "1787578325"
           }
         }
       ]
