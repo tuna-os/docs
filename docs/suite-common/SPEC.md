@@ -5,20 +5,20 @@ title: "Spec"
 
 A small, FOSS office suite for the GNOME desktop, built as **separate libadwaita apps**
 that share a common scaffold. It completes the set started by
-[**Letters**](https://codeberg.org/eyekay/letters) (word processor):
+[**Letters**](https://github.com/tuna-os/letters) (word processor):
 
 | App | Role | Status |
 |-----|------|--------|
-| **[Letters](https://github.com/tuna-os/letters)** | Word processor | exists; **migrating onto suite-common** (reference consumer) |
-| **[Tables](https://github.com/tuna-os/tables)** | Spreadsheet (Excel-equivalent) | this suite |
-| **[Decks](https://github.com/tuna-os/decks)** | Presentation (PowerPoint-equivalent) | this suite |
+| **[Letters](https://github.com/tuna-os/gtk-office-suite)** | Word processor | exists in `gtk-office-suite` monorepo (reference consumer) |
+| **[Tables](https://github.com/tuna-os/gtk-office-suite)** | Spreadsheet (Excel-equivalent) | exists in `gtk-office-suite` monorepo |
+| **[Decks](https://github.com/tuna-os/gtk-office-suite)** | Presentation (PowerPoint-equivalent) | exists in `gtk-office-suite` monorepo |
 
 This repo, **`suite-common`**, holds the shared code consumed by all three apps as a
-**meson subproject**. It is **extracted from Letters** — Letters is both the source of the
-pattern and the first consumer, so migrating Letters onto `suite-common` is how we dogfood
-the extraction. Upstream Letters lives at
-[codeberg.org/eyekay/letters](https://codeberg.org/eyekay/letters); the suite tracks the
-fork at [tuna-os/letters](https://github.com/tuna-os/letters).
+**meson subproject**. It was **extracted from Letters** — Letters was both the source of the
+pattern and the first consumer. Upstream Letters was originally at
+`codeberg.org/eyekay/letters`; the suite tracked the fork at
+[tuna-os/letters](https://github.com/tuna-os/letters) before migrating into
+[tuna-os/gtk-office-suite](https://github.com/tuna-os/gtk-office-suite).
 
 ## The Letters pattern (what we inherit)
 
@@ -78,7 +78,7 @@ This is the structural analogue of Letters' `pypandoc.convert_file(...)`.
 
 ```
 meson.build
-io.github.hanthor.<app>.json   # Flatpak: GNOME 50 runtime + vendored JS + pip libs (historical; apps ship as org.tunaos.*-rust)
+org.tunaos.<app>.json          # Flatpak: GNOME 50 runtime + vendored JS + pip libs (historical; apps ship as org.tunaos.*-rust)
 data/                          # icons, .desktop, gschema, appdata/metainfo
 po/
 src/
@@ -98,7 +98,7 @@ subprojects/suite-common/
 
 ## Packaging
 
-The Flatpak manifest mirrors `net.codelogistics.letters.json`:
+The Flatpak manifest mirrors `org.tunaos.letters.json`:
 - JS engines: vendored prebuilt **UMD/minified** bundles in `src/vendor/`, listed in
   `.gresource.xml`, `<script>`-loaded from the HTML passed to `webview.load_html(...)`.
   No Node runtime ships.
@@ -108,8 +108,7 @@ The Flatpak manifest mirrors `net.codelogistics.letters.json`:
 ## GNOME-GUI-spec compliance
 
 Both apps target parity with Letters' audited baseline (**85/92**, see Letters'
-`AUDIT-GNOME-GUI-SPEC.md`) using the [gnome-gui-spec](https://github.com/tuna-os/gnome-gui-spec)
-tool. Compliance is a CI gate.
+`AUDIT-GNOME-GUI-SPEC.md`). Compliance is a CI gate.
 
 ## Verification (per app)
 
