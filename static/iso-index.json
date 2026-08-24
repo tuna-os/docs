@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-24T06:44:10.399Z",
+  "generatedAt": "2026-08-24T12:37:22.923Z",
   "baseUrl": "https://download.tunaos.org",
   "count": 165,
   "categories": [
@@ -17,7 +17,7 @@
           "path": "live-isos/gurnard-pantheon-latest.iso",
           "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-latest.iso",
           "size": 4326424576,
-          "modified": "2026-08-24T06:18:31.493065326Z",
+          "modified": "2026-08-24T08:16:01.249091074Z",
           "arch": "",
           "latest": true
         },
@@ -137,7 +137,7 @@
           "path": "live-isos/gurnard-pantheon-24.04-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-24.04-x86_64.iso",
           "size": 4326424576,
-          "modified": "2026-08-24T06:18:31.493065326Z",
+          "modified": "2026-08-24T08:16:01.249091074Z",
           "arch": "x86_64",
           "latest": false
         },
