@@ -60,7 +60,7 @@
       "Name": "tuna-os/tavern",
       "Images": [
         {
-          "Digest": "sha256:929141f01f10682e7fbb310c8bfc9f492121f3d2baa2cf28bb2b25dbe71c82d9",
+          "Digest": "sha256:b5af16452d9249ea42210b35871bbb97ece90d40a7a2ba81bf872ac7920e5b52",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -71,16 +71,16 @@
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy50dW5hb3MudGF2ZXJuCnJ1bnRpbWU9b3JnLmdub21lLlBsYXRmb3JtL3g4Nl82NC81MApzZGs9b3JnLmdub21lLlNkay94ODZfNjQvNTAKY29tbWFuZD10YXZlcm4KCltDb250ZXh0XQpzaGFyZWQ9aXBjO25ldHdvcms7CnNvY2tldHM9ZmFsbGJhY2steDExO3dheWxhbmQ7CmRldmljZXM9ZHJpOwpmaWxlc3lzdGVtcz1ob21lOy9ob21lL2xpbnV4YnJldzpybzsKCltTZXNzaW9uIEJ1cyBQb2xpY3ldCm9yZy5mcmVlZGVza3RvcC5GbGF0cGFrPXRhbGsKb3JnLnR1bmFvcy50YXZlcm4uU2VhcmNoUHJvdmlkZXI9b3duCgpbRW52aXJvbm1lbnRdCkhPTUVCUkVXX05PX0FVVE9fVVBEQVRFPTEKAABz",
             "org.flatpak.ref": "app/org.tunaos.tavern/x86_64/master",
-            "org.flatpak.installed-size": "526848",
-            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAAICgAAdA==",
+            "org.flatpak.installed-size": "528896",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAAIEgAAdA==",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.tavern\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=tavern\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;wayland;\ndevices=dri;\nfilesystems=home;/home/linuxbrew:ro;\n\n[Session Bus Policy]\norg.freedesktop.Flatpak=talk\norg.tunaos.tavern.SearchProvider=own\n\n[Environment]\nHOMEBREW_NO_AUTO_UPDATE=1\n",
-            "org.flatpak.timestamp": "1787444817",
-            "org.flatpak.download-size": "148797",
-            "org.flatpak.commit": "8cfe2f0c071ec8762e05bb44c291ee00f6d0b95c5a92a45e5e217aed64524846",
-            "org.flatpak.subject": "Built from a1420547aceedf0dc60a30c025dc058adbb3e4c6",
+            "org.flatpak.timestamp": "1787577919",
+            "org.flatpak.download-size": "149781",
+            "org.flatpak.commit": "bc9d7ee5b6b357d37ba7a2181467ce46a35886975989a262a31bfcefe16887cf",
+            "org.flatpak.subject": "Built from 4428a1f7fd4f927206190ebef9f39456530549eb",
             "org.flatpak.body": "Name: org.tunaos.tavern\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MudGF2ZXJuL3g4Nl82NC9tYXN0ZXIAAHM=",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAAClUAAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAACmUwAdA==",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MudGF2ZXJuL3g4Nl82NC9tYXN0ZXIAJABhcw=="
           }
         }
