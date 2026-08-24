@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-24T00:56:09.748Z",
+  "generatedAt": "2026-08-24T06:44:10.399Z",
   "baseUrl": "https://download.tunaos.org",
   "count": 165,
   "categories": [
@@ -11,6 +11,16 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "gurnard-pantheon-latest",
+          "path": "live-isos/gurnard-pantheon-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-latest.iso",
+          "size": 4326424576,
+          "modified": "2026-08-24T06:18:31.493065326Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "flounder-sid-latest",
@@ -38,16 +48,6 @@
           "url": "https://download.tunaos.org/live-isos/marlin-latest.iso",
           "size": 6899630080,
           "modified": "2026-08-23T23:37:53.083759196Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "gurnard-pantheon-latest",
-          "path": "live-isos/gurnard-pantheon-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-latest.iso",
-          "size": 4326227968,
-          "modified": "2026-08-23T08:04:33.245445315Z",
           "arch": "",
           "latest": true
         },
@@ -133,6 +133,16 @@
         },
         {
           "category": "live-isos",
+          "name": "gurnard-pantheon-24.04-x86_64",
+          "path": "live-isos/gurnard-pantheon-24.04-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-24.04-x86_64.iso",
+          "size": 4326424576,
+          "modified": "2026-08-24T06:18:31.493065326Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
           "name": "flounder-sid--x86_64",
           "path": "live-isos/flounder-sid--x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/flounder-sid--x86_64.iso",
@@ -158,16 +168,6 @@
           "url": "https://download.tunaos.org/live-isos/marlin--x86_64.iso",
           "size": 6899630080,
           "modified": "2026-08-23T23:37:53.083759196Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "gurnard-pantheon-24.04-x86_64",
-          "path": "live-isos/gurnard-pantheon-24.04-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-24.04-x86_64.iso",
-          "size": 4326227968,
-          "modified": "2026-08-23T08:04:33.245445315Z",
           "arch": "x86_64",
           "latest": false
         },
