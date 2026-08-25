@@ -180,7 +180,7 @@
       "Name": "tuna-os/tuna-installer-cosmic",
       "Images": [
         {
-          "Digest": "sha256:fe83f741e1a1a3999b5faadf066e731c03c671f91820acca57bfc4b61f957166",
+          "Digest": "sha256:419419a1ac8ff7231e84f8cec4c668ff237f6ca87dcfcc3c7b3df09907278879",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -193,15 +193,15 @@
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.InstallerCosmic\nruntime=org.freedesktop.Platform/x86_64/25.08\nsdk=org.freedesktop.Sdk/x86_64/25.08\ncommand=tuna-installer-cosmic\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;wayland;\ndevices=all;\nfilesystems=host;\n\n[Session Bus Policy]\norg.freedesktop.Flatpak=talk\n\n[System Bus Policy]\norg.freedesktop.PolicyKit1=talk\n\n[Extension org.tunaos.InstallerCosmic.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.InstallerCosmic.Debug;",
             "org.flatpak.installed-size": "265163776",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAUJq2AAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAUJq2kAdA==",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAA/OFAAAdA==",
-            "org.flatpak.download-size": "80013296",
+            "org.flatpak.download-size": "80013106",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyQ29zbWljL3g4Nl82NC9tYXN0ZXIALQBhcw==",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyQ29zbWljL3g4Nl82NC9tYXN0ZXIAAHM=",
             "org.flatpak.ref": "app/org.tunaos.InstallerCosmic/x86_64/master",
-            "org.flatpak.subject": "Built from d356ce73ccb14ce60b88901f6890401c948e486f",
-            "org.flatpak.commit": "857dea5cbfdc32f3ae061b16ec6f12965122adbbe0af525629b15e1682d8ea6a",
-            "org.flatpak.timestamp": "1787578325"
+            "org.flatpak.subject": "Built from 400a7fda29e59e8d63f0248e0514e61382c261a0",
+            "org.flatpak.commit": "00aa228d04576a94955edbc2519225326f4fa0e85a8ef66f506f4984387584f3",
+            "org.flatpak.timestamp": "1787623025"
           }
         }
       ]
