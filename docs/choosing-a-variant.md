@@ -56,7 +56,7 @@ Each variant offers desktop flavors tailored to different workflows:
 - **GNOME:** Polished default desktop with modern backports across enterprise bases.
 - **KDE Plasma:** Feature-rich, endlessly customizable desktop for power users.
 - **COSMIC:** Next-generation Rust-built desktop from System76.
-- **Niri:** Keyboard-driven, scrollable-tiling Wayland compositor.
+- **Niri:** Keyboard-driven, scrollable-tiling Wayland compositor (see the [Niri Quick Start](/docs/niri-quickstart)).
 - **XFCE:** A lightweight classic desktop that runs on Wayland via the new `xfwl4` compositor.
 - **Pantheon:** elementary OS's minimal, simple desktop (featured on [Gurnard](/gurnard)).
 

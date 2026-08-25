@@ -1,0 +1,371 @@
+---
+sidebar_position: 11
+sidebar_label: "Niri quick-start"
+title: "Niri window-manager quick-start"
+description: "A quick-start guide to the Niri scrollable-tiling Wayland window manager on TunaOS."
+---
+
+# ⚡ Niri Window Manager Quick-Start
+
+[Niri](https://github.com/YaLTeR/niri) is a modern, scrollable-tiling Wayland compositor written in Rust. It organizes windows in an infinite horizontal ribbon rather than fixed grid tiles or overlapping floating windows.
+
+TunaOS provides Niri across multiple base variants — including **[Bonito](/bonito)** (Fedora 44), **[Yellowfin](/yellowfin)** (AlmaLinux Kitten 10), **[Albacore](/albacore)** (AlmaLinux 10), **[Skipjack](/skipjack)** (CentOS Stream 10), **[Marlin](/marlin)** (Arch Linux), and **[Grouper](/grouper)** (Ubuntu 26.04).
+
+:::tip[Visual overview]
+To explore the Fedora 44 base variant that ships Niri, see the **[Bonito overview →](/bonito)** page.
+:::
+
+---
+
+## What is Niri?
+
+Niri is a keyboard-focused tiling compositor designed from the ground up for Wayland. Unlike conventional desktop environments and window managers, Niri uses a **scrollable tiling** model:
+
+- **Traditional Desktop Environments (GNOME, KDE Plasma, XFCE):** Windows float freely and overlap on a two-dimensional desktop plane. Finding windows often requires manual dragging, window minimization, or cycling through `Alt+Tab`.
+- **Traditional Tiling Window Managers (i3, Sway, Hyprland):** Windows are partitioned into rigid 2D screen splits or binary space partition (BSP) grids. As you open more windows, each existing window shrinks until text and UI elements become cramped.
+- **Niri's Scrollable Tiling (The Infinite Ribbon):** Windows are arranged into vertical columns along an endless horizontal ribbon. When you open a new window or column, existing windows keep their readable size. The view smoothly slides horizontally along the ribbon as you navigate between windows.
+
+```
+       ┌───────────┐ ┌───────────────────┐ ┌───────────┐
+... ── │ Window A  │ │    Window B       │ │ Window D  │ ── ...
+       │           │ ├───────────────────┤ │           │
+       │           │ │    Window C       │ │           │
+       └───────────┘ └───────────────────┘ └───────────┘
+         Column 1           Column 2          Column 3
+               <─────── Horizontal Ribbon ───────>
+```
+
+---
+
+## Getting Started
+
+### Available Images
+
+You can pull or switch to any of the TunaOS Niri images:
+
+```bash
+# Bonito (Fedora 44)
+ghcr.io/tuna-os/bonito:niri
+
+# Yellowfin (AlmaLinux Kitten 10)
+ghcr.io/tuna-os/yellowfin:niri
+
+# Albacore (AlmaLinux 10)
+ghcr.io/tuna-os/albacore:niri
+
+# Skipjack (CentOS Stream 10)
+ghcr.io/tuna-os/skipjack:niri
+
+# Marlin (Arch Linux)
+ghcr.io/tuna-os/marlin:niri
+
+# Grouper (Ubuntu 26.04)
+ghcr.io/tuna-os/grouper:niri
+```
+
+### Switching to Niri with bootc
+
+From an existing TunaOS installation, switch to the Niri flavor with `bootc switch`:
+
+```bash
+# Switch to Bonito Niri
+sudo bootc switch ghcr.io/tuna-os/bonito:niri
+sudo systemctl reboot
+```
+
+Or choose the **Niri** option from the desktop picker when installing from the live ISO.
+
+---
+
+## Default Keyboard Shortcuts
+
+In Niri, almost all actions use the **Mod** key (the `Super` / `Windows` key, or `Command` on macOS keyboards).
+
+### Navigation & Focus
+
+| Shortcut | Action |
+| --- | --- |
+| `Mod` + `Left` / `Right` (or `Mod` + `H` / `L`) | Focus the previous or next column on the ribbon |
+| `Mod` + `Up` / `Down` (or `Mod` + `K` / `J`) | Focus the window above or below in the current column |
+| `Mod` + `Home` / `End` | Focus the first or last column on the ribbon |
+| `Mod` + `Shift` + `Left` / `Right` (or `Mod` + `Shift` + `H` / `L`) | Move the current column left or right |
+| `Mod` + `Shift` + `Up` / `Down` (or `Mod` + `Shift` + `K` / `J`) | Move the active window up or down within its column |
+| `Mod` + `MouseWheelDown` / `MouseWheelUp` | Scroll the horizontal ribbon |
+
+### Workspaces
+
+Niri arranges workspaces vertically.
+
+| Shortcut | Action |
+| --- | --- |
+| `Mod` + `Page_Down` / `Page_Up` | Switch to the workspace below or above |
+| `Mod` + `1` … `9` | Switch directly to workspace 1 through 9 |
+| `Mod` + `Shift` + `Page_Down` / `Page_Up` | Move the active column to the workspace below or above |
+| `Mod` + `Shift` + `1` … `9` | Move the active column to workspace 1 through 9 |
+
+### Window Management & Sizing
+
+| Shortcut | Action |
+| --- | --- |
+| `Mod` + `R` | Cycle through preset column widths |
+| `Mod` + `Minus` (`-`) / `Mod` + `Equal` (`=`) | Decrease or increase the active column width |
+| `Mod` + `Shift` + `Minus` / `Mod` + `Shift` + `Equal` | Decrease or increase the active window height |
+| `Mod` + `F` | Maximize column width |
+| `Mod` + `Shift` + `F` | Fullscreen the active window |
+| `Mod` + `C` | Center the focused column on screen |
+| `Mod` + `W` | Toggle tabbed column display |
+| `Mod` + `Q` or `Mod` + `Shift` + `Q` | Close the active window |
+
+### Applications & Session
+
+| Shortcut | Action |
+| --- | --- |
+| `Mod` + `Return` or `Mod` + `T` | Open a terminal |
+| `Mod` + `Space` or `Mod` + `D` | Open the application launcher (`fuzzel` / `rofi`) |
+| `Mod` + `Shift` + `E` | Quit the Niri session |
+| `Mod` + `Shift` + `/` | Show keyboard shortcuts help overlay |
+
+---
+
+## Configuration (`config.kdl`)
+
+Niri uses the [KDL schema language](https://kdl.dev/) for configuration. The KDL format is node-based, readable, and structured.
+
+### Configuration Path
+
+Niri looks for configuration in your user home directory:
+
+```
+~/.config/niri/config.kdl
+```
+
+If the file does not exist yet, create the directory and copy the system default template:
+
+```bash
+mkdir -p ~/.config/niri
+cp /etc/niri/config.kdl ~/.config/niri/config.kdl
+```
+
+### Validating and Reloading
+
+To check your configuration for syntax errors without restarting:
+
+```bash
+niri --validate
+```
+
+Niri automatically reloads configuration when `~/.config/niri/config.kdl` is modified and saved. You can also trigger a reload manually:
+
+```bash
+niri msg action reload-config
+```
+
+---
+
+## Common Customizations
+
+### 1. Application Launcher and Terminal
+
+Bind your preferred launcher (`fuzzel`, `rofi-wayland`, `walker`) and terminal (`ptyxis`, `foot`, `alacritty`, `kitty`) in the `binds` section:
+
+```kdl
+binds {
+    Mod+Return { spawn "ptyxis"; }
+    Mod+Space  { spawn "fuzzel"; }
+    Mod+D      { spawn "fuzzel"; }
+}
+```
+
+### 2. Gaps and Layout Geometry
+
+Adjust outer and inner window gaps, default column proportions, and focus ring borders in the `layout` block:
+
+```kdl
+layout {
+    // Gap size between windows in pixels
+    gaps 16
+
+    // Preset column widths cycled with Mod+R
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+        proportion 1.0
+    }
+
+    // Default width for newly opened columns
+    default-column-width { proportion 0.5; }
+
+    // Focus indicator ring around the active window
+    focus-ring {
+        width 2
+        active-color "#7fc8ff"
+        inactive-color "#505050"
+    }
+}
+```
+
+### 3. Wallpaper and Startup Applications
+
+Use `spawn-at-startup` nodes to run background services, wallpaper daemons, and status bars when Niri starts:
+
+```kdl
+// Set desktop wallpaper with swaybg or wbg
+spawn-at-startup "swaybg" "-m" "fill" "-i" "/usr/share/backgrounds/tunaos/default.png"
+
+// Start status bar
+spawn-at-startup "waybar"
+
+// Start notification daemon
+spawn-at-startup "mako"
+```
+
+### 4. Window Rules (Floating Windows and Sizing)
+
+Define rules to match specific application IDs, setting them to float automatically or open at specific sizes:
+
+```kdl
+window-rule {
+    match app-id="org.gnome.Calculator"
+    open-floating true
+}
+
+window-rule {
+    match app-id="pavucontrol"
+    open-floating true
+    default-column-width { fixed 650; }
+}
+
+window-rule {
+    match app-id="org.mozilla.firefox"
+    default-column-width { proportion 0.66667; }
+}
+```
+
+---
+
+## Managing Applications & System Updates
+
+### Installing Graphical Applications (Flatpak)
+
+TunaOS enables [Flathub](https://flathub.org/) by default. Install graphical apps via `flatpak`:
+
+```bash
+# Install Firefox
+flatpak install flathub org.mozilla.firefox
+
+# Install VS Code
+flatpak install flathub com.visualstudio.code
+```
+
+Flatpak desktop entries are placed in `/var/lib/flatpak/exports/share/applications` and `~/.local/share/flatpak/exports/share/applications`. Launchers like `fuzzel` and `rofi` discover them automatically through the standard `XDG_DATA_DIRS` environment.
+
+### Installing CLI Tools (Homebrew)
+
+All TunaOS variants include [Homebrew](https://brew.sh/) for command-line developer tools:
+
+```bash
+brew install neovim ripgrep starship fzf
+```
+
+Homebrew binaries are located in the user path (`/var/home/linuxbrew/.linuxbrew/bin`) and are available immediately in all terminal shells.
+
+### System Updates with bootc
+
+TunaOS uses [bootc](https://github.com/bootc-dev/bootc) for atomic, transactional operating system management:
+
+```bash
+# Check for and stage image updates
+sudo bootc upgrade
+
+# Apply updates and reboot into the new image
+sudo systemctl reboot
+```
+
+:::info[Safe background staging]
+Because `bootc` stages updates in an isolated root deployment in the background, upgrading does not overwrite active system libraries or disrupt your running Niri session. You reboot only when you are ready.
+:::
+
+If an update causes an issue, rollback to the previous deployment at any time:
+
+```bash
+sudo bootc rollback
+sudo systemctl reboot
+```
+
+---
+
+## Troubleshooting
+
+### Displays and HiDPI Output Scaling
+
+To list connected monitor identifiers:
+
+```bash
+niri msg outputs
+```
+
+Configure display resolution, refresh rate, and scaling in `~/.config/niri/config.kdl`:
+
+```kdl
+output "eDP-1" {
+    mode "2880x1800@120.000"
+    scale 1.5
+    position x=0 y=0
+}
+
+output "DP-1" {
+    mode "3840x2160@60.000"
+    scale 2.0
+    position x=2880 y=0
+}
+```
+
+### Screen Sharing and Portals
+
+Niri uses PipeWire and the `xdg-desktop-portal` architecture for display sharing (e.g. in OBS Studio, Discord, or web browsers):
+
+- Ensure `xdg-desktop-portal-gnome` or `xdg-desktop-portal-gtk` and `xdg-desktop-portal` are active.
+- Verify that `XDG_CURRENT_DESKTOP=niri` is present in your session environment.
+
+For dedicated screen recording from the CLI, use `wl-screenrec`:
+
+```bash
+wl-screenrec -f output.mp4
+```
+
+### X11 Application Support (XWayland)
+
+TunaOS builds include XWayland support. If an X11 app does not scale correctly, verify the `xwayland` configuration block in `config.kdl`:
+
+```kdl
+xwayland {
+    // Enabled by default on TunaOS
+}
+```
+
+### Inspecting Running State
+
+Query active windows, workspaces, and compositor outputs:
+
+```bash
+# View list of open windows
+niri msg windows
+
+# View active outputs
+niri msg outputs
+
+# View active workspaces
+niri msg workspaces
+```
+
+---
+
+## Upstream Documentation & Resources
+
+- [YaLTeR/niri GitHub Repository](https://github.com/YaLTeR/niri) — Official source code and issue tracker
+- [Niri Official Wiki](https://github.com/YaLTeR/niri/wiki) — Full upstream documentation and tutorials
+- [Niri Configuration Reference](https://github.com/YaLTeR/niri/wiki/Configuration:-Overview) — Comprehensive KDL node reference
+- [Bonito Variant Guide](/docs/bonito) — Fedora 44 base variant documentation
+- [Desktop Environment Comparison](/docs/desktop-comparison) — Comparison of desktop workflows on TunaOS
+- [Managing with Bootc](/docs/tunaos/bootc-usage) — Complete guide to TunaOS bootc operations
