@@ -15,36 +15,27 @@ from the main [tunaOS](https://github.com/tuna-os/tunaOS) pipeline as the
 for current builds.
 :::
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/tuna-os/ubuntu/blob/main/LICENSE)
+## Successor images
 
-**Ubuntu-based bootc OCI images and live installable ISOs.**
+The standalone `ghcr.io/tuna-os/ubuntu:26.04` image and its ISO workflow are
+retired. Do not use the archived repository's pull, switch, or download
+instructions for a new installation.
 
-Part of the [TunaOS](https://tunaos.org) ecosystem.
+Choose the maintained in-tree successor that matches the Ubuntu release you
+need:
 
-## 26.04 Resolute Raccoon
+| Ubuntu base | TunaOS variant | Start here |
+| --- | --- | --- |
+| Ubuntu 26.04 | Grouper | [Grouper overview](/grouper) and [technical guide](/docs/grouper) |
+| Ubuntu 24.04 LTS | Gurnard | [Gurnard overview](/gurnard) |
 
-Ubuntu 26.04 Resolute Raccoon as a bootc OCI image with a live installable ISO. Traditional Ubuntu experience on an immutable, container-native foundation.
+Use the [download page](/download) for published ISOs. It is the canonical
+source for current artifacts; a missing variant there should not be inferred
+to have a supported "latest" build.
 
-### Download
+## Historical source
 
-The ISO workflow was moved into this repo (merged from the archived `ubuntu-26.04-iso`). Check [tunaos.org/download](https://tunaos.org/download) for the latest builds.
-
-### Usage
-
-```bash
-# Pull the image
-podman pull ghcr.io/tuna-os/ubuntu:26.04
-
-# Switch an existing bootc system
-sudo bootc switch ghcr.io/tuna-os/ubuntu:26.04
-```
-
-## Docs
-
-- [Ubuntu on tunaos.org](https://tunaos.org/docs/ubuntu)
-- [Contributing](https://github.com/tuna-os/ubuntu/blob/main/CONTRIBUTING.md)
-
-## License
-
-Apache 2.0 — see [LICENSE](https://github.com/tuna-os/ubuntu/blob/main/LICENSE).
-
+The archived [tuna-os/ubuntu](https://github.com/tuna-os/ubuntu) repository is
+retained for source history only. Its last commit was published without a
+GitHub Release or a supported migration contract. Existing users should choose
+an in-tree successor above rather than switching to an archived image tag.
