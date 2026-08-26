@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-26T06:38:09.099Z",
+  "generatedAt": "2026-08-26T12:40:11.342Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 165,
+  "count": 166,
   "categories": [
     {
       "id": "live-isos",
@@ -1239,15 +1239,15 @@
       "blurb": "",
       "icon": "📀",
       "order": 99,
-      "checksums": "https://download.tunaos.org/tacklebox/bazzite-gnome-SHA256SUMS-20260819-dca2b63",
+      "checksums": "https://download.tunaos.org/tacklebox/bazzite-gnome-SHA256SUMS-20260826-7919362",
       "isos": [
         {
           "category": "tacklebox",
           "name": "bazzite-gnome-latest",
           "path": "tacklebox/bazzite-gnome-latest.iso",
           "url": "https://download.tunaos.org/tacklebox/bazzite-gnome-latest.iso",
-          "size": 12088836096,
-          "modified": "2026-08-19T08:40:37.004233777Z",
+          "size": 9204596736,
+          "modified": "2026-08-26T08:48:28.031654108Z",
           "arch": "",
           "latest": true
         },
@@ -1300,6 +1300,16 @@
           "modified": "2026-07-31T12:34:11.169892931Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-gnome-20260826-7919362",
+          "path": "tacklebox/bazzite-gnome-20260826-7919362.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-gnome-20260826-7919362.iso",
+          "size": 9204596736,
+          "modified": "2026-08-26T08:48:28.031654108Z",
+          "arch": "",
+          "latest": false
         },
         {
           "category": "tacklebox",
