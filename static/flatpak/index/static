@@ -180,7 +180,7 @@
       "Name": "tuna-os/tuna-installer-cosmic",
       "Images": [
         {
-          "Digest": "sha256:d61ad9329ecdf04a575999d63430870ba5682640cd6970c2135492f951c32801",
+          "Digest": "sha256:4805d60d90f45a918b2cee1faa14e22d8d04b14e57a6d4c8424c04ff3f63950e",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -194,13 +194,13 @@
             "org.flatpak.installed-size": "265204736",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAA/OtAAAdA==",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.InstallerCosmic\nruntime=org.freedesktop.Platform/x86_64/25.08\nsdk=org.freedesktop.Sdk/x86_64/25.08\ncommand=tuna-installer-cosmic\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;wayland;\ndevices=all;\nfilesystems=host;\n\n[Session Bus Policy]\norg.freedesktop.Flatpak=talk\n\n[System Bus Policy]\norg.freedesktop.PolicyKit1=talk\n\n[Extension org.tunaos.InstallerCosmic.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.InstallerCosmic.Debug;",
-            "org.flatpak.timestamp": "1787800617",
-            "org.flatpak.download-size": "80042514",
-            "org.flatpak.commit": "f01bdd39f4aa0e9c56fc2c37a790fe724ccbb70ed07789a46e2de3000f40b830",
-            "org.flatpak.subject": "Built from 5f5ab06dad22324daebed135217fee3995230c51",
+            "org.flatpak.timestamp": "1787803832",
+            "org.flatpak.download-size": "80043513",
+            "org.flatpak.commit": "3fb6a0d1582ff8a78114c833b052fe98da69b7927674d39612ff9dba2efcf0a6",
+            "org.flatpak.subject": "Built from 62f5782be45d310e3110757aba72cc55623c61bd",
             "org.flatpak.body": "Name: org.tunaos.InstallerCosmic\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyQ29zbWljL3g4Nl82NC9tYXN0ZXIAAHM=",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAUKMF0AdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAUKMF4AdA==",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyQ29zbWljL3g4Nl82NC9tYXN0ZXIALQBhcw=="
           }
         }
