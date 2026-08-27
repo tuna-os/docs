@@ -588,7 +588,7 @@
       "Name": "tuna-os/blueshell",
       "Images": [
         {
-          "Digest": "sha256:928f291644b2fad9f2f38349c41e2b97bc99c9c8af1e1f9f766bc4c5364baa4f",
+          "Digest": "sha256:4ca12c2930eb6416e51b47ab7c733cecf5fa94601aced049e625209ba6306c39",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -602,18 +602,18 @@
             "org.flatpak.installed-size": "33201152",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAH6nAAAdA==",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.BlueShell\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=ghostty\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=all;dri;\nfilesystems=home:ro;xdg-run/podman;\n\n[Session Bus Policy]\norg.freedesktop.Flatpak=talk\ncom.mitchellh.ghostty=talk\n\n[Environment]\nGHOSTTY_RESOURCES_DIR=/app/share/ghostty\n\n[Extension org.tunaos.BlueShell.Locale]\ndirectory=share/runtime/locale\nautodelete=true\nlocale-subset=true\n\n[Extension org.tunaos.BlueShell.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.BlueShell.Locale;org.tunaos.BlueShell.Debug;",
-            "org.flatpak.timestamp": "1787806052",
-            "org.flatpak.download-size": "19793217",
-            "org.flatpak.commit": "739ac0b90fc853548918edddcb1b05ceda57f7382acc1b66667c907c1606cafe",
-            "org.flatpak.subject": "Built from a2339d382fe5c8c7f38a7dc3da75fd2ff4f6bc89",
+            "org.flatpak.timestamp": "1787809945",
+            "org.flatpak.download-size": "19793188",
+            "org.flatpak.commit": "889653b016d03f4e1e0e1509afb54fc030c36d6ce868eb27c72ce5c9b02b62b1",
+            "org.flatpak.subject": "Built from 7714b4aa4a7549823f2ce2ab3cc4a6f73cc42124",
             "org.flatpak.body": "Name: org.tunaos.BlueShell\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuQmx1ZVNoZWxsL3g4Nl82NC9tYXN0ZXIAAHM=",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAExVdoAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAExVbgAdA==",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuQmx1ZVNoZWxsL3g4Nl82NC9tYXN0ZXIAJwBhcw=="
           }
         },
         {
-          "Digest": "sha256:89cecbcee2e9ad0ae00023cc7d9a40e093037d964ba7b1dd60b921ed5401cb0e",
+          "Digest": "sha256:7e36996ca5322c5d52d6ab232ced7b25631bc92d152bf2d8ad672921fa43e6d0",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "arm64",
@@ -627,13 +627,13 @@
             "org.flatpak.installed-size": "31787520",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAAHlCgAAdA==",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.BlueShell\nruntime=org.gnome.Platform/aarch64/50\nsdk=org.gnome.Sdk/aarch64/50\ncommand=ghostty\n\n[Context]\nshared=ipc;\nsockets=fallback-x11;wayland;\ndevices=all;dri;\nfilesystems=home:ro;xdg-run/podman;\n\n[Session Bus Policy]\norg.freedesktop.Flatpak=talk\ncom.mitchellh.ghostty=talk\n\n[Environment]\nGHOSTTY_RESOURCES_DIR=/app/share/ghostty\n\n[Extension org.tunaos.BlueShell.Locale]\ndirectory=share/runtime/locale\nautodelete=true\nlocale-subset=true\n\n[Extension org.tunaos.BlueShell.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.BlueShell.Locale;org.tunaos.BlueShell.Debug;",
-            "org.flatpak.timestamp": "1787806047",
-            "org.flatpak.download-size": "19306344",
-            "org.flatpak.commit": "30a85998aa4dd3e8f5fb9a02fb7ed58696acdc120a37a72f59d5608d3db88807",
-            "org.flatpak.subject": "Built from a2339d382fe5c8c7f38a7dc3da75fd2ff4f6bc89",
+            "org.flatpak.timestamp": "1787809828",
+            "org.flatpak.download-size": "19306509",
+            "org.flatpak.commit": "82447fdea70ac00be19c0cb18898ac976b4810aa5777b252b29aab5e550bcfd2",
+            "org.flatpak.subject": "Built from 7714b4aa4a7549823f2ce2ab3cc4a6f73cc42124",
             "org.flatpak.body": "Name: org.tunaos.BlueShell\nArch: aarch64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuQmx1ZVNoZWxsL2FhcmNoNjQvbWFzdGVyAABz",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAEp71MAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAEp738AdA==",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy50dW5hb3MuQmx1ZVNoZWxsL2FhcmNoNjQvbWFzdGVyACgAYXM="
           }
         }
