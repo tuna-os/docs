@@ -120,7 +120,7 @@
       "Name": "tuna-os/tuna-installer-xfce",
       "Images": [
         {
-          "Digest": "sha256:6c3eec3217200198de6c77f18472605f993f839f97945c0b0b37fa4aa4244e17",
+          "Digest": "sha256:3aa3fbeafe5be083039f128b8740a0b3d0035ffbaabad45576d879dfebbd1d8d",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -134,10 +134,10 @@
             "org.flatpak.installed-size": "237421056",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAA4mwgAAdA==",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.InstallerXfce\nruntime=org.gnome.Platform/x86_64/49\nsdk=org.gnome.Sdk/x86_64/49\ncommand=tuna-installer-xfce\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;wayland;\ndevices=all;\nfilesystems=host;\n\n[Session Bus Policy]\norg.freedesktop.Flatpak=talk\n\n[System Bus Policy]\norg.freedesktop.PolicyKit1=talk\n\n[Extension org.tunaos.InstallerXfce.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.InstallerXfce.Debug;",
-            "org.flatpak.timestamp": "1787800200",
-            "org.flatpak.download-size": "69217252",
-            "org.flatpak.commit": "95a6ff9988c54773384d7a56381ecb976b2192339df477d318fcbbc3e9ccb2c4",
-            "org.flatpak.subject": "Built from 768d9882b7412c8779b584aee83502cc2ee7a94e",
+            "org.flatpak.timestamp": "1787805403",
+            "org.flatpak.download-size": "69217027",
+            "org.flatpak.commit": "5343cbd217b2c8c8d1b43e43576fbaf14ee3a119e4107e44b8054b4819e89b78",
+            "org.flatpak.subject": "Built from 962c92530bbc8b305aff963c4655c5ab931fd5d1",
             "org.flatpak.body": "Name: org.tunaos.InstallerXfce\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyWGZjZS94ODZfNjQvbWFzdGVyAABz",
             "org.flatpak.commit-metadata.xa.download-size": "AAAAAARk7P4AdA==",
