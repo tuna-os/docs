@@ -13,15 +13,73 @@ App ID: `org.tunaos.BlueShell`
 
 ## What makes it different
 
-| | BlueShell |
-| --- | --- |
-| **Renderer** | Ghostty — HarfBuzz, GPU-accelerated, Kitty graphics, OSC 8 hyperlinks, ligatures |
-| **Container integration** | First-class — spawn shells in Toolbox / Distrobox / Podman from the new-tab menu via `ptyxis-agent` |
-| **Profiles** | Ptyxis-style per-profile config snapshots — palette, font, opacity, cursor, command, scrollback |
-| **Preferences window** | Full Ptyxis-style UI — palette picker, font, cursor, scrollback, window theme, shell integration, notifications |
-| **Splits / tabs** | Ghostty splits + tab overview |
-| **Command palette** | Ghostty fuzzy command palette |
-| **Desktop** | GNOME / Libadwaita, Wayland + X11 |
+|                               | BlueShell                                                                                                                                              |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Renderer**                  | Ghostty — HarfBuzz, GPU-accelerated, Kitty graphics, OSC 8 hyperlinks, ligatures                                                                       |
+| **Container integration**     | First-class — spawn shells in Toolbox / Distrobox / Podman from the new-tab menu via `ptyxis-agent`                                                    |
+| **Profiles**                  | Ptyxis-style per-profile config snapshots — palette, font, opacity, cursor, command, scrollback                                                        |
+| **Preferences window**        | Full Ptyxis-style UI — palette picker, font, cursor, scrollback, window theme, shell integration, notifications                                        |
+| **Light / dark**              | Follows the desktop light/dark preference out of the box; the Ptyxis-style System / Light / Dark picker in the main menu overrides it                  |
+| **Agent awareness (preview)** | herdr-style AI agent tracking (opt-in) — per-tab idle / working / blocked / done badges, desktop notifications, blocked-tab tint, "Next Blocked Agent" |
+| **Splits / tabs**             | Ghostty splits + tab overview                                                                                                                          |
+| **Command palette**           | Ghostty fuzzy command palette                                                                                                                          |
+| **Desktop**                   | GNOME / Libadwaita, Wayland + X11                                                                                                                      |
+
+---
+
+## Screenshots
+
+Always current: these images are captured by BlueShell's CI screenshot
+walkthrough on every change to `ptyxis-port` and published to the
+repository's `screenshots` branch.
+
+|                                                                                                          |                                                                                                                            |
+| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| ![Main window](https://raw.githubusercontent.com/tuna-os/blueshell/screenshots/shots/01-main-window.png) | ![Preferences — Appearance](https://raw.githubusercontent.com/tuna-os/blueshell/screenshots/shots/02-prefs-appearance.png) |
+| ![Light mode](https://raw.githubusercontent.com/tuna-os/blueshell/screenshots/shots/06-theme-light.png)  | ![Dark mode](https://raw.githubusercontent.com/tuna-os/blueshell/screenshots/shots/07-theme-dark.png)                      |
+
+![Agent-aware tab badged as blocked](https://raw.githubusercontent.com/tuna-os/blueshell/screenshots/shots/08-agent-blocked.png)
+
+---
+
+## Theming
+
+BlueShell follows the desktop light/dark preference with no
+configuration: a light desktop gets a light terminal (GNOME/Adwaita
+palette), a dark desktop gets the classic Ghostty dark colors, and a
+system style switch repaints open terminals live. The **System / Light /
+Dark** picker in the main menu forces a style for BlueShell alone
+(`window-theme = system|light|dark`), and palettes applied from
+Preferences carry both variants so they follow the system too. Explicit
+colors or a single `theme` in your config always win over these
+defaults.
+
+---
+
+## Agent awareness (preview)
+
+Opt-in, [herdr](https://github.com/ogulcancelik/herdr)-inspired tracking
+of AI coding agents running in your tabs
+([RFC #22](https://github.com/tuna-os/blueshell/issues/22)):
+
+```ini
+# Which foreground processes count as agents (repeatable; empty = off).
+agent-detect = claude
+agent-detect = codex
+
+# Desktop notification when an unfocused agent blocks or finishes.
+agent-notify = true
+
+# Amber background tint while an agent is blocked on a question.
+agent-colors = true
+```
+
+Detected agents are classified **idle / working / blocked / done** from
+output activity and prompt-like text, shown as a badge on the tab; the
+tab overview doubles as an agent dashboard and **Next Blocked Agent** in
+the main menu jumps to the next tab waiting on input. Classification is
+heuristic by design, BlueShell never drives the agents themselves, and
+session persistence (tier 3 of the RFC) is future work. Linux only.
 
 ---
 
@@ -104,14 +162,14 @@ menu. These are **off by default**; opt in with a comma list in
 export BLUESHELL_VM_PROVIDERS=lima,incus        # or: all
 ```
 
-| Provider | Needs on PATH | Opens a shell via |
-| --- | --- | --- |
-| `lima` | `limactl` | `limactl shell <name>` |
-| `incus` | `incus` | `incus exec <name> --` |
-| `libvirt` | `virsh` | `virsh console <domain>` (serial console; exit with `Ctrl+]`) |
-| `kubernetes` | `kubectl` | `kubectl exec -it <pod> [-c <container>] --` (current context/namespace) |
-| `kubevirt` | `virtctl` + `kubectl` | `virtctl console -n <ns> <vmi>` |
-| `corral` | `corral` | VMs: `corral ssh <name>` · containers: `corral ct console <name>` ([tuna-os/corral](https://github.com/tuna-os/corral)) |
+| Provider     | Needs on PATH         | Opens a shell via                                                                                                       |
+| ------------ | --------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `lima`       | `limactl`             | `limactl shell <name>`                                                                                                  |
+| `incus`      | `incus`               | `incus exec <name> --`                                                                                                  |
+| `libvirt`    | `virsh`               | `virsh console <domain>` (serial console; exit with `Ctrl+]`)                                                           |
+| `kubernetes` | `kubectl`             | `kubectl exec -it <pod> [-c <container>] --` (current context/namespace)                                                |
+| `kubevirt`   | `virtctl` + `kubectl` | `virtctl console -n <ns> <vmi>`                                                                                         |
+| `corral`     | `corral`              | VMs: `corral ssh <name>` · containers: `corral ct console <name>` ([tuna-os/corral](https://github.com/tuna-os/corral)) |
 
 Only running instances are listed; a provider whose tool is missing is
 skipped silently. Enumeration happens at agent startup (restart the app to
@@ -148,6 +206,7 @@ The per-profile editor (accessible from Preferences → Profiles → Edit…) le
 Open with `Ctrl+,` or the hamburger menu.
 
 **Appearance**
+
 - Palette picker (244 palettes from the Gogh collection)
 - Background transparency + blur
 - Font family/size/thicken
@@ -155,6 +214,7 @@ Open with `Ctrl+,` or the hamburger menu.
 - Cursor shape (block / hollow block / I-beam / underline), blinking, opacity
 
 **Behavior**
+
 - Tab bar visibility + position + wide tabs
 - Window save state (restore on next launch)
 - Mouse hide while typing, copy-on-select
@@ -164,10 +224,12 @@ Open with `Ctrl+,` or the hamburger menu.
 - Confirm before closing
 
 **Shortcuts**
+
 - Live list of active keybindings from the current config
 - Quick access to open the config file or reload config
 
 **Profiles**
+
 - Create, switch, save, delete profiles
 - Open the per-profile editor
 
@@ -175,16 +237,16 @@ Open with `Ctrl+,` or the hamburger menu.
 
 ## Key bindings (defaults)
 
-| Action | Binding |
-| --- | --- |
-| New tab | `Ctrl+Shift+T` |
-| Close tab | `Ctrl+Shift+W` |
+| Action              | Binding                       |
+| ------------------- | ----------------------------- |
+| New tab             | `Ctrl+Shift+T`                |
+| Close tab           | `Ctrl+Shift+W`                |
 | Next / previous tab | `Ctrl+Tab` / `Ctrl+Shift+Tab` |
-| Split right | `Ctrl+Shift+D` |
-| Zoom in / out | `Ctrl+=` / `Ctrl+-` |
-| Command palette | `Ctrl+Shift+P` |
-| Preferences | `Ctrl+,` |
-| Search | `Ctrl+Shift+F` |
+| Split right         | `Ctrl+Shift+D`                |
+| Zoom in / out       | `Ctrl+=` / `Ctrl+-`           |
+| Command palette     | `Ctrl+Shift+P`                |
+| Preferences         | `Ctrl+,`                      |
+| Search              | `Ctrl+Shift+F`                |
 
 All keybindings are configurable via `keybind = trigger=action` in `~/.config/ghostty/config`.
 
