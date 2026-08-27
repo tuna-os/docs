@@ -90,7 +90,7 @@
       "Name": "tuna-os/bootc-installer",
       "Images": [
         {
-          "Digest": "sha256:b552e0f07a425f809aa4a2532356f8fbd57f00dddfa411b86f71b4fcc8d02acd",
+          "Digest": "sha256:05b93cf42942fe3ae851ae298f05ac7131f8815c1cbdf6e03f619cafcdf3c31c",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -101,16 +101,16 @@
             "org.flatpak.commit-metadata.ostree.collection-binding": "AABz",
             "org.flatpak.commit-metadata.xa.metadata": "W0FwcGxpY2F0aW9uXQpuYW1lPW9yZy5ib290Y2luc3RhbGxlci5JbnN0YWxsZXIKcnVudGltZT1vcmcuZ25vbWUuUGxhdGZvcm0veDg2XzY0LzUwCnNkaz1vcmcuZ25vbWUuU2RrL3g4Nl82NC81MApjb21tYW5kPWJvb3RjLWluc3RhbGxlcgoKW0NvbnRleHRdCnNoYXJlZD1pcGM7bmV0d29yazsKc29ja2V0cz1mYWxsYmFjay14MTE7d2F5bGFuZDsKZGV2aWNlcz1hbGw7CmZlYXR1cmVzPWRldmVsOwpmaWxlc3lzdGVtcz1ob3N0OwoKW1Nlc3Npb24gQnVzIFBvbGljeV0Kb3JnLmZyZWVkZXNrdG9wLkZsYXRwYWs9dGFsawoKW1N5c3RlbSBCdXMgUG9saWN5XQpvcmcuZnJlZWRlc2t0b3AubG9naW4xPXRhbGsKb3JnLmZyZWVkZXNrdG9wLlBvbGljeUtpdDE9dGFsawoKW0V4dGVuc2lvbiBvcmcuYm9vdGNpbnN0YWxsZXIuSW5zdGFsbGVyLkxvY2FsZV0KZGlyZWN0b3J5PXNoYXJlL3J1bnRpbWUvbG9jYWxlCmF1dG9kZWxldGU9dHJ1ZQpsb2NhbGUtc3Vic2V0PXRydWUKCltFeHRlbnNpb24gb3JnLmJvb3RjaW5zdGFsbGVyLkluc3RhbGxlci5EZWJ1Z10KZGlyZWN0b3J5PWxpYi9kZWJ1ZwphdXRvZGVsZXRlPXRydWUKbm8tYXV0b2Rvd25sb2FkPXRydWUKCltCdWlsZF0KYnVpbHQtZXh0ZW5zaW9ucz1vcmcuYm9vdGNpbnN0YWxsZXIuSW5zdGFsbGVyLkxvY2FsZTtvcmcuYm9vdGNpbnN0YWxsZXIuSW5zdGFsbGVyLkRlYnVnOwAAcw==",
             "org.flatpak.ref": "app/org.bootcinstaller.Installer/x86_64/master",
-            "org.flatpak.installed-size": "284392448",
-            "org.flatpak.commit-metadata.xa.installed-size": "AAAAABDzfAAAdA==",
+            "org.flatpak.installed-size": "284430336",
+            "org.flatpak.commit-metadata.xa.installed-size": "AAAAABD0EAAAdA==",
             "org.flatpak.metadata": "[Application]\nname=org.bootcinstaller.Installer\nruntime=org.gnome.Platform/x86_64/50\nsdk=org.gnome.Sdk/x86_64/50\ncommand=bootc-installer\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;wayland;\ndevices=all;\nfeatures=devel;\nfilesystems=host;\n\n[Session Bus Policy]\norg.freedesktop.Flatpak=talk\n\n[System Bus Policy]\norg.freedesktop.login1=talk\norg.freedesktop.PolicyKit1=talk\n\n[Extension org.bootcinstaller.Installer.Locale]\ndirectory=share/runtime/locale\nautodelete=true\nlocale-subset=true\n\n[Extension org.bootcinstaller.Installer.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.bootcinstaller.Installer.Locale;org.bootcinstaller.Installer.Debug;",
-            "org.flatpak.timestamp": "1781569926",
-            "org.flatpak.download-size": "110446036",
-            "org.flatpak.commit": "f7a1fd3e2a0e1bd897341ea1b3d2dc83f2a12a3d8f6cde31f7392f04ce482bb3",
-            "org.flatpak.subject": "Built from f9df8309869871361281e1d4abcc4891e5eb9aca",
+            "org.flatpak.timestamp": "1787808474",
+            "org.flatpak.download-size": "110460360",
+            "org.flatpak.commit": "053b21e859491f92cbf55662bc2982d82b3b95639b8be378ce117a460ac5dcef",
+            "org.flatpak.subject": "Built from 5c14f1784bade2b38527af97a4f733798bafd73f",
             "org.flatpak.body": "Name: org.bootcinstaller.Installer\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy5ib290Y2luc3RhbGxlci5JbnN0YWxsZXIveDg2XzY0L21hc3RlcgAAcw==",
-            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAbbv6IAdA==",
+            "org.flatpak.commit-metadata.xa.download-size": "AAAAAAbb87EAdA==",
             "org.flatpak.commit-metadata.ostree.ref-binding": "YXBwL29yZy5ib290Y2luc3RhbGxlci5JbnN0YWxsZXIveDg2XzY0L21hc3RlcgAvAGFz"
           }
         }
