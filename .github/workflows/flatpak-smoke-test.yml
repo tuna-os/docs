@@ -1,0 +1,44 @@
+# Installs and launches every app in static/flatpak/expected-apps.json
+# from the live tuna-os remote, and files a GitHub issue on the owning app
+# repo for anything that fails to install or crashes on launch.
+#
+# Complements flatpak-sanity.yml (that one checks the served index is
+# structurally correct; this one checks the apps it points at actually
+# work). Installer apps (org.tunaos.Installer*, org.bootcinstaller.Installer)
+# are install-tested only, not launched -- see flatpak-smoke-test.py.
+
+name: Flatpak Remote Smoke Test
+
+on:
+  schedule:
+    - cron: '30 12 * * *'  # daily, after flatpak-sanity.yml's nightly run
+  workflow_dispatch:
+    inputs:
+      file_issues:
+        description: File/update/close issues on app repos for real (leave off for a dry run)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install flatpak + xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flatpak xvfb
+
+      - name: Run smoke test
+        env:
+          ISSUE_TOKEN: ${{ secrets.FLATPAK_SMOKE_ISSUE_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          # Always file for real on the nightly schedule; on manual dispatch,
+          # respect the input (defaults to a dry run so testing this workflow
+          # itself doesn't spam every app repo).
+          FILE_ISSUES: ${{ github.event_name == 'schedule' || inputs.file_issues == true }}
+        run: python3 .github/scripts/flatpak-smoke-test.py

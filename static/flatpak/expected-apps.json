@@ -1,11 +1,13 @@
 {
-  "_comment": "Source of truth for the flatpak sanity check (.github/scripts/check-flatpak-remote.py). archs listed are required; missing ones fail the check, missing 'archs_planned' only warn.",
+  "_comment": "Source of truth for the flatpak sanity check (.github/scripts/check-flatpak-remote.py) and the smoke test (.github/scripts/flatpak-smoke-test.py). 'name' is the GHCR registry path (matched against index/static Results[].Name) -- archs listed are required; missing ones fail the check, missing 'archs_planned' only warn. 'issue_repo' is the GitHub repo the smoke test files issues against; only present when it differs from 'name' (letters/tables/decks kept their original per-app registry paths after consolidating development into tuna-os/gtk-office-suite -- their original standalone repos are archived and can't take new issues).",
   "apps": [
-    {"name": "tuna-os/letters", "id": "org.tunaos.letters", "archs": ["amd64", "arm64"]},
-    {"name": "tuna-os/tables", "id": "org.tunaos.tables", "archs": ["amd64", "arm64"]},
-    {"name": "tuna-os/decks", "id": "org.tunaos.decks", "archs": ["amd64", "arm64"]},
+    {"name": "tuna-os/letters", "issue_repo": "tuna-os/gtk-office-suite", "id": "org.tunaos.letters", "archs": ["amd64", "arm64"]},
+    {"name": "tuna-os/tables", "issue_repo": "tuna-os/gtk-office-suite", "id": "org.tunaos.tables", "archs": ["amd64", "arm64"]},
+    {"name": "tuna-os/decks", "issue_repo": "tuna-os/gtk-office-suite", "id": "org.tunaos.decks", "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/mariner", "id": "org.tunaos.mariner", "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/mandelbrot", "id": "org.tunaos.mandelbrot", "archs": ["amd64", "arm64"]},
+    {"name": "tuna-os/dualcut", "id": "org.tunaos.dualcut", "archs": ["amd64", "arm64"]},
+    {"name": "tuna-os/finupdate", "id": "org.tunaos.finupdate", "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/tavern", "id": "org.tunaos.tavern", "archs": ["amd64"]},
     {"name": "tuna-os/bootc-installer", "id": "org.bootcinstaller.Installer", "archs": ["amd64"]},
     {"name": "tuna-os/tuna-installer-xfce", "id": "org.tunaos.InstallerXfce", "archs": ["amd64"]},
