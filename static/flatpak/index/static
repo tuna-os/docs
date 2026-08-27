@@ -180,7 +180,7 @@
       "Name": "tuna-os/tuna-installer-cosmic",
       "Images": [
         {
-          "Digest": "sha256:e2e1ed217a73bac9db70646c7387b125b385e1bf6928297b6b20cafab70524a5",
+          "Digest": "sha256:40b9fe4cb517958df408a79beaf25de888912a459ab293236bab796431ece5a2",
           "MediaType": "application/vnd.oci.image.manifest.v1+json",
           "OS": "linux",
           "Architecture": "amd64",
@@ -194,10 +194,10 @@
             "org.flatpak.installed-size": "265204736",
             "org.flatpak.commit-metadata.xa.installed-size": "AAAAAA/OtAAAdA==",
             "org.flatpak.metadata": "[Application]\nname=org.tunaos.InstallerCosmic\nruntime=org.freedesktop.Platform/x86_64/25.08\nsdk=org.freedesktop.Sdk/x86_64/25.08\ncommand=tuna-installer-cosmic\n\n[Context]\nshared=ipc;network;\nsockets=fallback-x11;wayland;\ndevices=all;\nfilesystems=host;\n\n[Session Bus Policy]\norg.freedesktop.Flatpak=talk\n\n[System Bus Policy]\norg.freedesktop.PolicyKit1=talk\n\n[Extension org.tunaos.InstallerCosmic.Debug]\ndirectory=lib/debug\nautodelete=true\nno-autodownload=true\n\n[Build]\nbuilt-extensions=org.tunaos.InstallerCosmic.Debug;",
-            "org.flatpak.timestamp": "1787806066",
-            "org.flatpak.download-size": "80043423",
-            "org.flatpak.commit": "974284d377f8f6e3d05ff4e8c24e4d57ae443da0a546d0d0ec17c7aeab2d4ea2",
-            "org.flatpak.subject": "Built from efbb7ad596504f2f7d9671b4a66b87f127805ecf",
+            "org.flatpak.timestamp": "1787812007",
+            "org.flatpak.download-size": "80043165",
+            "org.flatpak.commit": "f7a081695c8766172d3fe01973cad5d9f2d33a82e7116da26de43ef16a2d0584",
+            "org.flatpak.subject": "Built from b05eba64310d21c61184128d3353618f76246ae4",
             "org.flatpak.body": "Name: org.tunaos.InstallerCosmic\nArch: x86_64\nBranch: master\nBuilt with: Flatpak 1.18.1\n",
             "org.flatpak.commit-metadata.xa.ref": "YXBwL29yZy50dW5hb3MuSW5zdGFsbGVyQ29zbWljL3g4Nl82NC9tYXN0ZXIAAHM=",
             "org.flatpak.commit-metadata.xa.download-size": "AAAAAAUKMGIAdA==",
