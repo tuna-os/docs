@@ -18,6 +18,8 @@ Run a local model with GPU passthrough. The host packages do not change:
 podman run -d --device nvidia.com/gpu=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 ```
 
+The `nvidia.com/gpu` device needs the NVIDIA container toolkit on the host. Generate the CDI specification first. Then check that the device name resolves before you start the container.
+
 ### 2. Podman Desktop
 
 Install Podman Desktop as a Flatpak to see and control your local containers and models:
