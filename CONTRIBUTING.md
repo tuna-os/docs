@@ -14,6 +14,13 @@ Thanks for your interest! This project is part of the [TunaOS](https://tunaos.or
 - Follow the existing code style and conventions.
 - Update docs if your change affects usage.
 
+## Adding a variant page
+
+The step-by-step page for adding a TunaOS variant is in the documentation:
+[Adding a variant page](docs/variant-pages.md). It covers the page skeleton,
+sidebar entry, image and ISO links, generated screenshots, and the checks to
+run before opening a PR.
+
 ## Blog Posts
 
 - Blog posts live in `blog/` with a `YYYY-MM-DD-<slug>.md` filename.
@@ -27,4 +34,3 @@ Thanks for your interest! This project is part of the [TunaOS](https://tunaos.or
 
 - [TunaOS Documentation](https://tunaos.org)
 - [GitHub Issues](https://github.com/tuna-os/tunaOS/issues)
-
