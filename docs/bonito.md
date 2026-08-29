@@ -19,6 +19,7 @@ the most recent available.
 - 🧪 **Experimental**: A playground for the newest features of the TunaOS project.
 - 🍺 **Baked-in Homebrew**: Standard across all TunaOS variants.
 - 📦 **Flatpak First**: Tuned for a desktop where containers hold the applications.
+- ⚡ **Niri Support**: A modern scrollable-tiling Wayland compositor — see the [Niri Quick Start](/docs/niri-quickstart).
 
 ## Status
 
