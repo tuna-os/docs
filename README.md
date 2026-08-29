@@ -6,7 +6,7 @@ of static websites.
 ## Installation
 
 ```bash
-yarn
+npm ci
 ```
 
 All standard tasks (`install`, `build`, `test`, `lint`) are also available
@@ -15,7 +15,7 @@ via [`just`](https://github.com/casey/just) — see `just --list`.
 ## Local Development
 
 ```bash
-yarn start
+npm run start
 ```
 
 This command starts a local development server and opens up a browser window. The server shows most changes immediately. You do not have to start it again.
@@ -23,7 +23,7 @@ This command starts a local development server and opens up a browser window. Th
 ## Build
 
 ```bash
-yarn build
+npm run build
 ```
 
 This command writes the static content to the `build` directory. Any service
@@ -46,5 +46,8 @@ static assets, and `worker/index.js` routes requests.
 To preview the production build locally:
 
 ```bash
-yarn build
+npm run build
 ```
+
+For prerequisites and validation before submission, see the
+[contributor guide](./CONTRIBUTING.md).
