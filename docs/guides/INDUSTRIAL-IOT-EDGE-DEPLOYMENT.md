@@ -1,17 +1,17 @@
 # Industrial IoT & Edge Gateway Deployment Guide
 
-TunaOS provides embedded systems engineers and edge computing architects with a resilient, transactional, and container-managed operating system baseline for remote edge nodes and IIoT gateways.
+TunaOS gives embedded engineers and edge architects a transactional, container-managed operating system for remote nodes and IIoT gateways.
 
 ## Key Advantages for Edge & Industrial Deployments
 
-1. **Transactional OTA Updates**: Over-the-air OS updates are pulled as standard container layer diffs via OCI registries. If an update fails health checks, automatic GRUB rollback restores the operational image.
-2. **Read-Only Root Partition**: System files `/usr` remain read-only, protecting edge gateways deployed in field locations from power failures or filesystem corruption.
+1. **Transactional OTA Updates**: The system gets over-the-air updates as standard container layers from an OCI registry. If an update does not pass its health checks, GRUB starts the last known good image again.
+2. **Read-Only Root Partition**: The system files in `/usr` stay read-only. This keeps a gateway in the field safe from a power failure or a corrupt filesystem.
 3. **Edge Workload Isolation**: Run telemetry collection (MQTT, Prometheus exporters), protocol translation (Modbus, OPC-UA), and local analytics as unprivileged Podman containers.
 
 ## Edge Deployment Architecture
 
 - **Base OS**: Minimal TunaOS Skipjack (CentOS Stream 10 base) or Albacore (AlmaLinux base).
-- **Container Microservices**: Manage local edge workloads using quadlets / systemd container units:
+- **Container Microservices**: Control the workloads on the gateway with quadlets, which are systemd unit files for containers:
   ```ini
   [Container]
   Image=ghcr.io/my-org/telemetry-collector:latest
@@ -21,7 +21,4 @@ TunaOS provides embedded systems engineers and edge computing architects with a 
   [Install]
   WantedBy=multi-user.target
   ```
-- **Remote Update Automation**: Scheduled systemd timer for background container updates (`bootc update`).
-
----
-*Filed by outreach agent (ACMM L6 — full mode)*
+- **Remote Update Automation**: A systemd timer runs `bootc update` in the background on a schedule.
