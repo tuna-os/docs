@@ -32,28 +32,28 @@ const ROOT = process.cwd();
 // disappears at the next sync. Everything else is this repo's to answer for, so
 // getting the line in the right place matters in both directions.
 
-// GENERATED_MARKER is the absolute-GitHub-link shape sync-org-docs.mjs leaves
-// behind when it rewrites a repo-relative link.
+// A file goes unchecked for exactly two reasons, and both are readable from
+// outside this script:
 //
-// It is a weak signal in both directions and is no longer what decides whether
-// a tree is generated (see generatedDirs below):
+//   * it sits in a generated tree — generatedDirs below, and every such tree is
+//     named in the run's output
+//   * it opted out in its own text with a stated reason — DISABLE_FILE below,
+//     and every one is printed with that reason
 //
-//   * it is not necessary — a synced file that contained no relative link never
-//     gets the mark, which is how seven synced files stayed in the budget (#102)
-//   * it is not sufficient — a hand-written page that links to a file on GitHub
-//     carries the identical shape. docs/faq.md and docs/community.md link to
-//     tunaOS/blob/main/CONTRIBUTING.md by hand and are marked generated today.
+// Nothing else suppresses a finding, so the reported total is the whole total.
 //
-// It survives only as the per-file fallback in main(). Removing it there is a
-// separate change with a much larger budget consequence, filed separately.
-const GENERATED_MARKER = /github\.com\/tuna-os\/[a-zA-Z0-9._-]+\/blob\/main/;
-
-// isGenerated reports whether a file carries the rewritten-link mark. Prefer
-// generatedDirs: this answers "does the file link to GitHub", not "was the file
-// written by the sync".
-export function isGenerated(content) {
-  return GENERATED_MARKER.test(content);
-}
+// There used to be a third reason, and it was the invisible one. main() also
+// skipped any file whose text matched the absolute-GitHub-link shape the sync
+// leaves behind when it rewrites a repo-relative link:
+//
+//   /github\.com\/tuna-os\/[a-zA-Z0-9._-]+\/blob\/main/
+//
+// That asks whether a page links to GitHub, not whether the sync wrote it, and
+// a hand-written page linking to a file on GitHub carries the identical shape.
+// It hid 110 findings in prose this repo answers for — 60 of them in one blog
+// post — while the printed total said 14 (#123). The prose behind it is now
+// converted or opted out by name, the check is gone, and this note is here so
+// the shape does not come back as a convenience.
 
 // generatedDirs finds the docs/<slug>/ trees that sync-org-docs.mjs owns.
 //

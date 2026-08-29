@@ -10,6 +10,7 @@
 //   node scripts/__tests__/ste-lint.test.mjs
 
 import {strict as assert} from 'node:assert';
+import {execFileSync} from 'node:child_process';
 import {existsSync, mkdirSync, mkdtempSync, writeFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {basename, dirname, join} from 'node:path';
@@ -19,7 +20,7 @@ import {
   checkSentenceLength, checkPassiveVoice, checkGerunds,
   checkUnapprovedWords, checkNounCluster, checkParagraphLength,
 } from '../ste-rules.mjs';
-import {stripNonProse, blocks, lintText, isGenerated, generatedDirs} from '../ste-lint.mjs';
+import {stripNonProse, blocks, lintText, generatedDirs} from '../ste-lint.mjs';
 import {frontmatter, subFrontmatter, HAND_AUTHORED} from '../sync-org-docs.mjs';
 
 // generatedDirs takes a root, so the tests can build trees instead of asserting
@@ -227,14 +228,6 @@ test('a list stuck to a paragraph is split from it', () => {
 // over-detection takes prose this repo does own out of the checker entirely,
 // which is the quieter and worse failure.
 
-test('the rewritten-link mark is recognised', () => {
-  assert.ok(isGenerated('See [README](https://github.com/tuna-os/corral/blob/main/../README.md)'));
-});
-
-test('a plain relative link does not carry the mark', () => {
-  assert.ok(!isGenerated('See [the guide](./guide.md) for more.'));
-});
-
 // A tree fixture: docs/<slug>/ holding the named files, under a temp root.
 function fixture(trees) {
   const root = mkdtempSync(join(tmpdir(), 'ste-lint-'));
@@ -332,6 +325,31 @@ test('clean STE prose produces no findings', () => {
 test('non-conformant prose produces findings', () => {
   const findings = lintText('Building the image is performed in order to utilize the cache.');
   assert.ok(findings.length >= 2, JSON.stringify(findings));
+});
+
+// A hand-written page that links to a file on GitHub must still be checked.
+//
+// This is the #123 regression, and it is a property of the run rather than of
+// any exported helper: main() used to skip any file whose text matched the
+// absolute-GitHub-link shape the sync leaves behind, which hid 110 findings in
+// prose this repo answers for while the printed total said 14. The check lived
+// nowhere but that loop, so the test drives the checker the way CI does — as a
+// process, against a fixture root — instead of asserting against a helper.
+test('a hand-written page that links to GitHub is still checked (#123)', () => {
+  const root = mkdtempSync(join(tmpdir(), 'ste-lint-cli-'));
+  mkdirSync(join(root, 'docs'), {recursive: true});
+  writeFileSync(join(root, 'docs', 'community.md'),
+    '# Community\n\n' +
+    'See the [Contributor Guide](https://github.com/tuna-os/tunaOS/blob/main/CONTRIBUTING.md).\n\n' +
+    'Building the image is performed in order to utilize the cache.\n');
+
+  const out = execFileSync(process.execPath, [join(ROOT, 'scripts', 'ste-lint.mjs')],
+    {cwd: root, encoding: 'utf8'});
+
+  assert.match(out, /docs\/community\.md/,
+    'the page carries findings and must be reported, not skipped:\n' + out);
+  assert.doesNotMatch(out, /generated file\(s\) skipped/,
+    'nothing in this fixture is generated:\n' + out);
 });
 
 console.log(`\n${passed} passed, ${failed} failed`);
