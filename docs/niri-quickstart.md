@@ -7,9 +7,9 @@ description: "A quick-start guide to the Niri scrollable-tiling Wayland window m
 
 # ⚡ Niri Window Manager Quick-Start
 
-[Niri](https://github.com/YaLTeR/niri) is a modern, scrollable-tiling Wayland compositor written in Rust. It organizes windows in an infinite horizontal ribbon rather than fixed grid tiles or overlapping floating windows.
+[Niri](https://github.com/YaLTeR/niri) is a modern, scrollable-tiling Wayland compositor written in Rust. It puts your windows on a single ribbon that runs sideways without end, not in fixed grid tiles and not in a stack that overlaps.
 
-TunaOS provides Niri across multiple base variants — including **[Bonito](/bonito)** (Fedora 44), **[Yellowfin](/yellowfin)** (AlmaLinux Kitten 10), **[Albacore](/albacore)** (AlmaLinux 10), **[Skipjack](/skipjack)** (CentOS Stream 10), **[Marlin](/marlin)** (Arch Linux), and **[Grouper](/grouper)** (Ubuntu 26.04).
+TunaOS ships Niri on several bases. These are **[Bonito](/bonito)** (Fedora 44), **[Yellowfin](/yellowfin)** (AlmaLinux Kitten 10), **[Albacore](/albacore)** (AlmaLinux 10), **[Skipjack](/skipjack)** (CentOS Stream 10), **[Marlin](/marlin)** (Arch Linux), and **[Grouper](/grouper)** (Ubuntu 26.04).
 
 :::tip[Visual overview]
 To explore the Fedora 44 base variant that ships Niri, see the **[Bonito overview →](/bonito)** page.
@@ -19,11 +19,11 @@ To explore the Fedora 44 base variant that ships Niri, see the **[Bonito overvie
 
 ## What is Niri?
 
-Niri is a keyboard-focused tiling compositor designed from the ground up for Wayland. Unlike conventional desktop environments and window managers, Niri uses a **scrollable tiling** model:
+Niri is a keyboard-focused tiling compositor, built for Wayland from the start. It is not like a conventional desktop or a conventional window manager. It uses a **scrollable tiling** model:
 
-- **Traditional Desktop Environments (GNOME, KDE Plasma, XFCE):** Windows float freely and overlap on a two-dimensional desktop plane. Finding windows often requires manual dragging, window minimization, or cycling through `Alt+Tab`.
-- **Traditional Tiling Window Managers (i3, Sway, Hyprland):** Windows are partitioned into rigid 2D screen splits or binary space partition (BSP) grids. As you open more windows, each existing window shrinks until text and UI elements become cramped.
-- **Niri's Scrollable Tiling (The Infinite Ribbon):** Windows are arranged into vertical columns along an endless horizontal ribbon. When you open a new window or column, existing windows keep their readable size. The view smoothly slides horizontally along the ribbon as you navigate between windows.
+- **Traditional Desktop Environments (GNOME, KDE Plasma, XFCE):** Windows float freely and overlap on a two-dimensional desktop plane. To find a window, you often drag it, or you minimize another one, or you step through `Alt+Tab`.
+- **Traditional Tiling Window Managers (i3, Sway, Hyprland):** These split the screen into rigid areas, or into a BSP grid. Each new window makes the other windows smaller, until the text is too cramped to read.
+- **Niri's Scrollable Tiling (The Infinite Ribbon):** Niri puts your windows into vertical columns on an endless horizontal ribbon. A new window or column does not shrink the windows you already have. The view slides along the ribbon when you move between windows.
 
 ```
        ┌───────────┐ ┌───────────────────┐ ┌───────────┐
@@ -73,7 +73,7 @@ sudo bootc switch ghcr.io/tuna-os/bonito:niri
 sudo systemctl reboot
 ```
 
-Or choose the **Niri** option from the desktop picker when installing from the live ISO.
+Or choose the **Niri** option in the desktop picker when you install from the live ISO.
 
 ---
 
@@ -94,7 +94,7 @@ In Niri, almost all actions use the **Mod** key (the `Super` / `Windows` key, or
 
 ### Workspaces
 
-Niri arranges workspaces vertically.
+Niri stacks the workspaces from top to bottom.
 
 | Shortcut | Action |
 | --- | --- |
@@ -148,13 +148,13 @@ cp /etc/niri/config.kdl ~/.config/niri/config.kdl
 
 ### Validating and Reloading
 
-To check your configuration for syntax errors without restarting:
+To check your configuration for syntax errors without a restart:
 
 ```bash
 niri --validate
 ```
 
-Niri automatically reloads configuration when `~/.config/niri/config.kdl` is modified and saved. You can also trigger a reload manually:
+Niri reloads the configuration each time you save `~/.config/niri/config.kdl`. You can also ask for a reload:
 
 ```bash
 niri msg action reload-config
@@ -222,7 +222,7 @@ spawn-at-startup "mako"
 
 ### 4. Window Rules (Floating Windows and Sizing)
 
-Define rules to match specific application IDs, setting them to float automatically or open at specific sizes:
+Write a rule that matches an application ID. The rule can float the window, or give it a size:
 
 ```kdl
 window-rule {
@@ -258,7 +258,7 @@ flatpak install flathub org.mozilla.firefox
 flatpak install flathub com.visualstudio.code
 ```
 
-Flatpak desktop entries are placed in `/var/lib/flatpak/exports/share/applications` and `~/.local/share/flatpak/exports/share/applications`. Launchers like `fuzzel` and `rofi` discover them automatically through the standard `XDG_DATA_DIRS` environment.
+Flatpak writes its desktop entries to `/var/lib/flatpak/exports/share/applications` and to `~/.local/share/flatpak/exports/share/applications`. A launcher such as `fuzzel` or `rofi` finds them through `XDG_DATA_DIRS`.
 
 ### Installing CLI Tools (Homebrew)
 
@@ -283,7 +283,7 @@ sudo systemctl reboot
 ```
 
 :::info[Safe background staging]
-Because `bootc` stages updates in an isolated root deployment in the background, upgrading does not overwrite active system libraries or disrupt your running Niri session. You reboot only when you are ready.
+`bootc` stages an update into a separate root deployment in the background. It does not touch the libraries in use, and your Niri session continues. You reboot only when you are ready.
 :::
 
 If an update causes an issue, rollback to the previous deployment at any time:
@@ -299,13 +299,13 @@ sudo systemctl reboot
 
 ### Displays and HiDPI Output Scaling
 
-To list connected monitor identifiers:
+To list the monitors that are connected:
 
 ```bash
 niri msg outputs
 ```
 
-Configure display resolution, refresh rate, and scaling in `~/.config/niri/config.kdl`:
+Set the resolution, the refresh rate, and the scale factor in `~/.config/niri/config.kdl`:
 
 ```kdl
 output "eDP-1" {
@@ -323,12 +323,12 @@ output "DP-1" {
 
 ### Screen Sharing and Portals
 
-Niri uses PipeWire and the `xdg-desktop-portal` architecture for display sharing (e.g. in OBS Studio, Discord, or web browsers):
+Niri uses PipeWire and `xdg-desktop-portal` to share your screen with OBS Studio, Discord, or a web browser:
 
 - Ensure `xdg-desktop-portal-gnome` or `xdg-desktop-portal-gtk` and `xdg-desktop-portal` are active.
 - Verify that `XDG_CURRENT_DESKTOP=niri` is present in your session environment.
 
-For dedicated screen recording from the CLI, use `wl-screenrec`:
+To record the screen from the command line, use `wl-screenrec`:
 
 ```bash
 wl-screenrec -f output.mp4
@@ -365,7 +365,7 @@ niri msg workspaces
 
 - [YaLTeR/niri GitHub Repository](https://github.com/YaLTeR/niri) — Official source code and issue tracker
 - [Niri Official Wiki](https://github.com/YaLTeR/niri/wiki) — Full upstream documentation and tutorials
-- [Niri Configuration Reference](https://github.com/YaLTeR/niri/wiki/Configuration:-Overview) — Comprehensive KDL node reference
+- [Niri Configuration Reference](https://github.com/YaLTeR/niri/wiki/Configuration:-Overview) — Full reference for the KDL nodes
 - [Bonito Variant Guide](/docs/bonito) — Fedora 44 base variant documentation
 - [Desktop Environment Comparison](/docs/desktop-comparison) — Comparison of desktop workflows on TunaOS
-- [Managing with Bootc](/docs/tunaos/bootc-usage) — Complete guide to TunaOS bootc operations
+- [Manage images with bootc](/docs/tunaos/bootc-usage) — Full guide to bootc on TunaOS
