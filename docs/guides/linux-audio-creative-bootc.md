@@ -5,28 +5,33 @@ description: Setting up low-latency PipeWire audio, DAW applications, and video 
 
 # Linux Audio & Creative Workstations on TunaOS
 
-TunaOS provides an immutable, container-native foundation for professional digital audio workstations (DAWs), media production, and video editing environments.
+TunaOS gives you an immutable, container-native base for digital audio workstations, media production, and video work.
 
 ## Why Container-Native for Audio & Video Production?
 
-- **Deterministic Low-Latency Audio**: System OS layers maintain stable kernel configuration and PipeWire audio graph defaults across upgrades.
-- **Isolated Plugins & Workstations**: Run DAWs like Ardour, Reaper, and Audacity alongside video editors (Kdenlive, DaVinci Resolve dependencies) via Flatpaks or containerized dev-envs without library conflicts.
-- **Fail-Safe Upgrades**: Roll back immediately using `bootc rollback` if an update impacts real-time audio threads or GPU encoder drivers.
+- **Stable Audio Configuration**: The kernel settings and the PipeWire graph defaults come from the image. They stay the same across an upgrade.
+- **Isolated Plugins & Workstations**: Run a DAW such as Ardour or Audacity next to a video editor such as Kdenlive. Each Flatpak brings its own libraries.
+- **Fail-Safe Upgrades**: If an update hurts your latency or your GPU encoder, `bootc rollback` puts the earlier image back.
 
 ## Setup Instructions
 
-### 1. Install Flatpak Workstations
+### 1. Install the Flatpak Workstations
+
 ```bash
 flatpak install flathub org.ardour.Ardour
 flatpak install flathub org.kde.kdenlive
 flatpak install flathub org.blender.Blender
 ```
 
-### 2. Verify PipeWire Audio Graph
+### 2. Check the PipeWire Audio Graph
+
+Look at the server and the devices that PipeWire found:
+
 ```bash
 pw-cli info 0
 wpctl status
 ```
 
----
-*Maintained by the TunaOS Community & Outreach Team.*
+Measure the latency you get on your own hardware before you commit to a
+session. The figure depends on your interface, your kernel, and your
+buffer settings, not on the base image alone.
