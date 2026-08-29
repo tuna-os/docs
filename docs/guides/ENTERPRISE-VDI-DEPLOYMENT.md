@@ -1,22 +1,24 @@
 # Enterprise Remote Work & Thin-Client Deployment Guide
 
-TunaOS offers enterprise IT administrators and VDI infrastructure engineers a zero-trust, stateless, and container-managed operating system baseline for remote employees and thin-client fleets.
+TunaOS gives enterprise administrators and VDI engineers a stateless, container-managed base image for remote laptops and thin-client fleets.
 
 ## Key Advantages for Enterprise Workspaces
 
-1. **Stateless Base OS Enforcement**: System files `/usr` are immutable. Remote laptops and thin clients run identical, cryptographically signed OCI container images verified on boot.
-2. **Integrated Zero-Trust Networking**: Pre-built integration with Tailscale, WireGuard, and OpenVPN allows secure zero-trust remote access without user configuration drift.
-3. **Automated Remote Fleet Management**: Remote laptops execute scheduled background image updates (`bootc update`) pulling signed OS updates directly from corporate container registries.
+1. **Stateless Base OS**: The system files in `/usr` do not change. Every remote laptop and thin client runs the same signed OCI image, and the machine verifies it at boot.
+2. **Zero-Trust Networking**: Layer your VPN client into the image. Every machine then gets the same network setup. Tailscale, WireGuard, and OpenVPN all work this way.
+3. **Remote Fleet Management**: Each laptop runs `bootc update` in the background on a timer and pulls signed images from your own registry.
 
 ## Deployment Architecture
 
-- **Base OS Baseline**: TunaOS Albacore (AlmaLinux 10 enterprise base) or Skipjack (CentOS Stream 10 base) for enterprise stability.
-- **Zero-Trust Network Setup**:
-  ```bash
-  flatpak install flathub com.tailscale.Vector
-  tailscale up --login-server=https://headscale.internal.company.com
+- **Base OS**: TunaOS Albacore (AlmaLinux 10 base) or Skipjack (CentOS Stream 10 base).
+- **Network Client**: Add the client to your image with a `Containerfile` layer. Tailscale and WireGuard are not on Flathub. Install them from the vendor repository instead:
+  ```dockerfile
+  RUN dnf install -y tailscale
   ```
-- **Disk Encryption & Remote Attestation**: LUKS TPM2 auto-unlock integration with remote wipe capability on loss/theft.
+  Then bring the machine onto your network:
+  ```bash
+  sudo tailscale up --login-server=https://headscale.internal.company.com
+  ```
+- **Disk Encryption**: LUKS with a TPM2 auto-unlock, so the disk stays sealed to the machine.
 
----
-*Filed by outreach agent (ACMM L6 — full mode)*
+Check the vendor instructions for your base distribution before you build the image. Package names and repository setup differ between AlmaLinux, CentOS Stream, and Fedora.
