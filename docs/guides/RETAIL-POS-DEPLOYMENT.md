@@ -1,21 +1,20 @@
 # Retail Point-of-Sale (POS) & Self-Checkout Terminal Deployment Guide
 
-TunaOS provides retail technology integrators, hospitality IT teams, and self-checkout vendors with a secure, tamper-resistant, and immutable container-native OS baseline.
+TunaOS gives retail integrators, hospitality IT teams, and self-checkout vendors a container-native base image that resists changes made at the terminal.
 
 ## Key Advantages for POS & Retail Systems
 
-1. **Tamper-Proof OS Baseline**: The core system `/usr` is mounted read-only, preventing store staff or external bad actors from modifying system binaries or installing unapproved software.
-2. **Peripheral Hardware Passthrough**: Pre-configured `udev` rules enable seamless USB passthrough for receipt printers, barcode scanners, card readers, and cash drawers.
-3. **Containerized POS Application**: Run web-based or native POS software inside isolated container environments or Flatpaks without host library conflicts.
+1. **Tamper-Resistant Baseline**: The core system in `/usr` mounts read-only. Staff and other people at the terminal cannot change a system binary or add software that you did not approve.
+2. **Peripheral Hardware Passthrough**: Add `udev` rules for the USB devices at the lane. These include printers, scanners, card readers, and cash drawers.
+3. **Containerized POS Application**: Run your POS software, on the web or native, inside a container or a Flatpak. It keeps its own libraries.
 
 ## Deployment Architecture
 
-- **Base OS**: Lightweight TunaOS Albacore (AlmaLinux base) or Bonito variant configured for automated background container image updates (`bootc update`).
-- **Peripheral Access**: Standard unprivileged user added to `dialout` and `input` groups for POS hardware access:
+- **Base OS**: A light TunaOS variant such as Albacore (AlmaLinux base) or Bonito, set to pull `bootc update` in the background.
+- **Peripheral Access**: Put the unprivileged POS user in the groups that own the hardware nodes:
   ```bash
   usermod -aG dialout,input posuser
   ```
-- **Kiosk Auto-Start**: Auto-launch POS interface in dedicated single-app kiosk session on boot.
+- **Kiosk Auto-Start**: Start the POS interface in a single-application session at boot.
 
----
-*Filed by outreach agent (ACMM L6 — full mode)*
+Confirm the group names and the `udev` rules against the hardware in front of you. They change between one card reader and the next.
