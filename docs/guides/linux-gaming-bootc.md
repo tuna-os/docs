@@ -5,35 +5,37 @@ description: Guide to container-native gaming, GPU drivers, and rollback recover
 
 # Container-Native Linux Gaming on TunaOS
 
-TunaOS provides an immutable, container-native desktop platform ideal for Linux gaming, handheld devices, and emulation setups.
+TunaOS gives you an immutable, container-native desktop for Linux gaming, handheld hardware, and emulation.
 
 ## Key Advantages for Gaming
 
-- **Atomic System Updates**: OS updates never break working graphics driver stacks or custom gaming configurations.
-- **Instant Rollback**: If a driver update introduces regressions, roll back to the previous bootable image instantly via `bootc rollback`.
-- **Isolated User Runtimes**: Install Steam, Heroic Games Launcher, and Lutris via Flatpak or containerized toolboxes without modifying root system state.
+- **Atomic System Updates**: An update to the OS lands whole, or not at all. It does not leave a half-updated graphics driver behind.
+- **Instant Rollback**: If a driver update breaks a game, `bootc rollback` puts the earlier image back at the next boot.
+- **Isolated User Runtimes**: Install Steam, Heroic, and Lutris as Flatpaks or in a container toolbox. The root filesystem stays as it is.
 
 ## Quick-Start Setup
 
-### 1. Install Flatpak Gaming Clients
+### 1. Install the Flatpak Gaming Clients
+
 ```bash
 flatpak install flathub com.valvesoftware.Steam
 flatpak install flathub com.heroicgameslauncher.hgl
 flatpak install flathub net.lutris.Lutris
 ```
 
-### 2. High-Performance Driver & MangoHud Configuration
-Ensure hardware-accelerated Vulkan and OpenGL runtimes are initialized properly within your Flatpak runtimes:
+### 2. Add the MangoHud Overlay
+
+Add the MangoHud layer so that a Flatpak game can show frame timings:
+
 ```bash
 flatpak install flathub org.freedesktop.Platform.VulkanLayer.MangoHud
 ```
 
-### 3. Verification & System Health
-Check active OS container layers and graphics capability:
+### 3. Check the System and the Graphics Stack
+
+Look at the image you booted and the Vulkan drivers that the system found:
+
 ```bash
 bootc status
 vulkaninfo --summary
 ```
-
----
-*Maintained by the TunaOS Community & Outreach Team.*
