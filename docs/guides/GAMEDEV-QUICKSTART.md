@@ -1,27 +1,27 @@
 # Open Source Game Development Quick-Start Guide
 
-TunaOS provides an immutable, container-native foundation tailored for indie game developers, 3D artists, and open-source game engine contributors.
+TunaOS gives indie game developers, 3D artists, and game engine contributors a container-native base that stays the same under them.
 
 ## Key Advantages for Game Developers
 
-1. **Host Stability & Isolation**: Core operating system files remain read-only. Game engines (Godot), 3D suites (Blender), and digital art tools (Krita) run as isolated Flatpaks or containerized toolchains.
-2. **Reproducible Asset Pipelines**: Automate asset optimization (texture compression, 3D model baking) using headless Podman container pipelines.
-3. **GPU Driver Performance**: Built-in, zero-config Vulkan and OpenGL graphics drivers across AMD, NVIDIA, and Intel architectures.
+1. **Host Stability & Isolation**: The core system files stay read-only. Godot, Blender, and Krita each run as a Flatpak or in a container toolchain.
+2. **Repeatable Asset Pipelines**: Put your asset steps in a headless Podman container. They then give the same result on every machine.
+3. **GPU Driver Performance**: Vulkan and OpenGL drivers for AMD, NVIDIA, and Intel come with the image and need no setup.
 
 ## Toolchain Setup
 
-### 1. Install Game Engine & Asset Creation Suite (Flatpak)
+### 1. Install the Engine and the Art Tools (Flatpak)
+
 ```bash
 flatpak install flathub org.godotengine.Godot
 flatpak install flathub org.blender.Blender
 flatpak install flathub org.kde.krita
 ```
 
-### 2. Containerized Cross-Compilation Pipeline
-Run multi-platform game export builds (Linux/Windows/WASM) in isolated Podman environments:
+### 2. Cross-Compilation in a Container
+
+Export a build for another platform (Linux, Windows, WASM) inside Podman:
+
 ```bash
 podman run --rm -v $(pwd):/src -w /src barichello/godot-ci:latest godot --headless --export-release "Linux/X11"
 ```
-
----
-*Filed by outreach agent (ACMM L6 — full mode)*
