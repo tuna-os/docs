@@ -4,8 +4,8 @@ TunaOS gives embedded engineers and edge architects a transactional, container-m
 
 ## Key Advantages for Edge & Industrial Deployments
 
-1. **Transactional OTA Updates**: The system gets over-the-air updates as standard container layers from an OCI registry. If an update does not pass its health checks, GRUB starts the last known good image again.
-2. **Read-Only Root Partition**: The system files in `/usr` stay read-only. This keeps a gateway in the field safe from a power failure or a corrupt filesystem.
+1. **Transactional OTA Updates**: The system takes over-the-air updates as standard container layers from an OCI registry. The previous image stays on the disk. To go back, run `bootc rollback` or select the earlier entry in GRUB. For an automatic return on a failed health check, add greenboot. The base image does not do this on its own.
+2. **Read-Only Root Partition**: The system files in `/usr` stay read-only. This protects them from a power failure at the gateway. The writable areas still need a filesystem that recovers well.
 3. **Edge Workload Isolation**: Run telemetry collection (MQTT, Prometheus exporters), protocol translation (Modbus, OPC-UA), and local analytics as unprivileged Podman containers.
 
 ## Edge Deployment Architecture
