@@ -6,7 +6,7 @@ TunaOS gives indie game developers, 3D artists, and game engine contributors a c
 
 1. **Host Stability & Isolation**: The core system files stay read-only. Godot, Blender, and Krita each run as a Flatpak or in a container toolchain.
 2. **Repeatable Asset Pipelines**: Put your asset steps in a headless Podman container. They then give the same result on every machine.
-3. **GPU Driver Performance**: Vulkan and OpenGL drivers for AMD, NVIDIA, and Intel come with the image and need no setup.
+3. **GPU Drivers in the Image**: The Mesa drivers for AMD and Intel come with the image and need no setup. For an NVIDIA card, choose a TunaOS variant that ships the NVIDIA driver.
 
 ## Toolchain Setup
 
