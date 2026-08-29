@@ -1,21 +1,18 @@
 # Digital Signage & Kiosk Fleet Deployment Guide
 
-TunaOS provides fleet administrators with a resilient, container-managed, and immutable operating system baseline optimized for 24/7 unattended digital signage displays and interactive kiosk terminals.
+TunaOS gives fleet administrators a container-managed base image for signage screens and interactive kiosks that run without an operator present.
 
 ## Key Advantages for Kiosk & Signage Fleets
 
-1. **Power-Loss Resilient Immutability**: The core OS partition `/usr` is mounted read-only. Abrupt power cuts will never corrupt system binaries or result in unbootable storage states.
-2. **Centralized OCI Fleet Management**: Trigger unattended background updates across 500+ kiosk displays by pushing new container tags to a standard OCI registry.
-3. **Single-App Kiosk Isolation**: Run web-based or native display appliances (Chromium Kiosk, MPV, custom web apps) in fullscreen autostart mode inside unprivileged container sandboxes.
+1. **Resilient to Power Loss**: The core system files in `/usr` are read-only. A sudden power cut does not corrupt a system binary or leave the disk in a state that cannot boot.
+2. **Central Fleet Management with OCI**: Push a new container tag to a standard registry. Every screen picks it up on its next scheduled update.
+3. **Single-App Kiosk Isolation**: Run one full-screen application in an unprivileged container sandbox at start-up. Use Chromium, MPV, or your own web app.
 
 ## System Configuration Highlights
 
-- **Desktop Baseline**: Lightweight TunaOS XFCE Linux or Bonito Niri variant configured for auto-login without desktop shell clutter.
-- **Kiosk Launch**: Auto-start fullscreen browser kiosk:
+- **Desktop Baseline**: A light TunaOS variant such as XFCE Linux or Bonito Niri. Set it to log in on its own with no desktop shell.
+- **Kiosk Launch**: Start the browser full-screen:
   ```bash
   flatpak run org.chromium.Chromium --kiosk --incognito https://signage.internal.company.com
   ```
-- **Unattended Updates**: Systemd timer executing background container image pulls (`bootc update`) during low-traffic night hours.
-
----
-*Filed by outreach agent (ACMM L6 — full mode)*
+- **Unattended Updates**: A systemd timer that runs `bootc update` in the quiet hours of the night.
