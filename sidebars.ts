@@ -6,7 +6,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Getting Started',
       collapsed: false,
-      items: ['intro', 'choosing-a-variant', 'architecture', 'installation', 'installer', 'system-requirements', 'desktop-comparison', 'bootc-rollback', 'bootc-resources', 'faq', 'ublue-ecosystem'],
+      items: ['intro', 'choosing-a-variant', 'architecture', 'installation', 'installer', 'system-requirements', 'desktop-comparison', 'desktop-environment-comparison', 'bootc-rollback', 'bootc-resources', 'faq', 'ublue-ecosystem'],
     },
     {
       type: 'category',
