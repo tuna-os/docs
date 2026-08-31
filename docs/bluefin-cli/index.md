@@ -78,7 +78,7 @@ source-build formula in [`contrib/homebrew/bluefin-cli.rb`](https://github.com/t
 
 ```bash
 brew tap ublue-os/homebrew-experimental-tap
-brew install bluefin-cli
+brew install bluefin-cli # no-verify: package publishing is maintained outside Homebrew
 ```
 
 ### Winget (Windows)

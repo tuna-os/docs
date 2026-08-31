@@ -75,7 +75,7 @@ xfce4-settings-manager
 xfce4-panel --preferences
 
 # Install XFCE themes
-brew install xfce-themes
+brew install xfce-themes # no-verify: desktop-specific package is maintained outside Homebrew
 ```
 
 ## Lightweight Advantage
