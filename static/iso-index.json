@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-30T20:24:33.284Z",
+  "generatedAt": "2026-08-31T02:57:59.246Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 166,
+  "count": 218,
   "categories": [
     {
       "id": "live-isos",
@@ -13,11 +13,191 @@
       "isos": [
         {
           "category": "live-isos",
-          "name": "gurnard-pantheon-latest",
-          "path": "live-isos/gurnard-pantheon-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-latest.iso",
-          "size": 4326424576,
-          "modified": "2026-08-25T08:28:22.239765262Z",
+          "name": "bonito-latest",
+          "path": "live-isos/bonito-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-latest.iso",
+          "size": 8284143616,
+          "modified": "2026-08-31T01:47:03.074388729Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-niri-latest",
+          "path": "live-isos/skipjack-niri-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-niri-latest.iso",
+          "size": 6525550592,
+          "modified": "2026-08-31T01:46:32.014716242Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-niri-latest",
+          "path": "live-isos/bonito-rawhide-niri-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-niri-latest.iso",
+          "size": 7677280256,
+          "modified": "2026-08-31T01:45:38.081780294Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-latest",
+          "path": "live-isos/skipjack-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-latest.iso",
+          "size": 7075987456,
+          "modified": "2026-08-31T01:40:47.088582528Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-kde-latest",
+          "path": "live-isos/bonito-rawhide-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-kde-latest.iso",
+          "size": 9832300544,
+          "modified": "2026-08-31T01:38:59.074485657Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-cosmic-latest",
+          "path": "live-isos/albacore-cosmic-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-cosmic-latest.iso",
+          "size": 6406340608,
+          "modified": "2026-08-31T01:38:01.046686373Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-kde-latest",
+          "path": "live-isos/bonito-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-kde-latest.iso",
+          "size": 9975693312,
+          "modified": "2026-08-31T01:35:11.053406209Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-xfce-latest",
+          "path": "live-isos/bonito-rawhide-xfce-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-xfce-latest.iso",
+          "size": 8783265792,
+          "modified": "2026-08-31T01:34:46.078027282Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-latest",
+          "path": "live-isos/yellowfin-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-latest.iso",
+          "size": 7144538112,
+          "modified": "2026-08-31T01:34:29.069566459Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-latest",
+          "path": "live-isos/bonito-rawhide-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-latest.iso",
+          "size": 8239710208,
+          "modified": "2026-08-31T01:34:19.045595047Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-latest",
+          "path": "live-isos/albacore-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-latest.iso",
+          "size": 8599830528,
+          "modified": "2026-08-31T01:33:52.086020368Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-niri-latest",
+          "path": "live-isos/bonito-niri-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-niri-latest.iso",
+          "size": 7717847040,
+          "modified": "2026-08-31T01:33:51.085474151Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-xfce-latest",
+          "path": "live-isos/bonito-xfce-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-xfce-latest.iso",
+          "size": 8709799936,
+          "modified": "2026-08-31T01:33:25.009748925Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-cosmic-latest",
+          "path": "live-isos/skipjack-cosmic-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-cosmic-latest.iso",
+          "size": 6797197312,
+          "modified": "2026-08-31T01:32:41.094596996Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-cosmic-latest",
+          "path": "live-isos/bonito-rawhide-cosmic-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-cosmic-latest.iso",
+          "size": 8178434048,
+          "modified": "2026-08-31T01:32:37.999962099Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-kde-latest",
+          "path": "live-isos/skipjack-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-kde-latest.iso",
+          "size": 6213074944,
+          "modified": "2026-08-31T01:32:33.028694293Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-niri-latest",
+          "path": "live-isos/marlin-niri-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-niri-latest.iso",
+          "size": 6109659136,
+          "modified": "2026-08-31T01:32:32.044099689Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-kde-latest",
+          "path": "live-isos/yellowfin-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-latest.iso",
+          "size": 6294863872,
+          "modified": "2026-08-31T01:31:51.064557737Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-cosmic-latest",
+          "path": "live-isos/marlin-cosmic-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-cosmic-latest.iso",
+          "size": 7142768640,
+          "modified": "2026-08-31T01:31:11.003645319Z",
           "arch": "",
           "latest": true
         },
@@ -26,8 +206,8 @@
           "name": "flounder-sid-latest",
           "path": "live-isos/flounder-sid-latest.iso",
           "url": "https://download.tunaos.org/live-isos/flounder-sid-latest.iso",
-          "size": 5255921664,
-          "modified": "2026-08-23T23:39:05.021908094Z",
+          "size": 5259526144,
+          "modified": "2026-08-31T01:30:47.006390598Z",
           "arch": "",
           "latest": true
         },
@@ -36,18 +216,28 @@
           "name": "flounder-latest",
           "path": "live-isos/flounder-latest.iso",
           "url": "https://download.tunaos.org/live-isos/flounder-latest.iso",
-          "size": 4486594560,
-          "modified": "2026-08-23T23:38:51.089521765Z",
+          "size": 4488822784,
+          "modified": "2026-08-31T01:30:34.047136331Z",
           "arch": "",
           "latest": true
         },
         {
           "category": "live-isos",
-          "name": "marlin-latest",
-          "path": "live-isos/marlin-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-latest.iso",
-          "size": 6899630080,
-          "modified": "2026-08-23T23:37:53.083759196Z",
+          "name": "bonito-cosmic-latest",
+          "path": "live-isos/bonito-cosmic-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-cosmic-latest.iso",
+          "size": 8000700416,
+          "modified": "2026-08-31T01:30:30.001995485Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-xfce-latest",
+          "path": "live-isos/albacore-xfce-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-xfce-latest.iso",
+          "size": 5910953984,
+          "modified": "2026-08-31T01:29:52.063086757Z",
           "arch": "",
           "latest": true
         },
@@ -56,8 +246,98 @@
           "name": "albacore-kde-latest",
           "path": "live-isos/albacore-kde-latest.iso",
           "url": "https://download.tunaos.org/live-isos/albacore-kde-latest.iso",
-          "size": 6007619584,
-          "modified": "2026-08-20T08:41:58.471689808Z",
+          "size": 6763315200,
+          "modified": "2026-08-31T01:29:44.083535230Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "flounder-sid-kde-latest",
+          "path": "live-isos/flounder-sid-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-sid-kde-latest.iso",
+          "size": 4734582784,
+          "modified": "2026-08-31T01:29:36.030520217Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-cosmic-latest",
+          "path": "live-isos/yellowfin-cosmic-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-cosmic-latest.iso",
+          "size": 6503923712,
+          "modified": "2026-08-31T01:29:29.038926077Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "flounder-kde-latest",
+          "path": "live-isos/flounder-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-kde-latest.iso",
+          "size": 4009754624,
+          "modified": "2026-08-31T01:29:13.080650932Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-xfce-latest",
+          "path": "live-isos/marlin-xfce-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-xfce-latest.iso",
+          "size": 6377570304,
+          "modified": "2026-08-31T01:28:32.075939912Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-latest",
+          "path": "live-isos/marlin-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-latest.iso",
+          "size": 6907822080,
+          "modified": "2026-08-31T01:28:23.057259427Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-xfce-latest",
+          "path": "live-isos/yellowfin-xfce-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-xfce-latest.iso",
+          "size": 5329846272,
+          "modified": "2026-08-31T01:28:22.094959382Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "flounder-xfce-latest",
+          "path": "live-isos/flounder-xfce-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-xfce-latest.iso",
+          "size": 3730571264,
+          "modified": "2026-08-31T01:27:34.035000400Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "flounder-sid-xfce-latest",
+          "path": "live-isos/flounder-sid-xfce-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-sid-xfce-latest.iso",
+          "size": 4465229824,
+          "modified": "2026-08-31T01:27:08.076114617Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "gurnard-pantheon-latest",
+          "path": "live-isos/gurnard-pantheon-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-latest.iso",
+          "size": 4326424576,
+          "modified": "2026-08-25T08:28:22.239765262Z",
           "arch": "",
           "latest": true
         },
@@ -78,26 +358,6 @@
           "url": "https://download.tunaos.org/live-isos/albacore-gnome-latest.iso",
           "size": 5744295936,
           "modified": "2026-08-20T08:39:53.550093246Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "albacore-cosmic-latest",
-          "path": "live-isos/albacore-cosmic-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-cosmic-latest.iso",
-          "size": 5521539072,
-          "modified": "2026-08-20T08:38:29.850209680Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "albacore-xfce-latest",
-          "path": "live-isos/albacore-xfce-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-xfce-latest.iso",
-          "size": 5144051712,
-          "modified": "2026-08-20T08:38:13.074893813Z",
           "arch": "",
           "latest": true
         },
@@ -133,11 +393,191 @@
         },
         {
           "category": "live-isos",
-          "name": "gurnard-pantheon-24.04-x86_64",
-          "path": "live-isos/gurnard-pantheon-24.04-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-24.04-x86_64.iso",
-          "size": 4326424576,
-          "modified": "2026-08-25T08:28:22.239765262Z",
+          "name": "bonito-44-x86_64",
+          "path": "live-isos/bonito-44-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-44-x86_64.iso",
+          "size": 8284143616,
+          "modified": "2026-08-31T01:47:03.074388729Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-niri-10-x86_64",
+          "path": "live-isos/skipjack-niri-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-niri-10-x86_64.iso",
+          "size": 6525550592,
+          "modified": "2026-08-31T01:46:32.014716242Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-niri-45-x86_64",
+          "path": "live-isos/bonito-rawhide-niri-45-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-niri-45-x86_64.iso",
+          "size": 7677280256,
+          "modified": "2026-08-31T01:45:38.081780294Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-10-x86_64",
+          "path": "live-isos/skipjack-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-10-x86_64.iso",
+          "size": 7075987456,
+          "modified": "2026-08-31T01:40:47.088582528Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-kde-45-x86_64",
+          "path": "live-isos/bonito-rawhide-kde-45-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-kde-45-x86_64.iso",
+          "size": 9832300544,
+          "modified": "2026-08-31T01:38:59.074485657Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-cosmic-10.2-x86_64",
+          "path": "live-isos/albacore-cosmic-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-cosmic-10.2-x86_64.iso",
+          "size": 6406340608,
+          "modified": "2026-08-31T01:38:01.046686373Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-kde-44-x86_64",
+          "path": "live-isos/bonito-kde-44-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-kde-44-x86_64.iso",
+          "size": 9975693312,
+          "modified": "2026-08-31T01:35:11.053406209Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-xfce-45-x86_64",
+          "path": "live-isos/bonito-rawhide-xfce-45-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-xfce-45-x86_64.iso",
+          "size": 8783265792,
+          "modified": "2026-08-31T01:34:46.078027282Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-10-x86_64",
+          "path": "live-isos/yellowfin-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-10-x86_64.iso",
+          "size": 7144538112,
+          "modified": "2026-08-31T01:34:29.069566459Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-45-x86_64",
+          "path": "live-isos/bonito-rawhide-45-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-45-x86_64.iso",
+          "size": 8239710208,
+          "modified": "2026-08-31T01:34:19.045595047Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-10.2-x86_64",
+          "path": "live-isos/albacore-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-10.2-x86_64.iso",
+          "size": 8599830528,
+          "modified": "2026-08-31T01:33:52.086020368Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-niri-44-x86_64",
+          "path": "live-isos/bonito-niri-44-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-niri-44-x86_64.iso",
+          "size": 7717847040,
+          "modified": "2026-08-31T01:33:51.085474151Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-xfce-44-x86_64",
+          "path": "live-isos/bonito-xfce-44-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-xfce-44-x86_64.iso",
+          "size": 8709799936,
+          "modified": "2026-08-31T01:33:25.009748925Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-cosmic-10-x86_64",
+          "path": "live-isos/skipjack-cosmic-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-cosmic-10-x86_64.iso",
+          "size": 6797197312,
+          "modified": "2026-08-31T01:32:41.094596996Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-cosmic-45-x86_64",
+          "path": "live-isos/bonito-rawhide-cosmic-45-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-cosmic-45-x86_64.iso",
+          "size": 8178434048,
+          "modified": "2026-08-31T01:32:37.999962099Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-kde-10-x86_64",
+          "path": "live-isos/skipjack-kde-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-kde-10-x86_64.iso",
+          "size": 6213074944,
+          "modified": "2026-08-31T01:32:33.028694293Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-niri--x86_64",
+          "path": "live-isos/marlin-niri--x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-niri--x86_64.iso",
+          "size": 6109659136,
+          "modified": "2026-08-31T01:32:32.044099689Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-kde-10-x86_64",
+          "path": "live-isos/yellowfin-kde-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-10-x86_64.iso",
+          "size": 6294863872,
+          "modified": "2026-08-31T01:31:51.064557737Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-cosmic--x86_64",
+          "path": "live-isos/marlin-cosmic--x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-cosmic--x86_64.iso",
+          "size": 7142768640,
+          "modified": "2026-08-31T01:31:11.003645319Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -146,8 +586,8 @@
           "name": "flounder-sid--x86_64",
           "path": "live-isos/flounder-sid--x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/flounder-sid--x86_64.iso",
-          "size": 5255921664,
-          "modified": "2026-08-23T23:39:05.021908094Z",
+          "size": 5259526144,
+          "modified": "2026-08-31T01:30:47.006390598Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -156,18 +596,28 @@
           "name": "flounder-13-x86_64",
           "path": "live-isos/flounder-13-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/flounder-13-x86_64.iso",
-          "size": 4486594560,
-          "modified": "2026-08-23T23:38:51.089521765Z",
+          "size": 4488822784,
+          "modified": "2026-08-31T01:30:34.047136331Z",
           "arch": "x86_64",
           "latest": false
         },
         {
           "category": "live-isos",
-          "name": "marlin--x86_64",
-          "path": "live-isos/marlin--x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin--x86_64.iso",
-          "size": 6899630080,
-          "modified": "2026-08-23T23:37:53.083759196Z",
+          "name": "bonito-cosmic-44-x86_64",
+          "path": "live-isos/bonito-cosmic-44-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-cosmic-44-x86_64.iso",
+          "size": 8000700416,
+          "modified": "2026-08-31T01:30:30.001995485Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-xfce-10.2-x86_64",
+          "path": "live-isos/albacore-xfce-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-xfce-10.2-x86_64.iso",
+          "size": 5910953984,
+          "modified": "2026-08-31T01:29:52.063086757Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -176,8 +626,98 @@
           "name": "albacore-kde-10.2-x86_64",
           "path": "live-isos/albacore-kde-10.2-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/albacore-kde-10.2-x86_64.iso",
-          "size": 6007619584,
-          "modified": "2026-08-20T08:41:58.471689808Z",
+          "size": 6763315200,
+          "modified": "2026-08-31T01:29:44.083535230Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "flounder-sid-kde--x86_64",
+          "path": "live-isos/flounder-sid-kde--x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-sid-kde--x86_64.iso",
+          "size": 4734582784,
+          "modified": "2026-08-31T01:29:36.030520217Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-cosmic-10-x86_64",
+          "path": "live-isos/yellowfin-cosmic-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-cosmic-10-x86_64.iso",
+          "size": 6503923712,
+          "modified": "2026-08-31T01:29:29.038926077Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "flounder-kde-13-x86_64",
+          "path": "live-isos/flounder-kde-13-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-kde-13-x86_64.iso",
+          "size": 4009754624,
+          "modified": "2026-08-31T01:29:13.080650932Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-xfce--x86_64",
+          "path": "live-isos/marlin-xfce--x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-xfce--x86_64.iso",
+          "size": 6377570304,
+          "modified": "2026-08-31T01:28:32.075939912Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin--x86_64",
+          "path": "live-isos/marlin--x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin--x86_64.iso",
+          "size": 6907822080,
+          "modified": "2026-08-31T01:28:23.057259427Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-xfce-10-x86_64",
+          "path": "live-isos/yellowfin-xfce-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-xfce-10-x86_64.iso",
+          "size": 5329846272,
+          "modified": "2026-08-31T01:28:22.094959382Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "flounder-xfce-13-x86_64",
+          "path": "live-isos/flounder-xfce-13-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-xfce-13-x86_64.iso",
+          "size": 3730571264,
+          "modified": "2026-08-31T01:27:34.035000400Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "flounder-sid-xfce--x86_64",
+          "path": "live-isos/flounder-sid-xfce--x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-sid-xfce--x86_64.iso",
+          "size": 4465229824,
+          "modified": "2026-08-31T01:27:08.076114617Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "gurnard-pantheon-24.04-x86_64",
+          "path": "live-isos/gurnard-pantheon-24.04-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-24.04-x86_64.iso",
+          "size": 4326424576,
+          "modified": "2026-08-25T08:28:22.239765262Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -198,26 +738,6 @@
           "url": "https://download.tunaos.org/live-isos/albacore-gnome-10.2-x86_64.iso",
           "size": 5744295936,
           "modified": "2026-08-20T08:39:53.550093246Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "albacore-cosmic-10.2-x86_64",
-          "path": "live-isos/albacore-cosmic-10.2-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-cosmic-10.2-x86_64.iso",
-          "size": 5521539072,
-          "modified": "2026-08-20T08:38:29.850209680Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "albacore-xfce-10.2-x86_64",
-          "path": "live-isos/albacore-xfce-10.2-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-xfce-10.2-x86_64.iso",
-          "size": 5144051712,
-          "modified": "2026-08-20T08:38:13.074893813Z",
           "arch": "x86_64",
           "latest": false
         },
