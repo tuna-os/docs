@@ -65,7 +65,7 @@ release ([#15](https://github.com/tuna-os/bluefin-cli/issues/15)):
 
 ```bash
 brew tap tuna-os/tap
-brew install bluefin-cli
+brew install bluefin-cli # no-verify: published to the tuna-os/tap tap, not homebrew-core
 ```
 
 > **Status (2026-08-14):** the `bluefin-cli` formula has not been published by
