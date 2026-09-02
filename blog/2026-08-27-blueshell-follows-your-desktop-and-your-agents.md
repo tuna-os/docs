@@ -92,13 +92,20 @@ you see there is always what the current build actually looks like.
 
 ## Try it
 
-The nightly Flatpak bundle has everything in this post:
+Everything in this post is on the TunaOS remote:
 
 ```sh
-curl -L https://nightly.link/tuna-os/blueshell/workflows/ghostty-ptyxis/ptyxis-port/BlueShell.flatpak.zip \
-  -o BlueShell.flatpak.zip \
-  && unzip -o BlueShell.flatpak.zip \
-  && flatpak install --user --reinstall BlueShell.flatpak
+flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo
+flatpak install tuna-os org.tunaos.BlueShell
+```
+
+Or grab a bundle directly from the rolling
+[`tip`](https://github.com/tuna-os/blueshell/releases/tag/tip) release
+(swap `x86_64` for `aarch64` on ARM):
+
+```sh
+curl -LO https://github.com/tuna-os/blueshell/releases/download/tip/blueshell-x86_64.flatpak
+flatpak install --user --reinstall blueshell-x86_64.flatpak
 ```
 
 Feedback on the agent heuristics — false blocked alarms, agents we
