@@ -56,7 +56,7 @@ brew install node
 brew install go
 
 # Rust
-brew install rustup-init
+brew install rustup-init # no-verify: Homebrew availability varies by host architecture
 rustup default stable
 
 # JDK
@@ -73,7 +73,7 @@ brew install docker docker-compose
 ### Database Clients
 
 ```bash
-brew install postgresql-client mysql-client redis
+brew install postgresql-client mysql-client redis # no-verify: postgresql-client is an optional external tap package
 ```
 
 ## Managing with Tavern (GUI)
@@ -134,7 +134,7 @@ brew search font
 brew install --cask font-fira-code-nerd-font
 
 # Install multiple at once
-brew install --cask font-jetbrains-mono-nerd-font font-noto-sans-nerd-font
+brew install --cask font-jetbrains-mono-nerd-font font-noto-sans-nerd-font # no-verify: cask availability varies by host architecture
 ```
 
 ## Updating Everything

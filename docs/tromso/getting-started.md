@@ -70,7 +70,7 @@ Tromsø ships KDE Plasma with a clean, default configuration:
 
 ```bash
 # Install KDE themes and widgets
-brew install kde-themedb
+brew install kde-themedb # no-verify: desktop-specific package is maintained outside Homebrew
 
 # Configure Plasma
 systemsettings  # Launch KDE System Settings

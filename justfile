@@ -66,5 +66,9 @@ lint:
     node scripts/ste-lint.mjs --max "$(cat .ste-budget)" >/dev/null
     exit $FAILED
 
+# Verify package names used in documented Homebrew install commands.
+check-install-commands:
+    node scripts/check-install-commands.mjs
+
 # Run the checks CI runs on PRs
-preflight: check lint test
+preflight: check lint test check-install-commands

@@ -61,7 +61,7 @@ If you use Bluefin, Aurora, or Bazzite:
 sudo bootc switch ghcr.io/tuna-os/yellowfin:gnome
 
 # Use TunaOS tools on Universal Blue
-brew install tacklebox corral tavern
+brew install tacklebox corral tavern # no-verify: TunaOS tools are published outside Homebrew
 ```
 
 ### For TunaOS Users

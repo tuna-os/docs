@@ -17,8 +17,8 @@ upstream repos' release pipelines (e.g. GoReleaser).
 
 ```sh
 brew tap tuna-os/tap
-brew install corral-vm
-brew install --cask tavern
+brew install corral-vm # no-verify: published to the tuna-os/tap tap, not homebrew-core
+brew install --cask tavern # no-verify: published to the tuna-os/tap tap, not homebrew-core
 ```
 
 ## Pending

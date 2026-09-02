@@ -100,6 +100,9 @@ jobs:
           done
           exit $FAILED
 
+      - name: Check documented install commands
+        run: npm run check-install-commands
+
 
   ste:
     name: Simplified Technical English
