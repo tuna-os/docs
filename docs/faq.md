@@ -133,6 +133,7 @@ TunaOS images are immutable — `/usr` is read-only at runtime. However:
 - **Homebrew** is pre-installed for user-space tools
 - **Flatpak** is pre-enabled for GUI apps
 - **Toolbox/Distrobox** provides a mutable container for `dnf`/`apt`
+- **Custom images** — use `bootc usr-overlay` for a temporary change, or build a derived image (see the [customization guide](layering.md))
 
 ```bash
 # Use Toolbox for traditional package management
@@ -175,4 +176,4 @@ TunaOS images are built in GitHub Actions using Containerfiles. See [Build Guide
 
 **Does TunaOS support Secure Boot?**
 
-Yes. The base OS provides a standard shim mechanism that enables UEFI Secure Boot.
+Yes. The base OS provides a standard shim mechanism that enables UEFI Secure Boot. See the [Secure Boot guide](secure-boot.md) and [Verify downloads and images](verifying-downloads.md).

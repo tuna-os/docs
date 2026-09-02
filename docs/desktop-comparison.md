@@ -18,7 +18,7 @@ desktop listed as a related product is not automatically a TunaOS variant.
 | Desktop | Best for / workflow | Typical idle RAM | Hardware fit | Availability |
 | --- | --- | ---: | --- | --- |
 | **GNOME** | A polished, focused workflow with opinionated defaults and minimal setup. | ~1–1.2 GB | Modern hardware; 16 GB RAM is comfortable. | Standard TunaOS flavor across the main bases; also available through Dakota (GNOME OS). |
-| **KDE Plasma** | A familiar, highly configurable desktop for users who want control over panels, shortcuts, and window behavior. | ~0.8–1 GB | Modern or mid-range hardware; a good fit from 8 GB RAM upward. | Standard TunaOS flavor across the main bases; also available through Tromsø. |
+| **[KDE Plasma](./plasma-shortcuts.md)** | A familiar, highly configurable desktop for users who want control over panels, shortcuts, and window behavior. | ~0.8–1 GB | Modern or mid-range hardware; a good fit from 8 GB RAM upward. | Standard TunaOS flavor across the main bases; also available through Tromsø. |
 | **[COSMIC](./cosmic-quickstart.md)** | A modern, keyboard-friendly desktop with a clean layout and Rust-based components. | ~0.8–1 GB | Mid-range and modern hardware; test graphics support on newer hardware. | Standard TunaOS flavor on supported bases; availability varies by base. |
 | **[Niri](./niri-quickstart.md)** | Keyboard-driven, scrollable tiling for people who prefer layouts over overlapping windows. | ~0.4–0.6 GB | Efficient on modest systems; best with a Wayland-compatible GPU and a keyboard-centric workflow. | Standard TunaOS flavor on supported bases; availability varies by base. |
 | **XFCE** | A traditional, lightweight desktop for older hardware, VMs, or users who want a conventional panel-and-menu layout. | ~600 MB | The best fit for 4–8 GB systems and older machines. | Available on supported TunaOS bases and as the separate [XFCE Linux](./xfce-linux/index.md) project; not every main base publishes it. |
@@ -42,3 +42,6 @@ desktop listed as a related product is not automatically a TunaOS variant.
 - [Manage images with bootc](./tunaos/bootc-usage.md)
 - [COSMIC quick-start guide](./cosmic-quickstart.md)
 - [Niri quick-start guide](./niri-quickstart.md)
+- [KDE Plasma shortcuts](./plasma-shortcuts.md)
+- [Customization and custom images](./layering.md)
+- [Verify downloads and images](./verifying-downloads.md)
