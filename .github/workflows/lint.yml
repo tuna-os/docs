@@ -17,6 +17,7 @@ on:
       - '*.md'
       - 'scripts/**'
       - '.ste-budget'
+      - '.markdownlint-budget'
       - '.github/workflows/lint.yml'
   push:
     branches: [main]
@@ -26,6 +27,7 @@ on:
       - '*.md'
       - 'scripts/**'
       - '.ste-budget'
+      - '.markdownlint-budget'
   workflow_dispatch:
 
 permissions:
@@ -42,15 +44,36 @@ jobs:
         with:
           node-version: '24'
 
+      # Pinned. The budget below is a count of findings, so it only means
+      # anything against a fixed rule set — an unpinned install silently
+      # rewrites the number every time upstream adds a rule. MD060
+      # (table-column-style) is the live example: it is new, and it alone
+      # accounts for 1823 of the 2834 findings. Disabling it the way MD013,
+      # MD033 and MD041 are disabled would cut the budget to 1011; that is a
+      # style call, so it is left to a maintainer rather than taken here.
       - name: Install markdownlint
-        run: npm install -g markdownlint-cli
+        run: npm install -g markdownlint-cli@0.49.1
 
+      # A budget rather than zero, exactly like the STE job below, and for the
+      # same reason: a gate that fails on day one gets disabled on day two.
+      # This step used to end in `|| echo "NOTE: ..."`, which made it exit 0
+      # whatever markdownlint said — so it reported success on 2834 findings
+      # and the summary table below called it "completed".
+      #
+      # Lower .markdownlint-budget whenever a batch of cleanup lands.
       - name: Run markdownlint
         run: |
           markdownlint 'docs/**/*.md' '*.md' \
             --ignore docs/docs/tacklebox \
-            --disable MD013 MD033 MD041 || \
-            echo "NOTE: markdownlint found issues — review and fix"
+            --disable MD013 MD033 MD041 > markdownlint.out 2>&1 || true
+          found=$(grep -c ' error ' markdownlint.out || true)
+          budget=$(cat .markdownlint-budget)
+          echo "markdownlint findings: ${found} (budget ${budget})"
+          tail -n 40 markdownlint.out
+          if [ "$found" -gt "$budget" ]; then
+            echo "::error::markdownlint findings ${found} exceed the budget of ${budget}"
+            exit 1
+          fi
 
   # Check for broken internal links using a lightweight markdown link checker
   js-syntax:
@@ -154,19 +177,24 @@ jobs:
               fi
             done < <(grep -oP '\[.*?\]\([^)]+\.md(#[^)]*)?\)' "$f" 2>/dev/null || true)
           done
+          # Fails, rather than reporting. This block used to print the
+          # count and exit 0, so a broken link merged with a green check and
+          # the summary table below still said "completed". There are no
+          # broken links today, so there is nothing to ratchet down from.
           if [ "$ERRORS" -gt 0 ]; then
-            echo "Found $ERRORS broken internal links"
-          else
-            echo "No broken internal links found"
+            echo "::error::Found $ERRORS broken internal links"
+            exit 1
           fi
+          echo "No broken internal links found"
 
       - name: Test summary
         if: always()
         run: |
           echo "## Lint Results" >> "$GITHUB_STEP_SUMMARY"
+          # Deliberately only reports this job's own result. The old table
+          # listed every check as "completed" from inside the link-check job,
+          # which knows nothing about the others — so it read as a pass even
+          # when a sibling job failed.
           echo "| Check | Status |" >> "$GITHUB_STEP_SUMMARY"
           echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Markdown Lint | completed |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Node.js Syntax | completed |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Unit Tests | completed |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Internal Link Check | completed |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Internal Link Check | ${{ job.status }} |" >> "$GITHUB_STEP_SUMMARY"
