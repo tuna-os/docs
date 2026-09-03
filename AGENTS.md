@@ -45,7 +45,7 @@ just build         # run this whenever a change can affect the generated site
 `lint.yml` has four jobs, and it is worth knowing which ones bite:
 
 | Job | Enforces |
-|---|---|
+| --- | --- |
 | `js-syntax` | Yes — `node --check` on every script, plus every `*.test.mjs`, plus `check-install-commands` |
 | `ste` | Yes — Simplified Technical English, against the number in `.ste-budget` |
 | `markdown-lint` | Against `.markdownlint-budget` |
