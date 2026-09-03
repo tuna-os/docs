@@ -14,6 +14,8 @@
 // repo that starts uploading is picked up automatically with no code
 // change here.
 
+import {pathToFileURL} from 'node:url';
+
 const BASE_URL = 'https://download.tunaos.org';
 
 // Friendly metadata per top-level prefix. Anything not listed falls back
@@ -80,76 +82,82 @@ function readStdin() {
   });
 }
 
-const raw = (await readStdin()).trim();
-const entries = raw ? JSON.parse(raw) : [];
+async function main() {
+  const raw = (await readStdin()).trim();
+  const entries = raw ? JSON.parse(raw) : [];
 
-const isos = [];
-const checksums = {}; // category -> checksum object url
+  const isos = [];
+  const checksums = {}; // category -> checksum object url
 
-for (const e of entries) {
-  // rclone lsjson gives Path (relative to the remote root), Name, Size, ModTime.
-  const path = e.Path || e.Name;
-  if (!path) continue;
-  const slash = path.indexOf('/');
-  const prefix = slash === -1 ? '' : path.slice(0, slash);
-  const base = e.Name || path.slice(slash + 1);
+  for (const e of entries) {
+    // rclone lsjson gives Path (relative to the remote root), Name, Size, ModTime.
+    const path = e.Path || e.Name;
+    if (!path) continue;
+    const slash = path.indexOf('/');
+    const prefix = slash === -1 ? '' : path.slice(0, slash);
+    const base = e.Name || path.slice(slash + 1);
 
-  if (/SHA256SUMS/i.test(base)) {
-    // Track the newest checksum manifest per category.
-    const prev = checksums[prefix];
-    if (!prev || (e.ModTime || '') > prev.modified) {
-      checksums[prefix] = {url: `${BASE_URL}/${path}`, modified: e.ModTime || ''};
+    if (/SHA256SUMS/i.test(base)) {
+      // Track the newest checksum manifest per category.
+      const prev = checksums[prefix];
+      if (!prev || (e.ModTime || '') > prev.modified) {
+        checksums[prefix] = {url: `${BASE_URL}/${path}`, modified: e.ModTime || ''};
+      }
+      continue;
     }
-    continue;
+    if (!base.toLowerCase().endsWith('.iso')) continue;
+
+    isos.push({
+      category: prefix || 'other',
+      name: base.replace(/\.iso$/i, ''),
+      path,
+      url: `${BASE_URL}/${path}`,
+      size: e.Size ?? null,
+      modified: e.ModTime || '',
+      arch: detectArch(base),
+      latest: /-latest\.iso$/i.test(base),
+    });
   }
-  if (!base.toLowerCase().endsWith('.iso')) continue;
 
-  isos.push({
-    category: prefix || 'other',
-    name: base.replace(/\.iso$/i, ''),
-    path,
-    url: `${BASE_URL}/${path}`,
-    size: e.Size ?? null,
-    modified: e.ModTime || '',
-    arch: detectArch(base),
-    latest: /-latest\.iso$/i.test(base),
+  // Group into categories.
+  const byCat = new Map();
+  for (const iso of isos) {
+    if (!byCat.has(iso.category)) byCat.set(iso.category, []);
+    byCat.get(iso.category).push(iso);
+  }
+
+  const categories = [...byCat.entries()].map(([id, items]) => {
+    const meta = CATEGORIES[id] || {label: titleCase(id), blurb: '', icon: '📀', order: 99};
+    // Latest builds first, then newest-modified dated archives.
+    items.sort((a, b) => {
+      if (a.latest !== b.latest) return a.latest ? -1 : 1;
+      return (b.modified || '').localeCompare(a.modified || '');
+    });
+    return {
+      id,
+      label: meta.label,
+      blurb: meta.blurb,
+      icon: meta.icon,
+      order: meta.order,
+      checksums: checksums[id]?.url || null,
+      isos: items,
+    };
   });
-}
+  categories.sort((a, b) => a.order - b.order || a.label.localeCompare(b.label));
 
-// Group into categories.
-const byCat = new Map();
-for (const iso of isos) {
-  if (!byCat.has(iso.category)) byCat.set(iso.category, []);
-  byCat.get(iso.category).push(iso);
-}
-
-const categories = [...byCat.entries()].map(([id, items]) => {
-  const meta = CATEGORIES[id] || {label: titleCase(id), blurb: '', icon: '📀', order: 99};
-  // Latest builds first, then newest-modified dated archives.
-  items.sort((a, b) => {
-    if (a.latest !== b.latest) return a.latest ? -1 : 1;
-    return (b.modified || '').localeCompare(a.modified || '');
-  });
-  return {
-    id,
-    label: meta.label,
-    blurb: meta.blurb,
-    icon: meta.icon,
-    order: meta.order,
-    checksums: checksums[id]?.url || null,
-    isos: items,
+  const out = {
+    generatedAt: new Date().toISOString(),
+    baseUrl: BASE_URL,
+    count: isos.length,
+    categories,
   };
-});
-categories.sort((a, b) => a.order - b.order || a.label.localeCompare(b.label));
 
-const out = {
-  generatedAt: new Date().toISOString(),
-  baseUrl: BASE_URL,
-  count: isos.length,
-  categories,
-};
-
-process.stdout.write(JSON.stringify(out, null, 2) + '\n');
+  process.stdout.write(JSON.stringify(out, null, 2) + '\n');
+}
 
 // Exported for unit tests.
 export {detectArch, titleCase, CATEGORIES};
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main();
+}
