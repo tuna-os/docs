@@ -80,6 +80,7 @@ After installation, TunaOS provides:
 2. Install additional software via Flathub (Software app)
 3. Use Homebrew for command-line tools: `brew install <package>`
 4. Check out the [Project Bluefin documentation](https://docs.projectbluefin.io) for general usage
+5. To add packages, debug with a temporary overlay, or build a custom image, see the [customization guide](layering.md)
 
 ### Variant-Specific Features
 
@@ -100,7 +101,7 @@ After installation, TunaOS provides:
 - Try the `x86_64_v2` variant for older hardware
 
 ### Installation Problems
-- Verify ISO integrity after download
+- [Verify the ISO, its SBOM, and its signature](verifying-downloads.md) after download
 - Use a different tool to write the USB drive: Ventoy, Rufus, or dd
 - Make sure that the disk has enough free space
 

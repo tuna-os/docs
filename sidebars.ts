@@ -6,7 +6,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Getting Started',
       collapsed: false,
-      items: ['intro', 'choosing-a-variant', 'architecture', 'installation', 'installer', 'system-requirements', 'desktop-comparison', 'bootc-rollback', 'bootc-resources', 'faq', 'ublue-ecosystem'],
+      items: ['intro', 'choosing-a-variant', 'architecture', 'installation', 'verifying-downloads', 'installer', 'system-requirements', 'desktop-comparison', 'plasma-shortcuts', 'layering', 'bootc-rollback', 'bootc-resources', 'faq', 'ublue-ecosystem'],
     },
     {
       type: 'category',
@@ -29,7 +29,7 @@ const sidebars: SidebarsConfig = {
         {type: 'link', label: 'Bonito Rawhide — Fedora Rawhide', href: '/bonito-rawhide'},
         {type: 'link', label: 'Sailfin — openSUSE Tumbleweed', href: '/sailfin'},
         {type: 'link', label: 'Guppy — Gentoo Linux', href: '/guppy'},
-        {type: 'category', label: 'Reference docs', collapsed: true, items: ['albacore', 'yellowfin', 'bonito', 'skipjack', 'grouper', 'gurnard/pantheon-shortcuts', 'marlin', 'gurnard-pantheon', 'niri-quickstart']},
+        {type: 'category', label: 'Reference docs', collapsed: true, items: ['albacore', 'yellowfin', 'bonito', 'skipjack', 'grouper', 'gurnard/pantheon-shortcuts', 'marlin', 'gurnard-pantheon', 'niri-quickstart', 'cosmic-quickstart']},
 
 
       ],
