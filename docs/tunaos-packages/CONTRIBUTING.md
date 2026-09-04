@@ -3,132 +3,126 @@ sidebar_position: 3
 title: "Contributing"
 ---
 
-## Getting Started
+TunaOS Packages contains several packaging pipelines. Before changing a
+package, identify which pipeline owns it and preserve that pipeline's source,
+build, install, and runtime gates.
 
-1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR_USER/tunaos-packages.git`
-3. Create a feature branch: `git checkout -b my-feature`
+## Get started
 
-## Adding a New Package
+1. Fork the repository and clone your fork.
+2. Create a feature branch from the latest `main`.
+3. Read [ARCHITECTURE.md](https://github.com/tuna-os/tunaos-packages/blob/main/ARCHITECTURE.md) and the documentation for the
+   pipeline you plan to change.
+4. Make the smallest package, manifest, and test changes needed.
+5. Run focused checks, then the full repository check where practical.
+6. Push the feature branch and open a pull request. Do not push directly to
+   `main`.
 
-### 1. Create the Source Directory
+Useful pipeline references:
 
-```bash
-mkdir -p src/my-package-1.0.0
-```
+- [Package factory contract](https://github.com/tuna-os/tunaos-packages/blob/main/docs/PACKAGE_FACTORY.md) — supported targets,
+  source policy, promotion gates, and `packages/*/package.yaml` recipes
+- [Patch policy](https://github.com/tuna-os/tunaos-packages/blob/main/docs/PATCH_POLICY.md) — when and how downstream patches may
+  be carried
+- [GNOME 50 repository publication](https://github.com/tuna-os/tunaos-packages/blob/main/docs/GNOME50-REPO-PUBLISH.md) — operator
+  steps for the native EL10 repository
+- [XFWL4 porting guide](https://github.com/tuna-os/tunaos-packages/blob/main/docs/XFWL4-PORTING.md) — target-specific XFCE/XFWL4
+  packaging
+- [Upstream parity register](https://github.com/tuna-os/tunaos-packages/blob/main/docs/UPSTREAM_PARITY.md) — source and behavior
+  differences that need explicit tracking
 
-### 2. Create the Spec File
+`AGENTS.md` contains additional GNOME 49/50 conventions. Its scope note lists
+the package families it does and does not cover.
 
-Create `src/my-package.spec`:
+## Choose the correct package layout
 
-```spec
-Name:           my-package
-Version:        1.0.0
-Release:        1%{?dist}
-Summary:        My package description
-License:        MIT
-URL:            https://example.com
-Source0:        %{name}-%{version}.tar.gz
+Do not create a generic source directory or tarball unless the package's spec
+actually requires one. Existing packages use one of these layouts:
 
-%description
-My package description.
+| Path | Use |
+| --- | --- |
+| `src/<family>/<package>/` | Native RPM spec, patches, and source metadata |
+| `packages/<package>/package.yaml` | Package-factory recipe for supported cross-distribution targets |
+| `packaging/<format>/` | Shared format-specific packaging and helpers |
+| `build-order*.yml` | Native build dependency order |
+| `manifests/` | Factory catalog, dependency trees, target queues, and build contracts |
 
-%prep
-%autosetup
+Start from a nearby package in the same family. If adding a package-factory
+recipe, use `packages/_template/package.yaml` and declare only targets the
+recipe can build and verify. Keep native EL10 compatibility work in the native
+RPM pipeline until the package-factory promotion contract is satisfied.
 
-%build
-# Build commands
+When changing a native spec:
 
-%install
-# Install commands
+- keep the package after its build-time dependencies in the applicable
+  `build-order*.yml` file;
+- place patches beside the owning spec and follow `docs/PATCH_POLICY.md`;
+- record manual GNOME spec or source changes in `SRPM-CHANGES.md` where that
+  log applies; and
+- add a focused regression test for compatibility or pipeline behavior that
+  is not evident from a successful build alone.
 
-%files
-# Files to package
+## Validate changes
 
-%changelog
-* Thu Mar 12 2026 Your Name <you@example.com> - 1.0.0-1
-- Initial package
-```
-
-### 3. Create Source Files
-
-Add your source code to `src/my-package-1.0.0/`
-
-### 4. Create Tarball
-
-```bash
-cd src
-tar -czf my-package-1.0.0.tar.gz my-package-1.0.0
-```
-
-### 5. Test Build
-
-```bash
-./scripts/build-local.sh my-package fedora-43-x86_64
-```
-
-### 6. Commit and Push
+Install Python test dependencies with:
 
 ```bash
-git add src/
-git commit -m "Add my-package"
-git push origin main
+python3 -m pip install pytest pyyaml jsonschema
 ```
 
-## Adding New Build Targets
-
-To add support for a new distribution:
-
-1. Check if mock-core-configs supports it:
-   ```bash
-   docker run --rm fedora:43 bash -c "dnf install -y mock-core-configs && ls /etc/mock/" | grep <distro>
-   ```
-
-2. Update `justfile` with new target recipes
-
-3. Update `.github/workflows/build.yml` with new targets
-
-4. Test: `just build <new-target>`
-
-## Code Style
-
-- Shell scripts: Use `set -euo pipefail`
-- Python: Follow PEP 8
-- YAML: 2 spaces indentation
-- Commit messages: Imperative mood ("Add feature" not "Added feature")
-
-## Testing
-
-Before submitting a PR:
+Run focused tests while developing. For example:
 
 ```bash
-# Test all x86_64 targets
-just build-x86_64
+python3 -m pytest tests/test_parse_build_order.py -v
+python3 scripts/parse-build-order.py build-order.yml --validate
+```
 
-# Test specific target
+Run the repository's combined fast checks before submitting:
+
+```bash
+just check
+```
+
+This runs the Python test suite and validates the primary build-order
+manifest. CI also checks YAML, shell scripts, every build-order manifest, and
+the Bats suite. If your change touches shell workflows, install Bats and run
+the relevant file under `tests/bats/`; see
+[`tests/bats/README.md`](https://github.com/tuna-os/tunaos-packages/blob/main/tests/bats/README.md) for setup and examples.
+
+For a local RPM build, use the target declared by the owning pipeline:
+
+```bash
 ./scripts/build-local.sh <package> <target>
-
-# Verify GPG setup
-just verify-gpg
 ```
 
-## Pull Request Process
+Container and Mock builds are slower than the fast checks. Run the relevant
+build when practical and state clearly in the pull request when it was not run.
+A build alone is not a release gate: package promotion also requires a clean
+staged install and the applicable runtime or desktop validation.
 
-1. Update documentation if needed
-2. Test locally if possible
-3. Push to your fork
-4. Open PR with clear description
-5. Ensure CI passes
+## Pull requests
 
-## Package Naming Conventions
+Include in the pull request description:
 
-- Use lowercase, hyphens: `my-package` not `MyPackage`
-- Match upstream name when possible
-- Version in spec should match upstream release
-- Use semantic versioning
+- package family and target distributions or architectures affected;
+- source or patch provenance and why a downstream change is required;
+- manifests or build-order files changed;
+- commands run and their results; and
+- staged install or runtime checks run, or why they remain for CI or an
+  operator.
 
-## Security
+Keep unrelated package updates separate. Automated source updates must open
+review pull requests and must not publish directly. Signing and publication
+credentials belong only in trusted GitHub environments; never use production
+publication commands or commit secrets from a contributor workstation.
 
-- Never commit secrets or keys
-- Use GitHub Secrets for sensitive data
-- GPG keys should be in `.gitignore`
+## Style
+
+- Shell: use `set -euo pipefail` and satisfy ShellCheck.
+- Python: follow PEP 8 and add focused pytest coverage.
+- YAML: use two-space indentation and validate the affected manifest.
+- Commits: use imperative subjects and explain non-obvious packaging choices.
+
+All contributions must follow [CODE_OF_CONDUCT.md](https://github.com/tuna-os/tunaos-packages/blob/main/CODE_OF_CONDUCT.md). Report
+vulnerabilities through the private process in [SECURITY.md](https://github.com/tuna-os/tunaos-packages/blob/main/SECURITY.md), not
+through a public issue.

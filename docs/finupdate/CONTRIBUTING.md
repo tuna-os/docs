@@ -96,7 +96,8 @@ Read [PATTERNS.md](https://github.com/tuna-os/finupdate/blob/main/PATTERNS.md) f
 
 ### Adding a New Feature
 
-1. Identify which component owns the feature (app.rs, status_view.rs, or new component)
+1. Identify which layer owns the feature (`finupdate-core` for GTK-free backend
+   behavior, `app.rs` for application state, or a focused module under `src/ui/`)
 2. Add message variants to the appropriate `Input`/`Output` enum
 3. Implement the handler in `update()`
 4. Update the view! macro or init() if new widgets are needed
@@ -112,7 +113,8 @@ touch src/ui/my_component.rs
 pub mod my_component;
 ```
 
-Then implement using the `#[relm4::component(pub)]` macro. See `log_view.rs` for the simplest example or `status_view.rs` for a complex one.
+Then implement using the `#[relm4::component(pub)]` macro. See `log_view.rs`
+for a small component or `update_list.rs` for a larger one.
 
 ### Modifying the Flatpak Manifest
 
@@ -150,6 +152,8 @@ Run through the HIG compliance checklist in [PATTERNS.md](https://github.com/tun
 Quick sanity checks:
 - [ ] `toolbox run --container finupdate cargo build` compiles cleanly with no warnings
 - [ ] `toolbox run --container finupdate cargo clippy` passes
+- [ ] `just test` (or `cargo test --all-targets`) passes all unit tests
+- [ ] `just gui-test` passes Broadway GUI verification
 - [ ] App launches and the new feature works visually
 - [ ] Dark mode looks correct
 - [ ] Keyboard navigation works
@@ -164,16 +168,22 @@ Quick sanity checks:
 | `meson.build` | Top-level Meson build (deps, subdirs) |
 | `meson_options.txt` | Build profile option (development/release) |
 | `src/main.rs` | Entry point (logging, app launch) |
-| `src/config.rs` | Build-time constants |
-| `src/config.rs.in` | Meson template for config.rs |
+| `finupdate-core/src/config.rs` | Build-time constants |
+| `finupdate-core/src/config.rs.in` | Meson template for config.rs |
+| `finupdate-core/src/lib.rs` | GTK-free backend module map and boundary |
+| `finupdate-core/src/service.rs` | Updater service interface and bootc implementation |
+| `finupdate-core/src/registry_client/` | Image registry queries and family resolution |
+| `finupdate-core/src/orchestrator.rs` | Privileged update runner protocol |
+| `finupdate-core/src/update_worker.rs` | Update event stream and simulator |
+| `finupdate-core/src/settings.rs` | GSettings preferences with JSON fallback |
 | `src/app.rs` | Main window component + state machine |
-| `src/update_worker.rs` | Async subprocess worker (tokio) |
 | `src/ui/mod.rs` | UI module declarations |
-| `src/ui/status_view.rs` | State-driven content area (Stack) |
 | `src/ui/log_view.rs` | Scrollable log output |
 | `src/ui/update_list.rs` | Per-module update cards with Nerd Mode |
 | `src/ui/preferences.rs` | Preferences dialog |
-| `src/settings.rs` | Settings persistence (XDG JSON) |
+| `src/changelog_widget.rs` | Embeddable changelog widget for the Settings panel |
+| `src/rebase_widget.rs` | Embeddable image-switching widget for the Settings panel |
+| `src/ffi.rs` | C ABI exported to the Settings panel |
 | `src/meson.build` | Cargo build integration |
 | `data/meson.build` | Install desktop/metainfo/icons |
 | `data/*.desktop.in` | Desktop entry template |
@@ -186,7 +196,7 @@ Quick sanity checks:
 
 ## Getting Help
 
-- Open an issue at https://github.com/castrojo/finupdate/issues
+- Open an issue at https://github.com/tuna-os/finupdate/issues
 - Reference the [GNOME Developer Documentation](https://developer.gnome.org/)
 - Reference the [relm4 book](https://relm4.org/book/stable/)
 - Reference the [gtk4-rs docs](https://gtk-rs.org/gtk4-rs/stable/latest/docs/gtk4/)

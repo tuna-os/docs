@@ -63,6 +63,7 @@ Two inputs address this, and neither disturbs existing GHCR chunk caches:
 | --- | --- | --- |
 | `extra_core_targets` | `''` | Extra elements built in `build_core` *in addition to* the first `core_split` plan entries. The chunk matrix is still derived from `core_split` alone, so chunk names and cache keys are unchanged. Anything listed here is built once and reaches every chunk through the shared core CAS. |
 | `soft_core_budget` | `false` | Lets `build_core` exhaust its budget without failing the job. Core is a cache-warming job whose partial CAS is pushed either way, so when you deliberately give it more work than fits in one job the timeout is a checkpoint, not a fault. Only exit code 124 is softened. |
+| `soft_chunk_budget` | `false` | Lets dependency chunks treat exit code 124 as a cache-warming checkpoint instead of failing the run. This allows the caller's `build_final` job to consume the partial CAS and lets later runs resume from the rolling cache. Real build errors still fail. |
 
 Raising `num_chunks` is *not* a substitute: with round-robin slicing it
 multiplies the duplicated closure across more runners rather than dividing
@@ -77,6 +78,14 @@ the CAS archive+push that follows, which grows with the cache: a chunk push
 of a comparable CAS has been measured at 16 minutes. The chunk budget is
 deliberately left at 270 — a job-level timeout cancels the job and throws
 away the whole chunk, so the remaining headroom there is not worth spending.
+
+Enable `soft_chunk_budget` when chunks routinely reach that 270-minute limit
+but still make useful progress. A timed-out chunk publishes only its rolling
+`:latest` cache tag; it does not publish the exact `:<cache_key>` tag, because
+that tag means the chunk completed. This makes repeated runs converge without
+allowing a partial chunk to masquerade as complete. Leave the input disabled
+when a timeout should block final assembly. `soft_core_budget` applies the same
+exit-code-124 policy to the serial core job; the two inputs are independent.
 
 `runner_label` / `runner_label_aarch64` (default `ubuntu-24.04` /
 `ubuntu-24.04-arm`) set `runs-on` for planning, core and chunks. This is the
@@ -105,10 +114,13 @@ podman, or a real chunked build to run:
 ### `scripts/lint_bst.py`
 
 Catches two classes of mistake in new/changed `.bst` files without
-BuildStream, a junction fetch, or a real build:
+BuildStream, a junction fetch, or a real build. It requires Python 3 and
+PyYAML (`python3 -m pip install pyyaml`):
 
-1. **Structural**: valid YAML, `kind:` is a recognized BuildStream plugin
-   kind (catches typos like `kind: meason`).
+1. **Structural**: invalid YAML and a missing `kind:` are errors. An
+   unrecognized BuildStream plugin kind (including a possible typo such as
+   `kind: meason`) is reported as a non-fatal warning because the script's
+   built-in list may not include every valid third-party plugin.
 2. **Cross-reference**: every junction-qualified dependency (anything with
    a `:` in it, e.g. `freedesktop-sdk.bst:components/foo.bst`) named by a
    new/changed file is checked against every `.bst` file already in the
@@ -133,10 +145,11 @@ python3 scripts/lint_bst.py path/to/elements --check-new path/to/elements/foo/ne
 #   git diff --name-only --diff-filter=AM origin/main... -- '*.bst'
 ```
 
-Exits 0 unless a structural error is found (invalid YAML, missing `kind:`);
-unconfirmed-dependency findings are warnings by default since they're a
-"go check this" signal, not a certain failure — pass `--strict` to make
-them fatal once you've built confidence in the false-positive rate.
+Exits 0 unless a structural error is found (invalid YAML, missing `kind:`).
+Unknown-kind and unconfirmed-dependency findings are warnings by default
+since they're "go check this" signals, not certain failures. Pass `--strict`
+to make unconfirmed-dependency findings fatal once you've built confidence
+in their false-positive rate; unknown-kind warnings remain non-fatal.
 
 ## Scope
 
@@ -157,10 +170,32 @@ the mechanically identical, highest-churn part of the pipeline. It does
 
 ## Versioning
 
-Consumers currently pin `@main` (this repo has no tagged releases yet).
-Once this stabilizes across a few consumers, moving to tagged releases
-(`@v1`) is worth doing so a breaking change here can't silently break
-every consumer's next scheduled build.
+Consumers can pin the workflow by commit SHA:
+
+```yaml
+jobs:
+  multirunner:
+    uses: tuna-os/bst-ci/.github/workflows/multirunner-build.yml@<sha>
+    with:
+      image_name: your-image
+      bst_target: oci/your-image.bst
+```
+
+Two caveats, both of which matter when you are pinning in order to be able to
+roll back:
+
+- **This repository publishes no tags or releases yet**, so a SHA is the only
+  ref that resolves. Both current consumers track `main`.
+- **A pin freezes the workflow definition only.** The `planning` job checks the
+  helper scripts out into `.bst-ci` with `ref: main` hardcoded, so a pinned
+  consumer still runs the current `scripts/ci-build-matrix.py` — the script
+  that computes chunk names, the chunk matrix and the GHCR cache keys. There is
+  no input for overriding that ref; passing one that the workflow does not
+  declare fails the run at load time.
+
+`runbooks/rollback.md` covers what to do when a change here breaks a consumer,
+which of the two rollback levers covers which kind of regression, and the cache
+blast radius to expect afterwards.
 
 ## Consumers
 

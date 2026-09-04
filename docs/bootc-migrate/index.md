@@ -27,17 +27,17 @@ old OSTree deployment stays in the boot menu as a fallback the whole time.
 swap in `aarch64-unknown-linux-gnu`):
 
 > **Release-naming note.** This repo was renamed from `bootc-migrate-composefs`
-> to `bootc-migrate` after the v0.2.0 release. The released tarballs, the
-> binary inside them, and the container image still carry the old
-> `bootc-migrate-composefs` name — the commands below reflect what v0.2.0
-> actually ships. The next release will publish under the new `bootc-migrate`
-> name.
+> to `bootc-migrate` after v0.2.0. `release.yml` already publishes under the
+> new name, so from **v0.5.0** the tarball, the binary inside it, and the
+> container image are all `bootc-migrate`. The commands below reflect that.
+> To install the older v0.2.0 artifacts, substitute `bootc-migrate-composefs`
+> in the paths.
 
 ```bash
 curl -fsSL -o bmc.tar.gz \
-  https://github.com/tuna-os/bootc-migrate/releases/latest/download/bootc-migrate-composefs-x86_64-unknown-linux-gnu.tar.gz
+  https://github.com/tuna-os/bootc-migrate/releases/latest/download/bootc-migrate-x86_64-unknown-linux-gnu.tar.gz
 tar xzf bmc.tar.gz
-sudo install -m755 bootc-migrate-composefs /usr/local/bin/bootc-migrate
+sudo install -m755 bootc-migrate /usr/local/bin/bootc-migrate
 ```
 
 <details>
@@ -46,10 +46,10 @@ sudo install -m755 bootc-migrate-composefs /usr/local/bin/bootc-migrate
 A minimal image ships the same binary, useful when GitHub Releases is rate-limited/blocked, or to `COPY --from=` it into another Containerfile:
 
 ```bash
-podman create --name bmc-extract ghcr.io/tuna-os/bootc-migrate-composefs:latest
-podman cp bmc-extract:/usr/local/bin/bootc-migrate-composefs .
+podman create --name bmc-extract ghcr.io/tuna-os/bootc-migrate:latest
+podman cp bmc-extract:/usr/local/bin/bootc-migrate .
 podman rm bmc-extract
-sudo install -m755 bootc-migrate-composefs /usr/local/bin/bootc-migrate
+sudo install -m755 bootc-migrate /usr/local/bin/bootc-migrate
 ```
 </details>
 
@@ -103,10 +103,11 @@ On **Bluefin LTS** (XFS) or systems with **LVM / LUKS / a dedicated `/var`
 partition**, the tool handles those automatically — see
 [docs/filesystem-support.md](https://github.com/tuna-os/bootc-migrate/blob/main/docs/filesystem-support.md).
 
-> **Status: CI-validated, released, and proven on real hardware.** Four E2E
-> scenarios — btrfs, ext4, LUKS+XFS, and LVM-on-LUKS with a dedicated `/var` —
-> run in CI on every push to `main` (migration, commit, deep-clean, and
-> `bootc status` / `upgrade --check` all green). Prebuilt binaries are on the
+> **Status: CI-validated, released, and proven on real hardware.** Seven E2E
+> scenarios — btrfs, ext4, LUKS+XFS, LVM-on-LUKS with a dedicated `/var`, two
+> ostree re-bases, and a TUI-driven migration — run in CI on every push to
+> `main` (migration, commit, deep-clean, and `bootc status` /
+> `upgrade --check` all green). Prebuilt binaries are on the
 > [Releases](https://github.com/tuna-os/bootc-migrate/releases) page. Don't point this at a machine you can't
 > reinstall, but the core path is stable.
 
@@ -251,7 +252,10 @@ sudo bootc-migrate \
 
 Things to confirm in the report:
 
-- `Booted OSTree backend: Yes` — required; if `No` the tool refuses to run.
+- `Booted bootc backend: ostree` — the conversion runs from here. `composefs`
+  means the conversion is already done, and the tool swaps the deployment
+  image instead (`bootc switch`) rather than refusing. Only `none` — not a
+  bootc deployment at all — is a blocker.
 - `UEFI Boot Mode: Yes` + `NVRAM writable: Yes` — required for the
   systemd-boot path; on BIOS-only or locked NVRAM pass `--bootloader grub2`.
 - `ESP Free Space: ≥ 150 MB` — we copy `systemd-bootx64.efi` from the
@@ -441,7 +445,7 @@ What's intentionally *not* carried forward:
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| Phase 0 refuses with "System is not booted into an OSTree deployment" | You're already on composefs (or a non-bootc system) | Nothing to do |
+| Phase 0 refuses with "System is not booted into a bootc deployment" | Neither an ostree nor a composefs deployment is booted | Nothing to migrate from; check `bootc status` |
 | Phase 2 fails with ENOSPC mid-pull | `/sysroot/composefs` is tight on the 1.1× heuristic | Free space or grow the partition, then rerun |
 | Post-reboot `cat /proc/cmdline` shows `ostree=` not `composefs=` | Firmware ignored the new NVRAM entry, or OVMF loaded `Fedora\shim` instead | Use firmware boot menu to pick `Linux Boot Manager`; if that fails, fall back to OSTree and report the firmware quirk |
 | `bootc status` says "No manifest_digest in origin" | You're on an old build of this tool | Update to `main` — version info is on the first line of the migration log |
@@ -482,8 +486,23 @@ sudo ./tests/run-e2e.sh
 ```
 
 Overridable via env: `BASE_IMAGE`, `TARGET_IMAGE`, `DISK_SIZE`,
-`FILESYSTEM`, `SKIP_SETUP`. The CI matrix runs four scenarios: btrfs (default), XFS+ext4-loopback, LUKS+XFS+crypt,
-and LVM-on-LUKS with a dedicated `/var`.
+`FILESYSTEM`, `SKIP_SETUP`, `E2E_MODE`.
+
+The CI matrix runs seven cells (see `.github/workflows/e2e-tests.yml`, which
+is authoritative):
+
+| Cell | Base → target | Filesystem | Disk |
+|---|---|---|---|
+| composefs migration | bluefin:stable → dakota:stable | btrfs | 40G |
+| composefs migration | bluefin:lts → dakota:stable | ext4 | 40G |
+| composefs migration | bluefin:lts → dakota:stable | xfs+crypt | 40G |
+| composefs migration | bluefin:lts → dakota:stable | xfs+lvm+crypt | 60G |
+| ostree re-base | bluefin:stable → dakota:stable | btrfs | 40G |
+| ostree re-base, GNOME→KDE (non-gating) | bluefin:stable → aurora:stable | btrfs | 40G |
+| TUI-driven migration | bluefin:stable → dakota:stable | btrfs | 40G |
+
+Only the two `xfs*` cells exercise the ext4-loopback composefs store (XFS has
+no fs-verity); btrfs and ext4 seal in place.
 
 ## Layout
 
@@ -497,7 +516,7 @@ A Cargo workspace with three crates (see [ROADMAP.md](https://github.com/tuna-os
   (`de_migrate`), types.
 - `crates/bootc-migrate` — **the protected MVP binary** described
   above. CLI surface (clap), `commit`/`undo`/`rollback` subcommands, the TUI
-  wizard. Its four E2E cells are untouchable regression gates — this binary's
+  wizard. Its E2E cells are untouchable regression gates — this binary's
   behavior doesn't change as new capability lands in `bootc-rebase`.
 - `crates/bootc-rebase` — the universal re-base engine binary; see below.
 - `tests/run-e2e.sh` — QEMU E2E harness exercising both binaries.
@@ -521,9 +540,9 @@ cargo build --release -p bootc-rebase
 | `scan <image>` | Registry-streamed capability probe of a target image — composefs/ostree readiness, fs-verity requirement, transient root/etc, bootloader payload, desktops, base OS identity, sysusers, initramfs flavor, filesystem expectation, and a `Compatible: YES/NO` verdict with reasons. `--json` for machine output. | Done |
 | `rebase --target-image <image>` | Re-base the running system, routing on `--source-backend`/`--target-backend` through the strategy table below. `--plan` prints the route, selected phases, and bootloader policy, then exits without touching the system. | Implemented for ostree→composefs (the MVP pipeline), composefs→composefs (image swap), and ostree→ostree (native `bootc switch`, with cross-base UID/GID remap when host and target disagree on distro family — pass `--accept-cross-base` to proceed past the report) |
 | `rollback [--reboot]` | Re-order UEFI `BootOrder` back to the previous deployment. | Done |
-| `boot-entries [--json] [--interactive] [--rename-branding] [--apply] [--undo]` | Enumerate and classify UEFI boot entries: dead (loader path missing), generic-label, duplicate, firmware-managed, plus which are protected and why. **Dry-run by default** — a bare invocation is the read-only audit. `--interactive` opens a checklist (protected entries are unselectable), `--rename-branding` proposes renaming the booted entry to `PRETTY_NAME`, `--apply` writes the result to NVRAM after a typed confirmation and a restorable snapshot, and `--undo` replays that snapshot. | Audit and the cleanup **planner** are done and unit-tested (protections, the last-bootable-entry guard, and the "every entry looks dead ⇒ the ESP is wrong" refusal). The `efibootmgr` mutation path and the checklist's event loop have **no automated coverage** — no E2E cell mutates NVRAM — and need real-hardware/VM UEFI validation before they are trusted ([#31](https://github.com/tuna-os/bootc-migrate/issues/31)) |
+| `boot-entries [--json] [--interactive] [--rename-branding] [--apply] [--undo]` | Enumerate and classify UEFI boot entries: dead (loader path missing), generic-label, duplicate, firmware-managed, plus which are protected and why. **Dry-run by default** — a bare invocation is the read-only audit. `--interactive` opens a checklist (protected entries are unselectable), `--rename-branding` proposes renaming the booted entry to `PRETTY_NAME`, `--apply` writes the result to NVRAM after a typed confirmation and a restorable snapshot, and `--undo` replays that snapshot. | Audit and the cleanup **planner** are unit-tested (protections, the last-bootable-entry guard, and the "every entry looks dead ⇒ the ESP is wrong" refusal). The gating OSTree re-base E2E cell also renames a live OVMF NVRAM entry, applies the plan, undoes it, and asserts byte-identical `efibootmgr -v` output. This covers the executor and snapshot restore; it does **not** cover the separate, unimplemented GRUB2→systemd-boot flip ([#31](https://github.com/tuna-os/bootc-migrate/issues/31), [#189](https://github.com/tuna-os/bootc-migrate/issues/189)) |
 | `de-migrate stash\|restore` | Move a user's desktop-environment config (GNOME dconf/gnome-shell, KDE kdeglobals/plasma, COSMIC, niri, XFCE) into or out of a stash directory around a cross-DE re-base — union of paths per issue [#68](https://github.com/tuna-os/bootc-migrate/issues/68), never deletes. `--run-hooks` executes `pre-switch.d`/`post-switch.d` scripts with `REBASE_FROM_DE`/`REBASE_TO_DE`/`REBASE_STASH_DIR`/`REBASE_HOME` set. `--dry-run` previews without touching anything. | Done. Also runs automatically inside `rebase --de-migrate`; this subcommand remains the manual escape hatch for images shipping several desktops (which detection refuses to guess between) |
-| `rebase --de-migrate` | Detects the desktop environment the target image ships (registry-streamed session files, session binaries, and display-manager default session — no `podman pull`) and the one this host runs. When they differ, stashes every human account's outgoing DE config before staging and re-exposes any stash a previous re-base in the other direction left behind, running the `pre-switch.d`/`post-switch.d` hooks around each. | Done, unit-tested; **off by default** — a re-base never touches per-user desktop state unless asked to. Not yet covered by a cross-DE E2E cell |
+| `rebase --de-migrate` | Detects the desktop environment the target image ships (registry-streamed session files, session binaries, and display-manager default session — no `podman pull`) and the one this host runs. When they differ, stashes every human account's outgoing DE config before staging and re-exposes any stash a previous re-base in the other direction left behind, running the `pre-switch.d`/`post-switch.d` hooks around each. | Done, unit-tested; **off by default** — a re-base never touches per-user desktop state unless asked to. The non-gating Bluefin→Aurora E2E cell passes `--de-migrate`, seeds GNOME config, and asserts that the cross-DE plan and stash are created. Because target desktop detection uses the registry scan, this evidence depends on that exploratory cell completing successfully ([#68](https://github.com/tuna-os/bootc-migrate/issues/68), [#188](https://github.com/tuna-os/bootc-migrate/issues/188)) |
 | `migrate-bootloader --to systemd-boot` | GRUB2 → systemd-boot conversion, standalone of a backend re-base. | **Not implemented** — the subcommand exists and always refuses; only the pure BLS-entry/kernel-arg/entry-token logic it will use has landed. Live ESP populate + NVRAM cutover + the kernel-install resync hook (without which a flipped system would silently boot stale kernels) are deliberately deferred pending explicit sign-off and a dedicated E2E cell — see [#65](https://github.com/tuna-os/bootc-migrate/issues/65) for the full implementation plan |
 
 `rebase`'s routing table (`crates/bootc-rebase/src/routing.rs` is the single

@@ -973,9 +973,11 @@ The Windows installer (`wootc.exe`) has four screens:
 ```
 
 **Button actions:**
-- **[Try in VM]**: Bypasses BCD modification. Launches a background Alpine
-  builder VM to pull the OCI image into a local virtual disk and starts
-  QEMU immediately (§6.1). No reboot.
+- **[Try in VM]**: (Optional / Post-1.0 offline bundle; gated by `GetFreshVMCapability`).
+  Bypasses BCD modification. Launches a background Alpine builder VM to pull
+  the OCI image into a local virtual disk and starts QEMU immediately (§6.1).
+  No reboot. In standard 1.0 builds, this affordance is hidden in favor of
+  post-install Phase 1 VM Boot (ADR 0001, #231).
 - **[Install]**: Validates fields, proceeds to pre-flight checks.
 
 #### Screen 1.5: Pre-Flight Mitigation (Conditional)
@@ -1250,8 +1252,10 @@ pre-installed during deployment.
 
 ### 4.4 Windows-Style Mode
 
-On first login, the system can optionally adopt the Windows host's
-aesthetics to reduce the visual shock of switching OS:
+On first login, the system adopts the Windows host's aesthetics to reduce
+the visual shock of switching OS. This is ON by default — everything safe
+to bring along comes along, the way a Mac migration would — with the
+opt-out under Advanced for users who want the image maker's stock desktop:
 
 - Same wallpaper (extracted via fisherman's Slurp)
 - Same accent color
@@ -1277,8 +1281,8 @@ three consent tiers:
 
 | Tier | Policy | Examples |
 |---|---|---|
-| Apply automatically | Non-secret preferences with an obvious Linux equivalent | timezone, keyboard layout, language, accessibility settings, wallpaper, accent color, hostname, browser homepage |
-| Offer with preview | Useful data or configuration whose effect the user can inspect | Wi-Fi profiles, browser data, Steam libraries, VPN endpoints, cloud-folder setup, developer tools, printers, display/audio preferences |
+| Apply automatically | Non-secret preferences with an obvious Linux equivalent, plus the connectivity a user cannot comfortably be without | timezone, keyboard layout, language, accessibility settings, wallpaper, accent color, hostname, browser homepage, personal Wi-Fi networks (open/WPA-PSK/WPA3-SAE) |
+| Offer with preview | Useful data or configuration whose effect the user can inspect | browser data, Steam libraries, VPN endpoints, cloud-folder setup, developer tools, printers, display/audio preferences |
 | Never migrate silently | Secrets, identity material, executable automation, or controller-specific state | passwords, private keys, access tokens, certificates, Bluetooth pairing keys, enterprise Wi-Fi credentials, scheduled-task commands |
 
 The maintenance control panel includes a **Bring your setup over** dashboard.
@@ -1287,8 +1291,11 @@ what remains on Windows, and how to undo the Linux-side result.
 
 #### Wi-Fi profiles
 
-Wi-Fi is an opt-in, first-class migration feature. During Windows setup,
-wootc can export selected saved profiles using `netsh wlan export profile
+Wi-Fi is a first-class migration feature, on by default: being online on
+first boot without re-typing a single network password is the friendliest
+thing a migration can do, and macOS-grade setup would never make it a
+question. During Windows setup, wootc exports saved profiles using `netsh
+wlan export profile
 ... key=clear`; this requires administrator privileges and exposes the
 network key in the exported profile. The transient export is handed to the
 first Linux boot, converted to NetworkManager connections, and securely
@@ -1434,6 +1441,13 @@ wootc can boot bootc images directly on Windows using QEMU with WHPX
 performance. Two distinct modes:
 
 ### 6.1 Fresh VM from OCI Image (Two-Stage QEMU Handoff)
+
+> **Status (1.0 Scope)**: Deferred to post-1.0 per [ADR 0001](https://github.com/tuna-os/wootc/blob/main/docs/adr/0001-phase1-first-architecture.md)
+> and [#231](https://github.com/tuna-os/wootc/issues/231). The 1.0 distribution relies on
+> §6.2 (Phase 1 Boot-in-VM) against the installed `root.disk`, avoiding bundling ~100MB+
+> of builder/QEMU binaries in standard installer releases while providing a zero-risk VM
+> trial of the real system. The underlying capability check and builder scripts are preserved
+> for evaluation and potential post-1.0 offline bundles.
 
 "Try before you install" — the user clicks **[Try in VM]** on the
 Launchpad, and wootc builds a bootable disk image and launches it in
@@ -1773,6 +1787,41 @@ wootc/
 ---
 
 ## 9. Open Questions
+
+#### Which Microsoft UEFI CA the firmware trusts (#322)
+
+Secure Boot launches only a loader signed by a certificate authority present
+in the firmware's `db` variable. Microsoft's third-party authority exists in
+two generations:
+
+| Generation | Certificate | Notes |
+|---|---|---|
+| `Microsoft Corporation UEFI CA 2011` | expired 2026-06-27 | firmware ignores expiry, so machines holding it still boot 2011-signed loaders |
+| `Microsoft UEFI CA 2023` | current | signs everything Microsoft issues now; new machines increasingly ship it alone |
+
+A shim signed only by an authority this firmware does not hold fails at
+`bad shim signature` **after** the reboot, and the firmware falls back to
+Windows with nothing said. wootc therefore closes the loop at both ends:
+
+- **Build time.** `packaging/shim-authorities.py` reads the Authenticode
+  signatures out of the staged `shimx64.efi` (walking *every* WIN_CERTIFICATE,
+  since a dual-signed binary carries two) and writes `shim-authorities.json`.
+  The release refuses to publish a shim that is not 2023-signed, and stamps
+  the generations into each exe with `-X main.shimAuthorities=…`.
+- **Preflight.** `getSystemInfo` reads `db` via `Get-SecureBootUEFI -Name db`,
+  parses the `EFI_SIGNATURE_LIST` chain, and records which generations the
+  firmware holds. `gateScenario` refuses **before** anything is written when
+  both sides are known and do not intersect.
+- **When `db` cannot be read**, the install proceeds with an on-screen
+  warning rather than a refusal. `bad shim signature` costs the user a reboot
+  back into Windows, not their data; refusing every PC whose SecureBoot
+  PowerShell module is unavailable would block machines that work today.
+  (This is a deliberate softening of the original design in
+  `docs/borrowed-from-libertix.md` §1, which called for refusing on unknown.)
+
+`mmx64.efi` (MokManager) is signed by the distribution's own key and verified
+by shim rather than by the firmware, so it is deliberately not graded against
+the Microsoft authorities.
 
 1. **Secure Boot with GRUB2**: WubiUEFI uses shim for Secure Boot.
    wootc inherits this for the GRUB2 path. The shim must be signed by

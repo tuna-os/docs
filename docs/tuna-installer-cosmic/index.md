@@ -18,7 +18,7 @@ status: unknown
 
 A real **COSMIC** application: `cosmic::Application`, the COSMIC header bar,
 the cosmic widget set and the `cosmic-theme` palette. It drives the
-[fisherman](https://github.com/projectbluefin/fisherman) bootc install backend.
+[fisherman](https://github.com/tuna-os/fisherman) bootc install backend.
 
 > Previously this crate was plain `iced` with `.theme(|_| Theme::Dark)`
 > hardcoded and no `libcosmic` dependency at all, which is why it never looked
@@ -96,6 +96,10 @@ On a TunaOS live ISO the installer detects the booted bootc image
 recipe). Embedded OCI stores listed in `/etc/tuna-installer/offline-stores`
 (or `$TUNA_OFFLINE_STORES`, default `/usr/share/tuna-installer/oci-store`)
 are passed to fisherman as `additionalImageStores`.
+
+## Contributing
+
+See [CONTRIBUTING.md](https://github.com/tuna-os/tuna-installer-cosmic/blob/main/CONTRIBUTING.md) for detailed guidelines on local setup, running verification commands (`just check`, `just check-cargo-sources`), and screenshot capture tests (`just capture`).
 
 ## Screenshots
 

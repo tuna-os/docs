@@ -11,7 +11,7 @@ matrix greens; the channel graduates when whole tiers are green.
 
 ## The single source of truth
 
-The [build/test matrix](https://github.com/tuna-os/wootc/blob/main/README.md#buildtest-matrix) is authoritative. A
+The [build/test matrix](https://github.com/tuna-os/wootc/blob/main/docs/status.md#buildtest-matrix) is authoritative. A
 combination is *green* only when the hosted E2E (`e2e-matrix.yml` /
 `e2e-gui.yml`) has passed it end-to-end — Windows seed → deploy → Phase-2
 bridge → Phase-3 native disk → seeded file on the native disk.
@@ -57,13 +57,13 @@ Windows is a good outcome; a walked-into-red user with a broken boot is not.
 
 Each of these flips a gate the moment its matrix row is green:
 
-- [ ] yellowfin / bonito / marlin / flounder full three-phase → `status: green`
-- [ ] composefs-native (dakota) Phase-2/3
-- [ ] Windows 10 + Home/Enterprise/LTSC editions
-- [ ] BitLocker FDE path (#34) → `BitLockerSupported: true`
+- [x] yellowfin / bonito / marlin / flounder full three-phase → `status: green`
+- [x] composefs-native (dakota) Phase-2/3
+- [x] Windows 10 + Home/Enterprise/LTSC editions
+- [x] BitLocker FDE path (#34) → `BitLockerSupported: true`
 - [ ] tpm2-luks root (#33) → offer encryption
 - [ ] btrfs sealed Phase-2 (#35) → offer btrfs
-- [ ] custom OCI refs (once the deploy path is family-agnostic green) → `CustomImageAllowed: true`
+- [x] custom OCI refs (once the deploy path is family-agnostic green) → `CustomImageAllowed: true`
 
 When the **whole matrix** is green, the default channel becomes `beta`
 (catalog all-green, custom refs on), and the axis gates open as their issues
@@ -80,15 +80,40 @@ git tag v0.1.0-alpha.1 && git push origin v0.1.0-alpha.1
 # → tests → E2E gate (real Windows VM, bluefin:lts, GUI-driven) → build + publish
 ```
 
-The published artifact is `wootc.exe` (Wails, Go + web UI; no runtime deps).
-`skip_e2e` exists for emergencies and documents itself in the release notes.
+Every release ships the **full artifact set**, not just one exe
+(`release.yml`): one installer per brand directory — `wootc.exe` plus
+`TunaOS-Installer.exe`, `Bluefin-Installer.exe`, `Bazzite-Installer.exe`,
+`Aurora-Installer.exe` (Wails, Go + web UI; no runtime deps) — the shared
+boot artifacts (`deployer-vmlinuz`, `deployer-initramfs.img`, `shimx64.efi`,
+`grubx64.efi`, `mmx64.efi`, plus `wubildr.efi` when its build succeeds), and
+a `SHA256SUMS` covering all of them. `skip_e2e` exists for emergencies and
+documents itself in the release notes.
 
-## User instructions (shipped in the release notes / INSTALL.md)
+## When a release has to be taken back
+
+[runbooks/rollback-a-bad-release.md](https://github.com/tuna-os/wootc/blob/main/runbooks/rollback-a-bad-release.md)
+is the other direction: which lever to pull for a bad build, and what each
+one reaches. The short version, because the instinct is usually wrong:
+
+- Marking the bad release a **pre-release** moves `latest` back to the last
+  good full release — that fixes the download links and every unstamped
+  build, and leaves pinned exes able to finish verifying.
+- **Deleting** the release is the only thing that reaches an exe already on
+  a user's disk, and it also 404s any published winget manifest. Reserve it
+  for a build that is dangerous, not merely broken.
+- The nightly keeps cutting `auto-v*` from `main`, so nothing is contained
+  until the offending commit is reverted or `e2e-gui.yml` is paused.
+- winget submission is one-directional; withdrawing a version means a PR
+  against `microsoft/winget-pkgs`.
+
+## User instructions (shipped in the release notes)
 
 1. Download `wootc.exe`. It is not code-signed yet (alpha) — SmartScreen will
    warn; *More info → Run anyway*.
 2. Requirements the app checks for you: Windows 10/11 64-bit, UEFI + Secure
-   Boot, TPM 2.0, **BitLocker off** (alpha), ~40 GB free.
+   Boot, TPM 2.0, **BitLocker off** (alpha), and at least 35 GB free on `C:`
+   (20 GB for Linux plus the 15 GB headroom the launchpad reserves for
+   Windows).
 3. Run it, pick Bluefin, set a username + password, click Install. Nothing on
    your PC changes until you click **Reboot Now** — and even then Windows and
    all your files stay put; Linux lives in a file beside them.

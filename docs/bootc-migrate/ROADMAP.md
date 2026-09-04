@@ -3,8 +3,14 @@ sidebar_position: 3
 title: "Roadmap"
 ---
 
-Status date: 2026-08-13. Living document; the issue tracker is authoritative
+Status date: 2026-08-27. Living document; the issue tracker is authoritative
 for day-to-day state, this file is authoritative for **shape and sequence**.
+
+Caveat on that split, recorded because it has already misled readers: five
+milestone issues are closed as completed while their exit criteria here are
+not met, because the implementation landed and the validation named in the
+issue's own scope did not. Where the two disagree, this file is currently the
+more accurate. See "Unvalidated paths" below and #186.
 
 ## Vision
 
@@ -34,8 +40,63 @@ deliberately deferred** — each of M2, M3, and M5 shipped a pure/unit-testable
 "skeleton" slice first. M2 stopped there, ahead of boot-critical live-system
 mutation CI cannot validate; M3 and M5 have since grown their live halves,
 but those run on paths no CI cell reaches (no cross-base E2E cell, no NVRAM
-mutation, no TUI assertions), so they are landed-but-unproven rather than
-done. See each milestone below for the specific line and why.
+mutation; the TUI-assertions gap now has headless render/state tests plus
+the `tui-migrate` cell, which is now gating and green), so they are
+landed-but-unproven rather than done. See each milestone below for the specific line and why.
+
+## Next release gate — first post-rename release
+
+The next release is a trust checkpoint, not a date-only cut. It must restore
+one coherent public identity after the repository and binary rename while
+keeping the protected migrator's proven contract distinct from the broader,
+partly unvalidated re-base engine.
+
+Before tagging, the release owner must record these decisions and evidence:
+
+- **Identity:** Cargo workspace/crate versions, changelog heading, Git tag,
+  binary names, archive names, and container tags agree. The published quick
+  start downloads those exact artifacts; no pre-rename
+  `bootc-migrate-composefs` path remains in the primary install flow.
+- **Scope:** release notes state whether `bootc-rebase` is excluded, included
+  as an experimental preview, or supported. Experimental routes must not
+  inherit the protected MVP's stability language.
+- **Validation:** all protected-MVP E2E cells pass on the release commit, and
+  a manual dispatch of the release workflow successfully builds both target
+  archives and the container without publishing them.
+- **Safety boundary:** release notes enumerate every live or interactive path
+  that lacks automated coverage (including cross-base, cross-DE, NVRAM, and
+  checklist paths) and link to recovery/undo guidance.
+- **Ownership:** one named release owner and target date are attached to the
+  roadmap issue; the owner verifies checksums and install commands from the
+  immutable GitHub Release before announcing it.
+
+This gate deliberately does not require unfinished M2–M5 work to graduate.
+It allows the proven, renamed migrator to ship while making the newer engine's
+evidence level visible to adopters. After this release, cadence and the
+`bootc-rebase` graduation gate should be tracked separately.
+
+## Unvalidated paths (single list for release notes)
+
+Consumed by [RELEASING.md](https://github.com/tuna-os/bootc-migrate/blob/main/RELEASING.md), which records the release contract
+(#171): what ships, how versions are chosen, and the pre-tag checklist.
+
+The next release gate requires enumerating "every live or interactive path
+that lacks automated coverage". Assembling that from five milestone
+narratives is error-prone, so it is collected here. #186 tracks the fact that
+each of these had its implementation issue closed as completed while the
+validation named in that issue's own scope never shipped.
+
+| Path | State | Validation gap | Tracking |
+|---|---|---|---|
+| `migrate-bootloader` live GRUB2→sd-boot | `run` refuses "not implemented"; PR #115 open | no cell installs a GRUB2 guest and flips it | #65, #189 |
+| Boot-entry cleanup (`efibootmgr` executor) | implemented, dry-run default, typed confirmation, NVRAM snapshot + `--undo` | live rename + snapshot restore run in the gating OSTree re-base cell; real-hardware validation remains advisable | #31, #189, #204 |
+| Cross-base remap + `/etc` conflict policy | implemented, wired into `OstreeDeploy` | never executes; currently un-coverable in CI — the guest cannot scan the target, so the gate no-ops (#191) | #67, #187, #191 |
+| DE stash/restore (`--de-migrate`) | implemented, detection table-tested | the non-gating Bluefin→Aurora cell passes `--de-migrate` and asserts the stash; evidence depends on the exploratory cell and target registry scan succeeding | #68, #188 |
+| Identity-DB merge across bases | **gap, not closed** — `etc_conflict` holds identity DBs exempt | needs upstream change or compensating logic; the `#80` advisory also silently no-ops in CI for the same scan failure (#191) | #80, #191 |
+| `NativeStore` (`composefs-native`) | behind a feature flag, off by default | default path still pins a legacy-CLI builder | #13 |
+
+Everything not in this table — the OSTree→ComposeFS migrator itself, including
+rollback and commit — is covered by the seven-cell E2E matrix.
 
 ## Milestones
 
@@ -110,11 +171,36 @@ introduced in `mergetc`); machine-describing paths and the identity DBs are
 reported but never replaced. This is the same "adjust the staged deployment
 before first boot" seam part 1's remap already uses.
 
-**What is not proven**: no CI cell is cross-base — all four E2E scenarios are
-Fedora-family → Fedora-family, so `is_cross_base` is false and neither part 1
-nor part 2 executes in CI at all. Both are unit-tested (planning, exemptions,
-sidecar naming, report/JSON, and a collect→plan→apply round trip over real
-trees) and neither has run on a real cross-base system.
+**What is not proven**: neither part 1 nor part 2 executes in CI at all. Both
+are unit-tested (planning, exemptions, sidecar naming, report/JSON, and a
+collect→plan→apply round trip over real trees) and neither has run on a real
+cross-base system.
+
+Why, precisely — this went through two wrong explanations before the code
+was actually read, so the reasoning is recorded rather than the conclusion
+alone:
+
+- `is_cross_base` (`scan.rs`) is **lineage-aware**: it returns false when
+  either side's `ID_LIKE` contains the other's `ID`. CentOS declares
+  `ID_LIKE="rhel fedora"`, so a CentOS → Fedora re-base is same-lineage *by
+  design* — see the `cross_base_same_family_via_id_like_is_clean` test. So
+  "every cell is Fedora-family → Fedora-family" is substantively right, and
+  Bluefin LTS being CentOS Stream 10-based does not by itself make a cell
+  cross-base. (An earlier revision of this file claimed otherwise; that was
+  wrong.)
+- Separately, the three `bluefin:lts` cells run
+  `E2E_MODE=composefs-migrate` — the MVP binary, which merges via `mergetc`
+  and has no `is_cross_base` gate at all — and no cell passes
+  `--accept-cross-base`.
+- And when a cell was actually built to exercise this (#187), it uncovered a
+  third blocker that outranks both: inside the E2E guest the target-image
+  scan cannot reach ghcr.io, so `gate_cross_base` degrades to a no-op with
+  only a warning and `is_cross_base` is never evaluated at all (#191).
+
+So the honest status is that the cross-base path is not merely uncovered but
+currently **un-coverable in CI**, and the first question is #191, not the
+cell. Whether any available image pair even qualifies as cross-base under the
+`ID_LIKE` rule is still open. Tracked as #187.
 
 Related: [#80](https://github.com/tuna-os/bootc-migrate/issues/80)
 confirmed (via reading ostree's `merge_configuration_from()` source directly)
@@ -144,16 +230,15 @@ generation, and retiring the pinned legacy builder, have not been picked up.
 bootc anywhere (host, target, builder); `BMC_CFS_BUILDER` becomes a no-op
 escape hatch.
 
-### M5 — Desktop & UX (scenario E + human factors) — **computable cores landed; the interactive/live pieces exist but are unvalidated**
+### M5 — Desktop & UX (scenario E + human factors) — **computable cores landed; interactive/live coverage is partial**
 
-Three issues, same shape: the pure/reusable core shipped first and is
-unit-tested. The interactive checklists (#15, #31) and #31's live NVRAM
-mutation have since been built on top, but neither is exercisable by this
-project's build/clippy/test/fmt + E2E loop — a passing CI run cannot
-demonstrate that a checklist UI works, and no E2E cell mutates NVRAM. Both
-carry that caveat in their module docs and need manual/corral-VM
-validation; #31's `efibootmgr` path is the same class of risk as #65 and
-should not be trusted until it has been run on a real UEFI system.
+Three issues share the same shape: the pure/reusable core shipped first and
+is unit-tested. The interactive checklist in #15 is now driven through a
+full migration by the gating TUI cell. The gating OSTree re-base cell also
+executes #31's live NVRAM rename and snapshot restore against OVMF and asserts
+that `efibootmgr -v` is byte-identical afterwards. That evidence does not
+cover #65's unimplemented bootloader flip, and real-hardware validation is
+still advisable before treating firmware-specific behavior as universal.
 
 - [#68](https://github.com/tuna-os/bootc-migrate/issues/68) — DE
   config stash/restore (GNOME dconf/gnome-shell, KDE kdeglobals/plasma,
@@ -176,9 +261,16 @@ should not be trusted until it has been run on a real UEFI system.
   (`etc-drift --interactive`, or `--review-drift` as "Phase 0.5" ahead of a
   live migration) and its wiring into Phase 4's merge decision
   (`EtcDriftManifest` / `merge_etc_files_with_overrides`, unit-tested) are
-  now implemented. The checklist's terminal event loop itself is the one
-  piece that can't be proven by compile+unit-test — same as this project's
-  other interactive-only work — and needs manual/corral-VM validation.
+  now implemented. The checklist's terminal event loop — previously the
+  one piece only manual/corral-VM validation could reach — is now covered
+  twice over: headless state-machine + `TestBackend` render tests
+  (`drift_review::tests`, and `tui::tests` for the migration wizard), and
+  the `tui-migrate` E2E cell, which drives the checklist and then a full
+  migration through the wizard on a pty inside the VM
+  (`tests/tui-e2e-driver.py`; see docs/testing.md "TUI testing"). The
+  cell is gating as of 2026-08-27 and publishes an asciicast/GIF/screenshot
+  walkthrough artifact on every run. The full seven-cell matrix runs on
+  GitHub-hosted runners (run 33071608765, all green).
 - [#31](https://github.com/tuna-os/bootc-migrate/issues/31) — the
   UEFI boot-entry audit (dead/generic-label/duplicate/firmware-managed
   classification) is done, read-only, exposed as `bootc-rebase boot-entries`.
@@ -190,11 +282,11 @@ should not be trusted until it has been run on a real UEFI system.
   (`boot_cleanup::plan`), and the `efibootmgr` executor
   (`boot_cleanup::live`) only performs what the planner approved. Dry-run
   is the default; `--apply` requires a typed confirmation and writes a
-  restorable NVRAM snapshot first; `--undo` replays it. What has **not**
-  run is the `efibootmgr` path itself: no E2E cell mutates NVRAM, so entry
-  deletion, the create-before-delete rename, and `--undo` need a real UEFI
-  machine or a corral VM before they are trusted — as does the checklist's
-  terminal event loop, like this project's other interactive-only work.
+  restorable NVRAM snapshot first; `--undo` replays it. The gating OSTree
+  re-base cell now covers the create-before-delete rename and `--undo`
+  against live OVMF variables, including a byte-for-byte restoration check.
+  Entry deletion and the checklist's terminal event loop are not exercised
+  by that flow and still need targeted VM or real-hardware validation.
 
 **Exit criteria (not yet met)**: bluefin↔aurora-style switch preserves user
 data untouched, stashes/restores DE state, swaps DE-scoped flatpaks on
@@ -243,7 +335,7 @@ graph TD
   M1 --> GAP80["#80 identity-DB merge gap — confirmed, tracked separately"]
   M1 --> M4["M4 NativeStore selection / retire legacy builder — not started"]
   M1 --> M5A["M5 #68 DE stash/restore — detection+wiring landed, cross-DE E2E cell deferred"]
-  M1 --> M5B["M5 #15 etc-drift report + TUI + Phase 4 wiring — done, TUI needs manual validation"]
+  M1 --> M5B["M5 #15 etc-drift report + TUI + Phase 4 wiring — done, TUI unit-tested + tui-migrate E2E cell gating"]
   M1 --> M5C["M5 #31 boot-entry audit + cleanup/branding — planner tested, NVRAM path needs a UEFI VM"]
 ```
 

@@ -146,7 +146,7 @@ Boot Flow
 ├── UEFI/Secure Boot
 ├── Linux Kernel
 ├── systemd initialization
-├── GDM Display Manager
+├── GDM Display Manager (greetd/regreet staged per ADR 0001)
 └── XFCE Session
 ```
 

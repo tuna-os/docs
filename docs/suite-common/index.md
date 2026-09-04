@@ -7,6 +7,10 @@ status: unknown
 
 > ⚠️ **DEPRECATED — Superseded by the Rust rewrite.**
 >
+> This repository is the legacy **Python** implementation. It is being renamed
+> to `tuna-os/suite-common-python`; the Python import name `suite_common` and
+> Meson subproject name `suite-common` remain stable for existing consumers.
+>
 > This Python library is in **bugfix-only maintenance**. New feature development
 > has moved to the [gtk-office-suite](https://github.com/tuna-os/gtk-office-suite)
 > monorepo, where the canonical `suite-common` implementation is the Rust crate
@@ -31,8 +35,9 @@ Shared scaffold for the [TunaOS](https://github.com/tuna-os) GNOME office suite.
 | **Tables** | [tuna-os/gtk-office-suite](https://github.com/tuna-os/gtk-office-suite) `tables/` |
 | **Decks** | [tuna-os/gtk-office-suite](https://github.com/tuna-os/gtk-office-suite) `decks/` |
 
-Suite-common is extracted from Letters and consumed by all three apps as a
-[meson subproject](https://mesonbuild.com/Subprojects.html).  It provides the
+Suite-common was extracted from Letters and was consumed by the former Python
+apps as a [meson subproject](https://mesonbuild.com/Subprojects.html). It
+provides the
 GTK4 / libadwaita chrome, the WebKit bridge, file-I/O base classes, test helpers,
 and oracle wrappers — so each app only ships its own editing engine and format
 adapters.
@@ -52,9 +57,9 @@ adapters.
 Full architecture rationale: [SPEC.md](https://github.com/tuna-os/suite-common/blob/main/SPEC.md).  
 Test strategy & pyramid: [TESTING-SPEC.md](https://github.com/tuna-os/suite-common/blob/main/TESTING-SPEC.md).
 
-## Consuming suite-common
+## Historical consumption
 
-Each app declares suite-common as a subproject in `meson.build`:
+The former Python apps declared suite-common as a subproject in `meson.build`:
 
 ```python
 suite_common = subproject('suite-common')
@@ -62,8 +67,8 @@ sc_sources = suite_common.get_variable('suite_common_sources')
 install_data(sc_sources, install_dir: pkgdatadir / 'suite_common')
 ```
 
-At runtime the launcher script puts `pkgdatadir` on `sys.path`, so app code imports
-naturally:
+At runtime their launcher scripts put `pkgdatadir` on `sys.path`, so app code
+imported the package naturally:
 
 ```python
 from suite_common.application import SuiteApplication
@@ -74,25 +79,18 @@ from suite_common.webview import SuiteWebView, build_document
 ## Quick start
 
 ```bash
-# Run the suite-common unit tests
+# Run this repository's unit tests
 python3 tests/test_fileio.py
-
-# Build & test an app (requires Flatpak + org.flatpak.Builder)
-cd ../tables
-just setup          # clones suite-common into subprojects/
-just build          # builds & installs the Flatpak
-just verify         # smoke: launches, confirms engine + bridge are live
-just guitest        # AT-SPI dogtail GUI test
-
-# Run L1 adapter tests
-just l1test         # pytest tests/unit/
-
-# Run formula conformance
-just formulatest    # HyperFormula vectors via Flatpak hook
-
-# Run L3 golden-file E2E
-just e2etest        # dogtail → save → soffice oracle
+python3 tests/test_shortcuts_presets.py
+python3 tests/test_oracles.py
 ```
+
+The retired Python applications' build and GUI-test commands are preserved in
+the historical design records, but they are not a supported workflow for this
+repository. For current application development, use
+[`gtk-office-suite`](https://github.com/tuna-os/gtk-office-suite). See
+[ROADMAP.md](https://github.com/tuna-os/suite-common/blob/main/ROADMAP.md) for the decision process governing any remaining
+compatibility work here.
 
 ## License
 

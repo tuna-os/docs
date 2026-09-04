@@ -79,6 +79,8 @@ ssh -p 2222 root@localhost
 | `just log` | Tail the build log |
 | `just generate-bootable-image` | Create a bootable raw disk image via bootc |
 | `just boot-vm` | Boot the raw image in QEMU (SSH on port 2222, serial on 4444) |
+| `just test` | Run local BATS and Pytest unit test suites |
+| `just lint` | Run bootc container lint on the built OCI image |
 | `just bst <args>` | Run any arbitrary `bst` command inside the build container |
 
 ## CI/CD — multi-runner BuildStream
@@ -141,6 +143,21 @@ cosign verify-blob tromso-live-<date>-<sha>.iso \
 - **[BuildStream](https://www.buildstream.build/)** — build system
 
 ## ISO Builder (merged from tromso-iso)
+
+The live-ISO tooling is maintained in this repository. Build a systemd-boot
+UEFI ISO from the published Tromso payload, then boot it in QEMU:
+
+```bash
+just iso-sd-boot tromso
+just boot-iso-vnc tromso
+```
+
+The default artifact is `output/tromso-live.iso`. Set a different output
+directory with `just output_dir=/path/to/output iso-sd-boot tromso`. For the
+pipeline architecture, debugging options, and install end-to-end tests, see
+[CI & ISO pipeline](https://github.com/tuna-os/tromso/blob/main/docs/ci-and-iso-pipeline.md). To restore a bad `stable`
+release, follow
+[Roll back a bad stable release](https://github.com/tuna-os/tromso/blob/main/runbooks/rollback-a-bad-stable-release.md).
 
 ---
 

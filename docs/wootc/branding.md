@@ -1,11 +1,15 @@
 ---
-sidebar_position: 9
+sidebar_position: 13
 title: "branding"
 ---
 
 wootc is themeable so partners and enterprises can ship a branded
-migrator without forking the code. Two override files, both read at
-runtime from `C:\wootc\`:
+migrator without forking the code. (For the *built-in* brand builds —
+TunaOS, Bluefin, Aurora, Bazzite — and how a build embeds a brand at
+compile time with real logo/typeface/theme assets, see
+[branding-and-distribution.md](https://github.com/tuna-os/wootc/blob/main/docs/branding-and-distribution.md); this page
+covers the runtime override, which also wins over an embedded brand.)
+Three override files, all read at runtime from `C:\wootc\`:
 
 ## `brand.json` — look and copy
 
@@ -37,10 +41,24 @@ default; you only specify what you want to change.
 | `accent` / `accentText` | Primary buttons, selection, slider, focus ring (and its text color) |
 | `background` / `card` / `text` | Core palette (applied as CSS variables) |
 | `installVerb` | CTA + heading verb ("Install" → "Migrate", "Switch", …) |
+| `productName` | The installer's own name (title bar); `name` is the distribution being installed |
+| `logoDataUri` | Real logo (data URI) replacing the emoji everywhere a mark renders |
+| `fontFamily` + `fontDataUri` | Brand typeface, embedded as a data URI (`woff2`) |
+| `catalog` / `defaultImage` | Restrict + order the offered images by id; pre-select one |
+| `hideCustomImage` | Remove the custom-OCI field on every channel |
 
 The palette is applied as CSS custom properties at startup, so a single
 accent change re-skins every button, chip, and highlight consistently.
 See the branded screenshot in [gui-walkthrough.md](https://github.com/tuna-os/wootc/blob/main/docs/gui-walkthrough.md).
+
+## `brand.css` — deep restyle
+
+A `C:\wootc\brand.css` is injected after the app stylesheet (and after any
+embedded brand theme), so it can restyle components the tokens don't reach —
+button treatment, radii, gradients. The stylesheet is fully token-driven
+(`--bg`, `--bg-card`, `--accent`, `--radius`, …), so most re-skins need only
+`brand.json`; reach for `brand.css` when you want gradient buttons or
+pill shapes.
 
 ## `images.json` — the variant catalog
 

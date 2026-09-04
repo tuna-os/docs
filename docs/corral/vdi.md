@@ -1,5 +1,5 @@
 ---
-sidebar_position: 16
+sidebar_position: 17
 title: "vdi"
 ---
 
@@ -33,9 +33,16 @@ N VMs and labels them; `corral vdi pool list` reads the labels back;
 what a command actually did, `kubectl get vm -n <ns> -l corral.dev/vdi-pool`
 shows you the truth directly — there's no other state to go stale.
 
-Assignment works the same way: `corral.dev/vdi-assigned-to=<user>` label
-plus a `corral.dev/vdi-claimed-at` annotation (RFC3339 timestamp) on the
-member VM. Nothing lives outside the K8s API.
+Assignment ownership is held by a Kubernetes `coordination.k8s.io/v1`
+Lease named `corral-vdi-<member>`. Lease creation is first-writer-wins; a
+stale Lease is replaced with its `resourceVersion`, so concurrent claimants
+cannot select the same member. The Lease records the pool/member in labels,
+the identity, acquisition/renewal time, and a one-hour expiry. The
+`corral.dev/vdi-assigned-to=<user>` label plus `corral.dev/vdi-claimed-at`
+annotation remain presentation state on the VM. Existing Phase 1 pools have
+no Lease and remain visible; their first atomic claim creates one. A legacy
+`unassign` can clear label-only members, while an active Lease may only be
+released by its owner.
 
 ## Prerequisites
 
@@ -87,13 +94,32 @@ corral vdi connect devpool-1
 #   RDP (if the guest answers on 3389):  corral viewer devpool-1  (or a native RDP client via virtctl port-forward)
 #   SSH (Linux guests):  corral ssh devpool-1
 
-# 6. When alice is done, release it. This stops the VM too — pooled
+# 6. Native USB Redirection (smartcards, security keys, YubiKeys).
+#    List local USB devices available on the client:
+corral vdi usb list
+#    Redirect a selected device to the running assigned desktop (requires virtctl):
+corral vdi usb redir devpool-1 --device 1050:0407 --user alice
+
+# 7. When alice is done, release it. This stops the VM too — pooled
 #    desktops don't stay running unclaimed.
 corral vdi unassign devpool-1
 
-# 7. Tear the whole pool down when you're finished with it.
+# 8. Tear the whole pool down when you're finished with it.
 corral vdi pool delete devpool
 ```
+
+## Native USB Redirection
+
+`corral vdi usb redir <member>` redirects a local USB device from the operator's machine straight to the guest via `virtctl usbredir` (wrapping KubeVirt's native USB redirection rather than legacy SPICE).
+
+- **Use cases**: Hardware security keys (YubiKey / FIDO2), smartcards (CAC/PIV), USB tokens, and external peripheral passthrough.
+- **Prerequisites & constraints**:
+  - Requires the `virtctl` client binary installed locally.
+  - Desktop member must be actively **assigned** and **running** in KubeVirt.
+  - Ownership authorization check (`--user`) ensures users cannot redirect local devices to another user's desktop.
+  - KubeVirt VMs support USB redirection; CT and non-KubeVirt backends report actionable unsupported errors.
+  - Before attaching, security implications (host device exclusivity, migration blockage, guest trust boundaries) are displayed.
+
 
 ## What "connect" actually does today
 
@@ -123,28 +149,49 @@ already gives Linux members. Until then:
   (see Prerequisites above) or the source VM's PVC not being
   snapshottable. This is a real, live-found failure mode — see the RFC's
   commit history for the bug that motivated the wait/timeout logic.
-- **`pool has no free members`** — every member is currently assigned.
-  Either `corral vdi unassign` one, or `corral vdi pool create` a bigger
-  pool (there's no live resize yet — delete and recreate, or create a
-  second pool).
+- **`pool has no free members`** — every member is currently assigned or
+  another claimant won its Lease race. Either `corral vdi unassign` one, or
+  `corral vdi pool create` a bigger pool (there's no live resize yet —
+  delete and recreate, or create a second pool).
+- **A claim is stuck after a partial failure** — inspect
+  `kubectl get lease -n <ns> corral-vdi-<member> -o yaml`. The Lease is
+  intentionally retained if label update or VM startup fails, preventing a
+  second user from receiving a half-configured desktop. The owner can retry
+  `corral vdi assign`; after the one-hour expiry an administrator can retry
+  and recover the member.
+- **`insufficient device capacity for "X"` or `device admission failed`** —
+  The golden VM requests host devices (PCI passthrough, mediated vGPU, SR-IOV),
+  but cluster capacity cannot satisfy `size * per_vm_devices` across the nodes.
+  `corral vdi pool create` validates allocatable devices minus active VMI allocations
+  and refuses pool creation up front before partial clones can be created.
 - **Assigned member won't start** — `corral vdi assign` surfaces the
   underlying `virtctl start` error directly (e.g. insufficient cluster
   capacity, a feature-gate the golden VM's spec needs). The assignment
   label is still set even if start failed — `corral vdi unassign` to back
   out and retry once the underlying problem's fixed.
 
-## Current limitations (Phase 1 — by design, not bugs)
+## GPU & Host-Device Capacity Validation
+
+When a golden VM requests host devices or GPUs (via `gpus` or `hostDevices` in its spec), `corral vdi pool create` performs pre-flight capacity admission:
+1. **Device type classification**: Inspects KubeVirt configuration to distinguish exclusive PCI passthrough (`pciHostDevices`), mediated vGPU devices (`mediatedDevices`), and external device providers (vGPU/SR-IOV).
+2. **Allocatable vs Allocated tracking**: Queries per-node allocatable resources and active running VMIs to compute actual remaining capacity.
+3. **Concurrency & Topology constraints**: Ensures not only that total devices are sufficient, but that node placement can satisfy multi-device requirements per VM.
+4. **Actionable failure reporting**: Refuses impossible pools before any mutation and reports resource shortages with per-node availability breakdowns.
+
+### Hardware Limitations
+- **Single-VM Full Passthrough**: Physical GPUs attached via full PCI passthrough (e.g., consumer GPUs without SR-IOV/vGPU support) are strictly 1:1 exclusive to a single running VM instance. A pool of size $N$ requires $N$ distinct physical GPUs allocatable across cluster nodes.
+- **Mediated / vGPU Sharing**: Mediated devices (NVIDIA GRID/vGPU, Intel GVT-g) allow multiple pool members per physical card up to the configured profile limit.
+
+## Current limitations (by design, not bugs)
 
 - **No self-serve.** Assignment is a CLI/admin action — there's no
-  end-user "get a desktop" page yet.
+  end-user "get a desktop" page yet. The Lease primitive is ready for the
+  later broker, but the broker is not part of this plugin slice.
 - **No idle/logout reclaim.** Unassigned-but-still-running members don't
   happen (unassign always stops), but there's nothing that notices "alice
   hasn't touched devpool-1 in 3 hours" and reclaims it automatically.
 - **No live resize.** Growing or shrinking a pool means deleting and
   recreating it, or manually cloning one more member and hand-labeling it.
-- **No GPU-gating on pool create yet.** If your golden VM needs a GPU,
-  every clone needs one too — nothing stops you from creating a pool
-  bigger than your cluster's GPU capacity.
 - **CT-backed pools aren't implemented.** Only VM (KubeVirt) golden
   sources work today; Containers (CT) pooling is exploratory (RFC's Phase
   4 territory).

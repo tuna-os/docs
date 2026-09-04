@@ -20,7 +20,7 @@ Build, install to `~/.local`, and launch:
 TAVERN_LOG=debug ./run.sh # with verbose logging
 ```
 
-For a sandboxed Flatpak build:
+For a sandboxed Flatpak build (requires [`just`](https://github.com/casey/just)):
 
 ```bash
 just dev                  # build + install + run as Flatpak
@@ -28,10 +28,12 @@ just dev                  # build + install + run as Flatpak
 
 ## Tests
 
+Running the test suite requires PyGObject and GTK 4/Libadwaita development bindings installed on the host system:
+
 ```bash
-pytest tests/                                       # full suite
-pytest tests/test_backend.py -v                     # one file
-pytest tests/test_benchmarks.py --benchmark-enable  # benchmarks
+python3 -m pytest tests/                                       # full suite
+python3 -m pytest tests/test_backend.py -v                     # one file
+python3 -m pytest tests/test_benchmarks.py --benchmark-enable  # benchmarks
 ```
 
 Tests run headlessly — the autouse fixtures in `tests/conftest.py` mock `Gio.Settings` and dialog `.present()` calls so nothing pops on screen. If you add new dialog types, extend that fixture.
@@ -46,11 +48,34 @@ Blueprint files (`.blp`) compile to `.ui` XML at build time via `blueprint-compi
 
 When adding a new page, keep Blueprint, Python, window wiring, gresource registration, and meson sources in sync — the repo layout in [README.md](https://github.com/tuna-os/Tavern/blob/main/README.md) and `src/` shows where each piece lands.
 
+### Localization
+
+Wrap every user-visible Blueprint value in `_()`, for example
+`label: _("Install");`, and add new Blueprint/Python sources to
+`po/POTFILES.in`. Python UI strings should use `gettext.gettext` (`_`) or
+`ngettext` for plurals. Before opening a PR, run:
+
+```bash
+python3 tools/check-translations.py
+meson setup build
+meson compile -C build tavern-pot
+```
+
+Add a locale code to `po/LINGUAS` only when its `.po` catalog is ready to
+ship. Translation-only PRs are welcome and do not require changes to Python.
+
+Additional maintainer guides cover the [cache lifecycle](https://github.com/tuna-os/Tavern/blob/main/docs/CACHE.md),
+[curation feed](https://github.com/tuna-os/Tavern/blob/main/docs/CURATION.md), [accessibility release pass](https://github.com/tuna-os/Tavern/blob/main/docs/ACCESSIBILITY.md),
+and [release process](https://github.com/tuna-os/Tavern/blob/main/docs/RELEASING.md).
+
+The files under [`docs/reports/`](https://github.com/tuna-os/Tavern/blob/main/docs/reports/README.md) are dated historical
+verification snapshots, not maintained contributor instructions.
+
 ## Pull requests
 
 - Keep PRs focused — one change, one PR.
 - Include a screenshot or short clip for any user-visible UI change.
-- Run `pytest tests/` locally before opening.
+- Run `python3 -m pytest tests/` locally before opening.
 - Reference the issue you're closing (`Closes #123`).
 
 ## Code style
