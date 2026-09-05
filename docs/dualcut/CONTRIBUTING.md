@@ -3,6 +3,11 @@ sidebar_position: 2
 title: "Contributing"
 ---
 
+> **Deprecation notice:** New development has moved to
+> [shrimply](https://github.com/soirihiroka/shrimply). Please port useful
+> ideas there instead of starting new feature work in this repository. See
+> [DEPRECATED.md](https://github.com/tuna-os/dualcut/blob/main/DEPRECATED.md).
+
 Thanks for helping with **dualcut** — the GNOME video editor with dual usage:
 edit manually in the timeline/inspector, or programmatically via a live JSON
 document, TypeScript scripts, and an HTTP API.
@@ -52,7 +57,9 @@ sudo dnf install -y cargo rust clippy gtk4-devel libadwaita-devel \
   xorg-x11-server-Xvfb xset xz
 ```
 
-(CI runs inside a Fedora 44 container with exactly this set.)
+CI runs inside a Fedora 45 container. See
+[`.github/workflows/ci.yml`](https://github.com/tuna-os/dualcut/blob/main/.github/workflows/ci.yml) for the authoritative
+package list and validation commands.
 
 ## Making a change
 

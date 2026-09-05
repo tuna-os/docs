@@ -19,8 +19,8 @@ status: unknown
 Classic GTK3/PyGObject wizard that drives the
 [fisherman](https://github.com/projectbluefin/fisherman) bootc install
 backend. The plainest of the TunaOS installer frontends by design — see
-`DESIGN.md` (the trawl line is the entire brand budget) and the shared
-contract in `../INSTALLER-FRONTENDS.md`.
+`DESIGN.md` (the trawl line is the entire brand budget) and the
+[shared installer frontend contract](https://github.com/tuna-os/tunaos/blob/main/docs/INSTALLER-FRONTENDS.md).
 
 ## Flow
 
@@ -43,8 +43,33 @@ sudo dnf install -y python3-gobject gtk3
 ```
 
 Outside a Flatpak it invokes `sudo /usr/local/bin/fisherman`; inside it uses
-`pkexec /app/bin/fisherman` (polkit action `org.tunaos.Installer.install`
-must be installed on the host by the ISO build).
+`flatpak-spawn --host pkexec /usr/local/bin/fisherman` (polkit action
+`org.tunaos.Installer.install` must be installed on the host by the ISO
+build).
+
+## Testing
+
+Run unit tests via `pytest`:
+
+```bash
+pytest tests/
+```
+
+Or via Python's built-in `unittest`:
+
+```bash
+python3 -m unittest discover tests/
+```
+
+Headless GUI screenshot capture and verification:
+
+```bash
+python3 tests/gui/capture-screens.py docs/screenshots
+```
+
+## Contributing
+
+Please see [CONTRIBUTING.md](https://github.com/tuna-os/tuna-installer-xfce/blob/main/CONTRIBUTING.md) for local setup, testing workflows, and PR submission guidelines.
 
 ## Flatpak
 
@@ -59,4 +84,5 @@ libadwaita and follows the system GTK theme).
 
 ## License
 
-GPL-3.0-only
+GPL-3.0-or-later
+

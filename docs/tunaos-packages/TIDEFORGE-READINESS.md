@@ -1,5 +1,5 @@
 ---
-sidebar_position: 10
+sidebar_position: 13
 title: "TIDEFORGE READINESS"
 ---
 
@@ -11,6 +11,20 @@ parity before it replaces any native EL10 GNOME packaging."* The promotion contr
 `docs/PACKAGE_FACTORY.md` is stricter still: every candidate must *"build in the target
 buildroot, pass package tests, install from the staged repository, and complete a
 desktop/runtime smoke test where the package affects a session."*
+
+> **Addendum, 2026-09-02.** The strategy question this note kept open is
+> settled in `docs/PACKAGE_FACTORY.md` ("One contract, one build engine per
+> target"): Tideforge stays the recipe renderer for the targets whose
+> coverage is complete (COSMIC and Niri on EL10 and deb; the Niri/DMS stack
+> on Tumbleweed and Arch), each engine builds in its own root, and the
+> contract -- roots, gates, status board, promotion rule -- is what is
+> shared.  A BuildStream-style "build once, package at the end" was
+> measured and rejected for anything compiled
+> (`experiments/tideforge-universal-intermediate.md`).  GNOME on Hummingbird
+> is consumed from utah-packages rather than built (`HUMMINGBIRD-TARGET.md`
+> §7-8); GNOME on DEB is its own measured chain (`gnome51-deb.yaml`), not a
+> Tideforge rollout step.  The runtime-gate table below is still the open
+> work.
 
 ## Verdict
 
@@ -88,15 +102,18 @@ that gnome-shell survives without crash-looping, and scans the journal for crash
 signatures. That is the standard Tideforge has to meet, and it already exists as a
 worked example to copy.
 
-## COSMIC is payload-only by design, today
+## COSMIC installs and smokes, but the full staged closure is still ahead
 
-`build-tideforge-supported.yml` says so in its own comment:
+cosmic-session's gate cell (unified factory, #430) installs the package into a
+clean container and runs its smoke contract -- `start-cosmic` and the
+wayland-sessions desktop file are present -- but the desktop still cannot be
+staged end-to-end: the remaining runtime closure (greetd-selinux,
+adw-gtk3-theme, and the nine cosmic siblings cosmic-session depends on) is not
+all factory-built yet.
 
-> COSMIC is deliberately payload-only for now: a full staged install requires the
-> remaining runtime closure, which is not all factory-built yet.
-
-So COSMIC meets 1 of its 4 declared gates (`mock-build`), not the
-`rpm-md-stage-install`, `greetd-login`, or `cosmic-session-smoke` it claims.
+So COSMIC meets its install/smoke gate per package, but not the
+full staged-desktop gates (`rpm-md-stage-install`, `greetd-login`, or
+`cosmic-session-smoke` on a complete session) that the desktop edition needs.
 
 ## Other gaps found
 

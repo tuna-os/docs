@@ -8,7 +8,7 @@ bootc-installer is a GTK4/Libadwaita Flatpak installer for [bootc](https://conta
 ## Getting started
 
 ```bash
-git clone --recurse-submodules https://github.com/projectbluefin/bootc-installer
+git clone --recurse-submodules https://github.com/tuna-os/bootc-installer
 cd bootc-installer
 ```
 
@@ -69,7 +69,7 @@ CI gate: `--cov-fail-under=51` (minimum unit test coverage).
 
 ## Adding images to the catalog
 
-The image catalog lives in [`fisherman/data/images.json`](https://github.com/tuna-os/bootc-installer/blob/dev/fisherman/data/images.json). See the README for the full JSON schema.
+The image catalog lives in [`fisherman/data/images.json`](https://github.com/projectbluefin/fisherman/blob/dev/data/images.json). See the README for the full JSON schema.
 
 > `fisherman/` is a git submodule pointing to [`projectbluefin/fisherman`](https://github.com/projectbluefin/fisherman). Changes to the catalog must be committed and pushed **separately** to the fisherman repo, then the submodule pointer updated here.
 
@@ -90,4 +90,4 @@ See [CLAUDE.md](https://github.com/tuna-os/bootc-installer/blob/dev/CLAUDE.md) a
 
 ## Security
 
-Report vulnerabilities via [GitHub Private Vulnerability Reporting](https://github.com/projectbluefin/bootc-installer/security/advisories/new). Do not open public issues for security bugs.
+Report vulnerabilities via [GitHub Private Vulnerability Reporting](https://github.com/tuna-os/bootc-installer/security/advisories/new). Do not open public issues for security bugs.

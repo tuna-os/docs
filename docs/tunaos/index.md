@@ -23,9 +23,11 @@ status: stable
 
 </div>
 
+> 🎃 **Hacktoberfest 2026**: We are participating! Looking for your first open-source PR? Check out our [good first issues](https://github.com/tuna-os/tunaOS/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) and join us on Matrix for maintainer office hours in October.
+
 ## About TunaOS
 
-TunaOS builds **bootc-based desktop operating systems** with atomic updates and straightforward rollbacks. Choose an Enterprise Linux base for long-term stability or a community distribution for a faster release cadence, while keeping the same image-based management model.
+TunaOS builds **bootc-based desktop operating systems** with atomic updates and straightforward rollbacks. Choose an Enterprise Linux base for long-term stability or an alternative distribution for a faster release cadence, while keeping the same image-based management model.
 
 [Visit tunaos.org](https://tunaos.org/) or read the [launch announcement](https://tunaos.org/blog/modern-enterprise-linux-desktops-with-tunaos).
 
@@ -43,7 +45,8 @@ TunaOS builds **bootc-based desktop operating systems** with atomic updates and 
 | 🐟 **Albacore** | AlmaLinux 10 (RHEL 10) | `ghcr.io/tuna-os/albacore` | GNOME, KDE, COSMIC, Niri | x86_64, x86_64/v2, arm64 |
 | 🍣 **Skipjack** | CentOS Stream 10 | `ghcr.io/tuna-os/skipjack` | GNOME, KDE, COSMIC, Niri | x86_64, arm64 |
 | 🎣 **Bonito** | Fedora 44 | `ghcr.io/tuna-os/bonito` | GNOME, KDE, COSMIC, Niri | x86_64, arm64 |
-| 🐦 **Hummingbird** | Fedora Hummingbird (experimental) | `ghcr.io/tuna-os/hummingbird` | Base, GNOME, KDE, COSMIC, Niri | x86_64, arm64 |
+| 🐦 **Hummingbird** | Fedora Hummingbird (experimental) | `ghcr.io/tuna-os/hummingbird` | Base, GNOME, COSMIC | x86_64; arm64 (base only) |
+| 🎏 **Wahoo** | Fedora ELN — EL11 preview (experimental, no codecs) | `ghcr.io/tuna-os/wahoo` | Base, GNOME | x86_64, arm64 |
 | 🔒 **Redfin** | Red Hat Enterprise Linux 10 | *Local-Build Only* | GNOME, KDE, COSMIC, Niri, XFCE | x86_64, arm64 |
 | 🐟 **Grouper** | Ubuntu 26.04 | `ghcr.io/tuna-os/grouper` | GNOME, KDE, Niri, XFCE | x86_64 |
 | 🐟 **Gurnard** | Ubuntu 24.04 (Noble Numbat, experimental) | `ghcr.io/tuna-os/gurnard` | Base, Pantheon | x86_64, arm64 |
@@ -53,6 +56,8 @@ TunaOS builds **bootc-based desktop operating systems** with atomic updates and 
 | 🐉 **Bonito Rawhide** | Fedora Rawhide | `ghcr.io/tuna-os/bonito:*-rawhide` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64, arm64 |
 | 🦈 **Sailfin** | openSUSE Tumbleweed | `ghcr.io/tuna-os/sailfin` | GNOME, KDE, Niri, XFCE | x86_64 |
 | 🌈 **Guppy** | Gentoo Linux | `ghcr.io/tuna-os/guppy` | GNOME, KDE | x86_64 |
+| 🏔️ **Tromsø** | freedesktop-sdk (BuildStream), built in [tuna-os/tromso](https://github.com/tuna-os/tromso) | `ghcr.io/tuna-os/tromso` | KDE | x86_64 |
+| 🐭 **XFCE Linux** | freedesktop-sdk (BuildStream), built in [tuna-os/xfce-linux](https://github.com/tuna-os/xfce-linux) | `ghcr.io/tuna-os/xfce-linux` | XFCE | x86_64 |
 
 Tags are `<desktop>[-hardware]` — e.g. `yellowfin:gnome-hwe`,
 `albacore:kde-nvidia`. Full tag reference: [docs/IMAGE-TAGS.md](https://github.com/tuna-os/tunaOS/blob/main/docs/IMAGE-TAGS.md).
@@ -69,27 +74,36 @@ _Generated from the latest conclusive main-branch build for each variant (cancel
 
 | Variant | Green image cells | Latest run | Failing | Not reached |
 | :--- | ---: | :--- | :--- | :--- |
-| 🐠 `yellowfin` | **14/20** | [❌ 2026-08-18](https://github.com/tuna-os/tunaOS/actions/runs/32090850058) | — | base,gnome-nvidia,gnome-nvidia-hwe,cosmic-nvidia,kde-nvidia,niri-nvidia |
-| 🐟 `albacore` | **2/20** | [❌ 2026-08-17](https://github.com/tuna-os/tunaOS/actions/runs/31987265967) | — | base-hwe,gnome,cosmic,kde,niri,xfce,gnome-hwe,gnome-asahi,gnome-nvidia,gnome-nvidia-hwe,cosmic-hwe,cosmic-nvidia,kde-hwe,kde-nvidia,niri-hwe,niri-nvidia,xfce-hwe,xfce-nvidia |
-| 🍣 `skipjack` | **10/18** | [❌ 2026-08-18](https://github.com/tuna-os/tunaOS/actions/runs/32090785200) | — | gnome,gnome-hwe,gnome-asahi,gnome-nvidia,gnome-nvidia-hwe,cosmic-nvidia,kde-nvidia,niri-nvidia |
-| 🎣 `bonito` | **5/15** | [❌ 2026-08-18](https://github.com/tuna-os/tunaOS/actions/runs/32091020905) | — | base-nvidia,gnome,niri,gnome-hwe,gnome-asahi,gnome-nvidia,cosmic-nvidia,kde-nvidia,niri-nvidia,xfce-nvidia |
-| 🐦 `hummingbird` | **1/5** | [❌ 2026-08-18](https://github.com/tuna-os/tunaOS/actions/runs/32139187211) | — | gnome,kde,niri,cosmic |
-| 🦈 `sailfin` | **6/7** | [❌ 2026-08-18](https://github.com/tuna-os/tunaOS/actions/runs/32105775211) | — | gnome-asahi |
-| 🌈 `guppy` | **3/4** | [❌ 2026-08-18](https://github.com/tuna-os/tunaOS/actions/runs/32090675142) | — | gnome |
-| 🐉 `bonito-rawhide` | **8/14** | [❌ 2026-08-18](https://github.com/tuna-os/tunaOS/actions/runs/32090947417) | — | base-nvidia,gnome,cosmic,kde,niri,xfce |
-| 🐟 `gurnard` | **2/2** | [❌ 2026-08-18](https://github.com/tuna-os/tunaOS/actions/runs/32091144965) | — | — |
-| 🐟 `grouper` | **2/7** | [❌ 2026-08-17](https://github.com/tuna-os/tunaOS/actions/runs/31987613412) | — | gnome,gnome-zfs,kde,cosmic,xfce |
-| 🚀 `marlin` | **16/16** | [❌ 2026-08-18](https://github.com/tuna-os/tunaOS/actions/runs/32091076264) | — | — |
-| 🐡 `flounder` | **1/7** | [❌ 2026-08-17](https://github.com/tuna-os/tunaOS/actions/runs/31987631533) | — | gnome,kde,xfce,gnome-nvidia,kde-nvidia,xfce-nvidia |
-| ☢️ `flounder-sid` | **5/7** | [❌ 2026-08-18](https://github.com/tuna-os/tunaOS/actions/runs/32090947584) | — | gnome,xfce |
+| 🐠 `yellowfin` | **9/20** | [❌ 2026-09-03](https://github.com/tuna-os/tunaOS/actions/runs/33728906010) | — | gnome,cosmic,niri,gnome-hwe,gnome-nvidia,gnome-nvidia-hwe,cosmic-hwe,cosmic-nvidia,niri-hwe,niri-nvidia,xfce-nvidia |
+| 🐟 `albacore` | **12/20** | [❌ 2026-09-03](https://github.com/tuna-os/tunaOS/actions/runs/33727109674) | — | cosmic,niri,gnome-asahi,gnome-nvidia-hwe,cosmic-hwe,cosmic-nvidia,niri-hwe,niri-nvidia |
+| 🍣 `skipjack` | **6/18** | [❌ 2026-09-02](https://github.com/tuna-os/tunaOS/actions/runs/33637401793) | xfce | gnome,cosmic,niri,gnome-hwe,gnome-asahi,gnome-nvidia,gnome-nvidia-hwe,cosmic-hwe,cosmic-nvidia,niri-hwe,niri-nvidia |
+| 🎏 `wahoo` | **3/4** | [❌ 2026-08-27](https://github.com/tuna-os/tunaOS/actions/runs/33041330231) | — | cosmic |
+| 🎣 `bonito` | **1/16** | [❌ 2026-09-03](https://github.com/tuna-os/tunaOS/actions/runs/33770195451) | — | base,base-hwe,base-nvidia,gnome,cosmic,kde,niri,xfce,gnome-hwe,gnome-asahi,gnome-t2,gnome-nvidia,cosmic-nvidia,kde-nvidia,niri-nvidia |
+| 🐦 `hummingbird` | **0/3** | [❌ 2026-09-03](https://github.com/tuna-os/tunaOS/actions/runs/33699113444) | — | base,gnome,cosmic |
+| 🦈 `sailfin` | **0/7** | [❌ 2026-09-02](https://github.com/tuna-os/tunaOS/actions/runs/33687500544) | — | base,gnome,gnome-asahi,kde,niri,xfce,cosmic |
+| 🌈 `guppy` | **3/4** | [❌ 2026-09-02](https://github.com/tuna-os/tunaOS/actions/runs/33624381727) | — | kde |
+| 🐉 `bonito-rawhide` | **4/14** | [❌ 2026-09-02](https://github.com/tuna-os/tunaOS/actions/runs/33669251484) | — | base,base-hwe,base-nvidia,gnome,cosmic,kde,niri,xfce,cosmic-nvidia,niri-nvidia |
+| 🐟 `gurnard` | **2/2** | [❌ 2026-09-03](https://github.com/tuna-os/tunaOS/actions/runs/33736358207) | — | — |
+| 🐟 `grouper` | **0/7** | [❌ 2026-09-02](https://github.com/tuna-os/tunaOS/actions/runs/33675500148) | — | base,gnome,gnome-asahi,gnome-zfs,kde,cosmic,xfce |
+| 🚀 `marlin` | **10/16** | [❌ 2026-09-02](https://github.com/tuna-os/tunaOS/actions/runs/33659564363) | — | cosmic,niri,cosmic-cachyos,niri-cachyos,cosmic-nvidia,niri-nvidia |
+| 🐡 `flounder` | **0/7** | [❌ 2026-09-02](https://github.com/tuna-os/tunaOS/actions/runs/33694724467) | — | base,gnome,kde,xfce,gnome-nvidia,kde-nvidia,xfce-nvidia |
+| ☢️ `flounder-sid` | **0/7** | [❌ 2026-09-03](https://github.com/tuna-os/tunaOS/actions/runs/33702354589) | — | base,gnome,kde,xfce,gnome-nvidia,kde-nvidia,xfce-nvidia |
 
-**Built 75/142 · composite green 75/142 (52%)** — of the remainder, **0 failing** and **67 never reached** (no job asserted them). The two are reported separately on purpose: a never-reached cell is untested, not broken. Composite green is scored against [`.github/green-criteria.yml`](https://github.com/tuna-os/tunaOS/blob/main/.github/green-criteria.yml) (blocking today: `builds` + `boots` — a cell must promote AND pass its boot Gate; the full per-axis board is [docs/MATRIX-STATUS.md](https://github.com/tuna-os/tunaOS/blob/main/docs/MATRIX-STATUS.md)). This is a point-in-time CI snapshot, not a support-tier promise.
+**Sibling images, built in their own repositories.** These are TunaOS-family bootc images built with BuildStream on freedesktop-sdk rather than from a distribution's packages, so they have no cells in the matrix above and are not scored by `green-criteria.yml`; each repository runs its own build, live-ISO, plain-install and LUKS-install checks. Status is that repository's latest completed main-branch build.
+
+| Image | Built by | Desktop | Latest main build |
+| :--- | :--- | :--- | :--- |
+| 🏔️ `ghcr.io/tuna-os/tromso` | [tromso](https://github.com/tuna-os/tromso) | KDE | [❌ 2026-09-02](https://github.com/tuna-os/tromso/actions/runs/33592553295) |
+| 🐭 `ghcr.io/tuna-os/xfce-linux` | [xfce-linux](https://github.com/tuna-os/xfce-linux) | XFCE | [❌ 2026-09-03](https://github.com/tuna-os/xfce-linux/actions/runs/33702969743) |
+
+**Built 50/145 · composite green 52/145 (34% built)** — of the remainder, **1 failing** and **94 never reached** (no job asserted them). The two are reported separately on purpose: a never-reached cell is untested, not broken. Composite green counts published cells, per [docs/MATRIX-STATUS.md](https://github.com/tuna-os/tunaOS/blob/main/docs/MATRIX-STATUS.md) and is scored against [`.github/green-criteria.yml`](https://github.com/tuna-os/tunaOS/blob/main/.github/green-criteria.yml), blocking today on `boots`, `builds`, `desktop`, `no_silent_omissions` — every one of those a cell must satisfy, with skipped and never-tested counting as not green. The full per-axis board is [docs/MATRIX-STATUS.md](https://github.com/tuna-os/tunaOS/blob/main/docs/MATRIX-STATUS.md). This is a point-in-time CI snapshot, not a support-tier promise.
 
 
 
 ## Get started
 
 - **Install from an ISO:** [📦 tunaos.org/download](https://tunaos.org/download)
+- **Install from Windows (no USB drive needed):** [🪟 wootc installer](https://github.com/tuna-os/wootc) (download from [releases](https://github.com/tuna-os/wootc/releases) / read the [Migration Guide](https://github.com/tuna-os/tunaOS/blob/main/MIGRATION.md#from-windows-wootc))
 - **Build your own ISO in the browser:** [🛠️ tunaos.org/iso-builder](https://tunaos.org/iso-builder)
 - **Switch an existing bootc system:**
 

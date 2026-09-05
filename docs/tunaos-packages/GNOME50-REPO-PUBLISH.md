@@ -3,43 +3,57 @@ sidebar_position: 7
 title: "GNOME50 REPO PUBLISH"
 ---
 
-The published GNOME 50 repo at `https://repo.tunaos.org/gnome50/10-stream-x86_64/`
-has never been seeded (HTTP 404, confirmed by R2 inventory). The `Verify GNOME 50
-Repo` workflow correctly reports red on main because #112 removed the path filter
-that previously hid this absent-repo check (see #179).
+The GNOME 50 family index for EL10 is `https://repo.tunaos.org/gnome50/10-stream-x86_64/`,
+written by `publish-build-chain-rpms.yml` for the cell `gnome50-el10-x86_64`
+and published in the same run as an OCI image, `ghcr.io/tuna-os/tunaos-packages:gnome50-el10-x86_64`,
+cosign-signed by digest (`docs/PACKAGE_FACTORY.md`, "Promotion contract").
 
-## Why the repo was never published
+## What was there before the first factory publish (2026-09-03)
 
-- `build-gnome50-package.yml` publishes on `push: main` with `paths: src/gnome-50/**`
-  — no `src/gnome-50/` commit has been merged to main since the workflow was created.
-- The one `main`-push publish run (2026-06-21) failed.
-- `build-gnome50-distributed.yml` and `refresh-gnome50-r2.yml` are `workflow_dispatch`
-  only — neither has ever been dispatched.
+The prefix was not empty and it was not factory output. The since-deleted
+`refresh-gnome50-r2.yml` (runs 30926227247 and 30928751255, 2026-08-04)
+downloaded the `jreilly1821/c10s-gnome-50` COPR and `rclone sync`ed it into
+`bluefin/gnome50/10-stream-x86_64/` and `bluefin/repo/10-x86_64/`. Those RPMs
+carry the COPR project key's signature (`99b9f29ec528e021`, vendor
+"Fedora Copr - user jreilly1821"), so a consumer that trusts `public.gpg` with
+`gpgcheck=1` cannot install a single one of them -- tunaOS run 33750514082
+failed on exactly that: `GPG check FAILED ... Public key for
+glib2-2.88.0-4.el10.x86_64.rpm is not installed`.
 
-## What the operator must do to seed the repo
+Meanwhile the factory's own `gnome50-el10-x86_64` cell had never published:
+its catalog `r2_path` was `repo/10-x86_64`, the tideforge mirror prefix, which
+`scripts/plan-build-chain-publish.py` refuses by name because two
+`rclone sync` writers into one prefix delete each other's packages
+(run 33751204743 was refused at plan for that reason). The weekly
+build-chain run of 2026-08-30 (33303057118) had built 57 of the family's 58
+packages across 19 tiers; the one failure was `input-remapper`'s spec
+missing `BuildRequires: systemd-rpm-macros`.
 
-**Option A (preferred — copy from COPR):**
+Maintainer directive, 2026-09-03: nothing below GNOME 50 ships in tunaOS, and
+no more COPR -- build in GitHub, consume like `projectbluefin/utah-packages`.
 
-Dispatch `Refresh GNOME 50 R2 from COPR` from the Actions tab. This mirrors
-the COPR project `jreilly1821/c10s-gnome-50` into the R2 bucket at
-`bluefin/gnome50/10-stream-x86_64/`. The repo becomes accessible within
-~60 seconds after the sync completes.
+## What the publisher does now
 
-**Option B (full rebuild from source):**
+1. `manifests/package-builds.yaml` gives `gnome50-el10-x86_64` its own prefix,
+   `gnome50/10-stream-x86_64`, the shape `gnome51/` and `xfce/` already use.
+2. `scripts/publish-rpm-wave.sh --evict-foreign` (passed only by the
+   build-chain publisher) removes every RPM in the synced-down tree whose
+   header signature is not by the publisher's key before indexing, so the
+   family prefix carries only what the factory built and signed. It refuses
+   to evict anything if the freshly signed wave itself does not read as the
+   publisher's own -- a wrong key-id derivation must not empty a served tree.
+3. The sync-up then deletes the COPR mirror from the bucket, `createrepo_c`
+   indexes the factory tree, `repomd.xml` is detach-signed, and the same tree
+   is pushed as the OCI image whose digest tunaOS pins.
 
-Dispatch `GNOME 50 Distributed Build` from the Actions tab. This rebuilds the
-entire GNOME 50 stack from `src/gnome-50/` and `src/deps/` sources, tier by
-tier, signs the RPMs, and syncs to R2. This is the authoritative publish path
-but takes ~45 minutes.
+## How to (re)publish
 
-## After the repo is seeded
+Dispatch `Publish build-chain RPMs` with `cells=gnome50-el10-x86_64`,
+`dry_run=false`. The build job builds the chain in the CentOS Stream 10 mock
+root (resuming the nightly's banked partial where the action key matches),
+the publish job does the steps above, and the run summary prints the image
+digest. `verify` then asserts every published package resolves from the
+served index.
 
-- `Verify GNOME 50 Repo` will go green automatically (no code changes needed).
-- The `verify-repo` job will confirm `repomd.xml` returns 200 and packages
-  install cleanly in a CentOS Stream 10 container.
-- The `verify-gdm` job will provision an EL10 VM from the published repo and
-  verify GDM + gnome-shell boot.
-
-The workflow is already wired to fire on the completion of both the incremental
-package build and the distributed build — once the repo is seeded, verification
-engages on every publish without further operator action.
+For installed systems the live endpoint stays `https://repo.tunaos.org`; the
+OCI digest is the image build's input.

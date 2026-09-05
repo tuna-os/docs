@@ -115,7 +115,7 @@ When the installer detects it is running on a live ISO (via `/etc/bootc-installe
 
 ```bash
 curl -Lo installer.flatpak \
-  https://github.com/projectbluefin/bootc-installer/releases/latest/download/org.bootcinstaller.Installer.flatpak \
+  https://github.com/tuna-os/bootc-installer/releases/latest/download/org.bootcinstaller.Installer.flatpak \
   && sudo flatpak uninstall -y org.bootcinstaller.Installer org.bootcos.Installer 2>/dev/null; sudo flatpak install --bundle -y installer.flatpak
 ```
 
@@ -123,7 +123,7 @@ curl -Lo installer.flatpak \
 
 ```bash
 curl -Lo installer-devel.flatpak \
-  https://github.com/projectbluefin/bootc-installer/releases/download/latest-dev/org.bootcinstaller.Installer.Devel.flatpak \
+  https://github.com/tuna-os/bootc-installer/releases/download/latest-dev/org.bootcinstaller.Installer.Devel.flatpak \
   && sudo flatpak uninstall -y org.bootcinstaller.Installer.Devel 2>/dev/null; sudo flatpak install --bundle -y installer-devel.flatpak
 ```
 
@@ -504,4 +504,3 @@ sudo FISHERMAN_BIN=/path/to/fisherman BOOT_VERIFY=1 pytest tests/integration/tes
 ```
 
 Real release qualification still requires destructive installs on lab hardware for TPM2, physical boot prompts, recovery-key/passphrase fallback, Windows slurp, and offline ISO paths. Use the repo runbook in [`.github/CI_CD_GUIDE.md`](https://github.com/tuna-os/bootc-installer/blob/dev/.github/CI_CD_GUIDE.md#release-qualification-runbook) to separate what can be verified now from what remains hardware-only.
-

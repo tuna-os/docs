@@ -29,12 +29,55 @@ self-contained (no external refs), safe for Flatpak/live-ISO offline use.
 
 - Installer Source-step cards: render at 96 px.
 - Welcome pages / ISO boot menus: 128–512 px, scale freely.
-- These are the source of truth; PR them to
-  `projectbluefin/fisherman:data/images/` to replace the current placeholder
-  clip-art (where `albacore.svg` is byte-identical to `tunaos.svg`).
+- These are the source of truth. Consumers should pin a commit or release from
+  this repository and verify copied files against `branding-manifest.json`.
+- The installer consumer is
+  [`tuna-os/fisherman:data/images/`](https://github.com/tuna-os/fisherman/tree/main/data/images/).
+  Update its pin and vendored assets together; do not copy an unversioned branch
+  tip.
 
-Regenerate the preview sheet with cairosvg (see `sheet.py` pattern in repo
-history / any cairosvg one-liner).
+`branding-manifest.json` is the machine-readable asset contract. Its
+`schema_version` covers the manifest format, while each value binds an asset
+name to its SHA-256 digest. Consumers can reject missing, extra, or modified
+assets before packaging an installer.
+
+## Maintaining the manifest
+
+After intentionally changing an SVG, update its digest in
+`branding-manifest.json` from the repository root:
+
+```bash
+asset=albacore.svg
+digest=$(sha256sum "$asset" | cut -d ' ' -f 1)
+jq --arg asset "$asset" --arg digest "sha256:$digest" \
+  '.assets[$asset] = $digest' branding-manifest.json > branding-manifest.json.new
+mv branding-manifest.json.new branding-manifest.json
+```
+
+Replace `albacore.svg` with the asset that changed. Keep the manifest update in
+the same commit as the SVG change. Before committing, verify every declared
+asset and make sure the manifest neither omits nor names an extra SVG:
+
+```bash
+jq -r '.assets | to_entries[] | "\(.value | sub("sha256:"; ""))  \(.key)"' \
+  branding-manifest.json | sha256sum --check --strict
+
+diff -u \
+  <(find . -maxdepth 1 -type f -name '*.svg' -printf '%f\n' | sort) \
+  <(jq -r '.assets | keys[]' branding-manifest.json | sort)
+```
+
+Both commands should finish without errors or differences.
+
+## Running Tests
+
+An automated Python test suite is provided in `tests/test_branding.py` to validate manifest schema compliance, SVG dimensions (128x128), SHA-256 digest matching, asset completeness, and absence of external references.
+
+Run the test suite using Python's standard `unittest` module:
+
+```bash
+python3 -m unittest discover -s tests
+```
 
 ## License
 

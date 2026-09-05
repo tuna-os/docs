@@ -36,9 +36,11 @@ is an explicit allowlist: every `CatalogEntry` carries a `verified` field
 (`false` by default), and the macOS app only offers entries where it is
 `true`. The shipped `catalog.json` includes both `bonito` and `grouper`,
 marked `verified: true`. Adding a new variant requires both the image and a
-passing harness sweep — the field is the gate, and CI generation must
-consume harness results, not just tag enumeration
-([#41](https://github.com/tuna-os/bootc-installer-asahi/issues/41)).
+passing harness sweep — the field is the gate. That gate is currently
+hand-maintained rather than CI-generated from harness results
+([#70](https://github.com/tuna-os/bootc-installer-asahi/issues/70)); the
+harness sweep itself ([#41](https://github.com/tuna-os/bootc-installer-asahi/issues/41))
+that produced the two verified entries above is closed.
 
 ## Status
 
@@ -51,6 +53,20 @@ consume harness results, not just tag enumeration
 - [x] D2 asahi-installer `--json` machine mode (upstreamable)
 - [ ] D3 macOS app (SwiftUI, wraps the asahi-installer Python backend)
 - [x] D4 recoveryOS walkthrough UX, LUKS, Wi-Fi handoff (RecoveryWalkthroughView QR & instructions; LUKS fail-closed #20/#47; Wi-Fi prompt at first boot #46)
+
+## Development & testing
+
+Contributor workflow, code style, branch conventions and the full local test
+matrix live in [CONTRIBUTING.md](https://github.com/tuna-os/bootc-installer-asahi/blob/main/CONTRIBUTING.md). The short version:
+
+```sh
+shellcheck -S warning scripts/*.sh components/*/*.sh   # lint, as CI runs it
+sudo ./scripts/selftest.sh                             # payload + installer_data.json contract
+./scripts/test-backend-contract.sh                     # pinned asahi-installer --json contract
+./components/bootsahi-agent/test-agent.sh              # install-config.json -> recipe.json
+
+cd macos-app/Bootsahi && swift build -v && swift test -v
+```
 
 ### What's tested and what it proves
 

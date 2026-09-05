@@ -65,6 +65,9 @@ sequenceDiagram
 | `app/wrangler.jsonc` | Cloudflare Pages deployment configuration. Deployed to `iso.tunaos.org`. |
 | `worker/` | `cors-shim.js` — Cloudflare Worker shim (`relay.tunaos.org`) proxying GHCR + Flathub/package search APIs. |
 | `e2e/` | Playwright test suite driving the real WASM engine against live container registries. |
+| [`native/`](https://github.com/tuna-os/iso-builder/blob/main/native/README.md) | Cross-platform desktop writer for creating and managing persistent multi-boot drives. |
+| [`docs/`](https://github.com/tuna-os/iso-builder/blob/main/docs/MULTI-BOOT-DRIVE-MANAGEMENT.md) | Design and lifecycle documentation for multi-boot drive management. |
+| [`CONTRIBUTING.md`](https://github.com/tuna-os/iso-builder/blob/main/CONTRIBUTING.md) | Developer guide, test suite instructions, and contribution process. |
 
 ---
 
@@ -86,6 +89,13 @@ npx playwright test --grep-invert @full        # Runs UI & inspect network flow
 > [!IMPORTANT]
 > Playwright tests run in a persistent browser context located in `~/tmp/` instead of `/tmp`. This ensures Chrome doesn't run out of storage space when downloading real image layers on Linux environments that limit `/tmp` to a small `tmpfs` RAM disk.
 
+### Native writer
+
+The desktop writer has separate platform prerequisites and uses the Go toolchain.
+See [`native/README.md`](https://github.com/tuna-os/iso-builder/blob/main/native/README.md) for build and test commands, and
+[`docs/MULTI-BOOT-DRIVE-MANAGEMENT.md`](https://github.com/tuna-os/iso-builder/blob/main/docs/MULTI-BOOT-DRIVE-MANAGEMENT.md)
+for the drive-management lifecycle and safety model.
+
 ---
 
 ## Deploy
@@ -96,6 +106,8 @@ cd worker && npx wrangler deploy   # Deploys to Workers (relay.tunaos.org)
 ```
 
 *Note: Requires `CLOUDFLARE_API_TOKEN` configured in your environment with Workers and Pages deployment scope.*
+
+Normally this is automatic: the `deploy` job in `.github/workflows/ci.yml` deploys both surfaces on every push to `main`. Nothing in CI checks production afterwards, so verify by hand — `curl -sS https://relay.tunaos.org/healthz` (expects `{"status":"ok"}`) and `curl -sSI https://iso.tunaos.org/tbox.wasm`. To roll a bad deploy back, and for the rest of the detection and verification checklist, see [`runbooks/deploy-and-rollback.md`](https://github.com/tuna-os/iso-builder/blob/main/runbooks/deploy-and-rollback.md).
 
 ---
 
@@ -111,3 +123,12 @@ When updating the WASM file, always ensure you copy the matching `wasm_exec.js` 
 ```sh
 cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" app/public/
 ```
+
+## Updating systemd-boot
+
+`app/public/systemd-bootx64.efi` is a committed copy of the systemd-boot EFI
+stub, fetched by the app at runtime for the DDI build path. It is pinned to
+an exact Ubuntu package version with a checksum — see
+[`app/public/sdboot-NOTICE.txt`](https://github.com/tuna-os/iso-builder/blob/main/app/public/sdboot-NOTICE.txt) for the
+provenance, the pinned version, and the reproduction command used to verify
+or refresh it.

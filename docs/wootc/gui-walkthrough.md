@@ -1,5 +1,5 @@
 ---
-sidebar_position: 13
+sidebar_position: 19
 title: "gui walkthrough"
 ---
 
@@ -107,8 +107,6 @@ browsers, how many Wi-Fi profiles. The choice is saved to
 `~/.config/wootc/migration-selection.json` for the bridges to honor.
 
 ## 8b. Set up your account
-
-![Account setup](https://raw.githubusercontent.com/tuna-os/wootc/main/docs/screenshots/13b-account-setup.png)
 
 `wootc-user-gui`. Your name, username, email and account picture are
 carried over from Windows and already filled in — the screen asks for

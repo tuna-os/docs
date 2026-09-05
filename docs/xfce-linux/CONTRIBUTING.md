@@ -8,24 +8,28 @@ Thank you for your interest in contributing to the XFCE Linux BuildStream projec
 ## Getting Started
 
 ### Prerequisites
-- BuildStream 2.7.0+
-- Podman or Docker
+- [just](https://just.systems/) (use a current release; Ubuntu 24.04's
+  packaged version is too old for this repository's grouped recipes)
+- BuildStream 2.7.0+ or Podman for the repository's `bst2` container
+- Podman
 - QEMU + KVM
 - 200GB+ free disk space
-- Git
+- Git, Python 3, pytest, and BATS
 
 ### Setup Development Environment
 
 ```bash
 # Clone repository
-git clone <repo-url> xfce-linux
+git clone https://github.com/tuna-os/xfce-linux.git
 cd xfce-linux
 
-# Verify BuildStream installation
-bst --version  # Should be 2.7.0+
+# Verify the recipe files parse
+just --summary >/dev/null
+just --evaluate >/dev/null
 
-# Check cache
-du -sh ~/.cache/buildstream/
+# Run the fast local tests
+bats tests/bats/*.bats
+python3 -m pytest tests/pytest/ -v
 
 # Verify Podman
 podman --version
@@ -43,16 +47,12 @@ git checkout -b feature/your-feature-name
 
 #### Adding XFCE Components
 
-Edit `elements/core/meta-xfce-core-apps.bst`:
-
-```yaml
-- name: new-xfce-app
-  repo: xfce-wayland
-  checkout: main
-  track: main
-  build-depends:
-    - xfce-linux-deps.bst
-```
+Add the component's BuildStream element under `elements/`, then reference that
+element from the appropriate composition element. Use a neighboring checked-in
+element as the schema example; component definitions are BuildStream files, not
+the `name`/`repo`/`checkout` mapping previously shown here. Local sources should
+track upstream release tags unless the exception is documented in
+[`docs/ci-and-iso-pipeline.md`](https://github.com/tuna-os/xfce-linux/blob/main/docs/ci-and-iso-pipeline.md#release-linked-sources).
 
 #### Modifying Element Definitions
 
@@ -69,18 +69,28 @@ Edit `elements/core/meta-xfce-core-apps.bst`:
 ### 3. Testing Changes
 
 ```bash
-# Quick validation
-bst show elements/your-element.bst
+# Unit and functional tests (the same commands used by CI)
+bats tests/bats/*.bats
+python3 -m pytest tests/pytest/ -v
 
-# Single element build
-bst build elements/your-element.bst
+# Verify the justfiles parse
+just --summary >/dev/null
+just --evaluate >/dev/null
+
+# Validate the complete BuildStream graph
+bst --no-interactive show --deps all oci/xfce-linux.bst >/dev/null
 
 # Full rebuild (if major changes)
 just build
 
-# Boot test
-just boot-vm
+# Validate the exported image
+just lint
 ```
+
+Shell, YAML, workflow, and Renovate changes are also checked by ShellCheck,
+yamllint, actionlint, and `renovate-config-validator` in CI. See
+[`docs/ci-and-iso-pipeline.md`](https://github.com/tuna-os/xfce-linux/blob/main/docs/ci-and-iso-pipeline.md#guard-rails-what-stops-a-bad-commit)
+for the full pre-merge and post-merge gate sequence.
 
 ### 4. Documentation
 
@@ -93,7 +103,7 @@ Update relevant documentation:
 
 ```bash
 git add -A
-git commit -m "Description of changes
+git commit -s -m "Description of changes
 
 - Detailed list of changes
 - Second point
@@ -138,13 +148,13 @@ just --list
 # Build phases
 just build              # Full OCI build
 just export             # Export to image
-just generate-bootable  # Create bootable disk
+just generate-bootable-image  # Create bootable disk
 just boot-vm            # Launch QEMU VM
 
 # Development
 just clean              # Clean cache
-just status             # Show status
 just logs               # View logs
+just --list             # List all available recipes
 ```
 
 ### BuildStream Commands
@@ -183,6 +193,13 @@ xfce-linux/
 ```
 
 ## Testing
+
+Run the fast test suites before pushing:
+
+```bash
+bats tests/bats/*.bats
+python3 -m pytest tests/pytest/ -v
+```
 
 ### Boot Testing
 
@@ -229,8 +246,10 @@ See `docs/technical/SOLUTIONS_AND_ANALYSIS.md` for:
 ## Code Review Process
 
 1. **Automated Checks:**
-   - BuildStream syntax validation
-   - Git hooks (if configured)
+   - BATS and pytest test suites
+   - Full BuildStream dependency-graph validation
+   - Justfile parsing
+   - ShellCheck, yamllint, actionlint, and Renovate configuration validation
 
 2. **Manual Review:**
    - Check for completeness
@@ -238,8 +257,8 @@ See `docs/technical/SOLUTIONS_AND_ANALYSIS.md` for:
    - Test build locally
 
 3. **Testing:**
-   - `just build` passes
-   - Boot test successful
+   - Fast tests pass locally
+   - Relevant image, ISO, or install tests pass for the scope of the change
    - No regressions
 
 ## Performance Considerations
@@ -307,4 +326,5 @@ This project integrates open-source components with various licenses (GPL, LGPL,
 For more information, see:
 - docs/README.md — Main guide
 - docs/PROJECT_STATUS.md — Current status
+- docs/ci-and-iso-pipeline.md — CI, ISO, install-test, and release pipeline
 - docs/technical/SOLUTIONS_AND_ANALYSIS.md — Known issues & solutions

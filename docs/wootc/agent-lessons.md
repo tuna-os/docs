@@ -756,3 +756,44 @@ copy loop saw an unattributable vendor binary and refused, correctly.
 - The harness now drops the task once the app is up and then *counts*
   `wootc.exe` before writing the directive — no instance can install until the
   directive exists, so an extra killed at that point provably never installed.
+
+## 33. A deaf channel has no opinion about the product
+
+el10-gnome-win11pro (run 32556250889) reported "install stalled at *Finding
+your files*" after waiting out its full 30-minute drive deadline. Printed
+underneath that verdict, in the same block, was the fact that invalidated it:
+
+```
+[FAIL] GUI-driven install did not reach the done screen in 30m
+[FAIL]   QGA does NOT answer ping — the verdict above may be a lost channel
+```
+
+The QGA virtio-serial channel had gone deaf. A stalled installer and a dead
+channel produce the *same* observable — the drive-state file stops changing —
+and opposite causes, so the run had no standing to say anything about the
+install. It said it anyway, thirty minutes late, and a human had to read the
+log to find out the red was not real.
+
+- **Ask the discriminator first, not last.** `guest-ping` decides which verdict
+  is even available, so it runs *before* anything is written down. Appending
+  the channel state under a product verdict is the wrong order: the caveat does
+  not retract the claim, it just sits below it.
+- **Waiting longer cannot make a deaf socket talk.** The remaining ~28 minutes
+  bought nothing except the appearance of diligence. Once ping is dead, one
+  bounded reconnect cycle — reap the clients that may still hold the
+  single-client socket, drain what the killed one left queued (§20), reopen
+  with a delimited sync — and then a verdict either way.
+- **Say what you do not know.** The classification is `qga-channel-lost` and it
+  states that the run has *no* verdict on the product. The install may have
+  finished, stalled or failed; the harness cannot tell, so it does not guess.
+- **Name the class in the ledger.** `note_flake` writes the machine-readable
+  verdict the retry gate reads, and the ledger line names the same class, so
+  the re-dispatch decision needs no human in it.
+- **Exit 1 from a socket that will not open was the same mistake in miniature.**
+  `qga.py` connected outside its own error handler, so ENOENT on a dead channel
+  exited 1 — indistinguishable from a guest command that ran and returned 1,
+  which `qga_call_retry` must never replay (§#40). A transport failure has to
+  say so: it exits 42.
+
+Guarded by `tests/unit/qga-channel-lost.bats` and a synthetic channel kill
+against a real socket in `tests/unit/test_qga_reconnect.py`.

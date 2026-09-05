@@ -83,6 +83,10 @@ Create `org.tunaos.<app>.json` at the repo root. For apps that use **GNOME 50** 
 }
 ```
 
+The app must also install `<app-id>.metainfo.xml` to `/app/share/metainfo/` and
+an icon to `/app/share/icons/hicolor/`, or it will have no name, icon, licence
+or screenshots in a software centre. See [App metadata](#app-metadata).
+
 For apps that need **Node.js** (like Mariner), add a `nodejs` module:
 
 ```json
@@ -115,7 +119,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   packages: write
 
 jobs:
@@ -155,21 +159,24 @@ jobs:
           name: <app>-oci
           path: <app>.oci
       - name: Push OCI to GHCR
-        run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | skopeo login ghcr.io -u "${{ github.actor }}" --password-stdin
-          skopeo copy oci:<app>.oci docker://ghcr.io/tuna-os/<app>:latest
-      - name: Update central index (tuna-os/docs)
         env:
-          FLATPAK_INDEX_TOKEN: ${{ secrets.FLATPAK_INDEX_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git clone --depth 1 \
-            https://x-access-token:${FLATPAK_INDEX_TOKEN}@github.com/tuna-os/docs.git \
-            index-repo
-          pip install requests
+          echo "$GITHUB_TOKEN" | skopeo login ghcr.io -u "${{ github.actor }}" --password-stdin
+          skopeo copy oci:<app>.oci docker://ghcr.io/tuna-os/<app>:latest
+      - name: Check out central index
+        uses: actions/checkout@v4
+        with:
+          repository: tuna-os/docs
+          token: ${{ secrets.FLATPAK_INDEX_TOKEN }}
+          path: index-repo
+      - name: Update central index (tuna-os/docs)
+        run: |
           python3 .github/scripts/update-index.py \
             --oci-dir <app>.oci \
             --index-file index-repo/static/flatpak/index/static \
             --repo-name tuna-os/<app> \
+            --require-appstream \
             --tags latest
           cd index-repo
           git config user.name "github-actions[bot]"
@@ -183,15 +190,23 @@ jobs:
           fi
 ```
 
-Also copy `.github/scripts/update-index.py` from an existing app (e.g. [tuna-os/mariner](https://github.com/tuna-os/mariner)).
+Also vendor [`scripts/update-index.py`](https://github.com/tuna-os/flatpak-index/blob/main/scripts/update-index.py) from this repo
+to `.github/scripts/update-index.py`. That is the canonical copy — do not copy
+an older one from another app repo, and see
+[App metadata](#app-metadata) for why.
 
 ### 4. Set repo secrets
 
-- **`FLATPAK_INDEX_TOKEN`**: A GitHub PAT with push access to `tuna-os/docs`
+- **`FLATPAK_INDEX_TOKEN`**: A fine-grained GitHub PAT with **Contents: read and
+  write** access only to `tuna-os/docs`. Do not reuse a general-purpose CLI or
+  account token.
 
 ```bash
-gh secret set FLATPAK_INDEX_TOKEN --repo tuna-os/<app> --body "$(gh auth token)"
+gh secret set FLATPAK_INDEX_TOKEN --repo tuna-os/<app>
 ```
+
+Enter the fine-grained token at the prompt. Avoid putting token values in command
+arguments, repository URLs, or documentation.
 
 ### 5. Push to trigger the build
 
@@ -205,6 +220,42 @@ The CI will:
 3. Push to `ghcr.io/tuna-os/<app>:latest`
 4. Update the central index in `tuna-os/docs/static/flatpak/index/static`
 5. Cloudflare Pages redeploys `tunaos.org` with the new index
+
+## App metadata
+
+Software centres such as [Bazaar](https://github.com/kolunmi/bazaar), GNOME
+Software and KDE Discover render an app page from **AppStream** metadata. On an
+OCI remote that metadata travels as three image labels —
+`org.freedesktop.appstream.appdata`, `.icon-64` and `.icon-128` — which
+`flatpak build-bundle --oci` writes automatically from the app's
+`/app/share/metainfo/<app-id>.metainfo.xml`.
+
+The publisher must copy those labels into `index/static`. If it does not,
+flatpak has nothing to build a catalogue from and every app in the remote shows
+up as a bare application ID with an "Unknown" licence and no screenshots.
+
+- **Writing a metainfo file:** [`docs/METAINFO.md`](https://github.com/tuna-os/flatpak-index/blob/main/docs/METAINFO.md), starting
+  from [`templates/org.tunaos.example.metainfo.xml`](https://github.com/tuna-os/flatpak-index/blob/main/templates/org.tunaos.example.metainfo.xml).
+  It follows [Flathub's quality guidelines](https://docs.flathub.org/docs/for-app-authors/metainfo-guidelines/quality-guidelines),
+  which is the bar software centres render against.
+- **Screenshots:** [`docs/SCREENSHOTS.md`](https://github.com/tuna-os/flatpak-index/blob/main/docs/SCREENSHOTS.md) — the shared
+  [capture action](https://github.com/tuna-os/flatpak-index/blob/main/.github/actions/capture-screenshots) photographs an app's own
+  window under a headless X server, so screenshots are generated in CI from the
+  real app rather than taken by hand. The audit below reports apps that declare
+  none.
+- **Auditing the live remote:**
+
+  ```bash
+  curl -sSfL -o served-index.json https://tunaos.org/flatpak/index/static
+  ./scripts/enrich-index.py served-index.json --check
+  ```
+
+  This reports any published image whose metadata is missing from the index, or
+  that has no metadata at all. Run daily by
+  [`check-metadata.yml`](https://github.com/tuna-os/flatpak-index/blob/main/.github/workflows/check-metadata.yml).
+- **Repairing an index in place:** `./scripts/enrich-index.py <index-file>`
+  re-reads the labels from the registry and writes them back. It only touches
+  the digests already listed, so the set of published images is unchanged.
 
 ## Architecture
 
@@ -229,3 +280,5 @@ ghcr.io/tuna-os/<app>         → OCI images with flatpak metadata
 The `index/static` file is a JSON array with OCI image references. Each entry maps an app name to its manifest digest and flatpak metadata labels. Flatpak downloads this index, finds the right image by app ID and architecture, then pulls it from the GHCR registry.
 
 > **Note:** the authoritative index is `static/flatpak/index/static` in the [tuna-os/docs](https://github.com/tuna-os/docs) repo, served at `https://tunaos.org/flatpak/`. The copy of `index/static` in *this* repo is a **historical snapshot** and is **not** what the remote serves — treat it as reference only. When the README's [Available apps](#available-apps) table and this snapshot disagree, the table (and tunaos.org) reflect the live remote.
+>
+> **This repo's own [GitHub Pages site](https://tuna-os.github.io/flatpak-index/) and the `tuna-os.flatpakrepo` file at its root are the same non-authoritative snapshot**, published as a live OCI remote (`oci+https://tuna-os.github.io/flatpak-index`). Do not `flatpak remote-add` that URL or this file — it will not receive new apps or updates. Always use the `https://tunaos.org/flatpak/tuna-os.flatpakrepo` remote from the [top of this README](#tunaos-flatpak-index).

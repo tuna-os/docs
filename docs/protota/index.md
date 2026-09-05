@@ -16,10 +16,14 @@ Uses real [`@gjsify/adwaita-web`](https://github.com/gjsify/gjsify/tree/main/pac
 ```bash
 npm install
 npm run dev        # Vite dev server
+npx tsc -b         # TypeScript typecheck — CI runs this on every PR
+npm run lint       # oxlint
 npm run build      # Production build → dist/
 npm run test:unit  # Blueprint/renderer conformance tests
-npm test            # Playwright tests
+npm test           # Playwright tests
 ```
+
+`just check` runs lint, unit tests, and build together.
 
 ## Rendering and conformance
 

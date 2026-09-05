@@ -5,6 +5,8 @@ sidebar_label: "dualcut"
 status: unknown
 ---
 
+> **Deprecated:** Development has moved to [shrimply](https://github.com/soirihiroka/shrimply), which is the recommended project for new work. This repository is retained for its history and existing releases; please port useful ideas here rather than starting new feature work in dualcut.
+
 A GNOME video editor with **dual usage**: edit manually (scene timeline +
 inspector) or programmatically (live JSON document, TypeScript scripts,
 HTTP API for agents) — every surface stays in sync while the app runs.

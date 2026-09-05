@@ -1,5 +1,5 @@
 ---
-sidebar_position: 19
+sidebar_position: 31
 title: "session migration"
 ---
 
@@ -36,12 +36,12 @@ carry the login with no decryption. Done in the deployer.
 3. re-encrypts the payload under a key derived from the wootc vault
    secret (never written in clear to disk), stored in
    `install\slurp\session\<app>.enc`.
-On the Linux side, the app's equivalent store is written back and
-re-encrypted under the Linux `safeStorage` (libsecret/kwallet). Result:
-the app opens already signed in. **Gated behind explicit user consent per
-app** — this is moving auth tokens, so the dashboard asks first and
-defaults off. (Implemented incrementally; the collector scaffolding lands
-here, per-app LevelDB rewriting is the follow-up.)
+On the Linux side, once the app's equivalent store is written back,
+re-encrypted under the Linux `safeStorage` (libsecret/kwallet), and verified
+against real service invalidation, the app opens signed in. **Gated behind
+explicit user consent per app** — this is moving auth tokens, so the dashboard
+asks first and defaults off. Until the target consumer and test matrix prove
+a migration, the key remains staged and the UI honestly says so.
 
 ### Online rewrap contract
 
@@ -81,8 +81,9 @@ Chrome/Edge install and a Linux D-Bus session to verify against, neither
 of which this change had access to.
 
 Until that consumer completes and records `imported`, the dashboard must show
-re-link/sign-in guidance rather than a signed-in result. A staged key is an
-implementation artifact, not evidence that a token transplant succeeded.
+staged guidance ("staged — you'll sign in once on Linux") or re-link/sign-in
+guidance rather than a signed-in result. A staged key is an implementation
+artifact, not evidence that a token transplant succeeded.
 
 **Phone-linked apps → guided re-link, not token theft.** Signal, WhatsApp,
 and (when token copy is declined) any messenger: the safest, most durable
@@ -103,4 +104,5 @@ everything. The dashboard frames it that way ("your playlists are waiting
 - Prefer re-link over token copy when the service is known to invalidate
   transplanted sessions (avoids a broken-looking app on first launch).
 - Every app row in the dashboard states its real outcome: *signed in*,
-  *re-link needed (2 steps)*, or *sign in once*.
+  *staged — sign in once*, *re-link needed (2 steps)*, or *sign in once*.
+- No UI surface implies a migration that wasn't measured.

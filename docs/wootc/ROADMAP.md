@@ -3,78 +3,108 @@ sidebar_position: 3
 title: "Roadmap"
 ---
 
-**Last updated**: 2026-08-11 | **Maintainer**: tuna-os (hanthor)
+**Last updated**: 2026-09-03 | **Maintainer**: tuna-os (hanthor)
 
 ---
 
 ## Mission
 
-Make it as easy as possible for **non-technical Windows users** to migrate to Linux **without losing any of their data**. wootc installs a real, image-based bootc Linux system into a single `root.disk` file on the existing Windows NTFS volume — no repartitioning, no backups, no point of no return. Every decision is weighed against: *would a nervous Windows user get through this without fear or data loss?*
+Make it as easy as possible for **non-technical Windows users** to migrate to Linux **without losing any of their data**. wootc installs a real, image-based bootc Linux system into a single `root.disk` file on the existing Windows NTFS volume — no repartitioning, no backups required, no point of no return. Every decision is weighed against: *would a nervous Windows user get through this without fear or data loss?*
 
-wootc is the org's **conversion front door**: it is the highest-leverage adoption channel for growing TunaOS beyond the Linux-curious audience. It is the Windows-hosted complement to the bootc-installer / tuna-installer family and drives [fisherman](https://github.com/projectbluefin/fisherman) under the hood.
+wootc is the org's **conversion front door** — the Windows-hosted complement to the bootc-installer / tuna-installer family, driving [fisherman](https://github.com/projectbluefin/fisherman) under the hood. One engine ships as five installers: generic **wootc**, and branded builds for **TunaOS**, **Bluefin**, **Aurora**, and **Bazzite** (`docs/branding-and-distribution.md`).
 
----
+## What 1.0 means
 
-## Current Status (August 2026)
+1.0 is not a feature count — it is the North Star made checkable:
 
-- **Phase 1 (VM Boot)** works end-to-end: Windows 11 → wootc.exe → signed shim → GRUB → deployer initramfs → fisherman `bootc install` into `root.disk` → native Linux. Green E2E baseline (timelapse published per run).
-- **Phase 2 (Native Boot)** in progress: GRUB → ntfs3 → losetup bare-metal boot; composefs Phase 2 module-tree correctness open (#78).
-- **Phase 3 (Standalone Linux)** future: Windows removed, NTFS dependency eliminated.
-- 16 open issues; active daily development (last push 2026-08-11).
-- ⚠️ **No LICENSE yet** — multi-component licensing (Go/Wails UI + Fedora/MS-signed boot chain) needs consolidation (#114).
-- ⚠️ **No CONTRIBUTING.md at root** — contribution onboarding pending; Hacktoberfest 2026 surface untapped.
-- Adopted by the org as the Windows migration on-ramp; tracked in tunaos ROADMAP (Windows installer track).
+1. **The download-to-desktop journey needs no instructions beyond the app.** A non-technical user installs (winget or one exe), reboots once, lands in Linux, finds their files, and can get back to Windows — guided entirely by what's on screen.
+2. **Zero known data-loss classes.** Every destructive path is double-gated, reversible, and exercised by the matrix; uninstall provably restores the machine.
+3. **Evidence, not claims.** Full matrix green (BitLocker and offline included), a 30-day soak of green nightlies, and a body of real-hardware reports with no data-loss incidents.
+4. **A trustworthy first impression.** Signed binaries (no SmartScreen wall), a stable winget package, and branded installers blessed by their upstream projects.
 
-### Priorities
-
-| Priority | Item | Tracking | Status |
-|----------|------|----------|--------|
-| P0 | CI reliability: restore fast test tier + required aggregate gate on main | #54, #55 | 🟡 In progress |
-| P0 | LICENSE consolidation (multi-component) | #114 | ⬜ Not started |
-| P0 | Decompose `installer_windows.go` (~1,700-line God-file, 47 fns) | #110 | ⬜ Not started |
-| P0 | Stop committing 2.8MB E2E timelapse media into git history | #87 | ⬜ Not started |
-| P1 | Migration UX: session re-link flows, migration dashboards, per-app consent | #1, #2, #3, #7 | 🟡 In progress |
-| P1 | Phase 2 boot correctness: composefs boots the deployer's kernel without matching module tree | #78 | 🟡 In progress |
-| P1 | User Data Bridge: migrate silently when Linux username differs from Windows profile | #73 | ⬜ Not started |
-| P2 | RFC: hardware pre-flight + hardware-aware image matching | #38 | ⬜ Not started |
-| P2 | RFC: OneDrive — carry over local files, mirror Files On-Demand | #65 | ⬜ Not started |
+Everything below is sequenced toward those four sentences.
 
 ---
 
-## Quarterly Goals
+## Current status (2026-09-03)
 
-### Q3 2026 (July–September) — "Make it safe"
+**Landed** (all on `main`, all matrix-exercised):
+- **v0.3.0-beta milestone shipped**: BitLocker policy enablement with numerical recovery key capture, UAC identity resolution to interactive user, `wootc-data` volume ownership validation, program-migrator plugin architecture with JSON manifest schemas, and runbook for taking back a bad release (#211, #358, #354, #362).
+- GUI-driven Phase 1 → 2 → 3 ladder proven on `bluefin:lts`; el10 Phase-2 class fixed; btrfs and BitLocker-refusal cells green.
+- **Release automation, three channels**: E2E-gated tagged releases (cuttable from a dispatch input — no tag-push rights needed), auto pre-releases from every green nightly, manual pre-releases. Every release ships all five brand exes + deployer boot artifacts + `SHA256SUMS`.
+- **First tagged release shipped**: [`v0.1.0-alpha.1`](https://github.com/tuna-os/wootc/releases/tag/v0.1.0-alpha.1) passed its E2E gate and was published on 2026-08-22.
+- **Branding system with real assets** (marks, typefaces, deep themes from each project's published branding), automated per-brand screenshot walkthroughs (`docs/branded-walkthroughs.md`), `just` brand args for local/manual testing.
+- **Offline-first core**: Windows-side digest-verified OCI pre-download, deployer bundle ingest, settled-hook start with bounded network wait. Wi-Fi-only laptops install with zero deploy-time network via branded builds / `WOOTC_PRELOAD=1`.
+- **North Star UX wave**: Windows on the boot menu, one-shot re-arm, calm product boots with honest copy, first-login welcome + Windows-drive bookmark, Add/Remove entry, uninstall that restores machine state, `docs/getting-started.md` + `docs/manual-testing.md`.
+- winget packaging (`TunaOS.wootc`) with auto-submission on full releases (pending the one-time `WINGET_TOKEN` secret).
 
-**Theme**: data safety and CI hardening for the conversion funnel.
+**In flight**: nightly green runs continue to publish automatic pre-releases while work advances toward the v0.2.0-alpha real-hardware evidence gate and v0.9.0-rc release candidate validation.
 
-| Goal | Owner | Tracking | Status |
-|------|-------|----------|--------|
-| CI: fast test tier restored + aggregate gate on main | ci-maintainer | #54, #55 | 🟡 In progress |
-| LICENSE consolidated and published | guide / maintainer | #114 | ⬜ Not started |
-| CONTRIBUTING.md + 3–5 good-first-issues (Hacktoberfest 10-01) | strategist / guide | tunaos#1347 | ⬜ Not started |
-| Phase 2 composefs boot correctness | architect | #78 | 🟡 In progress |
-| Migration dashboard MVP (discover + consent) | architect | #3, #7 | ⬜ Not started |
-
-### Q4 2026 (October–December) — "Make it a channel"
-
-> **Sketch:** graduation flow (Phase 2 → 3), Windows-style mode polish, partner theming/locking, conversion funnel metrics. Move up when Q4 starts.
+**Known defects with owners**: dakota Phase-2 first-boot hang (#209) · session token rewrap unfinished, honestly labeled (#1) · console window flash (#179).
 
 ---
 
-## Technical Debt Backlog
+## The version ladder
 
-| Item | Issue | Priority | Effort |
-|------|-------|----------|--------|
-| `installer_windows.go` God-file decomposition (47 fns: partition/ESP/vault/migration) | #110 | P0 | L |
-| 26MB of webm/webp blobs in git history (2.8MB per E2E run) | #87 | P0 | M |
-| E2E runs as systemd user units instead of nohup jobs | #57 | P1 | S |
-| User Data Bridge username mismatch silent no-op | #73 | P1 | S |
+Each milestone has a tracking issue carrying its live task list. A milestone ships when its checklist is empty and its gate evidence exists — dates are forecasts, gates are not.
+
+### v0.1.0-alpha — "It exists" *(shipped 2026-08-22)*
+The first complete release: five brand installers + boot artifacts + SHA256SUMS, E2E-gated, `releases/latest` resolving so plain online installs work. Nightly auto pre-releases keep it fresh without human hands.
+
+### v0.2.0-alpha — "Proven on real hardware" *(tracking: milestone issue M2)*
+The VM has been the world so far; this milestone makes real laptops the evidence source.
+- Maintainer + early-tester manual runs per `docs/manual-testing.md`, with a field-report issue template; every report triaged to green/fixed/filed.
+- Offline proof: `offline=on` matrix axis (`-nic none`), then `preloadImage` default-on for the generic build.
+- dakota Phase-2 hang (#209) root-caused; catalog statuses kept honest (demote before excusing).
+- No console flash on launch (#179) — the first second must look intentional.
+- Harness reliability: QGA-channel loss classified and retried, WU neutralization proven across editions.
+- First winget submission accepted upstream.
+
+### v0.3.0-beta — "The whole matrix, honestly" *(shipped 2026-09-03: milestone issue #211 / docs/release-notes-v0.3.0-beta.md)*
+Beta means the support policy stops saying "alpha" because the evidence exists.
+- **Full-tier matrix green (#222)**: every green-status catalog image × win10/11 Pro (+ Enterprise/LTSC cells where media allows) proven in `tests/e2e/matrix.tsv` and `app/data/images.json`.
+- **BitLocker path (#34, #223) green** → `BitLockerSupported: true` enabled on the beta channel with numerical recovery key capture and dedicated storage volumes.
+- **Profile-migration edge cases (#197)**: non-Latin usernames get `winuserN` fallback (never silently dropped, #224), localized built-in accounts excluded (#224), UAC elevating-admin identity resolved to interactive human (#225), `wootc-data` volume-label ownership verified before `RemovePartition` (#225).
+- **Branded-installer E2E cells (#226)**: Bazzite, Aurora, and plain Bluefin proven end-to-end and graduated to `status: green` in catalog.
+- **Upstream blessings (#227, #319)**: governance framework and decision recording in `app/branding/README.md` and `docs/upstream-blessings.md`.
+- **Session migration (#1, #228, #347)**: labeled honestly across dashboard, done screen, and docs as staged re-link on Linux.
+- **Support-policy audit**: every `GetSupportPolicy` flag traceable to a green matrix row with comprehensive test coverage.
+
+### v0.9.0-rc — "Ship-shaped" *(tracking: milestone issue M4)*
+- **Code signing** (EV cert / Azure Trusted Signing): kills the SmartScreen wall — the single biggest first-impression fix, and a spend decision that needs the maintainer.
+- **Try-in-VM (#178, #231)**: Explicitly cut from 1.0; Phase 1 Boot-in-VM on `root.disk` ([ADR 0001](https://github.com/tuna-os/wootc/blob/main/docs/adr/0001-phase1-first-architecture.md)) provides the primary zero-risk VM test path without bundling ~100MB+ of QEMU/builder binaries.
+- Program-migrator plugin architecture (#203): interface decision made; in or out of 1.0 scope, documented either way.
+- Docs complete and truthful end-to-end; walkthrough imagery regenerated from the shipping build.
+- Soak begins: consecutive green nightlies counting toward the 1.0 gate, release-blocking regressions only.
+
+### Scope decisions
+
+#### Try-in-VM vs. Phase 1 Boot-in-VM (#178, #231)
+
+**Decision**: Pre-install "Try in VM" fresh image preview is **explicitly cut from 1.0**. Phase 1 **Boot in VM** is the supported 1.0 VM experience.
+
+- **Background**: Issue #178 and SPEC §6.1 initially proposed a pre-install "Try in VM" mode using a two-stage handoff (a headless Alpine builder VM synthesizing a temporary `preview.raw` virtual disk from an OCI image before booting an interactive preview).
+- **Architectural Rationale**: Under the accepted Phase 1-first architecture ([ADR 0001](https://github.com/tuna-os/wootc/blob/main/docs/adr/0001-phase1-first-architecture.md)), wootc populates a single `root.disk` file directly on the NTFS volume without repartitioning. Upon install completion, the user can immediately choose **Boot in VM now** (SPEC §6.2) on Windows. Because `root.disk` is self-contained and uncommitted to firmware boot until Phase 2, Phase 1 provides the exact same "try before rebooting" safety guarantee on the real installed system.
+- **Distribution Footprint**: Shipping the builder kernel (`builder-vmlinuz`), initramfs (`builder-initramfs.img`), and a complete Windows QEMU runtime adds ~100+ MB of non-vendored binaries to the release installer without delivering safety or capabilities beyond Phase 1.
+- **Surfaces**: In 1.0 releases, the pre-install builder VM is cut from default user paths (`GetFreshVMCapability` remains capability-gated and unbundled, keeping the button hidden on standard builds). 1.0 documentation (`docs/user-guide.md`) directs users to Phase 1 Boot-in-VM. Pre-install builder bundling and offline packaging (#178) are deferred to post-1.0.
+
+### v1.0.0 — "The North Star, checkable" *(tracking: milestone issue M5)*
+The four criteria at the top of this file, verified: 30 days of green nightlies, the real-hardware report corpus with zero data-loss incidents, signed + winget-stable binaries, blessed brands. Cut from the soak's final green SHA.
 
 ---
 
-## How to Contribute
+## Standing technical debt
 
-See [CONTRIBUTING.md](https://github.com/tuna-os/wootc/blob/main/CONTRIBUTING.md) (pending, #114) for development setup and the PR process. Pick an issue labeled `good first issue` or comment on a goal you would like to own.
+| Item | Issue | Priority |
+|------|-------|----------|
+| Session token rewrap, target side | #1 | P1 (beta gate) |
+| Program migrator plugin architecture | #203 | P2 (rc decision) |
+| E2E runs as systemd user units instead of nohup jobs | #57 | P2 |
+| Try-in-VM pre-install builder VM | #178 | P3 (post-1.0; cut for 1.0 per #231 / ADR 0001) |
+
+## How to contribute
+
+See [CONTRIBUTING.md](https://github.com/tuna-os/wootc/blob/main/CONTRIBUTING.md). Prefer tasks tied to a red/unverified matrix cell or an open milestone checklist item — evidence that turns a claim green beats untested feature breadth. The milestone tracking issues are the live task boards.
 
 ---
-*Maintained by the strategist agent (tuna-os hive) — seed revision, refine with maintainer input.*
+*Refreshed 2026-08-22 against current `main` (resolves #201). Refine with maintainer input.*

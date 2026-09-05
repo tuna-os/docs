@@ -35,10 +35,14 @@ so mockups look *and behave* like real Adwaita.
 ```bash
 npm install
 npm run dev        # Vite dev server
+npx tsc -b         # TypeScript typecheck — CI runs this on every PR
+npm run lint       # oxlint
 npm run build      # Production build → dist/
 npm run test:unit  # Blueprint/renderer conformance tests
-npm test            # Playwright tests
+npm test           # Playwright tests
 ```
+
+`just check` runs lint, unit tests, and build together.
 
 The renderer is **generic**: presets must not add app-specific rendering
 branches. Blueprint and GtkBuilder imports preserve supported tree structure
@@ -54,10 +58,16 @@ can be added deliberately — never silently dropped.
 3. **Run the checks** before pushing:
 
    ```sh
+   npx tsc -b          # typecheck — its own CI step, see #211
+   npm run lint        # oxlint
    npm run test:unit   # conformance tests
    npm run build       # production build must succeed
    npm test            # Playwright browser tests
    ```
+
+   `npx tsc -b` is worth running first: `npm run build` is `tsc -b && vite
+   build`, so it only typechecks what the build includes, while CI checks the
+   test sources too.
 
 4. **Open a PR** describing what changed and why; link any related issue.
 

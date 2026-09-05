@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 4
 title: "gui walkthrough"
 ---
 
@@ -46,21 +46,46 @@ did not really render:
   heading, a line of prose — and legitimately score around 1% ink, while a form
   step with a FormCard behind it scores 30%. A blank screen scores zero on all
   four.
+- **visible step text** — the strings the current step actually put in its item
+  tree. Independent of every pixel ratio above, and the one signal that does
+  not move with the container's fonts.
 
-Measured on the six real screens at 1000×700 (CI run 31136541525), and the
+Measured on the six real screens at 1000×700 (CI run 33658389834), and the
 thresholds sit below these with margin (see the table at the top of `tests/capture.cpp`):
 
-| step | colours | ink | rows | cols |
-|---|---|---|---|---|
-| 01-welcome | 234 | 1.26% | 25.1% | 44.9% |
-| 02-disk | 315 | 22.03% | 41.2% | 53.9% |
-| 03-encryption | 367 | 26.89% | 53.8% | 53.9% |
-| 04-confirm | 288 | 30.20% | 56.8% | 53.9% |
-| 05-progress | 334 | 15.77% | 100.0% | 100.0% |
-| 06-done | 163 | 0.59% | 17.6% | 38.0% |
+| step | class | colours | ink | rows | cols |
+|---|---|---|---|---|---|
+| 01-welcome | hero | 198 | 0.90% | 9.0% | 45.2% |
+| 02-disk | card | 280 | 21.97% | 42.7% | 53.9% |
+| 03-encryption | card | 217 | 26.86% | 53.8% | 53.9% |
+| 04-confirm | card | 207 | 30.12% | 56.8% | 53.9% |
+| 05-progress | card | 244 | 15.34% | 100.0% | 100.0% |
+| 06-done | hero | 153 | 0.47% | 7.0% | 38.0% |
 
-Every run prints these, so a drift is visible in the log before it is a
-mystery. The capture also clears the output directory before rendering: a run
+### Why the row floor is per-class
+
+The spread floors are **per screen class**, and that is the point rather than a
+concession. A single global row floor turned out to measure the container
+image's font metrics as much as it measured rendering (#57).
+
+When the workflow moved to `fedora:45`, the three card steps did not move at
+all, while both hero pages roughly halved — welcome 23.2% → 9.0%, done 15.5% →
+7.0% — taking ink and colour count down with them and leaving columns nearly
+untouched. That is the signature of a smaller `Kirigami.Units.gridUnit`, which
+is derived from font metrics: a hero page sizes its icon, its spacings and its
+wrapped prose off it, so the entire column scales with the font. A card step
+barely moves, because its row coverage comes from the card background painting
+the rect rather than from text. The done page was rendering perfectly and the
+check called it blank.
+
+So the two classes are not measuring the same quantity and cannot share a
+floor. Splitting them **tightens** the check where it can bite — the card floor
+rises from 8% to 20%, against a sparsest measured 42.7% — and only relaxes it
+on the class where the number tracked the font. The semantic text assertion
+backs both up: a page that drew nothing carries no text whatever the fonts do.
+
+Every run prints these numbers and the class each floor was applied under, so a
+drift is visible in the log before it is a mystery. The capture also clears the output directory before rendering: a run
 that dies on the first screen must not leave the previous run's images there
 for the artifact upload to publish as its own.
 

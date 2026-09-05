@@ -17,5 +17,18 @@ tool releases to ship assets.
 
 - `bluefin-cli` (from [tuna-os/bluefin-cli](https://github.com/tuna-os/bluefin-cli))
   is not yet published here — releases ship binary assets since v0.10.6, but
-  the GoReleaser Scoop publisher has not produced a manifest yet. Tracked in
-  [tuna-os/bluefin-cli#141](https://github.com/tuna-os/bluefin-cli/issues/141).
+  the GoReleaser Scoop publisher has not produced a manifest yet.
+
+## Contributing manifests
+
+Add Scoop manifests as JSON files under `bucket/`. Before opening a pull
+request, run the dependency-free validator and its unit tests from the
+repository root:
+
+```console
+python3 tests/validate_manifests.py
+python3 -m unittest discover -s tests -v
+```
+
+See [CONTRIBUTING.md](https://github.com/tuna-os/scoop-bucket/blob/main/CONTRIBUTING.md) for manifest requirements, contribution
+scope, and release-pipeline ownership guidance.

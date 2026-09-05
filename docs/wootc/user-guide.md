@@ -1,5 +1,5 @@
 ---
-sidebar_position: 21
+sidebar_position: 35
 title: "user guide"
 ---
 
@@ -39,10 +39,19 @@ wootc runs a quick check when it starts and tells you in plain language if
 anything needs attention. Under the hood it wants:
 
 - **Windows 10 or 11**, 64-bit, UEFI (nearly all PCs since ~2015).
-- **~40 GB of free space** for a comfortable Linux install (you choose the size).
-- **Secure Boot** on is fine — wootc uses a Microsoft-trusted boot chain.
-- **BitLocker** is fine too — wootc never asks you to decrypt your drive
-  (see [§7](#7-encryption--bitlocker)).
+- **At least 35 GB of free space** on `C:` — 20 GB for Linux plus the 15 GB
+  the app keeps back so Windows still has room. More is better; you choose the
+  size.
+- **Secure Boot** on is fine — wootc stages a boot loader signed by Microsoft,
+  and checks *before* it changes anything that your PC's firmware trusts the
+  certificate it was signed with. If it does not, wootc says so and stops
+  rather than leaving you at a startup error
+  ([#322](https://github.com/tuna-os/wootc/issues/322)).
+- **BitLocker off**, for now. wootc never asks you to decrypt your drive, but
+  the encrypted-drive path is not proven green yet, so the alpha stops before
+  installing on a BitLocker-protected PC and says so
+  ([#34](https://github.com/tuna-os/wootc/issues/34), see
+  [§7](#7-encryption--bitlocker)).
 
 You don't need to disable Secure Boot, make a bootable USB, or shrink partitions
 yourself. wootc handles all of it.
@@ -57,16 +66,19 @@ Download and run **wootc.exe**. You'll see the Launchpad:
 
 1. **Pick a desktop.** Choose from the catalog — GNOME, KDE Plasma, Niri, or
    XFCE, on an Enterprise Linux, Fedora, Arch, or Debian base. Not sure? The
-   default (Yellowfin GNOME) is a great, stable starting point.
-2. **Name your setup.** Username, password, hostname, and how much disk to give
-   Linux. The preflight shows your free space live.
-3. **Choose encryption** (optional): TPM auto-unlock (recommended), a passphrase,
-   or none — see [§7](#7-encryption--bitlocker).
-4. **Optionally tick "Make it feel like Windows"** to bring your wallpaper,
-   accent color, keyboard layout, taskbar pins, and desktop shortcuts across on
-   first login. Off by default, so the desktop keeps its own look. Supported on
-   the Wayland desktops (GNOME, KDE Plasma, niri); other settings still migrate.
-5. Click **Install**. wootc creates your Linux disk file, stages a signed boot
+   first card is pre-selected for you — in the alpha that is Bluefin LTS, the
+   combination proven end-to-end (see [RELEASING](https://github.com/tuna-os/wootc/blob/main/docs/RELEASING.md#alpha-now)).
+2. **Set a password.** That's the whole form: your username and computer name
+   are mirrored from this PC, the disk is sized from your free space, and
+   TPM-backed encryption is picked for you. The form states the plan under the
+   password field, and everything is adjustable under **Advanced** — identity,
+   disk size, encryption ([§7](#7-encryption--bitlocker)), and the look toggle.
+3. **"Make it feel like Windows" is on by default** — wallpaper, accent color,
+   keyboard layout, taskbar pins, and desktop shortcuts come across on first
+   login, and your saved Wi-Fi networks become NetworkManager connections.
+   Untick it under Advanced to keep the desktop's own look. Supported on the
+   Wayland desktops (GNOME, KDE Plasma, niri); other settings still migrate.
+4. Click **Install**. wootc creates your Linux disk file, stages a signed boot
    entry, and arms a **one-time** boot into the installer. **Nothing else on
    your PC changes.**
 
@@ -96,7 +108,7 @@ boot menu; wootc doesn't remove it (until you ask it to — [§8](#8-go-linux-on
 
 ## 4. Bring your stuff over
 
-Open the **Bring your setup over** dashboard. wootc migrates honestly — it moves
+Open the **Bring Over From Windows** dashboard. wootc migrates honestly — it moves
 what it safely can and clearly says what needs a fresh sign-in. It follows three
 consent tiers:
 
@@ -120,8 +132,8 @@ What it brings over:
 - **Wi-Fi** — your saved networks become NetworkManager connections so you're
   online on first boot. Enterprise/802.1X networks are detected but need a fresh
   sign-in.
-- **Windows-Style Mode** (if you ticked it) — wallpaper, accent, keyboard, and
-  your taskbar/desktop shortcuts.
+- **Windows-Style Mode** (on unless you turned it off under Advanced) —
+  wallpaper, accent, keyboard, and your taskbar/desktop shortcuts.
 
 **Secrets stay put.** wootc never silently copies passwords, private SSH/GPG
 keys, tokens, or credential stores — you sign in again where it matters.
@@ -130,15 +142,15 @@ keys, tokens, or credential stores — you sign in again where it matters.
 
 ## 5. Try it first, commit later
 
-Not ready to reboot? Two ways to preview:
+Not ready to reboot?
 
-- **Boot in VM** — run your installed Linux in a window *without* rebooting,
-  right from Windows. It's the same disk, so any changes you make persist.
-- **Try in VM (fresh)** — build a preview of an image and try it in a window; if
-  you like it, **Install for Real** promotes the very same disk to your
-  permanent install (no re-download, no re-deploy).
+- **Boot in VM (Phase 1)** — run your installed Linux in a window *without*
+  rebooting, right from Windows. Because wootc installs into a single `root.disk`
+  file on your existing drive without repartitioning, you can test drive your
+  actual configured Linux system safely before ever rebooting. Any changes you
+  make persist to the same disk.
 
-Either way, you're always one reboot away from Windows.
+You're always one reboot away from Windows.
 
 ---
 
@@ -159,6 +171,15 @@ drive — a second internal disk, an external/USB drive, or a backup? Open
 
 ## 7. Encryption & BitLocker
 
+> **Not yet available in the alpha.** The design below is built and the code
+> ships, but the BitLocker path has not been proven green end-to-end
+> ([#34](https://github.com/tuna-os/wootc/issues/34)), so every channel that
+> ships today refuses to install on a BitLocker-protected PC rather than walk
+> you into an unproven path: *"BitLocker encryption isn't supported in the
+> alpha yet — it's coming soon. For now, wootc needs drive encryption turned
+> off."* Turn BitLocker off, or wait for the gate to open. What follows is
+> what happens once it does.
+
 **Your Windows BitLocker is safe.** wootc never forces you to decrypt your
 Windows drive. If C: is BitLocker-protected, wootc offers to put Linux on an
 unencrypted partition (creating one by safely shrinking, or reusing an existing
@@ -170,6 +191,15 @@ one) — **C: stays encrypted the whole time.**
   via your PC's TPM chip. No prompt at boot.
 - **Passphrase** — asks for a password every boot.
 - **None** — fastest; anyone with the PC can read the Linux disk.
+
+**The one-time blue screen (Bazzite and friends).** Some distributions ship
+their own tuned kernel, and under Secure Boot your PC needs one-time
+permission to trust it. For those images (the installer tells you on the
+final screen), the first start shows a blue **"MOK management"** screen:
+choose **Enroll MOK** → **Continue** → **Yes**, and type the password
+**`universalblue`** (the same one the distribution's own documentation
+uses). That's it — the screen never appears again, and Secure Boot stays
+fully on.
 
 ---
 
@@ -197,16 +227,29 @@ exists — you can't accidentally delete something that hadn't moved yet.
 
 ## 9. Uninstall — put everything back
 
-Changed your mind? wootc is fully reversible up until Phase 3 stage 6. The
-uninstaller:
+Changed your mind? wootc is fully reversible up until Phase 3 stage 6.
+
+**Where to find it:** open **Settings → Apps → Installed apps** (or Control
+Panel → Programs) and uninstall **TunaOS (wootc)** — or simply run
+`wootc.exe` again as Administrator, which opens the Manage screen with an
+**Uninstall** button.
+
+What it does:
 
 - Removes the wootc boot entry from Windows.
-- Deletes `C:\wootc\` (including your Linux disk file).
-- Removes the Linux bootloader from the ESP.
-- If Linux was on a dedicated partition, reclaims it and gives the space back to
-  Windows.
+- Removes the Linux bootloader files from the boot partition.
+- Deletes wootc's installer files.
+- **Keeps your Linux disk file (`root.disk`) by default**, so your Linux data
+  survives in case you come back. Tick *"Also delete my Linux data"* in the
+  uninstaller to remove it too — that is the only step that deletes anything
+  of yours.
+- If Linux was on a dedicated partition, can reclaim it and give the space
+  back to Windows.
+- Restores the Windows power settings (Fast Startup / hibernation) that
+  setup turned off.
 
-Your Windows install is left exactly as it was.
+With the Linux data box ticked, your Windows install is back exactly as it
+was.
 
 ---
 
@@ -221,11 +264,17 @@ Your Windows install is left exactly as it was.
   passwords or tokens. Sign in once and cloud sync brings the rest.
 - **My PC has no TPM / old firmware.** Choose GRUB2 + passphrase (or no)
   encryption in Advanced options.
+- **Windows wants to "scan and fix" the drive after I used Linux.** Linux
+  hands the drive back cleanly on every normal shutdown, but a power cut or
+  forced power-off while Linux is running can leave Windows wanting a check.
+  Let it run — it's Windows being careful, and your files are fine.
 
 ---
 
 *wootc is early, actively-developed software. The full
 Windows → deployer → native Linux → back-to-Windows loop is verified
-end-to-end on real hardware (UEFI + Secure Boot + TPM 2.0). See
-[docs/SPEC.md](https://github.com/tuna-os/wootc/blob/main/docs/SPEC.md) for the design and [docs/milestones.md](https://github.com/tuna-os/wootc/blob/main/docs/milestones.md)
-for what's proven.*
+end-to-end on the KVM E2E rig — a real Windows 11 VM with UEFI, Secure Boot
+and TPM 2.0. Real-hardware evidence is the next gate on the ladder
+([ROADMAP](https://github.com/tuna-os/wootc/blob/main/ROADMAP.md), v0.2.0-alpha), not something already banked. See
+[docs/SPEC.md](https://github.com/tuna-os/wootc/blob/main/docs/SPEC.md) for the design, [docs/status.md](https://github.com/tuna-os/wootc/blob/main/docs/status.md) for what
+each claim rests on, and [docs/milestones.md](https://github.com/tuna-os/wootc/blob/main/docs/milestones.md) for the ladder.*

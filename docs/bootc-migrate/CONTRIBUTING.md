@@ -57,6 +57,14 @@ $ just registry-cache   # pull Bluefin + Dakota; push to local registry
 | `just e2e-lts` | Bluefin LTS → Dakota (XFS + ext4 loopback) | 20 GB | LTS base |
 | `just e2e-luks` | Bluefin LTS → Dakota (XFS + LUKS + swtpm) | 40 GB | Encrypted root |
 | `just e2e-lvm` | Bluefin LTS → Dakota (LVM-on-LUKS, separate `/var`) | 40 GB | Most complex |
+| `just e2e-tui` | Bluefin stable → Dakota, driven through the TUI wizard | 40 GB | `E2E_MODE=tui-migrate` |
+
+These are the **local** recipes and they deliberately differ from the CI
+matrix — `just e2e-lts` runs XFS at 20 GB to exercise the ext4-loopback store
+on a small disk, while CI's LTS cell runs `ext4` at 40 GB. The seven-cell CI
+matrix lives in `.github/workflows/e2e-tests.yml`, which is authoritative;
+`README.md` reproduces it. Don't sync these two tables into one — they answer
+different questions.
 
 Run the default scenario:
 
@@ -192,13 +200,16 @@ $ just cleanup        # kill QEMU, prune podman, remove disk.raw and .log files
   and migration-path changes are exercised by at least the default E2E scenario.
 - If your change affects the kernel command line, boot artifacts, or any phase
   output, run the full E2E matrix locally or wait for CI to do it on your PR.
+- The change satisfies the **Definition of Done** ([REVIEW.md](https://github.com/tuna-os/bootc-migrate/blob/main/REVIEW.md)):
+  every claim in the PR matches the diff, no undischarged validation caveats
+  remain, and all required checks have been observed passing on the head commit.
 
 ## Code review
 
-Please read [REVIEW.md](https://github.com/tuna-os/bootc-migrate/blob/main/REVIEW.md) — it describes the testing, code-quality, and
-commit-message expectations applied here. AI-assisted contributions must follow
-[AGENTS.md](https://github.com/tuna-os/bootc-migrate/blob/main/AGENTS.md) (no automatic `Signed-off-by`; add an `Assisted-by:`
-trailer).
+Please read [REVIEW.md](https://github.com/tuna-os/bootc-migrate/blob/main/REVIEW.md) — it describes the Definition of Done (DoD),
+testing, code-quality, and commit-message expectations applied here. AI-assisted
+contributions must follow [AGENTS.md](https://github.com/tuna-os/bootc-migrate/blob/main/AGENTS.md) (no automatic `Signed-off-by`;
+add an `Assisted-by:` trailer, and discharge all validation steps).
 
 ---
 

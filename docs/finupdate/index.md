@@ -66,6 +66,9 @@ The remote is an OCI index backed by `ghcr.io/tuna-os/finupdate`; see
 [tuna-os/flatpak-index](https://github.com/tuna-os/flatpak-index). Builds are
 pushed by `.github/workflows/publish-flatpak.yml` on every push to `main`.
 
+If a published build turns out to be broken, see
+[runbooks/rollback-a-bad-finupdate-release.md](https://github.com/tuna-os/finupdate/blob/main/runbooks/rollback-a-bad-finupdate-release.md).
+
 ## Building
 
 ### Option A: Flatpak (recommended for testing)
@@ -115,16 +118,21 @@ cargo build --release  # Release
 ### Architecture
 
 ```
-src/
-├── main.rs              # Entry: logging + relm4 app launch
-├── config.rs            # Build-time constants (APP_ID, VERSION)
-├── config.rs.in         # Meson template → config.rs
-├── app.rs               # Top-level component (window, state machine, actions)
-├── update_worker.rs     # Async subprocess (tokio + mpsc streaming)
-└── ui/
-    ├── mod.rs           # Module declarations
-    ├── status_view.rs   # State-driven content switcher (gtk::Stack)
-    └── log_view.rs      # Scrollable monospace text output
+finupdate-core/src/       # GTK-free backend, reusable by GUI and CLI
+├── service.rs           # UpdaterService interface and bootc implementation
+├── registry_client/     # Image discovery, tag history, and family resolution
+├── orchestrator.rs      # Privileged update runner protocol
+├── update_worker.rs     # Update event stream and simulator
+└── settings.rs          # GSettings preferences with JSON fallback
+
+src/                      # GTK/libadwaita frontend and shared-library surface
+├── main.rs              # GUI entry point and per-run test flags
+├── app.rs               # Top-level relm4 application component
+├── cli.rs               # Headless CLI entry point
+├── ffi.rs               # C ABI used by the GNOME Settings panel
+├── changelog_widget.rs  # Embeddable changelog widget
+├── rebase_widget.rs     # Embeddable image-switching widget
+└── ui/                  # Focused application views and dialogs
 ```
 
 ### State Machine
@@ -137,21 +145,13 @@ Idle ──[StartUpdate]──→ Updating ──[Complete]──→ Complete �
                             └──────[Cancel]──→ Idle
 ```
 
-### Component Tree
-
-```
-App (AdwApplicationWindow)
-├── AdwToolbarView
-│   ├── AdwHeaderBar (menu button + cancel button)
-│   └── AdwToastOverlay (transient notifications)
-│       └── StatusView (gtk::Stack)
-│           ├── "idle" → AdwStatusPage
-│           ├── "updating" → AdwToastOverlay
-│           │   └── ProgressBar + LogView + BottomBar
-│           ├── "complete" → AdwStatusPage
-│           └── "error" → AdwStatusPage
-└── LogView (gtk::TextView in ScrolledWindow)
-```
+The backend boundary is enforced by the separate `finupdate-core` crate: it
+does not depend on GTK and can be built and tested on a headless host. The GUI
+crate re-exports that backend for compatibility, adds the relm4 application,
+and exposes reusable widgets through the C ABI for the GNOME Settings panel.
+See the module-level documentation in
+[`finupdate-core/src/lib.rs`](https://github.com/tuna-os/finupdate/blob/main/finupdate-core/src/lib.rs) for the complete
+backend map.
 
 ### Key Design Decisions
 
@@ -175,6 +175,17 @@ When running in Flatpak, the app uses `flatpak-spawn --host` to execute commands
 | `RUST_LOG=finupdate=debug` | Enable debug logging |
 | `RUST_LOG=trace` | Full trace output |
 | `GTK_DEBUG=interactive` | GTK Inspector |
+
+### Testing
+
+```bash
+# Run unit tests (Cargo or just)
+cargo test --all-targets
+just test
+
+# Run Broadway GUI test suite
+just gui-test
+```
 
 ## Contributing
 

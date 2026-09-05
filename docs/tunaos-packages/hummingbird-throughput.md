@@ -1,5 +1,5 @@
 ---
-sidebar_position: 18
+sidebar_position: 21
 title: "hummingbird throughput"
 ---
 
@@ -177,10 +177,36 @@ time roughly doubled (median 77.5 s at jobs=2-but-serialised, 138.5 s at
 jobs=4) because four builds share four cores with `%{_smp_mflags}`.  That is
 the ceiling more machines address and in-job concurrency does not.
 
+## Postscript, 2026-08-25 — Finding 2 came back
+
+The `-p` fix and the shared-cache mount both landed in PR #277, and the
+measurement above is what justified them.  They were wired up in
+`.github/workflows/build-hummingbird-desktops.yml`, which `6d4b77a` removed
+along with the rest of the hummingbird-specific pipeline (#517).
+`package-factory-cell.yml`, which replaced it, never set `MOCK_CACHE_DIR` —
+so from that commit until 2026-08-25 every nightly paid Finding 2 in full
+again, and nothing said so, because an unshared root cache is only slow.
+
+Restored on the branch for #512, with two changes to what #277 did:
+
+* the mount is `<config>/root_cache`, not all of `/var/cache/mock`.  The
+  sibling `yum_cache` accumulates every `BuildRequires` RPM a desktop closure
+  downloads.  That was an acceptable risk when a run was one tier; it is not
+  now that a run is 4.5 h and its partial output is what the continuation
+  shards resume from, so an `ENOSPC` in hour three costs the night rather
+  than a package;
+* it is `runner.temp`, not `actions/cache`.  The win is between the hundreds
+  of packages inside one job; the first package of each job rebuilding the
+  tarball once is cheaper than moving a gigabyte through the cache service.
+
+`tests/test_the_mock_root_cache_is_actually_shared.py` pins all three
+silent failure modes, including the one that made #277's first attempt
+worthless — a cache path mock never looks at.
+
 ## Summary Status (#267)
 
 * **One runner per dispatch**: Matrixed plan/build jobs implemented in PR #277.
-* **Mock chroot root cache**: Shared cache directory with `-p` flag implemented in PR #277.
+* **Mock chroot root cache**: Shared cache directory with `-p` flag implemented in PR #277; the wiring was lost with #517 and restored on #512 (see postscript).
 * **Runner size**: GitHub-hosted 4-vCPU standard runners in use across org.
 * **DAG wavefront**: Documented; evaluated for higher worker concurrency tiers.
 

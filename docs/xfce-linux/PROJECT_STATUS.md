@@ -3,9 +3,9 @@ sidebar_position: 5
 title: "PROJECT STATUS"
 ---
 
-**Status:** ✅ **70% COMPLETE** — Build verified, system boots successfully
+**Status:** ✅ **75% COMPLETE** — Build verified, greetd/regreet cargo2 refs repaired, system boots successfully
 
-**Last Updated:** 2026-05-06 16:35 IST
+**Last Updated:** 2026-08-25 16:35 UTC
 
 ---
 
@@ -31,6 +31,7 @@ title: "PROJECT STATUS"
 - All 1060 BuildStream elements load cleanly
 - Dependencies resolved without errors
 - freedesktop-sdk and gnome-build-meta integrated
+- `greetd` and `regreet` cargo2 source refs repaired with `kind: registry` and `sha:` checksums (#99)
 
 **Phase 2: Monorepo Integration** (100%)
 - 55 XFCE applications included
@@ -46,7 +47,7 @@ title: "PROJECT STATUS"
 **Phase 3c: Boot Testing** (70%)
 - VM boots successfully in QEMU
 - Serial console responsive
-- Display manager (GDM) operational
+- Display manager (GDM active default; greetd/regreet staged per ADR 0001) operational
 - Login prompt accessible
 
 ### ⏳ In-Progress Phases

@@ -32,22 +32,22 @@ After transfer, in the new repo:
 - Update the repo description/topics; keep the `upstream-sync` label
   (the weekly sync workflow creates issues with it).
 
-## 2. Rename the app ID: `dev.hanthor.BlueShell` → `org.tunaos.BlueShell`
+## 2. Rename the app ID: `dev.hanthor.BlueShell` → `org.tunaos.BlueShell` — ✅ DONE
 
 TunaOS convention is `org.tunaos.<App>`. One PR, mechanical:
 
 | File | Change |
 | --- | --- |
-| `flatpak/dev.hanthor.BlueShell.yml` | rename file, `app-id:` field |
-| `flatpak/dev.hanthor.BlueShell.desktop` | rename file; update `Icon=` and `StartupWMClass=` |
-| `flatpak/dev.hanthor.BlueShell.svg` | rename file (manifest install path follows app ID) |
+| `flatpak/org.tunaos.BlueShell.yml` | renamed file, `app-id:` field |
+| `flatpak/org.tunaos.BlueShell.desktop` | renamed file; updated `Icon=` and `StartupWMClass=` |
+| `flatpak/org.tunaos.BlueShell.svg` | renamed file (manifest install path follows app ID) |
 | `.github/workflows/ghostty-ptyxis.yml` | `manifest-path`, bundle name |
 | `.github/workflows/publish-flatpak.yml` | `APP_ID` env at the top |
 | `README.md`, `HACKING.md` | install commands, App ID mention |
 
 Notes:
 
-- **Icon: done.** `flatpak/dev.hanthor.BlueShell.svg` is original
+- **Icon: done.** `flatpak/org.tunaos.BlueShell.svg` is original
   BlueShell artwork (blue scallop + terminal prompt), installed by the
   manifest under the app ID; `rename-icon` was dropped so Ghostty's
   unlicensed icon is no longer shipped. Rename the SVG alongside the
@@ -118,15 +118,17 @@ Being installable is not the finish line — the app must be discoverable:
    (`02-prefs-appearance.png` shows the app best) and a link back to
    `tuna-os/blueshell`.
 
-2. **README install instructions**: ✅ DONE — the "available once…"
-   note is gone and the remote is the recommended path.
+2. **README install instructions**: the README's "TunaOS Flatpak
+   remote" section is already written (currently marked as pending
+   promotion) — remove the "available once…" note and promote it to
+   the recommended install path in the same PR that flips the app ID.
 
 ## 5. Post-promotion checklist
 
-- [x] `ptyxis-tests` and `ghostty-ptyxis` (bundle) workflows green in the org repo
-- [x] `publish-flatpak` run pushed an image to `ghcr.io/tuna-os/blueshell` and the index PR/commit landed in `tuna-os/docs`
+- [ ] `ptyxis-tests` and `ghostty-ptyxis` (bundle) workflows green in the org repo
+- [ ] `publish-flatpak` run pushed an image to `ghcr.io/tuna-os/blueshell` and the index PR/commit landed in `tuna-os/docs`
 - [ ] Fresh-machine install from the remote verified (`flatpak install tuna-os org.tunaos.BlueShell`)
-- [x] README install section switched to the remote as the primary path (the rolling `tip` release is the "bleeding edge" alternative)
+- [ ] README install section switched to the remote as the primary path (nightly.link bundle stays as the "bleeding edge" alternative)
 - [ ] tunaos.org apps page lists BlueShell with install command + screenshot (PR to `tuna-os/docs`)
 - [ ] `upstream-sync.yml` weekly run confirmed working under the org (issue/PR creation permissions)
 - [ ] Old repo redirect verified; announce the move in tunaOS channels
