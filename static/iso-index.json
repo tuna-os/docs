@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-04T20:10:59.383Z",
+  "generatedAt": "2026-09-05T02:30:16.539Z",
   "baseUrl": "https://download.tunaos.org",
   "count": 265,
   "categories": [
@@ -11,6 +11,46 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "grouper-kde-latest",
+          "path": "live-isos/grouper-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-kde-latest.iso",
+          "size": 5282201600,
+          "modified": "2026-09-04T23:07:24.538812572Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-gnome-latest",
+          "path": "live-isos/grouper-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-gnome-latest.iso",
+          "size": 5740691456,
+          "modified": "2026-09-04T23:06:25.857328431Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-xfce-latest",
+          "path": "live-isos/grouper-xfce-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-xfce-latest.iso",
+          "size": 4908974080,
+          "modified": "2026-09-04T23:02:40.224266505Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-gnome-nvidia-latest",
+          "path": "live-isos/marlin-gnome-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-gnome-nvidia-latest.iso",
+          "size": 8030846976,
+          "modified": "2026-09-04T19:48:30.560205671Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "bonito-rawhide-gnome-latest",
@@ -303,46 +343,6 @@
         },
         {
           "category": "live-isos",
-          "name": "grouper-gnome-latest",
-          "path": "live-isos/grouper-gnome-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-gnome-latest.iso",
-          "size": 5728043008,
-          "modified": "2026-09-03T23:38:31.646471661Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-xfce-latest",
-          "path": "live-isos/grouper-xfce-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-xfce-latest.iso",
-          "size": 4896391168,
-          "modified": "2026-09-03T23:36:01.454181591Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-kde-latest",
-          "path": "live-isos/grouper-kde-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-kde-latest.iso",
-          "size": 5282136064,
-          "modified": "2026-09-03T23:33:39.144297591Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-gnome-nvidia-latest",
-          "path": "live-isos/marlin-gnome-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-gnome-nvidia-latest.iso",
-          "size": 8030912512,
-          "modified": "2026-09-03T21:17:37.950877762Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
           "name": "marlin-gnome-latest",
           "path": "live-isos/marlin-gnome-latest.iso",
           "url": "https://download.tunaos.org/live-isos/marlin-gnome-latest.iso",
@@ -610,6 +610,46 @@
           "modified": "2026-08-31T01:27:08.076114617Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-kde-26.04-x86_64",
+          "path": "live-isos/grouper-kde-26.04-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-kde-26.04-x86_64.iso",
+          "size": 5282201600,
+          "modified": "2026-09-04T23:07:24.538812572Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-gnome-26.04-x86_64",
+          "path": "live-isos/grouper-gnome-26.04-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-gnome-26.04-x86_64.iso",
+          "size": 5740691456,
+          "modified": "2026-09-04T23:06:25.857328431Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-xfce-26.04-x86_64",
+          "path": "live-isos/grouper-xfce-26.04-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-xfce-26.04-x86_64.iso",
+          "size": 4908974080,
+          "modified": "2026-09-04T23:02:40.224266505Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-gnome-nvidia--x86_64",
+          "path": "live-isos/marlin-gnome-nvidia--x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-gnome-nvidia--x86_64.iso",
+          "size": 8030846976,
+          "modified": "2026-09-04T19:48:30.560205671Z",
+          "arch": "x86_64",
+          "latest": false
         },
         {
           "category": "live-isos",
@@ -898,46 +938,6 @@
           "url": "https://download.tunaos.org/live-isos/yellowfin-niri-nvidia-10-x86_64.iso",
           "size": 6498549760,
           "modified": "2026-09-04T07:23:22.271605913Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-gnome-26.04-x86_64",
-          "path": "live-isos/grouper-gnome-26.04-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-gnome-26.04-x86_64.iso",
-          "size": 5728043008,
-          "modified": "2026-09-03T23:38:31.646471661Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-xfce-26.04-x86_64",
-          "path": "live-isos/grouper-xfce-26.04-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-xfce-26.04-x86_64.iso",
-          "size": 4896391168,
-          "modified": "2026-09-03T23:36:01.454181591Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-kde-26.04-x86_64",
-          "path": "live-isos/grouper-kde-26.04-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-kde-26.04-x86_64.iso",
-          "size": 5282136064,
-          "modified": "2026-09-03T23:33:39.144297591Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-gnome-nvidia--x86_64",
-          "path": "live-isos/marlin-gnome-nvidia--x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-gnome-nvidia--x86_64.iso",
-          "size": 8030912512,
-          "modified": "2026-09-03T21:17:37.950877762Z",
           "arch": "x86_64",
           "latest": false
         },
