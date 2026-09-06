@@ -47,7 +47,7 @@ just build         # run this whenever a change can affect the generated site
 | Job | Enforces |
 | --- | --- |
 | `js-syntax` | Yes — `node --check` on every script, plus every `*.test.mjs`, plus `check-install-commands` |
-| `ste` | Yes — Simplified Technical English, against the number in `.ste-budget` |
+| `ste` | Yes — Simplified Technical English, against the number in `.ste-budget`. The linter itself lives in [tuna-os/.github](https://github.com/tuna-os/.github/tree/main/.github/actions/ste-lint); this repo keeps only the budget. Run it locally with `just ste`. |
 | `markdown-lint` | Against `.markdownlint-budget` |
 | `link-check` | Yes — broken internal `.md` links fail the job |
 

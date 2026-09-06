@@ -130,32 +130,17 @@ jobs:
 
 
   ste:
-    name: Simplified Technical English
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          node-version: '24'
-
-      - name: Rule tests
-        run: node scripts/__tests__/ste-lint.test.mjs
-
-      # A budget rather than zero. Conformance is being converted file by file,
-      # and a gate that fails on day one gets disabled on day two — so the
-      # number only ever goes down. Lower it whenever a batch of prose lands.
-      #
-      # Generated docs under docs/<slug>/ are skipped: sync-org-docs.mjs
-      # overwrites them from each source repo, so the fix belongs upstream.
-      # Which trees those are is decided by the sync's own index-page template,
-      # not guessed from the links a file happens to contain (#102). The run
-      # prints the list, so a tree that enters or leaves the budget is visible
-      # in the log rather than only in the total.
-      - name: STE budget
-        run: |
-          node scripts/ste-lint.mjs --summary
-          node scripts/ste-lint.mjs --max "$(cat .ste-budget)" >/dev/null
+    # The linter, its rules and its tests live in tuna-os/.github's ste-lint
+    # action, shared with every other repo in the org rather than copied into
+    # each one. This repo keeps only .ste-budget -- the number it is measured
+    # against.
+    #
+    # Moving it out is also what gets the synced trees covered. docs/<slug>/ is
+    # generated from ~40 repos' READMEs and is deliberately skipped here (a fix
+    # is reverted by the next sync, and the author is another repository), so
+    # that prose is only ever checked where it is written. Same rules, applied
+    # at the source.
+    uses: tuna-os/.github/.github/workflows/ste-lint.yml@main
 
   link-check:
     name: Internal Link Check
