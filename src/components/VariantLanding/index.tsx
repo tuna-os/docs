@@ -3,13 +3,17 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
-import AnimatedEmoji from '@site/src/components/AnimatedEmoji';
 import DesktopScreenshots from '@site/src/components/DesktopScreenshots';
 import {VARIANTS, type Variant} from '@site/src/data/variants';
+import {markFor, desktopLogo} from '@site/src/data/marks';
 import useIsoNames from '@site/src/hooks/useIsoNames';
 import {ISO_BASE_URL, isoNameForImage} from '@site/src/utils/isoNaming';
 
 import styles from './styles.module.css';
+
+// Bases with a hand-written reference page in docs/. Kept explicit: the docs
+// tree is largely synced from other repositories, so it cannot be derived.
+const VARIANT_DOC_IDS = new Set(['albacore', 'yellowfin', 'skipjack', 'bonito', 'grouper', 'marlin']);
 
 function Hero({variant, isoNames}: {variant: Variant; isoNames: Set<string> | null}): ReactNode {
   const heroFlavor = variant.flavors.find(
@@ -19,10 +23,15 @@ function Hero({variant, isoNames}: {variant: Variant; isoNames: Set<string> | nu
   return (
     <header className={styles.hero}>
       <div className={clsx('container', styles.heroInner)}>
-        {variant.recommended && <span className={styles.recommendedTag}>★ Recommended</span>}
-        <div className={styles.heroEmoji}>
-          <AnimatedEmoji emoji={variant.emoji} size={104} />
-        </div>
+        {variant.recommended && <span className={styles.recommendedTag}>Recommended</span>}
+        {/* The variant's own mark from tuna-os/branding — see src/data/marks.ts. */}
+        <img
+          className={styles.heroMark}
+          src={markFor(variant.id)}
+          alt=""
+          width={104}
+          height={104}
+        />
         <Heading as="h1" className={styles.heroTitle}>
           {variant.name}
         </Heading>
@@ -50,9 +59,17 @@ function Hero({variant, isoNames}: {variant: Variant; isoNames: Set<string> | nu
               Browse images
             </Link>
           )}
-          <Link className={clsx('button button--lg', styles.btnGhost)} to={`/docs/${variant.id}`}>
-            Full docs
-          </Link>
+          {/* Only the bases with a reference page under docs/ get a docs
+              button; the rest linked to a page that was never written. */}
+          {VARIANT_DOC_IDS.has(variant.id) ? (
+            <Link className={clsx('button button--lg', styles.btnGhost)} to={`/docs/${variant.id}`}>
+              Full docs
+            </Link>
+          ) : (
+            <Link className={clsx('button button--lg', styles.btnGhost)} to="/docs/choosing-a-variant">
+              Choosing a variant
+            </Link>
+          )}
           {variant.id === 'gurnard' && (
             <Link className={clsx('button button--lg', styles.btnGhost)} to="/docs/gurnard/pantheon-shortcuts">
               Pantheon shortcuts
@@ -75,7 +92,9 @@ function Desktops({variant}: {variant: Variant}): ReactNode {
         <div className={styles.deskGrid}>
           {variant.desktops.map((d) => (
             <div key={d.tag} className={styles.deskCard}>
-              <span className={styles.deskEmoji}><AnimatedEmoji emoji={d.emoji} size={36} /></span>
+              {desktopLogo(d.tag) && (
+                <img className={styles.deskLogo} src={desktopLogo(d.tag)!} alt="" width={32} height={32} loading="lazy" />
+              )}
               <Heading as="h3" className={styles.deskName}>{d.name}</Heading>
               <p className={styles.deskBlurb}>{d.blurb}</p>
               <code className={styles.deskTag}>:{d.tag}</code>
@@ -97,7 +116,6 @@ function Features({variant}: {variant: Variant}): ReactNode {
         <div className={styles.featGrid}>
           {variant.features.map((f) => (
             <div key={f.title} className={styles.featCard}>
-              <span className={styles.featEmoji}><AnimatedEmoji emoji={f.emoji} size={32} /></span>
               <Heading as="h3" className={styles.featTitle}>{f.title}</Heading>
               <p className={styles.featText}>{f.text}</p>
             </div>
@@ -162,7 +180,7 @@ function OtherVariants({variant}: {variant: Variant}): ReactNode {
         <div className={styles.otherGrid}>
           {others.map((v) => (
             <Link key={v.id} to={`/${v.id}`} className={styles.otherCard}>
-              <span className={styles.otherEmoji}><AnimatedEmoji emoji={v.emoji} size={34} /></span>
+              <img className={styles.otherMark} src={markFor(v.id)} alt="" width={34} height={34} loading="lazy" />
               <div>
                 <strong className={styles.otherName}>{v.name}</strong>
                 <span className={styles.otherBase}>{v.base}</span>
@@ -180,7 +198,7 @@ function Cta({variant}: {variant: Variant}): ReactNode {
   return (
     <section className={styles.ctaBand}>
       <div className="container text--center">
-        <div className={styles.ctaEmoji}><AnimatedEmoji emoji={variant.emoji} size={56} /></div>
+        <img className={styles.ctaMark} src={markFor(variant.id)} alt="" width={56} height={56} loading="lazy" />
         <Heading as="h2" className={styles.ctaTitle}>Dive into {variant.name}</Heading>
         <p className={styles.ctaText}>
           Grab a live ISO, or rebase an existing bootc system in one command.

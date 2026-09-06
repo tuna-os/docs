@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Yellowfin — field mark: long yellow sickle dorsal + anal fins, finlets -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="TunaOS Yellowfin">
+  <g fill="#F4C542">
+    <path d="M16 64 C 28 44, 52 35, 72 38 C 87 41, 98 50, 104 60 L 104 68 C 98 78, 87 87, 72 90 C 52 93, 28 84, 16 64 Z"/>
+    <path d="M102 64 L 121 45 C 116 57.5, 116 70.5, 121 83 Z"/>
+    <!-- sickle dorsal, exaggerated -->
+    <path d="M58 39 C 66 20, 84 16, 96 22 C 84 26, 72 33, 66 41 Z"/>
+    <!-- sickle anal fin -->
+    <path d="M62 88 C 70 104, 84 110, 94 106 C 84 101, 74 95, 69 87 Z"/>
+    <!-- finlets along the peduncle -->
+    <path d="M84 42 l6 -6 2 5 z M92 47 l6 -5 1.5 5 z M84 86 l6 6 2 -5 z M92 81 l6 5 1.5 -5 z"/>
+  </g>
+  <circle cx="31" cy="58" r="4.5" fill="#0B1B2B"/>
+  <circle cx="32.5" cy="56.5" r="1.4" fill="#F4C542"/>
+  <path d="M40 46 C 46 54, 46 74, 40 82" fill="none" stroke="#0B1B2B" stroke-width="3" stroke-linecap="round"/>
+</svg>

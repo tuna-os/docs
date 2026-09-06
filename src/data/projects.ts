@@ -1,3 +1,5 @@
+import type {IconName} from '@site/src/components/Icon';
+
 // Shared metadata for per-project landing pages (src/pages/<project>.tsx),
 // rendered by src/components/ProjectLanding. Copy is sourced from each
 // project's own docs under docs/<project>/.
@@ -12,6 +14,9 @@ export type PHighlight = {title: string; text: string};
 export type Project = {
   id: string; // route slug (/<id>) + docs slug (/docs/<id>)
   emoji: string;
+  // Glyph from src/components/Icon.tsx — the project's mark on cards, in the
+  // carousel and in its landing hero.
+  icon: IconName;
   name: string;
   status: ProjectStatus;
   tagline: string;
@@ -32,9 +37,6 @@ export type Project = {
   screenshots?: PShot[];
   // Dakota-style intro highlights (bold title + description cards).
   highlights?: PHighlight[];
-  // Built with BuildStream from source (vs. the bootc/Containerfile images).
-  // Flags the project as part of the BuildStream desktop family below.
-  buildstream?: boolean;
   // External project (not in tuna-os org).
   external?: boolean;
   externalLink?: string;
@@ -54,31 +56,47 @@ export const STATUS_LABELS: Record<ProjectStatus, string> = {
   internal: 'Internal',
 };
 
-// Sibling BuildStream "Aurora-style" desktop layers — opinionated images that
-// layer customizations on top of a vanilla desktop base (GNOME OS /
-// gnome-build-meta, KDE Linux / kde-build-meta, etc.). Tromsø is the KDE member
-// of this family; these are its GNOME and Niri counterparts.
-export const BUILDSTREAM_UPSTREAMS: {desktop: string; emoji: string; name: string; url: string; note: string}[] = [
-  {
-    desktop: 'KDE',
-    emoji: '🌌',
-    name: 'Tromsø',
-    url: '/tromso',
-    note: 'Aurora KDE Plasma 6 — built from source on freedesktop-sdk.',
-  },
-  {
-    desktop: 'XFCE',
-    emoji: '🖥️',
-    name: 'XFCE Linux',
-    url: '/xfce-linux',
-    note: 'Lightweight XFCE Wayland on the same freedesktop-sdk base.',
-  },
-
-];
-
 export const PROJECTS: Project[] = [
   {
+    id: 'wootc',
+    icon: 'window',
+    emoji: '🪟',
+    name: 'wootc',
+    status: 'alpha',
+    tagline: 'Try Linux from inside Windows — no repartitioning, nothing deleted, fully reversible.',
+    lede:
+      'wootc installs a real bootc Linux desktop into a single file next to your Windows files, and adds a boot menu entry for it. No repartitioning and no point of no return: Windows stays the default boot until you say otherwise, and uninstalling is deleting a folder and a boot entry.',
+    accent: '#5dabf0',
+    accent2: '#7bbdf5',
+    repo: 'https://github.com/tuna-os/wootc',
+    docs: '/docs/wootc',
+    cta: {label: 'Download for Windows', to: 'https://github.com/tuna-os/wootc/releases/latest'},
+    stats: [
+      {label: 'Runs on', value: 'Windows 10 · 11'},
+      {label: 'Installs to', value: 'root.disk'},
+      {label: 'Reversible', value: 'yes, at every step'},
+    ],
+    features: [
+      {emoji: '', title: 'A password is the whole form', text: 'Your username and computer name come from your PC, the disk is sized from your free space, and TPM-backed encryption is the default. Everything else is stated on screen and adjustable under Advanced.'},
+      {emoji: '', title: 'Your setup carries over', text: 'Files, Wi-Fi networks, wallpaper, accent colour, keyboard layout, taskbar pins, browser profiles, Steam libraries and WSL packages. Passwords, keys and tokens stay on Windows: you sign in again where it matters.'},
+      {emoji: '', title: 'Secure Boot, not disabled', text: 'The deployer runs under a Microsoft/Fedora-signed boot chain from a one-shot boot entry, so Secure Boot stays on and nothing else on the machine is touched.'},
+      {emoji: '', title: 'A real image catalog', text: 'GNOME, KDE Plasma, Niri and XFCE on Enterprise Linux, Fedora, Arch and Debian bases, or any supported custom OCI image.'},
+      {emoji: '', title: 'Try it before you reboot', text: 'Boot the result in a VM window from inside Windows first.'},
+      {emoji: '', title: 'An honest way back', text: "Uninstall lives in Windows' own Apps list. It removes the boot entry and installer, restores changed settings, and only reclaims a partition wootc itself created."},
+    ],
+    highlights: [
+      {title: 'Arm', text: 'The app creates root.disk, stages the signed boot chain on the ESP, and sets a one-shot boot entry.'},
+      {title: 'Deploy', text: 'One reboot: the signed chain launches a small installer that writes the chosen OS image into root.disk, with optional LUKS/TPM2 encryption.'},
+      {title: 'Live in both', text: 'A boot hook attaches root.disk on every boot and pivots into a native Linux system. Windows stays on the boot menu and its drive is there in the file manager.'},
+      {title: 'Commit, or do not', text: 'Graduate Linux onto a real partition when you are sure, dual-boot indefinitely, or uninstall and leave no trace.'},
+    ],
+    install: [
+      {label: 'Install with winget', code: 'winget install TunaOS.wootc'},
+    ],
+  },
+  {
     id: 'tacklebox',
+    icon: 'wrench',
     emoji: '🛠',
     name: 'Tacklebox',
     status: 'stable',
@@ -110,6 +128,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'bootc-migrate',
+    icon: 'anchor',
     emoji: '🧭',
     name: 'bootc-migrate',
     status: 'stable',
@@ -145,6 +164,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'tromso',
+    icon: 'layers',
     emoji: '🌌',
     name: 'Tromsø',
     status: 'alpha',
@@ -156,7 +176,6 @@ export const PROJECTS: Project[] = [
     heroEmojiLarge: true,
     repo: 'https://github.com/tuna-os/tromso',
     docs: '/docs/tromso',
-    buildstream: true,
     highlights: [
       {title: 'KDE Plasma 6', text: 'The latest stable release of Plasma, <a href="https://kde.org/plasma-desktop" target="_blank">built from source</a> — no distribution middleman, no lag.'},
       {title: 'Freedesktop SDK', text: 'Same battle-tested libraries as <a href="https://flathub.org" target="_blank">Flathub</a>. Continuously upgraded, always up to date.'},
@@ -185,6 +204,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'tavern',
+    icon: 'package',
     emoji: '🍻',
     name: 'Tavern',
     status: 'stable',
@@ -221,6 +241,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'mandelbrot',
+    icon: 'message-circle',
     emoji: '🌀',
     name: 'Mandelbrot',
     status: 'alpha',
@@ -258,6 +279,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'bluefin-cli',
+    icon: 'terminal',
     emoji: '⌨️',
     name: 'bluefin-cli',
     status: 'stable',
@@ -288,6 +310,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'corral',
+    icon: 'cpu',
     emoji: '🤠',
     name: 'Corral',
     status: 'alpha',
@@ -335,6 +358,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'tables',
+    icon: 'table',
     emoji: '📊',
     name: 'Tables',
     status: 'alpha',
@@ -367,6 +391,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'letters',
+    icon: 'file-text',
     emoji: '📝',
     name: 'Letters',
     status: 'alpha',
@@ -399,6 +424,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'decks',
+    icon: 'presentation',
     emoji: '📽️',
     name: 'Decks',
     status: 'alpha',
@@ -431,6 +457,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'mariner',
+    icon: 'folder',
     emoji: '🗺️',
     name: 'Mariner',
     status: 'alpha',
@@ -463,6 +490,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'blueshell',
+    icon: 'terminal',
     emoji: '🐚',
     name: 'BlueShell',
     status: 'alpha',
@@ -495,6 +523,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'ghostty',
+    icon: 'zap',
     emoji: '👻',
     name: 'Ghostty',
     status: 'stable',
@@ -526,6 +555,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'xfce-linux',
+    icon: 'monitor',
     emoji: '🖥️',
     name: 'XFCE Linux',
     status: 'alpha',
@@ -537,7 +567,6 @@ export const PROJECTS: Project[] = [
     repo: 'https://github.com/tuna-os/xfce-linux',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/5/5b/Xfce_logo.svg',
     docs: '/docs/xfce-linux',
-    buildstream: true,
     stats: [
       {label: 'Desktop', value: 'XFCE (Wayland)'},
       {label: 'Built with', value: 'BuildStream'},
@@ -559,6 +588,7 @@ export const PROJECTS: Project[] = [
 
   {
     id: 'dakota',
+    icon: 'shield',
     emoji: '🎣',
     name: 'Dakota',
     status: 'beta',
@@ -573,7 +603,6 @@ export const PROJECTS: Project[] = [
     externalLink: 'https://github.com/projectbluefin/dakota',
     logo: 'https://docs.projectbluefin.io/assets/images/01b99cdf-2b10-4be4-88bf-23da3a945be8-ea4ce28757013465dc1434aaa7a18742.png',
     logoLight: true,
-    buildstream: true,
     stats: [
       {label: 'Desktop', value: 'GNOME'},
       {label: 'Built with', value: 'BuildStream'},
@@ -594,6 +623,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'tunaos',
+    icon: 'fish',
     emoji: '🐟',
     name: 'TunaOS',
     status: 'stable',
@@ -604,7 +634,7 @@ export const PROJECTS: Project[] = [
     accent2: '#0ea5e9',
     repo: 'https://github.com/tuna-os/tunaOS',
     docs: '/docs/tunaos',
-    cta: {label: 'Download ISOs 📦', to: '/download'},
+    cta: {label: 'Download ISOs', to: '/download'},
     stats: [
       {label: 'Variants', value: '4 bases'},
       {label: 'Desktops', value: 'GNOME · KDE · COSMIC · Niri'},

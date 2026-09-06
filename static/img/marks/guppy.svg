@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Guppy — field marks: tiny body, huge flowing fan tail, big eye -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="TunaOS Guppy">
+  <g fill="#E05299">
+    <!-- huge fan tail -->
+    <path d="M76 66 C 86 38, 106 28, 124 32 C 120 46, 122 62, 120 78 C 118 92, 108 102, 96 104 C 88 92, 80 78, 76 70 Z" opacity="0.55"/>
+    <path d="M76 66 C 84 46, 98 38, 112 40 C 108 52, 108 70, 104 84 C 96 80, 84 74, 76 69 Z"/>
+    <!-- small body -->
+    <path d="M28 66 C 36 54, 50 48, 62 50 C 70 52, 76 58, 78 64 L 78 68 C 74 76, 66 80, 58 81 C 46 82, 34 76, 28 66 Z"/>
+    <!-- small dorsal -->
+    <path d="M48 50 C 52 40, 62 38, 68 42 L 58 52 Z"/>
+  </g>
+  <!-- big eye -->
+  <circle cx="38" cy="63" r="6" fill="#0B1B2B"/>
+  <circle cx="40" cy="61" r="2" fill="#E05299"/>
+  <path d="M29 70 C 32 72, 35 73, 38 73" fill="none" stroke="#0B1B2B" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

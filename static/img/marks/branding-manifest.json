@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "source": "https://github.com/tuna-os/branding",
+  "assets": {
+    "albacore.svg": "sha256:edb02990545adc4f444276e064bbc9577c08fe36ea1d451dbd348e040e04f45f",
+    "bonito.svg": "sha256:bf4d07b3fa3ca005c235af72c67d3cc67748c3a5ccd5969a1d5fa53a570819bf",
+    "flounder.svg": "sha256:f614a0c0dbbd28d04d3c2896f37a20c690cdc89c96e3e9d3ff2f01073841b039",
+    "grouper.svg": "sha256:72e4467ec95b5f619b5364b501d7a2da31f616e681c38abe2db7f3dc85f7f3d1",
+    "guppy.svg": "sha256:fc04e78f6a4841d65f2c7b2b14961fb19a1c798215c6e63876c52848cbc5b835",
+    "marlin.svg": "sha256:2868b9ae6b329355b7941820e411cf0bf7e1df5f78738e3943b914c5d32ec8ff",
+    "skipjack.svg": "sha256:d9a12af195a6d8ee5384c8ca67ebfa615ab78d5140a149aa119877350ef57c2f",
+    "tunaos.svg": "sha256:05c38b88771febfbecb72ceef70feff160dc1b945b5d59ca284d42a63e8bf89a",
+    "yellowfin.svg": "sha256:b284f0b6b1f1de715c43c24f1a52077c2b54832eabdb60d657e0196c23f38965"
+  }
+}

@@ -6,6 +6,7 @@ import {VARIANTS} from '@site/src/data/variants';
 import useIsoNames from '@site/src/hooks/useIsoNames';
 import {ISO_BASE_URL} from '@site/src/utils/isoNaming';
 import styles from './styles.module.css';
+import {markFor} from '@site/src/data/marks';
 
 type Variant = string;
 type Desktop = 'gnome' | 'gnome50' | 'kde' | 'cosmic' | 'niri' | 'pantheon';
@@ -31,6 +32,8 @@ const ROLLING_SIBLING_OF: Record<string, string> = {
 
 type Option<T extends string> = {
   value: T;
+  // Variant options carry their branding mark; the other steps have none.
+  mark?: string;
   label: string;
   description: string;
   badge?: string;
@@ -67,6 +70,7 @@ const PRODUCT_OPTIONS: Option<Product>[] = [
 // secondary choice under their parent's card instead.
 const VARIANT_OPTIONS: Option<Variant>[] = VARIANTS.filter((v) => !(v.id in ROLLING_SIBLING_OF)).map((v) => ({
   value: v.id,
+  mark: markFor(v.id),
   label: v.name,
   description: v.blurb,
   badge: v.recommended ? 'Recommended' : undefined,
@@ -227,6 +231,15 @@ function getIsoUrl(sel: Selection, isoNames: Set<string> | null): string | null 
   return `${ISO_BASE_URL}/${name}.iso`;
 }
 
+// iso.tunaos.org accepts the image as a URL parameter, so a picked image can
+// be handed straight to the in-browser builder (see /iso-builder).
+const BUILDER_URL = 'https://iso.tunaos.org';
+
+function getBuilderUrl(imageName: string): string {
+  const short = imageName.replace(/^ghcr\.io\//, '');
+  return `${BUILDER_URL}/?image=${encodeURIComponent(short)}`;
+}
+
 function getDocsUrl(sel: Selection): string {
   if (sel.product === 'dakota') return '/dakota';
   if (sel.product === 'tromso') return '/tromso';
@@ -248,22 +261,21 @@ function getVisibleSteps(sel: Selection): StepId[] {
 function ProgressBar({steps, current}: {steps: StepId[]; current: StepId}) {
   const currentIdx = steps.indexOf(current);
   return (
-    <div className={styles.progress}>
+    <ol className={styles.progress} aria-label="Steps">
       {steps.map((step, i) => (
-        <div
+        <li
           key={step}
+          aria-current={i === currentIdx ? 'step' : undefined}
           className={clsx(styles.progressStep, {
             [styles.progressDone]: i < currentIdx,
             [styles.progressActive]: i === currentIdx,
           })}
         >
-          <div className={styles.progressDot}>
-            {i < currentIdx ? '✓' : i + 1}
-          </div>
+          <span className={styles.progressDot}>{String(i + 1).padStart(2, '0')}</span>
           <span className={styles.progressLabel}>{STEP_LABELS[step]}</span>
-        </div>
+        </li>
       ))}
-    </div>
+    </ol>
   );
 }
 
@@ -280,19 +292,24 @@ function OptionCard<T extends string>({
     <button
       className={clsx(styles.optionCard, {[styles.optionSelected]: selected})}
       onClick={onClick}
+      aria-pressed={selected}
       type="button"
     >
-      {option.badge && (
-        <span className={clsx(styles.optionBadge, {
-          [styles.optionBadgeWarning]: option.badge === 'Experimental' || option.badge === 'Incomplete',
-          [styles.optionBadgePrimary]: option.badge === 'Recommended' || option.badge === 'Default' || option.badge === 'Most Common',
-        })}>
-          {option.badge}
-        </span>
-      )}
-      <div className={styles.optionLabel}>{option.label}</div>
-      <div className={styles.optionDesc}>{option.description}</div>
-      {selected && <div className={styles.optionCheck}>✓</div>}
+      <span className={styles.optionHead}>
+        {option.mark && (
+          <img className={styles.optionMark} src={option.mark} alt="" width={24} height={24} loading="lazy" />
+        )}
+        <span className={styles.optionLabel}>{option.label}</span>
+        {option.badge && (
+          <span className={clsx(styles.optionBadge, {
+            [styles.optionBadgeWarning]: option.badge === 'Experimental' || option.badge === 'Incomplete',
+            [styles.optionBadgePrimary]: option.badge === 'Recommended' || option.badge === 'Default' || option.badge === 'Most Common',
+          })}>
+            {option.badge}
+          </span>
+        )}
+      </span>
+      <span className={styles.optionDesc}>{option.description}</span>
     </button>
   );
 }
@@ -307,7 +324,7 @@ function CopyButton({text}: {text: string}) {
   };
   return (
     <button className={styles.copyBtn} onClick={handleCopy} type="button">
-      {copied ? '✓ Copied!' : '📋 Copy'}
+      {copied ? 'Copied' : 'Copy'}
     </button>
   );
 }
@@ -344,7 +361,7 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
           )}
         </div>
         <button className={styles.resetBtn} onClick={onReset} type="button">
-          ← Start Over
+          Start over
         </button>
       </div>
     );
@@ -378,7 +395,7 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
         </div>
 
         <button className={styles.resetBtn} onClick={onReset} type="button">
-          ← Start Over
+          Start over
         </button>
       </div>
     );
@@ -396,7 +413,7 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
       </div>
 
       <div className={styles.resultImageBox}>
-        <span className={styles.resultImageLabel}>Container Image</span>
+        <span className={styles.resultImageLabel}>Container image</span>
         <div className={styles.resultImageRow}>
           <code className={styles.resultImageName}>{imageName}</code>
           <CopyButton text={imageName} />
@@ -412,14 +429,17 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
             Download ISO
           </a>
         ) : isoNames === null ? (
-          <div className={styles.resultNoIso}>⏳ Checking what's published…</div>
+          <div className={styles.resultNoIso}>Checking what is published…</div>
         ) : (
           <div className={styles.resultNoIso}>
-            {`No live ISO for this combination — install the standard ISO and run \`bootc switch ${imageName}\` afterward.`}
+            {`No prebuilt ISO for this combination. Build one below, or install a standard ISO and run \`bootc switch ${imageName}\` afterward.`}
           </div>
         )}
+        <a href={getBuilderUrl(imageName)} className="button button--outline button--md">
+          Build this ISO in the browser
+        </a>
         <Link to={docsUrl} className="button button--outline button--md">
-          View Docs
+          Docs
         </Link>
       </div>
 
@@ -476,9 +496,9 @@ export default function ImagePicker(): ReactNode {
 
   const STEP_QUESTIONS: Record<StepId, string> = {
     product: 'Which product line?',
-    variant: 'Which base suits you?',
-    desktop: 'Which desktop environment?',
-    edition: 'Standard desktop or something specialized?',
+    variant: 'Which base distribution?',
+    desktop: 'Which desktop?',
+    edition: 'Standard, or a specialized edition?',
     result: '',
   };
 
@@ -488,7 +508,11 @@ export default function ImagePicker(): ReactNode {
         <ProgressBar steps={visibleSteps} current={step} />
       )}
 
-      <div className={clsx(styles.stepWrap, styles[`anim-${animDir}`])} key={step}>
+      <div
+        className={clsx(styles.stepWrap, styles[`anim-${animDir}`])}
+        key={step}
+        aria-live="polite"
+      >
         {step === 'result' ? (
           <ResultCard sel={sel} onReset={reset} />
         ) : (
@@ -556,7 +580,7 @@ export default function ImagePicker(): ReactNode {
             )}
             {step !== 'product' && (
               <button className={styles.backBtn} onClick={goBack} type="button">
-                ← Back
+                Back
               </button>
             )}
           </>

@@ -1,10 +1,9 @@
 import type {ReactNode} from 'react';
-import {useState} from 'react';
+import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
-import clsx from 'clsx';
+import Link from '@docusaurus/Link';
 import IsoDownloads from '@site/src/components/IsoDownloads';
-import ImagePicker from '@site/src/components/ImagePicker';
 import page from '@site/src/css/page.module.css';
 import styles from './download.module.css';
 
@@ -18,35 +17,31 @@ function DownloadHeader(): ReactNode {
         </Heading>
         <p className={page.heroLede}>
           Live ISOs for every TunaOS image and product line, served from{' '}
-          <a href="https://download.tunaos.org">download.tunaos.org</a>. The picker below
-          narrows the list by base and desktop; the{' '}
-          <a href="/docs/desktop-comparison">desktop comparison</a> covers the
-          differences in more detail. To pick your own flatpak set, build an ISO with
-          the <a href="/iso-builder">in-browser builder</a> instead.
+          <a href="https://download.tunaos.org">download.tunaos.org</a>. The{' '}
+          <a href="/docs/desktop-comparison">desktop comparison</a> covers what separates
+          them, and <a href="/variants">the variants page</a> covers the bases.
         </p>
       </div>
     </header>
   );
 }
 
-function HelpMeChoose(): ReactNode {
-  const [open, setOpen] = useState(false);
+// The picker used to live here behind a disclosure and again on the builder
+// page. It is one flow — pick an image, then take the ISO or build one — so it
+// lives on /iso-builder and this page links to it.
+function ChooseBanner(): ReactNode {
   return (
     <section className={styles.chooser}>
-      <button
-        className={styles.chooserToggle}
-        onClick={() => setOpen((v) => !v)}
-        type="button"
-        aria-expanded={open}
-      >
-        <span>Help me choose an image</span>
-        <span className={styles.chooserChevron}>{open ? '−' : '+'}</span>
-      </button>
-      {open && (
-        <div className={styles.chooserBody}>
-          <ImagePicker />
-        </div>
-      )}
+      <div>
+        <strong className={styles.chooserTitle}>Not sure which image?</strong>
+        <p className={styles.chooserText}>
+          Four questions narrow it to one image, with its ISO, its rebase command and a
+          custom-ISO build in the browser.
+        </p>
+      </div>
+      <Link className={clsx('button', page.btnPrimary, page.btnSmall)} to="/iso-builder">
+        Find my image
+      </Link>
     </section>
   );
 }
@@ -58,7 +53,7 @@ export default function Download(): ReactNode {
       description="Download bootable live ISOs for all TunaOS images — Albacore, Yellowfin, Skipjack, Bonito, Dakota and more.">
       <DownloadHeader />
       <main className={clsx('container', styles.main)}>
-        <HelpMeChoose />
+        <ChooseBanner />
         <IsoDownloads />
         <div className={styles.help}>
           <Heading as="h2">Writing the ISO to a USB drive</Heading>

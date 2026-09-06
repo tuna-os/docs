@@ -14,16 +14,17 @@ import {VARIANTS as ALL_VARIANTS} from '@site/src/data/variants';
 
 import styles from './index.module.css';
 
-const FEATURED_PROJECTS = [
-  {name: 'TunaOS', desc: 'Desktop images', to: '/tunaos'},
-  {name: 'Tacklebox', desc: 'ISO & USB builder', to: '/tacklebox'},
-  {name: 'Tromsø', desc: 'KDE Linux', to: '/tromso'},
-  {name: 'XFCE Linux', desc: 'XFCE desktop', to: '/xfce-linux'},
-  {name: 'Tavern', desc: 'Homebrew GUI', to: '/tavern'},
-  {name: 'bluefin-cli', desc: 'Shell CLI', to: '/bluefin-cli'},
-  {name: 'COPR Builds', desc: 'RPM builder', to: '/copr'},
-  {name: 'Corral', desc: 'VM & container manager', to: '/corral'},
-  {name: 'Dakota', desc: 'Bluefin GNOME OS', to: '/dakota'},
+const FEATURED_PROJECTS: Array<{name: string; desc: string; to: string; icon: IconName}> = [
+  {name: 'wootc', desc: 'Linux from inside Windows', to: '/wootc', icon: 'window'},
+  {name: 'TunaOS', desc: 'Desktop images', to: '/tunaos', icon: 'fish'},
+  {name: 'Tacklebox', desc: 'ISO and USB builder', to: '/tacklebox', icon: 'wrench'},
+  {name: 'Tromsø', desc: 'KDE Linux', to: '/tromso', icon: 'layers'},
+  {name: 'XFCE Linux', desc: 'XFCE desktop', to: '/xfce-linux', icon: 'monitor'},
+  {name: 'Tavern', desc: 'Homebrew front end', to: '/tavern', icon: 'package'},
+  {name: 'bluefin-cli', desc: 'Shell setup', to: '/bluefin-cli', icon: 'terminal'},
+  {name: 'COPR Builds', desc: 'RPM builder', to: '/copr', icon: 'box'},
+  {name: 'Corral', desc: 'VM and container manager', to: '/corral', icon: 'cpu'},
+  {name: 'Dakota', desc: 'Bluefin GNOME OS', to: '/dakota', icon: 'shield'},
 ];
 
 type SectionHeadProps = {
@@ -76,18 +77,18 @@ function Hero(): ReactNode {
               image: pull it, boot it, or rebase onto it.
               <br /><br />
               The org also maintains the tools that build and boot-test those images, a
-              Flatpak remote with GTK4 applications, and RPM and DEB repositories for
+              set of GTK4 applications published as Flatpaks, and RPM and DEB repositories for
               packages Enterprise Linux does not ship.
             </p>
             <div className={styles.btnGroup}>
               <Link className={clsx('button', styles.btnPrimary)} to="/download">
-                Download ISOs
+                Download an ISO
               </Link>
-              <Link className={clsx('button', styles.btnGhost)} to="/iso-builder">
-                Build your own ISO
+              <Link className={clsx('button', styles.btnGhost)} to="/wootc">
+                Try it from Windows
               </Link>
-              <Link className={clsx('button', styles.btnGhost)} to="/projects">
-                Projects
+              <Link className={clsx('button', styles.btnGhost)} to="/variants">
+                Compare images
               </Link>
             </div>
           </div>
@@ -108,6 +109,81 @@ function CarouselSection(): ReactNode {
           <div className={styles.carouselPanel}>
             <VariantCarousel variants={ALL_VARIANTS} />
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function InstallPathsBand(): ReactNode {
+  const paths: Array<{
+    icon: IconName;
+    name: string;
+    desc: string;
+    cta: string;
+    to: string;
+    code?: string;
+  }> = [
+    {
+      icon: 'shield',
+      name: 'From Windows, reversibly',
+      desc: 'wootc installs a real Linux desktop into a single file beside your Windows files and adds a boot entry for it. No repartitioning, and uninstalling is deleting a folder.',
+      cta: 'How wootc works',
+      to: '/wootc',
+    },
+    {
+      icon: 'disc',
+      name: 'From a USB stick',
+      desc: 'Write a live ISO, boot it, and install. Every main image publishes one, for x86_64 and arm64.',
+      cta: 'Download an ISO',
+      to: '/download',
+    },
+    {
+      icon: 'layers',
+      name: 'Rebase what you run',
+      desc: 'Already on bootc — Bluefin, Aurora, Fedora Atomic? Switch to a TunaOS image in one command and roll back if you do not like it.',
+      cta: 'Installation docs',
+      to: '/docs/installation',
+      code: 'sudo bootc switch ghcr.io/tuna-os/albacore:gnome',
+    },
+    {
+      icon: 'wrench',
+      name: 'Build your own',
+      desc: 'Pick an image and your flatpak set, and the browser builds the ISO locally. The same engine CI uses for release media.',
+      cta: 'Open the builder',
+      to: '/iso-builder',
+    },
+  ];
+
+  return (
+    <section className={styles.section}>
+      <div className="container">
+        <SectionHead
+          title="Ways to install"
+          sub="Four routes onto a TunaOS image. All of them end on the same bootc system, and all of them are reversible."
+        />
+        <div className={styles.pipelineGrid}>
+          {paths.map((p, i) => (
+            <Link key={p.name} to={p.to} className={styles.pipelineCard}>
+              <div className={styles.cardTop}>
+                <span className={styles.cardIcon}>
+                  <Icon name={p.icon} size={22} />
+                </span>
+                <span className={styles.cardIndex}>{String(i + 1).padStart(2, '0')}</span>
+              </div>
+              <Heading as="h3" className={styles.cardName}>
+                {p.name}
+              </Heading>
+              <p className={styles.cardBlurb}>{p.desc}</p>
+              {p.code && (
+                <code className={styles.pathCode}>{p.code}</code>
+              )}
+              <span className={styles.cardLink}>
+                {p.cta}
+                <Icon name="arrow-right" size={14} />
+              </span>
+            </Link>
+          ))}
         </div>
       </div>
     </section>
@@ -213,8 +289,8 @@ function AppsBand(): ReactNode {
     },
     {
       icon: 'package',
-      name: 'The TunaOS remote',
-      desc: 'One remote-add makes every app above installable. The index is rebuilt on a schedule and served from this site.',
+      name: 'Flatpaks',
+      desc: 'One remote-add makes every app above installable on any distribution that runs Flatpak. The index is rebuilt on a schedule and served from this site.',
       to: '/flatpak',
     },
   ];
@@ -224,7 +300,7 @@ function AppsBand(): ReactNode {
       <div className="container">
         <SectionHead
           title="Applications"
-          sub="GTK4 apps built in the org and published on the TunaOS Flatpak remote. They install on any distribution that runs Flatpak, not only on TunaOS images."
+          sub="GTK4 apps built in the org and published as Flatpaks. They install on any distribution that runs Flatpak, not only on TunaOS images."
         />
         <div className={styles.pipelineGrid}>
           {apps.map((a, i) => (
@@ -346,12 +422,13 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title={`${siteConfig.title} — Cloud-Native Enterprise Linux`}
-      description="Enterprise Linux desktop images built with bootc, the tools that build and test them, and the GTK4 apps published on the TunaOS Flatpak remote.">
+      description="Enterprise Linux desktop images built with bootc, the tools that build and test them, and the GTK4 apps published as Flatpaks.">
       <Hero />
       <FinalCta />
       <Backdrop />
       <CarouselSection />
       <main>
+        <InstallPathsBand />
         <HomepageFeaturesBand />
         <PipelineBand />
         <AppsBand />

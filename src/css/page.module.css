@@ -180,7 +180,7 @@
   font-size: 0.82em;
   font-weight: 500;
   margin-right: 0.65rem;
-  color: rgba(233, 235, 239, 0.32);
+  color: rgba(233, 235, 239, 0.55);
   letter-spacing: 0.02em;
 }
 
@@ -297,6 +297,7 @@
   border-radius: 6px;
   background: var(--tu-bg);
   color: var(--tu-accent-soft);
+  white-space: nowrap;
 }
 
 .chipPlain {
@@ -401,4 +402,14 @@
   .section {
     padding: 3.5rem 1rem;
   }
+}
+
+/* Quiet aside under a section's content — caveats, preview warnings. */
+.note {
+  margin: 1.25rem 0 0;
+  font-family: var(--tu-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  color: var(--tu-dim);
+  opacity: 0.75;
 }

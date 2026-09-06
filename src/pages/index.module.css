@@ -272,7 +272,7 @@
   font-size: 0.82em;
   font-weight: 500;
   margin-right: 0.65rem;
-  color: rgba(233, 235, 239, 0.32);
+  color: rgba(233, 235, 239, 0.55);
   letter-spacing: 0.02em;
 }
 
@@ -297,7 +297,7 @@
   font-size: 0.74rem;
   font-weight: 500;
   letter-spacing: 0.14em;
-  color: rgba(233, 235, 239, 0.26);
+  color: rgba(233, 235, 239, 0.55);
 }
 
 .cardIcon {
@@ -576,4 +576,23 @@
   .projectGrid {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
+}
+/* Inline command inside an install-path card. */
+.pathCode {
+  display: block;
+  margin: 0.9rem 0 0;
+  padding: 0.6rem 0.7rem;
+  border-radius: 6px;
+  border: none;
+  background: var(--tu-bg);
+  color: var(--tu-accent-soft);
+  font-family: var(--tu-mono);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.pipelineCard .cardLink {
+  margin-top: 1rem;
 }

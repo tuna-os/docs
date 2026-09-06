@@ -1,5 +1,6 @@
 import type {ReactNode} from 'react';
 import Link from '@docusaurus/Link';
+import Icon from '@site/src/components/Icon';
 import {PROJECTS, STATUS_LABELS, type Project, type ProjectStatus} from '@site/src/data/projects';
 import styles from './styles.module.css';
 
@@ -22,6 +23,9 @@ function ProjectCard({project}: {project: Project}) {
   return (
     <div className={`${styles.card} ${borderClass}`}>
       <div className={styles.cardTop}>
+        <span className={styles.icon}>
+          <Icon name={project.icon} size={20} />
+        </span>
         <h3 className={styles.name}>
           <Link to={`/${project.id}`}>{project.name}</Link>
         </h3>

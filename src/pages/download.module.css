@@ -8,38 +8,33 @@
 }
 
 .chooser {
-  border: 1px solid var(--tu-line);
-  border-radius: 6px;
-  margin-bottom: 2.5rem;
-  overflow: hidden;
-  background: var(--tu-panel);
-}
-
-.chooserToggle {
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.25rem;
-  background: none;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+  padding: 1.25rem 1.5rem;
   border: none;
-  cursor: pointer;
-  font-size: 1.02rem;
+  border-left: 2px solid var(--tu-accent);
+  border-radius: 6px;
+  background: var(--tu-panel);
+}
+
+.chooserTitle {
+  display: block;
+  font-size: 1rem;
   font-weight: 700;
+  letter-spacing: -0.01em;
   color: var(--tu-ink);
 }
 
-.chooserToggle:hover {
-  background: var(--tu-panel-2);
-}
-
-.chooserChevron {
-  color: var(--tu-accent);
-}
-
-.chooserBody {
-  padding: 0 1.25rem 1.5rem;
-  border-top: 1px solid var(--tu-line);
+.chooserText {
+  max-width: 60ch;
+  margin: 0.3rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--tu-dim);
 }
 
 .help {

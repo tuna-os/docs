@@ -77,6 +77,7 @@ export default function ProjectCarousel({projects, interval = 8000}: ProjectCaro
                 background: i === index ? 'var(--tu-accent)' : 'var(--tu-line-strong)',
               }}
               aria-label={`Go to project ${i + 1}`}
+              aria-current={i === index ? 'true' : undefined}
             />
           ))}
         </div>

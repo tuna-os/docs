@@ -4,8 +4,8 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
-import AnimatedEmoji from '@site/src/components/AnimatedEmoji';
-import {PROJECTS, STATUS_LABELS, BUILDSTREAM_UPSTREAMS, type Project} from '@site/src/data/projects';
+import Icon from '@site/src/components/Icon';
+import {PROJECTS, STATUS_LABELS, type Project} from '@site/src/data/projects';
 
 import styles from './styles.module.css';
 
@@ -16,8 +16,8 @@ function Hero({project}: {project: Project}): ReactNode {
         {project.logo ? (
           <img src={project.logo} alt={project.name} className={clsx(styles.heroLogo, project.logoLight && styles.heroLogoLight)} />
         ) : !project.heroEmojiLarge ? (
-          <div className={styles.heroEmoji}>
-            <AnimatedEmoji emoji={project.emoji} size={92} />
+          <div className={styles.heroIcon}>
+            <Icon name={project.icon} size={44} strokeWidth={1.5} />
           </div>
         ) : null}
         <div className={styles.heroTitleRow}>
@@ -131,7 +131,6 @@ function Features({project}: {project: Project}): ReactNode {
         <div className={styles.featGrid}>
           {project.features.map((f) => (
             <div key={f.title} className={styles.featCard}>
-              <span className={styles.featEmoji}><AnimatedEmoji emoji={f.emoji} size={30} /></span>
               <Heading as="h3" className={styles.featTitle}>{f.title}</Heading>
               <p className={styles.featText} dangerouslySetInnerHTML={{__html: f.text}} />
             </div>
@@ -163,40 +162,6 @@ function Install({project}: {project: Project}): ReactNode {
   );
 }
 
-function BuildStreamFamily({project}: {project: Project}): ReactNode {
-  if (!project.buildstream) return null;
-  const siblings = BUILDSTREAM_UPSTREAMS.filter((u) => u.name !== project.name);
-  return (
-    <section className={styles.section}>
-      <div className="container">
-        <div className={styles.sectionHead}>
-          <Heading as="h2">Part of the BuildStream desktop family</Heading>
-          <p>
-            {project.name} is built with{' '}
-            <a href="https://buildstream.build" target="_blank">BuildStream</a> on{' '}
-            <a href="https://gitlab.com/freedesktop-sdk/freedesktop-sdk" target="_blank">freedesktop-sdk</a> —
-            the same foundation as GNOME OS. These sibling projects share the same
-            build system and base:
-          </p>
-        </div>
-        <div className={styles.otherGrid}>
-          {siblings.map((u) => (
-            <Link key={u.url} to={u.url} className={styles.otherCard}>
-              <span className={styles.otherEmoji}>
-                <AnimatedEmoji emoji={u.emoji} size={30} />
-              </span>
-              <span>
-                <strong className={styles.otherName}>{u.name}</strong>
-                <span className={styles.otherTagline}>{u.note}</span>
-              </span>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function MoreProjects({project}: {project: Project}): ReactNode {
   const others = PROJECTS.filter((p) => p.id !== project.id && !p.external);
   return (
@@ -208,7 +173,9 @@ function MoreProjects({project}: {project: Project}): ReactNode {
         <div className={styles.otherGrid}>
           {others.map((p) => (
             <Link key={p.id} to={`/${p.id}`} className={styles.otherCard}>
-              <span className={styles.otherEmoji}><AnimatedEmoji emoji={p.emoji} size={30} /></span>
+              <span className={styles.otherIcon}>
+                <Icon name={p.icon} size={20} />
+              </span>
               <span>
                 <strong className={styles.otherName}>{p.name}</strong>
                 <span className={styles.otherTagline}>{p.tagline}</span>
@@ -246,7 +213,6 @@ export default function ProjectLanding({project}: {project: Project}): ReactNode
         <Screenshots project={project} />
         <Features project={project} />
         <Install project={project} />
-        <BuildStreamFamily project={project} />
         <MoreProjects project={project} />
       </main>
     </Layout>

@@ -1,29 +1,9 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
-import {PROJECTS} from './src/data/projects';
-import {VARIANTS} from './src/data/variants';
+import {MAIN_VARIANTS} from './src/data/variants';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
-
-// Navbar dropdowns derive from the same shared data as the /projects grid
-// and each project's own landing page — a hand-maintained 3rd/4th copy of
-// this list is exactly how bootc-migrate-composefs and Grouper went missing
-// from menus that already listed every one of their siblings.
-const variantNavItems = VARIANTS.map((v) => ({
-  to: `/${v.id}`,
-  label: `${v.name} — ${v.base}`,
-}));
-
-const projectNavItems = PROJECTS.filter((p) => !p.external).map((p) => ({
-  to: `/${p.id}`,
-  label: `${p.name}`,
-}));
-
-const externalProjectNavItems = PROJECTS.filter((p) => p.external).map((p) => ({
-  to: `/${p.id}`,
-  label: `${p.name}`,
-}));
 
 const config: Config = {
   title: 'TunaOS',
@@ -119,8 +99,9 @@ const config: Config = {
           ],
         },
         {to: '/download', label: 'Download', position: 'left'},
+        {to: '/wootc', label: 'From Windows', position: 'left'},
+        {to: '/flatpak', label: 'Flatpaks', position: 'left'},
         {to: '/projects', label: 'Projects', position: 'left'},
-        {to: '/flatpak', label: 'Apps', position: 'left'},
         {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
@@ -146,6 +127,10 @@ const config: Config = {
               to: '/download',
             },
             {
+              label: 'Try from Windows',
+              to: '/wootc',
+            },
+            {
               label: 'Documentation',
               to: 'docs/intro',
             },
@@ -156,8 +141,12 @@ const config: Config = {
           ],
         },
         {
-          title: 'Variants',
-          items: VARIANTS.map((v) => ({label: `${v.name} (${v.base})`, to: `/${v.id}`})),
+          title: 'Images',
+          items: [
+            ...MAIN_VARIANTS.map((v) => ({label: `${v.name} (${v.base})`, to: `/${v.id}`})),
+            {label: 'All variants', to: '/variants'},
+            {label: 'Build matrix', to: '/matrix'},
+          ],
         },
         {
           title: 'Community',
@@ -192,6 +181,10 @@ const config: Config = {
               href: 'https://hive.tunaos.org',
             },
             {
+              label: 'Flatpaks',
+              to: '/flatpak',
+            },
+            {
               label: 'Project Bluefin',
               href: 'https://docs.projectbluefin.io',
             },
@@ -202,7 +195,10 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} TunaOS Project. Built with Docusaurus.`,
+      copyright:
+        `Copyright © ${new Date().getFullYear()} TunaOS Project. ` +
+        'Site design by <a href="https://github.com/HuntedRaven7">HuntedRaven</a>. ' +
+        'Built with Docusaurus.',
     },
     prism: {
       theme: prismThemes.github,
