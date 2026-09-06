@@ -1,6 +1,9 @@
 import type {ReactNode} from 'react';
+import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
+
+import styles from '@site/src/css/page.module.css';
 
 const SPONSOR_SECTIONS = [
   {
@@ -103,45 +106,50 @@ export default function Support(): ReactNode {
       title="Support"
       description="Support the projects that make TunaOS possible."
     >
-      <main className="container margin-vert--lg">
-        <Heading as="h1">Support</Heading>
-        <p>
-          TunaOS is an image factory — we multiply desktop experiences across
-          distributions. But those experiences are built by other people. If you
-          find value in what we ship, the most impactful thing you can do is
-          support the upstream projects that create the desktops and
-          customizations we depend on.
-        </p>
+      <header className={styles.hero}>
+        <div className={styles.heroInner}>
+          <span className={styles.eyebrow}>Support upstream</span>
+          <Heading as="h1" className={styles.heroTitle}>
+            Support the upstream projects
+          </Heading>
+          <p className={styles.heroLede}>
+            TunaOS packages desktops it does not write. The customization layers and
+            the desktop environments themselves come from the projects below, so
+            sponsoring them is more useful than sponsoring us.
+          </p>
+        </div>
+      </header>
 
-        {SPONSOR_SECTIONS.map((section) => (
-          <section key={section.title} style={{ marginTop: '2.5rem' }}>
-            <Heading as="h2">{section.title}</Heading>
-            <p>{section.description}</p>
-            <div className="row">
-              {section.projects.map((project) => (
-                <div key={project.name} className="col col--4 margin-bottom--md">
-                  <div
-                    className="card"
-                    style={{
-                      padding: '1.25rem',
-                      height: '100%',
-                    }}
-                  >
-                    <Heading as="h3" style={{ marginTop: 0 }}>
+      <main>
+        {SPONSOR_SECTIONS.map((section, index) => (
+          <section
+            key={section.title}
+            className={clsx(
+              styles.section,
+              index === 0 && styles.sectionFirst,
+              index % 2 === 1 && styles.sectionAlt,
+            )}
+          >
+            <div className={styles.sectionInner}>
+              <div className={styles.sectionHead}>
+                <Heading as="h2" className={styles.sectionTitle}>
+                  <span className={styles.sectionMark}>
+                    {String(index + 1).padStart(2, '0')}.
+                  </span>
+                  {section.title}
+                </Heading>
+                <p className={styles.sectionSub}>{section.description}</p>
+              </div>
+              <div className={styles.grid}>
+                {section.projects.map((project) => (
+                  <div key={project.name} className={styles.card}>
+                    <Heading as="h3" className={styles.cardTitle}>
                       {project.name}
                     </Heading>
-                    <p
-                      style={{
-                        fontSize: '0.85rem',
-                        color: 'var(--ifm-color-emphasis-600)',
-                        marginBottom: '0.75rem',
-                      }}
-                    >
-                      {project.desktop}
-                    </p>
-                    <ul style={{ paddingLeft: '1rem', margin: 0 }}>
+                    <span className={styles.chip}>{project.desktop}</span>
+                    <ul className={styles.linkList} style={{marginTop: '1rem'}}>
                       {project.links.map((link) => (
-                        <li key={link.href} style={{ marginBottom: '0.35rem' }}>
+                        <li key={link.href}>
                           <a href={link.href} target="_blank" rel="noopener noreferrer">
                             {link.label}
                           </a>
@@ -149,8 +157,8 @@ export default function Support(): ReactNode {
                       ))}
                     </ul>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </section>
         ))}

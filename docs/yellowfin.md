@@ -14,10 +14,10 @@ Yellowfin is the "developer's daily drive" variant of TunaOS. It tracks AlmaLinu
 
 ## Features
 
-- 🍺 **Baked-in Homebrew**: Access thousands of CLI tools and fonts immediately.
-- ✨ **Microarchitecture Support**: Optimized builds for `x86_64_v2` (older CPUs).
-- 🐱 **Kitten Base**: Enjoy newer packages and features before they land in stable EL.
-- 🚀 **Lead Developer's Choice**: The variant used for daily development of TunaOS.
+- **Baked-in Homebrew**: Access thousands of CLI tools and fonts immediately.
+- **Microarchitecture Support**: Optimized builds for `x86_64_v2` (older CPUs).
+- **Kitten Base**: Enjoy newer packages and features before they land in stable EL.
+- **Lead Developer's Choice**: The variant used for daily development of TunaOS.
 
 ## Downloads
 

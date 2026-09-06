@@ -3,7 +3,7 @@ sidebar_position: 11
 title: "Universal Blue Ecosystem"
 ---
 
-# 🌐 TunaOS and the Universal Blue Ecosystem
+# TunaOS and the Universal Blue Ecosystem
 
 TunaOS is part of the broader **Universal Blue** ecosystem — a family of [bootc](https://github.com/bootc-dev/bootc)-based desktop operating images built on Enterprise Linux foundations.
 

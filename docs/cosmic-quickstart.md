@@ -5,7 +5,7 @@ title: "COSMIC desktop quick-start"
 description: "A quick-start guide to the COSMIC desktop environment on TunaOS, with keyboard shortcuts, applet setup, COSMIC Settings, and tile workflows."
 ---
 
-# 🌌 COSMIC Desktop Quick-Start
+# COSMIC Desktop Quick-Start
 
 [COSMIC](https://system76.com/cosmic) is an independent desktop environment from **System76**, written in Rust. It is built on Wayland, the `iced` toolkit, and the `cosmic-comp` compositor.
 

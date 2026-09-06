@@ -1,12 +1,18 @@
 import type {ReactNode} from 'react';
 import {useEffect, useState} from 'react';
+import clsx from 'clsx';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import Link from '@docusaurus/Link';
 import {PROJECTS} from '@site/src/data/projects';
 
-type InstallApp = {name: string; emoji: string; summary: string; tagline: string};
+import styles from '@site/src/css/page.module.css';
+
+type InstallApp = {name: string; summary: string; tagline: string};
+
+const REMOTE_ADD =
+  'flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo';
 
 // Derived from the shared project data (src/data/projects.ts) via each
 // project's flathub/flatpakRust app ID — not a separate hand-maintained
@@ -17,7 +23,6 @@ const APPS: Record<string, InstallApp> = Object.fromEntries(
     if (p.flathub) {
       entries.push([p.flathub, {
         name: p.name,
-        emoji: p.emoji,
         summary: p.tagline,
         tagline: p.features[0]?.text ?? '',
       }]);
@@ -25,7 +30,6 @@ const APPS: Record<string, InstallApp> = Object.fromEntries(
     if (p.flatpakRust) {
       entries.push([p.flatpakRust, {
         name: `${p.name} (Rust)`,
-        emoji: '🦀',
         summary: p.tagline,
         tagline: 'Pure Rust GTK4 rewrite — no WebKit, just speed.',
       }]);
@@ -33,6 +37,43 @@ const APPS: Record<string, InstallApp> = Object.fromEntries(
     return entries;
   }),
 );
+
+function Notice({title, children}: {title: string; children: ReactNode}): ReactNode {
+  return (
+    <header className={styles.hero}>
+      <div className={styles.heroInner}>
+        <Heading as="h1" className={styles.heroTitle}>
+          {title}
+        </Heading>
+        <p className={styles.heroLede}>{children}</p>
+      </div>
+    </header>
+  );
+}
+
+function Step({
+  mark,
+  title,
+  children,
+}: {
+  mark: string;
+  title: string;
+  children: ReactNode;
+}): ReactNode {
+  return (
+    <section className={styles.section}>
+      <div className={clsx(styles.sectionInner, styles.sectionNarrow)}>
+        <div className={styles.sectionHead}>
+          <Heading as="h2" className={styles.sectionTitle}>
+            <span className={styles.sectionMark}>{mark}</span>
+            {title}
+          </Heading>
+        </div>
+        {children}
+      </div>
+    </section>
+  );
+}
 
 function Content(): ReactNode {
   const [appId, setAppId] = useState<string | null>(null);
@@ -44,101 +85,73 @@ function Content(): ReactNode {
 
   if (!appId) {
     return (
-      <div style={{textAlign: 'center', padding: '6rem 1rem'}}>
-        <Heading as="h1">Install a TunaOS app</Heading>
-        <p style={{color: 'var(--ifm-color-emphasis-600)'}}>
-          Choose an app from the <Link to="/flatpak">Flatpak page</Link>.
-        </p>
-      </div>
+      <Notice title="Install a TunaOS app">
+        Choose an app from the <Link to="/flatpak">Flatpak page</Link>.
+      </Notice>
     );
   }
 
   const app = APPS[appId];
   if (!app) {
     return (
-      <div style={{textAlign: 'center', padding: '6rem 1rem'}}>
-        <Heading as="h1">Unknown app</Heading>
-        <p style={{color: 'var(--ifm-color-emphasis-600)'}}>
-          <code>{appId}</code> is not a recognized TunaOS app.{' '}
-          <Link to="/flatpak">Browse all apps</Link>.
-        </p>
-      </div>
+      <Notice title="Unknown app">
+        <code>{appId}</code> is not a recognized TunaOS app.{' '}
+        <Link to="/flatpak">Browse all apps</Link>.
+      </Notice>
     );
   }
 
   return (
     <>
-      <header style={{
-        textAlign: 'center', padding: '3rem 1rem 1.5rem',
-        background: 'radial-gradient(120% 120% at 50% -10%, #6366f1 0%, #1e3a5f 60%, #0b1220 100%)',
-        color: '#fff',
-      }}>
-        <div className="container">
-          <span style={{fontSize: '3rem', display: 'block'}}>{app.emoji}</span>
-          <Heading as="h1" style={{marginTop: '0.5rem'}}>Install {app.name}</Heading>
-          <p style={{fontSize: '1.1rem', opacity: 0.85}}>{app.summary}</p>
-          <p style={{opacity: 0.65}}>{app.tagline}</p>
+      <header className={styles.hero}>
+        <div className={styles.heroInner}>
+          <span className={styles.eyebrow}>Install</span>
+          <Heading as="h1" className={styles.heroTitle}>
+            {app.name}
+          </Heading>
+          <p className={styles.heroLede}>{app.summary}</p>
+          {app.tagline && <p className={styles.heroNote}>{app.tagline}</p>}
         </div>
       </header>
 
-      <main className="container" style={{maxWidth: 680, padding: '2.5rem 1rem'}}>
-        {/* Step 1: Add remote */}
-        <section style={{marginBottom: '2.5rem'}}>
-          <Heading as="h2">1. Add the TunaOS remote</Heading>
-          <p style={{color: 'var(--ifm-color-emphasis-600)', marginBottom: '0.75rem'}}>
-            If you haven&apos;t already, add the TunaOS Flatpak repository:
+      <main>
+        <Step mark="01." title="Add the TunaOS remote">
+          <p className={styles.prose} style={{marginBottom: '0.9rem'}}>
+            If you have not already, add the TunaOS Flatpak repository:
           </p>
-          <pre style={{
-            background: 'var(--prism-background-color)',
-            padding: '1rem', borderRadius: 8,
-            fontSize: '0.9rem',
-          }}>
-            <code>flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo</code>
+          <pre className={styles.code}>
+            <code>{REMOTE_ADD}</code>
           </pre>
-        </section>
+        </Step>
 
-        {/* Step 2: Install */}
-        <section style={{marginBottom: '2.5rem'}}>
-          <Heading as="h2">2. Install {app.name}</Heading>
-          <div style={{marginBottom: '1.25rem'}}>
+        <Step mark="02." title={`Install ${app.name}`}>
+          <div className={clsx(styles.btnRow, styles.btnRowLeft)} style={{marginTop: 0}}>
             <a
-              className="button button--lg button--primary"
-              href={`/flatpak/appstream/${appId}.flatpakref`}
-              style={{fontSize: '1.1rem', padding: '0.75rem 2rem'}}>
-              Install {app.emoji}
+              className={clsx('button', styles.btnPrimary)}
+              href={`/flatpak/appstream/${appId}.flatpakref`}>
+              Install {app.name}
             </a>
           </div>
-          <p style={{color: 'var(--ifm-color-emphasis-600)', marginBottom: '0.75rem'}}>
-            Or install manually from the terminal:
+          <p className={styles.prose} style={{margin: '1.5rem 0 0.9rem'}}>
+            Or install it from the terminal:
           </p>
-          <pre style={{
-            background: 'var(--prism-background-color)',
-            padding: '1rem', borderRadius: 8,
-            fontSize: '0.9rem',
-          }}>
+          <pre className={styles.code}>
             <code>flatpak install tuna-os {appId}</code>
           </pre>
-        </section>
+        </Step>
 
-        {/* Step 3: Run */}
-        <section style={{marginBottom: '2.5rem'}}>
-          <Heading as="h2">3. Run</Heading>
-          <pre style={{
-            background: 'var(--prism-background-color)',
-            padding: '1rem', borderRadius: 8,
-            fontSize: '0.9rem',
-          }}>
+        <Step mark="03." title="Run it">
+          <pre className={styles.code}>
             <code>flatpak run {appId}</code>
           </pre>
-          <p style={{marginTop: '0.75rem', color: 'var(--ifm-color-emphasis-500)', fontSize: '0.85rem'}}>
-            Or launch {app.name} from your app launcher — it&apos;ll appear alongside your other apps.
+          <p className={styles.prose} style={{marginTop: '0.9rem'}}>
+            Or launch {app.name} from your app launcher — it appears alongside your
+            other apps.
           </p>
-        </section>
-
-        <hr style={{margin: '2rem 0', opacity: 0.15}} />
-        <p style={{textAlign: 'center', color: 'var(--ifm-color-emphasis-500)', fontSize: '0.85rem'}}>
-          <Link to="/flatpak">← Back to all apps</Link>
-        </p>
+          <p className={styles.backLink}>
+            <Link to="/flatpak">← Back to all apps</Link>
+          </p>
+        </Step>
       </main>
     </>
   );

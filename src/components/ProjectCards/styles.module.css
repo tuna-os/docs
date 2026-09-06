@@ -1,127 +1,122 @@
+/* Project cards — aligned to the site design system: Vesper dark panels,
+   one blue accent, mono status badges, 6px radii, no borders. */
+
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.25rem;
 }
 
 .card {
-  border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 14px;
-  background: var(--ifm-background-surface-color);
-  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  padding: 1.5rem;
+  border-radius: 6px;
+  border: none;
+  background: var(--tu-panel);
+  color: var(--tu-ink);
+  transition: transform 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
 }
 
 .card:hover {
-  box-shadow: 0 10px 28px rgba(0, 43, 92, 0.12);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  background: var(--tu-panel-2);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.4);
 }
 
-.status-alpha,
-.status-experimental {
-  border-color: var(--ifm-color-warning-lighter, #ffe0a0);
-  background: var(--ifm-color-warning-contrast-background, #fffdf5);
-}
-
+/* Status is carried by the badge alone — the old tinted card backgrounds
+   fought the single-accent palette. */
 .status-internal {
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 .cardTop {
   display: flex;
-  gap: 0.75rem;
   align-items: flex-start;
-  margin-bottom: 0.5rem;
-}
-
-.icon {
-  font-size: 2rem;
-  line-height: 1;
-  flex-shrink: 0;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
 }
 
 .name {
   margin: 0;
   font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .name a {
-  color: var(--ifm-font-color-base);
+  color: var(--tu-ink);
   text-decoration: none;
-  font-weight: 700;
 }
 
 .name a:hover {
-  color: var(--ifm-color-primary);
+  color: var(--tu-accent);
 }
 
 .badge {
   display: inline-block;
+  flex: none;
+  font-family: var(--tu-mono);
   font-size: 0.62rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 0.15rem 0.5rem;
-  border-radius: 999px;
-  margin-top: 0.2rem;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  background: var(--tu-bg);
+  color: var(--tu-dim);
 }
 
 .badge-stable {
-  background: #d4edda;
-  color: #155724;
+  color: var(--tu-accent);
 }
 
-[data-theme='dark'] .badge-stable {
-  background: #1a3a24;
-  color: #7cda92;
+.badge-beta {
+  color: var(--tu-accent-soft);
 }
 
 .badge-alpha {
-  background: #fff3cd;
-  color: #856404;
-}
-
-[data-theme='dark'] .badge-alpha {
-  background: #3a2e0a;
   color: #f0c040;
 }
 
 .badge-experimental {
-  background: #f8d7da;
-  color: #A63232;
-}
-
-[data-theme='dark'] .badge-experimental {
-  background: #3a1a1d;
   color: #f09090;
 }
 
 .badge-internal {
-  background: var(--ifm-color-emphasis-200);
-  color: var(--ifm-color-emphasis-600);
+  color: var(--tu-dim);
 }
 
 .desc {
-  font-size: 0.88rem;
-  color: var(--ifm-font-color-base);
-  opacity: 0.78;
-  line-height: 1.5;
-  margin: 0.5rem 0 1rem;
   flex: 1;
+  margin: 0 0 1rem;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--tu-dim);
 }
 
 .links {
   display: flex;
-  gap: 0.75rem;
   flex-wrap: wrap;
-  border-top: 1px solid var(--ifm-color-emphasis-300);
-  padding-top: 0.75rem;
+  gap: 0.9rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--tu-line);
 }
 
 .link {
-  font-size: 0.82rem;
+  font-family: var(--tu-mono);
+  font-size: 0.78rem;
   font-weight: 600;
-  color: var(--ifm-color-primary);
+  color: var(--tu-accent-soft);
+}
+
+.link:hover {
+  color: var(--tu-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
 }

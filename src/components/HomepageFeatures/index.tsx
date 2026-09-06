@@ -15,18 +15,18 @@ const FeatureList: FeatureItem[] = [
     title: 'BuildStream desktops',
     description: (
       <>
-        Tromsø, XFCE Linux, Dakota — desktops built from source on{' '}
-        freedesktop-sdk. Reproducible, auditable, 100% from-source pipelines.
+        Tromsø, XFCE Linux and Dakota are built from source on freedesktop-sdk{' '}
+        with BuildStream, rather than assembled from prebuilt packages.
       </>
     ),
   },
   {
     icon: 'box',
-    title: 'bootc-native images',
+    title: 'bootc OCI images',
     description: (
       <>
-        Every project ships as a standard bootc OCI image. Pull it, boot it,{' '}
-        rebase onto it — atomic updates and clean rollbacks built in.
+        Every image is a standard bootc OCI image. Pull it, boot it, or rebase{' '}
+        onto it; updates are atomic and roll back to the previous image.
       </>
     ),
   },
@@ -35,38 +35,38 @@ const FeatureList: FeatureItem[] = [
     title: 'Multi-boot media',
     description: (
       <>
-        Tacklebox produces ISOs and USB drives with multiple environments —{' '}
-        pick your desktop at boot. File-level deduplication keeps sizes small.
+        Tacklebox writes ISOs and USB drives holding several desktops, chosen{' '}
+        at boot. File-level deduplication keeps the image size down.
       </>
     ),
   },
   {
     icon: 'grid',
-    title: 'Desktop apps + CLI',
+    title: 'Desktop apps and CLI',
     description: (
       <>
-        Tavern brings an App Store experience to Homebrew on Linux. bluefin-cli{' '}
-        keeps your shell environment sharp. GNOME, KDE, COSMIC, Niri, XFCE.
+        Tavern is a GTK4 front end for Homebrew on Linux. bluefin-cli configures{' '}
+        shells and development environments from the terminal.
       </>
     ),
   },
   {
     icon: 'shield',
-    title: 'Enterprise Linux base',
+    title: 'Enterprise Linux bases',
     description: (
       <>
-        TunaOS desktop images ship GNOME, KDE, and more on AlmaLinux, CentOS{' '}
-        Stream, and Fedora — with 10-year support cycles and backported desktops.
+        GNOME, KDE and other desktops on AlmaLinux, CentOS Stream and Fedora,{' '}
+        with current desktop versions backported onto long-support bases.
       </>
     ),
   },
   {
     icon: 'users',
-    title: 'Open source, open community',
+    title: 'Open source',
     description: (
       <>
-        Everything we build is open source. Contribute to upstream freedesktop-sdk,{' '}
-        GNOME OS, KDE, or BuildStream — start here, level up, become part of the teams.
+        Everything here is open source, and much of the work lands upstream in{' '}
+        freedesktop-sdk, GNOME OS, KDE and BuildStream.
       </>
     ),
   },

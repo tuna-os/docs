@@ -1,34 +1,38 @@
 import type {ReactNode} from 'react';
+import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
+import Icon, {type IconName} from '@site/src/components/Icon';
+
+import styles from '@site/src/css/page.module.css';
 
 const APP_URL = 'https://iso.tunaos.org';
 
-const FEATURES: {emoji: string; title: string; blurb: string}[] = [
+const FEATURES: {icon: IconName; title: string; blurb: string}[] = [
   {
-    emoji: '🌐',
-    title: 'Runs entirely in your browser',
+    icon: 'shield',
+    title: 'Runs in the browser',
     blurb:
       'Registry pull, filesystem authoring, and ISO assembly all happen locally in WebAssembly. Nothing is uploaded anywhere.',
   },
   {
-    emoji: '📦',
+    icon: 'box',
     title: 'Any bootable container image',
     blurb:
       'Point it at a TunaOS image or your own bootc-style image on GHCR. It inspects the image and detects the desktop automatically.',
   },
   {
-    emoji: '⚙️',
+    icon: 'wrench',
     title: 'Same engine as CI',
     blurb:
-      'The builder is tacklebox’s pure-Go core compiled to WASM — the exact code that authors TunaOS release media, boot-verified in QEMU.',
+      'The builder is tacklebox’s Go core compiled to WebAssembly: the same code that authors TunaOS release media in CI, which is boot-tested in QEMU.',
   },
   {
-    emoji: '🔗',
-    title: 'Deep-linkable presets',
+    icon: 'zap',
+    title: 'Options are URL parameters',
     blurb:
-      'Everything is a URL parameter: ?image=…&flatpaks=…&label=… — share a link and anyone builds your ISO, preconfigured.',
+      'Every option is a URL parameter (?image=…&flatpaks=…&label=…), so a link reproduces the same build for someone else.',
   },
 ];
 
@@ -37,67 +41,84 @@ export default function IsoBuilderPage(): ReactNode {
     <Layout
       title="ISO Builder"
       description="Build a live TunaOS ISO from any bootable container image — entirely in your browser.">
-      <main>
-        <div className="hero hero--primary" style={{textAlign: 'center'}}>
-          <div className="container">
-            <Heading as="h1" className="hero__title">
-              🐟 TunaOS ISO Builder
-            </Heading>
-            <p className="hero__subtitle">
-              Build a live, bootable ISO from any bootable container image —
-              entirely in your browser.
-            </p>
-            <div style={{display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap'}}>
-              <Link
-                className="button button--secondary button--lg"
-                href={`${APP_URL}/?image=tuna-os/guppy:base`}>
-                Open the builder →
-              </Link>
-              <Link className="button button--outline button--secondary button--lg" to="/docs/iso-builder">
-                Read the guide
-              </Link>
-            </div>
-            <p style={{marginTop: '0.75rem', opacity: 0.8, fontSize: '0.85rem'}}>
-              Experimental preview — currently hosted at a test URL.
-            </p>
+      <header className={styles.hero}>
+        <div className={styles.heroInner}>
+          <span className={styles.eyebrow}>ISO builder</span>
+          <Heading as="h1" className={styles.heroTitle}>
+            ISO builder
+          </Heading>
+          <p className={styles.heroLede}>
+            Turns a bootc container image into live, installable media. The build runs
+            in the browser: nothing is uploaded and no build host is involved.
+          </p>
+          <div className={styles.btnRow}>
+            <Link
+              className={clsx('button', styles.btnPrimary)}
+              href={`${APP_URL}/?image=tuna-os/guppy:base`}>
+              Open the builder
+            </Link>
+            <Link className={clsx('button', styles.btnGhost)} to="/docs/iso-builder">
+              Read the guide
+            </Link>
           </div>
-        </div>
-
-        <div className="container" style={{padding: '3rem 1rem'}}>
-          <div className="row">
-            {FEATURES.map((f) => (
-              <div key={f.title} className="col col--3" style={{marginBottom: '1.5rem'}}>
-                <Heading as="h3">
-                  <span style={{marginRight: '0.4rem'}}>{f.emoji}</span>
-                  {f.title}
-                </Heading>
-                <p>{f.blurb}</p>
-              </div>
-            ))}
-          </div>
-
-          <Heading as="h2">How it works</Heading>
-          <ol>
-            <li>
-              <b>Inspect</b> — enter an image like <code>tuna-os/guppy:base</code>. The engine pulls
-              and unpacks it in-browser and shows the detected desktop, kernel, and bootloader.
-            </li>
-            <li>
-              <b>Tune</b> — the flatpak preload list is prefilled for the detected desktop
-              (GNOME/KDE defaults); adjust it, the volume label, or supply a tbox initramfs URL
-              under <i>Advanced</i>.
-            </li>
-            <li>
-              <b>Build</b> — the EROFS live root, EFI system partition, and ISO9660/El&nbsp;Torito
-              image are authored in WASM and stream straight to your disk.
-            </li>
-          </ol>
-          <p>
-            Full walkthrough with screenshots, URL parameter reference, and current limits:{' '}
-            <Link to="/docs/iso-builder">the ISO Builder guide</Link>. The engine lives in{' '}
-            <Link href="https://github.com/tuna-os/tacklebox">tuna-os/tacklebox</Link>.
+          <p className={styles.heroNote}>
+            Experimental preview — currently hosted at a test URL.
           </p>
         </div>
+      </header>
+
+      <main>
+        <section className={clsx(styles.section, styles.sectionFirst)}>
+          <div className={styles.sectionInner}>
+            <div className={styles.grid}>
+              {FEATURES.map((f) => (
+                <div key={f.title} className={styles.card}>
+                  <span className={styles.cardIcon}>
+                    <Icon name={f.icon} size={22} />
+                  </span>
+                  <Heading as="h3" className={styles.cardTitle}>
+                    {f.title}
+                  </Heading>
+                  <p className={styles.cardText}>{f.blurb}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className={clsx(styles.section, styles.sectionAlt)}>
+          <div className={clsx(styles.sectionInner, styles.sectionNarrow)}>
+            <div className={styles.sectionHead}>
+              <Heading as="h2" className={styles.sectionTitle}>
+                <span className={styles.sectionMark}>01.</span>
+                How it works
+              </Heading>
+            </div>
+            <ol className={clsx(styles.prose, styles.steps)}>
+              <li>
+                <b>Inspect</b> — enter an image like <code>tuna-os/guppy:base</code>. The
+                engine pulls and unpacks it in-browser and shows the detected desktop,
+                kernel, and bootloader.
+              </li>
+              <li>
+                <b>Tune</b> — the flatpak preload list is prefilled for the detected
+                desktop (GNOME/KDE defaults); adjust it, the volume label, or supply a
+                tbox initramfs URL under <i>Advanced</i>.
+              </li>
+              <li>
+                <b>Build</b> — the EROFS live root, EFI system partition, and
+                ISO9660/El&nbsp;Torito image are authored in WASM and stream straight to
+                your disk.
+              </li>
+            </ol>
+            <p className={styles.prose} style={{marginTop: '1.5rem'}}>
+              Full walkthrough with screenshots, URL parameter reference, and current
+              limits: <Link to="/docs/iso-builder">the ISO Builder guide</Link>. The
+              engine lives in{' '}
+              <Link href="https://github.com/tuna-os/tacklebox">tuna-os/tacklebox</Link>.
+            </p>
+          </div>
+        </section>
       </main>
     </Layout>
   );
