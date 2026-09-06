@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-05T19:49:48.628Z",
+  "generatedAt": "2026-09-06T02:26:46.756Z",
   "baseUrl": "https://download.tunaos.org",
   "count": 265,
   "categories": [
@@ -11,6 +11,46 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "albacore-kde-latest",
+          "path": "live-isos/albacore-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-kde-latest.iso",
+          "size": 6024462336,
+          "modified": "2026-09-06T01:05:52.660620807Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-gnome-latest",
+          "path": "live-isos/grouper-gnome-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-gnome-latest.iso",
+          "size": 5740691456,
+          "modified": "2026-09-05T22:17:29.650988274Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-xfce-latest",
+          "path": "live-isos/grouper-xfce-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-xfce-latest.iso",
+          "size": 4908974080,
+          "modified": "2026-09-05T22:13:20.428216106Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-kde-latest",
+          "path": "live-isos/grouper-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-kde-latest.iso",
+          "size": 5282201600,
+          "modified": "2026-09-05T22:13:17.237503369Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "marlin-gnome-nvidia-latest",
@@ -153,16 +193,6 @@
         },
         {
           "category": "live-isos",
-          "name": "albacore-kde-latest",
-          "path": "live-isos/albacore-kde-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-kde-latest.iso",
-          "size": 6024265728,
-          "modified": "2026-09-05T11:54:38.941584703Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
           "name": "albacore-xfce-latest",
           "path": "live-isos/albacore-xfce-latest.iso",
           "url": "https://download.tunaos.org/live-isos/albacore-xfce-latest.iso",
@@ -258,36 +288,6 @@
           "url": "https://download.tunaos.org/live-isos/yellowfin-cosmic-latest.iso",
           "size": 4867096576,
           "modified": "2026-09-05T08:16:52.067047683Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-kde-latest",
-          "path": "live-isos/grouper-kde-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-kde-latest.iso",
-          "size": 5282201600,
-          "modified": "2026-09-04T23:07:24.538812572Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-gnome-latest",
-          "path": "live-isos/grouper-gnome-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-gnome-latest.iso",
-          "size": 5740691456,
-          "modified": "2026-09-04T23:06:25.857328431Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-xfce-latest",
-          "path": "live-isos/grouper-xfce-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-xfce-latest.iso",
-          "size": 4908974080,
-          "modified": "2026-09-04T23:02:40.224266505Z",
           "arch": "",
           "latest": true
         },
@@ -613,6 +613,46 @@
         },
         {
           "category": "live-isos",
+          "name": "albacore-kde-10.2-x86_64",
+          "path": "live-isos/albacore-kde-10.2-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-kde-10.2-x86_64.iso",
+          "size": 6024462336,
+          "modified": "2026-09-06T01:05:52.660620807Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-gnome-26.04-x86_64",
+          "path": "live-isos/grouper-gnome-26.04-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-gnome-26.04-x86_64.iso",
+          "size": 5740691456,
+          "modified": "2026-09-05T22:17:29.650988274Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-xfce-26.04-x86_64",
+          "path": "live-isos/grouper-xfce-26.04-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-xfce-26.04-x86_64.iso",
+          "size": 4908974080,
+          "modified": "2026-09-05T22:13:20.428216106Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-kde-26.04-x86_64",
+          "path": "live-isos/grouper-kde-26.04-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-kde-26.04-x86_64.iso",
+          "size": 5282201600,
+          "modified": "2026-09-05T22:13:17.237503369Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
           "name": "marlin-gnome-nvidia--x86_64",
           "path": "live-isos/marlin-gnome-nvidia--x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/marlin-gnome-nvidia--x86_64.iso",
@@ -753,16 +793,6 @@
         },
         {
           "category": "live-isos",
-          "name": "albacore-kde-10.2-x86_64",
-          "path": "live-isos/albacore-kde-10.2-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-kde-10.2-x86_64.iso",
-          "size": 6024265728,
-          "modified": "2026-09-05T11:54:38.941584703Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
           "name": "albacore-xfce-10.2-x86_64",
           "path": "live-isos/albacore-xfce-10.2-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/albacore-xfce-10.2-x86_64.iso",
@@ -858,36 +888,6 @@
           "url": "https://download.tunaos.org/live-isos/yellowfin-cosmic-10-x86_64.iso",
           "size": 4867096576,
           "modified": "2026-09-05T08:16:52.067047683Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-kde-26.04-x86_64",
-          "path": "live-isos/grouper-kde-26.04-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-kde-26.04-x86_64.iso",
-          "size": 5282201600,
-          "modified": "2026-09-04T23:07:24.538812572Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-gnome-26.04-x86_64",
-          "path": "live-isos/grouper-gnome-26.04-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-gnome-26.04-x86_64.iso",
-          "size": 5740691456,
-          "modified": "2026-09-04T23:06:25.857328431Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-xfce-26.04-x86_64",
-          "path": "live-isos/grouper-xfce-26.04-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-xfce-26.04-x86_64.iso",
-          "size": 4908974080,
-          "modified": "2026-09-04T23:02:40.224266505Z",
           "arch": "x86_64",
           "latest": false
         },
