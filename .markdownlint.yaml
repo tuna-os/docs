@@ -1,0 +1,37 @@
+# markdownlint configuration for tuna-os/docs.
+#
+# These rules were previously passed as `--disable` flags inside
+# .github/workflows/lint.yml. They live here instead because that is where a
+# new rule gets pinned: markdownlint ships new rules in minor releases, and a
+# flag list buried in a workflow is not where anyone looks when one fires.
+# MD060 is exactly that story -- see below.
+#
+# Most of docs/ is NOT written in this repository. scripts/sync-org-docs.mjs
+# overwrites docs/<slug>/ from ~40 org repos' READMEs on every run, so a rule
+# that penalises ordinary README style produces findings nobody here can fix:
+# a fix is reverted by the next sync, and the real author is another repo.
+# That is the test applied below.
+
+default: true
+
+# Line length. Upstream READMEs wrap wherever they wrap, and prose rewrapping
+# is churn that the next sync undoes.
+MD013: false
+
+# Inline HTML. Docusaurus pages legitimately use JSX/HTML, and README badges
+# are <img> tags.
+MD033: false
+
+# First line in a file must be a top-level heading. Every page here starts
+# with YAML frontmatter instead.
+MD041: false
+
+# Table column style (pipes aligned vs compact). Added in the markdownlint
+# release that markdownlint-cli 0.49.1 pulls in, which is why this appeared
+# with no code change in this repo: it went from 0 findings to 2786 -- 69% of
+# all findings, across 174 files, almost entirely in generated trees
+# (docs/tunaos-packages, docs/spindle, docs/wootc, docs/corral, ...). It is a
+# pure whitespace-consistency rule with no reader-visible effect: both styles
+# render identically. Forty upstream repos will never agree on one table
+# style, and `--fix` on a generated tree is reverted by the next sync.
+MD060: false
