@@ -58,9 +58,9 @@ that same commit — upstream's own `com.mitchellh.ghostty.yml`,
 from TunaOS, so an upstream dependency or runtime bump needs no change
 here.
 
-To pull in a specific upstream commit sooner, a maintainer can dispatch
+A maintainer can also dispatch
 [`publish-ghostty-flatpak.yml`](https://github.com/tuna-os/blueshell/actions/workflows/publish-ghostty-flatpak.yml)
-with a ref.
+with a ref, to build a given commit from upstream before the next run.
 
 ## BlueShell or Ghostty?
 
