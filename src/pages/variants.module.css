@@ -5,8 +5,19 @@
 .cardHead {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
+  gap: 0.6rem;
+}
+
+.cardHead .cardTitle,
+.cardHead h3 {
+  margin-right: auto;
+}
+
+.mark {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  display: block;
 }
 
 .base {
@@ -53,8 +64,18 @@
 }
 
 .rowName {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-weight: 700;
   letter-spacing: -0.01em;
+}
+
+.rowMark {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  display: block;
 }
 
 .rowBase {

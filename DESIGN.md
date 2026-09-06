@@ -40,9 +40,15 @@ CTA in the hero and has its own landing page.
    sidebar. Their pages still exist and their URLs still work.
 4. **Name things plainly.** No pitch copy, no "blazing fast", no exclamation
    points. Say what a thing is and what it runs on.
-5. **No emoji in the interface.** Icons come from `src/components/Icon.tsx`.
-   Emoji survive only where they are content (a project's own docs, synced
-   from its repository).
+5. **No emoji in the interface.** Each variant carries its mark from
+   [tuna-os/branding](https://github.com/tuna-os/branding) — vendored into
+   `static/img/marks/`, mapped in `src/data/marks.ts`, and verified against
+   the branding manifest by `scripts/check-branding-marks.test.mjs`. Each
+   project carries a glyph from `src/components/Icon.tsx`, named in its
+   `src/data/projects.ts` entry. Those marks are where a variant or project
+   gets to look like itself; the interface around them stays one hue. Emoji
+   survive only where they are content (a project's own docs, synced from its
+   repository).
 6. **Every list on the site derives from `src/data/`.** The nav, the footer,
    the matrix, the picker and the landing pages read the same arrays.
    A hand-maintained second copy is how images went missing from menus before.

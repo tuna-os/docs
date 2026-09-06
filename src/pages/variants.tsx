@@ -4,6 +4,7 @@ import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import Link from '@docusaurus/Link';
 import {MAIN_VARIANTS, OTHER_VARIANTS, type Variant} from '@site/src/data/variants';
+import {markFor} from '@site/src/data/marks';
 
 import page from '@site/src/css/page.module.css';
 import styles from './variants.module.css';
@@ -17,6 +18,7 @@ function MainCard({variant}: {variant: Variant}): ReactNode {
   return (
     <Link to={`/${variant.id}`} className={clsx(page.card, page.cardLinked)}>
       <div className={styles.cardHead}>
+        <img className={styles.mark} src={markFor(variant.id)} alt="" width={40} height={40} loading="lazy" />
         <Heading as="h3" className={page.cardTitle}>
           {variant.name}
         </Heading>
@@ -34,7 +36,10 @@ function MainCard({variant}: {variant: Variant}): ReactNode {
 function OtherRow({variant}: {variant: Variant}): ReactNode {
   return (
     <Link to={`/${variant.id}`} className={styles.row}>
-      <span className={styles.rowName}>{variant.name}</span>
+      <span className={styles.rowName}>
+        <img className={styles.rowMark} src={markFor(variant.id)} alt="" width={22} height={22} loading="lazy" />
+        {variant.name}
+      </span>
       <span className={styles.rowBase}>{variant.base}</span>
       <span className={styles.rowBlurb}>{variant.blurb}</span>
       {variant.localBuildOnly && <span className={styles.rowNote}>local build only</span>}

@@ -297,6 +297,7 @@
   border-radius: 6px;
   background: var(--tu-bg);
   color: var(--tu-accent-soft);
+  white-space: nowrap;
 }
 
 .chipPlain {

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Flounder — field marks: flat oval body, both eyes on one side, speckles -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="TunaOS Flounder">
+  <g fill="#C4915C">
+    <path d="M14 64 C 20 42, 48 30, 72 34 C 92 38, 104 50, 104 64 C 104 78, 92 90, 72 94 C 48 98, 20 86, 14 64 Z"/>
+    <!-- small fan tail -->
+    <path d="M102 64 L 119 51 C 115 60, 115 68, 119 77 Z"/>
+  </g>
+  <!-- both eyes on the top side -->
+  <circle cx="34" cy="49" r="4.5" fill="#0B1B2B"/>
+  <circle cx="35.4" cy="47.6" r="1.4" fill="#C4915C"/>
+  <circle cx="45" cy="42" r="4.5" fill="#0B1B2B"/>
+  <circle cx="46.4" cy="40.6" r="1.4" fill="#C4915C"/>
+  <!-- speckles -->
+  <g fill="#0B1B2B">
+    <circle cx="58" cy="56" r="2.6"/>
+    <circle cx="74" cy="50" r="2.2"/>
+    <circle cx="64" cy="72" r="2.6"/>
+    <circle cx="82" cy="64" r="2.2"/>
+    <circle cx="48" cy="68" r="2.2"/>
+    <circle cx="76" cy="80" r="2.4"/>
+    <circle cx="36" cy="64" r="2.0"/>
+  </g>
+  <!-- mouth -->
+  <path d="M15 58 C 19 61, 23 62, 27 62" fill="none" stroke="#0B1B2B" stroke-width="3" stroke-linecap="round"/>
+</svg>

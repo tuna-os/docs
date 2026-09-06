@@ -1,3 +1,5 @@
+import type {IconName} from '@site/src/components/Icon';
+
 // Shared metadata for per-project landing pages (src/pages/<project>.tsx),
 // rendered by src/components/ProjectLanding. Copy is sourced from each
 // project's own docs under docs/<project>/.
@@ -12,6 +14,9 @@ export type PHighlight = {title: string; text: string};
 export type Project = {
   id: string; // route slug (/<id>) + docs slug (/docs/<id>)
   emoji: string;
+  // Glyph from src/components/Icon.tsx — the project's mark on cards, in the
+  // carousel and in its landing hero.
+  icon: IconName;
   name: string;
   status: ProjectStatus;
   tagline: string;
@@ -54,6 +59,7 @@ export const STATUS_LABELS: Record<ProjectStatus, string> = {
 export const PROJECTS: Project[] = [
   {
     id: 'wootc',
+    icon: 'window',
     emoji: '🪟',
     name: 'wootc',
     status: 'alpha',
@@ -90,6 +96,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'tacklebox',
+    icon: 'wrench',
     emoji: '🛠',
     name: 'Tacklebox',
     status: 'stable',
@@ -121,6 +128,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'bootc-migrate',
+    icon: 'anchor',
     emoji: '🧭',
     name: 'bootc-migrate',
     status: 'stable',
@@ -156,6 +164,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'tromso',
+    icon: 'layers',
     emoji: '🌌',
     name: 'Tromsø',
     status: 'alpha',
@@ -195,6 +204,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'tavern',
+    icon: 'package',
     emoji: '🍻',
     name: 'Tavern',
     status: 'stable',
@@ -231,6 +241,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'mandelbrot',
+    icon: 'message-circle',
     emoji: '🌀',
     name: 'Mandelbrot',
     status: 'alpha',
@@ -268,6 +279,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'bluefin-cli',
+    icon: 'terminal',
     emoji: '⌨️',
     name: 'bluefin-cli',
     status: 'stable',
@@ -298,6 +310,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'corral',
+    icon: 'cpu',
     emoji: '🤠',
     name: 'Corral',
     status: 'alpha',
@@ -345,6 +358,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'tables',
+    icon: 'table',
     emoji: '📊',
     name: 'Tables',
     status: 'alpha',
@@ -377,6 +391,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'letters',
+    icon: 'file-text',
     emoji: '📝',
     name: 'Letters',
     status: 'alpha',
@@ -409,6 +424,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'decks',
+    icon: 'presentation',
     emoji: '📽️',
     name: 'Decks',
     status: 'alpha',
@@ -441,6 +457,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'mariner',
+    icon: 'folder',
     emoji: '🗺️',
     name: 'Mariner',
     status: 'alpha',
@@ -473,6 +490,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'blueshell',
+    icon: 'terminal',
     emoji: '🐚',
     name: 'BlueShell',
     status: 'alpha',
@@ -505,6 +523,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'ghostty',
+    icon: 'zap',
     emoji: '👻',
     name: 'Ghostty',
     status: 'stable',
@@ -536,6 +555,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'xfce-linux',
+    icon: 'monitor',
     emoji: '🖥️',
     name: 'XFCE Linux',
     status: 'alpha',
@@ -568,6 +588,7 @@ export const PROJECTS: Project[] = [
 
   {
     id: 'dakota',
+    icon: 'shield',
     emoji: '🎣',
     name: 'Dakota',
     status: 'beta',
@@ -602,6 +623,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'tunaos',
+    icon: 'fish',
     emoji: '🐟',
     name: 'TunaOS',
     status: 'stable',

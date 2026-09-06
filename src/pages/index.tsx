@@ -14,17 +14,17 @@ import {VARIANTS as ALL_VARIANTS} from '@site/src/data/variants';
 
 import styles from './index.module.css';
 
-const FEATURED_PROJECTS = [
-  {name: 'wootc', desc: 'Linux from inside Windows', to: '/wootc'},
-  {name: 'TunaOS', desc: 'Desktop images', to: '/tunaos'},
-  {name: 'Tacklebox', desc: 'ISO & USB builder', to: '/tacklebox'},
-  {name: 'Tromsø', desc: 'KDE Linux', to: '/tromso'},
-  {name: 'XFCE Linux', desc: 'XFCE desktop', to: '/xfce-linux'},
-  {name: 'Tavern', desc: 'Homebrew GUI', to: '/tavern'},
-  {name: 'bluefin-cli', desc: 'Shell CLI', to: '/bluefin-cli'},
-  {name: 'COPR Builds', desc: 'RPM builder', to: '/copr'},
-  {name: 'Corral', desc: 'VM & container manager', to: '/corral'},
-  {name: 'Dakota', desc: 'Bluefin GNOME OS', to: '/dakota'},
+const FEATURED_PROJECTS: Array<{name: string; desc: string; to: string; icon: IconName}> = [
+  {name: 'wootc', desc: 'Linux from inside Windows', to: '/wootc', icon: 'window'},
+  {name: 'TunaOS', desc: 'Desktop images', to: '/tunaos', icon: 'fish'},
+  {name: 'Tacklebox', desc: 'ISO and USB builder', to: '/tacklebox', icon: 'wrench'},
+  {name: 'Tromsø', desc: 'KDE Linux', to: '/tromso', icon: 'layers'},
+  {name: 'XFCE Linux', desc: 'XFCE desktop', to: '/xfce-linux', icon: 'monitor'},
+  {name: 'Tavern', desc: 'Homebrew front end', to: '/tavern', icon: 'package'},
+  {name: 'bluefin-cli', desc: 'Shell setup', to: '/bluefin-cli', icon: 'terminal'},
+  {name: 'COPR Builds', desc: 'RPM builder', to: '/copr', icon: 'box'},
+  {name: 'Corral', desc: 'VM and container manager', to: '/corral', icon: 'cpu'},
+  {name: 'Dakota', desc: 'Bluefin GNOME OS', to: '/dakota', icon: 'shield'},
 ];
 
 type SectionHeadProps = {

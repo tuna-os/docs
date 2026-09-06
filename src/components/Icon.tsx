@@ -15,6 +15,15 @@ export type IconName =
   | 'cpu'
   | 'package'
   | 'fish'
+  | 'terminal'
+  | 'file-text'
+  | 'table'
+  | 'presentation'
+  | 'folder'
+  | 'monitor'
+  | 'window'
+  | 'hard-drive'
+  | 'message-circle'
   | 'arrow-right';
 
 const PATHS: Record<IconName, ReactNode> = {
@@ -102,6 +111,58 @@ const PATHS: Record<IconName, ReactNode> = {
       <circle cx="10.5" cy="12" r="1.2" fill="currentColor" stroke="none" />
     </>
   ),
+  terminal: (
+    <>
+      <path d="m4 17 6-5-6-5" />
+      <path d="M12 19h8" />
+    </>
+  ),
+  'file-text': (
+    <>
+      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+      <path d="M14 2v5h6" />
+      <path d="M8 13h8" />
+      <path d="M8 17h5" />
+    </>
+  ),
+  table: (
+    <>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="M3 10h18" />
+      <path d="M9 4v16" />
+    </>
+  ),
+  presentation: (
+    <>
+      <path d="M2 4h20" />
+      <path d="M3 4v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V4" />
+      <path d="m9 20 3-4 3 4" />
+    </>
+  ),
+  folder: <path d="M4 20a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2Z" />,
+  monitor: (
+    <>
+      <rect x="2" y="3" width="20" height="14" rx="2" />
+      <path d="M8 21h8" />
+      <path d="M12 17v4" />
+    </>
+  ),
+  window: (
+    <>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="M3 9h18" />
+      <path d="M7.5 6.5h.01" />
+    </>
+  ),
+  'hard-drive': (
+    <>
+      <path d="M2 13h20" />
+      <path d="M5.4 4h13.2a2 2 0 0 1 1.8 1.1L22 13v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5l1.6-7.9A2 2 0 0 1 5.4 4Z" />
+      <path d="M6 17h.01" />
+      <path d="M10 17h.01" />
+    </>
+  ),
+  'message-circle': <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.9 8.9 0 0 1-3.8-.9L3 20.5l1.6-4.9A8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z" />,
   'arrow-right': (
     <>
       <path d="M5 12h14" />

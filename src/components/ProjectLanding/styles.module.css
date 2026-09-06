@@ -39,9 +39,15 @@
   margin: 0 auto;
 }
 
-.heroEmoji {
-  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.35));
-  margin-bottom: 1.25rem;
+.heroIcon {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  margin: 0 auto 1.25rem;
+  border-radius: 6px;
+  background: var(--tu-panel);
+  color: var(--tu-accent);
 }
 
 .heroTitleRow {
@@ -297,11 +303,6 @@
   background: var(--tu-panel-2);
 }
 
-.featEmoji {
-  display: inline-block;
-  margin-bottom: 0.75rem;
-}
-
 .featTitle {
   font-size: 1.05rem;
   font-weight: 700;
@@ -377,8 +378,15 @@
   color: var(--tu-ink);
 }
 
-.otherEmoji {
+.otherIcon {
+  display: grid;
+  place-items: center;
   flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: var(--tu-bg);
+  color: var(--tu-accent);
 }
 
 .otherName {

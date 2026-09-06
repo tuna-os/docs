@@ -43,9 +43,10 @@
   background: var(--tu-panel-2);
   transform: translateY(-2px);
 }
-.card .emoji {
-  font-size: 2rem;
-  line-height: 1;
+.card .mark {
+  width: 48px;
+  height: 48px;
+  display: block;
 }
 .card .name {
   font-weight: 700;

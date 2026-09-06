@@ -6,6 +6,7 @@ import {VARIANTS} from '@site/src/data/variants';
 import useIsoNames from '@site/src/hooks/useIsoNames';
 import {ISO_BASE_URL} from '@site/src/utils/isoNaming';
 import styles from './styles.module.css';
+import {markFor} from '@site/src/data/marks';
 
 type Variant = string;
 type Desktop = 'gnome' | 'gnome50' | 'kde' | 'cosmic' | 'niri' | 'pantheon';
@@ -31,6 +32,8 @@ const ROLLING_SIBLING_OF: Record<string, string> = {
 
 type Option<T extends string> = {
   value: T;
+  // Variant options carry their branding mark; the other steps have none.
+  mark?: string;
   label: string;
   description: string;
   badge?: string;
@@ -67,6 +70,7 @@ const PRODUCT_OPTIONS: Option<Product>[] = [
 // secondary choice under their parent's card instead.
 const VARIANT_OPTIONS: Option<Variant>[] = VARIANTS.filter((v) => !(v.id in ROLLING_SIBLING_OF)).map((v) => ({
   value: v.id,
+  mark: markFor(v.id),
   label: v.name,
   description: v.blurb,
   badge: v.recommended ? 'Recommended' : undefined,
@@ -292,6 +296,9 @@ function OptionCard<T extends string>({
       type="button"
     >
       <span className={styles.optionHead}>
+        {option.mark && (
+          <img className={styles.optionMark} src={option.mark} alt="" width={24} height={24} loading="lazy" />
+        )}
         <span className={styles.optionLabel}>{option.label}</span>
         {option.badge && (
           <span className={clsx(styles.optionBadge, {

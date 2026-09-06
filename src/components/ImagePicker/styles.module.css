@@ -118,6 +118,13 @@
   flex-wrap: wrap;
 }
 
+.optionMark {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
 .optionLabel {
   font-size: 0.98rem;
   font-weight: 700;

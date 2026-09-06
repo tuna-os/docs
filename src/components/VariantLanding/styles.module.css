@@ -19,9 +19,12 @@
   margin: 0 auto;
 }
 
-.heroEmoji {
+.heroMark {
+  display: block;
+  width: 104px;
+  height: 104px;
+  margin: 0 auto 1.25rem;
   filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.35));
-  margin-bottom: 1.25rem;
 }
 
 .recommendedTag {
@@ -206,9 +209,13 @@
   background: var(--tu-panel-2);
 }
 
-.deskEmoji {
-  display: inline-block;
-  margin-bottom: 0.75rem;
+.deskLogo {
+  display: block;
+  width: 32px;
+  height: 32px;
+  margin-bottom: 0.6rem;
+  /* The desktop marks are monochrome dark; lift them onto the dark panel. */
+  filter: invert(1) opacity(0.85);
 }
 
 .deskName {
@@ -257,11 +264,6 @@
   transform: translateY(-4px);
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.4);
   background: var(--tu-panel-2);
-}
-
-.featEmoji {
-  display: inline-block;
-  margin-bottom: 0.75rem;
 }
 
 .featTitle {
@@ -395,8 +397,11 @@
   color: var(--tu-ink);
 }
 
-.otherEmoji {
+.otherMark {
   flex: none;
+  width: 34px;
+  height: 34px;
+  display: block;
 }
 
 .otherName {
@@ -435,8 +440,11 @@
   text-align: center;
 }
 
-.ctaEmoji {
-  margin-bottom: 0.75rem;
+.ctaMark {
+  display: block;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1rem;
 }
 
 .ctaTitle {

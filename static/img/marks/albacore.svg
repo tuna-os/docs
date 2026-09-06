@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Albacore — field mark: extremely long pectoral fin -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="TunaOS Albacore">
+  <g fill="#7FB7D9">
+    <path d="M16 60 C 28 40, 52 31, 72 34 C 87 37, 98 46, 104 56 L 104 64 C 98 74, 87 83, 72 86 C 52 89, 28 80, 16 60 Z"/>
+    <path d="M102 60 L 121 41 C 116 53.5, 116 66.5, 121 79 Z"/>
+    <path d="M54 34.5 C 58 23, 70 20.5, 78 24.5 L 71 36 Z"/>
+    <!-- signature long pectoral fin, sweeping past the tail base -->
+    <path d="M46 62 C 64 70, 88 84, 108 102 C 86 100, 62 88, 44 70 Z"/>
+  </g>
+  <circle cx="31" cy="54" r="4.5" fill="#0B1B2B"/>
+  <circle cx="32.5" cy="52.5" r="1.4" fill="#7FB7D9"/>
+  <path d="M40 42 C 46 50, 46 70, 40 78" fill="none" stroke="#0B1B2B" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Skipjack — field mark: horizontal belly stripes -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="TunaOS Skipjack">
+  <defs>
+    <clipPath id="body">
+      <path d="M16 64 C 28 44, 52 35, 72 38 C 87 41, 98 50, 104 60 L 104 68 C 98 78, 87 87, 72 90 C 52 93, 28 84, 16 64 Z"/>
+    </clipPath>
+  </defs>
+  <g fill="#6C8EF5">
+    <path d="M16 64 C 28 44, 52 35, 72 38 C 87 41, 98 50, 104 60 L 104 68 C 98 78, 87 87, 72 90 C 52 93, 28 84, 16 64 Z"/>
+    <path d="M102 64 L 121 45 C 116 57.5, 116 70.5, 121 83 Z"/>
+    <path d="M54 38.5 C 58 27, 70 24.5, 78 28.5 L 71 40 Z"/>
+  </g>
+  <!-- belly stripes -->
+  <g clip-path="url(#body)" stroke="#0B1B2B" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M38 70 C 60 74, 84 74, 102 70"/>
+    <path d="M40 77 C 60 81, 82 81, 100 77"/>
+    <path d="M44 84 C 62 88, 80 88, 96 84"/>
+  </g>
+  <circle cx="31" cy="58" r="4.5" fill="#0B1B2B"/>
+  <circle cx="32.5" cy="56.5" r="1.4" fill="#6C8EF5"/>
+  <path d="M40 46 C 46 54, 46 62, 42 64" fill="none" stroke="#0B1B2B" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Grouper — field marks: deep chunky body, big downturned mouth, spiny dorsal, spots -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="TunaOS Grouper">
+  <g fill="#C75146">
+    <!-- spiny dorsal -->
+    <path d="M42 36 l5 -10 4 9 z M53 33 l5 -10 4 9 z M64 32 l5 -10 4 9 z M75 33 l5 -9 3 8 z"/>
+    <!-- deep body -->
+    <path d="M16 66 C 24 42, 50 30, 72 33 C 90 36, 102 48, 104 62 L 104 70 C 98 82, 86 90, 70 92 C 48 95, 24 86, 16 66 Z"/>
+    <!-- broad paddle tail -->
+    <path d="M102 66 L 119 53 C 115 62, 115 72, 119 81 Z"/>
+    <!-- pectoral -->
+    <path d="M46 66 C 54 70, 62 78, 66 86 C 58 84, 50 78, 45 72 Z"/>
+  </g>
+  <!-- big downturned mouth -->
+  <path d="M15 58 C 20 64, 27 68, 35 70" fill="none" stroke="#0B1B2B" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="33" cy="50" r="4.5" fill="#0B1B2B"/>
+  <circle cx="34.4" cy="48.6" r="1.4" fill="#C75146"/>
+  <!-- spots -->
+  <g fill="#0B1B2B" opacity="0.85">
+    <circle cx="58" cy="48" r="2.4"/>
+    <circle cx="72" cy="44" r="2.2"/>
+    <circle cx="66" cy="62" r="2.4"/>
+    <circle cx="84" cy="56" r="2.2"/>
+    <circle cx="54" cy="78" r="2.2"/>
+    <circle cx="80" cy="74" r="2.4"/>
+    <circle cx="90" cy="66" r="2.0"/>
+  </g>
+</svg>

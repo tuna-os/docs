@@ -1,6 +1,7 @@
 import {useRef} from 'react';
 import type {ReactNode} from 'react';
 import type {Variant} from '@site/src/data/variants';
+import {markFor} from '@site/src/data/marks';
 import Link from '@docusaurus/Link';
 
 import styles from './styles.module.css';
@@ -27,7 +28,7 @@ export default function VariantCarousel({
       <div className={styles.track} ref={trackRef}>
         {variants.map((v) => (
           <Link key={v.id} to={`/${v.id}`} className={styles.card}>
-            <span className={styles.emoji}>{v.emoji}</span>
+            <img className={styles.mark} src={markFor(v.id)} alt="" width={48} height={48} loading="lazy" />
             <span className={styles.name}>{v.name}</span>
             <span className={styles.base}>{v.base}</span>
           </Link>
