@@ -134,7 +134,7 @@ export default function Office(): ReactNode {
                 Install the whole suite
               </Heading>
               <p className={styles.sectionSub}>
-                Add the TunaOS remote, then install all three apps at once.
+                Add the Flatpak remote, then install all three apps at once.
               </p>
             </div>
             <pre className={styles.code}>

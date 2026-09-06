@@ -88,18 +88,18 @@ function AppCard({app}: {app: (typeof APPS)[number]}): ReactNode {
 export default function Flatpak(): ReactNode {
   return (
     <Layout
-      title="Flatpak"
-      description="The TunaOS Flatpak remote: the GNOME office suite, terminals, a file manager, and a Homebrew front end.">
+      title="Flatpaks"
+      description="Flatpaks: the GNOME office suite, terminals, a file manager, and a Homebrew front end, installable on any distribution.">
       <header className={styles.hero}>
         <div className={styles.heroInner}>
-          <span className={styles.eyebrow}>Flatpak remote</span>
+          <span className={styles.eyebrow}>Flatpaks</span>
           <Heading as="h1" className={styles.heroTitle}>
-            The TunaOS Flatpak remote
+            Flatpaks
           </Heading>
           <p className={styles.heroLede}>
             Letters, Tables, Decks, Mariner, Tavern, BlueShell, Ghostty and
             bootc-installer, built here and installable on any distribution that runs
-            Flatpak.
+            Flatpak. Add one remote and they all show up.
           </p>
         </div>
       </header>

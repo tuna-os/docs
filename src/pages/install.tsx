@@ -115,7 +115,7 @@ function Content(): ReactNode {
       </header>
 
       <main>
-        <Step mark="01." title="Add the TunaOS remote">
+        <Step mark="01." title="Add the Flatpak remote">
           <p className={styles.prose} style={{marginBottom: '0.9rem'}}>
             If you have not already, add the TunaOS Flatpak repository:
           </p>

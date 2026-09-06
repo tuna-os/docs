@@ -17,7 +17,7 @@ next, and each of those actions is reachable from the front page in one click.
 | 1 | **On Windows, curious about Linux.** Has one machine and cannot repartition it. | To try Linux without risking the machine | **Try from Windows** | `/wootc` |
 | 2 | **Wants a desktop Linux to install.** Comparing distributions, or wants a long-support desktop. | A bootable ISO for their hardware | **Download** | `/download` |
 | 3 | **Already runs bootc** (Universal Blue, Bluefin, Fedora Atomic). | A one-line switch to a TunaOS image | **Rebase** (`bootc switch …`) | `/download`, docs |
-| 4 | **On some other distribution, wants the apps.** Does not care about the OS. | The office suite, terminal, file manager | **Apps** | `/flatpak` |
+| 4 | **On some other distribution, wants the apps.** Does not care about the OS. | The office suite, terminal, file manager | **Flatpaks** | `/flatpak` |
 | 5 | **Builder or contributor.** | The tooling and where the code is | **Build an ISO** / **Docs** / GitHub | `/iso-builder`, `/docs`, GitHub |
 
 Persona 1 is the one the site used to serve worst: wootc is the most

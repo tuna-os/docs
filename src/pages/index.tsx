@@ -77,7 +77,7 @@ function Hero(): ReactNode {
               image: pull it, boot it, or rebase onto it.
               <br /><br />
               The org also maintains the tools that build and boot-test those images, a
-              Flatpak remote with GTK4 applications, and RPM and DEB repositories for
+              set of GTK4 applications published as Flatpaks, and RPM and DEB repositories for
               packages Enterprise Linux does not ship.
             </p>
             <div className={styles.btnGroup}>
@@ -289,8 +289,8 @@ function AppsBand(): ReactNode {
     },
     {
       icon: 'package',
-      name: 'The TunaOS remote',
-      desc: 'One remote-add makes every app above installable. The index is rebuilt on a schedule and served from this site.',
+      name: 'Flatpaks',
+      desc: 'One remote-add makes every app above installable on any distribution that runs Flatpak. The index is rebuilt on a schedule and served from this site.',
       to: '/flatpak',
     },
   ];
@@ -300,7 +300,7 @@ function AppsBand(): ReactNode {
       <div className="container">
         <SectionHead
           title="Applications"
-          sub="GTK4 apps built in the org and published on the TunaOS Flatpak remote. They install on any distribution that runs Flatpak, not only on TunaOS images."
+          sub="GTK4 apps built in the org and published as Flatpaks. They install on any distribution that runs Flatpak, not only on TunaOS images."
         />
         <div className={styles.pipelineGrid}>
           {apps.map((a, i) => (
@@ -422,7 +422,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title={`${siteConfig.title} — Cloud-Native Enterprise Linux`}
-      description="Enterprise Linux desktop images built with bootc, the tools that build and test them, and the GTK4 apps published on the TunaOS Flatpak remote.">
+      description="Enterprise Linux desktop images built with bootc, the tools that build and test them, and the GTK4 apps published as Flatpaks.">
       <Hero />
       <FinalCta />
       <Backdrop />

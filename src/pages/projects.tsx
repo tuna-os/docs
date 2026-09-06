@@ -17,7 +17,7 @@ export default function Projects(): ReactNode {
             Projects
           </Heading>
           <p className={page.heroLede}>
-            Desktop OS images, the GTK4 apps published on the Flatpak remote, and the
+            Desktop OS images, the GTK4 apps published as Flatpaks, and the
             tools that build, boot-test, install and distribute them.
           </p>
         </div>

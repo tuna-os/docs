@@ -100,7 +100,7 @@ const config: Config = {
         },
         {to: '/download', label: 'Download', position: 'left'},
         {to: '/wootc', label: 'From Windows', position: 'left'},
-        {to: '/flatpak', label: 'Apps', position: 'left'},
+        {to: '/flatpak', label: 'Flatpaks', position: 'left'},
         {to: '/projects', label: 'Projects', position: 'left'},
         {
           type: 'docSidebar',
@@ -181,7 +181,7 @@ const config: Config = {
               href: 'https://hive.tunaos.org',
             },
             {
-              label: 'Apps',
+              label: 'Flatpaks',
               to: '/flatpak',
             },
             {
