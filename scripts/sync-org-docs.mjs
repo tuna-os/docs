@@ -64,12 +64,21 @@ const ROOT_DOC_FILTER = {
 //   dakota           — :::tip plus an external-project banner (repo is also
 //                      in SKIP; listed here so the protection does not rest
 //                      on a SKIP entry that exists for a different reason)
+//   blueshell        — :::tip pointing at the /blueshell showcase page, plus
+//                      site-specific install and upstream-tracking prose; the
+//                      upstream README is written for contributors, not for
+//                      this site
+//   ghostty          — not a tuna-os repo at all: the page documents what the
+//                      TunaOS remote republishes. Listed so it stays safe if a
+//                      repo of that name ever appears in the org
 const HAND_AUTHORED = new Set([
   'mariner',
   'gtk-office-suite',
   'mandelbrot',
   'remora',
   'dakota',
+  'blueshell',
+  'ghostty',
 ]);
 
 // Repos whose docs/ folder should NOT be synced (too noisy / internal).

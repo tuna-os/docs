@@ -22,6 +22,27 @@ flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.fl
 
 Everything below is installable from the remote. See the [App Guide](/docs/flatpak/guide) for the full catalog (13 apps, including system tools and the live-ISO installer frontends).
 
+Terminals:
+
+<Tabs>
+  <TabItem value="blueshell" label="🐚 BlueShell">
+    ```bash
+    flatpak install tuna-os org.tunaos.BlueShell
+    ```
+
+    Container-native terminal for GNOME — see the [BlueShell docs](/docs/blueshell).
+  </TabItem>
+  <TabItem value="ghostty" label="👻 Ghostty">
+    ```bash
+    flatpak install tuna-os com.mitchellh.ghostty
+    ```
+
+    Stock upstream Ghostty, rebuilt weekly — see the [Ghostty docs](/docs/ghostty).
+  </TabItem>
+</Tabs>
+
+The app IDs differ, so you can install both terminals side by side.
+
 Office suite (pure Rust on GTK4 — no Python or WebKit dependency):
 
 <Tabs>

@@ -40,6 +40,20 @@ const APPS = [
     docs: '/tavern',
   },
   {
+    id: 'org.tunaos.BlueShell',
+    name: 'BlueShell',
+    emoji: '🐚',
+    description: 'Container-native terminal for GNOME — the Ghostty engine, the Ptyxis experience.',
+    docs: '/blueshell',
+  },
+  {
+    id: 'com.mitchellh.ghostty',
+    name: 'Ghostty',
+    emoji: '👻',
+    description: 'The upstream terminal, republished here unmodified and rebuilt weekly.',
+    docs: '/ghostty',
+  },
+  {
     id: 'org.bootcinstaller.Installer',
     name: 'bootc-installer',
     emoji: '🖥️',
