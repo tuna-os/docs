@@ -121,6 +121,8 @@ const sidebars: SidebarsConfig = {
         },
         {type: 'category', label: '🗺️ Mariner', link: {type: 'doc', id: 'mariner/index'}, items: []},
         {type: 'category', label: '🌀 Mandelbrot', link: {type: 'doc', id: 'mandelbrot/index'}, items: ['mandelbrot/features']},
+        {type: 'category', label: '🐚 BlueShell', link: {type: 'doc', id: 'blueshell/index'}, items: []},
+        {type: 'category', label: '👻 Ghostty', className: 'sidebar-external', link: {type: 'doc', id: 'ghostty/index'}, items: []},
       ],
     },
     {type: 'html', value: '<div class="sidebar-section-label">Community</div>', defaultStyle: true},
