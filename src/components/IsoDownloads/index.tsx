@@ -124,14 +124,36 @@ function VariantSection({name, isos}: {name: string; isos: Iso[]}) {
   );
 }
 
-function CategoryCard({cat}: {cat: Category}): ReactNode {
+function CategoryCard({cat, query}: {cat: Category; query: string}): ReactNode {
   const latest = cat.isos.filter((i) => i.latest);
   const archives = cat.isos.filter((i) => !i.latest);
   const [showArchive, setShowArchive] = useState(false);
 
+  const filteredLatest = query
+    ? latest.filter((iso) => {
+        const text = `${iso.name} ${iso.category} ${iso.arch} ${prettyName(iso)}`.toLowerCase();
+        return text.includes(query);
+      })
+    : latest;
+
+  const filteredArchives = query
+    ? archives.filter((iso) => {
+        const text = `${iso.name} ${iso.category} ${iso.arch} ${prettyName(iso)}`.toLowerCase();
+        return text.includes(query);
+      })
+    : archives;
+
   // Group latest ISOs by variant prefix (e.g. albacore, yellowfin)
-  const groups = groupByVariant(latest.length ? latest : []);
+  const groups = groupByVariant(filteredLatest.length ? filteredLatest : []);
   const hasGroups = Object.keys(groups).length > 1;
+
+  if (!query && !latest.length && !archives.length) {
+    return null;
+  }
+
+  if (query && !filteredLatest.length && !filteredArchives.length) {
+    return null;
+  }
 
   return (
     <section className={styles.card}>
@@ -149,24 +171,24 @@ function CategoryCard({cat}: {cat: Category}): ReactNode {
             <VariantSection key={variant} name={variant} isos={isos} />
           ))
         ) : (
-          (latest.length ? latest : []).map((iso) => (
+          filteredLatest.map((iso) => (
             <IsoRow key={iso.path} iso={iso} />
           ))
         )}
       </div>
 
-      {archives.length > 0 && latest.length > 0 && (
+      {(filteredArchives.length > 0 && filteredLatest.length > 0) && !query && (
         <>
           <button
             className={styles.archiveToggle}
             onClick={() => setShowArchive((v) => !v)}
             type="button"
           >
-            {showArchive ? '▾' : '▸'} {archives.length} older build{archives.length === 1 ? '' : 's'}
+            {showArchive ? '▾' : '▸'} {filteredArchives.length} older build{filteredArchives.length === 1 ? '' : 's'}
           </button>
           {showArchive && (
             <div className={styles.isoList}>
-              {archives.map((iso) => (
+              {filteredArchives.map((iso) => (
                 <IsoRow key={iso.path} iso={iso} />
               ))}
             </div>
@@ -174,7 +196,7 @@ function CategoryCard({cat}: {cat: Category}): ReactNode {
         </>
       )}
 
-      {cat.checksums && (
+      {cat.checksums && !query && (
         <a className={styles.checksums} href={cat.checksums}>
           🔐 SHA256SUMS
         </a>
@@ -187,6 +209,7 @@ export default function IsoDownloads(): ReactNode {
   const indexUrl = useBaseUrl('/iso-index.json');
   const [index, setIndex] = useState<Index | null>(null);
   const [error, setError] = useState(false);
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
     let live = true;
@@ -222,19 +245,58 @@ export default function IsoDownloads(): ReactNode {
     );
   }
 
+  const q = query.trim().toLowerCase();
+  const latestIsos = index.categories
+    .flatMap((cat) => cat.isos.filter((i) => i.latest))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const filtered = q
+    ? latestIsos.filter((iso) => {
+        const text = `${iso.name} ${iso.category} ${iso.arch} ${prettyName(iso)}`.toLowerCase();
+        return text.includes(q);
+      })
+    : latestIsos;
+
+  const grouped = groupByVariant(filtered);
+
   return (
     <div>
+      <div className={styles.searchWrap}>
+        <input
+          className={styles.searchInput}
+          type="search"
+          placeholder="Search ISOs by variant, desktop, or arch…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </div>
+
+      {q && (
+        <p className={styles.resultCount}>
+          {filtered.length} result{filtered.length === 1 ? '' : 's'} for “{query}”
+        </p>
+      )}
+
       <div className={styles.grid}>
         {index.categories
-          .filter((cat) => cat.isos.some((i) => i.latest))
+          .filter((cat) => {
+            if (!query) return cat.isos.some((i) => i.latest);
+            return cat.isos.some((iso) => {
+              const text = `${iso.name} ${iso.category} ${iso.arch} ${prettyName(iso)}`.toLowerCase();
+              return text.includes(q);
+            });
+          })
           .map((cat) => (
-          <CategoryCard key={cat.id} cat={cat} />
+          <CategoryCard key={cat.id} cat={cat} query={q} />
         ))}
       </div>
-      <p className={styles.generated}>
-        {index.categories.reduce((n, c) => n + c.isos.filter((i) => i.latest).length, 0)} latest images · refreshed {formatDate(index.generatedAt)} from{' '}
-        <a href={index.baseUrl}>download.tunaos.org</a>
-      </p>
+
+      {!q && (
+        <p className={styles.generated}>
+          {latestIsos.length} latest images · refreshed {formatDate(index.generatedAt)} from{' '}
+          <a href={index.baseUrl}>download.tunaos.org</a>
+        </p>
+      )}
     </div>
   );
 }

@@ -1,113 +1,184 @@
+import {useEffect} from 'react';
 import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
+import VariantCarousel from '@site/src/components/VariantCarousel';
+import ProjectCarousel from '@site/src/components/ProjectCarousel';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import AnimatedEmoji from '@site/src/components/AnimatedEmoji';
+import Icon, {type IconName} from '@site/src/components/Icon';
 import Heading from '@theme/Heading';
+
+import {VARIANTS as ALL_VARIANTS} from '@site/src/data/variants';
 
 import styles from './index.module.css';
 
-const VARIANTS = [
-  {
-    emoji: '🐟',
-    name: 'Albacore',
-    base: 'AlmaLinux 10',
-    blurb: '10-year support cycle. The rock-solid daily driver for work.',
-    to: '/albacore',
-    flagship: true,
-  },
-  {
-    emoji: '🐠',
-    name: 'Yellowfin',
-    base: 'AlmaLinux Kitten',
-    blurb: 'Newer packages on a near-enterprise base. The developer pick.',
-    to: '/yellowfin',
-  },
-  {
-    emoji: '🍣',
-    name: 'Skipjack',
-    base: 'CentOS Stream 10',
-    blurb: 'Upstream-tracking — a preview of where Enterprise Linux is headed.',
-    to: '/skipjack',
-  },
-  {
-    emoji: '🎣',
-    name: 'Bonito',
-    base: 'Fedora 44',
-    blurb: 'Bleeding-edge packages and the very latest kernel.',
-    to: '/bonito',
-  },
+const FEATURED_PROJECTS = [
+  {name: 'TunaOS', desc: 'Desktop images', to: '/tunaos'},
+  {name: 'Tacklebox', desc: 'ISO & USB builder', to: '/tacklebox'},
+  {name: 'Tromsø', desc: 'KDE Linux', to: '/tromso'},
+  {name: 'XFCE Linux', desc: 'XFCE desktop', to: '/xfce-linux'},
+  {name: 'Tavern', desc: 'Homebrew GUI', to: '/tavern'},
+  {name: 'bluefin-cli', desc: 'Shell CLI', to: '/bluefin-cli'},
+  {name: 'COPR Builds', desc: 'RPM builder', to: '/copr'},
+  {name: 'Corral', desc: 'VM & container manager', to: '/corral'},
+  {name: 'Dakota', desc: 'Bluefin GNOME OS', to: '/dakota'},
 ];
 
+type SectionHeadProps = {
+  title: string;
+  sub?: string;
+};
+
+function SectionHead({title, sub}: SectionHeadProps): ReactNode {
+  return (
+    <div className={styles.sectionHead}>
+      <Heading as="h2" className={styles.sectionTitle}>
+        {title}
+      </Heading>
+      {sub && <p className={styles.sectionSub}>{sub}</p>}
+    </div>
+  );
+}
+
+/**
+ * Fixed art backdrop behind the hero, borrowed from the robin.tarxz.zip
+ * layout: a dimmed "seascape" that the page scrolls over, with a solid
+ * overlay that fades in as you scroll so the hero sinks into the page.
+ */
+function Backdrop(): ReactNode {
+  return (
+    <div className={styles.bgScene} aria-hidden>
+      <div className={styles.bgImage} />
+    </div>
+  );
+}
+
 function Hero(): ReactNode {
-  const {siteConfig} = useDocusaurusContext();
   return (
     <header className={styles.hero}>
-      <div className={styles.heroBubbles} aria-hidden>
-        {Array.from({length: 12}).map((_, i) => (
-          <span key={i} className={styles.bubble} />
-        ))}
-      </div>
       <div className={clsx('container', styles.heroInner)}>
-        <div className={styles.badgeRow}>
-          <span className={styles.badge}>GNOME 50</span>
-          <span className={styles.badge}>AlmaLinux 10</span>
-          <span className={styles.badge}>CentOS 10</span>
-          <span className={styles.badge}>Fedora 44</span>
-        </div>
-        <Heading as="h1" className={styles.heroTitle}>
-          <span className={styles.heroFish}><AnimatedEmoji emoji="🐟" size={64} /></span> {siteConfig.title}
-        </Heading>
-        <p className={styles.heroTagline}>{siteConfig.tagline}</p>
-        <p className={styles.heroLede}>
-          Modern, cloud-native desktops with the stability of Enterprise Linux.
-          Built on{' '}
-          <a href="https://github.com/bootc-dev/bootc" target="_blank" rel="noreferrer">
-            bootc
-          </a>{' '}
-          for atomic updates, painless rollbacks, and effortless customization.
-        </p>
-        <div className={styles.heroButtons}>
-          <Link className={clsx('button button--lg', styles.btnPrimary)} to="/download">
-            Download ISOs 📦
-          </Link>
-          <Link className={clsx('button button--lg', styles.btnGhost)} to="/iso-builder">
-            Build your own ISO 🛠️
-          </Link>
-          <Link className={clsx('button button--lg', styles.btnGhost)} to="/projects">
-            Explore Projects 🚀
-          </Link>
+        <div className={styles.heroGrid}>
+          <div className={styles.heroText}>
+            <Heading as="h1" className={styles.heroTitle}>
+              A new wave of <span className={styles.grad}>Enterprise Linux</span> desktops.
+            </Heading>
+            <div className={styles.badgeRow}>
+              <span className={styles.badge}>GNOME 50</span>
+              <span className={styles.badge}>AlmaLinux 10</span>
+              <span className={styles.badge}>CentOS 10</span>
+              <span className={styles.badge}>Fedora 44</span>
+            </div>
+            <p className={styles.heroLede}>
+              Why choose TunaOS?
+              <br /><br />
+              We pride ourselves on using what is proven to work, the pipeline design, CI patterns, and desktop polish this project builds on all trace back to Universal Blue and TunaOS isn't just Containerfiles — it's a small, purpose-built toolchain that builds, boots, and verifies every image before it ships.
+            </p>
+            <div className={styles.btnGroup}>
+              <Link className={clsx('button', styles.btnPrimary)} to="/download">
+                Download ISOs
+              </Link>
+              <Link className={clsx('button', styles.btnGhost)} to="/iso-builder">
+                Build your own ISO
+              </Link>
+              <Link className={clsx('button', styles.btnGhost)} to="/projects">
+                Explore Projects
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </header>
   );
 }
 
-function VariantLineup(): ReactNode {
+function CarouselSection(): ReactNode {
   return (
     <section className={styles.section}>
       <div className="container">
-        <div className={styles.sectionHead}>
-          <Heading as="h2">Pick your fish</Heading>
-          <p>Four bases, one experience — same desktop, different release cadence.</p>
+        <div className={styles.carouselGrid}>
+          <div className={styles.carouselPanel}>
+            <ProjectCarousel projects={FEATURED_PROJECTS} />
+          </div>
+          <div className={styles.carouselPanel}>
+            <VariantCarousel variants={ALL_VARIANTS} />
+          </div>
         </div>
-        <div className={styles.variantGrid}>
-          {VARIANTS.map((v) => (
+      </div>
+    </section>
+  );
+}
+
+function HomepageFeaturesBand(): ReactNode {
+  return (
+    <section className={styles.section}>
+      <div className="container">
+        <SectionHead
+          title="Built different"
+          sub="A small, reproducible image factory — not a distro fork."
+        />
+        <HomepageFeatures />
+      </div>
+    </section>
+  );
+}
+
+function PipelineBand(): ReactNode {
+  const tools: Array<{
+    icon: IconName;
+    name: string;
+    desc: string;
+    to: string;
+    external?: boolean;
+  }> = [
+    {
+      icon: 'wrench',
+      name: 'Tacklebox',
+      desc: 'Turns bootc OCI images into multi-desktop, deduplicated live ISOs and installable disk images — one shared squashfs store instead of a separate ISO per desktop.',
+      to: '/tacklebox',
+    },
+    {
+      icon: 'cpu',
+      name: 'Corral',
+      desc: "Boots every published image in a real VM (QEMU locally, KubeVirt in CI) and checks it actually reaches a working desktop before promotion — TunaOS's boot gate.",
+      to: '/corral',
+    },
+    {
+      icon: 'package',
+      name: 'tunaos-packages',
+      desc: "TunaOS's package factory — builds, tests, signs, and publishes RPM and DEB repositories with GitHub Actions and Cloudflare R2 (the packages EL10 doesn't ship yet: GNOME 50, the XFCE Wayland stack).",
+      to: 'https://github.com/tuna-os/tunaos-packages',
+      external: true,
+    },
+  ];
+
+  return (
+    <section className={styles.section}>
+      <div className="container">
+        <SectionHead
+          title="The pipeline behind every build"
+          sub="TunaOS isn't just Containerfiles — it's a small, purpose-built toolchain that builds, boots, and verifies every image before it ships."
+        />
+        <div className={styles.pipelineGrid}>
+          {tools.map((t, i) => (
             <Link
-              key={v.name}
-              to={v.to}
-              className={clsx(styles.variantCard, {[styles.variantFlagship]: v.flagship})}
+              key={t.name}
+              to={t.to}
+              {...(t.external ? {target: '_blank', rel: 'noopener noreferrer'} : {})}
+              className={styles.pipelineCard}
             >
-              {v.flagship && <span className={styles.flagshipTag}>Recommended</span>}
-              <div className={styles.variantEmoji}><AnimatedEmoji emoji={v.emoji} size={40} /></div>
-              <Heading as="h3" className={styles.variantName}>
-                {v.name}
+              <div className={styles.cardTop}>
+                <span className={styles.cardIcon}>
+                  <Icon name={t.icon} size={22} />
+                </span>
+                <span className={styles.cardIndex}>{String(i + 1).padStart(2, '0')}</span>
+              </div>
+              <Heading as="h3" className={styles.cardName}>
+                {t.name}
+                {t.external && <span className={styles.externalMark}> ↗</span>}
               </Heading>
-              <div className={styles.variantBase}>{v.base}</div>
-              <p className={styles.variantBlurb}>{v.blurb}</p>
-              <span className={styles.variantLink}>Learn more →</span>
+              <p className={styles.cardBlurb}>{t.desc}</p>
             </Link>
           ))}
         </div>
@@ -118,142 +189,30 @@ function VariantLineup(): ReactNode {
 
 function DocsBand(): ReactNode {
   return (
-    <section className={clsx(styles.section, styles.devBand)}>
+    <section className={clsx(styles.section, styles.docsSection)}>
       <div className="container">
-        <div className={styles.devInner}>
+        <div className={styles.docsInner}>
           <div>
-            <Heading as="h2">Docs that live with the code</Heading>
-            <p className={styles.devText}>
-              From first install to building your own images, the handbook
-              covers it — and it’s sourced straight from the project repository,
-              so it never drifts from what actually ships.
+            <Heading as="h2" className={styles.docsTitle}>
+              Docs that live with the code
+            </Heading>
+            <p className={styles.docsText}>
+              From first install to building your own images, the handbook covers it — and
+              it’s sourced straight from the project repository, so it never drifts from
+              what actually ships.
             </p>
           </div>
-          <div className={styles.devLinks}>
-            <Link className="button button--primary button--lg" to="/docs/intro">
-              📖 Read the Docs
+          <div className={styles.docsLinks}>
+            <Link className={clsx('button', styles.btnPrimary)} to="/docs/intro">
+              Read the Docs
             </Link>
             <a
-              className="button button--outline button--lg"
+              className={clsx('button', styles.btnGhost)}
               href="https://github.com/tuna-os/tunaOS"
             >
-              💻 Contribute on GitHub
+              Contribute on GitHub
             </a>
           </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ProjectsBand(): ReactNode {
-  const featured = [
-    {emoji: '🐟', name: 'TunaOS', desc: 'Desktop images', to: '/tunaos'},
-    {emoji: '🛠', name: 'Tacklebox', desc: 'ISO & USB builder', to: '/tacklebox'},
-    {emoji: '🌌', name: 'Tromsø', desc: 'KDE Linux', to: '/tromso'},
-    {emoji: '🖥️', name: 'XFCE Linux', desc: 'XFCE desktop', to: '/xfce-linux'},
-    {emoji: '🍻', name: 'Tavern', desc: 'Homebrew GUI', to: '/tavern'},
-    {emoji: '⌨️', name: 'bluefin-cli', desc: 'Shell CLI', to: '/bluefin-cli'},
-    {emoji: '⚙', name: 'COPR Builds', desc: 'RPM builder', to: '/copr'},
-    {emoji: '🤠', name: 'Corral', desc: 'VM & container manager', to: '/corral'},
-    {emoji: '🦖', name: 'Dakota', desc: 'Bluefin GNOME OS', to: '/dakota'},
-  ];
-  return (
-    <section className={clsx(styles.section)}>
-      <div className="container">
-        <div className={styles.sectionHead}>
-          <Heading as="h2">Our projects</Heading>
-          <p>Tools, installers, and ISOs — everything we build.</p>
-        </div>
-        <div className={styles.projectGrid}>
-          {featured.map((p) => (
-            <Link key={p.name} to={p.to} className={styles.projectChip}>
-              <span className={styles.projectChipEmoji}><AnimatedEmoji emoji={p.emoji} size={24} /></span>
-              <span>
-                <strong>{p.name}</strong>
-                <span className={styles.projectChipDesc}> — {p.desc}</span>
-              </span>
-            </Link>
-          ))}
-        </div>
-        <div className="text--center margin-top--md">
-          <Link className="button button--outline button--md" to="/projects">
-            Explore all projects →
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function PipelineBand(): ReactNode {
-  const tools = [
-    {
-      emoji: '🛠',
-      name: 'Tacklebox',
-      desc: 'Turns bootc OCI images into multi-desktop, deduplicated live ISOs and installable disk images — one shared squashfs store instead of a separate ISO per desktop.',
-      to: '/tacklebox',
-    },
-    {
-      emoji: '🤠',
-      name: 'Corral',
-      desc: "Boots every published image in a real VM (QEMU locally, KubeVirt in CI) and checks it actually reaches a working desktop before promotion — TunaOS's boot gate.",
-      to: '/corral',
-    },
-    {
-      emoji: '⚙',
-      name: 'tunaos-packages',
-      desc: "TunaOS's package factory — builds, tests, signs, and publishes RPM and DEB repositories with GitHub Actions and Cloudflare R2 (the packages EL10 doesn't ship yet: GNOME 50, the XFCE Wayland stack).",
-      to: 'https://github.com/tuna-os/tunaos-packages',
-      external: true,
-    },
-  ];
-
-  return (
-    <section className={clsx(styles.section, styles.pipelineSection)}>
-      <div className="container">
-        <div className={styles.sectionHead}>
-          <Heading as="h2">The pipeline behind every build</Heading>
-          <p>
-            TunaOS isn't just Containerfiles — it's a small, purpose-built toolchain that
-            builds, boots, and verifies every image before it ships.
-          </p>
-        </div>
-        <div className={styles.pipelineGrid}>
-          {tools.map((t) => (
-            <Link
-              key={t.name}
-              to={t.to}
-              {...(t.external ? {target: '_blank', rel: 'noopener noreferrer'} : {})}
-              className={styles.pipelineCard}>
-              <div className={styles.pipelineCardHead}>
-                <span className={styles.projectChipEmoji}><AnimatedEmoji emoji={t.emoji} size={28} /></span>
-                <strong>{t.name}{t.external ? ' ↗' : ''}</strong>
-              </div>
-              <p>{t.desc}</p>
-            </Link>
-          ))}
-        </div>
-
-        <div className={styles.foundationNote}>
-          <Heading as="h3">Built on a proven foundation</Heading>
-          <p>
-            TunaOS is a fork of{' '}
-            <a href="https://github.com/ublue-os/bluefin-lts" target="_blank" rel="noopener noreferrer">
-              Bluefin LTS
-            </a>{' '}
-            — itself part of the{' '}
-            <a href="https://github.com/ublue-os/bluefin" target="_blank" rel="noopener noreferrer">
-              Bluefin
-            </a>{' '}
-            /{' '}
-            <a href="https://github.com/ublue-os/aurora" target="_blank" rel="noopener noreferrer">
-              Aurora
-            </a>{' '}
-            family from Universal Blue — the pipeline design, CI patterns, and desktop
-            polish this project builds on all trace back there, adapted for Enterprise Linux
-            and, now, Ubuntu.
-          </p>
         </div>
       </div>
     </section>
@@ -263,19 +222,20 @@ function PipelineBand(): ReactNode {
 function FinalCta(): ReactNode {
   return (
     <section className={styles.ctaBand}>
-      <div className="container text--center">
+      <div className={clsx('container', styles.ctaInner)}>
+        <span className={styles.ctaKicker}>Ready?</span>
         <Heading as="h2" className={styles.ctaTitle}>
-          Ready to dive in?
+          Dive in.
         </Heading>
         <p className={styles.ctaText}>
           Grab a live ISO, or rebase an existing bootc system in one command.
         </p>
-        <div className={styles.heroButtons}>
-          <Link className={clsx('button button--lg', styles.btnPrimary)} to="/download">
-            Browse all ISOs 📦
+        <div className={styles.btnGroup}>
+          <Link className={clsx('button', styles.btnPrimary)} to="/download">
+            Browse all ISOs
           </Link>
-          <Link className={clsx('button button--lg', styles.btnGhost)} to="/docs/installation">
-            Install Guide 📋
+          <Link className={clsx('button', styles.btnGhost)} to="/docs/installation">
+            Install Guide
           </Link>
         </div>
       </div>
@@ -285,17 +245,51 @@ function FinalCta(): ReactNode {
 
 export default function Home(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+    const navbar = document.querySelector('.navbar');
+
+    const update = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY <= 0) {
+        navbar?.classList.remove('navbar--hidden');
+        navbar?.classList.add('navbar--visible');
+      } else if (currentScrollY > lastScrollY) {
+        navbar?.classList.add('navbar--hidden');
+        navbar?.classList.remove('navbar--visible');
+      } else {
+        navbar?.classList.remove('navbar--hidden');
+        navbar?.classList.add('navbar--visible');
+      }
+      lastScrollY = currentScrollY;
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
     <Layout
       title={`${siteConfig.title} — Cloud-Native Enterprise Linux`}
       description="A collection of cloud-native Enterprise Linux desktop images built with bootc — Albacore, Yellowfin, Skipjack, and Bonito.">
       <Hero />
+      <FinalCta />
+      <Backdrop />
+      <CarouselSection />
       <main>
-        <VariantLineup />
-        <ProjectsBand />
-        <HomepageFeatures />
+        <HomepageFeaturesBand />
+        <PipelineBand />
         <DocsBand />
-        <FinalCta />
       </main>
     </Layout>
   );

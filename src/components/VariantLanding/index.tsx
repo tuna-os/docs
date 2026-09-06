@@ -12,24 +12,12 @@ import {ISO_BASE_URL, isoNameForImage} from '@site/src/utils/isoNaming';
 import styles from './styles.module.css';
 
 function Hero({variant, isoNames}: {variant: Variant; isoNames: Set<string> | null}): ReactNode {
-  // Per-variant accent gradient, injected as CSS custom properties.
-  const style = {
-    ['--v-accent' as string]: variant.accent,
-    ['--v-accent2' as string]: variant.accent2,
-  };
-  // Prefer a direct link to the flagship flavor's live ISO; fall back to the
-  // picker page if nothing's published yet (or the index hasn't loaded).
   const heroFlavor = variant.flavors.find(
     (f) => isoNames && isoNames.has(isoNameForImage(variant.id, f.image) ?? ''),
   );
   const heroIsoUrl = heroFlavor ? `${ISO_BASE_URL}/${isoNameForImage(variant.id, heroFlavor.image)}.iso` : null;
   return (
-    <header className={styles.hero} style={style}>
-      <div className={styles.heroBubbles} aria-hidden>
-        {Array.from({length: 14}).map((_, i) => (
-          <span key={i} className={styles.bubble} />
-        ))}
-      </div>
+    <header className={styles.hero}>
       <div className={clsx('container', styles.heroInner)}>
         {variant.recommended && <span className={styles.recommendedTag}>★ Recommended</span>}
         <div className={styles.heroEmoji}>
@@ -39,7 +27,7 @@ function Hero({variant, isoNames}: {variant: Variant; isoNames: Set<string> | nu
           {variant.name}
         </Heading>
         <a className={styles.heroBase} href={variant.baseUrl} target="_blank" rel="noreferrer">
-          Based on {variant.base} ↗
+          Based on {variant.base}
         </a>
         <p className={styles.heroLede}>{variant.lede}</p>
 
@@ -55,19 +43,19 @@ function Hero({variant, isoNames}: {variant: Variant; isoNames: Set<string> | nu
         <div className={styles.heroButtons}>
           {heroIsoUrl ? (
             <a className={clsx('button button--lg', styles.btnPrimary)} href={heroIsoUrl}>
-              Download ISO 📦
+              Download ISO
             </a>
           ) : (
             <Link className={clsx('button button--lg', styles.btnPrimary)} to="/download">
-              Browse images 📦
+              Browse images
             </Link>
           )}
           <Link className={clsx('button button--lg', styles.btnGhost)} to={`/docs/${variant.id}`}>
-            Full docs 📖
+            Full docs
           </Link>
           {variant.id === 'gurnard' && (
             <Link className={clsx('button button--lg', styles.btnGhost)} to="/docs/gurnard/pantheon-shortcuts">
-              Pantheon shortcuts ⌨️
+              Pantheon shortcuts
             </Link>
           )}
         </div>
@@ -189,12 +177,8 @@ function OtherVariants({variant}: {variant: Variant}): ReactNode {
 }
 
 function Cta({variant}: {variant: Variant}): ReactNode {
-  const style = {
-    ['--v-accent' as string]: variant.accent,
-    ['--v-accent2' as string]: variant.accent2,
-  };
   return (
-    <section className={styles.ctaBand} style={style}>
+    <section className={styles.ctaBand}>
       <div className="container text--center">
         <div className={styles.ctaEmoji}><AnimatedEmoji emoji={variant.emoji} size={56} /></div>
         <Heading as="h2" className={styles.ctaTitle}>Dive into {variant.name}</Heading>
@@ -203,10 +187,10 @@ function Cta({variant}: {variant: Variant}): ReactNode {
         </p>
         <div className={styles.heroButtons}>
           <Link className={clsx('button button--lg', styles.btnPrimary)} to="/download">
-            Download 📦
+            Download
           </Link>
           <Link className={clsx('button button--lg', styles.btnGhost)} to="/docs/installation">
-            Install guide 📋
+            Install guide
           </Link>
         </div>
       </div>

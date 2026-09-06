@@ -128,7 +128,7 @@
 }
 
 [data-theme='dark'] .optionCard {
-  background: #1a1a1a;
+  background: #232323;
   border-color: #333;
 }
 
@@ -145,7 +145,7 @@
 }
 
 [data-theme='dark'] .optionSelected {
-  background: color-mix(in srgb, var(--ifm-color-primary) 15%, #1a1a1a) !important;
+  background: color-mix(in srgb, var(--ifm-color-primary) 15%, #232323) !important;
 }
 
 .optionEmoji {
@@ -263,7 +263,7 @@
 }
 
 [data-theme='dark'] .resultCard {
-  background: #1a1a1a;
+  background: #232323;
 }
 
 .resultHeader {
