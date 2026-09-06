@@ -62,9 +62,24 @@ lint:
         echo "  Checking: $f"
         node --check "$f" 2>/dev/null || FAILED=1
     done
-    node scripts/ste-lint.mjs --summary
-    node scripts/ste-lint.mjs --max "$(cat .ste-budget)" >/dev/null
+    just ste
     exit $FAILED
+
+# Simplified Technical English check. The linter lives in tuna-os/.github and
+# is shared by every repo in the org, so it is fetched rather than vendored --
+# a second copy here is a copy that drifts. Cached between runs; delete the
+# cache directory to force a refresh.
+ste:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    src=https://raw.githubusercontent.com/tuna-os/.github/main/.github/actions/ste-lint
+    dir="${XDG_CACHE_HOME:-$HOME/.cache}/tuna-os/ste-lint"
+    mkdir -p "$dir"
+    for f in ste-lint.mjs ste-rules.mjs; do
+        [ -f "$dir/$f" ] || curl -fsSL "$src/$f" -o "$dir/$f"
+    done
+    node "$dir/ste-lint.mjs" --summary
+    node "$dir/ste-lint.mjs" --max "$(cat .ste-budget)" >/dev/null
 
 # Verify package names used in documented Homebrew install commands.
 check-install-commands:

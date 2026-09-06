@@ -48,7 +48,7 @@ const config: Config = {
     // This compat flag turns HTML comments into MDX comments, and it was on by
     // default until `future.v4` started disabling it in Docusaurus 3.10 — which
     // broke the build on the `<!-- truncate -->` marker in every blog post and
-    // on the `<!-- ste-disable-file: ... -->` pragmas scripts/ste-lint.mjs
+    // on the `<!-- ste-disable-file: ... -->` pragmas tuna-os/.github's ste-lint action
     // reads. Writing `{/* ... */}` instead is not a drop-in replacement: an
     // MDX comment survives createExcerpt(), so a leading pragma becomes the
     // page's meta description.
