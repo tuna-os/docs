@@ -118,6 +118,9 @@ const config: Config = {
             {href: 'https://hive.tunaos.org', label: 'Hive'},
           ],
         },
+        {to: '/download', label: 'Download', position: 'left'},
+        {to: '/projects', label: 'Projects', position: 'left'},
+        {to: '/flatpak', label: 'Apps', position: 'left'},
         {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',

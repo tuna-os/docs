@@ -14,20 +14,20 @@ of enterprise desktops.
 Enterprise Linux gives **stability and long-term support**. Developers and
 workstation users also need **new tools**. TunaOS supplies both.
 
-## ✨ Why TunaOS?
+## Why TunaOS?
 
-- 🖥️ **Latest GNOME**: The newest GNOME on a stable base, with the
+- **Latest GNOME**: The newest GNOME on a stable base, with the
   Enterprise Linux toolchain. You get new desktop features and a stable system.
-- 🍺 **Baked-in Homebrew**: Homebrew is installed. You get immediate access to
+- **Baked-in Homebrew**: Homebrew is installed. You get immediate access to
   a large library of command-line tools and fonts.
-- 📦 **Bootc Technology**: Modern container technology makes the system
+- **Bootc Technology**: Modern container technology makes the system
   immutable, reliable, and easy to reproduce.
-- 🏢 **Enterprise DNA**: AlmaLinux 10 and CentOS 10 are the base. Support
+- **Enterprise DNA**: AlmaLinux 10 and CentOS 10 are the base. Support
   continues for as many as 10 years.
-- 🛍️ **Flathub Enabled**: Flathub is on at installation. A full set of desktop
+- **Flathub Enabled**: Flathub is on at installation. A full set of desktop
   applications is available immediately.
 
-## 🐠 Available Variants
+## Available Variants
 
 | Variant | Base OS | Target Audience |
 | :--- | :--- | :--- |
@@ -36,7 +36,7 @@ workstation users also need **new tools**. TunaOS supplies both.
 | **[Skipjack](skipjack)** | CentOS Stream 10 | Upstream Testing |
 | **[Bonito](bonito)** | Fedora 44 | Beta (published for testing) |
 
-## 🚀 Specialized Editions
+## Specialized Editions
 
 Albacore and Yellowfin are the primary variants. Each one has these editions:
 
@@ -45,7 +45,7 @@ Albacore and Yellowfin are the primary variants. Each one has these editions:
   graphics, and VFX work. The previous name was "GDX".
 - **HWE (Hardware Enablement)**: For new hardware that needs a later kernel.
 
-### 🎨 Desktop Flavors
+### Desktop Flavors
 
 Six desktop environments are available:
 
@@ -56,7 +56,7 @@ Six desktop environments are available:
 - **XFCE**: The classic lightweight desktop, on the new xfwl4 Wayland compositor.
 - **Pantheon**: elementary OS's simple, minimal desktop (Gurnard).
 
-## 📚 Next Steps
+## Next Steps
 
 To start:
 
@@ -65,7 +65,7 @@ To start:
 3.  **[Installation Guide](installation)** - Read how to install TunaOS.
 4.  **[Download ISOs](/download)** - Get a pre-built image.
 
-## 🧰 Beyond the OS
+## Beyond the OS
 
 TunaOS is more than its images. It is a set of tools that build the images,
 install them, and distribute them:

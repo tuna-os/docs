@@ -3,7 +3,7 @@ sidebar_position: 12
 title: "FAQ"
 ---
 
-# ❓ Frequently Asked Questions
+# Frequently Asked Questions
 
 ## General
 

@@ -14,10 +14,10 @@ Albacore is the flagship stable variant of TunaOS. It gives a solid desktop for 
 
 ## Features
 
-- 🍺 **Baked-in Homebrew**: Access thousands of CLI tools and fonts immediately.
-- ✨ **Microarchitecture Support**: Optimized builds for `x86_64_v2` (older CPUs).
-- 🚀 **HWE Variant**: Hardware Enablement kernel for the latest laptops and workstations.
-- 🏢 **10-Year Lifecycle**: Benefit from the long-term support of AlmaLinux 10.
+- **Baked-in Homebrew**: Access thousands of CLI tools and fonts immediately.
+- **Microarchitecture Support**: Optimized builds for `x86_64_v2` (older CPUs).
+- **HWE Variant**: Hardware Enablement kernel for the latest laptops and workstations.
+- **10-Year Lifecycle**: Benefit from the long-term support of AlmaLinux 10.
 
 ## Downloads
 

@@ -5,7 +5,7 @@ title: "Niri window-manager quick-start"
 description: "A quick-start guide to the Niri scrollable-tiling Wayland window manager on TunaOS."
 ---
 
-# ⚡ Niri Window Manager Quick-Start
+# Niri Window Manager Quick-Start
 
 [Niri](https://github.com/YaLTeR/niri) is a modern, scrollable-tiling Wayland compositor written in Rust. It puts your windows on a single ribbon that runs sideways without end, not in fixed grid tiles and not in a stack that overlaps.
 

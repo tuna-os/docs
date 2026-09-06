@@ -59,12 +59,6 @@
   margin-bottom: 1.1rem;
 }
 
-.cardIcon {
-  font-size: 2rem;
-  line-height: 1;
-  flex-shrink: 0;
-}
-
 .cardTitle {
   margin: 0 0 0.2rem;
   font-size: 1.15rem;

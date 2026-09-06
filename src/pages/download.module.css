@@ -1,31 +1,10 @@
-.header {
-  background: var(--tu-bg);
-  color: var(--tu-ink);
-  padding: 7rem 0 4rem;
-  text-align: center;
-  margin-bottom: 2.5rem;
-  border-bottom: 1px solid var(--tu-line);
-}
+/* Download page — the hero, sections and buttons come from
+   src/css/page.module.css; what remains here is the picker disclosure and
+   the USB-writing note. */
 
-.title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  margin: 0 0 0.75rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.subtitle {
-  max-width: 640px;
-  margin: 0 auto;
-  font-size: 1.02rem;
-  line-height: 1.7;
-  color: var(--tu-dim);
-}
-
-.subtitle a {
-  color: var(--tu-accent-soft);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+.main {
+  padding-top: 2.5rem;
+  padding-bottom: 3rem;
 }
 
 .chooser {
@@ -65,12 +44,33 @@
 
 .help {
   margin-top: 3.5rem;
-  padding: 1.5rem;
+  padding: 1.75rem;
   border-radius: 6px;
   background: var(--tu-panel);
   border: none;
 }
 
+.help h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--tu-ink);
+}
+
+.help p {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--tu-dim);
+}
+
+.help a {
+  color: var(--tu-accent-soft);
+}
+
 .help pre {
   margin: 0.75rem 0;
+  border-radius: 6px;
+  background: var(--tu-bg-2);
+  color: var(--tu-ink);
+  font-size: 0.85rem;
 }

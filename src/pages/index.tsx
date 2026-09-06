@@ -62,7 +62,7 @@ function Hero(): ReactNode {
         <div className={styles.heroGrid}>
           <div className={styles.heroText}>
             <Heading as="h1" className={styles.heroTitle}>
-              A new wave of <span className={styles.grad}>Enterprise Linux</span> desktops.
+              <span className={styles.grad}>Enterprise Linux</span> desktop images, built with bootc.
             </Heading>
             <div className={styles.badgeRow}>
               <span className={styles.badge}>GNOME 50</span>
@@ -71,9 +71,13 @@ function Hero(): ReactNode {
               <span className={styles.badge}>Fedora 44</span>
             </div>
             <p className={styles.heroLede}>
-              Why choose TunaOS?
+              TunaOS builds desktop images on AlmaLinux, CentOS Stream, Fedora and other
+              bases, with GNOME, KDE, COSMIC, Niri or XFCE. Every image is a bootc OCI
+              image: pull it, boot it, or rebase onto it.
               <br /><br />
-              We pride ourselves on using what is proven to work, the pipeline design, CI patterns, and desktop polish this project builds on all trace back to Universal Blue and TunaOS isn't just Containerfiles — it's a small, purpose-built toolchain that builds, boots, and verifies every image before it ships.
+              The org also maintains the tools that build and boot-test those images, a
+              Flatpak remote with GTK4 applications, and RPM and DEB repositories for
+              packages Enterprise Linux does not ship.
             </p>
             <div className={styles.btnGroup}>
               <Link className={clsx('button', styles.btnPrimary)} to="/download">
@@ -83,7 +87,7 @@ function Hero(): ReactNode {
                 Build your own ISO
               </Link>
               <Link className={clsx('button', styles.btnGhost)} to="/projects">
-                Explore Projects
+                Projects
               </Link>
             </div>
           </div>
@@ -115,8 +119,8 @@ function HomepageFeaturesBand(): ReactNode {
     <section className={styles.section}>
       <div className="container">
         <SectionHead
-          title="Built different"
-          sub="A small, reproducible image factory — not a distro fork."
+          title="What TunaOS builds"
+          sub="Images, apps, and the tooling in between."
         />
         <HomepageFeatures />
       </div>
@@ -157,8 +161,8 @@ function PipelineBand(): ReactNode {
     <section className={styles.section}>
       <div className="container">
         <SectionHead
-          title="The pipeline behind every build"
-          sub="TunaOS isn't just Containerfiles — it's a small, purpose-built toolchain that builds, boots, and verifies every image before it ships."
+          title="Build pipeline"
+          sub="The tools that turn a Containerfile into media: image build, boot test in a VM, ISO and USB authoring, package repositories."
         />
         <div className={styles.pipelineGrid}>
           {tools.map((t, i) => (
@@ -187,6 +191,67 @@ function PipelineBand(): ReactNode {
   );
 }
 
+function AppsBand(): ReactNode {
+  const apps: Array<{icon: IconName; name: string; desc: string; to: string}> = [
+    {
+      icon: 'grid',
+      name: 'GNOME office suite',
+      desc: 'Letters, Tables and Decks: a GTK4 word processor, spreadsheet and presentation app written in Rust. They read DOCX, XLSX, ODS and PPTX, and export PDF.',
+      to: '/office',
+    },
+    {
+      icon: 'code',
+      name: 'BlueShell and Ghostty',
+      desc: 'BlueShell is a container-native terminal for GNOME built on the Ghostty engine with a Ptyxis-style interface. Upstream Ghostty is republished here unmodified and rebuilt weekly.',
+      to: '/blueshell',
+    },
+    {
+      icon: 'box',
+      name: 'Mariner and Tavern',
+      desc: 'Mariner is a GNOME Files alternative with typeahead, dual-pane and Quick Look. Tavern is a GTK4 front end for Homebrew on Linux.',
+      to: '/tavern',
+    },
+    {
+      icon: 'package',
+      name: 'The TunaOS remote',
+      desc: 'One remote-add makes every app above installable. The index is rebuilt on a schedule and served from this site.',
+      to: '/flatpak',
+    },
+  ];
+
+  return (
+    <section className={styles.section}>
+      <div className="container">
+        <SectionHead
+          title="Applications"
+          sub="GTK4 apps built in the org and published on the TunaOS Flatpak remote. They install on any distribution that runs Flatpak, not only on TunaOS images."
+        />
+        <div className={styles.pipelineGrid}>
+          {apps.map((a, i) => (
+            <Link key={a.name} to={a.to} className={styles.pipelineCard}>
+              <div className={styles.cardTop}>
+                <span className={styles.cardIcon}>
+                  <Icon name={a.icon} size={22} />
+                </span>
+                <span className={styles.cardIndex}>{String(i + 1).padStart(2, '0')}</span>
+              </div>
+              <Heading as="h3" className={styles.cardName}>
+                {a.name}
+              </Heading>
+              <p className={styles.cardBlurb}>{a.desc}</p>
+            </Link>
+          ))}
+        </div>
+        <div className={styles.bandFooter}>
+          <Link className={clsx('button', styles.btnGhostSmall)} to="/projects">
+            All projects
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function DocsBand(): ReactNode {
   return (
     <section className={clsx(styles.section, styles.docsSection)}>
@@ -194,12 +259,12 @@ function DocsBand(): ReactNode {
         <div className={styles.docsInner}>
           <div>
             <Heading as="h2" className={styles.docsTitle}>
-              Docs that live with the code
+              Documentation
             </Heading>
             <p className={styles.docsText}>
-              From first install to building your own images, the handbook covers it — and
-              it’s sourced straight from the project repository, so it never drifts from
-              what actually ships.
+              Installation, image building, variant reference and troubleshooting. The
+              pages are synced daily from each project&apos;s own repository, so they match
+              what that project currently ships.
             </p>
           </div>
           <div className={styles.docsLinks}>
@@ -223,12 +288,12 @@ function FinalCta(): ReactNode {
   return (
     <section className={styles.ctaBand}>
       <div className={clsx('container', styles.ctaInner)}>
-        <span className={styles.ctaKicker}>Ready?</span>
+        <span className={styles.ctaKicker}>Get started</span>
         <Heading as="h2" className={styles.ctaTitle}>
-          Dive in.
+          Install TunaOS
         </Heading>
         <p className={styles.ctaText}>
-          Grab a live ISO, or rebase an existing bootc system in one command.
+          Download a live ISO, or rebase an existing bootc system onto a TunaOS image.
         </p>
         <div className={styles.btnGroup}>
           <Link className={clsx('button', styles.btnPrimary)} to="/download">
@@ -281,7 +346,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title={`${siteConfig.title} — Cloud-Native Enterprise Linux`}
-      description="A collection of cloud-native Enterprise Linux desktop images built with bootc — Albacore, Yellowfin, Skipjack, and Bonito.">
+      description="Enterprise Linux desktop images built with bootc, the tools that build and test them, and the GTK4 apps published on the TunaOS Flatpak remote.">
       <Hero />
       <FinalCta />
       <Backdrop />
@@ -289,6 +354,7 @@ export default function Home(): ReactNode {
       <main>
         <HomepageFeaturesBand />
         <PipelineBand />
+        <AppsBand />
         <DocsBand />
       </main>
     </Layout>

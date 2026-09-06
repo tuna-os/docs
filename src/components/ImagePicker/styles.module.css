@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--ifm-color-emphasis-400);
+  color: var(--tu-dim);
   font-size: 0.85rem;
   font-weight: 500;
 }
@@ -30,21 +30,21 @@
   display: block;
   width: 2rem;
   height: 2px;
-  background: var(--ifm-color-emphasis-300);
+  background: var(--tu-line-strong);
   margin: 0 0.25rem;
   flex-shrink: 0;
 }
 
 .progressDone .progressStep + .progressStep::before,
 .progressActive + .progressStep::before {
-  background: var(--ifm-color-primary);
+  background: var(--tu-accent);
 }
 
 .progressDot {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: 2px solid var(--ifm-color-emphasis-300);
+  border: 2px solid var(--tu-line-strong);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,16 +55,16 @@
 }
 
 .progressDone .progressDot {
-  background: var(--ifm-color-primary);
-  border-color: var(--ifm-color-primary);
-  color: white;
+  background: var(--tu-accent);
+  border-color: var(--tu-accent);
+  color: #1d1f21;
 }
 
 .progressActive .progressDot {
-  background: var(--ifm-color-primary);
-  border-color: var(--ifm-color-primary);
-  color: white;
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ifm-color-primary) 20%, transparent);
+  background: var(--tu-accent);
+  border-color: var(--tu-accent);
+  color: #1d1f21;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--tu-accent) 20%, transparent);
 }
 
 .progressLabel {
@@ -73,7 +73,7 @@
 
 .progressDone .progressLabel,
 .progressActive .progressLabel {
-  color: var(--ifm-color-primary);
+  color: var(--tu-accent);
 }
 
 /* ── Step container ─────────────────────────────────────────────── */
@@ -111,9 +111,9 @@
 
 .optionCard {
   position: relative;
-  background: var(--ifm-card-background-color, white);
-  border: 2px solid var(--ifm-color-emphasis-200);
-  border-radius: 14px;
+  background: var(--tu-panel);
+  border: 2px solid transparent;
+  border-radius: 6px;
   padding: 1.5rem 1rem 1.25rem;
   cursor: pointer;
   text-align: center;
@@ -123,36 +123,23 @@
   align-items: center;
   gap: 0.4rem;
   width: 100%;
-  color: var(--ifm-font-color-base);
+  color: var(--tu-ink);
   font-family: inherit;
 }
 
-[data-theme='dark'] .optionCard {
-  background: #232323;
-  border-color: #333;
-}
 
 .optionCard:hover {
-  border-color: var(--ifm-color-primary);
+  border-color: var(--tu-accent);
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
 }
 
 .optionSelected {
-  border-color: var(--ifm-color-primary) !important;
-  background: color-mix(in srgb, var(--ifm-color-primary) 8%, transparent) !important;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ifm-color-primary) 25%, transparent);
+  border-color: var(--tu-accent) !important;
+  background: var(--tu-panel-2) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--tu-accent) 25%, transparent);
 }
 
-[data-theme='dark'] .optionSelected {
-  background: color-mix(in srgb, var(--ifm-color-primary) 15%, #232323) !important;
-}
-
-.optionEmoji {
-  font-size: 2.25rem;
-  line-height: 1;
-  margin-bottom: 0.2rem;
-}
 
 .optionLabel {
   font-size: 1rem;
@@ -161,7 +148,7 @@
 
 .optionDesc {
   font-size: 0.78rem;
-  color: var(--ifm-color-emphasis-600);
+  color: var(--tu-dim);
   line-height: 1.4;
   margin-top: 0.15rem;
 }
@@ -176,18 +163,18 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 2px 8px;
-  border-radius: 20px;
+  border-radius: 6px;
   white-space: nowrap;
 }
 
 .optionBadgePrimary {
-  background: var(--ifm-color-primary);
-  color: white;
+  background: var(--tu-accent);
+  color: #1d1f21;
 }
 
 .optionBadgeWarning {
-  background: #f59e0b;
-  color: white;
+  background: #f0c040;
+  color: #1d1f21;
 }
 
 .optionCheck {
@@ -197,8 +184,8 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: var(--ifm-color-primary);
-  color: white;
+  background: var(--tu-accent);
+  color: #1d1f21;
   font-size: 0.7rem;
   display: flex;
   align-items: center;
@@ -211,7 +198,7 @@
 .rollingNote {
   text-align: center;
   font-size: 0.85rem;
-  color: var(--ifm-color-emphasis-600);
+  color: var(--tu-dim);
   margin: 0.5rem 0 0;
 }
 
@@ -219,7 +206,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--ifm-color-primary);
+  color: var(--tu-accent);
   font-size: inherit;
   font-family: inherit;
   padding: 0;
@@ -227,7 +214,7 @@
 }
 
 .rollingLink:hover {
-  color: var(--ifm-color-primary-dark);
+  color: var(--tu-accent-soft);
 }
 
 /* ── Navigation buttons ─────────────────────────────────────────── */
@@ -237,74 +224,63 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--ifm-color-emphasis-600);
+  color: var(--tu-dim);
   font-size: 0.9rem;
   padding: 0.4rem 0.75rem;
-  border-radius: 8px;
+  border-radius: 6px;
   transition: background 0.15s, color 0.15s;
   font-family: inherit;
 }
 
 .backBtn:hover,
 .resetBtn:hover {
-  background: var(--ifm-color-emphasis-100);
-  color: var(--ifm-font-color-base);
+  background: var(--tu-bg-2);
+  color: var(--tu-ink);
 }
 
 /* ── Result card ────────────────────────────────────────────────── */
 
 .resultCard {
-  background: var(--ifm-card-background-color, white);
-  border: 2px solid var(--ifm-color-primary);
-  border-radius: 16px;
+  background: var(--tu-panel);
+  border: none;
+  border-radius: 6px;
   padding: 2.5rem 2rem;
   text-align: center;
   animation: slideIn 0.22s ease both;
 }
 
-[data-theme='dark'] .resultCard {
-  background: #232323;
-}
 
 .resultHeader {
   margin-bottom: 2rem;
-}
-
-.resultEmoji {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
 }
 
 .resultTitle {
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 0.4rem;
-  color: var(--ifm-color-primary);
+  color: var(--tu-accent);
 }
 
 .resultSummary {
   font-size: 0.95rem;
-  color: var(--ifm-color-emphasis-600);
+  color: var(--tu-dim);
   margin: 0;
 }
 
 .resultImageBox {
-  background: var(--ifm-color-emphasis-100);
-  border-radius: 10px;
+  background: var(--tu-bg-2);
+  border-radius: 6px;
   padding: 1.25rem 1.5rem;
   margin-bottom: 1.75rem;
   text-align: left;
 }
 
-[data-theme='dark'] .resultImageBox {
-  background: #111;
-}
 
 .resultImageLabel {
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--ifm-color-emphasis-500);
+  color: var(--tu-dim);
   font-weight: 600;
   display: block;
   margin-bottom: 0.6rem;
@@ -329,16 +305,13 @@
 
 .resultRebaseHint {
   font-size: 0.8rem;
-  color: var(--ifm-color-emphasis-500);
+  color: var(--tu-dim);
   padding: 0.4rem 0.6rem;
-  background: var(--ifm-color-emphasis-200);
+  background: var(--tu-line-strong);
   border-radius: 6px;
   overflow-x: auto;
 }
 
-[data-theme='dark'] .resultRebaseHint {
-  background: #222;
-}
 
 .resultRebaseHint code {
   background: transparent;
@@ -347,8 +320,8 @@
 }
 
 .copyBtn {
-  background: var(--ifm-color-primary);
-  color: white;
+  background: var(--tu-accent);
+  color: #1d1f21;
   border: none;
   border-radius: 6px;
   padding: 0.3rem 0.75rem;
@@ -375,10 +348,10 @@
 
 .resultNoIso {
   font-size: 0.88rem;
-  color: var(--ifm-color-emphasis-600);
-  background: var(--ifm-color-emphasis-100);
+  color: var(--tu-dim);
+  background: var(--tu-bg-2);
   padding: 0.6rem 1rem;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 /* ── Responsive ─────────────────────────────────────────────────── */

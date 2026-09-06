@@ -109,6 +109,6 @@ After installation, TunaOS provides:
 If an update breaks your system after installation, see the [Rollback & Update guide](bootc-rollback.md).
 
 ### Getting Help
-- 🐛 **Report Issues**: [GitHub Issues](https://github.com/tuna-os/tunaOS/issues)
-- 💬 **Chat**: [Matrix #tunaos:reilly.asia](https://matrix.to/#/%23tunaos:reilly.asia)
-- 🎮 **Discord**: [Universal Blue Community](https://discord.gg/WEu6BdFEtp)
+- **Report Issues**: [GitHub Issues](https://github.com/tuna-os/tunaOS/issues)
+- **Chat**: [Matrix #tunaos:reilly.asia](https://matrix.to/#/%23tunaos:reilly.asia)
+- **Discord**: [Universal Blue Community](https://discord.gg/WEu6BdFEtp)

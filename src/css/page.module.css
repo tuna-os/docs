@@ -1,0 +1,404 @@
+/**
+ * Shared page shell — the design system the homepage, project landings, and
+ * variant landings established (see src/pages/index.module.css and
+ * src/components/ProjectLanding/styles.module.css).
+ *
+ * Bright Vesper base (#1d1f21) with a single blue accent (#5dabf0),
+ * JetBrains Mono for eyebrows, marks and code, borderless panels on a
+ * 6px radius, and no hero gradients or emoji. Standalone pages import
+ * this instead of restating the same rules — or worse, drifting from
+ * them with inline styles.
+ */
+
+/* ── Page hero ──────────────────────────────────────────────────────────── */
+
+.hero {
+  padding: 7rem 1rem 4rem;
+  color: var(--tu-ink);
+  background: var(--tu-bg);
+  border-bottom: 1px solid var(--tu-line);
+}
+
+.heroInner {
+  max-width: 820px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.heroWide {
+  max-width: 1100px;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 0.9rem;
+  font-family: var(--tu-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tu-accent-soft);
+}
+
+.heroTitle {
+  margin: 0;
+  font-size: clamp(2.1rem, 5.4vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--tu-ink);
+}
+
+.heroLede {
+  max-width: 640px;
+  margin: 1.1rem auto 0;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--tu-dim);
+}
+
+.heroLede a,
+.sectionSub a,
+.prose a {
+  color: var(--tu-accent-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.heroNote {
+  margin: 1rem auto 0;
+  font-family: var(--tu-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  color: var(--tu-dim);
+  opacity: 0.75;
+}
+
+/* ── Buttons ────────────────────────────────────────────────────────────── */
+
+.btnRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-top: 2rem;
+}
+
+.btnRowLeft {
+  justify-content: flex-start;
+}
+
+.btnPrimary,
+.btnGhost {
+  padding: 0.85rem 1.75rem;
+  border-radius: 6px;
+  border: none;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.btnPrimary {
+  background: var(--tu-accent);
+  color: #1d1f21 !important;
+  box-shadow: 0 4px 18px rgba(93, 171, 240, 0.35);
+}
+
+.btnPrimary:hover {
+  background: var(--tu-accent-soft);
+  color: #1d1f21 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(93, 171, 240, 0.45);
+}
+
+.btnGhost {
+  background: transparent;
+  color: var(--tu-ink) !important;
+}
+
+.btnGhost:hover {
+  background: rgba(160, 160, 160, 0.1);
+  color: var(--tu-ink) !important;
+  transform: translateY(-2px);
+}
+
+.btnSmall {
+  padding: 0.55rem 1.1rem;
+  font-size: 0.85rem;
+}
+
+/* ── Sections ───────────────────────────────────────────────────────────── */
+
+.section {
+  padding: 4.5rem 1rem;
+  background: var(--tu-bg);
+  border-top: 1px solid var(--tu-line);
+}
+
+.sectionFirst {
+  border-top: none;
+}
+
+.sectionAlt {
+  background: var(--tu-bg-2);
+}
+
+.sectionInner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+ /* Narrow measure for prose and code. Applied alongside .sectionInner, it
+    constrains the children rather than the wrapper, so a text section keeps
+    the same left gutter as the full-width sections above and below it. */
+.sectionNarrow > * {
+  max-width: 780px;
+}
+
+.sectionHead {
+  margin: 0 0 2.5rem;
+}
+
+.sectionHeadCentered {
+  text-align: center;
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sectionTitle {
+  margin: 0 0 0.7rem;
+  font-size: clamp(1.7rem, 4vw, 2.3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--tu-ink);
+}
+
+/* Numbered mono mark in front of a section title — "01. Add the remote". */
+.sectionMark {
+  font-family: var(--tu-mono);
+  font-size: 0.82em;
+  font-weight: 500;
+  margin-right: 0.65rem;
+  color: rgba(233, 235, 239, 0.32);
+  letter-spacing: 0.02em;
+}
+
+.sectionSub {
+  max-width: 62ch;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--tu-dim);
+}
+
+.sectionHeadCentered .sectionSub {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Panels & cards ─────────────────────────────────────────────────────── */
+
+.panel {
+  padding: 1.5rem;
+  border-radius: 6px;
+  border: none;
+  background: var(--tu-panel);
+  color: var(--tu-ink);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.gridTight {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.9rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  border-radius: 6px;
+  border: none;
+  background: var(--tu-panel);
+  color: var(--tu-ink);
+  text-decoration: none !important;
+  transition: transform 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
+}
+
+.cardLinked:hover {
+  transform: translateY(-4px);
+  background: var(--tu-panel-2);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.4);
+  color: var(--tu-ink);
+}
+
+.cardIcon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  margin-bottom: 0.9rem;
+  border-radius: 6px;
+  background: var(--tu-bg);
+  color: var(--tu-accent);
+}
+
+.cardTitle {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--tu-ink);
+}
+
+.cardText {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--tu-dim);
+}
+
+.cardFoot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+/* Mono label above a code block, list, or field. */
+.label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-family: var(--tu-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tu-accent-soft);
+}
+
+/* Mono badge — app IDs, desktop names, statuses. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--tu-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.22rem 0.55rem;
+  border-radius: 6px;
+  background: var(--tu-bg);
+  color: var(--tu-accent-soft);
+}
+
+.chipPlain {
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+/* ── Code ───────────────────────────────────────────────────────────────── */
+
+.code {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  border-radius: 6px;
+  border: none;
+  background: var(--tu-bg-2);
+  color: var(--tu-ink);
+  font-family: var(--tu-mono);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  overflow-x: auto;
+}
+
+.code code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* ── Prose ──────────────────────────────────────────────────────────────── */
+
+.prose {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--tu-dim);
+}
+
+.prose strong,
+.prose b {
+  color: var(--tu-ink);
+}
+
+.prose code {
+  background: var(--tu-bg-2);
+  border: none;
+  color: var(--tu-accent-soft);
+}
+
+.prose li {
+  margin-bottom: 0.6rem;
+}
+
+.steps {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.linkList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.linkList a {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--tu-accent-soft);
+}
+
+.backLink {
+  display: block;
+  margin-top: 2.5rem;
+  text-align: center;
+  font-family: var(--tu-mono);
+  font-size: 0.8rem;
+  color: var(--tu-dim);
+}
+
+.backLink a {
+  color: var(--tu-accent-soft);
+}
+
+/* ── Motion & responsive ────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .btnPrimary,
+  .btnGhost {
+    transition: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .hero {
+    padding: 5rem 1rem 3rem;
+  }
+  .section {
+    padding: 3.5rem 1rem;
+  }
+}

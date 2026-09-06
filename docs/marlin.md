@@ -21,11 +21,11 @@ package yet, so Marlin builds bootc from source in the image.
 
 ## Features
 
-- 🚀 **Continuous updates**: Marlin gets new Arch packages with no backport delay.
-- 🍺 **Baked-in Homebrew**: Access thousands of CLI tools and fonts immediately.
-- ⚡ **CachyOS kernel overlay**: Optional `-cachyos` flavors add the
+- **Continuous updates**: Marlin gets new Arch packages with no backport delay.
+- **Baked-in Homebrew**: Access thousands of CLI tools and fonts immediately.
+- **CachyOS kernel overlay**: Optional `-cachyos` flavors add the
   performance-tuned CachyOS kernel on top of the standard Arch base.
-- 🎮 **NVIDIA support**: `-nvidia` flavors add `nvidia-open-dkms` via pacman +
+- **NVIDIA support**: `-nvidia` flavors add `nvidia-open-dkms` via pacman +
   dkms (Arch has no akmods/RPM equivalent).
 
 ## Downloads

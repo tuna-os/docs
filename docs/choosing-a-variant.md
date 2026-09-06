@@ -10,7 +10,7 @@ This decision guide helps you pick the right variant for your hardware, stabilit
 
 ---
 
-## 🎯 Quick Decision Paths
+## Quick Decision Paths
 
 If you are not sure where to start, follow these recommended paths:
 
@@ -20,13 +20,13 @@ If you are not sure where to start, follow these recommended paths:
 - **Newest Fedora:** Choose **[Bonito](/bonito)** (Fedora 44). For users who want the latest mainline kernel, Mesa drivers, and desktop toolchains on an immutable base.
 - **elementary OS Desktop:** Choose **[Gurnard](/gurnard)** (Ubuntu 24.04 LTS with Pantheon). It gives you the elementary OS desktop on an LTS base.
 - **Arch Linux:** Choose **[Marlin](/marlin)** (Arch Linux). Newest packages on a composefs-native bootc base with continuous updates.
-- **Apple Silicon (ARM64):** Choose **[Asahi images](/blog/2026-08-12-tunaos-on-apple-silicon)** available across supported multi-arch bases (Albacore, Yellowfin, Bonito, Gurnard).
+- **Apple Silicon (ARM64):** Choose **Asahi images** available across supported multi-arch bases (Albacore, Yellowfin, Bonito, Gurnard).
 
 > **Not sure?** Start with **[Albacore](/albacore)** — the flagship variant designed as a rock-solid daily driver for most users.
 
 ---
 
-## 📊 Variant Comparison Matrix
+## Variant Comparison Matrix
 
 The table below summarizes the key attributes for each TunaOS variant:
 
@@ -49,7 +49,7 @@ The table below summarizes the key attributes for each TunaOS variant:
 
 ---
 
-## 🖥️ Choosing Your Desktop Environment
+## Choosing Your Desktop Environment
 
 Each variant offers desktop flavors tailored to different workflows:
 
@@ -62,7 +62,7 @@ Each variant offers desktop flavors tailored to different workflows:
 
 ---
 
-## 📥 Ready to Install?
+## Ready to Install?
 
 - Head to the **[Download Page](/download)** to select your image and desktop flavor.
 - Check the **[System Requirements](/docs/system-requirements)** to verify hardware compatibility.

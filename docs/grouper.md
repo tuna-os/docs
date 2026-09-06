@@ -14,10 +14,10 @@ Grouper brings the bootc model to the most familiar base in Linux: Ubuntu. Atomi
 
 ## Features
 
-- 🧪 **Experimental by design**: Where we prove the Ubuntu bootc work. It has a
+- **Experimental by design**: Where we prove the Ubuntu bootc work. It has a
   composefs root and apt-built desktops, and the newest ideas come here first.
-- 🍺 **Baked-in Homebrew**: Standard across all TunaOS variants.
-- 📦 **Flatpak First**: Tuned for a desktop where containers hold the applications.
+- **Baked-in Homebrew**: Standard across all TunaOS variants.
+- **Flatpak First**: Tuned for a desktop where containers hold the applications.
 
 ## Status
 

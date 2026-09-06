@@ -31,7 +31,6 @@ const ROLLING_SIBLING_OF: Record<string, string> = {
 
 type Option<T extends string> = {
   value: T;
-  emoji: string;
   label: string;
   description: string;
   badge?: string;
@@ -40,26 +39,22 @@ type Option<T extends string> = {
 const PRODUCT_OPTIONS: Option<Product>[] = [
   {
     value: 'tunaos',
-    emoji: '🐟',
     label: 'TunaOS',
     description: 'Enterprise Linux desktops — Albacore, Yellowfin, Skipjack, Bonito.',
     badge: 'Most popular',
   },
   {
     value: 'dakota',
-    emoji: '🦖',
     label: 'Dakota (Bluefin)',
     description: 'GNOME OS built from source. The reference BuildStream desktop.',
   },
   {
     value: 'tromso',
-    emoji: '🌌',
     label: 'Tromsø',
     description: 'Aurora KDE Plasma 6 — built from source on freedesktop-sdk.',
   },
   {
     value: 'xfce',
-    emoji: '🖥️',
     label: 'XFCE Linux',
     description: 'Lightweight XFCE Wayland — built from source on freedesktop-sdk.',
   },
@@ -72,7 +67,6 @@ const PRODUCT_OPTIONS: Option<Product>[] = [
 // secondary choice under their parent's card instead.
 const VARIANT_OPTIONS: Option<Variant>[] = VARIANTS.filter((v) => !(v.id in ROLLING_SIBLING_OF)).map((v) => ({
   value: v.id,
-  emoji: v.emoji,
   label: v.name,
   description: v.blurb,
   badge: v.recommended ? 'Recommended' : undefined,
@@ -81,38 +75,32 @@ const VARIANT_OPTIONS: Option<Variant>[] = VARIANTS.filter((v) => !(v.id in ROLL
 const DESKTOP_OPTIONS: Option<Desktop>[] = [
   {
     value: 'gnome',
-    emoji: '🖥️',
     label: 'GNOME',
     description: 'The polished default. GNOME 50 backported to Enterprise Linux.',
     badge: 'Default',
   },
   {
     value: 'gnome50',
-    emoji: '✨',
     label: 'GNOME 50',
     description: 'Next-generation GNOME — if you want to live on the bleeding edge of the desktop.',
   },
   {
     value: 'kde',
-    emoji: '🔵',
     label: 'KDE Plasma',
     description: 'Highly customizable. Familiar if you\'re coming from Windows.',
   },
   {
     value: 'cosmic',
-    emoji: '🌌',
     label: 'COSMIC',
     description: 'New Rust-built desktop from System76. Modern and fast.',
   },
   {
     value: 'niri',
-    emoji: '📜',
     label: 'Niri',
     description: 'Unique scrollable tiling Wayland compositor. For the keyboard-driven power user.',
   },
   {
     value: 'pantheon',
-    emoji: '🏛️',
     label: 'Pantheon',
     description: 'The elegant, minimal elementary OS desktop.',
   },
@@ -128,25 +116,21 @@ const DESKTOP_OPTIONS: Option<Desktop>[] = [
 const EDITION_CATALOG: Record<Edition, Option<Edition>> = {
   standard: {
     value: 'standard',
-    emoji: '👤',
     label: 'Standard',
     description: 'Just the desktop — great for everyday use.',
   },
   nvidia: {
     value: 'nvidia',
-    emoji: '🎮',
     label: 'AI / ML (NVIDIA)',
     description: 'Adds NVIDIA drivers and CUDA support for AI/ML, graphics, and VFX workloads.',
   },
   hwe: {
     value: 'hwe',
-    emoji: '🖥️',
     label: 'New Hardware (HWE)',
     description: 'A newer kernel for very recent hardware like the latest AMD and Intel platforms.',
   },
   cachyos: {
     value: 'cachyos',
-    emoji: '⚡',
     label: 'CachyOS kernel',
     description: 'The performance-tuned CachyOS kernel overlay on the same Arch userspace.',
   },
@@ -306,7 +290,6 @@ function OptionCard<T extends string>({
           {option.badge}
         </span>
       )}
-      <div className={styles.optionEmoji}>{option.emoji}</div>
       <div className={styles.optionLabel}>{option.label}</div>
       <div className={styles.optionDesc}>{option.description}</div>
       {selected && <div className={styles.optionCheck}>✓</div>}
@@ -344,21 +327,19 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
   // Non-tunaOS result
   if (!isTunaOS) {
     const productName = productOpt?.label || sel.product;
-    const productEmoji = productOpt?.emoji || '';
     return (
       <div className={styles.resultCard}>
         <div className={styles.resultHeader}>
-          <div className={styles.resultEmoji}>{productEmoji}</div>
           <h3 className={styles.resultTitle}>{productName}</h3>
         </div>
         <div className={styles.resultActions}>
           {isoUrl ? (
             <a href={isoUrl} className="button button--primary button--lg">
-              ⬇️ Download ISO
+              Download ISO
             </a>
           ) : (
             <div className={styles.resultNoIso}>
-              📦 No ISO available yet for {productName}.
+              No ISO available yet for {productName}.
             </div>
           )}
         </div>
@@ -375,9 +356,6 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
     return (
       <div className={styles.resultCard}>
         <div className={styles.resultHeader}>
-          <div className={styles.resultEmoji}>
-            {variantOpt?.emoji}{desktopOpt?.emoji}
-          </div>
           <h3 className={styles.resultTitle}>{variantOpt?.label} — local build only</h3>
           <p className={styles.resultSummary}>
             {variantMeta.base} restricts redistribution, so there's no public image or ISO —
@@ -395,7 +373,7 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
 
         <div className={styles.resultActions}>
           <Link to={docsUrl} className="button button--outline button--md">
-            📖 View Docs
+            View Docs
           </Link>
         </div>
 
@@ -409,9 +387,6 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
   return (
     <div className={styles.resultCard}>
       <div className={styles.resultHeader}>
-        <div className={styles.resultEmoji}>
-          {variantOpt?.emoji}{desktopOpt?.emoji}
-        </div>
         <h3 className={styles.resultTitle}>Your TunaOS Image</h3>
         <p className={styles.resultSummary}>
           {variantOpt?.label}
@@ -434,17 +409,17 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
       <div className={styles.resultActions}>
         {isoUrl ? (
           <a href={isoUrl} className="button button--primary button--lg">
-            ⬇️ Download ISO
+            Download ISO
           </a>
         ) : isoNames === null ? (
           <div className={styles.resultNoIso}>⏳ Checking what's published…</div>
         ) : (
           <div className={styles.resultNoIso}>
-            {`📦 No live ISO for this combination — install the standard ISO and run \`bootc switch ${imageName}\` afterward.`}
+            {`No live ISO for this combination — install the standard ISO and run \`bootc switch ${imageName}\` afterward.`}
           </div>
         )}
         <Link to={docsUrl} className="button button--outline button--md">
-          📖 View Docs
+          View Docs
         </Link>
       </div>
 
@@ -571,7 +546,7 @@ export default function ImagePicker(): ReactNode {
                         type="button"
                         onClick={() => pick('variant', siblingId)}
                       >
-                        {sibling.emoji} {sibling.name} (rolling {parent.name})
+                        {sibling.name} (rolling {parent.name})
                       </button>
                       {i < arr.length - 1 ? ' · ' : ''}
                     </span>

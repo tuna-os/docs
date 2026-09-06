@@ -3,11 +3,11 @@ sidebar_position: 1
 sidebar_label: "Community"
 ---
 
-# 🌐 Community
+# Community
 
 Welcome to the TunaOS community! Whether you are a user, contributor, or curious, here is how to participate.
 
-## 🗣️ Chat & Discussion
+## Chat & Discussion
 
 | Platform | Purpose | Link |
 |---|---|---|
@@ -18,7 +18,7 @@ Welcome to the TunaOS community! Whether you are a user, contributor, or curious
 | **Universal Blue Discord** | Larger bootc/atomic desktop community | [Join Discord](https://discord.gg/WEu6BdFEtp) |
 | **AlmaLinux Atomic SIG** | Enterprise Linux bootc discussions | [#sigatomic](https://chat.almalinux.org/almalinux/channels/sigatomic) |
 
-## 🤝 How to Contribute
+## How to Contribute
 
 See the full [Contributor Guide](https://github.com/tuna-os/tunaOS/blob/main/CONTRIBUTING.md) for setup instructions and PR workflow.
 
@@ -30,7 +30,7 @@ See the full [Contributor Guide](https://github.com/tuna-os/tunaOS/blob/main/CON
 
 All contributors must follow our [Code of Conduct](https://github.com/tuna-os/tunaOS/blob/main/CODE_OF_CONDUCT.md).
 
-## 📋 Adoption
+## Adoption
 
 If your organization uses TunaOS, we'd love to know!
 
@@ -38,7 +38,7 @@ If your organization uses TunaOS, we'd love to know!
 - Share your setup in [GitHub Discussions](https://github.com/tuna-os/tunaOS/discussions)
 - Write a case study or blog post (we'll help promote it!)
 
-## 📚 Project Resources
+## Project Resources
 
 | Resource | Description |
 |---|---|
@@ -48,7 +48,7 @@ If your organization uses TunaOS, we'd love to know!
 | [Migration Guide](https://github.com/tuna-os/tunaOS/blob/main/MIGRATION.md) | Switch from Fedora Atomic / other distros |
 | [Security Policy](https://github.com/tuna-os/tunaOS/blob/main/SECURITY.md) | Vulnerability reporting |
 
-## 🐠 Related Communities
+## Related Communities
 
 These projects and communities inspire TunaOS and provide its base:
 

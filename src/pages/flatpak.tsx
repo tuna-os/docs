@@ -1,161 +1,177 @@
 import type {ReactNode} from 'react';
+import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import Link from '@docusaurus/Link';
+import Icon, {type IconName} from '@site/src/components/Icon';
 
-const APPS = [
+import styles from '@site/src/css/page.module.css';
+
+const REMOTE_ADD =
+  'flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo';
+
+const APPS: {
+  id: string;
+  name: string;
+  icon: IconName;
+  description: string;
+}[] = [
   {
     id: 'org.tunaos.letters',
     name: 'Letters',
-    emoji: '📝',
+    icon: 'code',
     description: 'Pure Rust GTK4 word processor — DOCX, ODT, Markdown, PDF export.',
-    docs: '/letters',
   },
   {
     id: 'org.tunaos.tables',
     name: 'Tables',
-    emoji: '📊',
+    icon: 'grid',
     description: 'Pure Rust GTK4 spreadsheet — 83 Excel-compatible functions.',
-    docs: '/tables',
   },
   {
     id: 'org.tunaos.decks',
     name: 'Decks',
-    emoji: '📽️',
+    icon: 'layers',
     description: 'Pure Rust GTK4 presentation app — native canvas editing.',
-    docs: '/decks',
   },
   {
     id: 'org.tunaos.mariner',
     name: 'Mariner',
-    emoji: '🧭',
-    description: 'GNOME Files alternative — typeahead, dual-pane, Quick Look, full-text search.',
-    docs: 'https://github.com/romgrk/mariner',
+    icon: 'box',
+    description:
+      'GNOME Files alternative — typeahead, dual-pane, Quick Look, full-text search.',
   },
   {
     id: 'org.tunaos.tavern',
     name: 'Tavern',
-    emoji: '🍻',
+    icon: 'package',
     description: 'Homebrew client for Linux — GTK 4 + Libadwaita.',
-    docs: '/tavern',
   },
   {
     id: 'org.tunaos.BlueShell',
     name: 'BlueShell',
-    emoji: '🐚',
-    description: 'Container-native terminal for GNOME — the Ghostty engine, the Ptyxis experience.',
-    docs: '/blueshell',
+    icon: 'activity',
+    description:
+      'Container-native terminal for GNOME — the Ghostty engine, the Ptyxis experience.',
   },
   {
     id: 'com.mitchellh.ghostty',
     name: 'Ghostty',
-    emoji: '👻',
+    icon: 'zap',
     description: 'The upstream terminal, republished here unmodified and rebuilt weekly.',
-    docs: '/ghostty',
   },
   {
     id: 'org.bootcinstaller.Installer',
     name: 'bootc-installer',
-    emoji: '🖥️',
+    icon: 'disc',
     description: 'Graphical OS installer for bootc-based systems.',
-    docs: 'https://github.com/projectbluefin/bootc-installer',
   },
 ];
 
-function AppCard({app, badge}: {app: (typeof APPS)[number]; badge?: string}): ReactNode {
+function AppCard({app}: {app: (typeof APPS)[number]}): ReactNode {
   return (
-    <Link to={`/install?app=${app.id}`} style={{
-      display: 'flex', alignItems: 'center', gap: '1rem',
-      padding: '1rem 1.25rem', borderRadius: 12,
-      background: 'var(--ifm-card-background-color)',
-      border: '1px solid var(--ifm-color-emphasis-200)',
-      textDecoration: 'none', color: 'inherit',
-    }}>
-      <span style={{fontSize: '2rem'}}>{app.emoji}</span>
-      <div style={{flex: 1}}>
-        <strong style={{display: 'block', fontSize: '1.1rem'}}>
-          {app.name}
-          {badge && (
-            <span style={{
-              marginLeft: '0.5rem', fontSize: '0.7rem',
-              background: 'var(--ifm-color-warning-contrast-background)',
-              color: 'var(--ifm-color-warning-contrast-foreground)',
-              borderRadius: 99, padding: '0.1rem 0.5rem',
-              verticalAlign: 'middle',
-            }}>{badge}</span>
-          )}
-        </strong>
-        <span style={{color: 'var(--ifm-color-emphasis-600)', fontSize: '0.9rem'}}>{app.description}</span>
+    <Link to={`/install?app=${app.id}`} className={clsx(styles.card, styles.cardLinked)}>
+      <span className={styles.cardIcon}>
+        <Icon name={app.icon} size={22} />
+      </span>
+      <Heading as="h3" className={styles.cardTitle}>
+        {app.name}
+      </Heading>
+      <p className={styles.cardText}>{app.description}</p>
+      <div className={styles.cardFoot}>
+        <span className={clsx(styles.chip, styles.chipPlain)}>{app.id}</span>
       </div>
-      <code style={{
-        background: 'var(--ifm-code-background)',
-        padding: '0.25rem 0.6rem', borderRadius: 6,
-        fontSize: '0.8rem',
-      }}>{app.id}</code>
     </Link>
   );
 }
 
 export default function Flatpak(): ReactNode {
   return (
-    <Layout title="Flatpak" description="TunaOS Flatpak remote — install the GNOME office suite and more.">
-      <header style={{
-        textAlign: 'center', padding: '4rem 1rem 2rem',
-        background: 'radial-gradient(120% 120% at 50% -10%, #6366f1 0%, #1e3a5f 60%, #0b1220 100%)',
-        color: '#fff',
-      }}>
-        <div className="container">
-          <Heading as="h1">📦 TunaOS Flatpak Remote</Heading>
-          <p style={{fontSize: '1.2rem', opacity: 0.85, maxWidth: 600, margin: '1rem auto'}}>
-            Install Tables, Letters, Decks, Mariner, Tavern, and more.
+    <Layout
+      title="Flatpak"
+      description="The TunaOS Flatpak remote: the GNOME office suite, terminals, a file manager, and a Homebrew front end.">
+      <header className={styles.hero}>
+        <div className={styles.heroInner}>
+          <span className={styles.eyebrow}>Flatpak remote</span>
+          <Heading as="h1" className={styles.heroTitle}>
+            The TunaOS Flatpak remote
+          </Heading>
+          <p className={styles.heroLede}>
+            Letters, Tables, Decks, Mariner, Tavern, BlueShell, Ghostty and
+            bootc-installer, built here and installable on any distribution that runs
+            Flatpak.
           </p>
         </div>
       </header>
 
-      <main className="container" style={{padding: '3rem 0'}}>
-        <section style={{marginBottom: '3rem'}}>
-          <Heading as="h2">Add the remote</Heading>
-          <pre style={{
-            background: 'var(--prism-background-color)',
-            padding: '1.25rem', borderRadius: 8,
-            fontSize: '0.95rem',
-          }}>
-            <code>flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo</code>
-          </pre>
-          <p style={{marginTop: '0.75rem', color: 'var(--ifm-color-emphasis-600)'}}>
-            Or download the{' '}
-            <a href="/flatpak/tuna-os.flatpakrepo">
-              tuna-os.flatpakrepo
-            </a>{' '}
-            file and open it with GNOME Software.
-          </p>
-        </section>
-
-        <section style={{marginBottom: '3rem'}}>
-          <Heading as="h2">Available apps</Heading>
-          <div style={{display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1.5rem'}}>
-            {APPS.map((app) => (
-              <AppCard key={app.id} app={app} />
-            ))}
+      <main>
+        <section className={clsx(styles.section, styles.sectionFirst)}>
+          <div className={clsx(styles.sectionInner, styles.sectionNarrow)}>
+            <div className={styles.sectionHead}>
+              <Heading as="h2" className={styles.sectionTitle}>
+                <span className={styles.sectionMark}>01.</span>
+                Add the remote
+              </Heading>
+            </div>
+            <pre className={styles.code}>
+              <code>{REMOTE_ADD}</code>
+            </pre>
+            <p className={styles.prose} style={{marginTop: '1rem'}}>
+              Or download{' '}
+              <a href="/flatpak/tuna-os.flatpakrepo">tuna-os.flatpakrepo</a> and open it
+              with GNOME Software.
+            </p>
           </div>
         </section>
 
-        <section style={{marginTop: '3rem'}}>
-          <Heading as="h2">Install an app</Heading>
-          <p>Once the remote is added:</p>
-          <pre style={{
-            background: 'var(--prism-background-color)',
-            padding: '1.25rem', borderRadius: 8,
-            fontSize: '0.95rem',
-          }}>
-            <code>flatpak install tuna-os org.tunaos.letters</code>
-          </pre>
-          <p style={{marginTop: '0.5rem'}}>
-            Replace <code>org.tunaos.letters</code> with any app ID above.{' '}
-            <a href="https://github.com/tuna-os/gtk-office-suite">Source →</a>
-          </p>
+        <section className={clsx(styles.section, styles.sectionAlt)}>
+          <div className={styles.sectionInner}>
+            <div className={styles.sectionHead}>
+              <Heading as="h2" className={styles.sectionTitle}>
+                <span className={styles.sectionMark}>02.</span>
+                Available apps
+              </Heading>
+              <p className={styles.sectionSub}>
+                Each app has an install page with its flatpakref and terminal commands.
+              </p>
+            </div>
+            <div className={styles.grid}>
+              {APPS.map((app) => (
+                <AppCard key={app.id} app={app} />
+              ))}
+            </div>
+          </div>
         </section>
 
+        <section className={styles.section}>
+          <div className={clsx(styles.sectionInner, styles.sectionNarrow)}>
+            <div className={styles.sectionHead}>
+              <Heading as="h2" className={styles.sectionTitle}>
+                <span className={styles.sectionMark}>03.</span>
+                Install an app
+              </Heading>
+            </div>
+            <pre className={styles.code}>
+              <code>flatpak install tuna-os org.tunaos.letters</code>
+            </pre>
+            <p className={styles.prose} style={{marginTop: '1rem'}}>
+              Replace <code>org.tunaos.letters</code> with any app ID above. The office
+              suite is built from{' '}
+              <a href="https://github.com/tuna-os/gtk-office-suite">
+                tuna-os/gtk-office-suite
+              </a>
+              .
+            </p>
+            <div className={clsx(styles.btnRow, styles.btnRowLeft)}>
+              <Link className={clsx('button', styles.btnPrimary)} to="/office">
+                Office suite
+              </Link>
+              <Link className={clsx('button', styles.btnGhost)} to="/projects">
+                All projects
+              </Link>
+            </div>
+          </div>
+        </section>
       </main>
     </Layout>
   );

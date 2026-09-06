@@ -3,7 +3,7 @@ sidebar_position: 7
 title: "Rollback & Update Troubleshooting"
 ---
 
-# 🔄 Rollback & Update Troubleshooting
+# Rollback & Update Troubleshooting
 
 TunaOS uses [bootc](https://github.com/bootc-dev/bootc) to manage your system as a container image. Every update is atomic — if something goes wrong, you can roll back to the previous deployment in one command. This guide covers the full lifecycle: update, verify, roll back, and fix boot failures.
 

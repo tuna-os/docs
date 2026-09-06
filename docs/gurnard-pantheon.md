@@ -68,9 +68,7 @@ from Flathub.
 ## Bug reports
 
 Pantheon on Gurnard is new, and we want bug reports early, while a fix is
-cheap (see the
-[Gurnard launch announcement](https://tunaos.org/blog/announcing-gurnard-ubuntu-pantheon)).
-File issues in
+cheap. File issues in
 [github.com/tuna-os/tunaOS](https://github.com/tuna-os/tunaOS/issues), and
 tag them `gurnard` so they're easy to find. Include:
 
@@ -82,5 +80,4 @@ tag them `gurnard` so they're easy to find. Include:
 ## See also
 
 - [Gurnard overview](/gurnard) — variant start page, downloads, image tags
-- [Gurnard launch announcement](https://tunaos.org/blog/announcing-gurnard-ubuntu-pantheon) — the blog post for the release
 - [elementary OS docs](https://elementaryos.stackexchange.com/) — Pantheon questions that are not specific to Gurnard

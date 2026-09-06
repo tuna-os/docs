@@ -158,7 +158,6 @@ function CategoryCard({cat, query}: {cat: Category; query: string}): ReactNode {
   return (
     <section className={styles.card}>
       <header className={styles.cardHead}>
-        <span className={styles.cardIcon} aria-hidden>{cat.icon}</span>
         <div>
           <h3 className={styles.cardTitle}>{cat.label}</h3>
           {cat.blurb && <p className={styles.cardBlurb}>{cat.blurb}</p>}
