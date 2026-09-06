@@ -63,9 +63,11 @@ jobs:
       # Lower .markdownlint-budget whenever a batch of cleanup lands.
       - name: Run markdownlint
         run: |
+          # Disabled rules live in .markdownlint.yaml, not here -- a new
+          # markdownlint release adding a rule is what put this job over
+          # budget, and a config file is where the next one gets pinned.
           markdownlint 'docs/**/*.md' '*.md' \
-            --ignore docs/docs/tacklebox \
-            --disable MD013 MD033 MD041 > markdownlint.out 2>&1 || true
+            --ignore docs/docs/tacklebox > markdownlint.out 2>&1 || true
           found=$(grep -c ' error ' markdownlint.out || true)
           budget=$(cat .markdownlint-budget)
           echo "markdownlint findings: ${found} (budget ${budget})"
