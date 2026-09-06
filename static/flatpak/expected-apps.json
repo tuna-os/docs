@@ -9,6 +9,8 @@
     {"name": "tuna-os/dualcut", "id": "org.tunaos.dualcut", "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/finupdate", "id": "org.tunaos.finupdate", "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/tavern", "id": "org.tunaos.tavern", "archs": ["amd64"]},
+    {"name": "tuna-os/blueshell", "id": "org.tunaos.BlueShell", "archs": ["amd64", "arm64"]},
+    {"name": "tuna-os/ghostty", "issue_repo": "tuna-os/blueshell", "id": "com.mitchellh.ghostty", "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/bootc-installer", "id": "org.bootcinstaller.Installer", "archs": ["amd64"]},
     {"name": "tuna-os/tuna-installer-xfce", "id": "org.tunaos.InstallerXfce", "archs": ["amd64"]},
     {"name": "tuna-os/tuna-installer-kde", "id": "org.tunaos.InstallerKde", "archs": ["amd64"]},
