@@ -20,6 +20,12 @@
     Monaco, Consolas, 'Liberation Mono', monospace;
 }
 
+/* Hero backdrop. #380 displayed the shipping-container photo by hotlinking
+   Unsplash's CDN, and separately committed backdrop-ocean.jpg, which nothing
+   pointed at. This is the same picture that shipped, served from here so the
+   hero does not depend on a third party
+   (source: https://unsplash.com/photos/photo-1605732563938-8f8d4e7ad651,
+   Unsplash License). backdrop-ocean.jpg is kept for a future swap. */
 .bgScene {
   position: fixed;
   inset: 0;
@@ -28,7 +34,7 @@
   background-color: #1d1f21;
   background-image:
     radial-gradient(rgba(93, 171, 240, 0.18) 1px, transparent 1px),
-    url('/img/backdrop-ocean.jpg');
+    url('/img/backdrop-containers.jpg');
   background-size: 20px 20px, cover;
   background-position: 0 0, center center;
 }
@@ -36,7 +42,7 @@
 .bgImage {
   position: absolute;
   inset: 0;
-  background-image: url('/img/backdrop-ocean.jpg');
+  background-image: url('/img/backdrop-containers.jpg');
   background-size: cover;
   background-position: center center;
 }
@@ -565,6 +571,15 @@
   }
 }
 
+@media (max-width: 960px) {
+  /* The two carousels sat side by side at every width, so on a phone each got
+     half a screen — about 170px — and their contents overflowed. */
+  .carouselGrid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
 @media (max-width: 860px) {
   .hero {
     padding: 4.5rem 0 5rem;
@@ -575,6 +590,13 @@
   }
   .projectGrid {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+  .section,
+  .ctaBand {
+    padding: 3.5rem 0;
+  }
+  .sectionHead {
+    margin-bottom: 2rem;
   }
 }
 /* Inline command inside an install-path card. */
