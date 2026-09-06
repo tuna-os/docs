@@ -118,7 +118,7 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Enterprise-stable'},
       {label: 'Arch', value: 'x86_64 · aarch64'},
     ],
-    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/tunaos-packages#65
+    desktops: ALL_DESKTOPS.filter((d) => !['xfce', 'pantheon'].includes(d.tag)), // EL10 xfce pending tuna-os/tunaos-packages#65; pantheon is Gurnard-only
 
     features: [BOOTC, HOMEBREW, FLATHUB, HWE, NVIDIA, {
       emoji: '🛡️',
@@ -153,7 +153,7 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Fresh + stable'},
       {label: 'Microarch', value: 'x86_64_v2 builds'},
     ],
-    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/tunaos-packages#65
+    desktops: ALL_DESKTOPS.filter((d) => !['xfce', 'pantheon'].includes(d.tag)), // EL10 xfce pending tuna-os/tunaos-packages#65; pantheon is Gurnard-only
 
     features: [BOOTC, HOMEBREW, FLATHUB, HWE, NVIDIA, {
       emoji: '🐱',
@@ -188,7 +188,7 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Rolling preview'},
       {label: 'Role', value: 'Next-RHEL testing'},
     ],
-    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'xfce'), // EL10 xfce pending tuna-os/tunaos-packages#65
+    desktops: ALL_DESKTOPS.filter((d) => !['xfce', 'pantheon'].includes(d.tag)), // EL10 xfce pending tuna-os/tunaos-packages#65; pantheon is Gurnard-only
 
     features: [BOOTC, HOMEBREW, FLATHUB, HWE, {
       emoji: '🔭',
@@ -225,7 +225,7 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Bleeding edge'},
       {label: 'Kernel', value: 'Latest mainline'},
     ],
-    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'gnome50'),
+    desktops: ALL_DESKTOPS.filter((d) => !['gnome50', 'pantheon'].includes(d.tag)),
     features: [BOOTC, HOMEBREW, FLATHUB, NVIDIA, {
       emoji: '🚀',
       title: 'Freshest of everything',
@@ -348,7 +348,7 @@ export const VARIANTS: Variant[] = [
       {label: 'Support', value: '10 years'},
       {label: 'Role', value: 'Enterprise secure'},
     ],
-    desktops: ALL_DESKTOPS,
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'pantheon'),
     features: [BOOTC, HOMEBREW, FLATHUB, HWE, NVIDIA],
     flavors: [
       {name: 'GNOME', image: 'local/redfin:gnome'},
@@ -375,7 +375,7 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Rolling-release'},
       {label: 'Arch', value: 'x86_64'},
     ],
-    desktops: ALL_DESKTOPS,
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'pantheon'),
     features: [BOOTC, HOMEBREW, FLATHUB, NVIDIA],
     flavors: [
       {name: 'GNOME', image: 'ghcr.io/tuna-os/marlin:gnome'},
@@ -402,7 +402,7 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Debian stable'},
       {label: 'Arch', value: 'x86_64'},
     ],
-    desktops: ALL_DESKTOPS,
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'pantheon'),
     features: [BOOTC, HOMEBREW, FLATHUB],
     flavors: [
       {name: 'GNOME', image: 'ghcr.io/tuna-os/flounder:gnome'},
@@ -429,7 +429,7 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Debian unstable'},
       {label: 'Arch', value: 'x86_64'},
     ],
-    desktops: ALL_DESKTOPS,
+    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'pantheon'),
     features: [BOOTC, HOMEBREW, FLATHUB],
     flavors: [
       {name: 'GNOME', image: 'ghcr.io/tuna-os/flounder-sid:gnome'},
@@ -456,7 +456,7 @@ export const VARIANTS: Variant[] = [
       {label: 'Cadence', value: 'Rawhide'},
       {label: 'Arch', value: 'x86_64 · aarch64'},
     ],
-    desktops: ALL_DESKTOPS.filter((d) => d.tag !== 'gnome50'),
+    desktops: ALL_DESKTOPS.filter((d) => !['gnome50', 'pantheon'].includes(d.tag)),
     features: [BOOTC, HOMEBREW, FLATHUB],
     flavors: [
       {name: 'GNOME', image: 'ghcr.io/tuna-os/bonito-rawhide:gnome'},
@@ -516,6 +516,20 @@ export const VARIANTS: Variant[] = [
     ],
   },
 ];
+
+// The four images the site asks people to choose between. Every other base is
+// real and published, but it is for someone who came looking for it — see
+// DESIGN.md. The nav bar, footer and docs sidebar carry these four and a link
+// to /variants; /variants and the build matrix carry all of them.
+export const MAIN_VARIANT_IDS = ['albacore', 'yellowfin', 'skipjack', 'bonito'] as const;
+
+export const MAIN_VARIANTS: Variant[] = MAIN_VARIANT_IDS.map(
+  (id) => VARIANTS.find((v) => v.id === id)!,
+);
+
+export const OTHER_VARIANTS: Variant[] = VARIANTS.filter(
+  (v) => !(MAIN_VARIANT_IDS as readonly string[]).includes(v.id),
+);
 
 export function getVariant(id: string): Variant | undefined {
   return VARIANTS.find((v) => v.id === id);

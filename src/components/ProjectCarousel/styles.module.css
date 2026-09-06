@@ -126,11 +126,13 @@
 }
 
 .projectCarouselDot {
-  width: 8px;
-  height: 8px;
+  /* An 8px dot inside a 24px target: WCAG 2.2 target size (2.5.8). */
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  border: none;
+  border: 8px solid transparent;
   background: var(--tu-line-strong);
+  background-clip: content-box;
   cursor: pointer;
   transition: all 0.2s ease;
   padding: 0;

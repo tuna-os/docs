@@ -1,0 +1,92 @@
+/* Variants hub — the four main images as cards, every other base as a
+   compact row. Hero, sections, cards and buttons come from
+   src/css/page.module.css. */
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.base {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-family: var(--tu-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tu-accent-soft);
+}
+
+.desktops {
+  font-family: var(--tu-mono);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--tu-dim);
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 10rem 12rem 1fr auto;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: 6px;
+  background: var(--tu-panel);
+  color: var(--tu-ink);
+  text-decoration: none !important;
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+
+.row:hover {
+  background: var(--tu-panel-2);
+  transform: translateX(2px);
+  color: var(--tu-ink);
+}
+
+.rowName {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.rowBase {
+  font-family: var(--tu-mono);
+  font-size: 0.76rem;
+  color: var(--tu-accent-soft);
+}
+
+.rowBlurb {
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--tu-dim);
+}
+
+.rowNote {
+  font-family: var(--tu-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tu-dim);
+  white-space: nowrap;
+}
+
+@media (max-width: 860px) {
+  .row {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    transition: none;
+  }
+}

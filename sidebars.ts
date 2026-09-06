@@ -18,20 +18,9 @@ const sidebars: SidebarsConfig = {
         {type: 'link', label: 'Albacore — AlmaLinux 10', href: '/albacore'},
         {type: 'link', label: 'Yellowfin — AlmaLinux Kitten', href: '/yellowfin'},
         {type: 'link', label: 'Skipjack — CentOS Stream 10', href: '/skipjack'},
-        {type: 'link', label: 'Redfin — RHEL 10', href: '/redfin'},
         {type: 'link', label: 'Bonito — Fedora 44', href: '/bonito'},
-        {type: 'link', label: 'Hummingbird — Fedora Hummingbird', href: '/hummingbird'},
-        {type: 'link', label: 'Grouper — Ubuntu 26.04', href: '/grouper'},
-        {type: 'link', label: 'Gurnard — Ubuntu 24.04 (Pantheon)', href: '/gurnard'},
-        {type: 'link', label: 'Marlin — Arch Linux', href: '/marlin'},
-        {type: 'link', label: 'Flounder — Debian 13', href: '/flounder'},
-        {type: 'link', label: 'Flounder Sid — Debian Sid', href: '/flounder-sid'},
-        {type: 'link', label: 'Bonito Rawhide — Fedora Rawhide', href: '/bonito-rawhide'},
-        {type: 'link', label: 'Sailfin — openSUSE Tumbleweed', href: '/sailfin'},
-        {type: 'link', label: 'Guppy — Gentoo Linux', href: '/guppy'},
+        {type: 'link', label: 'All variants (Ubuntu, Arch, Debian, …)', href: '/variants'},
         {type: 'category', label: 'Reference docs', collapsed: true, items: ['albacore', 'yellowfin', 'bonito', 'skipjack', 'grouper', 'gurnard/pantheon-shortcuts', 'marlin', 'gurnard-pantheon', 'niri-quickstart', 'cosmic-quickstart']},
-
-
       ],
     },
     {
@@ -66,6 +55,7 @@ const sidebars: SidebarsConfig = {
       label: 'Tools',
       collapsed: false,
       items: [
+        {type: 'category', label: 'wootc', link: {type: 'doc', id: 'wootc/index'}, items: ['wootc/getting-started', 'wootc/user-guide', 'wootc/philosophy', 'wootc/status', 'wootc/ROADMAP', 'wootc/CONTRIBUTING']},
         {type: 'category', label: 'Tacklebox', link: {type: 'doc', id: 'tacklebox/index'}, items: ['tacklebox/USER-GUIDE', 'tacklebox/getting-started', 'tacklebox/ARCHITECTURE', 'tacklebox/github-iso-setup', 'tacklebox/TODO', 'tacklebox/ROADMAP', 'tacklebox/SECURITY', 'tacklebox/CONTRIBUTING', 'tacklebox/opfs-streaming-handoff']},
         {type: 'category', label: 'ISO Builder', link: {type: 'doc', id: 'iso-builder/index'}, items: [{type: 'category', label: 'Native App', link: {type: 'doc', id: 'iso-builder/native/index'}, items: ['iso-builder/native/user-guide']}]},
         {type: 'category', label: 'remora', link: {type: 'doc', id: 'remora/index'}, items: []},

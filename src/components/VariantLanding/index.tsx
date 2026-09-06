@@ -11,6 +11,10 @@ import {ISO_BASE_URL, isoNameForImage} from '@site/src/utils/isoNaming';
 
 import styles from './styles.module.css';
 
+// Bases with a hand-written reference page in docs/. Kept explicit: the docs
+// tree is largely synced from other repositories, so it cannot be derived.
+const VARIANT_DOC_IDS = new Set(['albacore', 'yellowfin', 'skipjack', 'bonito', 'grouper', 'marlin']);
+
 function Hero({variant, isoNames}: {variant: Variant; isoNames: Set<string> | null}): ReactNode {
   const heroFlavor = variant.flavors.find(
     (f) => isoNames && isoNames.has(isoNameForImage(variant.id, f.image) ?? ''),
@@ -50,9 +54,17 @@ function Hero({variant, isoNames}: {variant: Variant; isoNames: Set<string> | nu
               Browse images
             </Link>
           )}
-          <Link className={clsx('button button--lg', styles.btnGhost)} to={`/docs/${variant.id}`}>
-            Full docs
-          </Link>
+          {/* Only the bases with a reference page under docs/ get a docs
+              button; the rest linked to a page that was never written. */}
+          {VARIANT_DOC_IDS.has(variant.id) ? (
+            <Link className={clsx('button button--lg', styles.btnGhost)} to={`/docs/${variant.id}`}>
+              Full docs
+            </Link>
+          ) : (
+            <Link className={clsx('button button--lg', styles.btnGhost)} to="/docs/choosing-a-variant">
+              Choosing a variant
+            </Link>
+          )}
           {variant.id === 'gurnard' && (
             <Link className={clsx('button button--lg', styles.btnGhost)} to="/docs/gurnard/pantheon-shortcuts">
               Pantheon shortcuts

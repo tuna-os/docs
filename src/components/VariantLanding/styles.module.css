@@ -326,7 +326,7 @@
   padding: 0.15rem 0.5rem;
   border-radius: 6px;
   background: rgba(93, 171, 240, 0.12);
-  color: var(--tu-accent);
+  color: var(--tu-accent-soft);
   border: none;
 }
 

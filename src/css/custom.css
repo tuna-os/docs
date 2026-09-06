@@ -401,3 +401,27 @@ article.markdown .theme-code-block {
     animation: none;
   }
 }
+
+/* The footer copyright carries a design credit link. Colour alone does not
+   distinguish a link inside a run of text (WCAG 1.4.1), so underline it; the
+   footer's link blue is only 4.4:1 on the footer ground, so lighten it too. */
+.footer__copyright a {
+  color: var(--tuna-header-fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer__copyright a:hover {
+  color: #fff;
+}
+
+/* Same rule inside docs prose: an accent-coloured link in a paragraph is
+   only distinguished from the body text by hue. */
+/* Docusaurus renders the doc body as div.markdown, not article.markdown. */
+.markdown p a,
+.markdown li a,
+article.markdown p a,
+article.markdown li a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

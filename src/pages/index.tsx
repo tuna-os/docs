@@ -15,6 +15,7 @@ import {VARIANTS as ALL_VARIANTS} from '@site/src/data/variants';
 import styles from './index.module.css';
 
 const FEATURED_PROJECTS = [
+  {name: 'wootc', desc: 'Linux from inside Windows', to: '/wootc'},
   {name: 'TunaOS', desc: 'Desktop images', to: '/tunaos'},
   {name: 'Tacklebox', desc: 'ISO & USB builder', to: '/tacklebox'},
   {name: 'Tromsø', desc: 'KDE Linux', to: '/tromso'},
@@ -81,13 +82,13 @@ function Hero(): ReactNode {
             </p>
             <div className={styles.btnGroup}>
               <Link className={clsx('button', styles.btnPrimary)} to="/download">
-                Download ISOs
+                Download an ISO
               </Link>
-              <Link className={clsx('button', styles.btnGhost)} to="/iso-builder">
-                Build your own ISO
+              <Link className={clsx('button', styles.btnGhost)} to="/wootc">
+                Try it from Windows
               </Link>
-              <Link className={clsx('button', styles.btnGhost)} to="/projects">
-                Projects
+              <Link className={clsx('button', styles.btnGhost)} to="/variants">
+                Compare images
               </Link>
             </div>
           </div>
@@ -108,6 +109,81 @@ function CarouselSection(): ReactNode {
           <div className={styles.carouselPanel}>
             <VariantCarousel variants={ALL_VARIANTS} />
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function InstallPathsBand(): ReactNode {
+  const paths: Array<{
+    icon: IconName;
+    name: string;
+    desc: string;
+    cta: string;
+    to: string;
+    code?: string;
+  }> = [
+    {
+      icon: 'shield',
+      name: 'From Windows, reversibly',
+      desc: 'wootc installs a real Linux desktop into a single file beside your Windows files and adds a boot entry for it. No repartitioning, and uninstalling is deleting a folder.',
+      cta: 'How wootc works',
+      to: '/wootc',
+    },
+    {
+      icon: 'disc',
+      name: 'From a USB stick',
+      desc: 'Write a live ISO, boot it, and install. Every main image publishes one, for x86_64 and arm64.',
+      cta: 'Download an ISO',
+      to: '/download',
+    },
+    {
+      icon: 'layers',
+      name: 'Rebase what you run',
+      desc: 'Already on bootc — Bluefin, Aurora, Fedora Atomic? Switch to a TunaOS image in one command and roll back if you do not like it.',
+      cta: 'Installation docs',
+      to: '/docs/installation',
+      code: 'sudo bootc switch ghcr.io/tuna-os/albacore:gnome',
+    },
+    {
+      icon: 'wrench',
+      name: 'Build your own',
+      desc: 'Pick an image and your flatpak set, and the browser builds the ISO locally. The same engine CI uses for release media.',
+      cta: 'Open the builder',
+      to: '/iso-builder',
+    },
+  ];
+
+  return (
+    <section className={styles.section}>
+      <div className="container">
+        <SectionHead
+          title="Ways to install"
+          sub="Four routes onto a TunaOS image. All of them end on the same bootc system, and all of them are reversible."
+        />
+        <div className={styles.pipelineGrid}>
+          {paths.map((p, i) => (
+            <Link key={p.name} to={p.to} className={styles.pipelineCard}>
+              <div className={styles.cardTop}>
+                <span className={styles.cardIcon}>
+                  <Icon name={p.icon} size={22} />
+                </span>
+                <span className={styles.cardIndex}>{String(i + 1).padStart(2, '0')}</span>
+              </div>
+              <Heading as="h3" className={styles.cardName}>
+                {p.name}
+              </Heading>
+              <p className={styles.cardBlurb}>{p.desc}</p>
+              {p.code && (
+                <code className={styles.pathCode}>{p.code}</code>
+              )}
+              <span className={styles.cardLink}>
+                {p.cta}
+                <Icon name="arrow-right" size={14} />
+              </span>
+            </Link>
+          ))}
         </div>
       </div>
     </section>
@@ -352,6 +428,7 @@ export default function Home(): ReactNode {
       <Backdrop />
       <CarouselSection />
       <main>
+        <InstallPathsBand />
         <HomepageFeaturesBand />
         <PipelineBand />
         <AppsBand />

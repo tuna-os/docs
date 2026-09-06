@@ -127,8 +127,9 @@
 }
 
 .tagLatest {
-  background: var(--ifm-color-primary);
-  color: #fff;
+  background: var(--tu-accent);
+  /* Dark ink on the accent: white on #5dabf0 is only 2.45:1. */
+  color: #1d1f21;
 }
 
 .isoDate {
@@ -184,7 +185,14 @@
   margin-top: 2rem;
   text-align: center;
   font-size: 0.82rem;
-  color: var(--ifm-color-emphasis-600);
+  color: var(--tu-dim);
+}
+
+/* Colour alone does not mark a link inside running text (WCAG 1.4.1). */
+.generated a {
+  color: var(--tu-accent-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* ── Nested variant grouping ── */
