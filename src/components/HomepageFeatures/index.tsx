@@ -1,18 +1,18 @@
 import type {ReactNode} from 'react';
-import clsx from 'clsx';
 import Heading from '@theme/Heading';
+import Icon, {type IconName} from '@site/src/components/Icon';
 import styles from './styles.module.css';
 
 type FeatureItem = {
+  icon: IconName;
   title: string;
-  emoji: string;
   description: ReactNode;
 };
 
 const FeatureList: FeatureItem[] = [
   {
+    icon: 'layers',
     title: 'BuildStream desktops',
-    emoji: '🌌',
     description: (
       <>
         Tromsø, XFCE Linux, Dakota — desktops built from source on{' '}
@@ -21,8 +21,8 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
+    icon: 'box',
     title: 'bootc-native images',
-    emoji: '📦',
     description: (
       <>
         Every project ships as a standard bootc OCI image. Pull it, boot it,{' '}
@@ -31,8 +31,8 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
+    icon: 'disc',
     title: 'Multi-boot media',
-    emoji: '🛠',
     description: (
       <>
         Tacklebox produces ISOs and USB drives with multiple environments —{' '}
@@ -41,8 +41,8 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
+    icon: 'grid',
     title: 'Desktop apps + CLI',
-    emoji: '🍻',
     description: (
       <>
         Tavern brings an App Store experience to Homebrew on Linux. bluefin-cli{' '}
@@ -51,8 +51,8 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
+    icon: 'shield',
     title: 'Enterprise Linux base',
-    emoji: '🐟',
     description: (
       <>
         TunaOS desktop images ship GNOME, KDE, and more on AlmaLinux, CentOS{' '}
@@ -61,8 +61,8 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
+    icon: 'users',
     title: 'Open source, open community',
-    emoji: '🚀',
     description: (
       <>
         Everything we build is open source. Contribute to upstream freedesktop-sdk,{' '}
@@ -72,30 +72,27 @@ const FeatureList: FeatureItem[] = [
   },
 ];
 
-function Feature({title, emoji, description}: FeatureItem) {
+function Feature({icon, title, description, index}: FeatureItem & {index: string}) {
   return (
-    <div className={clsx('col col--4')}>
-      <div className="text--center">
-        {emoji && <div className={styles.featureEmoji}>{emoji}</div>}
-      </div>
-      <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
-      </div>
+    <div className={styles.featureCard}>
+      <span className={styles.featureIndex}>{index}</span>
+      <span className={styles.featureIcon}>
+        <Icon name={icon} size={22} />
+      </span>
+      <Heading as="h3" className={styles.featureTitle}>
+        {title}
+      </Heading>
+      <p className={styles.featureDesc}>{description}</p>
     </div>
   );
 }
 
 export default function HomepageFeatures(): ReactNode {
   return (
-    <section className={styles.features}>
-      <div className="container">
-        <div className="row">
-          {FeatureList.map((props, idx) => (
-            <Feature key={idx} {...props} />
-          ))}
-        </div>
-      </div>
-    </section>
+    <div className={styles.grid}>
+      {FeatureList.map((feature, idx) => (
+        <Feature key={idx} {...feature} index={String(idx + 1).padStart(2, '0')} />
+      ))}
+    </div>
   );
 }

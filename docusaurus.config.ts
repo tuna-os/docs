@@ -12,17 +12,17 @@ import {VARIANTS} from './src/data/variants';
 // from menus that already listed every one of their siblings.
 const variantNavItems = VARIANTS.map((v) => ({
   to: `/${v.id}`,
-  label: `${v.emoji} ${v.name} — ${v.base}`,
+  label: `${v.name} — ${v.base}`,
 }));
 
 const projectNavItems = PROJECTS.filter((p) => !p.external).map((p) => ({
   to: `/${p.id}`,
-  label: `${p.emoji} ${p.name}`,
+  label: `${p.name}`,
 }));
 
 const externalProjectNavItems = PROJECTS.filter((p) => p.external).map((p) => ({
   to: `/${p.id}`,
-  label: `${p.emoji} ${p.name} ↗`,
+  label: `${p.name}`,
 }));
 
 const config: Config = {
@@ -64,29 +64,19 @@ const config: Config = {
   },
 
   presets: [
-    [
-      'classic',
-      {
-        docs: {
-          sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/tuna-os/docs/tree/main/',
-        },
-        blog: {
-          showReadingTime: true,
-          blogTitle: 'TunaOS Blog',
-          blogDescription: 'Engineering updates, feature roundups, and build system deep-dives from the TunaOS image factory.',
-          blogSidebarTitle: 'Recent posts',
-          blogSidebarCount: 10,
-          editUrl: 'https://github.com/tuna-os/docs/tree/main/',
-        },
-        theme: {
-          customCss: './src/css/custom.css',
-        },
-      } satisfies Preset.Options,
-    ],
+      [
+        'classic',
+        {
+          docs: {
+            sidebarPath: './sidebars.ts',
+            editUrl:
+              'https://github.com/tuna-os/docs/tree/main/',
+          },
+          theme: {
+            customCss: './src/css/custom.css',
+          },
+        } satisfies Preset.Options,
+      ],
   ],
 
   // Local search index built at build time — no external service/API key
@@ -106,6 +96,11 @@ const config: Config = {
   themeConfig: {
     // Replace with your project's social card
     image: 'img/tunaos-social-card.png',
+    colorMode: {
+      // The TunaOS look is ocean-dark; land everyone there first.
+      defaultMode: 'dark',
+      disableSwitch: false,
+    },
     navbar: {
       title: 'TunaOS',
       logo: {
@@ -115,43 +110,13 @@ const config: Config = {
       items: [
         {
           type: 'dropdown',
-          label: '🤖 AI',
+          label: 'AI',
           position: 'left',
           items: [
             {type: 'html', value: '<div style="padding:0.5rem 1rem;max-width:280px;font-size:0.875rem;line-height:1.5;color:var(--ifm-dropdown-link-color)">All the projects here are made primarily with LLMs. They span the range of slop to not. Some are very useful and usable while others are definitely not.</div>'},
             {type: 'html', value: '<hr style="margin:0.3rem 0;opacity:0.3">'},
-            {href: 'https://hive.tunaos.org', label: '🐝 Hive'},
+            {href: 'https://hive.tunaos.org', label: 'Hive'},
           ],
-        },
-        {
-          type: 'dropdown',
-          label: '🐟 TunaOS',
-          position: 'left',
-          items: [
-            ...variantNavItems,
-            {type: 'html', value: '<hr style="margin:0.3rem 0;opacity:0.3">'},
-            {to: '/matrix', label: '🗂️ Build Matrix'},
-            {to: '/download', label: '📦 Download'},
-          ],
-        },
-        {
-          type: 'dropdown',
-          label: '🧰 Projects',
-          position: 'left',
-          items: [
-            ...projectNavItems,
-            {to: '/copr', label: '⚙ COPR Builds'},
-            {to: '/office', label: '🏢 Office Suite'},
-            {to: '/flatpak', label: '📦 Flatpak'},
-            {type: 'html', value: '<hr style="margin:0.3rem 0;opacity:0.3">'},
-            ...externalProjectNavItems,
-            {to: '/projects', label: 'All projects →'},
-          ],
-        },
-        {
-          to: '/blog',
-          label: '📝 Blog',
-          position: 'left',
         },
         {
           type: 'docSidebar',

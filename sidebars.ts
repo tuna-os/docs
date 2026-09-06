@@ -10,7 +10,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '🐟 Variants',
+      label: 'Variants',
       collapsed: false,
       // Showcase: the rich, visual landing pages (custom React pages), with the
       // detailed per-variant reference docs nested beneath.
@@ -54,7 +54,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '🧱 BuildStream Desktops',
+      label: 'BuildStream Desktops',
       collapsed: false,
       items: [
         {type: 'category', label: 'Tromsø', link: {type: 'doc', id: 'tromso/index'}, items: ['tromso/getting-started', 'tromso/SPEC', 'tromso/ROADMAP', 'tromso/SECURITY', 'tromso/CONTRIBUTING', 'tromso/ci-and-iso-pipeline']},
@@ -63,15 +63,15 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '🛠 Tools',
+      label: 'Tools',
       collapsed: false,
       items: [
         {type: 'category', label: 'Tacklebox', link: {type: 'doc', id: 'tacklebox/index'}, items: ['tacklebox/USER-GUIDE', 'tacklebox/getting-started', 'tacklebox/ARCHITECTURE', 'tacklebox/github-iso-setup', 'tacklebox/TODO', 'tacklebox/ROADMAP', 'tacklebox/SECURITY', 'tacklebox/CONTRIBUTING', 'tacklebox/opfs-streaming-handoff']},
         {type: 'category', label: 'ISO Builder', link: {type: 'doc', id: 'iso-builder/index'}, items: [{type: 'category', label: 'Native App', link: {type: 'doc', id: 'iso-builder/native/index'}, items: ['iso-builder/native/user-guide']}]},
-        {type: 'category', label: '🐟 remora', link: {type: 'doc', id: 'remora/index'}, items: []},
+        {type: 'category', label: 'remora', link: {type: 'doc', id: 'remora/index'}, items: []},
         {
           type: 'category',
-          label: '🤠 Corral',
+          label: 'Corral',
           link: {type: 'doc', id: 'corral/index'},
           items: ['corral/getting-started', 'corral/user-guide', 'corral/interfaces', 'corral/contexts', 'corral/command-reference', 'corral/vdi', 'corral/containers', 'corral/backup', 'corral/bootc', 'corral/windows', 'corral/gpu', 'corral/snapsched', 'corral/schedule', 'corral/proxmox', 'corral/ROADMAP', 'corral/SPEC', 'corral/architecture', 'corral/api', 'corral/backend-support', 'corral/backend-parity', 'corral/ci-boot-gate', 'corral/first-party-plugins', 'corral/kubevirt-proxmox-setup', 'corral/plugin-marketplace', 'corral/proxmox-api', 'corral/testing'],
         },
@@ -87,16 +87,16 @@ const sidebars: SidebarsConfig = {
           link: {type: 'doc', id: 'bootc-migrate/index'},
           items: ['bootc-migrate/architecture', 'bootc-migrate/filesystem-support', 'bootc-migrate/luks-testing', 'bootc-migrate/testing', 'bootc-migrate/references', 'bootc-migrate/ROADMAP', 'bootc-migrate/CONTRIBUTING', 'bootc-migrate/cfs-cli-generations'],
         },
-        {type: 'category', label: '📦 Flatpak', link: {type: 'doc', id: 'flatpak/index'}, items: ['flatpak/guide']},
-        {type: 'category', label: '📦 tunaos-packages', link: {type: 'doc', id: 'tunaos-packages/index'}, items: ['tunaos-packages/ARCHITECTURE', 'tunaos-packages/PACKAGE_FACTORY', 'tunaos-packages/PATCH_POLICY', 'tunaos-packages/ROADMAP', 'tunaos-packages/SECURITY', 'tunaos-packages/TIDEFORGE-READINESS', 'tunaos-packages/UPSTREAM_PARITY', 'tunaos-packages/XFWL4-PORTING', 'tunaos-packages/gnome49-centos-bootc', 'tunaos-packages/hummingbird-desktop-gap', 'tunaos-packages/CONTRIBUTING']},
-        {type: 'category', label: '🐧 Ubuntu', link: {type: 'doc', id: 'ubuntu/index'}, items: ['ubuntu/CONTRIBUTING', 'ubuntu/SECURITY']},
-        {type: 'category', label: '🖥️ bootc-installer-tui', link: {type: 'doc', id: 'bootc-installer-tui/index'}, items: ['bootc-installer-tui/CONTRIBUTING']},
-        {type: 'category', label: '🧱 chunkah', link: {type: 'doc', id: 'chunkah/index'}, items: ['chunkah/CONTRIBUTING']},
+        {type: 'category', label: 'Flatpak', link: {type: 'doc', id: 'flatpak/index'}, items: ['flatpak/guide']},
+        {type: 'category', label: 'tunaos-packages', link: {type: 'doc', id: 'tunaos-packages/index'}, items: ['tunaos-packages/ARCHITECTURE', 'tunaos-packages/PACKAGE_FACTORY', 'tunaos-packages/PATCH_POLICY', 'tunaos-packages/ROADMAP', 'tunaos-packages/SECURITY', 'tunaos-packages/TIDEFORGE-READINESS', 'tunaos-packages/UPSTREAM_PARITY', 'tunaos-packages/XFWL4-PORTING', 'tunaos-packages/gnome49-centos-bootc', 'tunaos-packages/hummingbird-desktop-gap', 'tunaos-packages/CONTRIBUTING']},
+        {type: 'category', label: 'Ubuntu', link: {type: 'doc', id: 'ubuntu/index'}, items: ['ubuntu/CONTRIBUTING', 'ubuntu/SECURITY']},
+        {type: 'category', label: 'bootc-installer-tui', link: {type: 'doc', id: 'bootc-installer-tui/index'}, items: ['bootc-installer-tui/CONTRIBUTING']},
+        {type: 'category', label: 'chunkah', link: {type: 'doc', id: 'chunkah/index'}, items: ['chunkah/CONTRIBUTING']},
       ],
     },
     {
       type: 'category',
-      label: '🗂 Images & ISOs',
+      label: 'Images & ISOs',
       collapsed: false,
       items: [
         {type: 'doc', id: 'tromso-iso/index', label: 'Tromsø ISO'},
@@ -115,14 +115,14 @@ const sidebars: SidebarsConfig = {
         {type: 'category', label: 'Tavern', link: {type: 'doc', id: 'tavern/index'}, items: ['tavern/ROADMAP', 'tavern/CONTRIBUTING', 'tavern/guide']},
         {
           type: 'category',
-          label: '🏢 Office Suite',
+          label: 'Office Suite',
           link: {type: 'doc', id: 'gtk-office-suite/index'},
           items: ['gtk-office-suite/letters', 'gtk-office-suite/tables', 'gtk-office-suite/decks'],
         },
-        {type: 'category', label: '🗺️ Mariner', link: {type: 'doc', id: 'mariner/index'}, items: []},
-        {type: 'category', label: '🌀 Mandelbrot', link: {type: 'doc', id: 'mandelbrot/index'}, items: ['mandelbrot/features']},
-        {type: 'category', label: '🐚 BlueShell', link: {type: 'doc', id: 'blueshell/index'}, items: []},
-        {type: 'category', label: '👻 Ghostty', className: 'sidebar-external', link: {type: 'doc', id: 'ghostty/index'}, items: []},
+        {type: 'category', label: 'Mariner', link: {type: 'doc', id: 'mariner/index'}, items: []},
+        {type: 'category', label: 'Mandelbrot', link: {type: 'doc', id: 'mandelbrot/index'}, items: ['mandelbrot/features']},
+        {type: 'category', label: 'BlueShell', link: {type: 'doc', id: 'blueshell/index'}, items: []},
+        {type: 'category', label: 'Ghostty', className: 'sidebar-external', link: {type: 'doc', id: 'ghostty/index'}, items: []},
       ],
     },
     {type: 'html', value: '<div class="sidebar-section-label">Community</div>', defaultStyle: true},

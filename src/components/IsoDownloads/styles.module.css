@@ -4,6 +4,37 @@
   gap: 1.5rem;
 }
 
+.searchWrap {
+  margin-bottom: 1.25rem;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--tu-line);
+  background: var(--tu-panel);
+  color: var(--tu-ink);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchInput::placeholder {
+  color: var(--tu-dim);
+}
+
+.searchInput:focus {
+  border-color: var(--tu-accent);
+  box-shadow: 0 0 0 3px rgba(93, 171, 240, 0.15);
+}
+
+.resultCount {
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+  color: var(--tu-dim);
+}
+
 .card {
   border: 1px solid var(--ifm-color-emphasis-200);
   border-radius: 16px;

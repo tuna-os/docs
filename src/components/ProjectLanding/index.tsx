@@ -10,17 +10,8 @@ import {PROJECTS, STATUS_LABELS, BUILDSTREAM_UPSTREAMS, type Project} from '@sit
 import styles from './styles.module.css';
 
 function Hero({project}: {project: Project}): ReactNode {
-  const style = {
-    ['--p-accent' as string]: project.accent,
-    ['--p-accent2' as string]: project.accent2,
-  };
   return (
-    <header className={clsx(styles.hero, project.heroEmojiLarge && styles.heroLargeEmoji)} style={style}>
-      {project.heroEmojiLarge && (
-        <div className={styles.heroBgEmoji} aria-hidden>
-          <AnimatedEmoji emoji={project.emoji} size={420} speed={0.4} />
-        </div>
-      )}
+    <header className={clsx(styles.hero, project.heroEmojiLarge && styles.heroLargeEmoji)}>
       <div className={clsx('container', styles.heroInner)}>
         {project.logo ? (
           <img src={project.logo} alt={project.name} className={clsx(styles.heroLogo, project.logoLight && styles.heroLogoLight)} />
@@ -58,28 +49,28 @@ function Hero({project}: {project: Project}): ReactNode {
           )}
           {project.flathub && (
             <a className={clsx('button button--lg', styles.btnPrimary)} href={`/install?app=${project.flathub}`}>
-              Install 📦
+              Install
             </a>
           )}
           {project.flatpakRust && (
             <a className={clsx('button button--lg', styles.btnGhost)} href={`/install?app=${project.flatpakRust}`}>
-              Install (Rust) 🦀
+              Install (Rust)
             </a>
           )}
           {project.docs && (
             <Link
               className={clsx('button button--lg', project.cta ? styles.btnGhost : styles.btnPrimary)}
               to={project.docs}>
-              Documentation 📖
+              Documentation
             </Link>
           )}
           {project.external ? (
             <a className={clsx('button button--lg', project.cta || project.docs ? styles.btnGhost : styles.btnPrimary)} href={project.externalLink || project.repo}>
-              View on GitHub 💻
+              View on GitHub
             </a>
           ) : (
             <a className={clsx('button button--lg', styles.btnGhost)} href={project.repo}>
-              GitHub 💻
+              GitHub
             </a>
           )}
         </div>

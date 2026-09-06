@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {type ReactNode} from 'react';
 
 const CDN_BASE = 'https://fonts.gstatic.com/s/e/notoemoji/latest';
 
@@ -35,76 +35,12 @@ type Props = {
   speed?: number;
 };
 
-export default function AnimatedEmoji({emoji, size = 32, className, alt, speed = 1}: Props) {
-  const code = EMOJI_MAP[emoji];
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [lottieReady, setLottieReady] = useState(false);
-  const hasLottie = code && LOTTIE_OK.has(code);
-
-  useEffect(() => { preloadLottie(); }, []);
-
-  useEffect(() => {
-    if (!hasLottie || !canvasRef.current) return;
-    let cancelled = false;
-    let instance: any = null;
-
-    const init = async () => {
-      // Wait for module to load
-      while (!DotLottieModule) {
-        await new Promise(r => setTimeout(r, 50));
-        if (cancelled) return;
-      }
-      if (cancelled || !canvasRef.current) return;
-      instance = new DotLottieModule.DotLottie({
-        autoplay: true,
-        loop: true,
-        speed,
-        canvas: canvasRef.current,
-        src: `${CDN_BASE}/${code}/lottie.json`,
-      });
-      setLottieReady(true);
-    };
-
-    init();
-    return () => {
-      cancelled = true;
-      instance?.destroy();
-    };
-  }, [code, hasLottie, speed]);
-
-  if (!code) {
-    return <span className={className} style={{fontSize: size}} role="img" aria-label={alt || emoji}>{emoji}</span>;
-  }
-
-  if (hasLottie) {
-    // Show canvas immediately (Lottie fills it asynchronously).
-    // No flash — the canvas is invisible until lottieReady.
-    return (
-      <span
-        className={className}
-        style={{display: 'inline-block', width: size, height: size, lineHeight: 0, opacity: lottieReady ? 1 : 0}}
-        role="img"
-        aria-label={alt || emoji}
-      >
-        <canvas
-          ref={canvasRef}
-          width={size * 2}
-          height={size * 2}
-          style={{width: size, height: size}}
-        />
-      </span>
-    );
-  }
-
-  return (
-    <img
-      src={`${CDN_BASE}/${code}/512.gif`}
-      alt={alt || emoji}
-      width={size}
-      height={size}
-      className={className}
-      style={{display: 'inline-block', imageRendering: 'auto'}}
-      loading="lazy"
-    />
-  );
+export default function AnimatedEmoji(_props: {
+  emoji: string;
+  size?: number;
+  className?: string;
+  alt?: string;
+  speed?: number;
+}): ReactNode {
+  return null;
 }

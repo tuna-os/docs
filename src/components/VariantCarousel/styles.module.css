@@ -1,0 +1,91 @@
+.wrap {
+  position: relative;
+  padding: 0 40px;
+}
+
+.track {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  width: 100%;
+  min-width: 0;
+  padding: 0.25rem 0.25rem 0.75rem;
+  margin: 0 -0.25rem;
+  cursor: grab;
+  scrollbar-width: none;
+}
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  flex: 0 0 auto;
+  width: calc((100% - 2rem) / 3);
+  scroll-snap-align: start;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1.25rem 1rem;
+  border-radius: 8px;
+  border: none;
+  background: var(--tu-panel);
+  box-shadow: none;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.card:hover {
+  background: var(--tu-panel-2);
+  transform: translateY(-2px);
+}
+.card .emoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+.card .name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--tu-ink);
+  letter-spacing: -0.01em;
+}
+.card .base {
+  font-size: 0.85rem;
+  color: var(--tu-dim);
+  line-height: 1.35;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--tu-line-strong);
+  background: var(--tu-panel);
+  color: var(--tu-ink);
+  font-size: 1.1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.85;
+}
+.arrow:hover {
+  opacity: 1;
+  border-color: var(--tu-accent);
+  color: var(--tu-accent);
+}
+.arrow:first-of-type {
+  left: 4px;
+}
+.arrow:last-of-type {
+  right: 4px;
+}

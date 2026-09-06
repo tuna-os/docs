@@ -4,111 +4,280 @@
  * work well for content-centric websites.
  */
 
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #0056b3;
-  --ifm-color-primary-dark: #004da1;
-  --ifm-color-primary-darker: #004998;
-  --ifm-color-primary-darkest: #003c7d;
-  --ifm-color-primary-light: #005fc5;
-  --ifm-color-primary-lighter: #0063ce;
-  --ifm-color-primary-lightest: #0070e9;
+  --ifm-font-family-base: 'JetBrains Mono', monospace;
+  --ifm-font-family-monospace: 'JetBrains Mono', monospace;
+  --tu-mono: 'JetBrains Mono', monospace;
+  /* Bright Vesper primaries for the light theme. */
+  --ifm-color-primary: #5dabf0;
+  --ifm-color-primary-dark: #5fa8e8;
+  --ifm-color-primary-darker: #4d9be0;
+  --ifm-color-primary-darkest: #3d8ad0;
+  --ifm-color-primary-light: #7bbdf5;
+  --ifm-color-primary-lighter: #9acff8;
+  --ifm-color-primary-lightest: #b8e0fa;
   --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-  --tuna-silver: #a0a0a0;
-  --tuna-dark-blue: #002b5c;
-  --tuna-light-blue: #e6f3ff;
+  --docusaurus-highlighted-code-line-bg: rgba(93, 171, 240, 0.12);
+  --tuna-silver: #9aa1a9;
+  --tuna-dark-blue: #1d1f21;
+  --tuna-light-blue: #c5c8c6;
+
+  /* Brand accent — bright Vesper blue, one restrained hue site-wide. */
+  --tuna-accent: #5dabf0;
+
+  /* Homepage tokens — shared by index.module.css and HomepageFeatures.
+     Bright Vesper palette. */
+  --tu-bg: #1d1f21;
+  --tu-bg-2: #232323;
+  --tu-panel: #2a2d31;
+  --tu-panel-2: #303236;
+  --tu-line: rgba(93, 171, 240, 0.12);
+  --tu-line-strong: rgba(93, 171, 240, 0.2);
+  --tu-accent: #5dabf0;
+  --tu-accent-soft: #7bbdf5;
+  --tu-ink: #f0f2f5;
+  --tu-dim: #b0b8c0;
+  --tu-footer: #1a1d21;
 
   /* Shared palette with iso.tunaos.org (app/public/index.html). Keep these in
      sync — the two sites sit behind one nav bar and must read as one product. */
   --tuna-panel: #ffffff;
-  --tuna-border: #cfe3f7;
-  --tuna-dim: #5a7492;
-  --tuna-header-bg: #002b5c;
-  --tuna-header-fg: #ffffff;
-  --tuna-header-link: #cfe3f7;
+  --tuna-border: transparent;
+  --tuna-dim: #5e6770;
+  --tuna-header-bg: #1d1f21;
+  --tuna-header-fg: #eaeaea;
+  --tuna-header-link: #81a2be;
 
-  /* The navy header bar is the site's signature element — identical in both
-     themes on the builder, so match that here rather than letting Infima
-     invert it. */
+  /* The bright Vesper header bar is the site's signature element — identical in both
+     themes, so match that here rather than letting Infima invert it. */
   --ifm-navbar-background-color: var(--tuna-header-bg);
   --ifm-navbar-link-color: var(--tuna-header-link);
   --ifm-navbar-link-hover-color: var(--tuna-header-fg);
   --ifm-navbar-shadow: 0 1px 0 var(--tuna-border);
 }
 
+body {
+  font-family: var(--ifm-font-family-base);
+}
+
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #47a1ff;
-  --ifm-color-primary-dark: #2e94ff;
-  --ifm-color-primary-darker: #218eff;
-  --ifm-color-primary-darkest: #0078f5;
-  --ifm-color-primary-light: #61aeff;
-  --ifm-color-primary-lighter: #6eb5ff;
-  --ifm-color-primary-lightest: #94c8ff;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-  --tuna-silver: #c0c0c0;
-  --tuna-dark-blue: #00152e;
-  --tuna-light-blue: #003366;
+  /* Bright Vesper blue accent — #5dabf0 across the shades. */
+  --ifm-color-primary: #5dabf0;
+  --ifm-color-primary-dark: #5fa8e8;
+  --ifm-color-primary-darker: #4d9be0;
+  --ifm-color-primary-darkest: #3d8ad0;
+  --ifm-color-primary-light: #7bbdf5;
+  --ifm-color-primary-lighter: #9acff8;
+  --ifm-color-primary-lightest: #b8e0fa;
+  --docusaurus-highlighted-code-line-bg: rgba(93, 171, 240, 0.12);
+  --tuna-silver: #a7adb5;
+  --tuna-dark-blue: #1d1f21;
+  --tuna-light-blue: #2a2d31;
 
-  /* Dark palette from iso.tunaos.org's :root (its default is dark). */
-  --tuna-panel: #002b5c;
-  --tuna-border: #1a4a7a;
-  --tuna-dim: #94b8dc;
-  --tuna-header-bg: #001a38;
+  --tuna-accent: #5dabf0;
 
-  /* Deep navy page/surface, matching the builder's --bg / --panel. */
-  --ifm-background-color: #00152e;
-  --ifm-background-surface-color: #002b5c;
+  /* Bright Vesper header bar — identical in both themes. */
+  --tuna-panel: #2a2d31;
+  --tuna-border: transparent;
+  --tuna-dim: #b0b8c0;
+  --tuna-header-bg: #1d1f21;
+
+  --ifm-background-color: #1d1f21;
+  --ifm-background-surface-color: #2a2d31;
   --ifm-navbar-background-color: var(--tuna-header-bg);
   --ifm-toc-border-color: var(--tuna-border);
   --ifm-navbar-shadow: 0 1px 0 var(--tuna-border);
+
+  /* Footer sits below the homepage's final section — match its tone so the
+     page flows into the footer instead of ending on a seam. */
+  --ifm-footer-background-color: #1a1d21;
+  --ifm-footer-title-color: var(--tuna-header-fg);
+  --ifm-footer-link-color: var(--tuna-header-link);
+  --ifm-footer-link-hover-color: var(--tuna-header-fg);
 }
 
-/* ── Header bar, matching iso.tunaos.org's .site-header ────────────────────
-   Navy bar in both themes, white brand, dimmed links that brighten on hover,
-   and an accent underline on the active item. */
+/* ── Header bar ─────────────────────────────────────────────────────────
+   Transparent floating navbar with button-style links, circular logo pfp,
+   and auto-hide on scroll down / show on scroll up. */
+.navbar {
+  height: 52px;
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  background: rgba(29, 31, 33, 0.72);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  width: 100%;
+}
+
+.navbar--fixed-top {
+  box-shadow: none;
+}
+
+.navbar--hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.navbar--visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.navbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ifm-color-primary), transparent);
+  opacity: 0.3;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.navbar__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
 .navbar__title,
 .navbar__brand {
   color: var(--tuna-header-fg);
   font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar__brand:hover {
+  opacity: 0.85;
 }
 
 .navbar__link {
   font-size: 0.92rem;
+  font-weight: 500;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0;
+  transition: all 0.2s ease;
+  position: relative;
+  border: none;
+  background: transparent;
+  color: var(--tuna-header-link);
+}
+
+.navbar__link:hover {
+  background: transparent;
+  color: var(--tuna-header-fg);
+  border-color: transparent;
+  transform: none;
+  box-shadow: none;
 }
 
 .navbar__link--active {
   color: var(--tuna-header-fg);
-  border-bottom: 2px solid var(--ifm-color-primary);
-  padding-bottom: 2px;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
 }
 
-/* The toggle and mobile-menu glyphs sit on navy in BOTH themes, so force the
-   light-on-dark treatment Infima would otherwise only apply in dark mode. */
+.navbar__link--active::before {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: var(--ifm-color-primary);
+  border-radius: 1px;
+  box-shadow: 0 0 10px var(--ifm-color-primary);
+}
+
+/* Dropdown styling */
+.navbar__item.dropdown .dropdown__menu {
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  background: rgba(22, 22, 22, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(38, 198, 218, 0.1);
+  padding: 0.5rem 0;
+  margin-top: 0.5rem;
+  animation: dropdownFadeIn 0.2s ease;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown__link {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  transition: all 0.15s ease;
+  position: relative;
+  border-radius: 6px;
+  margin: 0 0.5rem;
+}
+
+.dropdown__link:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--tuna-header-fg);
+  padding-left: 1.5rem;
+}
+
+.dropdown__link--active {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--tuna-header-fg);
+  box-shadow: inset 3px 0 0 var(--ifm-color-primary);
+}
+
+/* The toggle and mobile-menu glyphs sit on Vesper-dark in BOTH themes, so force
+   the light-on-dark treatment Infima would otherwise only apply in dark mode. */
 .navbar__toggle,
 .navbar__items--right .clean-btn {
   color: var(--tuna-header-link);
+  transition: all 0.2s ease;
 }
 
-.hero--primary {
-  background-color: var(--tuna-dark-blue);
-  color: #ffffff;
+.navbar__toggle:hover {
+  color: var(--tuna-header-fg);
+  transform: scale(1.1);
 }
 
-[data-theme='dark'] .hero--primary {
-  background-color: #000000;
+/* GitHub icon in navbar (white on the Vesper-dark bar in both themes) */
+.header-github-link::before {
+  content: '';
+  width: 24px;
+  height: 24px;
+  display: flex;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23fff' d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.475-5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E")
+    no-repeat;
+  transition: all 0.2s ease;
 }
 
-.button--secondary {
-  --ifm-button-background-color: var(--tuna-silver);
-  --ifm-button-border-color: var(--tuna-silver);
-  --ifm-button-color: #000000;
-}
-
-.button--secondary:hover {
-  --ifm-button-background-color: #b0b0b0;
-  --ifm-button-border-color: #b0b0b0;
+.header-github-link:hover::before {
+  opacity: 0.8;
+  transform: scale(1.1);
 }
 
 /* ── Sidebar ── */
@@ -117,6 +286,35 @@
 [data-theme='dark'] article img[src*='/img/os/'],
 [data-theme='dark'] article img[src*='/img/desktops/'] {
   filter: invert(1);
+}
+
+/* Doc page content borders */
+.docPage .markdown,
+article.markdown {
+  border: 1px solid var(--tu-line);
+  border-radius: 8px;
+  background: var(--tu-panel);
+  padding: 1.5rem;
+}
+
+.docPage .markdown > *,
+article.markdown > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Admonitions in docs */
+.docPage .admonition,
+article.markdown .admonition {
+  border-radius: 8px;
+  border: 1px solid var(--tu-line);
+}
+
+/* Code blocks in docs */
+.docPage .theme-code-block,
+article.markdown .theme-code-block {
+  border-radius: 8px;
+  border: 1px solid var(--tu-line);
 }
 
 .sidebar-section-label {
@@ -179,17 +377,12 @@
   z-index: 1;
 }
 
-/* GitHub icon in navbar */
+/* GitHub icon in navbar (white on the hybrid header bar in both themes) */
 .header-github-link::before {
   content: '';
   width: 24px;
   height: 24px;
   display: flex;
   background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23fff' d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E")
-    no-repeat;
-}
-
-[data-theme='light'] .header-github-link::before {
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23181717' d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E")
     no-repeat;
 }
