@@ -1,108 +1,125 @@
-.projectCarousel {
-  position: relative;
-  width: 100%;
-  height: 100%;
+/* Featured-project carousel — a scroll-snap track, so a swipe works on touch
+   and the height follows the content instead of a fixed guess. */
+
+.carousel {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  min-height: 320px;
-}
-
-.projectCarouselTrack {
-  position: relative;
+  gap: 1rem;
   width: 100%;
-  min-height: 220px;
+  min-width: 0;
 }
 
-.projectCarouselSlide {
-  position: absolute;
-  inset: 0;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+.track {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  /* Room for the card's shadow, which a clipped overflow would cut off. */
+  padding-bottom: 0.5rem;
 }
 
-.projectCarouselCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 0.6rem;
-  padding: 1.5rem 1.25rem;
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.track:focus-visible {
+  outline: 2px solid var(--tu-accent);
+  outline-offset: 4px;
   border-radius: 6px;
-  border: 1px solid var(--tu-line-strong);
-  background: #232323;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
-  width: 100%;
-  max-width: 360px;
 }
 
-.projectCarouselIcon {
+.slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+  display: flex;
+  padding: 0 0.15rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 1.4rem 1.35rem;
+  border: none;
+  border-radius: 6px;
+  background: var(--tu-panel);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.icon {
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
+  border: none;
   border-radius: 6px;
-  border: 1px solid var(--tu-line-strong);
-  background: #2a2d31;
+  background: var(--tu-bg);
   color: var(--tu-accent);
 }
 
-.projectCarouselName {
+.name {
   margin: 0;
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--tu-ink);
 }
 
-.projectCarouselDesc {
+.desc {
   margin: 0;
   font-size: 0.9rem;
   line-height: 1.65;
   color: var(--tu-dim);
 }
 
-.projectCarouselLink {
+.link {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
+  margin-top: auto;
+  padding-top: 0.35rem;
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--tu-ink);
   text-decoration: none;
-  margin-top: 0.5rem;
   transition: color 0.2s ease;
 }
 
-.projectCarouselLink:hover {
+.link:hover {
   color: var(--tu-accent-soft);
 }
 
-.projectCarouselLink svg {
+.link svg {
   color: var(--tu-accent);
   transition: transform 0.2s ease;
 }
 
-.projectCarouselLink:hover svg {
+.link:hover svg {
   transform: translateX(4px);
 }
 
-.projectCarouselControls {
+/* ── Controls ─────────────────────────────────────────────────────────── */
+
+.controls {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 1.25rem;
+  gap: 0.5rem;
+  min-width: 0;
 }
 
-.projectCarouselArrow {
+.arrow {
+  flex: none;
   width: 32px;
   height: 32px;
+  border: none;
   border-radius: 50%;
-  border: 1px solid var(--tu-line-strong);
-  background: #2a2d31;
+  background: var(--tu-panel);
   color: var(--tu-ink);
   font-size: 1.1rem;
   line-height: 1;
@@ -110,34 +127,62 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0.85;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
-.projectCarouselArrow:hover {
-  opacity: 1;
-  border-color: var(--tu-accent);
+.arrow:hover {
+  background: var(--tu-panel-2);
   color: var(--tu-accent);
 }
 
-.projectCarouselDots {
-  display: flex;
-  gap: 0.5rem;
+/* Touch devices swipe the track; the arrows are for mouse and keyboard, and
+   on a narrow screen they only steal room from the dots. */
+@media (hover: none), (max-width: 700px) {
+  .arrow {
+    display: none;
+  }
 }
 
-.projectCarouselDot {
+.dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.dot {
   /* An 8px dot inside a 24px target: WCAG 2.2 target size (2.5.8). */
   width: 24px;
   height: 24px;
-  border-radius: 50%;
+  padding: 0;
   border: 8px solid transparent;
+  border-radius: 50%;
   background: var(--tu-line-strong);
   background-clip: content-box;
   cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 0;
+  transition: background 0.2s ease;
 }
 
-.projectCarouselDot:hover {
+.dot:hover {
+  background: var(--tu-accent-soft);
+  background-clip: content-box;
+}
+
+.dotActive {
   background: var(--tu-accent);
+  background-clip: content-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    scroll-behavior: auto;
+  }
+
+  .arrow,
+  .dot,
+  .link,
+  .link svg {
+    transition: none;
+  }
 }

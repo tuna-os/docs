@@ -3,6 +3,17 @@
   padding: 0 40px;
 }
 
+/* Touch devices scroll the track directly; the arrow gutters only cost width. */
+@media (hover: none), (max-width: 700px) {
+  .wrap {
+    padding: 0;
+  }
+
+  .arrow {
+    display: none;
+  }
+}
+
 .track {
   display: flex;
   gap: 1rem;
@@ -22,6 +33,8 @@
 
 .card {
   flex: 0 0 auto;
+  /* Three across on a wide panel; below that the cards would be unreadable
+     slivers, so the count drops with the width (see the queries at the end). */
   width: calc((100% - 2rem) / 3);
   scroll-snap-align: start;
   margin: 0;
@@ -89,4 +102,16 @@
 }
 .arrow:last-of-type {
   right: 4px;
+}
+
+@media (max-width: 700px) {
+  .card {
+    width: calc((100% - 1rem) / 2);
+  }
+}
+
+@media (max-width: 460px) {
+  .card {
+    width: 78%;
+  }
 }
