@@ -1,0 +1,41 @@
+name: Lint (not applicable)
+
+# The counterpart to lint.yml, and the reason it exists: **Markdown Lint is a
+# required check**, and lint.yml only runs on pull requests that touch prose or
+# the lint tooling. On any other pull request — a CSS or component change, say
+# — the required check never reports at all, so the pull request sits forever
+# at "Expected — Waiting for status to be reported" and auto-merge never fires.
+# It is not a failure and no re-run clears it; nothing ever reported.
+#
+# This is GitHub's documented handling for a skipped-but-required check: a job
+# with the same name, the complementary path filter, and nothing to do. When
+# the real job runs, this one does not, and vice versa. A pull request touching
+# both kinds of file runs both, which is fine — a required check with two runs
+# passes only if both pass, and the real one is the one that can fail.
+#
+# The two lists must stay in step: a path added to lint.yml's `paths:` belongs
+# in `paths-ignore:` here, or that path gets both jobs and this one's success
+# is meaningless. Likewise, a job in lint.yml that becomes required needs a
+# no-op twin here under the same name.
+
+on:
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - 'blog/**'
+      - '*.md'
+      - 'scripts/**'
+      - '.ste-budget'
+      - '.markdownlint-budget'
+      - '.github/workflows/lint.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  markdown-lint:
+    name: Markdown Lint
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Nothing to lint
+        run: echo 'No prose, no lint tooling, no budget changed in this pull request.'
