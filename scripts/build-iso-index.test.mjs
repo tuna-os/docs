@@ -15,8 +15,13 @@ import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 
 // ── Import helpers from the script ─────────────────────────────────────
-// The script uses top-level await, so we import it as a URL with the
-// query trick to re-evaluate.
+// The script has a top-level `await readStdin()`, so importing it for its
+// pure-function exports runs that read too. In CI this resolves instantly
+// because the runner's stdin is already closed, but a contributor running
+// this file directly from an interactive shell (open, never-EOF stdin)
+// would otherwise hang here forever. Force EOF on our own stdin first so
+// this test behaves the same everywhere, not just by accident in CI.
+process.stdin.push(null);
 const scriptUrl = new URL('./build-iso-index.mjs', import.meta.url);
 const mod = await import(scriptUrl);
 
