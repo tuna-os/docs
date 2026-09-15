@@ -47,9 +47,17 @@ def is_installer(app_id):
 
 
 def setup_remote():
-    run(["flatpak", "remote-add", "--if-not-exists", "--user", "tuna-os", f"oci+{REMOTE_URL}"])
-    run(["flatpak", "remote-add", "--if-not-exists", "--user", "flathub",
-         "https://dl.flathub.org/repo/flathub.flatpakrepo"])
+    commands = [[
+        "flatpak", "remote-add", "--if-not-exists", "--user", "tuna-os",
+        f"{REMOTE_URL}/tuna-os.flatpakrepo",
+    ], [
+        "flatpak", "remote-add", "--if-not-exists", "--user", "flathub",
+        "https://dl.flathub.org/repo/flathub.flatpakrepo",
+    ]]
+    for cmd in commands:
+        result = run(cmd, timeout=60)
+        if result.returncode:
+            raise RuntimeError(f"Remote setup failed for {cmd[-2]}: {result.stderr.strip()}")
 
 
 def install(app_id):

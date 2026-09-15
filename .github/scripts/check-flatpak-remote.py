@@ -54,6 +54,11 @@ def check_flatpakrepo(load_text, errors):
             "tuna-os <app>` will fail with 'Nothing matches' for every app "
             "on a non-stable branch."
         )
+    if "AuthenticatorName=org.flatpak.Authenticator.Oci" not in text:
+        errors.append(
+            "tuna-os.flatpakrepo: missing AuthenticatorName=org.flatpak.Authenticator.Oci "
+            "-- GHCR OCI pulls return 401 without Flatpak's bearer-token authenticator."
+        )
 
 
 def check_index(load_json, errors, warnings):
