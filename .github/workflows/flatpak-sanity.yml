@@ -29,7 +29,9 @@ jobs:
 
       - name: Check working tree
         if: github.event_name != 'schedule'
-        run: python3 .github/scripts/check-flatpak-remote.py
+        run: |
+          node scripts/prepare-flatpak-icons.mjs
+          python3 .github/scripts/check-flatpak-remote.py
 
       - name: Check live remote
         if: github.event_name == 'schedule'
