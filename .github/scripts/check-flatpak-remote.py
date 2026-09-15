@@ -9,6 +9,8 @@ Verifies:
      image (missing 'archs_planned' entries warn instead of failing).
   3. Every appstream/*.flatpakref file's app-id resolves to a live index
      entry (local-file mode only -- there's no HTTP directory listing).
+  4. Every OCI AppStream entry offers a remote icon URL so Bazaar can render
+     icons despite its current cached-icon directory assumption.
 
 Run in local-file mode (checks the working tree, e.g. pre-deploy on a PR)
 or --base-url mode (checks what's actually being served, e.g. the nightly
@@ -21,6 +23,7 @@ import json
 import sys
 import urllib.request
 from pathlib import Path
+from xml.etree import ElementTree
 
 STATIC_DIR = Path(__file__).resolve().parents[2] / "static" / "flatpak"
 
@@ -71,7 +74,28 @@ def check_index(load_json, errors, warnings):
         refs = set()
         for image in result.get("Images", []):
             archs.add(image.get("Architecture"))
-            refs.add(image.get("Labels", {}).get("org.flatpak.ref", ""))
+            labels = image.get("Labels", {})
+            ref = labels.get("org.flatpak.ref", "")
+            refs.add(ref)
+            parts = ref.split("/")
+            if len(parts) != 4 or parts[0] != "app":
+                continue
+            app_id, flatpak_arch = parts[1:3]
+            appdata = labels.get("org.freedesktop.appstream.appdata", "")
+            try:
+                catalogue = ElementTree.fromstring(appdata)
+            except ElementTree.ParseError:
+                errors.append(f"{result['Name']} ({flatpak_arch}): AppStream XML is missing or invalid")
+                continue
+            remote_icons = [
+                icon.text for icon in catalogue.findall(".//component/icon[@type='remote']")
+            ]
+            expected_icon = f"https://tunaos.org/flatpak/icons/{app_id}-{flatpak_arch}.png"
+            if expected_icon not in remote_icons:
+                errors.append(
+                    f"{result['Name']} ({flatpak_arch}): missing Bazaar-compatible "
+                    f"remote icon URL {expected_icon}"
+                )
         by_name[result["Name"]] = {"archs": archs, "refs": refs}
 
     for app in expected:
