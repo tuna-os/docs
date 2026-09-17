@@ -1,105 +1,451 @@
-/* Build matrix table — Vesper dark panel, mono headers, one blue accent.
-   The page shell around it comes from src/css/page.module.css. */
+/* Build matrix — bases down, desktops across, live build state in the cells.
+   One hue: the blue tint is an ordinal freshness ramp (monotone lightness),
+   and every cell also says its state in words, so colour is never the only
+   carrier. See DESIGN.md. */
+
+.matrix {
+  position: relative;
+}
 
 .tableWrap {
   overflow-x: auto;
   border-radius: 6px;
-  border: none;
   background: var(--tu-panel);
+  scrollbar-width: thin;
+}
+
+.tableWrap:focus-visible {
+  outline: 2px solid var(--tu-accent);
+  outline-offset: 3px;
 }
 
 .table {
+  /* Infima styles bare `table` as display:block so markdown tables can scroll.
+     That makes this one a block box that shrink-wraps its columns and leaves a
+     quarter of the panel empty, so say what it is; the wrapper does the
+     scrolling here. */
+  display: table;
+  /* Fixed layout so the six desktop columns split the width evenly. */
+  table-layout: fixed;
   width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
+  min-width: 720px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.88rem;
   color: var(--tu-ink);
 }
 
 .table th,
 .table td {
-  padding: 0.75rem 0.9rem;
+  padding: 0.5rem;
   text-align: center;
-  border-bottom: 1px solid var(--tu-line);
   white-space: nowrap;
 }
 
-.table tbody tr:last-child th,
-.table tbody tr:last-child td {
-  border-bottom: none;
-}
+/* ── Headers ────────────────────────────────────────────────────────────── */
 
 .table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   background: var(--tu-bg-2);
   font-family: var(--tu-mono);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--tu-accent-soft);
 }
 
-.cornerHeader {
+.deskHeader {
+  width: auto;
+}
+
+.deskHeader span {
+  display: block;
+}
+
+.deskLogo {
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin: 0 auto 0.3rem;
+  /* The desktop marks are monochrome dark; lift them onto the dark panel. */
+  filter: invert(1) opacity(0.75);
+}
+
+.cornerHeader,
+.variantHeader {
+  position: sticky;
+  left: 0;
+  z-index: 1;
   text-align: left;
+  background: var(--tu-panel);
+}
+
+.cornerHeader {
+  z-index: 3;
+  background: var(--tu-bg-2);
 }
 
 .variantHeader {
-  text-align: left;
   font-weight: 700;
 }
 
-.variantHeader a {
-  color: var(--tu-ink);
-  text-decoration: none;
+.cornerHeader,
+.variantHeader {
+  width: 210px;
 }
 
-.variantHeader a:hover {
+/* The flex layout lives on an inner span: a display:flex <th> leaves table
+   layout and takes the row's height and column widths with it. */
+.variantInner {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.variantMark {
+  flex: none;
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.variantNames {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.variantLink {
+  color: var(--tu-ink);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+
+.variantLink:hover {
   color: var(--tu-accent);
+  text-decoration: underline;
 }
 
 .variantBase {
-  margin-top: 0.15rem;
   font-family: var(--tu-mono);
+  font-size: 0.68rem;
   font-weight: 400;
-  font-size: 0.72rem;
   color: var(--tu-dim);
 }
 
-.cellEmpty {
-  color: rgba(233, 235, 239, 0.22);
+/* ── Cells ──────────────────────────────────────────────────────────────── */
+
+.table tbody tr + tr th,
+.table tbody tr + tr td {
+  border-top: 1px solid var(--tu-line);
 }
 
-.cellAvailable {
-  background: rgba(93, 171, 240, 0.06);
+.cell {
+  padding: 0.35rem;
 }
 
-.cellLink {
+.cellIso,
+.cellImage {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.25rem;
-  color: inherit;
-  text-decoration: none;
+  gap: 0.1rem;
+  padding: 0.5rem 0.35rem;
+  border-radius: 6px;
+  text-decoration: none !important;
+  color: var(--tu-ink);
+  transition: transform 0.15s ease, background 0.15s ease;
 }
 
-.check {
-  color: var(--tu-accent);
+/* Ordinal freshness ramp, one hue, monotone lightness. Every step also
+   carries the word "ISO" and an age, so the ramp adds nuance rather than
+   being the only thing that speaks. */
+.cellIso {
+  background: rgba(93, 171, 240, 0.06);
+}
+
+.cellIso[data-fresh='1'] {
+  background: rgba(93, 171, 240, 0.12);
+}
+
+.cellIso[data-fresh='2'] {
+  background: rgba(93, 171, 240, 0.2);
+}
+
+.cellIso[data-fresh='3'] {
+  background: rgba(93, 171, 240, 0.3);
+}
+
+.cellImage {
+  background: var(--tu-bg);
+  color: var(--tu-dim);
+}
+
+.cellIso:hover,
+.cellIso:focus-visible,
+.cellImage:hover,
+.cellImage:focus-visible {
+  transform: translateY(-1px);
+  background: var(--tu-panel-2);
+  color: var(--tu-ink);
+}
+
+.cellIso:focus-visible,
+.cellImage:focus-visible {
+  outline: 2px solid var(--tu-accent);
+  outline-offset: 2px;
+}
+
+.cellState {
+  font-family: var(--tu-mono);
+  font-size: 0.66rem;
   font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.badges {
+.cellAge {
+  font-family: var(--tu-mono);
+  font-size: 0.66rem;
+  color: var(--tu-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.cellIso .cellAge {
+  color: var(--tu-ink);
+}
+
+.cellEditions {
   display: flex;
-  gap: 0.25rem;
-  flex-wrap: wrap;
-  justify-content: center;
+  gap: 0.15rem;
+  margin-top: 0.1rem;
 }
 
-.badge {
+.edition {
+  display: grid;
+  place-items: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: var(--tu-bg);
+  font-family: var(--tu-mono);
+  font-size: 0.56rem;
+  font-weight: 700;
+  color: var(--tu-accent-soft);
+}
+
+.cellEmpty {
+  color: rgba(233, 235, 239, 0.3);
+  font-size: 1rem;
+}
+
+/* ── Hover / focus detail ───────────────────────────────────────────────── */
+
+.peek {
+  position: absolute;
+  z-index: 5;
+  transform: translate(-50%, calc(-100% - 8px));
+  max-width: 280px;
+  padding: 0.45rem 0.65rem;
+  border-radius: 6px;
+  background: var(--tu-bg);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: var(--tu-ink);
+  pointer-events: none;
+  white-space: normal;
+  text-align: center;
+}
+
+/* ── Legend ─────────────────────────────────────────────────────────────── */
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.25rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+  color: var(--tu-dim);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.legendSwatch,
+.legendSwatchImage,
+.legendSwatchNone,
+.legendSwatchEdition {
+  display: grid;
+  place-items: center;
+  min-width: 34px;
+  padding: 0.2rem 0.3rem;
+  border-radius: 4px;
   font-family: var(--tu-mono);
   font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  padding: 0.08rem 0.35rem;
-  border-radius: 4px;
+  text-transform: uppercase;
+  color: var(--tu-ink);
+}
+
+.legendSwatch[data-fresh='3'] {
+  background: rgba(93, 171, 240, 0.3);
+}
+
+.legendSwatch[data-fresh='1'] {
+  background: rgba(93, 171, 240, 0.12);
+}
+
+.legendSwatchImage {
+  background: var(--tu-bg);
+  color: var(--tu-dim);
+}
+
+.legendSwatchNone {
+  background: transparent;
+  color: rgba(233, 235, 239, 0.4);
+}
+
+.legendSwatchEdition {
+  min-width: 20px;
   background: var(--tu-bg);
   color: var(--tu-accent-soft);
+}
+
+/* ── Phone cards ────────────────────────────────────────────────────────── */
+
+.cards {
+  display: none;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.card {
+  padding: 0.9rem 1rem;
+  border-radius: 6px;
+  background: var(--tu-panel);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--tu-line);
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cardRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.cardDesktop {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.88rem;
+  color: var(--tu-ink);
+}
+
+.cardDesktop .deskLogo {
+  margin: 0;
+}
+
+.cardState,
+.cardStateIso {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: var(--tu-bg);
+  font-family: var(--tu-mono);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tu-dim);
+}
+
+.cardStateIso {
+  color: var(--tu-ink);
+  background: rgba(93, 171, 240, 0.06);
+}
+
+.cardStateIso[data-fresh='1'] {
+  background: rgba(93, 171, 240, 0.12);
+}
+
+.cardStateIso[data-fresh='2'] {
+  background: rgba(93, 171, 240, 0.2);
+}
+
+.cardStateIso[data-fresh='3'] {
+  background: rgba(93, 171, 240, 0.3);
+}
+
+.cardAge {
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.cardEmpty {
+  margin: 0.6rem 0 0;
+  font-size: 0.85rem;
+  color: var(--tu-dim);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 860px) {
+  .tableWrap {
+    display: none;
+  }
+
+  .cards {
+    display: flex;
+  }
+
+  .peek {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cellIso,
+  .cellImage {
+    transition: none;
+  }
 }
