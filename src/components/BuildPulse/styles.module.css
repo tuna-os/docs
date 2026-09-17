@@ -1,0 +1,168 @@
+/* Build pulse — headline numbers and a fortnight of build activity, both read
+   from the live ISO index. One hue (the site accent), thin marks, recessive
+   axis; the numbers carry the meaning and the bars carry the shape. */
+
+.pulse {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+/* ── Stat tiles ─────────────────────────────────────────────────────────── */
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1rem 1.1rem;
+  border-radius: 6px;
+  background: var(--tu-panel);
+}
+
+.tileValue {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  font-family: var(--tu-mono);
+  font-size: 1.65rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--tu-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.tileValue[data-pending] {
+  color: var(--tu-dim);
+}
+
+.tileUnit {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--tu-accent-soft);
+}
+
+.tileLabel {
+  font-size: 0.74rem;
+  line-height: 1.4;
+  color: var(--tu-dim);
+}
+
+/* ── Activity bars ──────────────────────────────────────────────────────── */
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 1rem 1.1rem 0.85rem;
+  border-radius: 6px;
+  background: var(--tu-panel);
+}
+
+.chartHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.9rem;
+}
+
+.chartTitle {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--tu-ink);
+}
+
+.chartTotal {
+  font-family: var(--tu-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--tu-dim);
+}
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.3rem;
+  flex: 1;
+  min-height: 92px;
+}
+
+.barSlot {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.bar {
+  width: 100%;
+  /* 4px rounded data-end, anchored to the baseline. */
+  border-radius: 4px 4px 0 0;
+  background: var(--tu-accent);
+}
+
+.bar[data-empty] {
+  background: rgba(93, 171, 240, 0.18);
+}
+
+.barCount {
+  position: absolute;
+  top: -1.05rem;
+  font-family: var(--tu-mono);
+  font-size: 0.62rem;
+  color: var(--tu-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid var(--tu-line);
+  font-family: var(--tu-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  color: var(--tu-dim);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  .pulse {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tileValue {
+    font-size: 1.4rem;
+  }
+}

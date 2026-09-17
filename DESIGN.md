@@ -52,6 +52,14 @@ CTA in the hero and has its own landing page.
 6. **Every list on the site derives from `src/data/`.** The nav, the footer,
    the matrix, the picker and the landing pages read the same arrays.
    A hand-maintained second copy is how images went missing from menus before.
+7. **Build state is read, never written.** What has shipped — which ISOs
+   exist, how big they are, when they were built — comes from the release
+   bucket's own index (`static/iso-index.json`, refreshed by
+   `update-iso-index.yml`) through `useIsoIndex`. `/matrix` renders the shape
+   of things from `src/data/` immediately and the live state on arrival, and
+   says "built; live ISO state loads with the index" in between rather than
+   asserting something it cannot yet know. Never hand-write a build status
+   into the site: it would be wrong within a day and nobody would notice.
 
 ## Accessibility
 
