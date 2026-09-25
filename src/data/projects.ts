@@ -575,7 +575,7 @@ export const PROJECTS: Project[] = [
     accent: '#0f766e',
     accent2: '#2dd4bf',
     repo: 'https://github.com/tuna-os/compass',
-    flathub: 'com.vicinae.Vicinae',
+    flathub: 'org.tunaos.compass',
     stats: [
       {label: 'Language', value: 'Rust'},
       {label: 'Toolkit', value: 'Iced · wgpu'},
@@ -598,8 +598,8 @@ export const PROJECTS: Project[] = [
         {title: 'Memory-safe Rust', text: 'The engine, the interface and the extension host are Rust, with <code>unsafe_code = "forbid"</code> across the workspace. The only exceptions are three small binding crates, for SQLCipher, the Wayland protocols and the bridge that puts blur behind the launcher.'},
         {title: 'No Qt', text: 'The interface is drawn with Iced on wgpu. The Flatpak contains no Qt, no C++ and no CMake build, and it runs on <code>org.freedesktop.Platform</code> instead of the KDE runtime.'},
         {title: 'Wayland-native', text: 'On compositors with <code>wlr-layer-shell</code> (Sway, Hyprland, niri) the launcher is a layer surface on the top layer, the way a launcher is meant to appear. There is no X11 code path, and the Flatpak asks for no X11 socket.'},
-        {title: 'A Flatpak with an extension sandbox', text: 'Extensions run in a Node worker behind Landlock and a seccomp filter. An extension can write only its own directories, it reads a short allowlist of <code>$HOME</code>, and it cannot run a file it wrote. The engine refuses to run extensions if the sandbox helper is missing.'},
-        {title: 'Raycast extension compatibility', text: 'Extensions built for Raycast install from the Raycast Store and run through the same TypeScript API that Vicinae exposes, including OAuth sign-in through <code>raycast://</code> links.'},
+        {title: 'A Flatpak with an extension sandbox', text: 'Extensions run in a Node worker behind Landlock and a seccomp filter. An extension can write only its own directories, it reads a short allowlist of <code>$HOME</code>, and it cannot run a file it wrote. When an extension needs a program on the host, Compass asks first: Raycast\'s Brew extension gets "Allow Brew to run brew?" with Allow Once, Always Allow or Deny, and Script Permissions takes the grant back. The engine refuses to run extensions if the sandbox helper is missing.'},
+        {title: 'Raycast extension compatibility', text: 'Extensions built for Raycast install from the Raycast Store and run through the same TypeScript API that Vicinae exposes, including OAuth sign-in through <code>raycast://</code> links. Where an extension assumes macOS, Compass maps it to Linux: <code>open</code> goes to <code>xdg-open</code>, <code>pbcopy</code> and <code>pbpaste</code> to the clipboard, and Homebrew to Linuxbrew. AppleScript is refused by name rather than failing obscurely.'},
         {title: 'Full feature parity', text: 'Every Linux feature of the C++ engine has a row in the <a href="https://github.com/tuna-os/compass/blob/main/docs/rust-engine/PARITY.md">parity ledger</a>, and all 152 are implemented in Rust and covered by tests. Where Compass behaves differently on purpose, the ledger says so and why.'},
       ],
     },
@@ -626,9 +626,9 @@ export const PROJECTS: Project[] = [
     },
     // <!-- /PERF-TABLE -->
     install: [
-      {label: 'Flatpak (TunaOS remote)', code: 'flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo\nflatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo\nflatpak install tuna-os com.vicinae.Vicinae'},
-      {label: 'Start it, and check your desktop', code: 'flatpak run com.vicinae.Vicinae start\nflatpak run com.vicinae.Vicinae doctor'},
-      {label: 'Run from source', code: 'git clone https://github.com/tuna-os/compass.git\ncd compass\ncargo run -p vicinae -- ui'},
+      {label: 'Flatpak (TunaOS remote)', code: 'flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo\nflatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo\nflatpak install tuna-os org.tunaos.compass'},
+      {label: 'Start it, and check your desktop', code: 'flatpak run org.tunaos.compass start\nflatpak run org.tunaos.compass doctor'},
+      {label: 'Run from source', code: 'git clone https://github.com/tuna-os/compass.git\ncd compass\ncargo run -p compass -- ui'},
     ],
   },
   {
