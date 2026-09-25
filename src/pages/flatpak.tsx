@@ -61,7 +61,7 @@ const APPS: {
     description: 'The upstream terminal, republished here unmodified and rebuilt weekly.',
   },
   {
-    id: 'com.vicinae.Vicinae',
+    id: 'org.tunaos.compass',
     name: 'Compass',
     icon: 'compass',
     description:
