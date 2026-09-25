@@ -61,6 +61,13 @@ const APPS: {
     description: 'The upstream terminal, republished here unmodified and rebuilt weekly.',
   },
   {
+    id: 'com.vicinae.Vicinae',
+    name: 'Compass',
+    icon: 'compass',
+    description:
+      'Keyboard-first launcher — a Rust rewrite of Vicinae that runs Raycast extensions.',
+  },
+  {
     id: 'org.bootcinstaller.Installer',
     name: 'bootc-installer',
     icon: 'disc',
@@ -89,7 +96,7 @@ export default function Flatpak(): ReactNode {
   return (
     <Layout
       title="Flatpaks"
-      description="Flatpaks: the GNOME office suite, terminals, a file manager, and a Homebrew front end, installable on any distribution.">
+      description="Flatpaks: the GNOME office suite, terminals, a file manager, a launcher, and a Homebrew front end, installable on any distribution.">
       <header className={styles.hero}>
         <div className={styles.heroInner}>
           <span className={styles.eyebrow}>Flatpaks</span>
@@ -97,7 +104,7 @@ export default function Flatpak(): ReactNode {
             Flatpaks
           </Heading>
           <p className={styles.heroLede}>
-            Letters, Tables, Decks, Mariner, Tavern, BlueShell, Ghostty and
+            Letters, Tables, Decks, Mariner, Tavern, BlueShell, Ghostty, Compass and
             bootc-installer, built here and installable on any distribution that runs
             Flatpak. Add one remote and they all show up.
           </p>
