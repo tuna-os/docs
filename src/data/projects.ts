@@ -594,28 +594,34 @@ export const PROJECTS: Project[] = [
       intro:
         'Compass is a hard fork of <a href="https://github.com/vicinaehq/vicinae">Vicinae</a>, and it exists because of the work of Vicinae\'s maintainers and contributors. Vicinae\'s C++ engine and its extension ecosystem are the behavioural reference for the port. These are the differences.',
       items: [
-        {title: 'Memory-safe Rust', text: 'The engine, the interface and the extension host are Rust, with <code>unsafe_code = "forbid"</code> across the workspace. The only exceptions are the two binding crates, for SQLCipher and the Wayland protocols.'},
+        {title: 'Faster, and lighter', text: 'Measured head-to-head on the same machine, the engine is ready to answer in 96 ms against Vicinae\'s 1.7 s, the launcher is populated in under a second against 2.3 s, and results follow a keystroke in 56 ms against 153 ms, with less memory and a third of the shared libraries. See the table below.'},
+        {title: 'Memory-safe Rust', text: 'The engine, the interface and the extension host are Rust, with <code>unsafe_code = "forbid"</code> across the workspace. The only exceptions are three small binding crates, for SQLCipher, the Wayland protocols and the bridge that puts blur behind the launcher.'},
         {title: 'No Qt', text: 'The interface is drawn with Iced on wgpu. The Flatpak contains no Qt, no C++ and no CMake build, and it runs on <code>org.freedesktop.Platform</code> instead of the KDE runtime.'},
         {title: 'Wayland-native', text: 'On compositors with <code>wlr-layer-shell</code> (Sway, Hyprland, niri) the launcher is a layer surface on the top layer, the way a launcher is meant to appear. There is no X11 code path, and the Flatpak asks for no X11 socket.'},
-        {title: 'A Flatpak with an extension sandbox', text: 'Extensions run in a Node worker behind Landlock and a seccomp filter. An extension can write only its own directories, it reads a short allowlist of <code>$HOME</code>, and it cannot run a file it wrote. When an extension needs to run a program on the host, Compass asks you first. The engine refuses to run extensions if the sandbox helper is missing.'},
+        {title: 'A Flatpak with an extension sandbox', text: 'Extensions run in a Node worker behind Landlock and a seccomp filter. An extension can write only its own directories, it reads a short allowlist of <code>$HOME</code>, and it cannot run a file it wrote. The engine refuses to run extensions if the sandbox helper is missing.'},
         {title: 'Raycast extension compatibility', text: 'Extensions built for Raycast install from the Raycast Store and run through the same TypeScript API that Vicinae exposes, including OAuth sign-in through <code>raycast://</code> links.'},
-        {title: 'Near-complete feature parity', text: 'Every Linux feature of the C++ engine has a row in the <a href="https://github.com/tuna-os/compass/blob/main/docs/rust-engine/PARITY.md">parity ledger</a>, and nearly all of them are implemented in Rust and covered by tests. Where Compass behaves differently on purpose, the ledger says so and why.'},
+        {title: 'Full feature parity', text: 'Every Linux feature of the C++ engine has a row in the <a href="https://github.com/tuna-os/compass/blob/main/docs/rust-engine/PARITY.md">parity ledger</a>, and all 152 are implemented in Rust and covered by tests. Where Compass behaves differently on purpose, the ledger says so and why.'},
       ],
     },
+    screenshots: [
+      {src: '/img/screenshots/compass-search.png', alt: 'Compass searching applications and commands for "term"'},
+      {src: '/img/screenshots/compass-calculator.png', alt: 'The calculator converting sqrt(2) * 12 kg to pounds in the search field'},
+      {src: '/img/screenshots/compass-emoji.png', alt: 'The emoji picker searching for heart'},
+      {src: '/img/screenshots/compass-settings.png', alt: 'The settings view, General page'},
+    ],
     // <!-- PERF-TABLE -->
-    // Placeholder rows: replace every 'Pending' cell (and the rows
-    // themselves, if other things were measured) with measured numbers, and
-    // update `intro` to say what machine and method produced them. Do not
-    // publish estimates here.
+    // From docs/rust-engine/BENCHMARKS.md in tuna-os/compass (2026-09-25 run).
     performance: {
       intro:
-        'Measured numbers are pending. This table will say what was measured, on which machine, and how, when the results are in.',
-      columns: ['Measurement', 'Compass', 'Vicinae'],
+        'Both launchers were measured head-to-head by the same script on the same machine: Compass against the unmodified Vicinae 0.29.0 AppImage, cold-starting on headless Sway with software rendering, medians of five alternating runs. The machine was shared with other builds, so compare the ratios rather than the absolute times. Per core, Compass\'s fuzzy scorer is slower than Vicinae\'s; spread across cores it roughly evens out. <a href="https://github.com/tuna-os/compass/blob/main/docs/rust-engine/BENCHMARKS.md">Method, raw data and the command to reproduce it</a>.',
+      columns: ['Measurement', 'Compass', 'Vicinae 0.29.0'],
       rows: [
-        ['Cold start to first frame', 'Pending', 'Pending'],
-        ['Idle memory (RSS)', 'Pending', 'Pending'],
-        ['Keystroke to updated results', 'Pending', 'Pending'],
-        ['Installed size', 'Pending', 'Pending'],
+        ['Engine ready to answer', '96 ms', '1,746 ms'],
+        ['Launcher populated on screen', '0.9 s', '2.3 s'],
+        ['Keystroke to updated results', '56 ms', '153 ms'],
+        ['Idle memory (PSS, all processes)', '218 MiB', '263 MiB'],
+        ['Shared libraries loaded', '46', '136'],
+        ['Program files on disk', '72 MB', '310 MB'],
       ],
     },
     // <!-- /PERF-TABLE -->
