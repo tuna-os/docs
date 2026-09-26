@@ -207,6 +207,66 @@
   margin: 0 0 0.5rem;
 }
 
+/* HTML, not plain text: an intro may carry a link. */
+.sectionSub {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--tu-dim);
+  margin: 0;
+}
+
+/* Underlined: the accent alone is too close to --tu-dim to mark a link. */
+.sectionSub a,
+.featText a {
+  color: var(--tu-accent);
+  text-decoration: underline;
+}
+
+/* ── Performance ────────────────────────────────────────────────────────── */
+
+.tableWrap {
+  max-width: 760px;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.perfTable {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  background: var(--tu-panel);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.perfTable th,
+.perfTable td {
+  padding: 0.75rem 1rem;
+  border: none;
+  border-bottom: 1px solid var(--tu-line);
+  text-align: left;
+  color: var(--tu-ink);
+}
+
+.perfTable thead th {
+  color: var(--tu-dim);
+  font-weight: 600;
+}
+
+.perfTable tbody th {
+  font-weight: 600;
+}
+
+.perfTable tbody tr:last-child th,
+.perfTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.perfTable td {
+  font-family: var(--ifm-font-family-monospace);
+}
+
 /* ── Screenshots ────────────────────────────────────────────────────────── */
 
 .shotGrid {
