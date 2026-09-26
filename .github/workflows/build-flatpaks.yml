@@ -100,7 +100,7 @@ jobs:
           # Use header-based auth so the token never lands in the remote URL
           # (avoids leaks via .git/config, `git remote -v`, and process listings).
           git -C index-repo config --local http.extraheader \
-            "AUTHORIZATION: basic $(printf 'x-access-token:%s' "$FLATPAK_INDEX_TOKEN" | base64)"
+            "AUTHORIZATION: basic $(printf 'x-access-token:%s' "$FLATPAK_INDEX_TOKEN" | base64 -w0)"
           pip install requests
 
           for dir in artifacts/*/; do
