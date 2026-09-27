@@ -102,6 +102,7 @@ const config: Config = {
         {to: '/wootc', label: 'From Windows', position: 'left'},
         {to: '/flatpak', label: 'Flatpaks', position: 'left'},
         {to: '/projects', label: 'Projects', position: 'left'},
+        {to: '/metrics', label: 'Metrics', position: 'left'},
         {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
@@ -146,6 +147,7 @@ const config: Config = {
             ...MAIN_VARIANTS.map((v) => ({label: `${v.name} (${v.base})`, to: `/${v.id}`})),
             {label: 'All variants', to: '/variants'},
             {label: 'Build matrix', to: '/matrix'},
+            {label: 'Adoption metrics', to: '/metrics'},
           ],
         },
         {

@@ -34,6 +34,12 @@ jobs:
       - name: Build the site
         run: npm run build
 
+      - name: Install browser for metrics checks
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify metrics page and accessibility
+        run: npm run test:metrics
+
       - name: Install Wrangler
         run: npm install --global wrangler@4
 
