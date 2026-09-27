@@ -1,0 +1,57 @@
+{
+  "variant": [
+    "albacore",
+    "bonito",
+    "bonito-rawhide",
+    "flounder",
+    "flounder-sid",
+    "grouper",
+    "guppy",
+    "gurnard",
+    "hummingbird",
+    "marlin",
+    "sailfin",
+    "skipjack",
+    "wahoo",
+    "yellowfin"
+  ],
+  "flavor": [
+    "base",
+    "base-hwe",
+    "base-nvidia",
+    "cosmic",
+    "cosmic-cachyos",
+    "cosmic-hwe",
+    "cosmic-nvidia",
+    "gnome",
+    "gnome-asahi",
+    "gnome-cachyos",
+    "gnome-hwe",
+    "gnome-nvidia",
+    "gnome-t2",
+    "gnome-zfs",
+    "kde",
+    "kde-cachyos",
+    "kde-hwe",
+    "kde-nvidia",
+    "niri",
+    "niri-cachyos",
+    "niri-hwe",
+    "niri-nvidia",
+    "pantheon",
+    "xfce",
+    "xfce-cachyos",
+    "xfce-hwe",
+    "xfce-nvidia"
+  ],
+  "arch": [
+    "aarch64",
+    "x86_64"
+  ],
+  "age_bucket": [
+    "1",
+    "2",
+    "3",
+    "4"
+  ]
+}

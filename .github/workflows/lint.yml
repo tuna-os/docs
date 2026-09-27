@@ -16,6 +16,8 @@ on:
       - 'blog/**'
       - '*.md'
       - 'scripts/**'
+      - 'worker/**'
+      - 'src/**'
       - '.ste-budget'
       - '.markdownlint-budget'
       - '.github/workflows/lint.yml'
@@ -26,6 +28,8 @@ on:
       - 'blog/**'
       - '*.md'
       - 'scripts/**'
+      - 'worker/**'
+      - 'src/**'
       - '.ste-budget'
       - '.markdownlint-budget'
   workflow_dispatch:
