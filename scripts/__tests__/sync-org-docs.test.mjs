@@ -29,6 +29,7 @@ import {
   frontmatter,
   subFrontmatter,
   isSyncedIndex,
+  filesToRemove,
   getStatusBanner,
   slugify,
   listOrgRepos,
@@ -441,6 +442,85 @@ test('rejects a page with no front matter', () => {
 
 test('rejects front matter that is not at the start of the file', () => {
   assert.ok(!isSyncedIndex('Intro paragraph.\n\n' + frontmatter('X', 1, 'x', 'alpha')));
+});
+
+// ── filesToRemove ─────────────────────────────────────────────────────────────
+//
+// Reconciles a repo's existing docs/<slug>/ files against what this run wrote,
+// so a page deleted upstream (kde-build-meta's TRACKING-POLICY.md, the
+// motivating case) is deleted here too. Pure and filesystem-free: the third
+// argument is a callback the real caller backs with readFileSync, tests back
+// with a plain string.
+
+console.log('\nfilesToRemove');
+
+test('removes nothing when every existing file was written this run', () => {
+  const {removable, refused} = filesToRemove(
+    ['index.md', 'install.md'],
+    ['index.md', 'install.md'],
+    () => frontmatter('X', 1, 'x', 'alpha'),
+  );
+  assert.deepEqual(removable, []);
+  assert.deepEqual(refused, []);
+});
+
+test('removes a non-index file no longer written, unconditionally', () => {
+  // Every non-index write in the real loop goes through subFrontmatter(),
+  // whose shape cannot be told apart from a hand-written page's by content
+  // alone (see the isSyncedIndex tests above) — but this function is only
+  // ever asked about the targetDir a HAND_AUTHORED-excluded repo's own sync
+  // just finished writing, so which directory is being asked about already
+  // answers the question content can't.
+  const {removable, refused} = filesToRemove(
+    ['index.md', 'TRACKING-POLICY.md'],
+    ['index.md'],
+    () => frontmatter('X', 1, 'x', 'alpha'),
+  );
+  assert.deepEqual(removable, ['TRACKING-POLICY.md']);
+  assert.deepEqual(refused, []);
+});
+
+test('removes a synced index.md no longer written', () => {
+  const {removable, refused} = filesToRemove(
+    ['index.md'],
+    [],
+    () => frontmatter('X', 1, 'x', 'alpha'),
+  );
+  assert.deepEqual(removable, ['index.md']);
+  assert.deepEqual(refused, []);
+});
+
+test('refuses an index.md that does not match isSyncedIndex, and does not remove it', () => {
+  // Cannot happen for a repo actively syncing (README.md always exists or the
+  // write is skipped entirely, and the write always uses frontmatter()) — this
+  // is the defensive case for an index.md a person dropped into a targetDir by
+  // hand without adding the slug to HAND_AUTHORED.
+  const {removable, refused} = filesToRemove(
+    ['index.md'],
+    [],
+    () => '---\nsidebar_position: 1\nsidebar_label: "X"\nstatus: alpha\n---\n\nHand-written.\n',
+  );
+  assert.deepEqual(removable, []);
+  assert.deepEqual(refused, ['index.md']);
+});
+
+test('refuses when index.md no longer exists to read (readIndexContent returns null)', () => {
+  const {removable, refused} = filesToRemove(
+    ['index.md'],
+    [],
+    () => null,
+  );
+  assert.deepEqual(removable, []);
+  assert.deepEqual(refused, ['index.md']);
+});
+
+test('only calls readIndexContent when index.md is actually a removal candidate', () => {
+  let calls = 0;
+  filesToRemove(['index.md', 'other.md'], ['index.md', 'other.md'], () => {
+    calls++;
+    return frontmatter('X', 1, 'x', 'alpha');
+  });
+  assert.equal(calls, 0, 'index.md was written this run, so nothing should read it');
 });
 
 // ── getStatusBanner ───────────────────────────────────────────────────────────

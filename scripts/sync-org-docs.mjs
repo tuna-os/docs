@@ -330,6 +330,62 @@ function isSyncedIndex(content) {
   return SYNCED_INDEX.test(content);
 }
 
+// filesToRemove reconciles what a repo's sync wrote against what its
+// docs/<slug>/ tree already held, so a page deleted upstream is deleted here
+// too instead of outliving its source indefinitely (the kde-build-meta case:
+// TRACKING-POLICY.md stayed published for weeks after the workflow it
+// documented, and the repo itself, were retired).
+//
+// Takes plain arrays rather than touching the filesystem, so this is testable
+// without a real docs/ tree: `existingFiles` is what readdirSync(targetDir)
+// found before this run wrote anything, `writtenFiles` is every filename this
+// run's three write sites (README, root docs, docs/ folder) actually wrote.
+//
+// A file present before and not written this run is a candidate for removal
+// only if this script can prove it wrote it originally:
+//   - index.md is provable via isSyncedIndex — frontmatter()'s front matter
+//     is deliberately unlike anything a person types (see the comment above
+//     SYNCED_INDEX).
+//   - Every other synced filename is provable by construction, not content:
+//     this function is only ever called with the targetDir of a repo this
+//     run is actively syncing (never a HAND_AUTHORED slug, which `continue`s
+//     before reaching this loop at all), and every non-index write in that
+//     loop goes through subFrontmatter() — whose front matter shape is
+//     deliberately indistinguishable from a hand-written page's (see
+//     docs/flatpak/guide.md, cited in the isSyncedIndex tests). So content
+//     cannot tell a synced subpage from a hand-added one in the general
+//     case — but *which directory this run is allowed to touch* already
+//     answers that question for every file this function is asked about,
+//     because the caller never asks it about a directory it didn't just
+//     finish writing into.
+//
+// `existingFiles` must already exclude directory entries before it's passed
+// in — a synced repo's targetDir can hold a genuine subdirectory this script
+// never created (docs/iso-builder/img/, docs/tunaos/installer-walkthrough/ —
+// both real, both manually maintained), and this function has no way to
+// re-check that a name it's given isn't one; the caller does that filtering
+// (readdirSync with withFileTypes, keeping only isFile() entries) before ever
+// calling this.
+function filesToRemove(existingFiles, writtenFiles, readIndexContent) {
+  const written = new Set(writtenFiles);
+  const removable = [];
+  const refused = [];
+  for (const file of existingFiles) {
+    if (written.has(file)) continue;
+    if (file === 'index.md') {
+      const content = readIndexContent();
+      if (content !== null && isSyncedIndex(content)) {
+        removable.push(file);
+      } else {
+        refused.push(file);
+      }
+      continue;
+    }
+    removable.push(file);
+  }
+  return {removable, refused};
+}
+
 function subFrontmatter(title, position) {
   return `---
 sidebar_position: ${position}
@@ -569,6 +625,8 @@ function main() {
   const repos = listed.filter((n) => !SKIP.has(n));
   let synced = 0;
   let protectedDirs = 0;
+  let removed = 0;
+  let refusedRemovals = 0;
   const failures = [];
 
   const sidebar = [];
@@ -593,6 +651,16 @@ function main() {
       const targetDir = join(DOCS_DIR, slug);
       mkdirSync(targetDir, {recursive: true});
 
+      // Snapshot what's already there before writing anything, so removal
+      // (below) can tell "was here before, not written this run" from "this
+      // run just created it". Directories are excluded up front — img/,
+      // installer-walkthrough/ and the like are never something this script
+      // wrote and must never be candidates for removal.
+      const existingFiles = readdirSync(targetDir, {withFileTypes: true})
+        .filter(e => e.isFile())
+        .map(e => e.name);
+      const writtenFiles = [];
+
       let localPos = 1;
 
       // ── README.md → index page ──
@@ -610,6 +678,7 @@ function main() {
         }
         content = fm + content;
         writeFileSync(join(targetDir, 'index.md'), content);
+        writtenFiles.push('index.md');
         console.log(`  ✓ README.md → index.md`);
       }
 
@@ -633,6 +702,7 @@ function main() {
         const title = upper.charAt(0) + upper.slice(1).toLowerCase();
         content = subFrontmatter(title, localPos++) + content;
         writeFileSync(join(targetDir, file), content);
+        writtenFiles.push(file);
         console.log(`  ✓ ${file}`);
       }
 
@@ -651,9 +721,38 @@ function main() {
           const title = file.replace(/\.(md|rst)$/, '').replace(/[-_]/g, ' ');
           content = subFrontmatter(title, localPos++) + content;
           writeFileSync(join(targetDir, file), content);
+          writtenFiles.push(file);
           console.log(`  ✓ docs/${file}`);
         }
       }
+
+      // ── Reconcile deletions ──
+      // A page removed upstream (kde-build-meta's TRACKING-POLICY.md, deleted
+      // alongside the workflow it documented) otherwise stays published here
+      // forever: every write above is unconditional, and nothing until now
+      // ever looked at what was already in targetDir.
+      const {removable, refused} = filesToRemove(
+        existingFiles,
+        writtenFiles,
+        () => {
+          const indexPath = join(targetDir, 'index.md');
+          return existsSync(indexPath) ? readFileSync(indexPath, 'utf8') : null;
+        },
+      );
+      for (const file of removable) {
+        rmSync(join(targetDir, file), {force: true});
+        removed++;
+        console.log(`  ✗ removed (no longer upstream): ${file}`);
+      }
+      for (const file of refused) {
+        refusedRemovals++;
+        console.warn(
+          `  ⚠️  ${file} looks hand-written and is no longer upstream — ` +
+          'left in place. Add its slug to HAND_AUTHORED if it should stay ' +
+          'permanently, or delete it by hand if it should go.',
+        );
+      }
+
       synced++;
     } catch (e) {
       failures.push(`${repo}: ${e.message}`);
@@ -672,7 +771,8 @@ function main() {
   // 0, so partial coverage could only be noticed by spotting an absence.
   console.log(
     `\n📊 ${listed.length} listed · ${skipped.length} in SKIP · ` +
-    `${protectedDirs} hand-authored · ${synced} synced · ${failures.length} failed`,
+    `${protectedDirs} hand-authored · ${synced} synced · ${failures.length} failed · ` +
+    `${removed} removed (no longer upstream) · ${refusedRemovals} refused (looked hand-written)`,
   );
   if (failures.length) {
     for (const f of failures) console.error(`  ✗ ${f}`);
@@ -707,6 +807,7 @@ export {
   frontmatter,
   subFrontmatter,
   isSyncedIndex,
+  filesToRemove,
   getStatusBanner,
   slugify,
   listOrgRepos,
