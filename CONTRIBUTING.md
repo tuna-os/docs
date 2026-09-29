@@ -22,17 +22,17 @@ can then confirm its scope.
 ## Important: Which content can you edit?
 
 **Hand-written pages** (top-level `docs/`, `blog/`) — you can edit these freely.
-Your changes will be preserved.
+Your changes stay in place.
 
-**Synced pages** (under `docs/<project>/`) — these are generated daily by `sync-org-docs.yml`
-from each project's source repository. Any edits you make here will be overwritten
-by the next sync (usually within 24 hours).
+**Synced pages** (under `docs/<project>/`) — `sync-org-docs.yml` generates these daily
+from each project's source repository. The next sync overwrites any edits you make here
+(usually within 24 hours).
 
 **To fix synced content**: Edit the source file in the project's own repository
-(e.g., fix `docs/my-project/README.md` by editing `README.md` in the
+(e.g., to fix `docs/my-project/README.md`, update `README.md` in the
 `tuna-os/my-project` repository). The next daily sync will pull your fix here.
 
-For more details, see [`AGENTS.md`](./AGENTS.md) section "Most of `docs/` is generated".
+For more details, see the generated-content section of [`AGENTS.md`](./AGENTS.md).
 
 ## Validation
 
