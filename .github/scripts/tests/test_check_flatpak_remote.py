@@ -8,14 +8,30 @@ check_flatpak_remote = load_module("check-flatpak-remote.py", "check_flatpak_rem
 
 def test_check_flatpakrepo_flags_missing_default_branch():
     errors = []
-    check_flatpak_remote.check_flatpakrepo(lambda _rel: "Title=tuna-os\n", errors)
+    check_flatpak_remote.check_flatpakrepo(
+        lambda _rel: "Title=tuna-os\nAuthenticatorName=org.flatpak.Authenticator.Oci\n",
+        errors,
+    )
     assert len(errors) == 1
     assert "DefaultBranch" in errors[0]
 
 
+def test_check_flatpakrepo_flags_missing_authenticator():
+    errors = []
+    check_flatpak_remote.check_flatpakrepo(
+        lambda _rel: "Title=tuna-os\nDefaultBranch=stable\n",
+        errors,
+    )
+    assert len(errors) == 1
+    assert "AuthenticatorName" in errors[0]
+
+
 def test_check_flatpakrepo_passes_when_present():
     errors = []
-    check_flatpak_remote.check_flatpakrepo(lambda _rel: "Title=tuna-os\nDefaultBranch=stable\n", errors)
+    check_flatpak_remote.check_flatpakrepo(
+        lambda _rel: "Title=tuna-os\nDefaultBranch=stable\nAuthenticatorName=org.flatpak.Authenticator.Oci\n",
+        errors,
+    )
     assert errors == []
 
 
@@ -91,6 +107,97 @@ def test_check_index_warns_on_unexpected_app_in_index():
     check_flatpak_remote.check_index(_loader(expected=expected), errors, warnings)
     assert errors == []
     assert any("not in expected-apps.json" in w for w in warnings)
+
+
+MULTI_INDEX = {
+    "Results": [
+        {
+            "Name": "tuna-os/bootc-installer",
+            "Images": [
+                {
+                    "Architecture": "amd64",
+                    "Labels": {"org.flatpak.ref": "app/org.bootcinstaller.Installer/x86_64/master"},
+                },
+                {
+                    "Architecture": "arm64",
+                    "Labels": {"org.flatpak.ref": "app/org.bootcinstaller.Installer/aarch64/master"},
+                },
+                {
+                    "Architecture": "amd64",
+                    "Labels": {"org.flatpak.ref": "app/org.tunaos.InstallerKde/x86_64/master"},
+                },
+                {
+                    "Architecture": "arm64",
+                    "Labels": {"org.flatpak.ref": "app/org.tunaos.InstallerKde/aarch64/master"},
+                },
+            ],
+        },
+    ],
+}
+
+
+def test_check_index_passes_for_multi_id_app():
+    expected = {"apps": [{
+        "name": "tuna-os/bootc-installer",
+        "ids": ["org.bootcinstaller.Installer", "org.tunaos.InstallerKde"],
+        "archs": ["amd64", "arm64"],
+    }]}
+    errors, warnings = [], []
+    check_flatpak_remote.check_index(_loader(index=MULTI_INDEX, expected=expected), errors, warnings)
+    assert errors == []
+    assert warnings == []
+
+
+def test_check_index_flags_missing_id_on_arch():
+    expected = {"apps": [{
+        "name": "tuna-os/bootc-installer",
+        "ids": ["org.bootcinstaller.Installer", "org.tunaos.InstallerKde", "org.tunaos.InstallerXfce"],
+        "archs": ["amd64", "arm64"],
+    }]}
+    errors, warnings = [], []
+    check_flatpak_remote.check_index(_loader(index=MULTI_INDEX, expected=expected), errors, warnings)
+    assert any("missing required arch 'amd64' for id org.tunaos.InstallerXfce" in e for e in errors)
+    assert any("missing required arch 'arm64' for id org.tunaos.InstallerXfce" in e for e in errors)
+
+
+def test_check_index_flags_unexpected_ref_in_multi_id_app():
+    expected = {"apps": [{
+        "name": "tuna-os/bootc-installer",
+        "ids": ["org.bootcinstaller.Installer"],
+        "archs": ["amd64", "arm64"],
+    }]}
+    errors, warnings = [], []
+    check_flatpak_remote.check_index(_loader(index=MULTI_INDEX, expected=expected), errors, warnings)
+    assert any("don't match expected ids" in e for e in errors)
+
+
+def test_check_index_warns_on_planned_arch_for_multi_id_app():
+    index_amd_only = {
+        "Results": [{
+            "Name": "tuna-os/bootc-installer",
+            "Images": [
+                {
+                    "Architecture": "amd64",
+                    "Labels": {"org.flatpak.ref": "app/org.bootcinstaller.Installer/x86_64/master"},
+                },
+                {
+                    "Architecture": "amd64",
+                    "Labels": {"org.flatpak.ref": "app/org.tunaos.InstallerKde/x86_64/master"},
+                },
+            ],
+        }],
+    }
+    expected = {"apps": [{
+        "name": "tuna-os/bootc-installer",
+        "ids": ["org.bootcinstaller.Installer", "org.tunaos.InstallerKde"],
+        "archs": ["amd64"],
+        "archs_planned": ["arm64"],
+    }]}
+    errors, warnings = [], []
+    check_flatpak_remote.check_index(_loader(index=index_amd_only, expected=expected), errors, warnings)
+    assert errors == []
+    assert any("planned arch 'arm64' for id org.bootcinstaller.Installer not yet published" in w for w in warnings)
+    assert any("planned arch 'arm64' for id org.tunaos.InstallerKde not yet published" in w for w in warnings)
 
 
 def test_check_flatpakrefs_flags_orphan_ref_file(tmp_path, monkeypatch):

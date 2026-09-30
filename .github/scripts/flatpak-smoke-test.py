@@ -160,26 +160,28 @@ def main():
         # (letters/tables/decks kept their original per-app registry paths
         # after consolidating into tuna-os/gtk-office-suite) -- issue_repo
         # is the override for where issues should actually go.
-        app_id, repo = app["id"], app.get("issue_repo", app["name"])
-        print(f"== {app_id} ({repo}) ==")
-        failures = []
+        repo = app.get("issue_repo", app["name"])
+        app_ids = app.get("ids") or [app["id"]]
+        for app_id in app_ids:
+            print(f"== {app_id} ({repo}) ==")
+            failures = []
 
-        ok, log = install(app_id)
-        failures.append(("install", ok, log))
-        print(f"  install: {'ok' if ok else 'FAIL'}")
+            ok, log = install(app_id)
+            failures.append(("install", ok, log))
+            print(f"  install: {'ok' if ok else 'FAIL'}")
 
-        if ok and not is_installer(app_id):
-            ok2, log2 = launch(app_id)
-            failures.append(("launch", ok2, log2))
-            print(f"  launch: {'ok' if ok2 else 'FAIL'}")
+            if ok and not is_installer(app_id):
+                ok2, log2 = launch(app_id)
+                failures.append(("launch", ok2, log2))
+                print(f"  launch: {'ok' if ok2 else 'FAIL'}")
 
-        failed = any(not ok for _, ok, _ in failures)
-        if failed:
-            any_failed = True
-            if file_issues and token:
-                file_or_update_issue(repo, app_id, failures, run_url, token)
-        elif file_issues and token:
-            close_if_recovered(repo, app_id, token)
+            failed = any(not ok for _, ok, _ in failures)
+            if failed:
+                any_failed = True
+                if file_issues and token:
+                    file_or_update_issue(repo, app_id, failures, run_url, token)
+            elif file_issues and token:
+                close_if_recovered(repo, app_id, token)
 
     sys.exit(1 if any_failed else 0)
 

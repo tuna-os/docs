@@ -219,3 +219,30 @@ def test_main_uses_issue_repo_override(mod, monkeypatch):
                           env={"FILE_ISSUES": "true", "ISSUE_TOKEN": "tok"})
     assert code == 1
     assert file_issue.call_args.args[0] == "tuna-os/letters"
+
+
+def test_main_iterates_all_ids_when_ids_list_provided(mod, monkeypatch):
+    apps = [{"name": "tuna-os/bootc-installer", "ids": ["org.bootcinstaller.Installer", "org.tunaos.InstallerKde"]}]
+    with patch.object(mod, "install", return_value=(True, "")) as install, \
+         patch.object(mod, "launch") as launch:
+        code = _run_main(mod, apps, monkeypatch)
+    assert code == 0
+    assert install.call_count == 2
+    assert [c.args[0] for c in install.call_args_list] == [
+        "org.bootcinstaller.Installer",
+        "org.tunaos.InstallerKde",
+    ]
+    launch.assert_not_called()
+
+
+def test_main_handles_multi_id_launch_failure(mod, monkeypatch):
+    apps = [{"name": "tuna-os/suite", "ids": ["org.tunaos.app1", "org.tunaos.app2"]}]
+    with patch.object(mod, "install", return_value=(True, "")), \
+         patch.object(mod, "launch", side_effect=[(True, ""), (False, "crash")]), \
+         patch.object(mod, "file_or_update_issue") as file_issue:
+        code = _run_main(mod, apps, monkeypatch,
+                          env={"FILE_ISSUES": "true", "ISSUE_TOKEN": "tok"})
+    assert code == 1
+    file_issue.assert_called_once()
+    assert file_issue.call_args.args[0] == "tuna-os/suite"
+    assert file_issue.call_args.args[1] == "org.tunaos.app2"
