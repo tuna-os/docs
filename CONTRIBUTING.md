@@ -19,6 +19,21 @@ production site with `just build`.
 Open an issue before a substantial documentation or site change. Maintainers
 can then confirm its scope.
 
+## Important: Which content can you edit?
+
+**Hand-written pages** (top-level `docs/`, `blog/`) — you can edit these freely.
+Your changes stay in place.
+
+**Synced pages** (under `docs/<project>/`) — `sync-org-docs.yml` generates these daily
+from each project's source repository. The next sync overwrites any edits you make here
+(usually within 24 hours).
+
+**To fix synced content**: Edit the source file in the project's own repository
+(e.g., to fix `docs/my-project/README.md`, update `README.md` in the
+`tuna-os/my-project` repository). The next daily sync will pull your fix here.
+
+For more details, see the generated-content section of [`AGENTS.md`](./AGENTS.md).
+
 ## Validation
 
 Install the Markdown linter used by the repository recipe:
@@ -68,7 +83,8 @@ index page at the start of a project tree identifies the source repository.
 ## Questions?
 
 - [TunaOS Documentation](https://tunaos.org)
-- [GitHub Issues](https://github.com/tuna-os/tunaOS/issues)
+- [GitHub Issues for the docs site](https://github.com/tuna-os/docs/issues)
+- For general TunaOS questions, see [TunaOS Issues](https://github.com/tuna-os/tunaOS/issues)
 
 <!-- hive-contribute-plea: donated-compute appeal, keep in sync across repos -->
 ## Contribute compute — no code needed
