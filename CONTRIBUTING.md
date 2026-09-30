@@ -55,12 +55,12 @@ scripts. Also run `just build` when the change can affect the generated site.
 Use `just --list` to see individual setup, preview, build, and validation
 recipes.
 
-### Additional validation before merge
+### Optional validation
 
-Two additional checks are recommended before submitting:
+Two checks are optional but recommended:
 
-- **Accessibility:** `npm run a11y` audits the built site with axe-core (WCAG 2.2 A/AA) and must pass with zero violations. Run this after `npm run build`.
-- **Metrics:** `npm run test:metrics` validates the adoption metrics page with browser automation. Useful for changes affecting `/metrics`.
+- **Accessibility:** `npm run a11y` runs axe-core (WCAG 2.2 A/AA checks). Pass before opening a PR. Run after `npm run build`.
+- **Metrics:** `npm run test:metrics` tests the metrics page. Run for `/metrics` changes.
 
 ## Synchronized Project Documentation
 
