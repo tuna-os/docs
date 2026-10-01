@@ -366,12 +366,20 @@ function isSyncedIndex(content) {
 // re-check that a name it's given isn't one; the caller does that filtering
 // (readdirSync with withFileTypes, keeping only isFile() entries) before ever
 // calling this.
-function filesToRemove(existingFiles, writtenFiles, readIndexContent) {
+//
+// `couldWrite(file)` says whether this run could have written `file` at all.
+// A repo in SKIP_DOCS_DIR has its docs/ folder left alone, so its targetDir
+// mixes synced root docs with pages written by hand here (docs/tunaos/
+// introduction.md, building.md, …). Those were never this script's to write,
+// so they are never candidates — without this, every run deleted them and
+// the site build then failed on the sidebar entries that point at them.
+function filesToRemove(existingFiles, writtenFiles, readIndexContent, couldWrite = () => true) {
   const written = new Set(writtenFiles);
   const removable = [];
   const refused = [];
   for (const file of existingFiles) {
     if (written.has(file)) continue;
+    if (!couldWrite(file)) continue;
     if (file === 'index.md') {
       const content = readIndexContent();
       if (content !== null && isSyncedIndex(content)) {
@@ -384,6 +392,18 @@ function filesToRemove(existingFiles, writtenFiles, readIndexContent) {
     removable.push(file);
   }
   return {removable, refused};
+}
+
+// The root files the sync copies besides README.md, when a repo has no
+// ROOT_DOC_FILTER entry.
+const ROOT_DOC_NAMES = ['ARCHITECTURE', 'CONTRIBUTING', 'ROADMAP', 'TODO', 'SECURITY', 'SPEC'];
+
+// isRootDoc reports whether `file` in a targetDir is one the README or
+// root-docs stage writes: index.md, or a root doc the repo's filter allows.
+function isRootDoc(file, rootFilter = null) {
+  if (file === 'index.md') return true;
+  if (rootFilter !== null) return rootFilter.includes(file);
+  return /\.(md|rst)$/.test(file) && ROOT_DOC_NAMES.includes(file.replace(/\.(md|rst)$/, ''));
 }
 
 function subFrontmatter(title, position) {
@@ -683,7 +703,6 @@ function main() {
       }
 
       // ── Additional root docs ──
-      const EXTRA = ['ARCHITECTURE', 'CONTRIBUTING', 'ROADMAP', 'TODO', 'SECURITY', 'SPEC'];
       const rootFilter = ROOT_DOC_FILTER[repo] || null;
       for (const file of readdirSync(dir).sort()) {
         const upper = file.replace(/\.(md|rst)$/, '');
@@ -693,7 +712,7 @@ function main() {
           if (!rootFilter.includes(file)) continue;
         } else {
           // Default: only known doc files
-          if (!EXTRA.includes(upper)) continue;
+          if (!ROOT_DOC_NAMES.includes(upper)) continue;
         }
         let content = readFileSync(join(dir, file), 'utf8');
         content = sanitizeHtml(content);
@@ -738,6 +757,7 @@ function main() {
           const indexPath = join(targetDir, 'index.md');
           return existsSync(indexPath) ? readFileSync(indexPath, 'utf8') : null;
         },
+        SKIP_DOCS_DIR.has(repo) ? file => isRootDoc(file, rootFilter) : undefined,
       );
       for (const file of removable) {
         rmSync(join(targetDir, file), {force: true});
@@ -808,6 +828,7 @@ export {
   subFrontmatter,
   isSyncedIndex,
   filesToRemove,
+  isRootDoc,
   getStatusBanner,
   slugify,
   listOrgRepos,
