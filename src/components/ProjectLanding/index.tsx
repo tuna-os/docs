@@ -225,13 +225,26 @@ function Install({project}: {project: Project}): ReactNode {
   );
 }
 
+// Related projects first. Every project page used to end in a wall of all
+// seventeen others; six, chosen by what the reader is already looking at, is a
+// next step rather than a directory (the full list is one click away).
+const KINDS: Record<string, string[]> = {
+  apps: ['tables', 'letters', 'decks', 'mariner', 'blueshell', 'ghostty', 'tavern', 'mandelbrot'],
+  images: ['tunaos', 'tromso', 'xfce-linux', 'dakota', 'wootc'],
+  tools: ['tacklebox', 'bootc-migrate', 'bluefin-cli', 'corral', 'wootc'],
+};
+
 function MoreProjects({project}: {project: Project}): ReactNode {
-  const others = PROJECTS.filter((p) => p.id !== project.id && !p.external);
+  const kinds = Object.values(KINDS).filter((ids) => ids.includes(project.id));
+  const related = new Set(kinds.flat());
+  const others = PROJECTS.filter((p) => p.id !== project.id && !p.external)
+    .sort((a, b) => Number(related.has(b.id)) - Number(related.has(a.id)))
+    .slice(0, 6);
   return (
     <section className={clsx(styles.section, styles.sectionAlt)}>
       <div className="container">
         <div className={styles.sectionHead}>
-          <Heading as="h2">More from TunaOS</Heading>
+          <Heading as="h2">Related projects</Heading>
         </div>
         <div className={styles.otherGrid}>
           {others.map((p) => (

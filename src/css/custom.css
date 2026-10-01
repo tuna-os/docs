@@ -4,13 +4,30 @@
  * work well for content-centric websites.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+/* Self-hosted variable fonts — no third-party request at runtime. */
+@import '@fontsource-variable/geist/index.css';
+@import '@fontsource-variable/bricolage-grotesque/index.css';
+@import '@fontsource-variable/jetbrains-mono/index.css';
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-font-family-base: 'JetBrains Mono', monospace;
-  --ifm-font-family-monospace: 'JetBrains Mono', monospace;
-  --tu-mono: 'JetBrains Mono', monospace;
+  /* Type system. Three jobs, three faces:
+       body + UI   Geist — a neutral, highly legible sans for reading;
+       display     Bricolage Grotesque — headings, where the site gets its voice;
+       code + data JetBrains Mono — code, eyebrows, chips, figures.
+     All three are variable fonts served from this site (see customCss in
+     docusaurus.config.ts), so nothing here calls a third-party host. The site
+     used to set everything in monospace, which is right for code and wrong for
+     paragraphs: long-form docs prose was ~85 monospaced characters a line. */
+  --tu-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --tu-display: 'Bricolage Grotesque Variable', 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --tu-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --ifm-font-family-base: var(--tu-sans);
+  --ifm-heading-font-family: var(--tu-display);
+  --ifm-font-family-monospace: var(--tu-mono);
+  --ifm-font-size-base: 100%;
+  --ifm-line-height-base: 1.65;
+  --ifm-heading-font-weight: 700;
   /* Bright Vesper primaries for the light theme. */
   --ifm-color-primary: #5dabf0;
   --ifm-color-primary-dark: #5fa8e8;
@@ -61,6 +78,24 @@
 
 body {
   font-family: var(--ifm-font-family-base);
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--tu-display);
+  letter-spacing: -0.025em;
+  font-variation-settings: 'opsz' 48;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: var(--tu-mono);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -424,4 +459,233 @@ article.markdown p a,
 article.markdown li a {
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+/* ═══ Docs reading experience ═══════════════════════════════════════════════
+   Docs are the part of the site people actually read, so they get a reading
+   layout rather than a card: no boxed panel, a prose measure of ~70 characters,
+   a clear heading ladder, and a quiet sidebar. Code and tables keep the full
+   column — only running text is narrowed. */
+
+.docPage .markdown,
+article.markdown,
+.theme-doc-markdown {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+
+[data-theme='dark'] .docPage .markdown,
+[data-theme='dark'] article.markdown {
+  background: transparent;
+}
+
+.theme-doc-markdown {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--ifm-font-color-base);
+}
+
+.theme-doc-markdown p,
+.theme-doc-markdown li {
+  max-width: 72ch;
+}
+
+.theme-doc-markdown > h1:first-child,
+.markdown > header > h1 {
+  margin-bottom: 1.5rem;
+  font-size: clamp(2.2rem, 4.4vw, 3.2rem);
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+}
+
+.theme-doc-markdown h2 {
+  margin-top: 3.25rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--tu-line-strong);
+  font-size: 1.75rem;
+  line-height: 1.15;
+}
+
+.theme-doc-markdown h3 {
+  margin-top: 2.25rem;
+  font-size: 1.3rem;
+}
+
+.theme-doc-markdown h4 {
+  margin-top: 1.75rem;
+  font-size: 1.05rem;
+  font-family: var(--tu-sans);
+  letter-spacing: -0.005em;
+}
+
+.theme-doc-markdown a:not(.hash-link) {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.theme-doc-markdown :not(pre) > code {
+  padding: 0.12em 0.4em;
+  border: none;
+  border-radius: 5px;
+  background: var(--tu-panel);
+  font-size: 0.86em;
+  color: var(--tu-accent-soft);
+}
+
+.theme-doc-markdown blockquote {
+  padding: 0.4rem 1.25rem;
+  border-left: 3px solid var(--tu-accent);
+  border-radius: 0 6px 6px 0;
+  background: var(--tu-panel);
+  color: var(--tu-dim);
+}
+
+/* Tables: quiet rules and a mono header row, instead of a heavy grid. */
+.theme-doc-markdown table {
+  display: table;
+  width: 100%;
+  border: none;
+  font-size: 0.94rem;
+}
+
+.theme-doc-markdown table th,
+.theme-doc-markdown table td {
+  padding: 0.7rem 0.9rem;
+  border: none;
+  border-bottom: 1px solid var(--tu-line);
+  background: transparent;
+}
+
+.theme-doc-markdown table thead th {
+  border-bottom: 1px solid var(--tu-line-strong);
+  font-family: var(--tu-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tu-accent-soft);
+}
+
+.theme-doc-markdown table tr:nth-child(2n) {
+  background: transparent;
+}
+
+.theme-doc-markdown table tbody tr:hover {
+  background: rgba(93, 171, 240, 0.04);
+}
+
+/* Sidebar: quieter type, and the current page marked by a bar, not a block. */
+.theme-doc-sidebar-container .menu {
+  padding: 1rem 0.75rem 2rem;
+}
+
+.theme-doc-sidebar-container .menu__link {
+  padding: 0.38rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 450;
+  line-height: 1.4;
+  color: var(--tu-dim);
+}
+
+.theme-doc-sidebar-container .menu__link:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--tu-ink);
+}
+
+.theme-doc-sidebar-container .menu__link--active:not(.menu__link--sublist) {
+  background: rgba(93, 171, 240, 0.1);
+  box-shadow: inset 2px 0 0 var(--tu-accent);
+  font-weight: 600;
+  color: var(--tu-ink);
+}
+
+.theme-doc-sidebar-container .menu__list-item-collapsible > .menu__link--sublist {
+  margin-top: 0.5rem;
+  font-family: var(--tu-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tu-accent-soft);
+}
+
+/* Table of contents: same treatment, on the right. */
+.table-of-contents__link {
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--tu-dim);
+}
+
+.table-of-contents__link--active {
+  color: var(--tu-accent);
+  font-weight: 600;
+}
+
+.breadcrumbs__link {
+  font-size: 0.8rem;
+  border-radius: 6px;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────────────
+   Pinned to the page ground in both themes, like the navbar — the default
+   slate slab sat a shade lighter than the page and read as a separate site. */
+
+.footer {
+  --ifm-footer-background-color: #17191b;
+  --ifm-footer-title-color: var(--tuna-header-fg);
+  --ifm-footer-link-color: var(--tuna-header-link);
+  --ifm-footer-link-hover-color: var(--tuna-header-fg);
+  border-top: 1px solid var(--tu-line);
+  font-size: 0.92rem;
+}
+
+.footer__title {
+  font-family: var(--tu-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tu-accent-soft);
+}
+
+.footer__copyright {
+  font-size: 0.82rem;
+  color: var(--tu-dim);
+}
+
+/* An <hr> right before an h2 would double the h2's own top rule. */
+.theme-doc-markdown hr {
+  margin: 2.25rem 0 0;
+  border: none;
+  height: 0;
+}
+
+.theme-doc-markdown hr + h2 {
+  margin-top: 0;
+  border-top: 1px solid var(--tu-line-strong);
+}
+
+.theme-doc-markdown {
+  line-height: 1.7;
+}
+
+.theme-doc-markdown p {
+  margin-bottom: 1.1rem;
+}
+
+/* Wide tables scroll on small screens instead of widening the page. */
+@media (max-width: 996px) {
+  .theme-doc-markdown table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .theme-doc-markdown p,
+  .theme-doc-markdown li {
+    max-width: none;
+  }
 }
