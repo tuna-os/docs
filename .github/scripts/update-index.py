@@ -90,16 +90,26 @@ def build_image_entry(manifest_digest, config, tags, require_appstream):
 
 
 def merge_entry(index_data, repo_name, image_entry):
-    """Insert image_entry, replacing any existing image for the same arch."""
+    """Insert image_entry, replacing any existing image for the same arch and ref."""
+    architecture = image_entry.get("Architecture")
+    new_ref = (image_entry.get("Labels") or {}).get("org.flatpak.ref")
+
+    def supersedes(img):
+        if img.get("Architecture") != architecture:
+            return False
+        old_ref = (img.get("Labels") or {}).get("org.flatpak.ref")
+        return old_ref is None or new_ref is None or old_ref == new_ref
+
     for result in index_data.setdefault("Results", []):
         if result["Name"] == repo_name:
-            result["Images"] = [
-                image
-                for image in result["Images"]
-                if image["Architecture"] != image_entry["Architecture"]
-            ]
+            result["Images"] = [img for img in result["Images"] if not supersedes(img)]
             result["Images"].append(image_entry)
-            result["Images"].sort(key=lambda image: image["Architecture"])
+            result["Images"].sort(
+                key=lambda img: (
+                    img.get("Architecture", ""),
+                    (img.get("Labels") or {}).get("org.flatpak.ref") or "",
+                )
+            )
             return
     index_data["Results"].append({"Name": repo_name, "Images": [image_entry]})
     index_data["Results"].sort(key=lambda result: result["Name"])

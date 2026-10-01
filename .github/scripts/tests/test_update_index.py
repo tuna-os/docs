@@ -135,6 +135,95 @@ def test_merge_entry_replaces_same_arch_and_keeps_other_arches():
     assert by_arch == {"amd64": "sha256:new", "arm64": "sha256:arm"}
 
 
+def test_merge_entry_keeps_different_refs_on_same_arch():
+    index_data = {"Results": [{
+        "Name": "tuna-os/bootc-installer",
+        "Images": [
+            {
+                "Architecture": "amd64",
+                "Digest": "sha256:gnome",
+                "Labels": {"org.flatpak.ref": "app/org.bootcinstaller.Installer/x86_64/master"},
+            },
+        ],
+    }]}
+    kde_entry = {
+        "Architecture": "amd64",
+        "Digest": "sha256:kde",
+        "Labels": {"org.flatpak.ref": "app/org.tunaos.InstallerKde/x86_64/master"},
+    }
+    update_index.merge_entry(index_data, "tuna-os/bootc-installer", kde_entry)
+
+    images = index_data["Results"][0]["Images"]
+    assert len(images) == 2
+    refs = [img["Labels"]["org.flatpak.ref"] for img in images]
+    assert refs == [
+        "app/org.bootcinstaller.Installer/x86_64/master",
+        "app/org.tunaos.InstallerKde/x86_64/master",
+    ]
+
+
+def test_merge_entry_replaces_same_ref_on_same_arch():
+    index_data = {"Results": [{
+        "Name": "tuna-os/bootc-installer",
+        "Images": [
+            {
+                "Architecture": "amd64",
+                "Digest": "sha256:gnome_old",
+                "Labels": {"org.flatpak.ref": "app/org.bootcinstaller.Installer/x86_64/master"},
+            },
+            {
+                "Architecture": "amd64",
+                "Digest": "sha256:kde",
+                "Labels": {"org.flatpak.ref": "app/org.tunaos.InstallerKde/x86_64/master"},
+            },
+        ],
+    }]}
+    gnome_new = {
+        "Architecture": "amd64",
+        "Digest": "sha256:gnome_new",
+        "Labels": {"org.flatpak.ref": "app/org.bootcinstaller.Installer/x86_64/master"},
+    }
+    update_index.merge_entry(index_data, "tuna-os/bootc-installer", gnome_new)
+
+    images = index_data["Results"][0]["Images"]
+    assert len(images) == 2
+    by_ref = {img["Labels"]["org.flatpak.ref"]: img["Digest"] for img in images}
+    assert by_ref["app/org.bootcinstaller.Installer/x86_64/master"] == "sha256:gnome_new"
+    assert by_ref["app/org.tunaos.InstallerKde/x86_64/master"] == "sha256:kde"
+
+
+def test_merge_entry_sorts_images_by_arch_and_ref():
+    index_data = {"Results": [{
+        "Name": "tuna-os/bootc-installer",
+        "Images": [
+            {
+                "Architecture": "arm64",
+                "Digest": "sha256:kde_arm",
+                "Labels": {"org.flatpak.ref": "app/org.tunaos.InstallerKde/aarch64/master"},
+            },
+            {
+                "Architecture": "amd64",
+                "Digest": "sha256:kde_amd",
+                "Labels": {"org.flatpak.ref": "app/org.tunaos.InstallerKde/x86_64/master"},
+            },
+        ],
+    }]}
+    gnome_amd = {
+        "Architecture": "amd64",
+        "Digest": "sha256:gnome_amd",
+        "Labels": {"org.flatpak.ref": "app/org.bootcinstaller.Installer/x86_64/master"},
+    }
+    update_index.merge_entry(index_data, "tuna-os/bootc-installer", gnome_amd)
+
+    images = index_data["Results"][0]["Images"]
+    order = [(img["Architecture"], img["Labels"]["org.flatpak.ref"]) for img in images]
+    assert order == [
+        ("amd64", "app/org.bootcinstaller.Installer/x86_64/master"),
+        ("amd64", "app/org.tunaos.InstallerKde/x86_64/master"),
+        ("arm64", "app/org.tunaos.InstallerKde/aarch64/master"),
+    ]
+
+
 def test_merge_entry_sorts_results_by_name():
     index_data = {"Results": [{"Name": "tuna-os/zzz", "Images": []}]}
     update_index.merge_entry(index_data, "tuna-os/aaa", {"Architecture": "amd64"})
