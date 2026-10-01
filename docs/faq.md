@@ -26,7 +26,7 @@ Yes. Apache 2.0 licenses TunaOS as open source.
 Two ways:
 
 1. **Fresh install** — Download an ISO from [tunaos.org/download](https://tunaos.org/download) and write it to USB
-2. **Move from an existing bootc system** — use [bootc-migrate](/docs/bootc-migrate): `sudo bootc-migrate --target-image ghcr.io/tuna-os/yellowfin:gnome`, then reboot. It carries `/home`, `/var` and `/etc` across and keeps your old deployment bootable until you `commit`. Use it, not a bare `bootc switch`, when the new image differs from the one you run.
+2. **Move from an existing bootc system** — use [bootc-migrate](/docs/bootc-migrate), a smarter `bootc switch`: `sudo bootc-migrate --target-image ghcr.io/tuna-os/yellowfin:gnome`, then reboot. It takes the same target, checks it first, carries `/home`, `/var` and `/etc` across, and keeps your old deployment bootable until you `commit`.
 
 **Where do I download the ISOs?**
 
@@ -116,7 +116,7 @@ Example: `ghcr.io/tuna-os/yellowfin:gnome-nvidia-hwe`
 
 **Can I switch desktop environments without a fresh installation?**
 
-Yes. A different desktop is a different image, so use [bootc-migrate](/docs/bootc-migrate), not a bare `bootc switch`:
+Yes. A different desktop is a different image. Use [bootc-migrate](/docs/bootc-migrate), a smarter `bootc switch`:
 
 ```bash
 # From GNOME to COSMIC

@@ -65,7 +65,7 @@ ghcr.io/tuna-os/grouper:niri
 
 ### Switching to Niri with bootc
 
-From an existing TunaOS installation, move to the Niri flavor with [bootc-migrate](/docs/bootc-migrate). A different desktop is a different image, and bootc-migrate checks the target and keeps your home directory and settings, which a bare `bootc switch` does not:
+From an existing TunaOS installation, move to the Niri flavor with [bootc-migrate](/docs/bootc-migrate), a smarter `bootc switch`. It checks the target first and keeps your home directory and settings:
 
 ```bash
 # Check first; this changes nothing

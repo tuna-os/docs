@@ -61,13 +61,12 @@ CTA in the hero and has its own landing page.
    asserting something it cannot yet know. Never hand-write a build status
    into the site: it would be wrong within a day and nobody would notice.
 
-8. **Cross-image moves use bootc-migrate.** Anywhere the site tells someone
-   to leave one image for a different one (another base, another desktop,
-   another project's image), it shows `bootc-migrate --target-image …` and
-   links `/docs/bootc-migrate`. A bare `bootc switch` only repoints the
-   system at a new image; it does not reconcile UID/GID ranges, desktop
-   config or boot entries. `bootc switch` stays correct for same-image
-   changes (an edition suffix, pinning a digest, your own derived image).
+8. **bootc-migrate is the smarter `bootc switch`.** Anywhere the site tells
+   someone to move to another image (another base, desktop or project), it
+   shows `bootc-migrate --target-image …` and links `/docs/bootc-migrate`.
+   It takes the same target as `bootc switch`, checks it first, and carries
+   `/home`, `/var` and `/etc` across. Plain `bootc switch` stays only where
+   it is the whole job: pinning a digest, or updating your own derived image.
 
 ## Accessibility
 
