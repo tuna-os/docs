@@ -10,6 +10,12 @@ export type PFeature = {emoji: string; title: string; text: string};
 export type PInstall = {label: string; code: string};
 export type PShot = {src: string; alt: string};
 export type PHighlight = {title: string; text: string};
+// A "why this over the thing it forks" section: a heading, an optional
+// intro (HTML), and one card per reason.
+export type PComparison = {title: string; intro?: string; items: PHighlight[]};
+// A measurements table. `columns[0]` heads the row labels; every row has
+// one cell per column. `intro` (HTML) says what was measured and how.
+export type PPerformance = {intro: string; columns: string[]; rows: string[][]};
 
 export type Project = {
   id: string; // route slug (/<id>) + docs slug (/docs/<id>)
@@ -24,7 +30,9 @@ export type Project = {
   accent: string;
   accent2: string;
   repo: string;
-  docs: string; // doc path, usually /docs/<id>
+  // Doc path, usually /docs/<id>. Omit it until the sync has created that
+  // tree, or the Documentation button links nowhere.
+  docs?: string;
   // Optional primary CTA beyond Docs + GitHub.
   cta?: {label: string; to: string};
   // Flatpak app ID (renders as install button linking to /install?app=).
@@ -37,6 +45,8 @@ export type Project = {
   screenshots?: PShot[];
   // Dakota-style intro highlights (bold title + description cards).
   highlights?: PHighlight[];
+  comparison?: PComparison;
+  performance?: PPerformance;
   // External project (not in tuna-os org).
   external?: boolean;
   externalLink?: string;
@@ -551,6 +561,74 @@ export const PROJECTS: Project[] = [
     install: [
       {label: 'Flatpak (TunaOS remote)', code: 'flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo\nflatpak install tuna-os com.mitchellh.ghostty'},
       {label: 'Other sources', code: '# distro packages and the macOS app:\n# https://ghostty.org/download'},
+    ],
+  },
+  {
+    id: 'compass',
+    icon: 'compass',
+    emoji: '🧭',
+    name: 'Compass',
+    status: 'alpha',
+    tagline: 'A keyboard-first launcher for Linux, rewritten in Rust from Vicinae.',
+    lede:
+      'Compass puts applications, commands, clipboard history, snippets, files, a calculator, emoji, windows and extensions behind one search field. It is a hard fork of Vicinae with the engine and interface rewritten in Rust and Iced, it draws on Wayland only, and it ships as a Flatpak on the TunaOS remote.',
+    accent: '#0f766e',
+    accent2: '#2dd4bf',
+    repo: 'https://github.com/tuna-os/compass',
+    flathub: 'org.tunaos.compass',
+    stats: [
+      {label: 'Language', value: 'Rust'},
+      {label: 'Toolkit', value: 'Iced · wgpu'},
+      {label: 'Forked from', value: 'Vicinae'},
+    ],
+    features: [
+      {emoji: '🔎', title: 'One search field', text: 'Applications, commands, clipboard history, snippets, file search, a calculator, an emoji picker and a window switcher. Matching is fuzzy, so <code>fox</code> finds Firefox.'},
+      {emoji: '🧩', title: 'Raycast extensions', text: 'Runs Raycast extensions written in TypeScript and React through its extension host, and installs them from the Raycast Store or the Extension Store. <code>raycast://</code> sign-in links come back to the extension that asked.'},
+      {emoji: '📜', title: 'Scripts', text: 'Raycast-style script commands in any language, and Rhai scripts that declare the capabilities they need. A Rhai script you add yourself gets none of them until you allow it.'},
+      {emoji: '🪟', title: 'Made for Wayland', text: 'A layer-shell surface on Sway, Hyprland and niri; a normal window on GNOME, with the GNOME Shell extension for window switching and clipboard. On GNOME the hotkey comes from the GlobalShortcuts portal.'},
+      {emoji: '🌗', title: 'Follows the desktop', text: 'Draws light or dark to match the system setting, and changes when you switch it.'},
+      {emoji: '🩺', title: 'Says what works', text: '<code>doctor</code> reports the session, portals, engine and index state on your machine, and names what is missing.'},
+    ],
+    comparison: {
+      title: 'Why Compass over Vicinae',
+      intro:
+        'Compass is a hard fork of <a href="https://github.com/vicinaehq/vicinae">Vicinae</a>, and it exists because of the work of Vicinae\'s maintainers and contributors. Vicinae\'s C++ engine and its extension ecosystem are the behavioural reference for the port. These are the differences.',
+      items: [
+        {title: 'Faster, and lighter', text: 'Measured head-to-head on the same machine, the engine is ready to answer in 96 ms against Vicinae\'s 1.7 s, the launcher is populated in under a second against 2.3 s, and results follow a keystroke in 56 ms against 153 ms, with less memory and a third of the shared libraries. See the table below.'},
+        {title: 'Memory-safe Rust', text: 'The engine, the interface and the extension host are Rust, with <code>unsafe_code = "forbid"</code> across the workspace. The only exceptions are three small binding crates, for SQLCipher, the Wayland protocols and the bridge that puts blur behind the launcher.'},
+        {title: 'No Qt', text: 'The interface is drawn with Iced on wgpu. The Flatpak contains no Qt, no C++ and no CMake build, and it runs on <code>org.freedesktop.Platform</code> instead of the KDE runtime.'},
+        {title: 'Wayland-native', text: 'On compositors with <code>wlr-layer-shell</code> (Sway, Hyprland, niri) the launcher is a layer surface on the top layer, the way a launcher is meant to appear. There is no X11 code path, and the Flatpak asks for no X11 socket.'},
+        {title: 'A Flatpak with an extension sandbox', text: 'Extensions run in a Node worker behind Landlock and a seccomp filter. An extension can write only its own directories, it reads a short allowlist of <code>$HOME</code>, and it cannot run a file it wrote. When an extension needs a program on the host, Compass asks first: Raycast\'s Brew extension gets "Allow Brew to run brew?" with Allow Once, Always Allow or Deny, and Script Permissions takes the grant back. The engine refuses to run extensions if the sandbox helper is missing.'},
+        {title: 'Raycast extension compatibility', text: 'Extensions built for Raycast install from the Raycast Store and run through the same TypeScript API that Vicinae exposes, including OAuth sign-in through <code>raycast://</code> links. Where an extension assumes macOS, Compass maps it to Linux: <code>open</code> goes to <code>xdg-open</code>, <code>pbcopy</code> and <code>pbpaste</code> to the clipboard, and Homebrew to Linuxbrew. AppleScript is refused by name rather than failing obscurely.'},
+        {title: 'Full feature parity', text: 'Every Linux feature of the C++ engine has a row in the <a href="https://github.com/tuna-os/compass/blob/main/docs/rust-engine/PARITY.md">parity ledger</a>, and all 152 are implemented in Rust and covered by tests. Where Compass behaves differently on purpose, the ledger says so and why.'},
+      ],
+    },
+    screenshots: [
+      {src: '/img/screenshots/compass-search.png', alt: 'Compass searching applications and commands for "term"'},
+      {src: '/img/screenshots/compass-calculator.png', alt: 'The calculator converting sqrt(2) * 12 kg to pounds in the search field'},
+      {src: '/img/screenshots/compass-emoji.png', alt: 'The emoji picker searching for heart'},
+      {src: '/img/screenshots/compass-settings.png', alt: 'The settings view, General page'},
+    ],
+    // <!-- PERF-TABLE -->
+    // From docs/rust-engine/BENCHMARKS.md in tuna-os/compass (2026-09-25 run).
+    performance: {
+      intro:
+        'Both launchers were measured head-to-head by the same script on the same machine: Compass against the unmodified Vicinae 0.29.0 AppImage, cold-starting on headless Sway with software rendering, medians of five alternating runs. The machine was shared with other builds, so compare the ratios rather than the absolute times. Per core, Compass\'s fuzzy scorer is slower than Vicinae\'s; spread across cores it roughly evens out. <a href="https://github.com/tuna-os/compass/blob/main/docs/rust-engine/BENCHMARKS.md">Method, raw data and the command to reproduce it</a>.',
+      columns: ['Measurement', 'Compass', 'Vicinae 0.29.0'],
+      rows: [
+        ['Engine ready to answer', '96 ms', '1,746 ms'],
+        ['Launcher populated on screen', '0.9 s', '2.3 s'],
+        ['Keystroke to updated results', '56 ms', '153 ms'],
+        ['Idle memory (PSS, all processes)', '218 MiB', '263 MiB'],
+        ['Shared libraries loaded', '46', '136'],
+        ['Program files on disk', '72 MB', '310 MB'],
+      ],
+    },
+    // <!-- /PERF-TABLE -->
+    install: [
+      {label: 'Flatpak (TunaOS remote)', code: 'flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo\nflatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo\nflatpak install tuna-os org.tunaos.compass'},
+      {label: 'Start it, and check your desktop', code: 'flatpak run org.tunaos.compass start\nflatpak run org.tunaos.compass doctor'},
+      {label: 'Run from source', code: 'git clone https://github.com/tuna-os/compass.git\ncd compass\ncargo run -p compass -- ui'},
     ],
   },
   {
