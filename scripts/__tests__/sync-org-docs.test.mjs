@@ -94,6 +94,30 @@ test('handles tilde fences', () => {
 
 console.log('\nsanitizeHtml');
 
+test('escapes a placeholder that is not an HTML element (hive backend-setup, a table cell)', () => {
+  const out = sanitizeHtml('| `catalog` | lists the <catalog> entries | yes |\n');
+  assert.ok(out.includes('&lt;catalog>'), out);
+});
+
+test('escapes a placeholder inside emphasis', () => {
+  const out = sanitizeHtml('*Talks to the <frontend> over a socket*\n');
+  assert.equal(out, '*Talks to the &lt;frontend> over a socket*\n');
+});
+
+test('escapes a < that cannot start a tag (paperwm: <<, <-)', () => {
+  assert.equal(sanitizeHtml('Use Super+<< to move, a <- b\n'), 'Use Super+&lt;&lt; to move, a &lt;- b\n');
+});
+
+test('leaves a code span that wraps onto the next line alone', () => {
+  const md = '- `bootc install --source-imgref=docker://<image>\n  --karg=root=UUID=<uuid>`, then reboot\n';
+  assert.equal(sanitizeHtml(md), md);
+});
+
+test('keeps real HTML elements, closing tags and code', () => {
+  const md = '<details>\n<summary>More</summary>\n\n<img src="a.png" />\n\n</details>\n\n`<catalog>`\n';
+  assert.equal(sanitizeHtml(md), md);
+});
+
 test('splits one-line details/summary across lines', () => {
   const out = sanitizeHtml('<details><summary>More</summary>\n\ntext\n\n</details>\n');
   assert.match(out, /<details>\n<summary>More<\/summary>/);

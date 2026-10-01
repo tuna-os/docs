@@ -142,9 +142,11 @@ function onProse(content, fn) {
   return parts
     .map((part, i) => {
       if (i % 2 === 1) return part; // a fenced block
-      // Same again for inline `code` spans within the prose.
+      // Same again for inline `code` spans within the prose. A span may wrap
+      // onto the next line of its paragraph (CommonMark allows it), but not
+      // across a blank line.
       return part
-        .split(/(`[^`\n]*`)/g)
+        .split(/(`(?:[^`\n]|\n(?![ \t]*\n))*`)/g)
         .map((span, j) => (j % 2 === 1 ? span : fn(span)))
         .join('');
     })
@@ -192,10 +194,29 @@ function sanitizeHtml(content) {
       /<(img|br|hr|input|meta|link|source|col|area|base|embed|track|wbr)\b([^>]*?)\s*\/?>/gi,
       (_, tag, attrs) => `<${tag}${attrs.trimEnd()} />`,
     );
+    // Anything else after `<` is text. A synced README never means JSX, so
+    // `<catalog>` and `<frontend>` (placeholders in a table or in emphasis),
+    // `<<` and `<-` would otherwise reach MDX as tags it cannot close. Only a
+    // known HTML element, a closing tag or a comment keeps its `<`.
+    s = s.replace(/<(?!\/?(?:[a-zA-Z][\w-]*)\b|!--)/g, '&lt;');
+    s = s.replace(/<(\/?)([a-zA-Z][\w-]*)\b/g, (whole, slash, name) =>
+      HTML_ELEMENTS.has(name.toLowerCase()) ? whole : `&lt;${slash}${name}`,
+    );
     return s;
   });
   return c;
 }
+
+// The HTML elements a synced README may use and MDX renders as HTML.
+const HTML_ELEMENTS = new Set([
+  'a', 'abbr', 'area', 'audio', 'b', 'base', 'embed', 'link', 'meta', 'track', 'blockquote', 'br', 'caption', 'center', 'cite',
+  'code', 'col', 'colgroup', 'dd', 'del', 'details', 'dfn', 'div', 'dl', 'dt',
+  'em', 'figcaption', 'figure', 'font', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+  'hr', 'i', 'iframe', 'img', 'input', 'ins', 'kbd', 'li', 'mark', 'ol', 'p',
+  'picture', 'pre', 'q', 's', 'samp', 'small', 'source', 'span', 'strong',
+  'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead',
+  'tr', 'u', 'ul', 'var', 'video', 'wbr',
+]);
 
 // fixRelativeLinks rewrites repo-relative links and images to absolute URLs.
 //
