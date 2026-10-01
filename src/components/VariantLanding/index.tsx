@@ -158,9 +158,12 @@ function Flavors({variant, isoNames}: {variant: Variant; isoNames: Set<string> |
           })}
         </div>
         <div className={styles.rebaseBox}>
-          <span className={styles.rebaseLabel}>Rebase an existing bootc system</span>
+          <span className={styles.rebaseLabel}>
+            Move an existing bootc system here with{' '}
+            <Link to="/docs/bootc-migrate">bootc-migrate</Link>
+          </span>
           <pre className={styles.rebaseCode}>
-            <code>{`sudo bootc switch ${variant.flavors[0].image}`}</code>
+            <code>{`sudo bootc-migrate --target-image ${variant.flavors[0].image}`}</code>
           </pre>
         </div>
       </div>

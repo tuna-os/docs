@@ -143,10 +143,10 @@ function InstallPathsBand(): ReactNode {
     {
       icon: 'layers',
       name: 'Rebase what you run',
-      desc: 'Already on bootc — Bluefin, Aurora, Fedora Atomic? Switch to a TunaOS image in one command and roll back if you do not like it.',
-      cta: 'Installation docs',
-      to: '/docs/installation',
-      code: 'sudo bootc switch ghcr.io/tuna-os/albacore:gnome',
+      desc: 'Already on bootc — Bluefin, Aurora, Fedora Atomic? bootc-migrate moves you to a TunaOS image, keeps /home, /var and /etc, and leaves the old deployment bootable until you commit.',
+      cta: 'bootc-migrate docs',
+      to: '/docs/bootc-migrate',
+      code: 'sudo bootc-migrate --target-image ghcr.io/tuna-os/albacore:gnome',
     },
     {
       icon: 'wrench',

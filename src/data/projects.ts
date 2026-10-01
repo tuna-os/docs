@@ -199,7 +199,7 @@ export const PROJECTS: Project[] = [
     install: [
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/tromso.git\ncd tromso\njust build'},
       {label: 'Boot in a VM', code: 'just generate-bootable-image\njust boot-vm'},
-      {label: 'Rebase an existing bootc system', code: 'sudo bootc switch ghcr.io/tuna-os/tromso:latest'},
+      {label: 'Move an existing bootc system (bootc-migrate)', code: 'sudo bootc-migrate --target-image ghcr.io/tuna-os/tromso:latest'},
     ],
   },
   {
@@ -582,7 +582,7 @@ export const PROJECTS: Project[] = [
     ],
     install: [
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/xfce-linux.git\ncd xfce-linux\njust build'},
-      {label: 'Rebase an existing bootc system', code: 'sudo bootc switch ghcr.io/tuna-os/xfce-linux:latest'},
+      {label: 'Move an existing bootc system (bootc-migrate)', code: 'sudo bootc-migrate --target-image ghcr.io/tuna-os/xfce-linux:latest'},
     ],
   },
 
@@ -649,7 +649,7 @@ export const PROJECTS: Project[] = [
       {emoji: '🎮', title: 'NVIDIA option', text: 'NVIDIA drivers and CUDA for graphics and AI workflows.'},
     ],
     install: [
-      {label: 'Rebase an existing bootc system', code: 'sudo bootc switch ghcr.io/tuna-os/albacore:gnome'},
+      {label: 'Move an existing bootc system (bootc-migrate)', code: 'sudo bootc-migrate --target-image ghcr.io/tuna-os/albacore:gnome'},
     ],
   },
 ];

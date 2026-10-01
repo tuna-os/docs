@@ -16,7 +16,7 @@ next, and each of those actions is reachable from the front page in one click.
 | - | --- | --- | --- | --- |
 | 1 | **On Windows, curious about Linux.** Has one machine and cannot repartition it. | To try Linux without risking the machine | **Try from Windows** | `/wootc` |
 | 2 | **Wants a desktop Linux to install.** Comparing distributions, or wants a long-support desktop. | A bootable ISO for their hardware | **Download** | `/download` |
-| 3 | **Already runs bootc** (Universal Blue, Bluefin, Fedora Atomic). | A one-line switch to a TunaOS image | **Rebase** (`bootc switch …`) | `/download`, docs |
+| 3 | **Already runs bootc** (Universal Blue, Bluefin, Fedora Atomic). | A one-line move to a TunaOS image | **Rebase** (`bootc-migrate --target-image …`) | `/download`, docs |
 | 4 | **On some other distribution, wants the apps.** Does not care about the OS. | The office suite, terminal, file manager | **Flatpaks** | `/flatpak` |
 | 5 | **Builder or contributor.** | The tooling and where the code is | **Build an ISO** / **Docs** / GitHub | `/iso-builder`, `/docs`, GitHub |
 
@@ -60,6 +60,14 @@ CTA in the hero and has its own landing page.
    says "built; live ISO state loads with the index" in between rather than
    asserting something it cannot yet know. Never hand-write a build status
    into the site: it would be wrong within a day and nobody would notice.
+
+8. **Cross-image moves use bootc-migrate.** Anywhere the site tells someone
+   to leave one image for a different one (another base, another desktop,
+   another project's image), it shows `bootc-migrate --target-image …` and
+   links `/docs/bootc-migrate`. A bare `bootc switch` only repoints the
+   system at a new image; it does not reconcile UID/GID ranges, desktop
+   config or boot entries. `bootc switch` stays correct for same-image
+   changes (an edition suffix, pinning a digest, your own derived image).
 
 ## Accessibility
 
