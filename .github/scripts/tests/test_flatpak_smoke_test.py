@@ -219,3 +219,36 @@ def test_main_uses_issue_repo_override(mod, monkeypatch):
                           env={"FILE_ISSUES": "true", "ISSUE_TOKEN": "tok"})
     assert code == 1
     assert file_issue.call_args.args[0] == "tuna-os/letters"
+
+
+# ── display ───────────────────────────────────────────────────────────────
+
+def test_main_launches_a_wayland_only_app_on_wayland(mod, monkeypatch):
+    apps = [{"id": "org.tunaos.compass", "name": "tuna-os/compass", "display": "wayland"},
+            {"id": "org.tunaos.foo", "name": "tuna-os/foo"}]
+    with patch.object(mod, "install", return_value=(True, "")), \
+         patch.object(mod, "launch", return_value=(True, "")) as launch:
+        code = _run_main(mod, apps, monkeypatch)
+    assert code == 0
+    assert [c.args for c in launch.call_args_list] == [
+        ("org.tunaos.compass", "wayland"),
+        ("org.tunaos.foo", "x11"),
+    ]
+
+
+def test_launch_on_wayland_goes_through_sway_not_xvfb(mod):
+    with patch.object(mod, "launch_on_wayland", return_value=(True, "")) as wayland, \
+         patch.object(mod, "run") as run:
+        assert mod.launch("org.tunaos.compass", "wayland") == (True, "")
+    run.assert_not_called()
+    assert wayland.call_args.args[0][-1] == "org.tunaos.compass"
+
+
+def test_a_sway_that_never_listens_is_reported(mod, tmp_path):
+    class Exited:
+        def poll(self):
+            return 1
+    assert mod.wait_for_wayland_socket(str(tmp_path), Exited(), seconds=1) is None
+    (tmp_path / "wayland-1.lock").write_text("")
+    (tmp_path / "wayland-1").write_text("")
+    assert mod.wait_for_wayland_socket(str(tmp_path), Exited()) == str(tmp_path / "wayland-1")
