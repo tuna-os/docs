@@ -32,6 +32,7 @@ import {
   filesToRemove,
   isRootDoc,
   markUnparseable,
+  rejectExpressions,
   withFormatMd,
   getStatusBanner,
   slugify,
@@ -615,6 +616,24 @@ asyncTest('marks a page MDX cannot compile and leaves one it can alone', async (
   assert.ok(!readFileSync(good, 'utf8').includes('format: md'));
   // A page already marked is not marked twice.
   assert.equal(await markUnparseable([bad], compile), 0);
+});
+
+asyncTest('rejectExpressions fails a page whose prose MDX would read as JavaScript', async () => {
+  const {compile} = await import('@mdx-js/mdx');
+  const rejects = async (body) => {
+    try {
+      await compile(body, {remarkPlugins: [rejectExpressions]});
+      return false;
+    } catch {
+      return true;
+    }
+  };
+  // Compiles, then throws `server is not defined` when the site renders it.
+  assert.ok(await rejects('Run it against {server} first.\n'));
+  assert.ok(await rejects('{server}\n'));
+  assert.ok(await rejects('<img src={logo} />\n'));
+  assert.ok(await rejects('import x from "y"\n\nText\n'));
+  assert.ok(!(await rejects('Plain text, `{code}` and <img src="a.png" />.\n\n```\n{fenced}\n```\n')));
 });
 
 // ── getStatusBanner ───────────────────────────────────────────────────────────
