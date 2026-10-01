@@ -1,5 +1,5 @@
 ---
-sidebar_position: 15
+sidebar_position: 16
 title: "migration v1 v2"
 ---
 
@@ -43,7 +43,7 @@ This guide is practical rather than automatic: v2 changes the runtime layout, co
 1. Check out v2 and copy the example config:
 
    ```bash
-   git clone -b v2 https://github.com/kubestellar/hive.git hive-v2
+   git clone -b v2 https://github.com/hivecommons/hive.git hive-v2
    cd hive-v2/src
    cp hive.yaml.example hive.yaml
    ```

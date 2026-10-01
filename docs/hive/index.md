@@ -5,8 +5,15 @@ sidebar_label: "hive"
 status: unknown
 ---
 
+[![Deployment](https://img.shields.io/badge/deployment-hub.tunaos.org-6366f1?style=flat-square)](https://hub.tunaos.org)
+[![Tuna OS](https://img.shields.io/badge/website-tunaos.org-3b82f6?style=flat-square)](https://tunaos.org)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/14261/badge)](https://www.bestpractices.dev/projects/14261)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](https://github.com/tuna-os/hive/blob/v4/LICENSE)
+
+> This repository is a fork of [`hivecommons/hive`](https://github.com/hivecommons/hive)
+> that Tuna OS runs against its own repositories. Bugs, features, and security
+> reports for Hive itself go upstream — see [FORK.md](https://github.com/tuna-os/hive/blob/v4/FORK.md) for what belongs
+> where and which documents here describe upstream rather than this fork.
 
 AI agent orchestration for open source projects. A single Go binary enumerates GitHub issues and PRs, classifies them by complexity, and dispatches work to AI agents (Claude, Copilot, Gemini, Goose) on adaptive cadences governed by queue depth.
 
@@ -35,7 +42,7 @@ on the same port.
 - `git`, `openssl`, and a GitHub token (PAT or App) for the org you want the hive to work on
 
 ```bash
-git clone https://github.com/kubestellar/hive.git
+git clone https://github.com/hivecommons/hive.git
 cd hive
 
 cp src/hive.yaml.example src/hive.yaml
@@ -99,7 +106,7 @@ preflights, configuration, the four Quadlet units, the boot wiring, and a final
 check that the **gateway** answers on the published port before it returns.
 
 ```bash
-git clone https://github.com/kubestellar/hive.git
+git clone https://github.com/hivecommons/hive.git
 cd hive
 
 export HIVE_DEPLOY_RUNTIME=podman
@@ -137,7 +144,7 @@ The block below is **rootless**. For rootful, set `CONF=/etc/hive`, drop the
 # checked nothing — they default to Docker and skip.
 export HIVE_DEPLOY_RUNTIME=podman
 
-git clone https://github.com/kubestellar/hive.git
+git clone https://github.com/hivecommons/hive.git
 cd hive
 
 # Engine, root mode, cgroups; then subordinate IDs, graphroot, networking.
@@ -175,7 +182,7 @@ HIVE_SRC_DIR="$CONF" bin/hive-podman-preflight-host.sh
 
 # Pull before starting. The generated ExecStart pulls a missing image itself and
 # that pull is spent inside TimeoutStartSec; the Hive image is ~3.8GB.
-podman pull ghcr.io/kubestellar/hive:stable
+podman pull ghcr.io/hivecommons/hive:stable
 
 # All four Quadlet units — the gateway will not generate without the network it
 # names — plus the plain units that wire the stack to boot (#4478).
@@ -241,7 +248,7 @@ To build from source instead of pulling the pre-built image, build and tag it
 under the name the unit already names, then start as above:
 
 ```bash
-podman build -t ghcr.io/kubestellar/hive:stable -f src/Dockerfile .
+podman build -t ghcr.io/hivecommons/hive:stable -f src/Dockerfile .
 ```
 
 Full install detail — unit search paths, the traps behind each step above, boot
@@ -262,7 +269,11 @@ Teardown: `bin/hive-podman-teardown.sh`.
 
 ### Hosted Option
 
-The [Hive Hub](https://hive.kubestellar.io) provides hosted hives with OAuth-protected dashboards, a public registry, and cross-hive leaderboards. No cluster required.
+The [Hive Hub](https://hive.hivecommons.dev) provides hosted hives with OAuth-protected dashboards, a public registry, and cross-hive leaderboards. No cluster required.
+The canonical hub address is now `https://hive.hivecommons.dev`; the legacy
+`https://hive.kubestellar.io` hostname redirects during the cutover.
+Start with the [hosted hub onboarding guide](https://github.com/tuna-os/hive/blob/v4/src/docs/hosted-hub.md) to sign in,
+request a hosted hive, and finish first-run setup.
 
 If you need to run your own private hub instead, see the
 [self-hosted hub deployment guide](https://github.com/tuna-os/hive/blob/v4/src/docs/hub-deployment.md).
@@ -462,7 +473,7 @@ governor:
 
 hub:
   enabled: true
-  url: https://hive.kubestellar.io
+  url: https://hive.hivecommons.dev
   contribute:
     enabled: true
 ```
@@ -524,7 +535,7 @@ flowchart LR
 
 **See [src/docs/architecture.md](https://github.com/tuna-os/hive/blob/v4/src/docs/architecture.md) for the full reference architecture** — process model, the governor loop, the deterministic pipeline, layered guardrails, ACMM, beads, hub & spoke, and an end-to-end walkthrough, with Mermaid diagrams throughout. Operator safety references include [trajectory review](https://github.com/tuna-os/hive/blob/v4/src/docs/trajectory-review.md), [dashboard health checks](https://github.com/tuna-os/hive/blob/v4/src/docs/health-checks.md), [sandbox guardrails](https://github.com/tuna-os/hive/blob/v4/src/docs/sandbox-isolation.md), [manual provisioning](https://github.com/tuna-os/hive/blob/v4/src/docs/manual-provisioning.md), [cross-cluster migration](https://github.com/tuna-os/hive/blob/v4/src/docs/cross-cluster-migration.md), and [config layering](https://github.com/tuna-os/hive/blob/v4/src/docs/config-layering.md). The dashboard API reference is published as [dashboard/openapi.json](https://github.com/tuna-os/hive/blob/v4/dashboard/openapi.json).
 
-See also the [roadmap](https://github.com/tuna-os/hive/blob/v4/ROADMAP.md) (release-line trajectory, with the [detailed near-term plan](https://github.com/tuna-os/hive/blob/v4/src/docs/roadmap.md)), the [documentation index](https://github.com/tuna-os/hive/blob/v4/src/docs/README.md), and the [landscape comparison](https://github.com/tuna-os/hive/blob/v4/src/docs/landscape.md) for community-facing documentation and positioning.
+See also the [roadmap](https://github.com/tuna-os/hive/blob/v4/ROADMAP.md) (release-line trajectory, with the [detailed near-term plan](https://github.com/tuna-os/hive/blob/v4/src/docs/roadmap.md)), the [upgrade guide](https://github.com/tuna-os/hive/blob/v4/UPGRADE.md), the [documentation index](https://github.com/tuna-os/hive/blob/v4/src/docs/README.md), and the [landscape comparison](https://github.com/tuna-os/hive/blob/v4/src/docs/landscape.md) for community-facing documentation and positioning.
 
 ## Terminal dashboard
 
@@ -543,6 +554,25 @@ See [`hivectl tui` in the command reference](https://github.com/tuna-os/hive/blo
 for keybindings, pane cadence, and v1 boundaries, and
 [the design record](https://github.com/tuna-os/hive/blob/v4/src/docs/design/tui.md) for the reasoning behind it.
 
+## Tuna OS deployment
+
+Tuna OS runs this fork as a fleet of hives behind one hub. Each host below
+answered `curl` on 2026-09-10:
+
+| Host | Role | Check |
+| --- | --- | --- |
+| [hub.tunaos.org](https://hub.tunaos.org) | Hub. Its index page lists the hives. | `GET /` returns `200` |
+| [reef.tunaos.org](https://reef.tunaos.org) | Hive | `GET /api/health` returns `{"status":"ok"}` |
+| [school.tunaos.org](https://school.tunaos.org) | Hive | `GET /api/health` returns `{"status":"ok"}` |
+| [hive.tunaos.org](https://hive.tunaos.org) | Hive; the hub index does not list it | `GET /api/health` returns `{"status":"ok"}` |
+
+A hive answers `401` on `/` until you supply the dashboard token from the Quick
+Start, so use `/api/health` to see whether a hive is up.
+
+- Website: [tunaos.org](https://tunaos.org)
+- Organization: [github.com/tuna-os](https://github.com/tuna-os)
+- Fork scope and upstream: [FORK.md](https://github.com/tuna-os/hive/blob/v4/FORK.md)
+
 ## Contribute to a Hive
 
 Community members can contribute compute to any hive through **ClankeR**, the
@@ -551,7 +581,7 @@ running on your own machine:
 
 ```bash
 brew install just gh
-git clone https://github.com/kubestellar/hive && cd hive
+git clone https://github.com/hivecommons/hive && cd hive
 just contribute-setup claude
 just contribute-hive
 ```
@@ -560,11 +590,11 @@ Supported CLIs: Claude Code, GitHub Copilot, Pi, Goose, Bob. Contributors start 
 
 A relay can subscribe to multiple hives with comma-separated `HIVE_HUB` and matching `HIVE_REGISTRATION_TOKEN` values, and operators can delegate selected spoke roles through **Acting as** / `HIVE_AGENT_ROLE`. See [src/docs/contributor-relay.md](https://github.com/tuna-os/hive/blob/v4/src/docs/contributor-relay.md) and [src/docs/contributor-trust-and-roles.md](https://github.com/tuna-os/hive/blob/v4/src/docs/contributor-trust-and-roles.md).
 
-See the [Hive Hub contribute page](https://hive.kubestellar.io) for details.
+See the [Hive Hub contribute page](https://hive.hivecommons.dev) for details.
 
 ## Contributing
 
-See the [Hive Hub](https://hive.kubestellar.io) to browse registered hives, view leaderboards, and find hives accepting contributions.
+See the [Hive Hub](https://hive.hivecommons.dev) to browse registered hives, view leaderboards, and find hives accepting contributions.
 
 To contribute to Hive itself, see [CONTRIBUTING.md](https://github.com/tuna-os/hive/blob/v4/CONTRIBUTING.md) and open issues or PRs on this repository.
 

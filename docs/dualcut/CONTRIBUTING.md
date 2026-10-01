@@ -110,3 +110,10 @@ TunaOS organization (see the [org-level Code of Conduct](https://github.com/tuna
 Open an issue — the maintainers and the automated hive agents monitor the
 tracker. For anything about the document model specifically, `CONTEXT.md`
 and `AGENTS.md` are the authoritative references.
+
+
+## Contribute compute — no code needed
+
+No time to write code? You can still push this project's backlog forward. A TunaOS AI-agent hive works on this repository. Lend the hive your AI subscription or API tokens, and your machine runs contributor tasks from this project's backlog.
+
+- 🪸 [Contribute compute to the reef hive](https://reef.tunaos.org/contribute)

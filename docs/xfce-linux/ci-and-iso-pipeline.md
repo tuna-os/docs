@@ -21,35 +21,36 @@ elements/**  ──►  Build xfce-linux (Multi-Runner)  ──►  ghcr.io/tuna
 
 ### Multi-runner build (`build-multirunner.yml`)
 
-Planning + core + parallel dependency chunks (steps 1-3 below) are a
-shared reusable workflow, [tuna-os/bst-ci](https://github.com/tuna-os/bst-ci)
-— identical across every BuildStream desktop repo except image
-name/target/chunk count. `build_final` (step 4) stays local: cosign's
-keyless signing embeds *this* workflow's identity in the Fulcio
-certificate, which is what README.md's verify instructions point at.
+The plan, core, and parallel dependency chunks (steps 1-3) use the shared
+[tuna-os/bst-ci](https://github.com/tuna-os/bst-ci) reusable workflow. Each
+BuildStream desktop repository uses this workflow, with different image names,
+targets, and chunk counts. The local `build_final` job (step 4) uses cosign
+without a key. This process puts the identity of this workflow in the Fulcio
+certificate. The verification instructions in README.md use that identity.
 
-Free GitHub runners can't hold the whole GNOME+XFCE build, so it's split:
+Free GitHub runners can't hold the whole GNOME+XFCE build, so the workflow
+splits it:
 
-1. **planning** — bst-ci's `scripts/ci-build-matrix.py` runs `bst show` and
-   splits uncached elements into a core set (first `CORE_SPLIT`) and
-   `NUM_CHUNKS` round-robin chunks, each with a composite cache key. It's
-   checked out from bst-ci at run time — this repo no longer carries its
-   own copy.
+1. **plan** — The `scripts/ci-build-matrix.py` script from bst-ci runs
+   `bst show`. It splits uncached elements into a core set (first `CORE_SPLIT`)
+   and `NUM_CHUNKS` round-robin chunks. Each chunk has a composite cache key.
+   The job checks out the script from bst-ci at run time. This repository no
+   longer contains a copy.
 2. **build_core** — builds the bootstrap set, pushes the CAS as
    `ghcr.io/…/cache-xfce-linux-core:latest` (zstd tarball via oras).
 3. **build_deps** (matrix) — each chunk restores core + its own previous CAS,
-   builds, pushes `cache-xfce-linux-<chunk>:{latest,<cache-key>}`. A chunk whose
-   exact cache key already exists on GHCR is skipped entirely.
+   builds, and pushes `cache-xfce-linux-<chunk>:{latest,<cache-key>}`. The job
+   skips a chunk when GHCR already has its exact cache key.
 4. **build_final** — merges all chunk CAS tarballs, builds the final target,
    `just export` (squash + OCI labels + chunkify), `just lint`
    (`bootc container lint`), pushes `latest` + date + sha tags (main only).
 
 BuildStream settings CI uses live in the checked-in `buildstream-ci.conf`.
 
-**Cache-key invalidation warning:** anything that changes every element's
-cache key (e.g. renaming `name:` in `project.conf`) triggers a full world
-rebuild — expect chunk jobs to run for hours or hit their 6 h timeout once,
-then recover from the refreshed GHCR caches.
+**Cache-key invalidation warning:** a change to the cache key of every element
+causes a full world rebuild. A change to `name:` in `project.conf` is one
+example. Expect chunk jobs to run for hours or reach their six-hour limit once.
+They recover after they refresh the GHCR caches.
 
 ### Live ISO (`iso.justfile` + `xfce-linux/`)
 
@@ -60,15 +61,15 @@ then recover from the refreshed GHCR caches.
    initramfs (incl. the `95xfce-linux-isofile` Ventoy dracut module) → final
    stage installs flatpaks (`src/install-flatpaks.sh`) and configures the
    live env (`src/configure-live.sh`).
-2. The payload image is squashed and imported into a VFS containers-storage
-   inside the squashfs — that's what makes the offline self-install work.
+2. The recipe squashes the payload image and imports it into VFS container
+   storage inside the squashfs. This process enables the offline installation.
 3. `xfce-linux/src/build-iso.sh` assembles a systemd-boot UEFI ISO.
 
-The live session autologs into XFCE (Wayland, xfwl4) as `liveuser` and autostarts
-`org.tunaos.InstallerXfce` (from the tuna-os OCI flatpak remote); fisherman is
-symlinked to `/usr/local/bin/fisherman` with the shared
-`org.tunaos.Installer.install` polkit action (see INSTALLER-FRONTENDS.md in
-the org workspace).
+The live session automatically logs in to XFCE on Wayland through xfwl4 as
+`liveuser`. It starts `org.tunaos.InstallerXfce` from the OCI flatpak remote
+for tuna-os. A symbolic link at `/usr/local/bin/fisherman` points to fisherman.
+It uses the shared `org.tunaos.Installer.install` polkit action. See
+INSTALLER-FRONTENDS.md in the organization workspace.
 
 ### LUKS end-to-end test (`test-luks-install.yml`)
 
@@ -79,10 +80,11 @@ just debug=1 iso-sd-boot xfce-linux     # debug=1 enables SSH (liveuser/live)
 just luks-test-qemu xfce-linux          # boot → fisherman LUKS install → reboot → unlock
 ```
 
-`xfce-linux/src/luks-unlock.py` drives the QEMU monitor: waits for Plymouth via
-screendump polling, types the passphrase with `sendkey`, verifies the
-installed system boots. Screenshots (live desktop, Plymouth prompt, installed
-desktop) are published to the `ci-screenshots` branch and PR comments.
+`xfce-linux/src/luks-unlock.py` drives the QEMU monitor. It checks screen dumps
+until Plymouth appears, types the passphrase with `sendkey`, and verifies the
+installed system boot. The workflow publishes screenshots to the
+`ci-screenshots` branch and PR comments. They show the live desktop, Plymouth
+prompt, and installed desktop.
 
 ## Source updates
 
@@ -108,41 +110,45 @@ desktop) are published to the `ci-screenshots` branch and PR comments.
 
 | 2026-07-19 | LUKS e2e / ISO jobs die in seconds: "Unknown attribute `group`" at Justfile:5 | Ubuntu 24.04 apt ships just 1.21 (predates `[group()]`); old runs survived because ancient just silently picked the group-free lowercase justfile we removed | workflows install just via extractions/setup-just and invoke `sudo "$(command -v just)"` |
 | 2026-07-21 | Superseded push checks and image/ISO builds remained queued for hours | high-frequency workflows lacked concurrency groups or explicitly queued stale same-ref work | same-ref concurrency groups now cancel superseded runs; `test_high_frequency_workflows_cancel_superseded_runs` prevents regression |
+| 2026-09-10 | `build_final` dies with no job log and no uploaded build log; `:latest` last published ~2026-07-19, so every LUKS/Plain E2E run fails with `manifest unknown` | Runner disk exhaustion, not a build error: the check-run annotation on runs 34072176433, 34176106533 and 34298830711 is the runner agent's own `System.IO.IOException: No space left on device` on its `_diag` log. Core plus ten chunk CAS tarballs measured ~266 GB compressed on 2026-09-10 (chunks 20-29 GB each) against ~100-110 GB of runner disk, because each chunk tarball embeds a full copy of core, nothing expires (no `cache.quota`), and `oras pull -o .` staged each tarball on disk before extracting. Run 34298830711 is decisive: the build itself succeeded in 18 min and the runner died in `Export OCI image` | Stream restores via `scripts/cas-restore-stream.sh` (`oras blob fetch --output -`); `cache: quota: 60G` in `buildstream-ci.conf`; check the artifact out and delete the CAS before `just export` (`EXPORT_REUSE_CHECKOUT=1`); log `df -h /` around every merge. Invariants in `tests/pytest/test_ci_disk_invariants.py` |
 
-Keep appending to this table while iterating on CI (see the org `ci-fix-loop`
-skill; format proven in tuna-os/tunaos `docs/ci-troubleshooting.md`).
+Add rows to this table as you change CI. See the organization `ci-fix-loop`
+skill. The `docs/ci-troubleshooting.md` file in tuna-os/tunaos shows the format.
 
 ## Channels: nightly (main) and stable
 
 - **main** is the nightly trunk: the daily scheduled multi-runner build
   publishes `:latest`, `:nightly`, `:nightly-YYYYMMDD`, `:<sha>`; the ISO
   lands at R2 `xfce-linux/`.
-- **stable** is a release bookmark branch: `promote-stable.yml` (weekly cron
-  + dispatch, `force=true` to override) verifies the newest nightly build and
-  ISO both succeeded, force-pushes that commit to `stable`, and dispatches
-  the stable build → `:stable`, `:stable-YYYYMMDD` tags and an ISO under R2
-  `xfce-linux/stable/`. The stable ISO embeds the `:stable` payload
-  (payload_ref is rewritten per-channel in build-iso.yml).
-- Tracking/renovate PRs only ever target main; stable moves exclusively via
-  promotion.
+- **stable** is a release bookmark branch. A weekly schedule or manual dispatch
+  starts `promote-stable.yml`; set `force=true` for an override. The workflow
+  verifies the newest nightly build and ISO. It force-pushes that commit to
+  `stable` and starts the stable build. The build creates the `:stable` and
+  `:stable-YYYYMMDD` tags, plus an ISO under R2 `xfce-linux/stable/`. The stable
+  ISO embeds the `:stable` payload. The build-iso.yml workflow changes
+  `payload_ref` for each channel.
+- Update PRs from source trackers or Renovate target only main. Stable moves
+  only through promotion.
 
 ## Release-linked sources
 
-Local elements track upstream **release tags** (globs like `v[0-9]*`), not
-dev branches, so the daily `bst source track` lands releases. Exceptions
-that intentionally track branches: rolling content repos (aurora common,
-docs, wallpapers / xfwl4 dev repos) and junctions (pinned branch). Never pin
-`track:` to one exact tag — tracking can then never move it.
+Local elements use upstream **release tags** (globs such as `v[0-9]*`) instead
+of development branches. Thus, the daily `bst source track` selects releases.
+Some content repositories use branches, such as aurora common, docs,
+wallpapers, and the xfwl4 development repositories. Junctions also use a fixed
+branch. Do not set `track:` to one exact tag, because the tracker cannot move it.
 
 ## Guard rails (what stops a bad commit)
 
-Pre-merge, required on main (branch protection; automerge fires on green):
-shellcheck/yamllint/actionlint, unit suites (BATS + pytest incl. the
-52-test luks-unlock suite and `test_iso_invariants.py` — every invariant
-assertion encodes a bug class that actually shipped), the BuildStream
-graph gate (`bst show --deps all` on the shipping target, junctions
-resolved), `Just Parse`, and `pr-build-changed.yml` (which builds the
-elements a PR touches against the warm GHCR core CAS, promoted to required in xfce-linux#41).
+Branch protection needs the pre-merge checks on main. Automerge starts when
+they pass. The checks include shellcheck, yamllint, actionlint, BATS, and pytest.
+They also include the 52-test luks-unlock suite and `test_iso_invariants.py`.
+Each invariant represents a defect that reached users.
+
+The BuildStream graph gate runs `bst show --deps all` on the release target and
+resolves junctions. Other checks are `Just Parse` and `pr-build-changed.yml`.
+The latter builds the elements that a PR touches against the core CAS from
+GHCR. It became a required check in xfce-linux#41.
 
 Post-merge: salvage-enabled nightly world build → ISO boot gate
 (ready-marker + screenshot artifact) → weekly LUKS install e2e
@@ -150,18 +156,20 @@ Post-merge: salvage-enabled nightly world build → ISO boot gate
 routine ("tromso + xfce-linux CI babysitter", every 3 h) diagnoses
 completed failures from logs and pushes fixes.
 
-**Rules that keep this healthy:** never add `paths:` filters to workflows
-whose jobs are required checks (a non-reporting required check deadlocks
-automerge); if a required job is renamed, update the branch-protection
-contexts in the same PR; never wrap a gate in `|| echo` (that is how
-bst-validate and pytest were silently dead for months).
+**Rules that keep this healthy:** do not add `paths:` filters to workflows with
+required jobs. An absent required check prevents automerge. If you rename a
+required job, update the branch protection contexts in the same PR. Do not wrap
+a gate in `|| echo`. Such a wrapper hid failures in bst-validate and pytest for
+months.
 
 ## Rollback
 
-`rollback-stable.yml` (dispatch-only, **dry_run defaults to true**) is the
-inverse of promotion: verifies the target `:<sha>` image exists, then
-`skopeo copy --preserve-digests` onto `:stable` (+ a dated
-`stable-rollback-*` tag) and force-pushes the stable branch to the same
-commit so branch and tag never diverge. Shares the promote concurrency
-group so it cannot race a promotion. Dakota-pattern notes: once signing
-lands, add a cosign-verify step before the retag.
+`rollback-stable.yml` runs only through manual dispatch and defaults `dry_run`
+to true. It reverses a promotion. First, it verifies that the target `:<sha>`
+image exists. Then, `skopeo copy --preserve-digests` sets `:stable` and a dated
+`stable-rollback-*` tag.
+
+The workflow force-pushes the stable branch to the same commit so the branch and
+tag cannot differ. It shares the concurrency group of the promotion workflow,
+so both cannot run at once. Dakota-pattern note: add a cosign verification step
+before the retag after cosign support lands.

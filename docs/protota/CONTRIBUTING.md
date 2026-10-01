@@ -25,7 +25,7 @@ so mockups look *and behave* like real Adwaita.
 |---|---|
 | `src/` | The app: widget tree, renderer, presets, Blueprint/GtkBuilder import/export |
 | `presets-src/` | Preset source files |
-| `docs/` | `components.md` (generated component catalog) and other docs |
+| `docs/` | `components.md` (generated component catalog), `spec/` (vendored GNOME HIG/spec snapshot), and other docs |
 | `tests/` | Vitest unit tests (Blueprint/renderer conformance) |
 | `public/` | Static assets |
 | `scripts/` | Build and maintenance scripts |
@@ -92,3 +92,10 @@ Be respectful and constructive — see
 
 Open an issue. `CONTEXT.md` is the authoritative reference for design
 decisions; `AGENTS.md` covers the document model and editing surfaces.
+
+
+## Contribute compute — no code needed
+
+No time to write code? You can still push this project's backlog forward. A TunaOS AI-agent hive works on this repository. Lend the hive your AI subscription or API tokens, and your machine runs contributor tasks from this project's backlog.
+
+- 🪸 [Contribute compute to the reef hive](https://reef.tunaos.org/contribute)

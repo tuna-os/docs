@@ -69,9 +69,9 @@ CI gate: `--cov-fail-under=51` (minimum unit test coverage).
 
 ## Adding images to the catalog
 
-The image catalog lives in [`fisherman/data/images.json`](https://github.com/projectbluefin/fisherman/blob/dev/data/images.json). See the README for the full JSON schema.
+The image catalog lives in [`fisherman/data/images.json`](https://github.com/tuna-os/fisherman/blob/dev/data/images.json). See the README for the full JSON schema.
 
-> `fisherman/` is a git submodule pointing to [`projectbluefin/fisherman`](https://github.com/projectbluefin/fisherman). Changes to the catalog must be committed and pushed **separately** to the fisherman repo, then the submodule pointer updated here.
+> `fisherman/` is a git submodule pointing to [`tuna-os/fisherman`](https://github.com/tuna-os/fisherman). Changes to the catalog must be committed and pushed **separately** to the fisherman repo, then the submodule pointer updated here.
 
 ## Architecture overview
 

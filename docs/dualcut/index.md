@@ -93,3 +93,9 @@ open work: [issues](https://github.com/tuna-os/dualcut/issues)
 
 GPL-3.0-only — see [LICENSE](https://github.com/tuna-os/dualcut/blob/main/LICENSE).
 
+
+## Contribute compute — no code needed
+
+No time to write code? You can still push this project's backlog forward. A TunaOS AI-agent hive works on this repository. Lend the hive your AI subscription or API tokens, and your machine runs contributor tasks from this project's backlog.
+
+- 🪸 [Contribute compute to the reef hive](https://reef.tunaos.org/contribute)
