@@ -19,7 +19,7 @@
 //   node scripts/__tests__/sync-org-docs.test.mjs
 
 import { strict as assert } from 'node:assert';
-import { chmodSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { chmodSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import {
@@ -31,6 +31,8 @@ import {
   isSyncedIndex,
   filesToRemove,
   isRootDoc,
+  markUnparseable,
+  withFormatMd,
   getStatusBanner,
   slugify,
   listOrgRepos,
@@ -45,6 +47,21 @@ import {
 // ── Test helpers ──────────────────────────────────────────────────────────────
 let pass = 0;
 let fail = 0;
+
+// Async tests run after the synchronous ones, before the summary.
+const pending = [];
+function asyncTest(name, fn) {
+  pending.push(async () => {
+    try {
+      await fn();
+      pass++;
+      console.log(`  ✓ ${name}`);
+    } catch (e) {
+      fail++;
+      console.error(`  ✗ ${name}: ${e.message}`);
+    }
+  });
+}
 
 function test(name, fn) {
   try {
@@ -571,6 +588,35 @@ test('isRootDoc knows the default root docs and a repo filter', () => {
   assert.ok(!isRootDoc('ROADMAP.md', ['SECURITY.md']));
 });
 
+// ── markUnparseable ───────────────────────────────────────────────────────────
+
+console.log('\nmarkUnparseable');
+
+test('withFormatMd ends the front matter with mdx: {format: md}, and the index stays synced', () => {
+  const page = frontmatter('Hive', 1, 'hive', 'alpha') + 'Body\n';
+  const out = withFormatMd(page);
+  assert.ok(out.includes('mdx:\n  format: md\n---\n'), out);
+  assert.ok(isSyncedIndex(out));
+  assert.ok(out.endsWith('Body\n'));
+});
+
+asyncTest('marks a page MDX cannot compile and leaves one it can alone', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'mdx-'));
+  const bad = join(dir, 'bad.md');
+  const good = join(dir, 'good.md');
+  writeFileSync(bad, subFrontmatter('Bad', 1) + 'lists the <catalog> entries\n');
+  writeFileSync(good, subFrontmatter('Good', 2) + 'Fine.\n');
+  const compile = async (body) => {
+    if (body.includes('<catalog>')) throw new Error('Expected a closing tag for `<catalog>`');
+  };
+  const marked = await markUnparseable([bad, good], compile);
+  assert.equal(marked, 1);
+  assert.ok(readFileSync(bad, 'utf8').includes('mdx:\n  format: md\n'));
+  assert.ok(!readFileSync(good, 'utf8').includes('format: md'));
+  // A page already marked is not marked twice.
+  assert.equal(await markUnparseable([bad], compile), 0);
+});
+
 // ── getStatusBanner ───────────────────────────────────────────────────────────
 
 console.log('\ngetStatusBanner');
@@ -932,6 +978,8 @@ test('gives up after a second attempt that is still short', () => {
 });
 
 // ── summary ───────────────────────────────────────────────────────────────────
+
+for (const run of pending) await run();
 
 console.log(`\n${pass} passed, ${fail} failed`);
 if (fail > 0) process.exit(1);

@@ -343,7 +343,9 @@ status: ${status || 'unknown'}
 // in scripts/__tests__/sync-org-docs.test.mjs feeds frontmatter()'s real output
 // through isSyncedIndex, so the two cannot drift apart quietly: edit one and
 // that test fails.
-const SYNCED_INDEX = /^---\nsidebar_position: \d+\nsidebar_label: "[^"]*"\n\nstatus: \S+\n---\n/;
+// `mdx: {format: md}` is added after the fact by markUnparseable (below), so an
+// index it marked is still one this script wrote.
+const SYNCED_INDEX = /^---\nsidebar_position: \d+\nsidebar_label: "[^"]*"\n\nstatus: \S+\n(?:mdx:\n  format: md\n)?---\n/;
 
 // isSyncedIndex reports whether a document's front matter was written by this
 // script's frontmatter() rather than by a person.
@@ -719,6 +721,7 @@ function main() {
         }
         content = fm + content;
         writeFileSync(join(targetDir, 'index.md'), content);
+        WRITTEN.push(join(targetDir, 'index.md'));
         writtenFiles.push('index.md');
         console.log(`  ✓ README.md → index.md`);
       }
@@ -742,6 +745,7 @@ function main() {
         const title = upper.charAt(0) + upper.slice(1).toLowerCase();
         content = subFrontmatter(title, localPos++) + content;
         writeFileSync(join(targetDir, file), content);
+        WRITTEN.push(join(targetDir, file));
         writtenFiles.push(file);
         console.log(`  ✓ ${file}`);
       }
@@ -761,6 +765,7 @@ function main() {
           const title = file.replace(/\.(md|rst)$/, '').replace(/[-_]/g, ' ');
           content = subFrontmatter(title, localPos++) + content;
           writeFileSync(join(targetDir, file), content);
+        WRITTEN.push(join(targetDir, file));
           writtenFiles.push(file);
           console.log(`  ✓ docs/${file}`);
         }
@@ -841,6 +846,46 @@ function main() {
   }
 }
 
+// Every page this run wrote, for markUnparseable.
+const WRITTEN = [];
+
+// markUnparseable compiles each synced page as MDX, the way the site build
+// will, and marks one that does not compile `mdx: {format: md}` (Docusaurus's
+// per-page front matter, `frontMatter.mdx.format`) so Docusaurus reads
+// it as CommonMark instead.
+//
+// sanitizeHtml handles the shapes of upstream markdown seen so far, but an
+// upstream README is free to contain anything GitHub renders, and one page MDX
+// cannot parse fails the whole site build: every synced update then waits
+// until someone teaches the sanitizer the new shape. As CommonMark the page
+// builds, and only its raw HTML is lost (it shows as text). The warning names
+// the page so the sanitizer can learn the shape later.
+async function markUnparseable(paths, compile = null) {
+  const mdxCompile = compile ?? (await import('@mdx-js/mdx')).compile;
+  const remarkGfm = compile ? null : (await import('remark-gfm')).default;
+  let marked = 0;
+  for (const path of paths) {
+    const content = readFileSync(path, 'utf8');
+    const fm = content.match(/^---\n[\s\S]*?\n---\n/);
+    if (!fm || /\nmdx:\n  format: md\n/.test(fm[0])) continue;
+    try {
+      // HTML comments as the site's markdown.mdx1Compat.comments reads them.
+      const body = content.slice(fm[0].length).replace(/<!--[\s\S]*?-->/g, '');
+      await mdxCompile(body, remarkGfm ? {remarkPlugins: [remarkGfm]} : {});
+    } catch (e) {
+      writeFileSync(path, withFormatMd(content));
+      marked++;
+      console.warn(`  ⚠️  ${path} is not valid MDX (${String(e.message).split('\n')[0]}); built as CommonMark`);
+    }
+  }
+  return marked;
+}
+
+// withFormatMd adds `mdx: {format: md}` at the end of the front matter.
+function withFormatMd(content) {
+  return content.replace(/^(---\n[\s\S]*?\n)---\n/, '$1mdx:\n  format: md\n---\n');
+}
+
 export {
   sanitizeHtml,
   fixRelativeLinks,
@@ -850,6 +895,8 @@ export {
   isSyncedIndex,
   filesToRemove,
   isRootDoc,
+  markUnparseable,
+  withFormatMd,
   getStatusBanner,
   slugify,
   listOrgRepos,
@@ -867,4 +914,5 @@ export {
 // imported by the tests, which must not touch the network.
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   main();
+  await markUnparseable(WRITTEN);
 }
