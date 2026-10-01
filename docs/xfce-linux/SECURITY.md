@@ -26,6 +26,7 @@ You can expect an acknowledgement within 48 hours and a resolution within 90 day
 
 ## Disclosure Policy
 
-- Vulnerabilities are disclosed privately to the maintainers first
-- A fix is prepared before public disclosure
-- Public disclosure happens after a fix is released or 90 days have passed, whichever is sooner
+- Report vulnerabilities to the maintainers through a private channel first.
+- The maintainers prepare a fix before public disclosure.
+- The maintainers disclose the issue after they release a fix or after 90 days,
+  whichever is sooner.

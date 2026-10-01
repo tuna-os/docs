@@ -3,7 +3,7 @@ sidebar_position: 2
 title: "Contributing"
 ---
 
-Thanks for your interest in contributing! This project is part of the [TunaOS](https://tunaos.org) ecosystem.
+Thanks for your interest in a contribution! This project is part of the [TunaOS](https://tunaos.org) ecosystem.
 
 ## Getting Started
 
@@ -11,13 +11,13 @@ Thanks for your interest in contributing! This project is part of the [TunaOS](h
 2. Install the Go version declared in [`go.mod`](https://github.com/tuna-os/corral/blob/main/go.mod) and the
    [`just`](https://just.systems) command runner.
 3. Read the project [README](https://github.com/tuna-os/corral/blob/main/README.md), [architecture overview](https://github.com/tuna-os/corral/blob/main/docs/architecture.md),
-   and [testing strategy](https://github.com/tuna-os/corral/blob/main/docs/testing.md).
-4. Open an issue to discuss your change before submitting a PR.
+   and [test strategy](https://github.com/tuna-os/corral/blob/main/docs/testing.md).
+4. Open an issue to discuss your change before you submit a PR.
 
 ## Validate Your Changes
 
 Corral builds two tag sets — plain and `-tags bootc` (the bootc plugin) —
-and CI checks both. Run the local pre-push gate before opening a PR:
+and CI checks both. Run the local pre-push gate before you open a PR:
 
 ```bash
 just ci
@@ -34,8 +34,8 @@ just build   # go build, both tag sets
 just test    # go test -race, both tag sets
 ```
 
-Some tests exercise real tools (qemu-img, rclone conversions); install them
-locally if you touch that code path, or rely on CI to run them.
+Some tests use real tools (qemu-img, rclone conversions). If you touch that
+code path, install them locally, or rely on CI to run them.
 
 ## Pull Requests
 
@@ -47,4 +47,12 @@ locally if you touch that code path, or rely on CI to run them.
 ## Questions?
 
 - [TunaOS Documentation](https://tunaos.org)
-- [GitHub Issues](https://github.com/tuna-os/tunaOS/issues)
+- [GitHub Issues](https://github.com/tuna-os/corral/issues)
+
+
+## Contribute compute — no code needed
+
+No time to write code? You can still push this project's backlog forward. TunaOS AI-agent hives work on this repository. Lend a hive your AI subscription or API tokens, and your machine runs contributor tasks from this project's backlog.
+
+- 🪸 [Contribute compute to the reef hive](https://reef.tunaos.org/contribute)
+- 🏫 [Contribute compute to the school hive](https://school.tunaos.org/contribute)

@@ -3,6 +3,9 @@ sidebar_position: 11
 title: "opfs streaming handoff"
 ---
 
+
+# OPFS streaming and the wasm32 4 GiB ceiling (#156)
+
 Status: **cause found, fixed, measured.** The earlier revision of this doc
 said "nobody has identified what holds ~4 GiB" and listed four suspects
 inside `WriteErofs`. All four were wrong, and the instrumentation it asked

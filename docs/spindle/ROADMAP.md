@@ -1,9 +1,9 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 title: "Roadmap"
 ---
 
-**Last updated**: 2026-09-02 | **Status**: Experiment under construction — not a deployment
+**Last updated**: 2026-09-20 | **Status**: Experiment under construction — not a deployment
 
 Part of the [TunaOS](https://tunaos.org) ecosystem. A Matrix homeserver that
 stores rooms as a linear log, so state resolution never runs on the hot path.
@@ -22,6 +22,7 @@ maturity contract** — what has to be demonstrated before Spindle stops being a
 experiment, and what is deliberately not being built yet.
 
 - Milestone status: [docs/dashboard.md](https://github.com/tuna-os/spindle/blob/main/docs/dashboard.md) (generated, drift-gated)
+- GitHub work queues: [M0–M7 milestones](https://github.com/tuna-os/spindle/milestones?state=open)
 - Milestone scope and sequencing: [#4](https://github.com/tuna-os/spindle/issues/4)
 - The design the code is held against: [SPEC.md](https://github.com/tuna-os/spindle/blob/main/SPEC.md)
 - What is inherited, what is ours, what is deferred: [docs/divergence.md](https://github.com/tuna-os/spindle/blob/main/docs/divergence.md)
@@ -54,7 +55,7 @@ to belong to something.
 
 | Gate | Required evidence |
 |---|---|
-| Addressability | A `v0.0.1` tag cut from `main`, with release notes stating what it is not: no upgrade path, no support window, storage format unstable |
+| Addressability | `v0.0.x` tags cut from `main` weekly by the release workflow when CI is green, with release notes stating what they are not: no upgrade path, no support window, storage format unstable |
 | Storage format identity | A storage-format version distinct from the binary version, with the already-broken transition recorded as a numbered format change in [docs/lifecycle.md](https://github.com/tuna-os/spindle/blob/main/docs/lifecycle.md) |
 | Benchmark provenance | Every published comparison names the Spindle build it measured, as it already names Synapse 1.159.0 |
 
@@ -86,7 +87,7 @@ a roadmap item, not an afterthought — it is the org's only fresh Rust codebase
 with an embedded store, no database to provision, and `cargo test --workspace`
 as the whole gate.
 
-Near-term, tracked by [#306](https://github.com/tuna-os/spindle/issues/306):
+Completed under [#306](https://github.com/tuna-os/spindle/issues/306):
 
 - Repository topics and a homepage link, so the benchmark site is reachable from
   the repository header

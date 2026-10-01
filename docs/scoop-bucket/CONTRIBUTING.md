@@ -23,6 +23,11 @@ Each manifest must include non-empty `version`, `description`, `homepage`, and
 manifest uses architecture-specific downloads, every architecture entry must
 provide its own URL and hash.
 
+Hashes must use SHA-256 or SHA-512 — either a bare 64-character SHA-256 digest
+(Scoop's default) or a `sha256:`/`sha512:` prefixed digest of the matching
+length. MD5 and SHA-1 digests are rejected: both are collision-broken, so a
+download pinned with one is not meaningfully verified.
+
 Follow the upstream tool's supported Windows architectures and use release
 artifacts from its official TunaOS repository. Do not add manifests for
 third-party projects or unpublished artifacts.

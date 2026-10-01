@@ -1,5 +1,5 @@
 ---
-sidebar_position: 10
+sidebar_position: 11
 title: "development"
 ---
 
@@ -17,7 +17,7 @@ This guide describes the local workflow for contributing to the Hive Go codebase
 ## Clone and branch
 
 ```bash
-git clone https://github.com/kubestellar/hive.git
+git clone https://github.com/hivecommons/hive.git
 cd hive
 git switch -c <topic-branch> origin/v4
 ```

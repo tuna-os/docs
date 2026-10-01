@@ -1,5 +1,5 @@
 ---
-sidebar_position: 28
+sidebar_position: 32
 title: "plugin architecture"
 ---
 
@@ -8,6 +8,13 @@ title: "plugin architecture"
 **Milestone:** M4 (v0.9.0-rc: ship-shaped)  
 
 ---
+
+## Current audit and next contract
+
+The [migration extension plan](https://github.com/tuna-os/wootc/blob/main/docs/specs/migration-extensions.md) records the source audit
+and the proposed version-2 contract. It identifies gaps in the discovery trust policy,
+import results, transactions, and target verification. Existing manifests are a first seam,
+not proof of a complete migration framework.
 
 ## 1. Executive Summary
 

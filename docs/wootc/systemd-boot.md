@@ -1,5 +1,5 @@
 ---
-sidebar_position: 33
+sidebar_position: 39
 title: "systemd boot"
 ---
 

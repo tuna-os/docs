@@ -1,5 +1,5 @@
 ---
-sidebar_position: 15
+sidebar_position: 16
 title: "user guide"
 ---
 
@@ -8,8 +8,8 @@ Welcome to the comprehensive user guide for **Corral** — the unified managemen
 ## Backends, contexts, and peers
 
 `corral config set-default-backend incus` makes unqualified creates use
-Incus. `corral context list|set|get` switches Corral's context without
-mutating kubectl or the Incus CLI; `--context` is a one-shot override.
+Incus. `corral context list|set|get` switches Corral's context and does not
+change kubectl or the Incus CLI; `--context` is a one-shot override.
 
 Libvirt URIs make remote QEMU a normal backend, for example:
 `corral context set qemu+ssh://hypervisor/system`.
@@ -75,17 +75,17 @@ Access the Proxmox-style Web UI at `http://localhost:8006` or via `corral web`.
 
 #### Features:
 - **Datacenter Tree**: Navigate through all VMs, CTs, and Incus instances across local and cluster nodes.
-- **Live CPU & Memory Sparklines**: Real-time load monitoring per VM.
-- **Tag Filtering**: Filter instances by custom tags (`prod`, `dev`, `desktop`).
+- **Live CPU & Memory Sparklines**: Real-time load graphs for each VM.
+- **Tag Filters**: Filter instances by custom tags (`prod`, `dev`, `desktop`).
 - **Mobile Responsive**: Manage your VM fleet from your mobile browser.
-- **Theme & Branding**: Customize accent colours, header branding, and inject custom CSS — via CLI flags, config file, or the built-in Settings page.
+- **Theme & Brand**: Customize accent colours and the header brand, and inject custom CSS. Use CLI flags, a config file, or the built-in Settings page.
 
 ![Mobile Dashboard](https://raw.githubusercontent.com/tuna-os/corral/main/docs/screenshots/dashboard-mobile.png)
 
 #### Theme & Branding
 
-Corral's web UI accent colour, header branding, and custom CSS are fully
-customizable — no source-code changes needed.
+In Corral's web UI, you can fully customize the accent colour, the header
+brand, and custom CSS. You need no source-code changes.
 
 **CLI flags** (highest priority, override everything):
 ```bash
@@ -118,7 +118,7 @@ accent).
 
 ### Terminal UI (TUI)
 
-Launch the interactive Bubble Tea TUI by running `corral` with no arguments (or explore in demo mode with `corral --demo`).
+To launch the interactive TUI (built on Bubble Tea), run `corral` with no arguments. To explore in demo mode, run `corral --demo`.
 
 ![Automated Corral TUI capture](https://raw.githubusercontent.com/tuna-os/corral/main/docs/screenshots/generated/tui-fleet.png)
 
@@ -131,15 +131,16 @@ hiding healthy instances.
 
 - `/` fuzzy-searches names, canonical IDs, backends, contexts, nodes, and IPs.
 - `Tab`, `[` and `]` cycle between the complete fleet and named contexts.
-- `Enter` opens a capability-aware action menu; unsupported operations are
-  absent rather than failing after selection. Power (start/stop/restart/
-  pause/resume), migrate, clone, snapshots, events, the template mark,
-  CPU/RAM, published ports, export, SSH, VNC, and delete all live there.
+- `Enter` opens a capability-aware action menu. The menu leaves out
+  unsupported operations, so they do not fail after you select them. These
+  all live there: power (start/stop/restart/pause/resume), migrate, clone,
+  snapshots, and events. So do the template mark, CPU/RAM, published ports,
+  export, SSH, VNC, and delete.
 - **Snapshots** opens the instance's captures: `n` takes one (named or
-  auto-named), `Enter` restores, `x` deletes, `r` reloads. Every backend that
-  can snapshot is supported — KubeVirt, libvirt, Incus, and local QEMU — and
-  each capture reports what it actually caught (offline, filesystem, or
-  crash-consistent), same as the web UI's Snapshots tab.
+  auto-named), `Enter` restores, `x` deletes, `r` reloads. Corral supports every backend
+  that can snapshot: KubeVirt, libvirt, Incus, and local QEMU. Each capture
+  reports what it caught (offline, filesystem, or crash-consistent). This is
+  the same as the web UI's Snapshots tab.
 - **Events** shows the recent Kubernetes events for a KubeVirt VM and its
   `virt-launcher` pod, newest first.
 - **Make/Unmark template** flips the golden-template label that
@@ -148,9 +149,9 @@ hiding healthy instances.
 - `s` and `x` quickly start or stop the selected VM; `r` refreshes every
   backend.
 - `d` runs scoped QEMU, KubeVirt, Incus, and libvirt diagnostics.
-- The mouse works too: click a row to select it, double-click to open its
-  actions (or to run the highlighted one), and scroll with the wheel. Clicking
-  a port row in the ports form toggles it. Destructive actions still go through
+- The mouse works too. Click a row to select it, and scroll with the wheel.
+  Double-click to open its actions (or to run the highlighted one). A click
+  on a port row in the ports form toggles it. Destructive actions still go through
   their confirmation — a double click can't reach anything a keypress can't.
 - `?` opens the in-app command deck.
 - QEMU, KubeVirt, Incus, libvirt, and pet-pod CTs share the inventory without
@@ -189,7 +190,7 @@ Corral provides single-command remote access to guest displays and shells:
 #### In-Browser & Local VNC
 ![VM Summary & VNC](https://raw.githubusercontent.com/tuna-os/corral/main/docs/screenshots/vm-summary.png)
 
-- **VNC Display**: `corral viewer <vm-name>` opens a VNC session. In the Web UI, `noVNC` provides zero-install browser display access.
+- **VNC Display**: `corral viewer <vm-name>` opens a VNC session. In the Web UI, `noVNC` shows the display in the browser, with nothing to install.
 - **Interactive TTY / SSH**: `corral ssh <vm-name>` or `corral tty <ct-name>` connects your terminal directly into guest shell namespaces (via SSH, `virtctl console`, or `incus exec`).
 
 ![Local VM Framebuffer](https://raw.githubusercontent.com/tuna-os/corral/main/docs/screenshots/local-vm-console.png)
@@ -205,14 +206,33 @@ corral plugin install bootc
 corral bootc create my-node --image quay.io/centos-bootc/centos-bootc:stream9
 ```
 
-- Builds a bootable OS disk on-cluster using `bootc install to-disk`.
-- Upgrade guest OS images using `corral bootc upgrade <vm-name>`.
+- Builds a bootable OS disk on the cluster with `bootc install to-disk`.
+- Upgrade the OS image of a guest with `corral bootc upgrade <vm-name>`.
+
+#### Testing a bootc image (`corral vmtest`)
+
+`corral vmtest` boots an image locally and tests it. It needs no plugin, and
+it is what a CI pipeline should call:
+
+```bash
+corral vmtest gate --bootc ghcr.io/tuna-os/yellowfin:latest \
+  --user tester --password hunter2 --sudo-user \
+  --check 'systemctl --failed --no-legend'
+ssh -i corral-vmtest-out/ssh/id_ed25519 -p 2242 tester@127.0.0.1
+```
+
+The run leaves the VM up, so the next step tests a real machine over SSH.
+It also writes the guest's serial console, a screenshot of every stage of the
+boot, an optional WebM timelapse, and `result.json`. Accounts, passwords,
+packages and first-boot hooks go into a layer built on top of the image, which
+is never modified. Full reference:
+[docs/ci-boot-gate.md](https://github.com/tuna-os/corral/blob/main/docs/ci-boot-gate.md).
 
 ---
 
 ### 4. Proxmox VE API Compatibility Layer
 
-Corral includes a Proxmox VE REST API emulation layer (`/api2/json/...`), allowing Terraform (`bpg/proxmox`), Ansible, and Proxmoxer tools to manage KubeVirt and Incus instances natively.
+Corral includes a layer that emulates the REST API of Proxmox VE (`/api2/json/...`). With it, Terraform (`bpg/proxmox`), Ansible, and Proxmoxer tools can manage KubeVirt and Incus instances natively.
 
 ```bash
 corral plugin install proxmox
@@ -238,14 +258,14 @@ corral plugin remove <name>
 ```
 
 #### Available Plugins:
-- `bootc`: Bootable container image VM builder.
-- `proxmox`: Proxmox VE REST API compatibility server.
+- `bootc`: Builds VMs from bootable container images.
+- `proxmox`: Compatibility server for the REST API of Proxmox VE.
 - `backup`: S3/R2 VM disk backup & restore.
-- `snapsched`: Automated VM snapshot schedules with retention rules.
+- `snapsched`: Automated schedules for VM snapshots, with retention rules.
 - `schedule`: VM autostart and shutdown cron windows.
-- `gpu`: GPU / PCI passthrough device plugin discovery.
-- `windows`: First-class Windows VM creation (UEFI, TPM, virtio drivers).
-- `vdi`: Virtual Desktop Infrastructure desktop pools.
+- `gpu`: GPU / PCI passthrough, via discovery of the device plugin.
+- `windows`: First-class creation of Windows VMs (UEFI, TPM, virtio drivers).
+- `vdi`: Desktop pools for Virtual Desktop Infrastructure (VDI).
 
 ---
 
@@ -259,8 +279,8 @@ corral doctor
 
 In a multi-context setup it diagnoses every configured QEMU, KubeVirt, Incus,
 libvirt, and Proxmox target. Use `corral doctor --context NAME` for one target. The
-complete capability matrix and direct-versus-relayed networking behavior are
-documented in [backend-support.md](https://github.com/tuna-os/corral/blob/main/docs/backend-support.md).
+complete capability matrix and the direct-versus-relayed networking behavior
+are in [backend-support.md](https://github.com/tuna-os/corral/blob/main/docs/backend-support.md).
 
 ```
 ✓ KubeVirt installed (v1.8.2)
@@ -273,7 +293,7 @@ documented in [backend-support.md](https://github.com/tuna-os/corral/blob/main/d
 
 ## Reproducible screenshots
 
-Documentation captures use the real built-in demo fleet. They are automated
+Documentation captures use the real demo fleet that is built in. They are automated
 for both Chromium and the Bubble Tea TUI:
 
 ```bash
@@ -283,3 +303,8 @@ node scripts/capture-docs.mjs docs/screenshots/generated
 
 The same command can target the TunaOS site checkout:
 `node scripts/capture-docs.mjs ../docs/static/img/screenshots/corral`.
+
+The `Screenshots` workflow runs this script when the web UI, the TUI or the
+demo fleet changes, and one time each week. It then opens a PR with the new
+images. When the `TUNAOS_DOCS_TOKEN` secret is set, it also opens a PR in
+tuna-os/docs. That PR updates the images on the TunaOS site.
