@@ -74,25 +74,27 @@ const FeatureList: FeatureItem[] = [
 
 function Feature({icon, title, description, index}: FeatureItem & {index: string}) {
   return (
-    <div className={styles.featureCard}>
-      <span className={styles.featureIndex}>{index}</span>
-      <span className={styles.featureIcon}>
+    <li className={styles.item}>
+      <span className={styles.index}>{index}</span>
+      <div className={styles.body}>
+        <Heading as="h3" className={styles.title}>
+          {title}
+        </Heading>
+        <p className={styles.desc}>{description}</p>
+      </div>
+      <span className={styles.icon}>
         <Icon name={icon} size={22} />
       </span>
-      <Heading as="h3" className={styles.featureTitle}>
-        {title}
-      </Heading>
-      <p className={styles.featureDesc}>{description}</p>
-    </div>
+    </li>
   );
 }
 
 export default function HomepageFeatures(): ReactNode {
   return (
-    <div className={styles.grid}>
+    <ol className={styles.list}>
       {FeatureList.map((feature, idx) => (
         <Feature key={idx} {...feature} index={String(idx + 1).padStart(2, '0')} />
       ))}
-    </div>
+    </ol>
   );
 }
