@@ -1,3 +1,4 @@
+import {existsSync} from 'node:fs';
 import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 
 const sidebars: SidebarsConfig = {
@@ -46,8 +47,8 @@ const sidebars: SidebarsConfig = {
       label: 'BuildStream Desktops',
       collapsed: false,
       items: [
-        {type: 'category', label: 'Tromsø', link: {type: 'doc', id: 'tromso/index'}, items: ['tromso/getting-started', 'tromso/SPEC', 'tromso/ROADMAP', 'tromso/SECURITY', 'tromso/CONTRIBUTING', 'tromso/ci-and-iso-pipeline']},
-        {type: 'category', label: 'XFCE Linux', className: 'sidebar-alpha', link: {type: 'doc', id: 'xfce-linux/index'}, items: ['xfce-linux/getting-started', 'xfce-linux/README', 'xfce-linux/PROJECT_STATUS', 'xfce-linux/CONTRIBUTING', 'xfce-linux/ROADMAP', 'xfce-linux/SECURITY', 'xfce-linux/ci-and-iso-pipeline']},
+        {type: 'category', label: 'Tromsø', link: {type: 'doc', id: 'tromso/index'}, items: ['tromso/SPEC', 'tromso/ROADMAP', 'tromso/SECURITY', 'tromso/CONTRIBUTING', 'tromso/ci-and-iso-pipeline']},
+        {type: 'category', label: 'XFCE Linux', className: 'sidebar-alpha', link: {type: 'doc', id: 'xfce-linux/index'}, items: ['xfce-linux/README', 'xfce-linux/PROJECT_STATUS', 'xfce-linux/CONTRIBUTING', 'xfce-linux/ROADMAP', 'xfce-linux/SECURITY', 'xfce-linux/ci-and-iso-pipeline']},
       ],
     },
     {
@@ -56,14 +57,14 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         {type: 'category', label: 'wootc', link: {type: 'doc', id: 'wootc/index'}, items: ['wootc/getting-started', 'wootc/user-guide', 'wootc/philosophy', 'wootc/status', 'wootc/ROADMAP', 'wootc/CONTRIBUTING']},
-        {type: 'category', label: 'Tacklebox', link: {type: 'doc', id: 'tacklebox/index'}, items: ['tacklebox/USER-GUIDE', 'tacklebox/getting-started', 'tacklebox/ARCHITECTURE', 'tacklebox/github-iso-setup', 'tacklebox/TODO', 'tacklebox/ROADMAP', 'tacklebox/SECURITY', 'tacklebox/CONTRIBUTING', 'tacklebox/opfs-streaming-handoff']},
+        {type: 'category', label: 'Tacklebox', link: {type: 'doc', id: 'tacklebox/index'}, items: ['tacklebox/USER-GUIDE', 'tacklebox/ARCHITECTURE', 'tacklebox/github-iso-setup', 'tacklebox/TODO', 'tacklebox/ROADMAP', 'tacklebox/SECURITY', 'tacklebox/CONTRIBUTING', 'tacklebox/opfs-streaming-handoff']},
         {type: 'category', label: 'ISO Builder', link: {type: 'doc', id: 'iso-builder/index'}, items: [{type: 'category', label: 'Native App', link: {type: 'doc', id: 'iso-builder/native/index'}, items: ['iso-builder/native/user-guide']}]},
         {type: 'category', label: 'remora', link: {type: 'doc', id: 'remora/index'}, items: []},
         {
           type: 'category',
           label: 'Corral',
           link: {type: 'doc', id: 'corral/index'},
-          items: ['corral/getting-started', 'corral/user-guide', 'corral/interfaces', 'corral/contexts', 'corral/command-reference', 'corral/vdi', 'corral/containers', 'corral/backup', 'corral/bootc', 'corral/windows', 'corral/gpu', 'corral/snapsched', 'corral/schedule', 'corral/proxmox', 'corral/ROADMAP', 'corral/SPEC', 'corral/architecture', 'corral/api', 'corral/backend-support', 'corral/backend-parity', 'corral/ci-boot-gate', 'corral/first-party-plugins', 'corral/kubevirt-proxmox-setup', 'corral/plugin-marketplace', 'corral/proxmox-api', 'corral/testing'],
+          items: ['corral/user-guide', 'corral/vdi', 'corral/host-power', 'corral/ROADMAP', 'corral/SPEC', 'corral/architecture', 'corral/api', 'corral/backend-support', 'corral/backend-parity', 'corral/ci-boot-gate', 'corral/first-party-plugins', 'corral/kubevirt-proxmox-setup', 'corral/plugin-marketplace', 'corral/proxmox-api', 'corral/testing'],
         },
         {
           type: 'category',
@@ -78,7 +79,7 @@ const sidebars: SidebarsConfig = {
           items: ['bootc-migrate/architecture', 'bootc-migrate/filesystem-support', 'bootc-migrate/luks-testing', 'bootc-migrate/testing', 'bootc-migrate/references', 'bootc-migrate/ROADMAP', 'bootc-migrate/CONTRIBUTING', 'bootc-migrate/cfs-cli-generations'],
         },
         {type: 'category', label: 'Flatpak', link: {type: 'doc', id: 'flatpak/index'}, items: ['flatpak/guide']},
-        {type: 'category', label: 'tunaos-packages', link: {type: 'doc', id: 'tunaos-packages/index'}, items: ['tunaos-packages/ARCHITECTURE', 'tunaos-packages/PACKAGE_FACTORY', 'tunaos-packages/PATCH_POLICY', 'tunaos-packages/ROADMAP', 'tunaos-packages/SECURITY', 'tunaos-packages/TIDEFORGE-READINESS', 'tunaos-packages/UPSTREAM_PARITY', 'tunaos-packages/XFWL4-PORTING', 'tunaos-packages/gnome49-centos-bootc', 'tunaos-packages/hummingbird-desktop-gap', 'tunaos-packages/CONTRIBUTING']},
+        {type: 'category', label: 'tunaos-packages', link: {type: 'doc', id: 'tunaos-packages/index'}, items: ['tunaos-packages/ARCHITECTURE', 'tunaos-packages/PACKAGE_FACTORY', 'tunaos-packages/PATCH_POLICY', 'tunaos-packages/ROADMAP', 'tunaos-packages/SECURITY', 'tunaos-packages/TIDEFORGE-READINESS', 'tunaos-packages/UPSTREAM_PARITY', 'tunaos-packages/XFWL4-PORTING', 'tunaos-packages/hummingbird-desktop-gap', 'tunaos-packages/CONTRIBUTING']},
         {type: 'category', label: 'Ubuntu', link: {type: 'doc', id: 'ubuntu/index'}, items: ['ubuntu/CONTRIBUTING', 'ubuntu/SECURITY']},
         {type: 'category', label: 'bootc-installer-tui', link: {type: 'doc', id: 'bootc-installer-tui/index'}, items: ['bootc-installer-tui/CONTRIBUTING']},
         {type: 'category', label: 'chunkah', link: {type: 'doc', id: 'chunkah/index'}, items: ['chunkah/CONTRIBUTING']},
@@ -102,7 +103,8 @@ const sidebars: SidebarsConfig = {
       label: 'Apps',
       collapsed: false,
       items: [
-        {type: 'category', label: 'Tavern', link: {type: 'doc', id: 'tavern/index'}, items: ['tavern/ROADMAP', 'tavern/CONTRIBUTING', 'tavern/guide']},
+        {type: 'category', label: 'Tavern', link: {type: 'doc', id: 'tavern/index'}, items: ['tavern/ROADMAP', 'tavern/CONTRIBUTING']},
+        {type: 'category', label: 'Compass', link: {type: 'doc', id: 'compass/index'}, items: ['compass/getting-started', 'compass/CONTRIBUTING']},
         {
           type: 'category',
           label: 'Office Suite',
@@ -120,5 +122,49 @@ const sidebars: SidebarsConfig = {
     {type: 'category', label: 'Dakota (Bluefin)', className: 'sidebar-external', link: {type: 'doc', id: 'dakota/index'}, items: ['dakota/migration']},
   ],
 };
+
+// Many entries point into docs/<project>/ trees that sync-org-docs rewrites
+// from their source repos every day. A page renamed or removed upstream used
+// to fail the whole build (checkSidebarsDocIds), which blocked every synced
+// update for a week until someone edited this file. An entry whose page is
+// gone is now dropped with a warning instead; the build log still names it.
+type Item = SidebarsConfig[string] extends (infer T)[] ? T : never;
+
+function docExists(id: string): boolean {
+  return ['.md', '.mdx'].some(ext => existsSync(`docs/${id}${ext}`));
+}
+
+function present(items: Item[]): Item[] {
+  return items.flatMap(item => {
+    if (typeof item === 'string') {
+      if (docExists(item)) return [item];
+      console.warn(`[sidebars] dropping '${item}': docs/${item}.md is gone`);
+      return [];
+    }
+    if (item && typeof item === 'object' && 'type' in item) {
+      if (item.type === 'doc' && !docExists(item.id)) {
+        console.warn(`[sidebars] dropping '${item.id}': docs/${item.id}.md is gone`);
+        return [];
+      }
+      if (item.type === 'category') {
+        const category = {...item, items: present(item.items as Item[])};
+        if (category.link && category.link.type === 'doc' && !docExists(category.link.id)) {
+          console.warn(`[sidebars] '${category.label}' loses its link: docs/${category.link.id}.md is gone`);
+          delete category.link;
+        }
+        if (!category.link && category.items.length === 0) {
+          console.warn(`[sidebars] dropping '${category.label}': none of its pages is left`);
+          return [];
+        }
+        return [category];
+      }
+    }
+    return [item];
+  });
+}
+
+for (const name of Object.keys(sidebars)) {
+  sidebars[name] = present(sidebars[name] as Item[]);
+}
 
 export default sidebars;

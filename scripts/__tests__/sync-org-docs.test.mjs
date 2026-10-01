@@ -30,6 +30,7 @@ import {
   subFrontmatter,
   isSyncedIndex,
   filesToRemove,
+  isRootDoc,
   getStatusBanner,
   slugify,
   listOrgRepos,
@@ -521,6 +522,29 @@ test('only calls readIndexContent when index.md is actually a removal candidate'
     return frontmatter('X', 1, 'x', 'alpha');
   });
   assert.equal(calls, 0, 'index.md was written this run, so nothing should read it');
+});
+
+test('keeps hand-written pages in a repo whose docs/ folder is not synced', () => {
+  // docs/tunaos/: tunaOS is in SKIP_DOCS_DIR, so only index.md and the
+  // filtered root docs are written there; introduction.md and the rest are
+  // hand-authored and must survive the run.
+  const filter = ['README.md', 'ROADMAP.md', 'SECURITY.md', 'CONTRIBUTING.md'];
+  const {removable, refused} = filesToRemove(
+    ['index.md', 'ROADMAP.md', 'SECURITY.md', 'introduction.md', 'building.md'],
+    ['index.md', 'ROADMAP.md'],
+    () => frontmatter('X', 1, 'x', 'alpha'),
+    file => isRootDoc(file, filter),
+  );
+  assert.deepEqual(removable, ['SECURITY.md']);
+  assert.deepEqual(refused, []);
+});
+
+test('isRootDoc knows the default root docs and a repo filter', () => {
+  assert.ok(isRootDoc('index.md'));
+  assert.ok(isRootDoc('ROADMAP.md'));
+  assert.ok(!isRootDoc('getting-started.md'));
+  assert.ok(isRootDoc('SECURITY.md', ['SECURITY.md']));
+  assert.ok(!isRootDoc('ROADMAP.md', ['SECURITY.md']));
 });
 
 // ── getStatusBanner ───────────────────────────────────────────────────────────
