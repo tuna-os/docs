@@ -3,14 +3,30 @@
 This website uses [Docusaurus](https://docusaurus.io/), a modern generator
 of static websites.
 
+## Prerequisites
+
+- **Node.js 24** or later
+- **npm** (installed with Node.js)
+- **`just`** — Install from [casey/just](https://github.com/casey/just)
+
 ## Installation
 
 ```bash
 npm ci
 ```
 
-All standard tasks (`install`, `build`, `test`, `lint`) are also available
-via [`just`](https://github.com/casey/just) — see `just --list`.
+All standard tasks are available via `just`. Run `just --list` to see recipes for install, start, build, typecheck, lint, test, and more.
+
+## Before submitting a PR
+
+Run the validation suite to catch issues locally:
+
+```bash
+just preflight   # runs typecheck, lint, tests, and install-command checks
+npm run build    # always run this when changes can affect the rendered site
+```
+
+For details on what each check does and fixing common issues, see [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
 ## Local Development
 
