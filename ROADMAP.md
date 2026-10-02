@@ -1,6 +1,6 @@
 # tuna-os/docs Roadmap
 
-**Last updated**: 2026-09-25 | **Maintainer**: tuna-os (hanthor) / guide agent
+**Last updated**: 2026-10-01 | **Maintainer**: tuna-os (hanthor) / guide agent
 
 ---
 
@@ -83,9 +83,9 @@ walkthrough and maintainers record whether to extend, revise, or stop the patter
 |------|-------|----------|--------|
 | Historical banners and lifecycle status markers on archived repo pages | guide | #270, #406 | 🟡 In progress |
 | Migration/content review cadence aligned with variant lifecycle policy | guide | tunaos `VARIANT-LIFECYCLE.md` | ✅ Done (tunaos#1175 confirmed no residual gap) |
-| Download/usage data on the site (adoption metrics surface) | guide | #417 | ⬜ Unowned — tunaos#1174 tracks community metrics (stars/adopters) via `ADOPTION-METRICS.md`, not a site-side counter; no docs-repo work item exists yet |
+| Download/usage data on the site (adoption metrics surface) | guide | #429, #430 | ✅ Done — `/metrics` dashboard with a same-origin `/api/adoption` proxy to the tunaos countme collector (RFC 012) |
 | Versioned installer walkthrough pilot | guide | #308 | ⬜ Not started |
-| Variant pages track ROADMAP status (tunaos.org/wiki ↔ tunaos ROADMAP) | guide | #417 | ⬜ Unowned — tunaos#1295 closed as out of scope for tunaOS with no successor issue opened |
+| ~~Variant pages track ROADMAP status (tunaos.org/wiki ↔ tunaos ROADMAP)~~ | — | #417 | ❌ Dropped — the org-wide sync already publishes tunaos `ROADMAP.md` at `/docs/tunaos/ROADMAP`; per-variant status mirroring has no owner (tunaos#1295 closed it as out of scope) and is not planned |
 
 ---
 
