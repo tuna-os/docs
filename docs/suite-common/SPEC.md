@@ -14,21 +14,19 @@ title: "Spec"
 > architecture below are retained as historical context and may be obsolete.
 
 A small, FOSS office suite for the GNOME desktop, built as **separate libadwaita apps**
-that share a common scaffold. It completes the set started by
-[**Letters**](https://codeberg.org/eyekay/letters) (word processor):
+that share a common scaffold. The apps live in the monorepo at
+[`gtk-office-suite`](https://github.com/tuna-os/gtk-office-suite) (originally `suite-common`):
 
-| App | Role | Status |
-|-----|------|--------|
-| **[Letters](https://github.com/tuna-os/letters)** | Word processor | exists; **migrating onto suite-common** (reference consumer) |
-| **[Tables](https://github.com/tuna-os/tables)** | Spreadsheet (Excel-equivalent) | this suite |
-| **[Decks](https://github.com/tuna-os/decks)** | Presentation (PowerPoint-equivalent) | this suite |
+| App | Role | Repository |
+|-----|------|------------|
+| **[Letters](https://github.com/tuna-os/gtk-office-suite/tree/main/letters)** | Word processor | `gtk-office-suite/letters` |
+| **[Tables](https://github.com/tuna-os/gtk-office-suite/tree/main/tables)** | Spreadsheet (Excel-equivalent) | `gtk-office-suite/tables` |
+| **[Decks](https://github.com/tuna-os/gtk-office-suite/tree/main/decks)** | Presentation (PowerPoint-equivalent) | `gtk-office-suite/decks` |
 
-This repo, **`suite-common`**, holds the shared code consumed by all three apps as a
-**meson subproject**. It is **extracted from Letters** — Letters is both the source of the
-pattern and the first consumer, so migrating Letters onto `suite-common` is how we dogfood
-the extraction. Upstream Letters lives at
-[codeberg.org/eyekay/letters](https://codeberg.org/eyekay/letters); the suite tracks the
-fork at [tuna-os/letters](https://github.com/tuna-os/letters).
+The shared code from this document now lives as modules within the
+[`gtk-office-suite`](https://github.com/tuna-os/gtk-office-suite) monorepo.
+This `suite-common` repository is archived and kept for historical reference. For the
+canonical, current Rust implementation, see the gtk-office-suite repository.
 
 ## The Letters pattern (what we inherit)
 
@@ -88,7 +86,7 @@ This is the structural analogue of Letters' `pypandoc.convert_file(...)`.
 
 ```
 meson.build
-io.github.hanthor.<app>.json   # Flatpak: GNOME 50 runtime + vendored JS + pip libs (historical; apps ship as org.tunaos.*-rust)
+org.tunaos.<app>-rust.json     # Flatpak: GNOME 50 runtime + Rust implementation (current; replaces historical io.github.hanthor.* IDs)
 data/                          # icons, .desktop, gschema, appdata/metainfo
 po/
 src/
