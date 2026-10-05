@@ -75,7 +75,7 @@ and the diff is the work the release brought.
 
 ## Served beyond the spec at this pin
 
-87 routes the pinned spec does not define: MSC surfaces under
+91 routes the pinned spec does not define: MSC surfaces under
 `unstable/`, the admin and MAS-compatibility APIs, and stable spellings
 newer than the pin. Each MSC route must be accounted for in
 `contrib/msc/ledger.toml`; `scripts/msc-ledger.py --check` enforces that.
@@ -85,8 +85,10 @@ newer than the pin. Each MSC route must be accounted for in
 - `/_matrix/client/unstable/org.matrix.msc2965/auth_metadata`
 - `/_matrix/client/unstable/org.matrix.msc3814.v1/dehydrated_device`
 - `/_matrix/client/unstable/org.matrix.msc3814.v1/dehydrated_device/{}/events`
+- `/_matrix/client/unstable/org.matrix.msc4108/rendezvous`
 - `/_matrix/client/unstable/org.matrix.msc4140/delayed_events`
 - `/_matrix/client/unstable/org.matrix.msc4140/delayed_events/{}`
+- `/_matrix/client/unstable/org.matrix.msc4140/delayed_events/{}/{}`
 - `/_matrix/client/unstable/org.matrix.msc4143/rtc/transports`
 - `/_matrix/client/unstable/org.matrix.simplified_msc3575/sync`
 - `/_matrix/client/v1/rtc/transports`
@@ -123,6 +125,7 @@ newer than the pin. Each MSC route must be accounted for in
 - `/_synapse/admin/v1/event_reports`
 - `/_synapse/admin/v1/event_reports/{}`
 - `/_synapse/admin/v1/purge_history/{}`
+- `/_synapse/admin/v1/register`
 - `/_synapse/admin/v1/registration_tokens`
 - `/_synapse/admin/v1/registration_tokens/new`
 - `/_synapse/admin/v1/registration_tokens/{}`
@@ -149,6 +152,7 @@ newer than the pin. Each MSC route must be accounted for in
 - `/_synapse/admin/v2/users/{}`
 - `/_synapse/admin/v2/users/{}/delete_devices`
 - `/_synapse/admin/v2/users/{}/devices`
+- `/_synapse/client/rendezvous/{}`
 - `/_synapse/mas/allow_cross_signing_reset`
 - `/_synapse/mas/delete_device`
 - `/_synapse/mas/delete_user`
