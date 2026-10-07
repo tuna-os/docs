@@ -213,5 +213,3 @@ export function transformContent(content, options) {
   }
   return result;
 }
-
-export {onProse};
