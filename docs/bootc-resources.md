@@ -85,6 +85,9 @@ so the titles are the ones the speakers gave them.
   - **Albacore** — AlmaLinux 10
   - **Bonito** — Fedora 44 (pure bootc)
   - **Skipjack** — CentOS Stream 10
+  - **Tromsø** — KDE Plasma 6 desktop variant
+  - **XFCE Linux** — Lightweight XFCE desktop variant
+
 - [HeliumOS](https://www.heliumos.org/) — KDE CentOS-based desktop image.
 - [AlmaLinux Atomic Desktop](https://github.com/AlmaLinux/atomic-desktop) — KDE and GNOME base images on AlmaLinux.
 - [AlmaLinux Atomic Workstation](https://github.com/AlmaLinux/atomic-workstation) — opinionated GNOME workstation on AlmaLinux.
