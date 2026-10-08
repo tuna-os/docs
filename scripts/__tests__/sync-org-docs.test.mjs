@@ -29,13 +29,15 @@ import {
   frontmatter,
   subFrontmatter,
   isSyncedIndex,
-  filesToRemove,
-  isRootDoc,
-  markUnparseable,
   rejectExpressions,
   withFormatMd,
   getStatusBanner,
   slugify,
+} from '../lib/org-doc-transform.mjs';
+import {
+  filesToRemove,
+  isRootDoc,
+  markUnparseable,
   listOrgRepos,
   checkListing,
   discoverRepos,
