@@ -3,7 +3,7 @@ import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import useBuildHealth from '../hooks/useBuildHealth';
-import {displayStatus, targetKey, requiredBuildTargets, type Evidence, type HealthRow} from '../data/build-health';
+import {displayStatus, targetKey, requiredBuildTargets, type Evidence, type HealthRow} from '../data/build-health-types';
 import styles from './build-health.module.css';
 
 // This is declared coverage, with no manufactured observation or publication.

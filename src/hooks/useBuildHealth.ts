@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import {parseBuildHealth, type BuildHealth} from '../data/build-health';
+import {parseBuildHealth, type BuildHealth} from '../data/build-health-types';
 
 export type BuildHealthState =
   | {status: 'loading'; feed: null; error: null}

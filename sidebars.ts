@@ -135,7 +135,7 @@ function docExists(id: string): boolean {
 }
 
 function present(items: Item[]): Item[] {
-  return items.flatMap(item => {
+  return items.flatMap<Item>(item => {
     if (typeof item === 'string') {
       if (docExists(item)) return [item];
       console.warn(`[sidebars] dropping '${item}': docs/${item}.md is gone`);
