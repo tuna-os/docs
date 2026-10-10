@@ -1,0 +1,9 @@
+.main { max-width: 1500px; }
+.main code { overflow-wrap: anywhere; white-space: normal; }
+.filters { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1.5rem 0; }
+.filters label { display: flex; flex-direction: column; gap: 0.4rem; }
+.filters select { padding: 0.5rem; background: var(--ifm-background-color); color: var(--ifm-font-color-base); border: 1px solid var(--ifm-color-emphasis-500); border-radius: 4px; }
+.scroll { overflow-x: auto; }
+.table { display: table; width: 100%; min-width: 1000px; font-size: 0.9rem; }
+.table th, .table td { vertical-align: top; max-width: 320px; overflow-wrap: anywhere; }
+.table ul { padding-left: 1.2rem; }

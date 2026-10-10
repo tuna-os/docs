@@ -1,9 +1,11 @@
+import {buildHealthResponse} from './build-health.mjs';
 import {validateAdoption} from '../src/data/adoption.mjs';
 
 const headers = {'Content-Type': 'application/json; charset=utf-8', 'X-Content-Type-Options': 'nosniff'};
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (url.pathname === '/api/build-health') return buildHealthResponse(request);
     if (url.pathname !== '/api/adoption') return env.ASSETS.fetch(request);
     if (!['GET', 'HEAD'].includes(request.method)) return new Response(null, {status: 405, headers: {'Allow': 'GET, HEAD'}});
     try {
