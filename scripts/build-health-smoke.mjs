@@ -119,6 +119,12 @@ try {
   assert.equal(await table.locator('tbody tr').count(), 269);
   await page.getByLabel('Status', {exact: true}).selectOption('healthy');
   assert.equal(await table.locator('tbody tr').count(), 0);
+  for (const variant of ['albacore', 'yellowfin']) {
+    await page.goto(`http://localhost:${port}/${variant}`);
+    assert.match(await page.locator('main').innerText(), /AMD64 \(x86-64-v2\) · ARM64/);
+  }
+  await page.goto(`http://localhost:${port}/marlin`);
+  assert.match(await page.locator('main').innerText(), /AMD64 · ARM64/);
   console.log('build health browser: all 269 targets, platform filters, stale/invalid/unavailable feeds, latest versus publication and accessibility pass');
 } finally {
   await browser?.close();

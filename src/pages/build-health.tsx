@@ -60,9 +60,9 @@ export default function BuildHealthPage(): ReactNode {
       </>}
       {!feed && <p>Required targets: <strong>{requiredBuildTargets.length}</strong>. Scheduling and build observations are unknown until a valid feed arrives.</p>}
       <fieldset className={styles.filters}><legend>Filter required targets</legend>
-          <label>Variant <select value={variant} onChange={e => setVariant(e.target.value)}><option value="all">All variants</option>{[...new Set(rows.map(r => r.target.variant))].sort().map(v => <option key={v}>{v}</option>)}</select></label>
-          <label>Platform <select value={platform} onChange={e => setPlatform(e.target.value)}><option value="all">All platforms</option>{[...new Set(rows.map(r => r.target.platform))].sort().map(v => <option key={v}>{v}</option>)}</select></label>
-          <label>Status <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)}><option value="all">All statuses</option>{statuses.map(v => <option key={v}>{v}</option>)}</select></label>
+          <div><label htmlFor="health-variant">Variant</label><select id="health-variant" value={variant} onChange={e => setVariant(e.target.value)}><option value="all">All variants</option>{[...new Set(rows.map(r => r.target.variant))].sort().map(v => <option key={v}>{v}</option>)}</select></div>
+          <div><label htmlFor="health-platform">Platform</label><select id="health-platform" value={platform} onChange={e => setPlatform(e.target.value)}><option value="all">All platforms</option>{[...new Set(rows.map(r => r.target.platform))].sort().map(v => <option key={v}>{v}</option>)}</select></div>
+          <div><label htmlFor="health-status">Status</label><select id="health-status" value={filterStatus} onChange={e => setFilterStatus(e.target.value)}><option value="all">All statuses</option>{statuses.map(v => <option key={v}>{v}</option>)}</select></div>
         </fieldset>
         <p role="status">Showing {visible.length} of {rows.length} targets. Filters do not change required coverage.</p>
         <div className={styles.scroll} tabIndex={0} role="region" aria-label="Build health table">
