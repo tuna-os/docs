@@ -103,6 +103,7 @@ const config: Config = {
         {to: '/flatpak', label: 'Flatpaks', position: 'left'},
         {to: '/projects', label: 'Projects', position: 'left'},
         {to: '/metrics', label: 'Metrics', position: 'left'},
+        {to: '/build-health', label: 'Build health', position: 'left'},
         {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
@@ -147,6 +148,7 @@ const config: Config = {
             ...MAIN_VARIANTS.map((v) => ({label: `${v.name} (${v.base})`, to: `/${v.id}`})),
             {label: 'All variants', to: '/variants'},
             {label: 'Build matrix', to: '/matrix'},
+            {label: 'Build health', to: '/build-health'},
             {label: 'Adoption metrics', to: '/metrics'},
           ],
         },

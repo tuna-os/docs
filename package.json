@@ -15,7 +15,8 @@
     "typecheck": "tsc",
     "check-install-commands": "node scripts/check-install-commands.mjs",
     "a11y": "node scripts/a11y.mjs",
-    "test:metrics": "node scripts/metrics-smoke.mjs"
+    "test:metrics": "node scripts/metrics-smoke.mjs",
+    "test:build-health": "node scripts/build-health-smoke.mjs"
   },
   "dependencies": {
     "@docusaurus/core": "3.10.2",

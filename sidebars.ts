@@ -128,14 +128,14 @@ const sidebars: SidebarsConfig = {
 // to fail the whole build (checkSidebarsDocIds), which blocked every synced
 // update for a week until someone edited this file. An entry whose page is
 // gone is now dropped with a warning instead; the build log still names it.
-type Item = SidebarsConfig[string] extends (infer T)[] ? T : never;
+type Item = Extract<SidebarsConfig[string], unknown[]>[number];
 
 function docExists(id: string): boolean {
   return ['.md', '.mdx'].some(ext => existsSync(`docs/${id}${ext}`));
 }
 
 function present(items: Item[]): Item[] {
-  return items.flatMap(item => {
+  return items.flatMap<Item>(item => {
     if (typeof item === 'string') {
       if (docExists(item)) return [item];
       console.warn(`[sidebars] dropping '${item}': docs/${item}.md is gone`);

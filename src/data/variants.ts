@@ -1,3 +1,5 @@
+import {requiredVariantPlatforms, architectureSummary} from './variant-platforms.mjs';
+
 // Shared variant metadata. Drives the homepage line-up, the per-variant
 // landing pages (src/pages/<variant>.tsx), and the navbar/footer links.
 // One source of truth so the marketing copy never drifts between surfaces.
@@ -48,9 +50,8 @@ export type Variant = {
   desktops: Desktop[];
   features: Feature[];
   flavors: Flavor[];
-  // CPU platforms actually built for this base (build-config.yml `platforms:`).
-  // Most variants are amd64-only; only the EL10 trio + Bonito/Bonito Rawhide/
-  // Skipjack also build arm64, and only EL10 also builds an amd64_v2 target.
+  // Required support from the pinned canonical target policy.
+  // Build health separately reports whether any target has verified evidence.
   platforms: ('amd64' | 'amd64-v2' | 'arm64')[];
   // Which non-standard editions this base actually builds. Empty for bases
   // that only ship the plain desktop image (Sailfin, Guppy, Marlin sans
@@ -97,10 +98,9 @@ const HWE: Feature = {
   text: 'An -hwe kernel stack for newer laptops and desktops, layered on the same userspace.',
 };
 
-export const VARIANTS: Variant[] = [
+const VARIANT_METADATA: Omit<Variant, 'platforms'>[] = [
   {
     id: 'albacore',
-    platforms: ['amd64', 'amd64-v2', 'arm64'],
     editions: ['nvidia', 'hwe'],
     emoji: '🐟',
     name: 'Albacore',
@@ -136,7 +136,6 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'yellowfin',
-    platforms: ['amd64', 'amd64-v2', 'arm64'],
     editions: ['nvidia', 'hwe'],
     emoji: '🐠',
     name: 'Yellowfin',
@@ -171,7 +170,6 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'skipjack',
-    platforms: ['amd64', 'arm64'],
     editions: ['nvidia', 'hwe'],
     emoji: '🍣',
     name: 'Skipjack',
@@ -208,7 +206,6 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'bonito',
-    platforms: ['amd64', 'arm64'],
     editions: ['nvidia', 'hwe'],
     emoji: '🎣',
     name: 'Bonito',
@@ -246,7 +243,6 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'gurnard',
-    platforms: ['amd64', 'arm64'],
     editions: [],
     emoji: '🐟',
     name: 'Gurnard',
@@ -274,7 +270,6 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'grouper',
-    platforms: ['amd64'],
     editions: [],
     emoji: '🐟',
     name: 'Grouper',
@@ -305,7 +300,6 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'hummingbird',
-    platforms: ['amd64', 'arm64'],
     editions: [],
     emoji: '🐦',
     name: 'Hummingbird',
@@ -332,7 +326,6 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'redfin',
-    platforms: ['amd64', 'arm64'],
     editions: ['nvidia', 'hwe'],
     localBuildOnly: true,
     emoji: '🔒',
@@ -360,7 +353,6 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'marlin',
-    platforms: ['amd64'],
     editions: ['cachyos'],
     emoji: '🚀',
     name: 'Marlin',
@@ -387,7 +379,6 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'flounder',
-    platforms: ['amd64'],
     editions: [],
     emoji: '🐡',
     name: 'Flounder',
@@ -414,7 +405,6 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'flounder-sid',
-    platforms: ['amd64'],
     editions: [],
     emoji: '☢️',
     name: 'Flounder Sid',
@@ -441,7 +431,6 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'bonito-rawhide',
-    platforms: ['amd64', 'arm64'],
     editions: ['nvidia', 'hwe'],
     emoji: '🐉',
     name: 'Bonito Rawhide',
@@ -467,7 +456,6 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'sailfin',
-    platforms: ['amd64'],
     editions: [],
     emoji: '🦎',
     name: 'Sailfin',
@@ -493,7 +481,6 @@ export const VARIANTS: Variant[] = [
   },
   {
     id: 'guppy',
-    platforms: ['amd64'],
     editions: [],
     emoji: '🐧',
     name: 'Guppy',
@@ -516,6 +503,17 @@ export const VARIANTS: Variant[] = [
     ],
   },
 ];
+
+// Required architecture commitments must not be inferred from an ISO inventory.
+export const VARIANTS: Variant[] = VARIANT_METADATA.map(variant => {
+  const platforms = requiredVariantPlatforms(variant.id) as Variant['platforms'];
+  // Redfin is local-only and has no public required target declaration.
+  if (!platforms.length && variant.localBuildOnly) platforms.push('amd64');
+  return {...variant, platforms, stats: [
+    ...variant.stats.filter(stat => !['Arch', 'Microarch'].includes(stat.label)),
+    {label: 'Arch', value: architectureSummary(platforms)},
+  ]};
+});
 
 // The four images the site asks people to choose between. Every other base is
 // real and published, but it is for someone who came looking for it — see

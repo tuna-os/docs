@@ -31,6 +31,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Typecheck site sources
+        run: npm run typecheck
+
       - name: Build the site
         run: npm run build
 
@@ -39,6 +42,9 @@ jobs:
 
       - name: Verify metrics page and accessibility
         run: npm run test:metrics
+
+      - name: Verify build health and accessibility
+        run: npm run test:build-health
 
       - name: Install Wrangler
         run: npm install --global wrangler@4

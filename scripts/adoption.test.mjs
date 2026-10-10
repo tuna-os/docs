@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {validateAdoption, estimateText, adoptionWarnings} from '../src/data/adoption.mjs';
 // index.js is a Worker module; this repository's package otherwise defaults to CJS.
-const source = readFileSync(new URL('../worker/index.js', import.meta.url), 'utf8').replace("'../src/data/adoption.mjs'", JSON.stringify(new URL('../src/data/adoption.mjs', import.meta.url).href));
+const source = readFileSync(new URL('../worker/index.js', import.meta.url), 'utf8').replace("'../src/data/adoption.mjs'", JSON.stringify(new URL('../src/data/adoption.mjs', import.meta.url).href)).replace("'./build-health.mjs'", JSON.stringify(new URL('../worker/build-health.mjs', import.meta.url).href));
 const {default: worker} = await import(`data:text/javascript,${encodeURIComponent(source)}`);
 const now = Date.parse('2026-09-27T12:00:00Z');
 const margin = (key) => ({status: 'reported', counts: {[{variant: 'yellowfin', flavor: 'gnome', arch: 'x86_64', age_bucket: '2'}[key]]: 20}});
@@ -46,7 +46,7 @@ try {
   assert.equal(await worker.fetch(new Request('https://tunaos.org/metrics'), {ASSETS: {fetch: () => 'asset'}}), 'asset');
 } finally {globalThis.fetch = oldFetch;}
 const config = JSON.parse(readFileSync('wrangler.jsonc', 'utf8'));
-assert.deepEqual(config.assets.run_worker_first, ['/api/adoption']);
+assert.deepEqual(config.assets.run_worker_first, ['/api/adoption', '/api/build-health']);
 assert.deepEqual(config.services, [{binding: 'COUNTME', service: 'tunaos-countme'}]);
 assert.match(readFileSync('src/pages/metrics.tsx', 'utf8'), /Missing data is not zero adoption/);
 console.log('adoption public-schema and application header-copy tests pass');
