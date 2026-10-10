@@ -12,10 +12,6 @@
     {"name": "tuna-os/compass", "id": "org.tunaos.compass", "archs": ["amd64"], "display": "wayland"},
     {"name": "tuna-os/blueshell", "id": "org.tunaos.BlueShell", "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/ghostty", "issue_repo": "tuna-os/blueshell", "id": "com.mitchellh.ghostty", "archs": ["amd64", "arm64"]},
-    {"name": "tuna-os/bootc-installer", "id": "org.bootcinstaller.Installer", "archs": ["amd64"]},
-    {"name": "tuna-os/tuna-installer-xfce", "id": "org.tunaos.InstallerXfce", "archs": ["amd64"]},
-    {"name": "tuna-os/tuna-installer-kde", "id": "org.tunaos.InstallerKde", "archs": ["amd64"]},
-    {"name": "tuna-os/tuna-installer-cosmic", "id": "org.tunaos.InstallerCosmic", "archs": ["amd64"]},
-    {"name": "tuna-os/tuna-installer-niri", "id": "org.tunaos.InstallerNiri", "archs": ["amd64"]}
+    {"name": "tuna-os/bootc-installer", "ids": ["org.bootcinstaller.Installer", "org.tunaos.InstallerCosmic", "org.tunaos.InstallerKde", "org.tunaos.InstallerNiri", "org.tunaos.InstallerXfce"], "archs": ["amd64", "arm64"]}
   ]
 }
