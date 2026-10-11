@@ -55,6 +55,13 @@ scripts. Also run `just build` when the change can affect the generated site.
 Use `just --list` to see individual setup, preview, build, and validation
 recipes.
 
+### Additional validation before submission
+
+Run two additional checks before you submit:
+
+- **Accessibility:** `npm run a11y` audits the built site with axe-core (WCAG 2.2 A/AA) and must pass with zero violations. Run this after `npm run build`.
+- **Metrics:** `npm run test:metrics` validates the adoption metrics page with browser automation. Useful for changes that affect `/metrics`.
+
 ## Synchronized Project Documentation
 
 The daily sync of documentation generates many `docs/<project>/` trees from
