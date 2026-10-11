@@ -52,3 +52,10 @@ ShellCheck, yamllint with `.yamllint.yml`, or actionlint respectively.
 
 - [TunaOS Documentation](https://tunaos.org)
 - [Tromso GitHub Issues](https://github.com/tuna-os/tromso/issues)
+
+
+## Contribute compute — no code needed
+
+No time to write code? You can still push this project's backlog forward. A TunaOS AI-agent hive works on this repository. Lend the hive your AI subscription or API tokens, and your machine runs tasks from this project's backlog.
+
+- 🏫 [Contribute compute to the school hive](https://school.tunaos.org/contribute)
