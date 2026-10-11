@@ -4,35 +4,68 @@ Thanks for your interest! This project is part of the [TunaOS](https://tunaos.or
 
 ## Getting Started
 
-Install Node.js 24 and npm. Also install the
-[repository command runner](https://github.com/casey/just). Then fork the
-repository, clone your fork, and install the pinned dependencies:
+### Local Environment Setup
+
+Install Node.js 24, npm, and the
+[repository command runner](https://github.com/casey/just).
+Check them with `node --version`, `npm --version`, and `just --version`.
+
+**First-time setup:**
 
 ```bash
+git clone https://github.com/YOUR-USERNAME/docs.git
+cd docs
 npm ci
 ```
 
-Start Docusaurus on your computer with `just start`. Before you submit a change
-that affects pages, navigation, components, or configuration, build the
-production site with `just build`.
+Fork the repository on GitHub first. Replace `YOUR-USERNAME` with your GitHub name.
+`npm ci` installs the versions in the lockfile.
 
-Open an issue before a substantial documentation or site change. Maintainers
-can then confirm its scope.
+**Local development:**
 
-## Important: Which content can you edit?
+```bash
+just start
+```
 
-**Hand-written pages** (top-level `docs/`, `blog/`) — you can edit these freely.
-Your changes stay in place.
+Open the local address that `just start` prints. The site reloads when you edit a file.
 
-**Synced pages** (under `docs/<project>/`) — `sync-org-docs.yml` generates these daily
-from each project's source repository. The next sync overwrites any edits you make here
-(usually within 24 hours).
+**Before you submit a PR:**
 
-**To fix synced content**: Edit the source file in the project's own repository
-(e.g., to fix `docs/my-project/README.md`, update `README.md` in the
-`tuna-os/my-project` repository). The next daily sync will pull your fix here.
+```bash
+just preflight
+just build
+```
 
-For more details, see the generated-content section of [`AGENTS.md`](./AGENTS.md).
+`just preflight` checks types, prose, code, install commands, and tests.
+`just build` creates the production site in `build/`.
+
+### Opening an Issue
+
+Open an issue before a substantial documentation or site change (new sections,
+navigation rework, new components) so maintainers can confirm its scope.
+Small fixes (typos, links, single-page updates) do not need pre-approval.
+
+## Content Ownership
+
+This repository owns the pages at the top level of `docs/` and in `blog/`.
+For example, edit `docs/architecture.md` in this repository.
+Site code in `src/` and navigation in `docusaurus.config.js` also live here.
+
+Each day, [`sync-org-docs.yml`](/.github/workflows/sync-org-docs.yml)
+copies pages from projects into many `docs/<project>/` directories.
+It runs at 06:00 UTC and opens a PR for changes. A merge of that PR can
+replace edits made directly to copied pages. To fix a copied page, edit its
+source repository and wait for the sync PR to merge.
+
+The sync creates each project's `index.md` from its source `README.md`.
+Other files can come from the source root or its `docs/` directory.
+For example, `docs/bluefin-cli/index.md` comes from the bluefin-cli README.
+Look at the sync script and the source repository to confirm a file's owner.
+
+Some project directories also contain pages written here. For example,
+this repository owns `docs/tunaos/introduction.md`, while the sync copies
+that directory's `index.md` from its source. See [`AGENTS.md`](./AGENTS.md) for
+the sync rules and more detail about these mixed directories.
 
 ## Validation
 
