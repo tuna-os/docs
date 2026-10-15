@@ -19,8 +19,9 @@
 // not an error -- the page is accurate, it just leads with a command that
 // does not work yet, and it says so itself.
 
-import {readFileSync, readdirSync, statSync} from 'node:fs';
+import {readFileSync} from 'node:fs';
 import {join, relative} from 'node:path';
+import {walkMarkdownFiles as walk} from './lib/fs-walk.mjs';
 
 const ROOT = process.cwd();
 const FORMULA_API = 'https://formulae.brew.sh/api/formula';
@@ -45,16 +46,6 @@ function tapPaths(name) {
     ['cask', `Casks/${name}.rb`],
     ['cask', `Casks/${letter}/${name}.rb`],
   ];
-}
-
-function walk(dir) {
-  const files = [];
-  for (const entry of readdirSync(dir, {withFileTypes: true})) {
-    const path = join(dir, entry.name);
-    if (entry.isDirectory()) files.push(...walk(path));
-    else if (/\.(md|mdx)$/i.test(entry.name)) files.push(path);
-  }
-  return files;
 }
 
 // Returns each fenced block's body plus the 1-based file line its first body
