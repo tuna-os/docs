@@ -8,6 +8,10 @@
 
 name: Flatpak Remote Sanity Check
 
+permissions:
+  contents: read
+  packages: read
+
 on:
   push:
     branches: [main]
