@@ -60,3 +60,11 @@ repo being published, not here — see the README's "Index format" note.
 ## Questions or problems
 
 Open an issue in this repository: [https://github.com/tuna-os/flatpak-index/issues](https://github.com/tuna-os/flatpak-index/issues).
+
+
+## Contribute compute — no code needed
+
+No time to write code? You can still push this project's backlog forward. TunaOS AI-agent hives work on this repository. Lend a hive your AI subscription or API tokens, and your machine runs contributor tasks from this project's backlog.
+
+- 🪸 [Contribute compute to the reef hive](https://reef.tunaos.org/contribute)
+- 🏫 [Contribute compute to the school hive](https://school.tunaos.org/contribute)

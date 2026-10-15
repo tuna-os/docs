@@ -142,9 +142,11 @@ function onProse(content, fn) {
   return parts
     .map((part, i) => {
       if (i % 2 === 1) return part; // a fenced block
-      // Same again for inline `code` spans within the prose.
+      // Same again for inline `code` spans within the prose. A span may wrap
+      // onto the next line of its paragraph (CommonMark allows it), but not
+      // across a blank line.
       return part
-        .split(/(`[^`\n]*`)/g)
+        .split(/(`(?:[^`\n]|\n(?![ \t]*\n))*`)/g)
         .map((span, j) => (j % 2 === 1 ? span : fn(span)))
         .join('');
     })
@@ -192,10 +194,29 @@ function sanitizeHtml(content) {
       /<(img|br|hr|input|meta|link|source|col|area|base|embed|track|wbr)\b([^>]*?)\s*\/?>/gi,
       (_, tag, attrs) => `<${tag}${attrs.trimEnd()} />`,
     );
+    // Anything else after `<` is text. A synced README never means JSX, so
+    // `<catalog>` and `<frontend>` (placeholders in a table or in emphasis),
+    // `<<` and `<-` would otherwise reach MDX as tags it cannot close. Only a
+    // known HTML element, a closing tag or a comment keeps its `<`.
+    s = s.replace(/<(?!\/?(?:[a-zA-Z][\w-]*)\b|!--)/g, '&lt;');
+    s = s.replace(/<(\/?)([a-zA-Z][\w-]*)\b/g, (whole, slash, name) =>
+      HTML_ELEMENTS.has(name.toLowerCase()) ? whole : `&lt;${slash}${name}`,
+    );
     return s;
   });
   return c;
 }
+
+// The HTML elements a synced README may use and MDX renders as HTML.
+const HTML_ELEMENTS = new Set([
+  'a', 'abbr', 'area', 'audio', 'b', 'base', 'embed', 'link', 'meta', 'track', 'blockquote', 'br', 'caption', 'center', 'cite',
+  'code', 'col', 'colgroup', 'dd', 'del', 'details', 'dfn', 'div', 'dl', 'dt',
+  'em', 'figcaption', 'figure', 'font', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+  'hr', 'i', 'iframe', 'img', 'input', 'ins', 'kbd', 'li', 'mark', 'ol', 'p',
+  'picture', 'pre', 'q', 's', 'samp', 'small', 'source', 'span', 'strong',
+  'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead',
+  'tr', 'u', 'ul', 'var', 'video', 'wbr',
+]);
 
 // fixRelativeLinks rewrites repo-relative links and images to absolute URLs.
 //
@@ -322,7 +343,9 @@ status: ${status || 'unknown'}
 // in scripts/__tests__/sync-org-docs.test.mjs feeds frontmatter()'s real output
 // through isSyncedIndex, so the two cannot drift apart quietly: edit one and
 // that test fails.
-const SYNCED_INDEX = /^---\nsidebar_position: \d+\nsidebar_label: "[^"]*"\n\nstatus: \S+\n---\n/;
+// `mdx: {format: md}` is added after the fact by markUnparseable (below), so an
+// index it marked is still one this script wrote.
+const SYNCED_INDEX = /^---\nsidebar_position: \d+\nsidebar_label: "[^"]*"\n\nstatus: \S+\n(?:mdx:\n  format: md\n)?---\n/;
 
 // isSyncedIndex reports whether a document's front matter was written by this
 // script's frontmatter() rather than by a person.
@@ -366,12 +389,20 @@ function isSyncedIndex(content) {
 // re-check that a name it's given isn't one; the caller does that filtering
 // (readdirSync with withFileTypes, keeping only isFile() entries) before ever
 // calling this.
-function filesToRemove(existingFiles, writtenFiles, readIndexContent) {
+//
+// `couldWrite(file)` says whether this run could have written `file` at all.
+// A repo in SKIP_DOCS_DIR has its docs/ folder left alone, so its targetDir
+// mixes synced root docs with pages written by hand here (docs/tunaos/
+// introduction.md, building.md, …). Those were never this script's to write,
+// so they are never candidates — without this, every run deleted them and
+// the site build then failed on the sidebar entries that point at them.
+function filesToRemove(existingFiles, writtenFiles, readIndexContent, couldWrite = () => true) {
   const written = new Set(writtenFiles);
   const removable = [];
   const refused = [];
   for (const file of existingFiles) {
     if (written.has(file)) continue;
+    if (!couldWrite(file)) continue;
     if (file === 'index.md') {
       const content = readIndexContent();
       if (content !== null && isSyncedIndex(content)) {
@@ -384,6 +415,18 @@ function filesToRemove(existingFiles, writtenFiles, readIndexContent) {
     removable.push(file);
   }
   return {removable, refused};
+}
+
+// The root files the sync copies besides README.md, when a repo has no
+// ROOT_DOC_FILTER entry.
+const ROOT_DOC_NAMES = ['ARCHITECTURE', 'CONTRIBUTING', 'ROADMAP', 'TODO', 'SECURITY', 'SPEC'];
+
+// isRootDoc reports whether `file` in a targetDir is one the README or
+// root-docs stage writes: index.md, or a root doc the repo's filter allows.
+function isRootDoc(file, rootFilter = null) {
+  if (file === 'index.md') return true;
+  if (rootFilter !== null) return rootFilter.includes(file);
+  return /\.(md|rst)$/.test(file) && ROOT_DOC_NAMES.includes(file.replace(/\.(md|rst)$/, ''));
 }
 
 function subFrontmatter(title, position) {
@@ -678,12 +721,12 @@ function main() {
         }
         content = fm + content;
         writeFileSync(join(targetDir, 'index.md'), content);
+        WRITTEN.push(join(targetDir, 'index.md'));
         writtenFiles.push('index.md');
         console.log(`  ✓ README.md → index.md`);
       }
 
       // ── Additional root docs ──
-      const EXTRA = ['ARCHITECTURE', 'CONTRIBUTING', 'ROADMAP', 'TODO', 'SECURITY', 'SPEC'];
       const rootFilter = ROOT_DOC_FILTER[repo] || null;
       for (const file of readdirSync(dir).sort()) {
         const upper = file.replace(/\.(md|rst)$/, '');
@@ -693,7 +736,7 @@ function main() {
           if (!rootFilter.includes(file)) continue;
         } else {
           // Default: only known doc files
-          if (!EXTRA.includes(upper)) continue;
+          if (!ROOT_DOC_NAMES.includes(upper)) continue;
         }
         let content = readFileSync(join(dir, file), 'utf8');
         content = sanitizeHtml(content);
@@ -702,6 +745,7 @@ function main() {
         const title = upper.charAt(0) + upper.slice(1).toLowerCase();
         content = subFrontmatter(title, localPos++) + content;
         writeFileSync(join(targetDir, file), content);
+        WRITTEN.push(join(targetDir, file));
         writtenFiles.push(file);
         console.log(`  ✓ ${file}`);
       }
@@ -721,6 +765,7 @@ function main() {
           const title = file.replace(/\.(md|rst)$/, '').replace(/[-_]/g, ' ');
           content = subFrontmatter(title, localPos++) + content;
           writeFileSync(join(targetDir, file), content);
+        WRITTEN.push(join(targetDir, file));
           writtenFiles.push(file);
           console.log(`  ✓ docs/${file}`);
         }
@@ -738,6 +783,7 @@ function main() {
           const indexPath = join(targetDir, 'index.md');
           return existsSync(indexPath) ? readFileSync(indexPath, 'utf8') : null;
         },
+        SKIP_DOCS_DIR.has(repo) ? file => isRootDoc(file, rootFilter) : undefined,
       );
       for (const file of removable) {
         rmSync(join(targetDir, file), {force: true});
@@ -800,6 +846,74 @@ function main() {
   }
 }
 
+// Every page this run wrote, for markUnparseable.
+const WRITTEN = [];
+
+// markUnparseable compiles each synced page as MDX, the way the site build
+// will, and marks one that does not compile `mdx: {format: md}` (Docusaurus's
+// per-page front matter, `frontMatter.mdx.format`) so Docusaurus reads
+// it as CommonMark instead.
+//
+// sanitizeHtml handles the shapes of upstream markdown seen so far, but an
+// upstream README is free to contain anything GitHub renders, and one page MDX
+// cannot parse fails the whole site build: every synced update then waits
+// until someone teaches the sanitizer the new shape. As CommonMark the page
+// builds, and only its raw HTML is lost (it shows as text). The warning names
+// the page so the sanitizer can learn the shape later.
+async function markUnparseable(paths, compile = null) {
+  const mdxCompile = compile ?? (await import('@mdx-js/mdx')).compile;
+  const remarkGfm = compile ? null : (await import('remark-gfm')).default;
+  let marked = 0;
+  for (const path of paths) {
+    const content = readFileSync(path, 'utf8');
+    const fm = content.match(/^---\n[\s\S]*?\n---\n/);
+    if (!fm || /\nmdx:\n  format: md\n/.test(fm[0])) continue;
+    try {
+      // HTML comments as the site's markdown.mdx1Compat.comments reads them.
+      const body = content.slice(fm[0].length).replace(/<!--[\s\S]*?-->/g, '');
+      await mdxCompile(body, remarkGfm ? {remarkPlugins: [remarkGfm, rejectExpressions]} : {});
+    } catch (e) {
+      writeFileSync(path, withFormatMd(content));
+      marked++;
+      console.warn(`  ⚠️  ${path} is not valid MDX (${String(e.message).split('\n')[0]}); built as CommonMark`);
+    }
+  }
+  return marked;
+}
+
+// rejectExpressions fails the compile on a JavaScript expression or import.
+// `{server}` in an upstream README is prose to GitHub, but MDX compiles it to a
+// reference to a variable that does not exist, and the page then fails when
+// the site renders it rather than when it compiles. A synced page never means
+// JavaScript, so any expression marks it.
+function rejectExpressions() {
+  return (tree) => {
+    const walk = (node) => {
+      const found = findExpression(node);
+      if (found) throw new Error(`JavaScript expression \`${found}\` in prose`);
+      node.children?.forEach(walk);
+    };
+    walk(tree);
+  };
+}
+
+function findExpression(node) {
+  if (node.type === 'mdxjsEsm') return node.value.trim().split('\n')[0];
+  if ((node.type === 'mdxFlowExpression' || node.type === 'mdxTextExpression') && node.value.trim()) {
+    return `{${node.value.trim()}}`;
+  }
+  for (const attr of node.attributes ?? []) {
+    if (attr.type === 'mdxJsxExpressionAttribute') return `{${attr.value}}`;
+    if (attr.value?.type === 'mdxJsxAttributeValueExpression') return `{${attr.value.value}}`;
+  }
+  return null;
+}
+
+// withFormatMd adds `mdx: {format: md}` at the end of the front matter.
+function withFormatMd(content) {
+  return content.replace(/^(---\n[\s\S]*?\n)---\n/, '$1mdx:\n  format: md\n---\n');
+}
+
 export {
   sanitizeHtml,
   fixRelativeLinks,
@@ -808,6 +922,10 @@ export {
   subFrontmatter,
   isSyncedIndex,
   filesToRemove,
+  isRootDoc,
+  markUnparseable,
+  rejectExpressions,
+  withFormatMd,
   getStatusBanner,
   slugify,
   listOrgRepos,
@@ -825,4 +943,5 @@ export {
 // imported by the tests, which must not touch the network.
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   main();
+  await markUnparseable(WRITTEN);
 }

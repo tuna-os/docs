@@ -28,10 +28,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Install flatpak + xvfb
+      # sway: a headless Wayland session for the apps whose entry in
+      # expected-apps.json sets "display": "wayland" (no X11 in their sandbox).
+      - name: Install flatpak + xvfb + sway
         run: |
           sudo apt-get update
-          sudo apt-get install -y flatpak xvfb
+          sudo apt-get install -y flatpak xvfb sway
 
       - name: Run smoke test
         env:

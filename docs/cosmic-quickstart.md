@@ -56,11 +56,14 @@ ghcr.io/tuna-os/marlin:cosmic
 
 ### Switch to COSMIC with bootc
 
-From an existing TunaOS installation, switch to the COSMIC flavor with `bootc switch`:
+From an existing TunaOS installation, move to the COSMIC flavor with [bootc-migrate](/docs/bootc-migrate), a smarter `bootc switch`. It checks the target first and keeps your home directory and settings:
 
 ```bash
-# Switch to Yellowfin COSMIC
-sudo bootc switch ghcr.io/tuna-os/yellowfin:cosmic
+# Check first; this changes nothing
+sudo bootc-migrate --target-image ghcr.io/tuna-os/yellowfin:cosmic --dry-run
+
+# Move to Yellowfin COSMIC
+sudo bootc-migrate --target-image ghcr.io/tuna-os/yellowfin:cosmic
 sudo systemctl reboot
 ```
 

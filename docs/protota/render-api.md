@@ -1,5 +1,5 @@
 ---
-sidebar_position: 14
+sidebar_position: 15
 title: "render api"
 ---
 
@@ -66,7 +66,7 @@ pixel-faithful (real browser rasterisation, no html2canvas approximation).
 
 ## 2. Programmatic API — `protota.renderScreenshot(options)`
 
-The live agent handle (`window.protota`, see `src/utils/agent-api.ts`) can
+The live agent handle (`window.protota`, see `src/runtime/agentHandle.ts`) can
 capture a PNG of any screen of the **live document** without disturbing the
 editor — zoom, pan, selection, undo history, and persistence are untouched.
 The screen renders into a hidden offscreen container through the same

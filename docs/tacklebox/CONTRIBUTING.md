@@ -3,7 +3,7 @@ sidebar_position: 3
 title: "Contributing"
 ---
 
-Thanks for your interest in contributing! This project is part of the [TunaOS](https://tunaos.org) ecosystem.
+Thank you for your interest in this project! It is part of the [TunaOS](https://tunaos.org) ecosystem.
 
 ## Getting Started
 
@@ -12,7 +12,7 @@ Thanks for your interest in contributing! This project is part of the [TunaOS](h
    [`just`](https://just.systems) command runner.
 3. Read the project [README](https://github.com/tuna-os/tacklebox/blob/main/README.md), [user guide](https://github.com/tuna-os/tacklebox/blob/main/docs/USER-GUIDE.md), and
    [architecture overview](https://github.com/tuna-os/tacklebox/blob/main/ARCHITECTURE.md).
-4. Open an issue to discuss your change before submitting a PR.
+4. Open an issue to discuss your change before you submit a PR.
 
 ## Validate Your Changes
 
@@ -25,8 +25,8 @@ go vet ./...
 go test -tags=integration -run='Help' ./...
 ```
 
-If you change an example or fixture recipe, ensure every JSON file still
-parses:
+If you change an example or fixture recipe, make sure that every JSON file
+still parses:
 
 ```bash
 for recipe in examples/*.json fixtures/*.json; do
@@ -34,9 +34,9 @@ for recipe in examples/*.json fixtures/*.json; do
 done
 ```
 
-Media builds and boot tests need additional host tools, elevated privileges,
-and substantial disk space. Run the relevant script under `scripts/` when your
-change affects image assembly, bootloader entries, or the live boot path; the
+Media builds and boot tests need more host tools, elevated privileges, and
+substantial disk space. Run the relevant script under `scripts/` when your
+change affects the image, bootloader entries, or live boot path. The
 pull-request CI runs the broader smoke suite.
 
 ## Pull Requests

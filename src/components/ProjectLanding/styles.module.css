@@ -194,9 +194,9 @@
 }
 
 .sectionHead {
-  text-align: center;
-  max-width: 680px;
-  margin: 0 auto 3rem;
+  text-align: left;
+  max-width: none;
+  margin: 0 0 2.5rem;
 }
 
 .sectionHead h2 {
@@ -205,6 +205,66 @@
   letter-spacing: -0.02em;
   color: var(--tu-ink);
   margin: 0 0 0.5rem;
+}
+
+/* HTML, not plain text: an intro may carry a link. */
+.sectionSub {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--tu-dim);
+  margin: 0;
+}
+
+/* Underlined: the accent alone is too close to --tu-dim to mark a link. */
+.sectionSub a,
+.featText a {
+  color: var(--tu-accent);
+  text-decoration: underline;
+}
+
+/* ── Performance ────────────────────────────────────────────────────────── */
+
+.tableWrap {
+  max-width: 760px;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.perfTable {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  background: var(--tu-panel);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.perfTable th,
+.perfTable td {
+  padding: 0.75rem 1rem;
+  border: none;
+  border-bottom: 1px solid var(--tu-line);
+  text-align: left;
+  color: var(--tu-ink);
+}
+
+.perfTable thead th {
+  color: var(--tu-dim);
+  font-weight: 600;
+}
+
+.perfTable tbody th {
+  font-weight: 600;
+}
+
+.perfTable tbody tr:last-child th,
+.perfTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.perfTable td {
+  font-family: var(--ifm-font-family-monospace);
 }
 
 /* ── Screenshots ────────────────────────────────────────────────────────── */
@@ -284,7 +344,7 @@
 
 .featGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.25rem;
 }
 
@@ -322,7 +382,7 @@
 
 .installList {
   max-width: 760px;
-  margin: 0 auto;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -354,7 +414,7 @@
 
 .otherGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.25rem;
 }
 
@@ -453,4 +513,18 @@
   .hero {
     padding: 4.5rem 1rem 3.5rem;
   }
+}
+
+/* Section headings: left-aligned, in the display face, so landing pages share
+   the homepage's voice instead of centring every band. */
+.sectionHead h2 {
+  font-family: var(--tu-display);
+  font-size: clamp(1.9rem, 3.8vw, 2.7rem);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+}
+
+.heroTitle {
+  font-family: var(--tu-display);
+  letter-spacing: -0.04em;
 }

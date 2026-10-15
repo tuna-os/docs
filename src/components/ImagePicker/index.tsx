@@ -188,7 +188,7 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
           <CopyButton text={imageName} />
         </div>
         <div className={styles.resultRebaseHint}>
-          <code>bootc switch {imageName}</code>
+          <code>bootc-migrate --target-image {imageName}</code>
         </div>
       </div>
 
@@ -201,7 +201,7 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
           <div className={styles.resultNoIso}>Checking what is published…</div>
         ) : (
           <div className={styles.resultNoIso}>
-            {`No prebuilt ISO for this combination. Build one below, or install a standard ISO and run \`bootc switch ${imageName}\` afterward.`}
+            {`No prebuilt ISO for this combination. Build one below, or install a standard ISO and run \`bootc-migrate --target-image ${imageName}\` afterward.`}
           </div>
         )}
         <a href={getBuilderUrl(imageName)} className="button button--outline button--md">

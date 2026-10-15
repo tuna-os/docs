@@ -30,11 +30,13 @@ const FEATURED_PROJECTS: Array<{name: string; desc: string; to: string; icon: Ic
 type SectionHeadProps = {
   title: string;
   sub?: string;
+  eyebrow?: string;
 };
 
-function SectionHead({title, sub}: SectionHeadProps): ReactNode {
+function SectionHead({title, sub, eyebrow}: SectionHeadProps): ReactNode {
   return (
     <div className={styles.sectionHead}>
+      {eyebrow && <span className={styles.sectionEyebrow}>{eyebrow}</span>}
       <Heading as="h2" className={styles.sectionTitle}>
         {title}
       </Heading>
@@ -141,10 +143,10 @@ function InstallPathsBand(): ReactNode {
     {
       icon: 'layers',
       name: 'Rebase what you run',
-      desc: 'Already on bootc — Bluefin, Aurora, Fedora Atomic? Switch to a TunaOS image in one command and roll back if you do not like it.',
-      cta: 'Installation docs',
-      to: '/docs/installation',
-      code: 'sudo bootc switch ghcr.io/tuna-os/albacore:gnome',
+      desc: 'Already on bootc — Bluefin, Aurora, Fedora Atomic? bootc-migrate moves you to a TunaOS image, keeps /home, /var and /etc, and leaves the old deployment bootable until you commit.',
+      cta: 'bootc-migrate docs',
+      to: '/docs/bootc-migrate',
+      code: 'sudo bootc-migrate --target-image ghcr.io/tuna-os/albacore:gnome',
     },
     {
       icon: 'wrench',
@@ -156,15 +158,20 @@ function InstallPathsBand(): ReactNode {
   ];
 
   return (
-    <section className={styles.section}>
+    <section className={clsx(styles.section, styles.sectionGlow)}>
       <div className="container">
         <SectionHead
+          eyebrow="Install"
           title="Ways to install"
           sub="Four routes onto a TunaOS image. All of them end on the same bootc system, and all of them are reversible."
         />
-        <div className={styles.pipelineGrid}>
+        <div className={styles.pathGrid}>
           {paths.map((p, i) => (
-            <Link key={p.name} to={p.to} className={styles.pipelineCard}>
+            <Link
+              key={p.name}
+              to={p.to}
+              className={clsx(styles.pathCard, i === 0 && styles.pathCardFeatured)}
+            >
               <div className={styles.cardTop}>
                 <span className={styles.cardIcon}>
                   <Icon name={p.icon} size={22} />
@@ -192,12 +199,15 @@ function InstallPathsBand(): ReactNode {
 
 function HomepageFeaturesBand(): ReactNode {
   return (
-    <section className={styles.section}>
-      <div className="container">
-        <SectionHead
-          title="What TunaOS builds"
-          sub="Images, apps, and the tooling in between."
-        />
+    <section className={clsx(styles.section, styles.sectionTint)}>
+      <div className={clsx('container', styles.split)}>
+        <div className={styles.splitHead}>
+          <SectionHead
+            eyebrow="Overview"
+            title="What TunaOS builds"
+            sub="Images, apps, and the tooling in between."
+          />
+        </div>
         <HomepageFeatures />
       </div>
     </section>
@@ -237,16 +247,17 @@ function PipelineBand(): ReactNode {
     <section className={styles.section}>
       <div className="container">
         <SectionHead
+          eyebrow="Pipeline"
           title="Build pipeline"
           sub="The tools that turn a Containerfile into media: image build, boot test in a VM, ISO and USB authoring, package repositories."
         />
-        <div className={styles.pipelineGrid}>
+        <div className={styles.flow}>
           {tools.map((t, i) => (
             <Link
               key={t.name}
               to={t.to}
               {...(t.external ? {target: '_blank', rel: 'noopener noreferrer'} : {})}
-              className={styles.pipelineCard}
+              className={styles.flowStep}
             >
               <div className={styles.cardTop}>
                 <span className={styles.cardIcon}>
@@ -296,15 +307,20 @@ function AppsBand(): ReactNode {
   ];
 
   return (
-    <section className={styles.section}>
+    <section className={clsx(styles.section, styles.sectionTint)}>
       <div className="container">
         <SectionHead
+          eyebrow="Apps"
           title="Applications"
           sub="GTK4 apps built in the org and published as Flatpaks. They install on any distribution that runs Flatpak, not only on TunaOS images."
         />
-        <div className={styles.pipelineGrid}>
+        <div className={styles.appGrid}>
           {apps.map((a, i) => (
-            <Link key={a.name} to={a.to} className={styles.pipelineCard}>
+            <Link
+              key={a.name}
+              to={a.to}
+              className={clsx(styles.appCard, i === 0 && styles.appCardLead)}
+            >
               <div className={styles.cardTop}>
                 <span className={styles.cardIcon}>
                   <Icon name={a.icon} size={22} />

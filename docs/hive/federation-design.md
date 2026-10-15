@@ -1,5 +1,5 @@
 ---
-sidebar_position: 11
+sidebar_position: 12
 title: "federation design"
 ---
 
@@ -28,7 +28,7 @@ Registry storage defaults to `/data/federation/registry.json` and can be overrid
 A project maintainer installs/configures GitHub auth for their Hive, generates or writes the hive config (`hive.yaml`), deploys the Hive, and registers it:
 
 ```bash
-curl -X POST https://hive.kubestellar.io/api/hives/register \
+curl -X POST https://hive.hivecommons.dev/api/hives/register \
   -H "Content-Type: application/json" \
   -d '{
     "project_name": "drasi",

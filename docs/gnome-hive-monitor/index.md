@@ -94,3 +94,14 @@ the shell — no external dependencies.
 ## License
 
 Apache-2.0, matching upstream hive.
+
+## Contributing
+
+See [CONTRIBUTING.md](https://github.com/tuna-os/gnome-hive-monitor/blob/main/CONTRIBUTING.md) for local development setup, schema validation, packaging, and pull request guidelines.
+
+
+## Contribute compute — no code needed
+
+No time to write code? You can still push this project's backlog forward. A TunaOS AI-agent hive works on this repository. Lend the hive your AI subscription or API tokens, and your machine runs contributor tasks from this project's backlog.
+
+- 🪸 [Contribute compute to the reef hive](https://reef.tunaos.org/contribute)

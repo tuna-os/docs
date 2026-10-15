@@ -66,44 +66,32 @@ def check_index(load_json, errors, warnings):
     expected = load_json("expected-apps.json")["apps"]
 
     by_name = {}
-    for result in index.get("Results", []):
+    for result in index["Results"]:
         archs = set()
         refs = set()
         for image in result.get("Images", []):
             archs.add(image.get("Architecture"))
-            ref = image.get("Labels", {}).get("org.flatpak.ref", "")
-            if ref:
-                refs.add(ref)
-        by_name[result["Name"]] = {"result": result, "archs": archs, "refs": refs}
+            refs.add(image.get("Labels", {}).get("org.flatpak.ref", ""))
+        by_name[result["Name"]] = {"archs": archs, "refs": refs}
 
     for app in expected:
         name = app["name"]
         entry = by_name.get(name)
-
         if "ids" in app:
-            expected_ids = app["ids"]
+            # One repository serving several applications (e.g. the five
+            # installer frontends under tuna-os/bootc-installer): every
+            # expected id must be present and no stray ref may remain, so a
+            # dropped frontend fails instead of silently vanishing.
+            want_ids = app["ids"]
             if entry is None:
-                errors.append(f"{name}: missing from index/static entirely (expected ids {expected_ids})")
+                errors.append(f"{name}: missing from index/static entirely (expected ids {want_ids})")
                 continue
-
-            bad_refs = [r for r in entry["refs"] if not any(aid in r for aid in expected_ids)]
-            if bad_refs:
-                errors.append(f"{name}: ref(s) don't match expected ids {expected_ids}: {bad_refs}")
-
-            for aid in expected_ids:
-                id_archs = {
-                    img.get("Architecture")
-                    for img in entry["result"].get("Images", [])
-                    if aid in img.get("Labels", {}).get("org.flatpak.ref", "")
-                }
-                for arch in app.get("archs", []):
-                    if arch not in id_archs:
-                        errors.append(
-                            f"{name}: missing required arch '{arch}' for id {aid} (has {sorted(id_archs)})"
-                        )
-                for arch in app.get("archs_planned", []):
-                    if arch not in id_archs:
-                        warnings.append(f"{name}: planned arch '{arch}' for id {aid} not yet published")
+            missing = [wid for wid in want_ids if not any(wid in r for r in entry["refs"])]
+            if missing:
+                errors.append(f"{name}: missing expected id(s) {missing} (has {sorted(entry['refs'])})")
+            stray = [r for r in entry["refs"] if not any(wid in r for wid in want_ids)]
+            if stray:
+                errors.append(f"{name}: ref(s) don't match expected ids {want_ids}: {stray}")
         else:
             app_id = app["id"]
             if entry is None:
@@ -114,13 +102,13 @@ def check_index(load_json, errors, warnings):
             if bad_refs:
                 errors.append(f"{name}: ref(s) don't match expected id {app_id}: {bad_refs}")
 
-            for arch in app.get("archs", []):
-                if arch not in entry["archs"]:
-                    errors.append(f"{name}: missing required arch '{arch}' (has {sorted(entry['archs'])})")
+        for arch in app.get("archs", []):
+            if arch not in entry["archs"]:
+                errors.append(f"{name}: missing required arch '{arch}' (has {sorted(entry['archs'])})")
 
-            for arch in app.get("archs_planned", []):
-                if arch not in entry["archs"]:
-                    warnings.append(f"{name}: planned arch '{arch}' not yet published")
+        for arch in app.get("archs_planned", []):
+            if arch not in entry["archs"]:
+                warnings.append(f"{name}: planned arch '{arch}' not yet published")
 
     expected_names = {app["name"] for app in expected}
     unexpected = set(by_name) - expected_names

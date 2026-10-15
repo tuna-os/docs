@@ -14,6 +14,23 @@ status: unknown
 
 bootc-installer is a guided graphical installer for [bootc](https://containers.github.io/bootc/) container-native OS images. It handles everything from disk partitioning and encryption setup to post-install personalisation — including importing your files and settings from an existing Windows installation.
 
+> **This is the monorepo for every TunaOS / Bluefin installer frontend.** The
+> GNOME frontend lives at the root; the KDE, COSMIC, Niri and XFCE frontends
+> live under [`frontends/`](https://github.com/tuna-os/bootc-installer/blob/dev/frontends) and share the fisherman backend, the
+> recipe schema and the screen contract in [`shared/`](https://github.com/tuna-os/bootc-installer/blob/dev/shared). All five are
+> rendered screen by screen in [`docs/walkthrough/`](https://github.com/tuna-os/bootc-installer/blob/dev/docs/walkthrough/README.md).
+> Releases are promoted from `dev` to `prod` automatically once every check is
+> green: [`docs/RELEASE.md`](https://github.com/tuna-os/bootc-installer/blob/dev/docs/RELEASE.md). How the repositories were merged,
+> and what is still open from the old ones: [`docs/MIGRATION.md`](https://github.com/tuna-os/bootc-installer/blob/dev/docs/MIGRATION.md).
+
+| Frontend | Path | Toolkit | Walkthrough |
+|---|---|---|---|
+| GNOME | `bootc_installer/` | GTK4 / libadwaita (Python) | [docs/gui-walkthrough.md](https://github.com/tuna-os/bootc-installer/blob/dev/docs/gui-walkthrough.md) |
+| KDE Plasma | `frontends/kde/` | Qt 6 / Kirigami | [frontends/kde/docs/gui-walkthrough.md](https://github.com/tuna-os/bootc-installer/blob/dev/frontends/kde/docs/gui-walkthrough.md) |
+| COSMIC | `frontends/cosmic/` | libcosmic (Rust) | [frontends/cosmic/docs/gui-walkthrough.md](https://github.com/tuna-os/bootc-installer/blob/dev/frontends/cosmic/docs/gui-walkthrough.md) |
+| Niri | `frontends/niri/` | Quickshell QML + Go | [frontends/niri/docs/gui-walkthrough.md](https://github.com/tuna-os/bootc-installer/blob/dev/frontends/niri/docs/gui-walkthrough.md) |
+| XFCE | `frontends/xfce/` | GTK3 / PyGObject | [frontends/xfce/docs/gui-walkthrough.md](https://github.com/tuna-os/bootc-installer/blob/dev/frontends/xfce/docs/gui-walkthrough.md) |
+
 It supports two distinct boot stacks:
 
 | Stack | Images | Bootloader | Root FS | Layout |
@@ -393,7 +410,7 @@ ExecStart=flatpak run org.bootcinstaller.Installer --autoinstall /etc/bootc-inst
 
 ## Contributing Images
 
-The installer's image catalog is defined in [`fisherman/data/images.json`](https://github.com/projectbluefin/fisherman/blob/dev/data/images.json) (the `fisherman` backend is a git submodule pointing at projectbluefin/fisherman@dev). Adding a new image means adding an entry to that file. The structure is a recursive tree of groups and leaves:
+The installer's image catalog is defined in [`fisherman/data/images.json`](https://github.com/tuna-os/fisherman/blob/dev/data/images.json) (the `fisherman` backend is a git submodule pointing at tuna-os/fisherman@dev). Adding a new image means adding an entry to that file. The structure is a recursive tree of groups and leaves:
 
 ```jsonc
 {

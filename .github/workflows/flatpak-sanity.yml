@@ -8,6 +8,10 @@
 
 name: Flatpak Remote Sanity Check
 
+permissions:
+  contents: read
+  packages: read
+
 on:
   push:
     branches: [main]
@@ -19,6 +23,10 @@ on:
   schedule:
     - cron: '0 12 * * *'  # daily at 12:00 UTC, well after any overnight publish jobs
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   check:

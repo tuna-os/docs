@@ -5,7 +5,7 @@ title: "FACTORY STATUS"
 
 
 
-Measured 2026-09-02T09:47:13+00:00 from the live published indexes;
+Measured 2026-09-05T09:11:39+00:00 from the live published indexes;
 provenance (repomd revision, primary.xml sha256) is in
 `docs/factory-status.json`, which also carries the full built and
 needed lists this page truncates.
@@ -17,32 +17,28 @@ needs catalog version pins, which most entries do not carry yet.
 
 ## Progress since the last measurement
 
-Compared against 2026-08-26T05:58:10+00:00, the last measurement
+Compared against 2026-09-02T09:47:13+00:00, the last measurement
 that actually MERGED — so a large gap here means the daily
 refresh is not landing, which is its own defect:
 
-> **⚠ the previous measurement is 7 days old.** The refresh PR is not merging; every delta
-> below spans that whole window, and nothing in between
-> was recorded.
-
 | target/arch | built Δ | needed Δ | no movement for | newly built |
 |---|---|---|---|---|
-| debian/amd64 | +0 | +1 | 8 days | — |
-| debian/arm64 | +0 | +1 | 8 days | — |
-| el10/aarch64 | +0 | +2 | 8 days | — |
-| el10/x86_64 | +2 | +0 | — | libnotify, tecla |
-| fedora/x86_64 | +0 | +0 | ≥ 12 days | — |
-| hummingbird/aarch64 | +371 | -266 | — | ModemManager, NetworkManager-openconnect, NetworkManager-openvpn, NetworkManager-ssh, NetworkManager-vpnc, SDL3, … (373 total) |
-| hummingbird/x86_64 | +166 | -61 | — | Thunar, adwaita-fonts, alsa-firmware, alsa-tools, anaconda-webui, atkmm, … (169 total) |
-| opensuse-tumbleweed/aarch64 | +10 | +9 | newly measured | cpptrace-devel, danksearch, dgop, dms, dms-cli, dms-greeter, … (10 total) |
-| opensuse-tumbleweed/x86_64 | +10 | +9 | newly measured | cpptrace-devel, danksearch, dgop, dms, dms-cli, dms-greeter, … (10 total) |
-| ubuntu/amd64 | +0 | +2 | 8 days | — |
-| ubuntu/arm64 | +0 | +2 | 8 days | — |
+| debian/amd64 | +0 | +0 | 11 days | — |
+| debian/arm64 | +0 | +0 | 11 days | — |
+| el10/aarch64 | +0 | +0 | 11 days | — |
+| el10/x86_64 | +0 | +0 | 2 days | — |
+| fedora/x86_64 | +0 | +0 | ≥ 15 days | — |
+| hummingbird/aarch64 | -9 | -104 | — | SwayNotificationCenter, Thunar, appstream, at-spi2-core, atkmm, blueman, … (77 total) |
+| hummingbird/x86_64 | -93 | -20 | — | SwayNotificationCenter, gnome-disk-utility, gtksourceview4, libdbusmenu, libhandy, python-aiohappyeyeballs, … (15 total) |
+| opensuse-tumbleweed/aarch64 | +0 | +0 | 2 days | — |
+| opensuse-tumbleweed/x86_64 | +0 | +0 | 2 days | — |
+| ubuntu/amd64 | +0 | +0 | 11 days | — |
+| ubuntu/arm64 | +0 | +0 | 11 days | — |
 
-**REGRESSED — served by the previous measurement, absent now.** This is the repo-wipe shape (#124) caught at measurement time; treat it as an incident, not a statistic:
+**Retired — built by the previous measurement, no longer in the catalog.** The target adopted them, so the factory stopped owing them; this is work REMOVED (RFC 011 criterion 2), and it is why `built` can fall without anything being lost:
 
-- hummingbird/aarch64: google-noto-emoji-fonts, jsoncpp
-- hummingbird/x86_64: google-noto-emoji-fonts, jsoncpp, mako
+- hummingbird/aarch64: accountsservice, adw-gtk3-theme, adwaita-fonts, alsa-firmware, alsa-tools, augeas, chrony, containerd, ddcutil, distrobox, evtest, fastfetch, … (86 total)
+- hummingbird/x86_64: accountsservice, adw-gtk3-theme, adwaita-fonts, alsa-firmware, alsa-tools, augeas, chrony, containerd, ddcutil, distrobox, evtest, fastfetch, … (108 total)
 
 ## debian
 
@@ -242,93 +238,75 @@ xdg-desktop-portal-gnome
 
 | arch | catalog entries | built | needed | index packages |
 |---|---|---|---|---|
-| aarch64 | 778 | 633 | 145 | 3424 |
-| x86_64 | 778 | 736 | 42 | 8738 |
+| aarch64 | 665 | 624 | 41 | 3905 |
+| x86_64 | 665 | 643 | 22 | 8811 |
 
-Needed on aarch64 (145; first 40, full list in the JSON):
+Needed on aarch64 (41; first 40, full list in the JSON):
 
 ```
-SwayNotificationCenter
-Thunar
-anaconda
-appstream
-at-spi2-core
-atkmm
-blueman
 cockpit
 evolution-data-server
 evolution-ews
 firefox
 fprintd
 fwupd
-gcr
-gcr3
-gdm
 glycin
-gnome-bluetooth
-gnome-color-manager
-gnome-control-center
-gnome-desktop3
-gnome-disk-utility
 gnome-initial-setup
-gnome-keyring
-gnome-online-accounts
-gnome-session
-gnome-settings-daemon
-gnome-shell
 gnome-user-share
 gpsd
 grub2
-gsound
-gspell
-gssdp
 gstreamer1-plugins-bad-free
-gstreamer1-plugins-base
-gstreamer1-plugins-good
-gtk-layer-shell
-gtk2
-gtk3
+intel-media-driver-free
+kf6-kcoreaddons
+kf6-kguiaddons
+kf6-kjobwidgets
+kf6-knotifications
+kf6-kstatusnotifieritem
+kf6-kunitconversion
+kf6-kwidgetsaddons
+kf6-kxmlgui
+libayatana-ido
+libcanberra
+libosinfo
+libphonenumber
+librist
+libsoup3
+libvorbis
+libvpl
+libxfce4util
+nautilus
+pavucontrol
+plasma-desktop
+plasma-workspace
+qt6-qtmultimedia
+qt6-qtwebengine
+samba
+stoken
+vdirsyncer
+xfce4-settings
 ```
 
-Needed on x86_64 (42; first 40, full list in the JSON):
+Needed on x86_64 (22):
 
 ```
-SwayNotificationCenter
-anaconda
 cockpit
 evolution-data-server
 evolution-ews
 firefox
 fprintd
-gnome-disk-utility
 gnome-user-share
 gpsd
 grub2
 gstreamer1-plugins-bad-free
-gtksourceview4
 libcanberra
-libdbusmenu
-libffado
-libhandy
 libosinfo
 libphonenumber
-libratbag
-libreport
 librist
 libvorbis
 libxfce4util
-mozc
-python-aiohappyeyeballs
-python-aiosignal
-python-bugzilla
-python-dbus-next
-python-meh
-python-pydantic
-python-pydantic-core
 qt6-qtwebengine
 samba
 stoken
-udisks2
 vdirsyncer
 webkitgtk
 xfce4-settings
@@ -483,12 +461,12 @@ desktops tunaOS can wire (tunaOS#1755).
 
 | desktop | roots present | missing |
 |---|---|---|
-| bluefin | 48/77 | anaconda-live, bootc, bootupd, dracut-live, evolution-ews-core, firefox, … (29 total) |
+| bluefin | 49/77 | anaconda-live, bootc, bootupd, dracut-live, evolution-ews-core, firefox, … (28 total) |
 | cosmic | 5/5 | — |
 | gnome | 1/10 | gdm, gnome-control-center, gnome-initial-setup, gnome-session, gnome-settings-daemon, gnome-shell, … (9 total) |
 | kde | 3/5 | plasma-desktop, plasma-workspace |
-| niri | 2/6 | dms, dms-cli, dms-greeter, niri |
-| xfce | 2/6 | gtkgreet, libxfce4ui, xfconf, xfwl4 |
+| niri | 3/6 | dms, dms-cli, dms-greeter |
+| xfce | 5/6 | xfwl4 |
 
 ## hummingbird desktop coverage (x86_64)
 
@@ -498,7 +476,7 @@ desktops tunaOS can wire (tunaOS#1755).
 
 | desktop | roots present | missing |
 |---|---|---|
-| bluefin | 58/77 | anaconda-live, bootc, bootupd, dracut-live, evolution-ews-core, firefox, … (19 total) |
+| bluefin | 59/77 | anaconda-live, bootc, bootupd, dracut-live, evolution-ews-core, firefox, … (18 total) |
 | cosmic | 5/5 | — |
 | gnome | 10/10 | — |
 | kde | 5/5 | — |

@@ -8,15 +8,16 @@ status: unknown
 **A Matrix homeserver that stores rooms as a linear log, so state resolution
 never runs on the hot path.**
 
-[**Benchmarks vs Synapse, Continuwuity and Tuwunel**](https://tuna-os.github.io/spindle/comparisons.html)
+[**Benchmarks vs Synapse, Dendrite, Continuwuity and Tuwunel**](https://tuna-os.github.io/spindle/comparisons.html)
 · [micro-benchmarks](https://tuna-os.github.io/spindle/)
 · [spec coverage dashboard](https://tuna-os.github.io/spindle/dashboard.html)
 · [SPEC.md](https://github.com/tuna-os/spindle/blob/main/SPEC.md)
 
 > **Status: an experiment under construction, not a deployment.** The
 > client-server surface is broad and tested, federation interoperates with real
-> Synapse, and nothing here has ever run in production. There is no release, no
-> upgrade path promise, and the storage format has already broken once —
+> Synapse, and nothing here has ever run in production. Releases are weekly
+> `v0.0.x` prereleases that name a build and promise nothing else: no
+> upgrade path, and the storage format has already broken once —
 > deliberately, with the [test that caught it](https://github.com/tuna-os/spindle/blob/main/crates/spindle-store/tests/backend_compatibility.rs)
 > kept and inverted rather than deleted.
 
@@ -113,13 +114,13 @@ impossible and the exception path is dead code.
 | **M0** Prove the core | **Done** | Fork resolution vs `ruma-state-res` as a differential oracle; HAMT benchmarks; torn-write and restart recovery |
 | **M1** Local homeserver | **Done** | Rooms, timelines, state, membership, moderation, relations, threads, redaction, receipts, typing, account data, push rules, aliases, filters, `/context` |
 | **M2** Modern clients | **Done** | Media + thumbnails, S3 backend, Simplified Sliding Sync, E2EE transport, device lists, key backup, cross-signing, URL previews |
-| **M3** Federation | Interoperating | Signed requests, join/invite/leave/knock handshakes, backfill, state reads, outbound queue with backoff — live Spindle↔Synapse rooms in both directions |
+| **M3** Federation | Interoperating | Signed requests, join/invite/leave/knock handshakes, backfill, state reads, outbound queue with backoff — live Spindle↔Synapse rooms in both directions; MSC4242 state-DAG rooms (Hydra phase 2) and E2EE keys, to-device and device lists across the seam to a Neutrino mesh node, measured by a loopback rig |
 | **M4** Ecosystem | Substantial | Appservices (transactions, MSC2409 to-device, MSC4190), MSC3861 delegated auth, the `/_synapse/mas/*` surface, and a built-in OIDC provider so Element X login needs one binary |
 | **M5** Lifecycle | Substantial | 18 admin endpoints (also at `/_synapse/admin/v1`), `/metrics` with the fork-case counter, backup/restore/verify-media, versioned migrations |
 | **M6** Differentiators | Not started | Hub mode, MLS |
-| **M7** MatrixRTC | Started | **MSC4140 delayed events** — the dead-man's switch that stops calls accumulating ghost participants. No other Rust homeserver has them |
+| **M7** MatrixRTC | Server side served | **MSC4140 delayed events** — the dead-man's switch that stops calls accumulating ghost participants, which no other Rust homeserver has — plus MSC4354 sticky events, MSC4143 transport discovery, a built-in LiveKit JWT service or the OpenID round trip for an external one, ringing and decline. Element Call's own Playwright suite runs with Spindle in Synapse's seat: thirteen specs pass, among them a two-party call with video through LiveKit and MatrixRTC 2.0 sticky-event membership with a rejoin after an improper leave. Ringing, churn, a restart mid-call and the federated call are what remains of the gate |
 
-**180 routes** and a **311-test Complement ratchet** in CI, over a workspace of
+**224 routes** and a **310-test Complement ratchet** in CI, over a workspace of
 100+ test suites. The first two are gated — the [dashboard](https://github.com/tuna-os/spindle/blob/main/docs/dashboard.md)
 is parsed from the router and CI fails on drift, and the ratchet is a file every
 entry of which must pass — so what they say matches `main` rather than matching
@@ -203,7 +204,13 @@ The risks that would invalidate the headline claim are enumerated in
 | [docs/lifecycle.md](https://github.com/tuna-os/spindle/blob/main/docs/lifecycle.md) | Backup, restore, migrations |
 | [docs/rate-limits.md](https://github.com/tuna-os/spindle/blob/main/docs/rate-limits.md) | Every rate and cap, and the growth nothing bounds yet |
 | [docs/matrix-rtc.md](https://github.com/tuna-os/spindle/blob/main/docs/matrix-rtc.md) | Calls end to end: the SFU, the JWT service built in or beside, and what a token cannot promise |
+| [docs/mesh-federation.md](https://github.com/tuna-os/spindle/blob/main/docs/mesh-federation.md) | Federating with a Bluetooth mesh: the venue system, the loopback evidence, and the Neutrino gateway patch |
+| [docs/venue-playbook.md](https://github.com/tuna-os/spindle/blob/main/docs/venue-playbook.md) | Setting up the mesh and the conference Spindle, the test ladder, and the go/no-go list for 3,000 attendees |
+| [docs/venue-gateway.md](https://github.com/tuna-os/spindle/blob/main/docs/venue-gateway.md) | The venue gateway: the Neutrino node with the uplink, how to build, run, pair, and troubleshoot it |
 | [docs/dashboard.md](https://github.com/tuna-os/spindle/blob/main/docs/dashboard.md) | Generated endpoint and milestone coverage |
+| [docs/mscs.md](https://github.com/tuna-os/spindle/blob/main/docs/mscs.md) | Every MSC served, partly served, planned or declined — generated from the ledger CI holds to the code |
+| [docs/spec-gaps.md](https://github.com/tuna-os/spindle/blob/main/docs/spec-gaps.md) | What the pinned Matrix spec defines that the router does not serve, by the version that added it |
+| [docs/maintenance.md](https://github.com/tuna-os/spindle/blob/main/docs/maintenance.md) | Keeping up: the gates, the ratchets, the weekly upkeep report, and how a spec release or an MSC is absorbed |
 
 ---
 
@@ -222,7 +229,8 @@ so there is no database to provision.
 
 CI gates on all of the above plus the Complement ratchet, a config-drift check,
 a generated-dashboard drift check, and pinned-action and benchmark-tooling
-checks. New performance work is expected to arrive with a counting assertion
+checks. CONTRIBUTING.md has the longer version, and docs/releasing.md what a
+tag does. New performance work is expected to arrive with a counting assertion
 rather than a timing one, for the reason given above.
 
 ## License

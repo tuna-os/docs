@@ -24,6 +24,7 @@ export type IconName =
   | 'window'
   | 'hard-drive'
   | 'message-circle'
+  | 'compass'
   | 'arrow-right';
 
 const PATHS: Record<IconName, ReactNode> = {
@@ -163,6 +164,12 @@ const PATHS: Record<IconName, ReactNode> = {
     </>
   ),
   'message-circle': <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.9 8.9 0 0 1-3.8-.9L3 20.5l1.6-4.9A8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z" />,
+  compass: (
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <path d="m16.24 7.76-1.8 5.41a2 2 0 0 1-1.27 1.27L7.76 16.24l1.8-5.41a2 2 0 0 1 1.27-1.27z" />
+    </>
+  ),
   'arrow-right': (
     <>
       <path d="M5 12h14" />

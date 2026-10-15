@@ -9,7 +9,8 @@ status: alpha
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/tuna-os/xfce-linux/blob/main/LICENSE)
 
-**XFCE Wayland OCI image built with BuildStream** — a lightweight, immutable desktop OS image with the XFCE desktop environment.
+**An OCI image with XFCE Wayland, built through BuildStream** — a lightweight
+and immutable OS image with the XFCE desktop.
 
 Part of the [TunaOS](https://tunaos.org) ecosystem.
 
@@ -32,36 +33,40 @@ sudo bootc switch ghcr.io/tuna-os/xfce-linux:latest
 
 ## Stable release channel
 
-The first stable channel is published only after the nightly image, matching
-live ISO, plain install, and LUKS install checks are green. Once promoted,
-the immutable image is available at:
+The release workflow publishes the first stable channel only after all checks
+pass. The checks cover the nightly image, matching live ISO, plain install, and
+LUKS install. After promotion, use the immutable image at:
 
 ```bash
 podman pull ghcr.io/tuna-os/xfce-linux:stable
 sudo bootc switch ghcr.io/tuna-os/xfce-linux:stable
 ```
 
-The stable live ISO and checksum are published under
-`https://pub-<configured-r2-domain>/xfce-linux/stable/` as
+The workflow publishes the stable live ISO and checksum under
+`https://pub-<configured-r2-domain>/xfce-linux/stable/`. Their names are
 `xfce-linux-live-latest.iso` and `xfce-linux-live-latest.iso-CHECKSUM`.
-The promotion workflow verifies both objects before reporting the release
-ready, so downstream download pages can safely point at those stable names.
+The promotion workflow verifies both objects before it marks the release as
+ready. Thus, downstream download pages can safely use those stable names.
 
 ## Verifying Signatures
 
-OCI images and live ISOs are signed keylessly with [cosign](https://github.com/sigstore/cosign)
-via GitHub Actions OIDC (Sigstore/Fulcio) — no long-lived signing key to leak or rotate.
+CI signs each OCI image with [cosign](https://github.com/sigstore/cosign) and
+a project key. The public half is `cosign.pub` in this repository. The build
+copies it into the image at `/usr/share/pki/containers/xfce-linux.pub`, where
+`bootc` reads it. See [`docs/signing.md`](https://github.com/tuna-os/xfce-linux/blob/main/docs/signing.md).
+
+The project uses a key, not a keyless signature, because `bootc` verifies
+through containers-policy(5). That policy type takes a path to a public key
+and cannot express a Fulcio certificate identity.
 
 **OCI images:**
 
 ```bash
-cosign verify ghcr.io/tuna-os/xfce-linux:latest \
-  --certificate-identity-regexp 'https://github.com/tuna-os/xfce-linux/\.github/workflows/build-multirunner\.yml@.*' \
-  --certificate-oidc-issuer https://token.actions.githubusercontent.com
+cosign verify --key cosign.pub ghcr.io/tuna-os/xfce-linux:latest
 ```
 
-**Live ISOs** (`.sig`/`.cert` are published alongside each dated ISO, e.g.
-`xfce-linux-live-<date>-<sha>.iso.sig`):
+**Live ISO signatures** (`.sig` and `.cert` files accompany each dated ISO,
+such as `xfce-linux-live-<date>-<sha>.iso.sig`):
 
 ```bash
 cosign verify-blob xfce-linux-live-<date>-<sha>.iso \
@@ -74,7 +79,7 @@ cosign verify-blob xfce-linux-live-<date>-<sha>.iso \
 ## Docs
 
 - [XFCE Linux on tunaos.org](https://tunaos.org/docs/xfce-linux)
-- [Contributing](https://github.com/tuna-os/xfce-linux/blob/main/CONTRIBUTING.md)
+- [Contribution guide](https://github.com/tuna-os/xfce-linux/blob/main/CONTRIBUTING.md)
 
 ## License
 

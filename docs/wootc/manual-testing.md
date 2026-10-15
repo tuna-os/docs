@@ -1,22 +1,24 @@
 ---
-sidebar_position: 20
+sidebar_position: 24
 title: "manual testing"
 ---
 
-wootc is exercised nightly by an automated matrix of real Windows VMs, but
-a VM is not a laptop: virtual ethernet, virtual firmware, no vendor OEM
-partitions, no years of accumulated Windows. This is the pre-flight for
-trying wootc **interactively on real hardware** — five minutes that make
-the attempt safe and the feedback actionable.
+This protocol covers the legacy Wails path for native installation. It does not
+prove a Linux desktop inside Windows or the WinUI journey. Those release gates
+need their own tests on real hardware; see the [roadmap](https://github.com/tuna-os/wootc/blob/main/ROADMAP.md).
 
-wootc's whole design is reversibility (everything lives in `C:\wootc`, no
-repartitioning, Windows stays the default boot), so the blast radius is
-deliberately small. Treat it as alpha software anyway.
+The VM matrix does not cover vendor firmware, OEM partitions or years of
+changes to Windows. Use this protocol to collect evidence from a real machine.
+
+Installation changes Windows startup settings and boot files on the ESP.
+The BitLocker path may resize Windows and create a data partition.
+Linux data can live on the selected data volume, outside `C:\wootc`.
+Keep a backup before you test alpha boot software.
 
 ## Before you start
 
-1. **Have a backup of anything you can't lose.** wootc doesn't touch your
-   files — and you should never test alpha boot software without one.
+1. **Have a backup of anything you can't lose.** A successful VM test does
+   not prove that your machine or files will survive an installation failure.
 2. **Know your BitLocker recovery key** (Settings ▸ Privacy & security ▸
    Device encryption, or `manage-bde -protectors C: -get`). On the beta
    channel, BitLocker-encrypted systems are supported: the installer leaves
@@ -58,14 +60,15 @@ deliberately small. Treat it as alpha software anyway.
    are bridged (look for the "Windows drive" bookmark in the file manager).
 4. **The way back**: reboot → Windows starts by default. In Windows, the
    app's Manage screen offers "Restart into `<your distro>`" whenever you
-   want Linux again — and Uninstall puts everything back.
+   want Linux again. After uninstall, verify cleanup against the baseline below.
 
 ## If something goes wrong
 
-Nothing before the reboot leaves more than the `C:\wootc` folder and (late
-in the pipeline) one one-time boot entry — and a failure or cancel removes
-the boot entry again. A failed deploy boot returns to Windows by itself
-after 30 seconds.
+Changes before reboot include files on the ESP, boot entries, registry records
+and power settings. The BitLocker path can also change the partition layout.
+A failure or cancel can leave partial state. A detected deploy failure records
+diagnostics and requests a reboot. Confirm the Windows desktop after that request;
+a reboot request does not prove a Windows return.
 
 Collect, in this order, and attach to a GitHub issue. The
 [real hardware test report form](https://github.com/tuna-os/wootc/blob/main/.github/ISSUE_TEMPLATE/manual-test-report.yml)
@@ -79,9 +82,80 @@ asks for each item and records the machine details needed to triage it:
 | What the screen said | a phone photo beats a memory |
 
 Then run the uninstaller (Windows ▸ Settings ▸ Apps ▸ "TunaOS (wootc)", or
-`wootc.exe uninstall`): it removes the boot entry and ESP files, restores
-your Fast Startup/hibernation settings, and keeps `root.disk` unless you
-tick otherwise — so a fixed build can retry without re-downloading.
+`wootc.exe uninstall`). Uninstall tries cleanup; it can leave files or boot state behind.
+It tries to restore your recorded Fast Startup and hibernation settings.
+It keeps `root.disk` unless you choose to delete Linux data. Check the results
+below before you report restoration or retry installation.
+
+## Proving the uninstall put everything back
+
+"One uninstall puts everything back" is a v1.0 criterion ([#238]). On real
+hardware, this is where machines are most different. Each vendor has its own
+firmware boot entries. A dual-boot machine also has files on the ESP that
+belong only to their owner.
+
+The failures to find here are **silent**. Examples are an entry that stays,
+hibernation that stays off, or an ESP file of a different owner that is gone. To see them,
+you need a baseline, and **the uninstall itself deletes it**. So capture the
+baseline first:
+
+```powershell
+# After the install completes, BEFORE uninstalling (run as Administrator):
+.\tests\field\verify-uninstall.ps1 capture -Out C:\uninstall-proof
+```
+
+This command records:
+- The firmware boot entries.
+- Each ESP file, with its SHA-256.
+- The ESP ownership manifest.
+- Your live power settings.
+- `C:\wootc` and the Add/Remove entry.
+
+It also copies out `C:\wootc\install\prior-power.txt`. In this file, the
+installer records the hibernation and Fast Startup values from *before* it
+changed them.
+
+Uninstall, reboot **two times**, then run:
+
+```powershell
+.\tests\field\verify-uninstall.ps1 verify -Baseline C:\uninstall-proof -RootDisk keep
+```
+
+The command shows a checklist and writes it to
+`C:\uninstall-proof\checklist.md`. For each box, the checklist shows the
+result *and the evidence for it*. The command **exits with a non-zero code if
+a box fails**. Attach that file to your report. [#238] asks for this file.
+
+The script does not change the machine under test. It writes only its own two
+files into the folder that you name. The only other change is a temporary
+drive letter for the ESP. The script removes that letter before it stops.
+
+The checks:
+
+| Box | How it is decided |
+|---|---|
+| Firmware boot entries clean | `bcdedit /enum firmware` no longer lists any wootc entry (the captured identifiers are named, so you can see what went) |
+| ESP: every wootc-claimed file gone | each path in `EFI\wootc\wootc-owned.txt` is absent |
+| ESP: nothing else touched | every other file is still there **and byte-identical** — a name-only diff would miss a rewrite |
+| Hibernation / Fast Startup restored | current values match the recorded pre-install ones. A value that was *off* must still be off; restore is not "turn on" |
+| `C:\wootc` state | judged against the choice you made — see below |
+| Add/Remove Programs entry gone | the `Uninstall\wootc` key is unregistered |
+| Windows booted clean twice | boot events since the capture, with no bugcheck or unexpected shutdown |
+
+**`C:\wootc` is not always meant to disappear.** The default choice is to
+keep it. The Apps entry and a bare `wootc.exe uninstall` both use this choice.
+Then the folder stays with `disks\root.disk` and your logs, and the uninstall
+removes only `install\`. Use `-RootDisk delete` only if you ticked *"Also
+delete my Linux data"*. A correct keep run fails if you grade it against
+"the folder is gone". Do not record that ✘, because it is not a real failure.
+
+**The variant with orphaned leftovers.** On one machine, also test the path
+where you delete `C:\wootc` by hand *before* the uninstall. Capture the
+baseline first on this machine too. The power record is in the folder that you
+delete, so the capture is the only way to grade the power box. Then add
+`-Orphaned` to the verify run.
+
+[#238]: https://github.com/tuna-os/wootc/issues/238
 
 ## Debug mode
 

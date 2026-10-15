@@ -94,5 +94,12 @@ compatibility work here.
 
 ## License
 
-GPL-3.0-or-later.  Test fixtures under `tests/fixtures/` are sourced from
+GPL-3.0-or-later.  Test fixtures under `tests/fixtures/` come from
 LibreOffice (`qa/`) under MPL-2.0 — see `tests/fixtures/PROVENANCE.md`.
+
+
+## Contribute compute — no code needed
+
+No time to write code? You can still push this project's backlog forward. A TunaOS AI-agent hive works on this repository. Lend the hive your AI subscription or API tokens, and your machine runs contributor tasks from this project's backlog.
+
+- 🪸 [Contribute compute to the reef hive](https://reef.tunaos.org/contribute)
