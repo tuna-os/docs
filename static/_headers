@@ -1,0 +1,10 @@
+# Cloudflare Workers static-asset headers (copied into build/ by Docusaurus).
+# /switch-to-bazzite is an unlisted preview pending Universal Blue's approval
+# of the Bazzite mark: keep it and its images out of search engines.
+# See src/components/SwitchToBazzite/README.md.
+/switch-to-bazzite
+  X-Robots-Tag: noindex, nofollow
+/switch-to-bazzite/*
+  X-Robots-Tag: noindex, nofollow
+/img/switch-to-bazzite/*
+  X-Robots-Tag: noindex, nofollow
