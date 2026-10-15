@@ -44,9 +44,67 @@ try {
   assert.deepEqual(await failure.json(), {error: 'adoption_metrics_unavailable'});
   assert.equal((await worker.fetch(new Request('https://tunaos.org/api/adoption', {method: 'POST'}), {})).status, 405);
   assert.equal(await worker.fetch(new Request('https://tunaos.org/metrics'), {ASSETS: {fetch: () => 'asset'}}), 'asset');
+
+  // Each upstream failure path logs a distinct, fixed reason string server-side
+  // (Cloudflare Workers Logs) so an operator can tell them apart without
+  // reproducing the request. The log call must never carry the visitor's
+  // cookie, IP, or query string — only fixed reasons and non-visitor detail
+  // (upstream status, byte size, parse/schema error text).
+  const oldError = console.error;
+  const logged = [];
+  console.error = (...args) => logged.push(args);
+  try {
+    const req = () => new Request('https://tunaos.org/api/adoption', {headers: {'Cookie': 'secret', 'CF-Connecting-IP': '192.0.2.1'}});
+
+    logged.length = 0;
+    globalThis.fetch = async () => new Response(null, {status: 502});
+    await worker.fetch(req(), {});
+    assert.equal(logged.length, 1);
+    assert.match(logged[0][0], /^adoption-proxy: upstream_http_error/);
+    assert.equal(logged[0][1], 502);
+
+    logged.length = 0;
+    globalThis.fetch = async () => new Response('not json', {headers: {'content-type': 'text/plain'}});
+    await worker.fetch(req(), {});
+    assert.match(logged[0][0], /^adoption-proxy: upstream_wrong_content_type/);
+
+    logged.length = 0;
+    globalThis.fetch = async () => Response.json({not: 'valid'});
+    await worker.fetch(req(), {});
+    assert.match(logged[0][0], /^adoption-proxy: upstream_schema_mismatch/);
+
+    logged.length = 0;
+    globalThis.fetch = async () => new Response('{not valid json', {headers: {'content-type': 'application/json'}});
+    await worker.fetch(req(), {});
+    assert.match(logged[0][0], /^adoption-proxy: upstream_invalid_json/);
+
+    logged.length = 0;
+    globalThis.fetch = async () => new Response('x'.repeat(512001), {headers: {'content-type': 'application/json'}});
+    await worker.fetch(req(), {});
+    assert.match(logged[0][0], /^adoption-proxy: upstream_oversize_feed/);
+    assert.ok(logged[0][1] > 512000);
+
+    logged.length = 0;
+    globalThis.fetch = async () => { throw Object.assign(Error('boom'), {name: 'TypeError'}); };
+    await worker.fetch(req(), {});
+    assert.match(logged[0][0], /^adoption-proxy: upstream_fetch_failed/);
+
+    logged.length = 0;
+    globalThis.fetch = async () => { throw Object.assign(Error('timed out'), {name: 'TimeoutError'}); };
+    await worker.fetch(req(), {});
+    assert.match(logged[0][0], /^adoption-proxy: upstream_timeout/);
+
+    // No logged call ever contains the visitor's cookie, IP, or query string.
+    for (const call of logged) {
+      const text = call.map((value) => String(value)).join(' ');
+      assert.ok(!text.includes('secret'), text);
+      assert.ok(!text.includes('192.0.2.1'), text);
+    }
+  } finally { console.error = oldError; }
 } finally {globalThis.fetch = oldFetch;}
 const config = JSON.parse(readFileSync('wrangler.jsonc', 'utf8'));
 assert.deepEqual(config.assets.run_worker_first, ['/api/adoption']);
 assert.deepEqual(config.services, [{binding: 'COUNTME', service: 'tunaos-countme'}]);
 assert.match(readFileSync('src/pages/metrics.tsx', 'utf8'), /Missing data is not zero adoption/);
 console.log('adoption public-schema and application header-copy tests pass');
+
