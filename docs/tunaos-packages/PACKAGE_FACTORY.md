@@ -12,6 +12,7 @@ targets, and publishes only validated repositories to Cloudflare R2.
 | Target | Format | Repository | Status |
 |---|---|---|---|
 | EL10 | RPM | rpm-md | supported |
+| Fedora ELN | RPM | rpm-md | supported |
 | Ubuntu | DEB | APT | supported foundation |
 | Debian Sid | DEB | APT | supported foundation |
 | openSUSE Tumbleweed | RPM | rpm-md | supported foundation |
@@ -34,6 +35,7 @@ and the Rawhide-root `GLIBC_2.44` leak in `docs/HUMMINGBIRD-TARGET.md` §2).
 |---|---|---|---|
 | EL10 | mock + native specs (`src/gnome-5x`, `src/deps`, `src/xfce-wayland`) | `centos-stream-10-ci` (+CRB, EPEL as build inputs) | `build-gnome50-verify.yml` (Lima VM, GDM) |
 | Fedora | mock + native specs | `fedora-44-ci` | clean-install cell |
+| Fedora ELN | mock + native specs / Tideforge | `fedora-eln-ci` | clean-install cell |
 | Hummingbird | mock + Rawhide dist-git imports | Fedora 44 + public-hummingbird by priority (`hummingbird-ci*.cfg`) | static installability walk + `dnf --assumeno` inside the pinned bootc-os image |
 | Ubuntu, Debian | Tideforge → `debian/` + container build | the target's own container | clean-install cell; session smokes declared, not yet implemented |
 | openSUSE Tumbleweed | Tideforge → spec + zypper build | Tumbleweed container | clean-install cell |

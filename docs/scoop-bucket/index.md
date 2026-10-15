@@ -21,7 +21,7 @@ tool releases to ship assets.
 
 ## Contributing manifests
 
-Add Scoop manifests as JSON files under `bucket/`. Before opening a pull
+Add Scoop manifests as JSON files under `bucket/`. Before you open a pull
 request, run the dependency-free validator and its unit tests from the
 repository root:
 

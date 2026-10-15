@@ -41,7 +41,7 @@ written to.
 CronJobs:
 
 - `TestHousekeepingSampleRendersLive` checks it against the snapshot
-  `internal/housekeeping/testdata/live-cronjobs-20261001T1800.yaml`.
+  `internal/housekeeping/testdata/live-cronjobs-20261001T1915.yaml`.
 - The live check is read-only: `go run ./cmd/hive-shadow-diff --live --housekeeping`.
 
 **Modes**, per object and overridable per job (`jobs[].mode`):
@@ -126,7 +126,7 @@ port fixed these gaps:
 
 - `.status.report` is the pass in the bash's own output format.
 - `TestGoldenLiveJob` reproduces job `hive-shared-auth-29847960`
-  (2026-10-01 18:00Z) byte for byte.
+  (2026-10-01 19:15Z) byte for byte.
 - `TestDifferentialAgainstBash` runs the **live script** (testdata copy) and
   the port on identical local trees through a kubectl stub. It covers 7
   scenarios × check/reconcile: healthy, empty token, private copy plus no pod,
