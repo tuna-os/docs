@@ -14,6 +14,7 @@
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
     "check-install-commands": "node scripts/check-install-commands.mjs",
+    "check-sidebar-coverage": "node scripts/check-sidebar-coverage.mjs",
     "a11y": "node scripts/a11y.mjs",
     "test:metrics": "node scripts/metrics-smoke.mjs"
   },
