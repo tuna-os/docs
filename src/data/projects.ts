@@ -315,7 +315,7 @@ export const PROJECTS: Project[] = [
     ],
     install: [
       {label: 'macOS / Linux (Go)', code: 'go install github.com/tuna-os/bluefin-cli@latest'},
-      {label: 'Homebrew (experimental)', code: 'brew tap tuna-os/homebrew-tap\nbrew install bluefin-cli'},
+      {label: 'Homebrew (experimental)', code: 'brew tap ublue-os/homebrew-experimental-tap\nbrew install bluefin-cli'},
     ],
   },
   {
