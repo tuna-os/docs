@@ -35,6 +35,18 @@ def test_check_flatpakrepo_passes_when_present():
     assert errors == []
 
 
+def _labels(ref):
+    """Index labels as prepare-flatpak-icons.mjs leaves them: ref plus a
+    remote icon URL in the AppStream catalogue."""
+    _, app_id, arch, _ = ref.split("/")
+    icon = f"https://tunaos.org/flatpak/icons/{app_id}-{arch}.png"
+    appdata = (
+        f'<components><component type="desktop-application"><id>{app_id}</id>'
+        f'<icon type="remote" width="128" height="128">{icon}</icon></component></components>'
+    )
+    return {"org.flatpak.ref": ref, "org.freedesktop.appstream.appdata": appdata}
+
+
 INDEX = {
     "Results": [
         {
@@ -42,7 +54,7 @@ INDEX = {
             "Images": [
                 {
                     "Architecture": "amd64",
-                    "Labels": {"org.flatpak.ref": "app/org.tunaos.Example/x86_64/stable"},
+                    "Labels": _labels("app/org.tunaos.Example/x86_64/stable"),
                 },
             ],
         },
@@ -67,6 +79,27 @@ def test_check_index_passes_for_matching_app():
     check_flatpak_remote.check_index(_loader(), errors, warnings)
     assert errors == []
     assert warnings == []
+
+
+def _index_with_labels(labels):
+    return {"Results": [{"Name": "tuna-os/example", "Images": [{"Architecture": "amd64", "Labels": labels}]}]}
+
+
+def test_check_index_flags_missing_remote_icon():
+    labels = _labels("app/org.tunaos.Example/x86_64/stable")
+    labels["org.freedesktop.appstream.appdata"] = (
+        "<components><component><id>org.tunaos.Example</id></component></components>"
+    )
+    errors, warnings = [], []
+    check_flatpak_remote.check_index(_loader(index=_index_with_labels(labels)), errors, warnings)
+    assert any("missing Bazaar-compatible remote icon URL" in e for e in errors)
+
+
+def test_check_index_flags_missing_appstream():
+    labels = {"org.flatpak.ref": "app/org.tunaos.Example/x86_64/stable"}
+    errors, warnings = [], []
+    check_flatpak_remote.check_index(_loader(index=_index_with_labels(labels)), errors, warnings)
+    assert any("AppStream XML is missing or invalid" in e for e in errors)
 
 
 def test_check_index_flags_missing_app():
@@ -109,7 +142,7 @@ def _multi_app_index(refs):
                 "Images": [
                     {
                         "Architecture": "amd64",
-                        "Labels": {"org.flatpak.ref": ref},
+                        "Labels": _labels(ref),
                     }
                     for ref in refs
                 ],
