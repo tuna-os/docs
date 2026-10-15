@@ -111,7 +111,7 @@ The long pole binds from Wâ‰ˆ7. Below that the packing is essentially perfect â€
    measured 126 s mean is **~23.8 h of serialised mock**, and it is being asked
    of one runner out of the org's 60.  `desktop: all` cannot ever complete:
    gnome-00 alone was 288 m against a 360 m job cap.
-3. **Runner size.**  Not actionable.  Blacksmith runners were removed org-wide
+3. **Runner size.**  Not actionable.  Third-party large runners were removed org-wide
    on 2026-08-08 and every `runs-on:` in this repository is now `ubuntu-latest`
    or `ubuntu-24.04-arm`; no larger GitHub-hosted label is in use anywhere here
    and there is nothing to verify an entitlement against.  Note also that four
