@@ -3,13 +3,13 @@ sidebar_position: 2
 title: "Contributing"
 ---
 
-Thank you for your interest in contributing to the XFCE Linux BuildStream project!
+Thank you for your interest in the BuildStream project for XFCE Linux!
 
 ## Getting Started
 
 ### Prerequisites
-- [just](https://just.systems/) (use a current release; Ubuntu 24.04's
-  packaged version is too old for this repository's grouped recipes)
+- The [`just`](https://just.systems/) command runner. Use a current release.
+  Ubuntu 24.04 has a version that is too old for the grouped recipes.
 - BuildStream 2.7.0+ or Podman for the repository's `bst2` container
 - Podman
 - QEMU + KVM
@@ -48,10 +48,10 @@ git checkout -b feature/your-feature-name
 #### Adding XFCE Components
 
 Add the component's BuildStream element under `elements/`, then reference that
-element from the appropriate composition element. Use a neighboring checked-in
-element as the schema example; component definitions are BuildStream files, not
-the `name`/`repo`/`checkout` mapping previously shown here. Local sources should
-track upstream release tags unless the exception is documented in
+element from the appropriate composition element. Use a checked-in element in
+the same directory as the schema example. Component definitions are BuildStream
+files, not the `name`/`repo`/`checkout` map that this guide showed before. Local
+sources should use release tags from upstream. Document exceptions in
 [`docs/ci-and-iso-pipeline.md`](https://github.com/tuna-os/xfce-linux/blob/main/docs/ci-and-iso-pipeline.md#release-linked-sources).
 
 #### Modifying Element Definitions
@@ -132,9 +132,9 @@ Fixes: #issue-number (if applicable)
 - `feat:` New feature
 - `fix:` Bug fix
 - `docs:` Documentation
-- `refactor:` Code restructuring
+- `refactor:` Code structure changes
 - `build:` Build process changes
-- `test:` Testing changes
+- `test:` Test changes
 - `chore:` Maintenance
 
 ## Build System
@@ -194,7 +194,7 @@ xfce-linux/
 
 ## Testing
 
-Run the fast test suites before pushing:
+Run the fast test suites before you push:
 
 ```bash
 bats tests/bats/*.bats
@@ -239,16 +239,16 @@ journalctl -u xfce-session -n 50
 ## Known Issues & Solutions
 
 See `docs/technical/SOLUTIONS_AND_ANALYSIS.md` for:
-- Bootc multi-layer OCI issue (solutions provided)
-- Artifact export dependency resolution
+- OCI issue with multiple bootc layers (solutions provided)
+- Resolution of dependencies during artifact export
 - SSH authentication workarounds
 
 ## Code Review Process
 
 1. **Automated Checks:**
    - BATS and pytest test suites
-   - Full BuildStream dependency-graph validation
-   - Justfile parsing
+   - Validation of the full dependency graph in BuildStream
+   - Justfile syntax checks
    - ShellCheck, yamllint, actionlint, and Renovate configuration validation
 
 2. **Manual Review:**
@@ -256,8 +256,8 @@ See `docs/technical/SOLUTIONS_AND_ANALYSIS.md` for:
    - Verify documentation
    - Test build locally
 
-3. **Testing:**
-   - Fast tests pass locally
+3. **Tests:**
+   - Make sure that you pass the fast tests on your machine
    - Relevant image, ISO, or install tests pass for the scope of the change
    - No regressions
 
@@ -265,7 +265,7 @@ See `docs/technical/SOLUTIONS_AND_ANALYSIS.md` for:
 
 - **Large builds take time:** 88-90 minutes typical
 - **Cache is essential:** 127GB local cache with remotes
-- **Network critical:** Build pulls from remote caches
+- **Important network access:** The build pulls from remote caches
 - **Disk space:** ~200GB for cache + artifacts
 
 ## Troubleshooting
@@ -296,7 +296,7 @@ bst show --deps elements/path/to/element.bst
 ```
 
 ### VM Boot Issues
-- Check BuildStream artifacts exist
+- Make sure that artifacts from BuildStream exist
 - Verify QEMU installation: `qemu-system-x86_64 --version`
 - Check KVM availability: `kvm-ok` or `grep vmx /proc/cpuinfo`
 
@@ -305,7 +305,7 @@ bst show --deps elements/path/to/element.bst
 - Use Markdown for all documentation
 - Include code examples where helpful
 - Keep README.md up-to-date
-- Document breaking changes clearly
+- Clearly document incompatible changes
 - Update SOLUTIONS_AND_ANALYSIS.md with new findings
 
 ## Questions?
@@ -317,11 +317,12 @@ bst show --deps elements/path/to/element.bst
 
 ## License
 
-This project integrates open-source components with various licenses (GPL, LGPL, MIT). Ensure contributions respect these licenses.
+This project includes open-source components with various licenses (GPL, LGPL,
+MIT). Make sure that contributions comply with these licenses.
 
 ---
 
-**Happy Contributing!** 🚀
+**Thank you for your contribution!** 🚀
 
 For more information, see:
 - docs/README.md — Main guide

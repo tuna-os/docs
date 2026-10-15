@@ -16,7 +16,7 @@ Thank you for helping improve KubeStellar Hive. This guide is for contributing c
 
 ## Repository layout
 
-- `src/` — the current Go module (`github.com/kubestellar/hive`) and the main development target for this repository.
+- `src/` — the current Go module (`github.com/hivecommons/hive`) and the main development target for this repository.
   - `src/cmd/hive` — main Hive binary.
   - `src/cmd/hivectl`, `src/cmd/apiproxy`, `src/cmd/hive-backup` — supporting command-line tools.
   - `src/pkg/` — Go packages for agents, GitHub integration, scheduling, policies, dashboards, hubs, backups, and related runtime behavior.
@@ -135,8 +135,20 @@ The sign-off adds a `Signed-off-by:` trailer certifying that you have the right 
 - Include `Fixes #<issue>` lines for issues the PR closes.
 - Describe what changed, why, and how you tested it.
 - Include the relevant command output or a short note such as `Not run (docs only)` when tests are not applicable.
-- Add a [CHANGELOG.md](https://github.com/tuna-os/hive/blob/v4/CHANGELOG.md) entry under `Unreleased` for user-visible changes — features, fixes, security changes, migrations, deprecations, and breaking changes. Routine refactors, test-only changes, and dependency churn are explicitly out of scope; see the guidance at the top of that file. A GitHub Actions job leaves a one-time advisory comment when a PR touches code without touching the changelog: it is a reminder, not a merge gate, and an entry is not required when the change is not user-visible.
+- Add a changelog fragment under [`changelog.d/`](https://github.com/tuna-os/hive/blob/v4/changelog.d/README.md) for user-visible changes — features, fixes, security changes, migrations, deprecations, and breaking changes (see "Changelog fragments" below). Routine refactors, test-only changes, and dependency churn are explicitly out of scope — add the `no-changelog` label if the advisory `changelog-fragment-guard` check asks anyway. Do **not** append to `CHANGELOG.md`'s `## Unreleased` section directly: every PR editing that one shared heading is what made unrelated PRs merge-conflict with each other ([#5675](https://github.com/hivecommons/hive/issues/5675)); fragments are compiled into [CHANGELOG.md](https://github.com/tuna-os/hive/blob/v4/CHANGELOG.md) automatically at release time.
 - Expect maintainers to ask for focused follow-up changes rather than broad drive-by edits.
+
+## Changelog fragments
+
+One file per PR, named `changelog.d/<category>-<pr-or-slug>.md` where the category (`added`, `changed`, `deprecated`, `fixed`, `security`) picks the CHANGELOG subsection — and, through it, the semver bump of the next release. The file's content is exactly your entry: a single `- ` bullet in the same narrative style as existing `CHANGELOG.md` entries, no headings. The complete workflow:
+
+```bash
+echo '- The relay no longer drops long tasks ([#1234](https://github.com/hivecommons/hive/issues/1234)).' > changelog.d/fixed-1234-relay-drop.md
+git add changelog.d/fixed-1234-relay-drop.md
+git commit -s
+```
+
+`changelog.d/README.md` has the full format, the `no-changelog` exemption, and the release-marker escape hatch. Transition note: direct `CHANGELOG.md` edits are still accepted until 2026-09-09 so in-flight PRs can land unreworked.
 
 ## Maintainer resources
 

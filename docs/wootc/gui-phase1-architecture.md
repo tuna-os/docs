@@ -1,5 +1,5 @@
 ---
-sidebar_position: 18
+sidebar_position: 22
 title: "gui phase1 architecture"
 ---
 

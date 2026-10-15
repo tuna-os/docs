@@ -14,10 +14,14 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   build:
     name: Build tunaos-org
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
         with:
@@ -33,6 +37,12 @@ jobs:
 
       - name: Build the site
         run: npm run build
+
+      - name: Install browser for metrics checks
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify metrics page and accessibility
+        run: npm run test:metrics
 
       - name: Install Wrangler
         run: npm install --global wrangler@4

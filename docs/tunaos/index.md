@@ -11,7 +11,7 @@ status: stable
 ## TunaOS
 ### *Cloud-native, immutable desktop Linux images*
 
-*One bootc-native desktop experience across Enterprise Linux and community distributions*
+*One desktop experience with bootc across Enterprise Linux and community distributions*
 
 ---
 
@@ -23,17 +23,17 @@ status: stable
 
 </div>
 
-> 🎃 **Hacktoberfest 2026**: We are participating! Looking for your first open-source PR? Check out our [good first issues](https://github.com/tuna-os/tunaOS/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) and join us on Matrix for maintainer office hours in October.
+> 🎃 **Hacktoberfest 2026:** Join us! Is this your first open-source PR? See our [good first issues](https://github.com/tuna-os/tunaOS/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22). You can also join the office hours for maintainers in October on Matrix.
 
 ## About TunaOS
 
-TunaOS builds **bootc-based desktop operating systems** with atomic updates and straightforward rollbacks. Choose an Enterprise Linux base for long-term stability or an alternative distribution for a faster release cadence, while keeping the same image-based management model.
+TunaOS builds **bootc-based desktop operating systems** with atomic updates and straightforward rollbacks. Choose an Enterprise Linux base for long-term stability or an alternative distribution for a faster release cadence. Both choices use the same image-based management model.
 
 [Visit tunaos.org](https://tunaos.org/) or read the [launch announcement](https://tunaos.org/blog/modern-enterprise-linux-desktops-with-tunaos).
 
 - **Modern Desktops**: GNOME, KDE Plasma, COSMIC, Niri, and XFCE — equal first-class options across distribution bases
 - **Up-to-Date Desktop Stack**: Fresh desktop features and updates backported to Enterprise and community bases
-- **Homebrew**: Baked into the image — all your CLI apps and fonts are just a `brew` command away
+- **Homebrew**: Baked into the image — all your CLI apps and fonts are a `brew` command away
 - **Flathub by Default**: Full Flathub access out of the box — get any Flatpak available on the net
 - **HWE and NVIDIA Options**: Hardware Enablement kernels and NVIDIA drivers + CUDA as image tags
 
@@ -41,23 +41,35 @@ TunaOS builds **bootc-based desktop operating systems** with atomic updates and 
 
 | Variant | Base OS | Registry Path | Desktops | Architectures |
 | :--- | :--- | :--- | :--- | :--- |
-| 🐠 **Yellowfin** | AlmaLinux Kitten 10 | `ghcr.io/tuna-os/yellowfin` | GNOME, KDE, COSMIC, Niri | x86_64, x86_64/v2, arm64 |
-| 🐟 **Albacore** | AlmaLinux 10 (RHEL 10) | `ghcr.io/tuna-os/albacore` | GNOME, KDE, COSMIC, Niri | x86_64, x86_64/v2, arm64 |
-| 🍣 **Skipjack** | CentOS Stream 10 | `ghcr.io/tuna-os/skipjack` | GNOME, KDE, COSMIC, Niri | x86_64, arm64 |
-| 🎣 **Bonito** | Fedora 44 | `ghcr.io/tuna-os/bonito` | GNOME, KDE, COSMIC, Niri | x86_64, arm64 |
-| 🐦 **Hummingbird** | Fedora Hummingbird (experimental) | `ghcr.io/tuna-os/hummingbird` | Base, GNOME, COSMIC | x86_64; arm64 (base only) |
-| 🎏 **Wahoo** | Fedora ELN — EL11 preview (experimental, no codecs) | `ghcr.io/tuna-os/wahoo` | Base, GNOME | x86_64, arm64 |
+| 🐠 **Yellowfin** | AlmaLinux Kitten 10 | `ghcr.io/tuna-os/yellowfin` | GNOME (x86_64 only, see note), KDE, COSMIC, Niri, XFCE | x86_64, x86_64/v2, arm64 |
+| 🐟 **Albacore** | AlmaLinux 10 (RHEL 10) | `ghcr.io/tuna-os/albacore` | GNOME (x86_64 only, see note), KDE, COSMIC, Niri, XFCE | x86_64, x86_64/v2, arm64 |
+| 🍣 **Skipjack** | CentOS Stream 10 | `ghcr.io/tuna-os/skipjack` | GNOME (x86_64 only, see note), KDE, COSMIC, Niri, XFCE | x86_64, arm64 |
+| 🎣 **Bonito** | Fedora 44 | `ghcr.io/tuna-os/bonito` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64, arm64 |
+| 🐦 **Hummingbird** | Fedora Hummingbird (experimental) | `ghcr.io/tuna-os/hummingbird` | Base, GNOME, COSMIC | x86_64 (see note) |
+| 🎏 **Wahoo** | Fedora ELN — EL11 preview (experimental, no codecs) | `ghcr.io/tuna-os/wahoo` | Base, GNOME, KDE, COSMIC | x86_64, arm64 |
 | 🔒 **Redfin** | Red Hat Enterprise Linux 10 | *Local-Build Only* | GNOME, KDE, COSMIC, Niri, XFCE | x86_64, arm64 |
-| 🐟 **Grouper** | Ubuntu 26.04 | `ghcr.io/tuna-os/grouper` | GNOME, KDE, Niri, XFCE | x86_64 |
-| 🐟 **Gurnard** | Ubuntu 24.04 (Noble Numbat, experimental) | `ghcr.io/tuna-os/gurnard` | Base, Pantheon | x86_64, arm64 |
+| 🪸 **Grouper** | Ubuntu 26.04 | `ghcr.io/tuna-os/grouper` | GNOME, KDE, COSMIC, XFCE | x86_64 |
+| 🤖 **Gurnard** | Ubuntu 24.04 (Noble Numbat, experimental) | `ghcr.io/tuna-os/gurnard` | Base, Pantheon | x86_64, arm64 |
 | 🚀 **Marlin** | Arch Linux (Rolling) | `ghcr.io/tuna-os/marlin` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64 |
-| 🐡 **Flounder** | Debian 13 (Trixie) | `ghcr.io/tuna-os/flounder` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64 |
-| ☢️ **Flounder Sid** | Debian Sid (Unstable) | `ghcr.io/tuna-os/flounder:*-sid` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64 |
+| 🐡 **Flounder** | Debian 13 (Trixie) | `ghcr.io/tuna-os/flounder` | KDE, XFCE | x86_64 |
+| ☢️ **Flounder Sid** | Debian Sid (Unstable) | `ghcr.io/tuna-os/flounder:*-sid` | GNOME, KDE, XFCE | x86_64 |
 | 🐉 **Bonito Rawhide** | Fedora Rawhide | `ghcr.io/tuna-os/bonito:*-rawhide` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64, arm64 |
-| 🦈 **Sailfin** | openSUSE Tumbleweed | `ghcr.io/tuna-os/sailfin` | GNOME, KDE, Niri, XFCE | x86_64 |
-| 🌈 **Guppy** | Gentoo Linux | `ghcr.io/tuna-os/guppy` | GNOME, KDE | x86_64 |
+| ⛵ **Sailfin** | openSUSE Tumbleweed | `ghcr.io/tuna-os/sailfin` | GNOME, KDE, COSMIC, Niri, XFCE | x86_64 |
+| 🌈 **Guppy** | Gentoo Linux | `ghcr.io/tuna-os/guppy` | KDE, XFCE | x86_64 |
 | 🏔️ **Tromsø** | freedesktop-sdk (BuildStream), built in [tuna-os/tromso](https://github.com/tuna-os/tromso) | `ghcr.io/tuna-os/tromso` | KDE | x86_64 |
 | 🐭 **XFCE Linux** | freedesktop-sdk (BuildStream), built in [tuna-os/xfce-linux](https://github.com/tuna-os/xfce-linux) | `ghcr.io/tuna-os/xfce-linux` | XFCE | x86_64 |
+
+GNOME on the EL10 variants comes from the tunaOS GNOME 50 package tier.
+GitHub Actions builds this tier without COPR. The tier supports only x86_64
+today, so the `gnome` and `gnome-hwe` images have only x86_64 support.
+The `gnome-asahi` image is off until the tier adds aarch64
+([tunaos-packages#673](https://github.com/tuna-os/tunaos-packages/issues/673)).
+Every GNOME image uses GNOME 50 or newer. The project does not promote older versions.
+
+Hummingbird is x86_64 only. This includes its base. The aarch64 package
+snapshot has no `xfsprogs`, and the base stage needs it. No hummingbird arm64
+image builds today. The architecture is absent, not thinner. See
+[docs/HUMMINGBIRD.md](https://github.com/tuna-os/tunaOS/blob/main/docs/HUMMINGBIRD.md).
 
 Tags are `<desktop>[-hardware]` — e.g. `yellowfin:gnome-hwe`,
 `albacore:kde-nvidia`. Full tag reference: [docs/IMAGE-TAGS.md](https://github.com/tuna-os/tunaOS/blob/main/docs/IMAGE-TAGS.md).
@@ -70,33 +82,37 @@ Hardware requirements and ARM laptop status: [docs/HARDWARE.md](https://github.c
 
 
 
-_Generated from the latest conclusive main-branch build for each variant (cancelled runs are skipped over). A cell is green when its image was successfully promoted to the published tag; **failing** means a job ran and failed; **not reached** means no job asserted the cell at all, usually because an earlier stage stopped it._
+_Each cell reports the newest conclusive main-branch run that asserted it, so a flavor-filtered rebuild does not blank the cells it never scheduled. This table omits cancelled runs. **Latest run** names the variant's newest conclusive run. A green cell has a successful promotion to the published tag. **Failed** means that a job ran and failed. **Not reached** means that no recent run asserted the cell, usually because an earlier stage stopped it._
 
 | Variant | Green image cells | Latest run | Failing | Not reached |
 | :--- | ---: | :--- | :--- | :--- |
-| 🐠 `yellowfin` | **9/20** | [❌ 2026-09-03](https://github.com/tuna-os/tunaOS/actions/runs/33728906010) | — | gnome,cosmic,niri,gnome-hwe,gnome-nvidia,gnome-nvidia-hwe,cosmic-hwe,cosmic-nvidia,niri-hwe,niri-nvidia,xfce-nvidia |
-| 🐟 `albacore` | **12/20** | [❌ 2026-09-03](https://github.com/tuna-os/tunaOS/actions/runs/33727109674) | — | cosmic,niri,gnome-asahi,gnome-nvidia-hwe,cosmic-hwe,cosmic-nvidia,niri-hwe,niri-nvidia |
-| 🍣 `skipjack` | **6/18** | [❌ 2026-09-02](https://github.com/tuna-os/tunaOS/actions/runs/33637401793) | xfce | gnome,cosmic,niri,gnome-hwe,gnome-asahi,gnome-nvidia,gnome-nvidia-hwe,cosmic-hwe,cosmic-nvidia,niri-hwe,niri-nvidia |
-| 🎏 `wahoo` | **3/4** | [❌ 2026-08-27](https://github.com/tuna-os/tunaOS/actions/runs/33041330231) | — | cosmic |
-| 🎣 `bonito` | **1/16** | [❌ 2026-09-03](https://github.com/tuna-os/tunaOS/actions/runs/33770195451) | — | base,base-hwe,base-nvidia,gnome,cosmic,kde,niri,xfce,gnome-hwe,gnome-asahi,gnome-t2,gnome-nvidia,cosmic-nvidia,kde-nvidia,niri-nvidia |
-| 🐦 `hummingbird` | **0/3** | [❌ 2026-09-03](https://github.com/tuna-os/tunaOS/actions/runs/33699113444) | — | base,gnome,cosmic |
-| 🦈 `sailfin` | **0/7** | [❌ 2026-09-02](https://github.com/tuna-os/tunaOS/actions/runs/33687500544) | — | base,gnome,gnome-asahi,kde,niri,xfce,cosmic |
-| 🌈 `guppy` | **3/4** | [❌ 2026-09-02](https://github.com/tuna-os/tunaOS/actions/runs/33624381727) | — | kde |
-| 🐉 `bonito-rawhide` | **4/14** | [❌ 2026-09-02](https://github.com/tuna-os/tunaOS/actions/runs/33669251484) | — | base,base-hwe,base-nvidia,gnome,cosmic,kde,niri,xfce,cosmic-nvidia,niri-nvidia |
-| 🐟 `gurnard` | **2/2** | [❌ 2026-09-03](https://github.com/tuna-os/tunaOS/actions/runs/33736358207) | — | — |
-| 🐟 `grouper` | **0/7** | [❌ 2026-09-02](https://github.com/tuna-os/tunaOS/actions/runs/33675500148) | — | base,gnome,gnome-asahi,gnome-zfs,kde,cosmic,xfce |
-| 🚀 `marlin` | **10/16** | [❌ 2026-09-02](https://github.com/tuna-os/tunaOS/actions/runs/33659564363) | — | cosmic,niri,cosmic-cachyos,niri-cachyos,cosmic-nvidia,niri-nvidia |
-| 🐡 `flounder` | **0/7** | [❌ 2026-09-02](https://github.com/tuna-os/tunaOS/actions/runs/33694724467) | — | base,gnome,kde,xfce,gnome-nvidia,kde-nvidia,xfce-nvidia |
-| ☢️ `flounder-sid` | **0/7** | [❌ 2026-09-03](https://github.com/tuna-os/tunaOS/actions/runs/33702354589) | — | base,gnome,kde,xfce,gnome-nvidia,kde-nvidia,xfce-nvidia |
+| 🐠 `yellowfin` | **18/18** | [❌ 2026-09-30](https://github.com/tuna-os/tunaOS/actions/runs/36674158064) | — | — |
+| 🐟 `albacore` | **18/18** | [❌ 2026-09-30](https://github.com/tuna-os/tunaOS/actions/runs/36691515933) | — | — |
+| 🍣 `skipjack` | **16/16** | [❌ 2026-09-30](https://github.com/tuna-os/tunaOS/actions/runs/36740571187) | — | — |
+| 🎏 `wahoo` | **4/4** | [❌ 2026-09-27](https://github.com/tuna-os/tunaOS/actions/runs/36310655873) | — | — |
+| 🎣 `bonito` | **16/16** | [✅ 2026-09-29](https://github.com/tuna-os/tunaOS/actions/runs/36601065031) | — | — |
+| 🐦 `hummingbird` | **2/3** | [❌ 2026-09-30](https://github.com/tuna-os/tunaOS/actions/runs/36654631286) | gnome | — |
+| ⛵ `sailfin` | **6/6** | [✅ 2026-09-29](https://github.com/tuna-os/tunaOS/actions/runs/36642871266) | — | — |
+| 🌈 `guppy` | **3/3** | [✅ 2026-09-30](https://github.com/tuna-os/tunaOS/actions/runs/36716367752) | — | — |
+| 🐉 `bonito-rawhide` | **14/14** | [❌ 2026-09-29](https://github.com/tuna-os/tunaOS/actions/runs/36623351372) | — | — |
+| 🤖 `gurnard` | **2/2** | [✅ 2026-09-30](https://github.com/tuna-os/tunaOS/actions/runs/36703175537) | — | — |
+| 🪸 `grouper` | **7/7** | [✅ 2026-09-29](https://github.com/tuna-os/tunaOS/actions/runs/36633070510) | — | — |
+| 🚀 `marlin` | **16/16** | [✅ 2026-09-29](https://github.com/tuna-os/tunaOS/actions/runs/36613770043) | — | — |
+| 🐡 `flounder` | **5/5** | [✅ 2026-09-30](https://github.com/tuna-os/tunaOS/actions/runs/36650867830) | — | — |
+| ☢️ `flounder-sid` | **7/7** | [❌ 2026-09-30](https://github.com/tuna-os/tunaOS/actions/runs/36658438407) | — | — |
 
-**Sibling images, built in their own repositories.** These are TunaOS-family bootc images built with BuildStream on freedesktop-sdk rather than from a distribution's packages, so they have no cells in the matrix above and are not scored by `green-criteria.yml`; each repository runs its own build, live-ISO, plain-install and LUKS-install checks. Status is that repository's latest completed main-branch build.
+**Sibling images from separate repositories.** These TunaOS-family bootc images use BuildStream on freedesktop-sdk. They do not use packages from a distribution. Thus, the matrix above has no cells for them, and `green-criteria.yml` does not score them. Each repository runs its own checks for the build, live ISO, plain installation, and LUKS installation. The status shows the latest complete build from the main branch of that repository.
 
 | Image | Built by | Desktop | Latest main build |
 | :--- | :--- | :--- | :--- |
-| 🏔️ `ghcr.io/tuna-os/tromso` | [tromso](https://github.com/tuna-os/tromso) | KDE | [❌ 2026-09-02](https://github.com/tuna-os/tromso/actions/runs/33592553295) |
-| 🐭 `ghcr.io/tuna-os/xfce-linux` | [xfce-linux](https://github.com/tuna-os/xfce-linux) | XFCE | [❌ 2026-09-03](https://github.com/tuna-os/xfce-linux/actions/runs/33702969743) |
+| 🏔️ `ghcr.io/tuna-os/tromso` | [tromso](https://github.com/tuna-os/tromso) | KDE | [❌ 2026-09-30](https://github.com/tuna-os/tromso/actions/runs/36675140422) |
+| 🐭 `ghcr.io/tuna-os/xfce-linux` | [xfce-linux](https://github.com/tuna-os/xfce-linux) | XFCE | [❌ 2026-09-26](https://github.com/tuna-os/xfce-linux/actions/runs/36209550897) |
 
-**Built 50/145 · composite green 52/145 (34% built)** — of the remainder, **1 failing** and **94 never reached** (no job asserted them). The two are reported separately on purpose: a never-reached cell is untested, not broken. Composite green counts published cells, per [docs/MATRIX-STATUS.md](https://github.com/tuna-os/tunaOS/blob/main/docs/MATRIX-STATUS.md) and is scored against [`.github/green-criteria.yml`](https://github.com/tuna-os/tunaOS/blob/main/.github/green-criteria.yml), blocking today on `boots`, `builds`, `desktop`, `no_silent_omissions` — every one of those a cell must satisfy, with skipped and never-tested counting as not green. The full per-axis board is [docs/MATRIX-STATUS.md](https://github.com/tuna-os/tunaOS/blob/main/docs/MATRIX-STATUS.md). This is a point-in-time CI snapshot, not a support-tier promise.
+**Built 134/135 · composite green 117/135 (99% built)** — The remainder has **1 failure** and **0 never reached** (stale: 4); no job asserted the latter. We show the two values separately. A cell with no job has no test, but it can still work.
+
+The score for composite green uses published cells, per [docs/MATRIX-STATUS.md](https://github.com/tuna-os/tunaOS/blob/main/docs/MATRIX-STATUS.md). [`.github/green-criteria.yml`](https://github.com/tuna-os/tunaOS/blob/main/.github/green-criteria.yml) provides the score. Today, these criteria prevent publication: `boots`, `builds`, `desktop`, `no_silent_omissions`. A cell must satisfy each criterion.
+
+Skipped cells and cells with no test do not count as green. The full per-axis board is [docs/MATRIX-STATUS.md](https://github.com/tuna-os/tunaOS/blob/main/docs/MATRIX-STATUS.md). This snapshot of CI shows one point in time. It does not promise a support tier.
 
 
 
@@ -111,8 +127,8 @@ _Generated from the latest conclusive main-branch build for each variant (cancel
   sudo bootc switch ghcr.io/tuna-os/yellowfin:gnome
   ```
 
-Building media locally, verifying signatures and SBOMs, registry
-authentication, and pull troubleshooting: [docs/INSTALL.md](https://github.com/tuna-os/tunaOS/blob/main/docs/INSTALL.md).
+For local media builds, signature and SBOM checks, registry authentication,
+and pull help, read [docs/INSTALL.md](https://github.com/tuna-os/tunaOS/blob/main/docs/INSTALL.md).
 
 ## Contributing
 
@@ -133,15 +149,15 @@ Related communities: [Universal Blue Discord](https://discord.gg/WEu6BdFEtp) ·
 
 Start here:
 
-- [User Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/USER-GUIDE.md) — choosing an image, installing, updating, rolling back, apps, encryption
-- [Developer Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/DEVELOPER-GUIDE.md) — the whole pipeline and its plumbing, with diagrams
-- [Installation](https://github.com/tuna-os/tunaOS/blob/main/docs/INSTALL.md) — building media, verification, registry access
+- [User Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/USER-GUIDE.md) — image choice, installation, updates, rollback, apps, and encryption
+- [Developer Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/DEVELOPER-GUIDE.md) — the complete pipeline with architecture diagrams
+- [Installation](https://github.com/tuna-os/tunaOS/blob/main/docs/INSTALL.md) — media builds, verification, and registry access
 - [Hardware Support](https://github.com/tuna-os/tunaOS/blob/main/docs/HARDWARE.md) — requirements and ARM laptop status
-- [Matrix Status](https://github.com/tuna-os/tunaOS/blob/main/docs/MATRIX-STATUS.md) — which variant×desktop cells are verified, per quality axis
+- [Matrix Status](https://github.com/tuna-os/tunaOS/blob/main/docs/MATRIX-STATUS.md) — quality status for each variant×desktop cell
 - [Roadmap](https://github.com/tuna-os/tunaOS/blob/main/ROADMAP.md) — project direction and feature status
 - [Vision](https://github.com/tuna-os/tunaOS/blob/main/VISION.md) — project philosophy
 
-The full index — every guide, policy, and planning doc — is at
+The full index of every guide, policy, and project plan is at
 [docs/README.md](https://github.com/tuna-os/tunaOS/blob/main/docs/README.md).
 
 ---
@@ -161,9 +177,10 @@ The full index — every guide, policy, and planning doc — is at
 
 ---
 
-This repository and many of the [tuna-os](https://github.com/tuna-os) repos are
-developed and maintained with **[Hive](https://hive.tunaos.org)**, an AI-driven
-development platform orchestrated via [KubeStellar](https://kubestellar.io/).
+This repository and many [tuna-os](https://github.com/tuna-os) repositories
+use **[Hive](https://hive.tunaos.org)** for development and maintenance. Hive
+is a development platform for AI agents. It uses
+[KubeStellar](https://kubestellar.io/) for orchestration.
 
 ---
 

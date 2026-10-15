@@ -43,6 +43,17 @@ static assets, and `worker/index.js` routes requests.
 - **Content sync** — `.github/workflows/sync-org-docs.yml` runs daily
   (cron `0 6 * * *`) and opens a PR when org-synced content changes.
 
+The adoption API uses the `COUNTME` service binding to the `tunaos-countme`
+Worker in the same account. Deploy the collector before the site. Its source
+and D1 migrations live in `tuna-os/tunaos/services/countme`.
+
+If `/api/adoption` returns HTTP 503 while the collector is healthy, check the
+Worker fetch options. A live run on 2026-09-27 returned `TypeError: Invalid
+redirect value` for `redirect: "error"`. Use `redirect: "manual"` and reject
+redirect responses. Node fetch accepts `"error"`, so the cross-repository
+integration test also runs the site proxy in native workerd with a service
+binding.
+
 To preview the production build locally:
 
 ```bash
@@ -51,3 +62,11 @@ npm run build
 
 For prerequisites and validation before submission, see the
 [contributor guide](./CONTRIBUTING.md).
+
+<!-- hive-contribute-plea: donated-compute appeal, keep in sync across repos -->
+## Contribute compute — no code needed
+
+No time to write code? You can still push this project's backlog forward. TunaOS AI-agent hives work on this repository. Lend a hive your AI subscription or API tokens, and your machine runs contributor tasks from this project's backlog.
+
+- 🪸 [Contribute compute to the reef hive](https://reef.tunaos.org/contribute)
+- 🏫 [Contribute compute to the school hive](https://school.tunaos.org/contribute)

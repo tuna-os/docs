@@ -3,23 +3,23 @@ sidebar_position: 2
 title: "Contributing"
 ---
 
-Thank you for helping maintain the TunaOS Homebrew distribution channel.
+Thank you for your help with the TunaOS Homebrew channel.
 
 ## Repository layout
 
 - `Formula/` contains source-built Homebrew formulae.
 - `Casks/` contains packaged application casks.
 - `scripts/validate-tap.sh` checks the Ruby syntax of every formula and cask.
-- `README.md` lists packages that are available or pending.
+- `README.md` lists packages that are available now or not yet added.
 - `ROADMAP.md` describes admission, ownership, freshness, and validation goals.
 
-Formula and cask releases are owned by their upstream projects. Before changing
-a version, URL, checksum, or supported platform, verify the corresponding
+Each upstream project owns its own formula and cask releases. Before you
+change a version, URL, checksum, or supported platform, check the matching
 release in the upstream repository linked from the package definition.
 
 ## Local prerequisites
 
-The repository's validation script requires:
+The repository's validation script needs:
 
 - Bash
 - Ruby, including the `ruby` executable on `PATH`
@@ -37,15 +37,15 @@ required by the syntax validation script.
    ./scripts/validate-tap.sh
    ```
 
-4. In the pull request, identify the upstream release or issue that motivates
-   the change. For a release update, include how the download URL and checksum
-   were verified.
+4. In the pull request, name the upstream release or issue that motivates
+   the change. For a release update, state how you checked the download URL
+   and the checksum.
 
 The validation script runs `ruby -c` against every `.rb` file under `Formula/`
-and `Casks/`. It catches Ruby syntax errors only; it does not download artifacts,
-verify checksums, install packages, or exercise supported platforms. Broader
-producer-to-consumer and installation validation is tracked in
-[issue #7](https://github.com/tuna-os/homebrew-tap/issues/7).
+and `Casks/`. It catches only Ruby syntax errors; it does not download
+artifacts, check checksums, install packages, or exercise supported
+platforms. [Issue #7](https://github.com/tuna-os/homebrew-tap/issues/7)
+tracks the broader producer-to-consumer and install checks.
 
-Documentation-only changes should still run the script when Ruby is available,
-so the pull request reports the current repository validation state.
+Run the script for documentation-only changes too, when Ruby is available, so
+the pull request reports the repository's current validation state.

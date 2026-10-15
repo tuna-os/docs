@@ -19,7 +19,7 @@
 //   node scripts/__tests__/sync-org-docs.test.mjs
 
 import { strict as assert } from 'node:assert';
-import { chmodSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { chmodSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import {
@@ -29,6 +29,11 @@ import {
   frontmatter,
   subFrontmatter,
   isSyncedIndex,
+  filesToRemove,
+  isRootDoc,
+  markUnparseable,
+  rejectExpressions,
+  withFormatMd,
   getStatusBanner,
   slugify,
   listOrgRepos,
@@ -43,6 +48,21 @@ import {
 // ── Test helpers ──────────────────────────────────────────────────────────────
 let pass = 0;
 let fail = 0;
+
+// Async tests run after the synchronous ones, before the summary.
+const pending = [];
+function asyncTest(name, fn) {
+  pending.push(async () => {
+    try {
+      await fn();
+      pass++;
+      console.log(`  ✓ ${name}`);
+    } catch (e) {
+      fail++;
+      console.error(`  ✗ ${name}: ${e.message}`);
+    }
+  });
+}
 
 function test(name, fn) {
   try {
@@ -91,6 +111,30 @@ test('handles tilde fences', () => {
 // the start of a JSX tag, so the same text is a syntax error here.
 
 console.log('\nsanitizeHtml');
+
+test('escapes a placeholder that is not an HTML element (hive backend-setup, a table cell)', () => {
+  const out = sanitizeHtml('| `catalog` | lists the <catalog> entries | yes |\n');
+  assert.ok(out.includes('&lt;catalog>'), out);
+});
+
+test('escapes a placeholder inside emphasis', () => {
+  const out = sanitizeHtml('*Talks to the <frontend> over a socket*\n');
+  assert.equal(out, '*Talks to the &lt;frontend> over a socket*\n');
+});
+
+test('escapes a < that cannot start a tag (paperwm: <<, <-)', () => {
+  assert.equal(sanitizeHtml('Use Super+<< to move, a <- b\n'), 'Use Super+&lt;&lt; to move, a &lt;- b\n');
+});
+
+test('leaves a code span that wraps onto the next line alone', () => {
+  const md = '- `bootc install --source-imgref=docker://<image>\n  --karg=root=UUID=<uuid>`, then reboot\n';
+  assert.equal(sanitizeHtml(md), md);
+});
+
+test('keeps real HTML elements, closing tags and code', () => {
+  const md = '<details>\n<summary>More</summary>\n\n<img src="a.png" />\n\n</details>\n\n`<catalog>`\n';
+  assert.equal(sanitizeHtml(md), md);
+});
 
 test('splits one-line details/summary across lines', () => {
   const out = sanitizeHtml('<details><summary>More</summary>\n\ntext\n\n</details>\n');
@@ -441,6 +485,155 @@ test('rejects a page with no front matter', () => {
 
 test('rejects front matter that is not at the start of the file', () => {
   assert.ok(!isSyncedIndex('Intro paragraph.\n\n' + frontmatter('X', 1, 'x', 'alpha')));
+});
+
+// ── filesToRemove ─────────────────────────────────────────────────────────────
+//
+// Reconciles a repo's existing docs/<slug>/ files against what this run wrote,
+// so a page deleted upstream (kde-build-meta's TRACKING-POLICY.md, the
+// motivating case) is deleted here too. Pure and filesystem-free: the third
+// argument is a callback the real caller backs with readFileSync, tests back
+// with a plain string.
+
+console.log('\nfilesToRemove');
+
+test('removes nothing when every existing file was written this run', () => {
+  const {removable, refused} = filesToRemove(
+    ['index.md', 'install.md'],
+    ['index.md', 'install.md'],
+    () => frontmatter('X', 1, 'x', 'alpha'),
+  );
+  assert.deepEqual(removable, []);
+  assert.deepEqual(refused, []);
+});
+
+test('removes a non-index file no longer written, unconditionally', () => {
+  // Every non-index write in the real loop goes through subFrontmatter(),
+  // whose shape cannot be told apart from a hand-written page's by content
+  // alone (see the isSyncedIndex tests above) — but this function is only
+  // ever asked about the targetDir a HAND_AUTHORED-excluded repo's own sync
+  // just finished writing, so which directory is being asked about already
+  // answers the question content can't.
+  const {removable, refused} = filesToRemove(
+    ['index.md', 'TRACKING-POLICY.md'],
+    ['index.md'],
+    () => frontmatter('X', 1, 'x', 'alpha'),
+  );
+  assert.deepEqual(removable, ['TRACKING-POLICY.md']);
+  assert.deepEqual(refused, []);
+});
+
+test('removes a synced index.md no longer written', () => {
+  const {removable, refused} = filesToRemove(
+    ['index.md'],
+    [],
+    () => frontmatter('X', 1, 'x', 'alpha'),
+  );
+  assert.deepEqual(removable, ['index.md']);
+  assert.deepEqual(refused, []);
+});
+
+test('refuses an index.md that does not match isSyncedIndex, and does not remove it', () => {
+  // Cannot happen for a repo actively syncing (README.md always exists or the
+  // write is skipped entirely, and the write always uses frontmatter()) — this
+  // is the defensive case for an index.md a person dropped into a targetDir by
+  // hand without adding the slug to HAND_AUTHORED.
+  const {removable, refused} = filesToRemove(
+    ['index.md'],
+    [],
+    () => '---\nsidebar_position: 1\nsidebar_label: "X"\nstatus: alpha\n---\n\nHand-written.\n',
+  );
+  assert.deepEqual(removable, []);
+  assert.deepEqual(refused, ['index.md']);
+});
+
+test('refuses when index.md no longer exists to read (readIndexContent returns null)', () => {
+  const {removable, refused} = filesToRemove(
+    ['index.md'],
+    [],
+    () => null,
+  );
+  assert.deepEqual(removable, []);
+  assert.deepEqual(refused, ['index.md']);
+});
+
+test('only calls readIndexContent when index.md is actually a removal candidate', () => {
+  let calls = 0;
+  filesToRemove(['index.md', 'other.md'], ['index.md', 'other.md'], () => {
+    calls++;
+    return frontmatter('X', 1, 'x', 'alpha');
+  });
+  assert.equal(calls, 0, 'index.md was written this run, so nothing should read it');
+});
+
+test('keeps hand-written pages in a repo whose docs/ folder is not synced', () => {
+  // docs/tunaos/: tunaOS is in SKIP_DOCS_DIR, so only index.md and the
+  // filtered root docs are written there; introduction.md and the rest are
+  // hand-authored and must survive the run.
+  const filter = ['README.md', 'ROADMAP.md', 'SECURITY.md', 'CONTRIBUTING.md'];
+  const {removable, refused} = filesToRemove(
+    ['index.md', 'ROADMAP.md', 'SECURITY.md', 'introduction.md', 'building.md'],
+    ['index.md', 'ROADMAP.md'],
+    () => frontmatter('X', 1, 'x', 'alpha'),
+    file => isRootDoc(file, filter),
+  );
+  assert.deepEqual(removable, ['SECURITY.md']);
+  assert.deepEqual(refused, []);
+});
+
+test('isRootDoc knows the default root docs and a repo filter', () => {
+  assert.ok(isRootDoc('index.md'));
+  assert.ok(isRootDoc('ROADMAP.md'));
+  assert.ok(!isRootDoc('getting-started.md'));
+  assert.ok(isRootDoc('SECURITY.md', ['SECURITY.md']));
+  assert.ok(!isRootDoc('ROADMAP.md', ['SECURITY.md']));
+});
+
+// ── markUnparseable ───────────────────────────────────────────────────────────
+
+console.log('\nmarkUnparseable');
+
+test('withFormatMd ends the front matter with mdx: {format: md}, and the index stays synced', () => {
+  const page = frontmatter('Hive', 1, 'hive', 'alpha') + 'Body\n';
+  const out = withFormatMd(page);
+  assert.ok(out.includes('mdx:\n  format: md\n---\n'), out);
+  assert.ok(isSyncedIndex(out));
+  assert.ok(out.endsWith('Body\n'));
+});
+
+asyncTest('marks a page MDX cannot compile and leaves one it can alone', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'mdx-'));
+  const bad = join(dir, 'bad.md');
+  const good = join(dir, 'good.md');
+  writeFileSync(bad, subFrontmatter('Bad', 1) + 'lists the <catalog> entries\n');
+  writeFileSync(good, subFrontmatter('Good', 2) + 'Fine.\n');
+  const compile = async (body) => {
+    if (body.includes('<catalog>')) throw new Error('Expected a closing tag for `<catalog>`');
+  };
+  const marked = await markUnparseable([bad, good], compile);
+  assert.equal(marked, 1);
+  assert.ok(readFileSync(bad, 'utf8').includes('mdx:\n  format: md\n'));
+  assert.ok(!readFileSync(good, 'utf8').includes('format: md'));
+  // A page already marked is not marked twice.
+  assert.equal(await markUnparseable([bad], compile), 0);
+});
+
+asyncTest('rejectExpressions fails a page whose prose MDX would read as JavaScript', async () => {
+  const {compile} = await import('@mdx-js/mdx');
+  const rejects = async (body) => {
+    try {
+      await compile(body, {remarkPlugins: [rejectExpressions]});
+      return false;
+    } catch {
+      return true;
+    }
+  };
+  // Compiles, then throws `server is not defined` when the site renders it.
+  assert.ok(await rejects('Run it against {server} first.\n'));
+  assert.ok(await rejects('{server}\n'));
+  assert.ok(await rejects('<img src={logo} />\n'));
+  assert.ok(await rejects('import x from "y"\n\nText\n'));
+  assert.ok(!(await rejects('Plain text, `{code}` and <img src="a.png" />.\n\n```\n{fenced}\n```\n')));
 });
 
 // ── getStatusBanner ───────────────────────────────────────────────────────────
@@ -804,6 +997,8 @@ test('gives up after a second attempt that is still short', () => {
 });
 
 // ── summary ───────────────────────────────────────────────────────────────────
+
+for (const run of pending) await run();
 
 console.log(`\n${pass} passed, ${fail} failed`);
 if (fail > 0) process.exit(1);

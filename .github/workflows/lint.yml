@@ -16,6 +16,8 @@ on:
       - 'blog/**'
       - '*.md'
       - 'scripts/**'
+      - 'worker/**'
+      - 'src/**'
       - '.ste-budget'
       - '.markdownlint-budget'
       - '.github/workflows/lint.yml'
@@ -26,6 +28,8 @@ on:
       - 'blog/**'
       - '*.md'
       - 'scripts/**'
+      - 'worker/**'
+      - 'src/**'
       - '.ste-budget'
       - '.markdownlint-budget'
   workflow_dispatch:
@@ -33,14 +37,18 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   markdown-lint:
     name: Markdown Lint
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: '24'
 
@@ -80,11 +88,11 @@ jobs:
   # Check for broken internal links using a lightweight markdown link checker
   js-syntax:
     name: Node.js Syntax & Tests
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: '24'
 
@@ -144,7 +152,7 @@ jobs:
 
   link-check:
     name: Internal Link Check
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 

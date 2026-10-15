@@ -1,0 +1,15 @@
+schema: 2
+written_by: 0.20.0
+description: TunaOS public metrics site
+source:
+    provider: file
+    config:
+        location: ..
+knowledge:
+    provider: file
+    config:
+        location: knowledge
+changelog:
+    provider: file
+    config:
+        directory: changelog

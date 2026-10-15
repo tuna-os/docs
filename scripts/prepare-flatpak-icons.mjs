@@ -16,13 +16,17 @@ for (const result of index.Results) {
     const match = /^app\/([A-Za-z0-9._-]+)\/([A-Za-z0-9._-]+)\/([A-Za-z0-9._-]+)$/.exec(labels['org.flatpak.ref'] ?? '');
     if (!match) throw new Error(`Invalid Flatpak ref in ${result.Name}`);
     const [, appId, arch] = match;
+    // A publisher shipping without a usable icon must not break the whole
+    // site build; check-flatpak-remote.py reports the missing remote icon.
     const iconLabel = labels['org.freedesktop.appstream.icon-128'] ?? '';
     if (!iconLabel.startsWith('data:image/png;base64,')) {
-      throw new Error(`Missing 128px PNG icon for ${appId}/${arch}`);
+      console.warn(`Skipping ${appId}/${arch}: no 128px PNG icon label`);
+      continue;
     }
     const png = Buffer.from(iconLabel.slice('data:image/png;base64,'.length), 'base64');
-    if (!png.subarray(0, 8).equals(pngSignature) || png.readUInt32BE(16) !== 128 || png.readUInt32BE(20) !== 128) {
-      throw new Error(`Invalid 128px PNG icon for ${appId}/${arch}`);
+    if (png.length < 24 || !png.subarray(0, 8).equals(pngSignature) || png.readUInt32BE(16) !== 128 || png.readUInt32BE(20) !== 128) {
+      console.warn(`Skipping ${appId}/${arch}: icon-128 label is not a 128x128 PNG`);
+      continue;
     }
 
     mkdirSync(iconDir, { recursive: true });

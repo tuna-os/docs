@@ -16,7 +16,7 @@ next, and each of those actions is reachable from the front page in one click.
 | - | --- | --- | --- | --- |
 | 1 | **On Windows, curious about Linux.** Has one machine and cannot repartition it. | To try Linux without risking the machine | **Try from Windows** | `/wootc` |
 | 2 | **Wants a desktop Linux to install.** Comparing distributions, or wants a long-support desktop. | A bootable ISO for their hardware | **Download** | `/download` |
-| 3 | **Already runs bootc** (Universal Blue, Bluefin, Fedora Atomic). | A one-line switch to a TunaOS image | **Rebase** (`bootc switch …`) | `/download`, docs |
+| 3 | **Already runs bootc** (Universal Blue, Bluefin, Fedora Atomic). | A one-line move to a TunaOS image | **Rebase** (`bootc-migrate --target-image …`) | `/download`, docs |
 | 4 | **On some other distribution, wants the apps.** Does not care about the OS. | The office suite, terminal, file manager | **Flatpaks** | `/flatpak` |
 | 5 | **Builder or contributor.** | The tooling and where the code is | **Build an ISO** / **Docs** / GitHub | `/iso-builder`, `/docs`, GitHub |
 
@@ -52,6 +52,21 @@ CTA in the hero and has its own landing page.
 6. **Every list on the site derives from `src/data/`.** The nav, the footer,
    the matrix, the picker and the landing pages read the same arrays.
    A hand-maintained second copy is how images went missing from menus before.
+7. **Build state is read, never written.** What has shipped — which ISOs
+   exist, how big they are, when they were built — comes from the release
+   bucket's own index (`static/iso-index.json`, refreshed by
+   `update-iso-index.yml`) through `useIsoIndex`. `/matrix` renders the shape
+   of things from `src/data/` immediately and the live state on arrival, and
+   says "built; live ISO state loads with the index" in between rather than
+   asserting something it cannot yet know. Never hand-write a build status
+   into the site: it would be wrong within a day and nobody would notice.
+
+8. **bootc-migrate is the smarter `bootc switch`.** Anywhere the site tells
+   someone to move to another image (another base, desktop or project), it
+   shows `bootc-migrate --target-image …` and links `/docs/bootc-migrate`.
+   It takes the same target as `bootc switch`, checks it first, and carries
+   `/home`, `/var` and `/etc` across. Plain `bootc switch` stays only where
+   it is the whole job: pinning a digest, or updating your own derived image.
 
 ## Accessibility
 

@@ -59,9 +59,11 @@ On macOS this installs `Tavern.app`; on Linux it installs a prebuilt AppImage an
 - **📦 Package Details**: Rich information including descriptions, versions, dependencies, READMEs, screenshots, and install statistics.
 - **🔤 Font Previews**: Font casks render live pangram previews right on the details page.
 - **📌 Version Pinning**: Pin formulae and casks to their installed version; pinned packages stay out of update prompts.
-- **📄 Brewfile Support**: Open and manage `.Brewfile`s to bulk-install or remove entire environments.
+- **📄 Brewfile Support**: View complete Brewfiles and install all Homebrew-supported entry types without loss of options. Remove formulae and casks as a group.
 - **⚡ Task Management**: Queued installs, removals, and upgrades with per-package progress and a task panel.
 - **🫖 Tap Manager**: Add, remove, update, and trust Homebrew taps; browse tap contents.
+- **🩺 Brew Doctor**: Check Homebrew health, inspect warnings, retry, and copy diagnostic output.
+- **🛠 Maintenance**: Installed security scans, install previews, user services, cleanup previews, and a tool for historical formulae. See [Homebrew features](https://github.com/tuna-os/Tavern/blob/main/docs/HOMEBREW_FEATURES.md).
 - **🌗 Native Design**: Libadwaita interface following the GNOME HIG — dark mode, adaptive layouts, keyboard shortcuts, and a preferences dialog.
 - **🐧 Linux First**: Smart filtering to hide macOS-only casks on Linux systems.
 
@@ -155,3 +157,11 @@ Tavern is released under the **GPL-3.0-or-later** license. See `LICENSE` for det
 ---
 
 Part of the [TunaOS](https://tunaos.org) ecosystem. [Docs](https://tunaos.org) · [Contributing](https://github.com/tuna-os/Tavern/blob/main/CONTRIBUTING.md)
+
+
+## Contribute compute — no code needed
+
+No time to write code? You can still push this project's backlog forward. TunaOS AI-agent hives work on this repository. Lend a hive your AI subscription or API tokens, and your machine runs contributor tasks from this project's backlog.
+
+- 🪸 [Contribute compute to the reef hive](https://reef.tunaos.org/contribute)
+- 🏫 [Contribute compute to the school hive](https://school.tunaos.org/contribute)

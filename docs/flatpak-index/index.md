@@ -12,7 +12,15 @@ flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.fl
 flatpak install tuna-os org.tunaos.mariner
 ```
 
-The remote is served via Cloudflare Pages from the [tuna-os/docs](https://github.com/tuna-os/docs) repo at `https://tunaos.org/flatpak/`.
+If your existing `tuna-os` remote returns HTTP 401, add the OCI authenticator:
+
+```bash
+flatpak remote-modify --system --authenticator-name=org.flatpak.Authenticator.Oci tuna-os
+```
+
+Use `--user` instead of `--system` if you added the remote for your user.
+
+Cloudflare Pages serves the remote at `https://tunaos.org/flatpak/`. The files come from the [tuna-os/docs](https://github.com/tuna-os/docs) repo.
 
 ## Available apps
 
@@ -26,6 +34,7 @@ The remote is served via Cloudflare Pages from the [tuna-os/docs](https://github
 | Dualcut | `flatpak install tuna-os org.tunaos.dualcut` |
 | Mandelbrot | `flatpak install tuna-os org.tunaos.mandelbrot` |
 | Tavern | `flatpak install tuna-os org.tunaos.tavern` |
+| Compass | `flatpak install tuna-os org.tunaos.compass` |
 | Installer (bootc-installer) | `flatpak install tuna-os org.bootcinstaller.Installer` |
 | Installer (KDE) | `flatpak install tuna-os org.tunaos.InstallerKde` |
 | Installer (Niri) | `flatpak install tuna-os org.tunaos.InstallerNiri` |
@@ -35,6 +44,12 @@ The remote is served via Cloudflare Pages from the [tuna-os/docs](https://github
 > The installer frontends drive the [fisherman](https://github.com/projectbluefin/fisherman)
 > bootc backend and are preinstalled on the matching TunaOS live ISOs
 > (see `build_scripts/installer-frontend.sh` in [tuna-os/tunaOS](https://github.com/tuna-os/tunaOS)).
+
+> **Compass** is a hard fork of [Vicinae](https://github.com/vicinaehq/vicinae).
+> Its source is [tuna-os/compass](https://github.com/tuna-os/compass).
+> On first start, Compass moves an existing Vicinae configuration into its own directory.
+> Its image is `ghcr.io/tuna-os/compass`.
+> It uses the `org.freedesktop.Platform//26.08` runtime from Flathub.
 
 > **Note**: Letters, Tables and Decks are the Rust rewrite versions from [gtk-office-suite](https://github.com/tuna-os/gtk-office-suite). The office-suite manifests publish unsuffixed IDs (`org.tunaos.letters` etc.).
 > The legacy Python versions are at [tables](https://github.com/tuna-os/tables), [decks](https://github.com/tuna-os/decks), [letters](https://github.com/tuna-os/letters).
@@ -191,8 +206,10 @@ jobs:
 ```
 
 Also vendor [`scripts/update-index.py`](https://github.com/tuna-os/flatpak-index/blob/main/scripts/update-index.py) from this repo
-to `.github/scripts/update-index.py`. That is the canonical copy — do not copy
-an older one from another app repo, and see
+to `.github/scripts/update-index.py`, or use the `update-flatpak-index` action
+from `tuna-os/.github` (`tuna-os/.github/actions/update-flatpak-index`). The script
+in this repository is the canonical standalone single-file implementation — do not
+copy an older version from another app repository, and see
 [App metadata](#app-metadata) for why.
 
 ### 4. Set repo secrets
@@ -282,3 +299,11 @@ The `index/static` file is a JSON array with OCI image references. Each entry ma
 > **Note:** the authoritative index is `static/flatpak/index/static` in the [tuna-os/docs](https://github.com/tuna-os/docs) repo, served at `https://tunaos.org/flatpak/`. The copy of `index/static` in *this* repo is a **historical snapshot** and is **not** what the remote serves — treat it as reference only. When the README's [Available apps](#available-apps) table and this snapshot disagree, the table (and tunaos.org) reflect the live remote.
 >
 > **This repo's own [GitHub Pages site](https://tuna-os.github.io/flatpak-index/) and the `tuna-os.flatpakrepo` file at its root are the same non-authoritative snapshot**, published as a live OCI remote (`oci+https://tuna-os.github.io/flatpak-index`). Do not `flatpak remote-add` that URL or this file — it will not receive new apps or updates. Always use the `https://tunaos.org/flatpak/tuna-os.flatpakrepo` remote from the [top of this README](#tunaos-flatpak-index).
+
+
+## Contribute compute — no code needed
+
+No time to write code? You can still push this project's backlog forward. TunaOS AI-agent hives work on this repository. Lend a hive your AI subscription or API tokens, and your machine runs contributor tasks from this project's backlog.
+
+- 🪸 [Contribute compute to the reef hive](https://reef.tunaos.org/contribute)
+- 🏫 [Contribute compute to the school hive](https://school.tunaos.org/contribute)

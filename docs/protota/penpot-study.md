@@ -1,5 +1,5 @@
 ---
-sidebar_position: 11
+sidebar_position: 12
 title: "penpot study"
 ---
 
@@ -45,7 +45,7 @@ piece of this study (§4).
   (`copyNode`/`cutNode`/`pasteNode`/`duplicateNode` with `withFreshIds`),
   whole-document undo snapshots (`pushSnapshot`, `MAX_HISTORY = 50`).
   Selection is a single `selectedNodeId`.
-- Agent API: `src/utils/agent-api.ts` — `MockupBuilder`, build-time only
+- Agent API: `src/utils/mockupBuilder.ts` — `MockupBuilder`, build-time only
   (constructs a document; no access to the live editor, selection, or
   events). The store is exposed for tests as `window.__mockupStore` in dev
   builds only.
@@ -328,7 +328,7 @@ the main repo under `frontend/src/app/plugins/` (`api.cljs`, `events.cljs`,
 `common/src/app/common/types/plugins.cljc`. The parts relevant to Protota's
 agent story, all verified in `index.d.ts`:
 
-| Capability | Penpot | Protota `MockupBuilder` (`src/utils/agent-api.ts`) |
+| Capability | Penpot | Protota `MockupBuilder` (`src/utils/mockupBuilder.ts`) |
 |---|---|---|
 | Construction | `createBoard()`, `createRectangle()`, `createText()`, … | `addScreen`/`addWidget`/`addChild` with legality checks — comparable, and Protota's slot/legality validation is stronger than Penpot's |
 | Live document access | `penpot.root`, `penpot.currentPage`, live `Shape` proxies | None — builder produces a detached document; the live store is only reachable via the dev-only `window.__mockupStore` |

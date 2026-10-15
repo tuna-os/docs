@@ -5,8 +5,8 @@ sidebar_label: "homebrew-tap"
 status: unknown
 ---
 
-Homebrew tap for TunaOS tooling. Formulas/casks are published from the
-upstream repos' release pipelines (e.g. GoReleaser).
+Homebrew tap for TunaOS tooling. Upstream repos' release pipelines (e.g.
+GoReleaser) publish the formulas and casks here.
 
 ## Currently available
 
@@ -23,21 +23,21 @@ brew install --cask tavern
 
 ## Contributing
 
-See [CONTRIBUTING.md](https://github.com/tuna-os/homebrew-tap/blob/main/CONTRIBUTING.md) for the repository layout, local
-prerequisites, and the validation required before proposing formula, cask, or
-documentation changes.
+See [the contribution guide](https://github.com/tuna-os/homebrew-tap/blob/main/CONTRIBUTING.md) for the repository layout,
+local prerequisites, and the checks needed before a formula, cask, or
+documentation change.
 
 ## Pending
 
 - `bluefin-cli` (from [tuna-os/bluefin-cli](https://github.com/tuna-os/bluefin-cli))
-  is not yet published here — releases ship binary assets since v0.10.6, but
-  the GoReleaser Homebrew publisher has not produced a formula yet.
+  is not here yet. Releases ship binary assets since v0.10.6, but the
+  GoReleaser Homebrew publisher has not made a formula yet.
   [tuna-os/bluefin-cli#141](https://github.com/tuna-os/bluefin-cli/issues/141)
-  fixed the old install instructions and is closed; no open follow-up issue
-  currently tracks publishing the formula.
-- `tavern`'s cask is hand-maintained here today, not yet auto-published from
-  Tavern's own release pipeline the way `corral-vm` is from GoReleaser
+  fixed the old install steps; that issue closed. No open issue tracks the
+  formula work now.
+- `tavern`'s cask is hand-made here today. It is not yet auto-published from
+  Tavern's own pipeline. GoReleaser auto-publishes `corral-vm` that way
   ([tuna-os/Tavern#79](https://github.com/tuna-os/Tavern/issues/79) tracked
-  adding the cask and is closed). Version/checksum bumps on new Tavern releases
-  need a manual PR here; no open follow-up issue currently tracks automating
-  them.
+  the cask's addition; that issue closed). Version and checksum bumps on new
+  Tavern releases need a manual PR here. No open issue tracks that automation
+  now.

@@ -618,3 +618,418 @@
 .pipelineCard .cardLink {
   margin-top: 1rem;
 }
+
+/* ═══ Rhythm: bands that no longer share one shape ═════════════════════════
+   The page used to be six rows of "heading, then a grid of identical grey
+   cards". Each band below has its own structure — bento, split list, flow,
+   lead card — and the section backgrounds alternate, so scrolling reads as a
+   sequence of different things rather than the same thing six times. */
+
+.sectionEyebrow {
+  display: inline-block;
+  margin-bottom: 0.9rem;
+  font-family: var(--tu-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tu-accent-soft);
+}
+
+.sectionTitle {
+  font-family: var(--tu-display);
+  font-size: clamp(2rem, 4.4vw, 3.1rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.sectionSub {
+  font-size: 1.08rem;
+  line-height: 1.6;
+  max-width: 52ch;
+}
+
+.heroTitle {
+  font-family: var(--tu-display);
+  font-size: clamp(2.5rem, 6.4vw, 4.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.heroLede {
+  font-size: 1.06rem;
+  line-height: 1.7;
+}
+
+.sectionTint {
+  background:
+    linear-gradient(180deg, rgba(93, 171, 240, 0.045), transparent 38%),
+    var(--tu-bg-2);
+}
+
+.sectionGlow {
+  position: relative;
+  overflow: hidden;
+}
+
+.sectionGlow::before {
+  content: '';
+  position: absolute;
+  top: -22%;
+  right: -12%;
+  width: 640px;
+  height: 640px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(93, 171, 240, 0.12), transparent 65%);
+  pointer-events: none;
+}
+
+.sectionGlow > .container {
+  position: relative;
+}
+
+/* ── Split: sticky heading beside a ruled list ──────────────────────────── */
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+  gap: 4rem;
+  align-items: start;
+}
+
+.splitHead {
+  position: sticky;
+  top: 6rem;
+}
+
+.splitHead .sectionHead {
+  margin-bottom: 0;
+}
+
+/* ── Bento: install paths ───────────────────────────────────────────────── */
+
+.pathGrid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 1rem;
+}
+
+.pathCard {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  border-radius: 10px;
+  background: var(--tu-panel);
+  color: var(--tu-ink);
+  text-decoration: none !important;
+  transition: transform 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
+}
+
+.pathCard:hover {
+  transform: translateY(-3px);
+  background: var(--tu-panel-2);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+  color: var(--tu-ink);
+}
+
+.pathCard:nth-child(4) {
+  grid-column: 2 / span 2;
+}
+
+.pathCardFeatured {
+  grid-row: span 2;
+  justify-content: space-between;
+  padding: 2rem;
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgba(93, 171, 240, 0.2), transparent 60%),
+    var(--tu-panel);
+  box-shadow: inset 0 0 0 1px rgba(93, 171, 240, 0.28);
+}
+
+.pathCardFeatured .cardName {
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.75rem;
+}
+
+.pathCardFeatured .cardBlurb {
+  font-size: 1.02rem;
+  line-height: 1.65;
+  max-width: 36ch;
+}
+
+.pathCard .cardName {
+  font-family: var(--tu-display);
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+}
+
+.pathCard .cardBlurb {
+  font-size: 0.94rem;
+  line-height: 1.6;
+}
+
+/* ── Flow: the pipeline, drawn as a sequence ────────────────────────────── */
+
+.flow {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  padding-top: 2.25rem;
+  counter-reset: step;
+}
+
+/* The rail the steps hang from. */
+.flow::before {
+  content: '';
+  position: absolute;
+  top: 0.45rem;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--tu-accent), rgba(93, 171, 240, 0.15));
+}
+
+.flowStep {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0.25rem;
+  color: var(--tu-ink);
+  text-decoration: none !important;
+  counter-increment: step;
+}
+
+.flowStep::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  top: -2.25rem;
+  left: 0;
+  padding: 0 0.6rem 0 0;
+  background: var(--tu-bg);
+  font-family: var(--tu-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--tu-accent);
+}
+
+.flowStep::after {
+  content: '';
+  position: absolute;
+  top: -1.9rem;
+  left: 2.2rem;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--tu-accent);
+  box-shadow: 0 0 0 4px var(--tu-bg);
+}
+
+.flowStep:hover {
+  color: var(--tu-ink);
+}
+
+.flowStep:hover .cardName {
+  color: var(--tu-accent);
+}
+
+.flowStep .cardTop {
+  margin-bottom: 0.75rem;
+}
+
+.flowStep .cardName {
+  font-family: var(--tu-display);
+  font-size: 1.5rem;
+  letter-spacing: -0.03em;
+  transition: color 0.2s ease;
+}
+
+.flowStep .cardBlurb {
+  font-size: 0.96rem;
+  line-height: 1.65;
+}
+
+.flowStep .cardIndex {
+  display: none;
+}
+
+/* ── Apps: one lead card, the rest supporting ───────────────────────────── */
+
+.appGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.appCard {
+  display: flex;
+  flex-direction: column;
+  padding: 1.35rem;
+  border-radius: 10px;
+  background: var(--tu-panel);
+  color: var(--tu-ink);
+  text-decoration: none !important;
+  transition: transform 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
+}
+
+.appCard:hover {
+  transform: translateY(-3px);
+  background: var(--tu-panel-2);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+  color: var(--tu-ink);
+}
+
+.appCardLead {
+  grid-column: span 2;
+  grid-row: span 2;
+  padding: 2rem;
+  justify-content: flex-end;
+  background:
+    radial-gradient(100% 80% at 100% 0%, rgba(93, 171, 240, 0.18), transparent 65%),
+    var(--tu-panel);
+  box-shadow: inset 0 0 0 1px rgba(93, 171, 240, 0.24);
+}
+
+.appCard .cardName {
+  font-family: var(--tu-display);
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.appCardLead .cardName {
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.appCardLead .cardBlurb {
+  font-size: 1.02rem;
+  max-width: 44ch;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 960px) {
+  .split {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .splitHead {
+    position: static;
+  }
+
+  .pathGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pathCardFeatured {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .pathCard:nth-child(4) {
+    grid-column: 1 / -1;
+  }
+
+  .appGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .appCardLead {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .flow {
+    grid-template-columns: 1fr;
+    padding-top: 0;
+    padding-left: 2rem;
+    gap: 2rem;
+  }
+
+  .flow::before {
+    top: 0;
+    bottom: 0;
+    left: 0.45rem;
+    right: auto;
+    width: 2px;
+    height: auto;
+    background: linear-gradient(180deg, var(--tu-accent), rgba(93, 171, 240, 0.15));
+  }
+
+  .flowStep::before {
+    display: none;
+  }
+
+  .flowStep::after {
+    top: 0.45rem;
+    left: -1.95rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .pathGrid,
+  .appGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pathCard,
+  .appCard {
+    transition: none;
+  }
+}
+
+/* ── Card polish ────────────────────────────────────────────────────────── */
+
+.pathCard .cardLink,
+.appCard .cardLink {
+  margin-top: auto;
+  padding-top: 1.1rem;
+}
+
+/* Featured cards: icon pinned to the top, copy anchored to the bottom, so the
+   spare room reads as breathing space instead of a gap in the middle. */
+.pathCardFeatured .cardTop,
+.appCardLead .cardTop {
+  margin-bottom: auto;
+}
+
+.pathCardFeatured .cardLink {
+  margin-top: 1.5rem;
+  padding-top: 0;
+}
+
+/* A dot grid, the same texture the hero sits on, gives the big cards a surface. */
+.pathCardFeatured,
+.appCardLead {
+  background-image:
+    radial-gradient(rgba(93, 171, 240, 0.2) 1px, transparent 1px),
+    radial-gradient(120% 90% at 0% 0%, rgba(93, 171, 240, 0.2), transparent 60%);
+  background-size: 22px 22px, auto;
+  background-color: var(--tu-panel);
+}
+
+.appCardLead {
+  background-image:
+    radial-gradient(rgba(93, 171, 240, 0.2) 1px, transparent 1px),
+    radial-gradient(100% 80% at 100% 0%, rgba(93, 171, 240, 0.18), transparent 65%);
+}
+
+/* Fourth app card spans the bottom of the right-hand pair: no orphan slot. */
+.appCard:nth-child(4) {
+  grid-column: 3 / span 2;
+}
+
+@media (max-width: 960px) {
+  .appCard:nth-child(4) {
+    grid-column: auto;
+  }
+}

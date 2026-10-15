@@ -15,18 +15,25 @@
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
     "check-install-commands": "node scripts/check-install-commands.mjs",
-    "a11y": "node scripts/a11y.mjs"
+    "check-sidebar-coverage": "node scripts/check-sidebar-coverage.mjs",
+    "a11y": "node scripts/a11y.mjs",
+    "test:metrics": "node scripts/metrics-smoke.mjs"
   },
   "dependencies": {
     "@docusaurus/core": "3.10.2",
     "@docusaurus/faster": "3.10.2",
     "@docusaurus/preset-classic": "3.10.2",
     "@easyops-cn/docusaurus-search-local": "^0.55.2",
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@mdx-js/mdx": "^3.1.1",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
@@ -37,8 +44,11 @@
     "typescript": "~7.0.0"
   },
   "overrides": {
+    "postcss-selector-parser": "^7.1.6",
     "serialize-javascript": "^7.0.5",
-    "uuid": "^14.0.0"
+    "tinypool": "^2.2.0",
+    "uuid": "^14.0.0",
+    "image-size": "^2.0.4"
   },
   "browserslist": {
     "production": [

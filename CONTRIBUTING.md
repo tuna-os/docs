@@ -4,20 +4,68 @@ Thanks for your interest! This project is part of the [TunaOS](https://tunaos.or
 
 ## Getting Started
 
-Install Node.js 24 and npm. Also install the
-[repository command runner](https://github.com/casey/just). Then fork the
-repository, clone your fork, and install the pinned dependencies:
+### Local Environment Setup
+
+Install Node.js 24, npm, and the
+[repository command runner](https://github.com/casey/just).
+Check them with `node --version`, `npm --version`, and `just --version`.
+
+**First-time setup:**
 
 ```bash
+git clone https://github.com/YOUR-USERNAME/docs.git
+cd docs
 npm ci
 ```
 
-Start Docusaurus on your computer with `just start`. Before you submit a change
-that affects pages, navigation, components, or configuration, build the
-production site with `just build`.
+Fork the repository on GitHub first. Replace `YOUR-USERNAME` with your GitHub name.
+`npm ci` installs the versions in the lockfile.
 
-Open an issue before a substantial documentation or site change. Maintainers
-can then confirm its scope.
+**Local development:**
+
+```bash
+just start
+```
+
+Open the local address that `just start` prints. The site reloads when you edit a file.
+
+**Before you submit a PR:**
+
+```bash
+just preflight
+just build
+```
+
+`just preflight` checks types, prose, code, install commands, and tests.
+`just build` creates the production site in `build/`.
+
+### Opening an Issue
+
+Open an issue before a substantial documentation or site change (new sections,
+navigation rework, new components) so maintainers can confirm its scope.
+Small fixes (typos, links, single-page updates) do not need pre-approval.
+
+## Content Ownership
+
+This repository owns the pages at the top level of `docs/` and in `blog/`.
+For example, edit `docs/architecture.md` in this repository.
+Site code in `src/` and navigation in `docusaurus.config.js` also live here.
+
+Each day, [`sync-org-docs.yml`](/.github/workflows/sync-org-docs.yml)
+copies pages from projects into many `docs/<project>/` directories.
+It runs at 06:00 UTC and opens a PR for changes. A merge of that PR can
+replace edits made directly to copied pages. To fix a copied page, edit its
+source repository and wait for the sync PR to merge.
+
+The sync creates each project's `index.md` from its source `README.md`.
+Other files can come from the source root or its `docs/` directory.
+For example, `docs/bluefin-cli/index.md` comes from the bluefin-cli README.
+Look at the sync script and the source repository to confirm a file's owner.
+
+Some project directories also contain pages written here. For example,
+this repository owns `docs/tunaos/introduction.md`, while the sync copies
+that directory's `index.md` from its source. See [`AGENTS.md`](./AGENTS.md) for
+the sync rules and more detail about these mixed directories.
 
 ## Validation
 
@@ -39,6 +87,13 @@ scripts. Also run `just build` when the change can affect the generated site.
 
 Use `just --list` to see individual setup, preview, build, and validation
 recipes.
+
+### Additional validation before submission
+
+Run two additional checks before you submit:
+
+- **Accessibility:** `npm run a11y` audits the built site with axe-core (WCAG 2.2 A/AA) and must pass with zero violations. Run this after `npm run build`.
+- **Metrics:** `npm run test:metrics` validates the adoption metrics page with browser automation. Useful for changes that affect `/metrics`.
 
 ## Synchronized Project Documentation
 
@@ -68,4 +123,13 @@ index page at the start of a project tree identifies the source repository.
 ## Questions?
 
 - [TunaOS Documentation](https://tunaos.org)
-- [GitHub Issues](https://github.com/tuna-os/tunaOS/issues)
+- [GitHub Issues for the docs site](https://github.com/tuna-os/docs/issues)
+- For general TunaOS questions, see [TunaOS Issues](https://github.com/tuna-os/tunaOS/issues)
+
+<!-- hive-contribute-plea: donated-compute appeal, keep in sync across repos -->
+## Contribute compute — no code needed
+
+No time to write code? You can still push this project's backlog forward. TunaOS AI-agent hives work on this repository. Lend a hive your AI subscription or API tokens, and your machine runs contributor tasks from this project's backlog.
+
+- 🪸 [Contribute compute to the reef hive](https://reef.tunaos.org/contribute)
+- 🏫 [Contribute compute to the school hive](https://school.tunaos.org/contribute)

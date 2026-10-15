@@ -3,224 +3,151 @@ sidebar_position: 2
 title: "Architecture"
 ---
 
-## Overview
+## Purpose
 
-This project implements a Copr-like RPM build and hosting system using:
-- **GitHub Actions**: CI/CD pipeline for building RPMs
-- **Mock**: Isolated chroot environments for building
-- **Cloudflare R2**: Storage for RPMs and metadata
-- **GPG**: Package signing for security
+This repository is a multi-distribution package factory. It imports or adapts
+upstream package sources, plans reproducible build cells, builds each cell in a
+target-specific environment, verifies the result, and publishes signed package
+repositories through `repo.tunaos.org`.
 
-## System Components
+The factory currently produces RPM, DEB, and Arch packages. It has two build
+engines:
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                           GitHub Actions                                │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────────┐ │
-│  │  build-x86_64   │  │ build-aarch64   │  │  build (main job)      │ │
-│  │  ubuntu-latest  │  │ ubuntu-latest-  │  │  - Checkout            │ │
-│  │                 │  │ arm64            │  │  - Build container     │ │
-│  │                 │  │                 │  │  - Import GPG          │ │
-│  │                 │  │                 │  │  - Configure R2        │ │
-│  │                 │  │                 │  │  - Build RPMs          │ │
-│  │                 │  │                 │  │  - Sign RPMs           │ │
-│  │                 │  │                 │  │  - Upload to R2        │ │
-│  └─────────────────┘  └─────────────────┘  └─────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────────────┘
-                                    │
-                                    ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│                        Mock Container                                    │
-│  ┌─────────────────────────────────────────────────────────────────┐   │
-│  │  Isolated chroot environments per target                        │   │
-│  │  - fedora-44-x86_64                                             │   │
-│  │  - almalinux-10-x86_64                                          │   │
-│  │  - centos-stream-10-x86_64                                      │   │
-│  │  - (ARM64 targets)                                              │   │
-│  └─────────────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────────────┘
-                                    │
-                                    ▼
-┌─────────────────────────────────────────────────────────────────────────┐
-│                        Cloudflare R2                                    │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────────┐ │
-│  │  /repo/         │  │  /sources/      │  │  /public.gpg           │ │
-│  │  ├── fedora-44/ │  │  ├── glib/      │  │  (GPG public key)      │ │
-│  │  ├── almalinux/ │  │  ├── gtk4/      │  │                        │ │
-│  │  └── centos/    │  │  └── ...        │  │                        │ │
-│  └─────────────────┘  └─────────────────┘  └─────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────────────┘
-                                    │
-                                    ▼ (Optional)
-┌─────────────────────────────────────────────────────────────────────────┐
-│                     Cloudflare Worker                                   │
-│  ┌─────────────────────────────────────────────────────────────────┐   │
-│  │  - Custom domain routing                                        │   │
-│  │  - dnf/yum metadata handling                                    │   │
-│  │  - Security headers                                            │   │
-│  │  - Request logging                                              │   │
-│  └─────────────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────────────┘
+- **build-chain** builds curated package-family manifests in dependency order;
+- **Tideforge** rebuilds individual recipes across their declared targets.
+
+## Authoritative contracts
+
+The architecture is defined by data contracts rather than by a single
+workflow.
+
+| Contract | Responsibility |
+| --- | --- |
+| `manifests/package-factory.yaml` | Targets, architectures, build roots, publication paths, and served indexes |
+| `manifests/package-builds.yaml` | Package recipes and the targets on which each recipe is built |
+| `build-order*.yml` | Curated dependency order for build-chain package families |
+| `scripts/factory_contract.py` | Shared reader and validator for the factory contract |
+| `scripts/plan-package-factory.py` | Converts contracts and a change set or selector into build cells |
+| `.github/workflows/package-factory-cell.yml` | Reusable execution boundary for one planned cell |
+
+`docs/PACKAGE_FACTORY.md` documents the schema and onboarding process. A new
+target or package family is incomplete until its contract, planner, builder,
+verification, and publisher agree.
+
+## Data flow
+
+```text
+upstream source / local adaptation
+               |
+               v
+package-factory.yaml + package-builds.yaml + build-order manifests
+               |
+               v
+      planner emits build cells
+               |
+               v
+   build-chain or Tideforge engine
+               |
+               v
+   per-cell tests and installability checks
+               |
+               v
+ signed, attested intermediate artifacts
+               |
+               v
+ format-specific publisher -> Cloudflare R2
+               |
+               v
+ Cloudflare Worker -> repo.tunaos.org served indexes
 ```
 
-## Build Pipeline
+Planning is separate from execution. `.github/workflows/package-factory.yml`
+selects cells for pull requests, pushes, schedules, and manual selectors, then
+calls the reusable cell workflow. Long-running build-chain cells can publish a
+partial artifact and resume in a continuation shard; the artifact is build
+state, not a public repository.
 
-### 1. Trigger
+## Build boundaries
 
-- Push to `main` branch
-- New tag (`v*`)
-- dispatch
+### Build-chain
 
- Manual workflow### 2. Container Build
+`scripts/build-chain.sh` orchestrates curated RPM families. A family manifest
+defines tiers, and packages within a tier may build concurrently. The script
+supports isolated Mock/Podman execution and a native RPM backend; backend
+implementation is being moved behind `scripts/lib/build-chain/` interfaces.
+Family publishers consume the resulting RPM artifacts and write only their
+declared prefix.
 
-```dockerfile
-FROM fedora:44
+### Tideforge
 
-# Install build tools
-RUN dnf install -y mock createrepo_c rpm-sign rpm-build ...
-```
+`scripts/tideforge.py` and its supporting modules execute the recipe catalog.
+The target contract selects the format-specific builder and validation rules.
+Tideforge publishers are split by repository format:
 
-### 3. Chroot Initialization
+- `.github/workflows/publish-tideforge-rpms.yml`;
+- `.github/workflows/publish-tideforge-debs.yml`;
+- `.github/workflows/publish-tideforge-arch.yml`.
 
-Mock creates isolated environments:
-- Downloads base packages
-- Configures repos
-- Sets up build user
+The portable experiment workflow is an evaluation surface, not a production
+publisher.
 
-### 4. SRPM Build
+## Target and repository boundaries
 
-```bash
-rpmbuild -bs my-package.spec  # Creates .src.rpm
-```
+Targets are declared in `manifests/package-factory.yaml`. Supported target
+shapes include EL and Fedora RPM repositories, Ubuntu and Debian APT
+repositories, and Arch repositories. Hummingbird has additional bootstrap
+constraints recorded in the contract and its focused documentation.
 
-### 5. RPM Build
+Three locations must not be conflated:
 
-```bash
-mock -r fedora-44-ci-x86_64 --srpm my-package.src.rpm
-mock -r fedora-44-ci-x86_64 --build my-package.src.rpm
-```
+1. **Build state** is carried in workflow artifacts and local build roots.
+2. **Write paths** are R2 prefixes owned by a format or family publisher.
+3. **Read indexes** are URLs served through `repo.tunaos.org` and declared per
+   target and architecture.
 
-### 6. Signing
+Write paths and read URLs can intentionally differ because the Cloudflare
+Worker maps public routes to stored prefixes. Consumers must use
+`published_index`; publishers must use their declared R2 path. See
+`docs/GNOME50-REPO-PUBLISH.md` and `runbooks/r2-repo-publish-guard.md` for the
+known family-specific mappings and destructive-sync safeguards.
 
-```bash
-rpmsign --addsign *.rpm
-```
+## Publication boundary
 
-### 7. Upload
+Build cells do not publish directly to a public repository. They upload
+intermediate artifacts. A publisher then:
 
-```bash
-aws s3 sync output/ s3://bucket/repo/
-# Regenerate metadata from the actual files — never `--update` against
-# repodata seeded from the published repo: --update carries pre-existing
-# entries forward without re-hashing, so a drifted checksum is republished
-# forever (#358).
-rm -rf repodata && createrepo_c .
-```
+1. downloads the artifacts for its format or family;
+2. seeds and validates the existing repository state;
+3. signs packages and repository metadata;
+4. applies regression and shrink guards;
+5. synchronizes the complete repository to its owned R2 prefix; and
+6. verifies the served index rather than assuming the write succeeded.
 
-## Storage Layout
+The publishers require GitHub OIDC/attestation permissions and scoped R2/GPG
+secrets. Public consumers trust the repository signing keys and the served
+metadata, not workflow artifacts.
 
-```
-r2://repo-james-rc/
-├── public.gpg                          # GPG public key
-├── repo/
-│   ├── fedora-44-x86_64/
-│   │   ├── my-package-1.0.0-1.fc44.x86_64.rpm
-│   │   └── repodata/
-│   │       ├── repomd.xml
-│   │       ├── primary.xml.gz
-│   │       └── ...
-│   ├── almalinux-10-x86_64/
-│   ├── almalinux-10-x86_64_v2/
-│   ├── almalinux-10-aarch64/
-│   ├── centos-stream-10-x86_64/
-│   └── centos-stream-10-aarch64/
-└── sources/                           # Lookaside cache
-    ├── glib/
-    │   └── glib-2.80.0.tar.xz
-    └── ...
-```
+## Verification and observability
 
-## Security
+- Pull requests plan only affected cells; scheduled runs exercise complete
+  families so dependency or base-distribution drift is observed.
+- `scripts/verify-package-factory-cell.sh` verifies built cells before
+  publication.
+- `scripts/verify-published-wave.py` and format-specific checks verify the
+  consumer-visible repository after publication.
+- `scripts/factory-status.py` and `scripts/render-factory-site.py` derive the
+  status site from manifests and served indexes.
+- `scripts/check-gate-coverage.py` detects build cells not covered by their
+  required gates.
 
-### GPG Signing
+Detailed target constraints and operational history belong in `docs/`,
+runbooks, and regression tests. This document owns the stable component and
+authority boundaries; update it when those boundaries change.
 
-- Dedicated subkey for RPM signing
-- Private key stored in GitHub Secrets
-- Imported at build time
-- All RPMs signed before upload
+## Local development
 
-### Network Access
-
-- R2 accessed via AWS CLI with scoped credentials
-- Worker can add IP allowlisting
-- CDN provides DDoS protection
-
-## Retention Policy
-
-The cleanup script (`scripts/cleanup.py`):
-
-- Runs after each build
-- Keeps latest 3 versions of each package
-- Saves storage costs
-- Configurable via `--keep` flag
-
-## Multi-Architecture
-
-### x86_64 Builds
-
-- Standard runners: `ubuntu-latest`
-- Native execution
-
-### ARM64 Builds
-
-- Free runners: `ubuntu-latest-arm64`
-- Native execution on ARM
-- Pre-installed QEMU in container for compatibility
-
-### x86_64_v2
-
-- Builds with SSE4.2/AVX2 optimizations
-- Compatible with modern x86_64 CPUs
-- Falls back gracefully on older CPUs
-
-## Local Development
-
-### Using justfile
-
-```bash
-# Build single target
-just build fedora-44-ci
-
-# Build all x86_64
-just build-x86_64
-
-# Build all targets
-just build-all
-
-# Publish to R2
-just publish fedora-44-ci
-```
-
-### Using Container Script
-
-```bash
-./scripts/build-local.sh <package> <target>
-```
-
-## Dependencies
-
-### Runtime
-
-- `mock`: Chroot package builder
-- `createrepo_c`: Repository metadata generator
-- `rpm-sign`: RPM signing tool
-
-### Build
-
-- `rpm-build`: RPM building tools
-- Distribution-specific mock configs
-
-### Storage
-
-- Cloudflare R2
-- AWS CLI for S3 operations
+Use the focused commands in `justfile` and `docs/PACKAGE_FACTORY.md`. At a
+minimum, contract changes should run the manifest validators and planner tests;
+engine changes should run the corresponding script tests and shell lint. Local
+builds are evidence for a target, but publication remains the responsibility
+of the gated publisher workflows.

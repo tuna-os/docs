@@ -8,6 +8,10 @@
 
 name: Flatpak Remote Sanity Check
 
+permissions:
+  contents: read
+  packages: read
+
 on:
   push:
     branches: [main]
@@ -20,10 +24,14 @@ on:
     - cron: '0 12 * * *'  # daily at 12:00 UTC, well after any overnight publish jobs
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   check:
     name: Check ${{ github.event_name == 'schedule' && 'live remote' || 'working tree' }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
 

@@ -5,6 +5,12 @@ import {MAIN_VARIANTS} from './src/data/variants';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
+// Pages that are built and reachable by URL but must not be listed: not in the
+// sitemap, not in search, not linked from nav, footer or src/data/. Each one
+// also sets `noindex, nofollow` and is named in static/_headers.
+// /switch-to-bazzite waits for Universal Blue's approval of the Bazzite mark.
+const UNLISTED_ROUTES = ['/switch-to-bazzite'];
+
 const config: Config = {
   title: 'TunaOS',
   tagline: 'A Collection of Cloud-Native Enterprise Linux OS Images',
@@ -55,6 +61,11 @@ const config: Config = {
           theme: {
             customCss: './src/css/custom.css',
           },
+          sitemap: {
+            // Unlisted previews: keep them out of the sitemap. See
+            // src/components/SwitchToBazzite/README.md.
+            ignorePatterns: UNLISTED_ROUTES.flatMap((r) => [r, `${r}/**`]),
+          },
         } satisfies Preset.Options,
       ],
   ],
@@ -69,6 +80,8 @@ const config: Config = {
         indexDocs: true,
         indexPages: true,
         docsRouteBasePath: '/docs',
+        // Unlisted previews stay out of the search index too.
+        ignoreFiles: UNLISTED_ROUTES.map((r) => new RegExp(`^${r.slice(1)}(/|$)`)),
       },
     ],
   ],
@@ -102,6 +115,7 @@ const config: Config = {
         {to: '/wootc', label: 'From Windows', position: 'left'},
         {to: '/flatpak', label: 'Flatpaks', position: 'left'},
         {to: '/projects', label: 'Projects', position: 'left'},
+        {to: '/metrics', label: 'Metrics', position: 'left'},
         {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
@@ -146,6 +160,7 @@ const config: Config = {
             ...MAIN_VARIANTS.map((v) => ({label: `${v.name} (${v.base})`, to: `/${v.id}`})),
             {label: 'All variants', to: '/variants'},
             {label: 'Build matrix', to: '/matrix'},
+            {label: 'Adoption metrics', to: '/metrics'},
           ],
         },
         {

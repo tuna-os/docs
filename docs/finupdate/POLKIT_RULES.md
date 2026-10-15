@@ -10,7 +10,9 @@ Finupdate requires elevated privileges to interact with bootc and system managem
 ## Rule: `/etc/polkit-1/rules.d/49-finupdate.rules`
 
 ### Purpose
-Allows the local user and members of the `wheel` group to execute bootc commands (status, upgrade, etc.) and system reboot operations without password prompts. Designed for:
+Allows members of the `wheel` group to run the allowlisted bootc and
+finupdate-runner programs with no password prompt. Members can also reboot the
+system and manage systemd units and unit files. Designed for:
 - Automated testing in CI/CD environments
 - Development/debug mode operations
 - Non-destructive command verification (bootc status, upgrade checks)
@@ -66,6 +68,18 @@ Executed via:
 #### System reboot
 - `systemctl reboot` — Initiate system restart
 - Polkit action: `org.freedesktop.login1.reboot`
+
+#### Systemd unit management
+- `org.freedesktop.systemd1.manage-units` — Enable, disable, start, stop, or
+  otherwise manage the systemd units used by finupdate, including the `uupd`
+  timer.
+- `org.freedesktop.systemd1.manage-unit-files` — Change systemd unit files,
+  for example to turn a timer on or off.
+
+The shipped rule grants these two action IDs to the whole `wheel` group. The
+rule does not restrict them to one unit name. Treat changes to the
+finupdate code that select or change systemd units as changes to this
+privilege boundary.
 
 ### Security Notes
 

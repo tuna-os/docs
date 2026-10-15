@@ -141,6 +141,69 @@ function Features({project}: {project: Project}): ReactNode {
   );
 }
 
+function Comparison({project}: {project: Project}): ReactNode {
+  const comparison = project.comparison;
+  if (!comparison) return null;
+  return (
+    <section className={styles.section}>
+      <div className="container">
+        <div className={styles.sectionHead}>
+          <Heading as="h2">{comparison.title}</Heading>
+          {comparison.intro && (
+            <p className={styles.sectionSub} dangerouslySetInnerHTML={{__html: comparison.intro}} />
+          )}
+        </div>
+        <div className={styles.featGrid}>
+          {comparison.items.map((item) => (
+            <div key={item.title} className={styles.featCard}>
+              <Heading as="h3" className={styles.featTitle}>{item.title}</Heading>
+              <p className={styles.featText} dangerouslySetInnerHTML={{__html: item.text}} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Performance({project}: {project: Project}): ReactNode {
+  const performance = project.performance;
+  if (!performance) return null;
+  const [labelColumn, ...valueColumns] = performance.columns;
+  return (
+    <section className={clsx(styles.section, styles.sectionAlt)}>
+      <div className="container">
+        <div className={styles.sectionHead}>
+          <Heading as="h2">Performance</Heading>
+          <p className={styles.sectionSub} dangerouslySetInnerHTML={{__html: performance.intro}} />
+        </div>
+        <div className={styles.tableWrap}>
+          <table className={styles.perfTable}>
+            <thead>
+              <tr>
+                <th scope="col">{labelColumn}</th>
+                {valueColumns.map((column) => (
+                  <th key={column} scope="col">{column}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {performance.rows.map(([label, ...values]) => (
+                <tr key={label}>
+                  <th scope="row">{label}</th>
+                  {values.map((value, i) => (
+                    <td key={valueColumns[i]}>{value}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Install({project}: {project: Project}): ReactNode {
   if (!project.install?.length) return null;
   return (
@@ -162,13 +225,26 @@ function Install({project}: {project: Project}): ReactNode {
   );
 }
 
+// Related projects first. Every project page used to end in a wall of all
+// seventeen others; six, chosen by what the reader is already looking at, is a
+// next step rather than a directory (the full list is one click away).
+const KINDS: Record<string, string[]> = {
+  apps: ['tables', 'letters', 'decks', 'mariner', 'blueshell', 'ghostty', 'tavern', 'mandelbrot'],
+  images: ['tunaos', 'tromso', 'xfce-linux', 'dakota', 'wootc'],
+  tools: ['tacklebox', 'bootc-migrate', 'bluefin-cli', 'corral', 'wootc'],
+};
+
 function MoreProjects({project}: {project: Project}): ReactNode {
-  const others = PROJECTS.filter((p) => p.id !== project.id && !p.external);
+  const kinds = Object.values(KINDS).filter((ids) => ids.includes(project.id));
+  const related = new Set(kinds.flat());
+  const others = PROJECTS.filter((p) => p.id !== project.id && !p.external)
+    .sort((a, b) => Number(related.has(b.id)) - Number(related.has(a.id)))
+    .slice(0, 6);
   return (
     <section className={clsx(styles.section, styles.sectionAlt)}>
       <div className="container">
         <div className={styles.sectionHead}>
-          <Heading as="h2">More from TunaOS</Heading>
+          <Heading as="h2">Related projects</Heading>
         </div>
         <div className={styles.otherGrid}>
           {others.map((p) => (
@@ -212,6 +288,8 @@ export default function ProjectLanding({project}: {project: Project}): ReactNode
         <Highlights project={project} />
         <Screenshots project={project} />
         <Features project={project} />
+        <Comparison project={project} />
+        <Performance project={project} />
         <Install project={project} />
         <MoreProjects project={project} />
       </main>

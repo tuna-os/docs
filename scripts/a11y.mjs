@@ -26,6 +26,7 @@ const DEFAULT_PATHS = [
   '/office',
   '/variants',
   '/matrix',
+  '/metrics',
   '/projects',
   '/support',
   '/albacore',

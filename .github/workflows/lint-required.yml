@@ -32,10 +32,14 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   markdown-lint:
     name: Markdown Lint
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Nothing to lint
         run: echo 'No prose, no lint tooling, no budget changed in this pull request.'
