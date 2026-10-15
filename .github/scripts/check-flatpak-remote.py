@@ -75,15 +75,32 @@ def check_index(load_json, errors, warnings):
         by_name[result["Name"]] = {"archs": archs, "refs": refs}
 
     for app in expected:
-        name, app_id = app["name"], app["id"]
+        name = app["name"]
         entry = by_name.get(name)
-        if entry is None:
-            errors.append(f"{name}: missing from index/static entirely (expected id {app_id})")
-            continue
+        if "ids" in app:
+            # One repository serving several applications (e.g. the five
+            # installer frontends under tuna-os/bootc-installer): every
+            # expected id must be present and no stray ref may remain, so a
+            # dropped frontend fails instead of silently vanishing.
+            want_ids = app["ids"]
+            if entry is None:
+                errors.append(f"{name}: missing from index/static entirely (expected ids {want_ids})")
+                continue
+            missing = [wid for wid in want_ids if not any(wid in r for r in entry["refs"])]
+            if missing:
+                errors.append(f"{name}: missing expected id(s) {missing} (has {sorted(entry['refs'])})")
+            stray = [r for r in entry["refs"] if not any(wid in r for wid in want_ids)]
+            if stray:
+                errors.append(f"{name}: ref(s) don't match expected ids {want_ids}: {stray}")
+        else:
+            app_id = app["id"]
+            if entry is None:
+                errors.append(f"{name}: missing from index/static entirely (expected id {app_id})")
+                continue
 
-        bad_refs = [r for r in entry["refs"] if app_id not in r]
-        if bad_refs:
-            errors.append(f"{name}: ref(s) don't match expected id {app_id}: {bad_refs}")
+            bad_refs = [r for r in entry["refs"] if app_id not in r]
+            if bad_refs:
+                errors.append(f"{name}: ref(s) don't match expected id {app_id}: {bad_refs}")
 
         for arch in app.get("archs", []):
             if arch not in entry["archs"]:

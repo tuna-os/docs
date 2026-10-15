@@ -85,6 +85,59 @@ def test_check_index_warns_on_planned_arch_not_yet_published():
     assert any("planned arch 'arm64' not yet published" in w for w in warnings)
 
 
+def _multi_app_index(refs):
+    return {
+        "Results": [
+            {
+                "Name": "tuna-os/multi",
+                "Images": [
+                    {
+                        "Architecture": "amd64",
+                        "Labels": {"org.flatpak.ref": ref},
+                    }
+                    for ref in refs
+                ],
+            },
+        ],
+    }
+
+
+MULTI_EXPECTED = {
+    "apps": [
+        {"name": "tuna-os/multi", "ids": ["org.tunaos.One", "org.tunaos.Two"], "archs": ["amd64"]},
+    ],
+}
+
+
+def test_check_index_passes_for_multi_app_repo():
+    index = _multi_app_index([
+        "app/org.tunaos.One/x86_64/stable",
+        "app/org.tunaos.Two/x86_64/stable",
+    ])
+    errors, warnings = [], []
+    check_flatpak_remote.check_index(_loader(index=index, expected=MULTI_EXPECTED), errors, warnings)
+    assert errors == []
+    assert warnings == []
+
+
+def test_check_index_flags_dropped_frontend_in_multi_app_repo():
+    index = _multi_app_index(["app/org.tunaos.One/x86_64/stable"])
+    errors, warnings = [], []
+    check_flatpak_remote.check_index(_loader(index=index, expected=MULTI_EXPECTED), errors, warnings)
+    assert any("missing expected id(s)" in e for e in errors)
+
+
+def test_check_index_flags_stray_ref_in_multi_app_repo():
+    index = _multi_app_index([
+        "app/org.tunaos.One/x86_64/stable",
+        "app/org.tunaos.Two/x86_64/stable",
+        "app/org.tunaos.Stray/x86_64/stable",
+    ])
+    errors, warnings = [], []
+    check_flatpak_remote.check_index(_loader(index=index, expected=MULTI_EXPECTED), errors, warnings)
+    assert any("don't match expected ids" in e for e in errors)
+
+
 def test_check_index_warns_on_unexpected_app_in_index():
     expected = {"apps": []}
     errors, warnings = [], []
