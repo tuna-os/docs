@@ -8,14 +8,30 @@ check_flatpak_remote = load_module("check-flatpak-remote.py", "check_flatpak_rem
 
 def test_check_flatpakrepo_flags_missing_default_branch():
     errors = []
-    check_flatpak_remote.check_flatpakrepo(lambda _rel: "Title=tuna-os\n", errors)
+    check_flatpak_remote.check_flatpakrepo(
+        lambda _rel: "Title=tuna-os\nAuthenticatorName=org.flatpak.Authenticator.Oci\n",
+        errors,
+    )
     assert len(errors) == 1
     assert "DefaultBranch" in errors[0]
 
 
+def test_check_flatpakrepo_flags_missing_authenticator():
+    errors = []
+    check_flatpak_remote.check_flatpakrepo(
+        lambda _rel: "Title=tuna-os\nDefaultBranch=stable\n",
+        errors,
+    )
+    assert len(errors) == 1
+    assert "AuthenticatorName" in errors[0]
+
+
 def test_check_flatpakrepo_passes_when_present():
     errors = []
-    check_flatpak_remote.check_flatpakrepo(lambda _rel: "Title=tuna-os\nDefaultBranch=stable\n", errors)
+    check_flatpak_remote.check_flatpakrepo(
+        lambda _rel: "Title=tuna-os\nDefaultBranch=stable\nAuthenticatorName=org.flatpak.Authenticator.Oci\n",
+        errors,
+    )
     assert errors == []
 
 
