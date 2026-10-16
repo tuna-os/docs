@@ -23,6 +23,7 @@ import {readFileSync, readdirSync, statSync} from 'node:fs';
 import {join} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {isSyncedIndex} from './sync-org-docs.mjs';
+import {walkMarkdownFiles as findMarkdownFiles} from './lib/fs-walk.mjs';
 
 const ROOT = process.cwd();
 const DOCS_DIR = join(ROOT, 'docs');
@@ -65,20 +66,6 @@ function isReachable(slug, sidebarIds) {
     if (id.startsWith(prefix)) return true;
   }
   return false;
-}
-
-function findMarkdownFiles(dir) {
-  const out = [];
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    const st = statSync(full);
-    if (st.isDirectory()) {
-      out.push(...findMarkdownFiles(full));
-    } else if (entry.endsWith('.md') || entry.endsWith('.mdx')) {
-      out.push(full);
-    }
-  }
-  return out;
 }
 
 // Only slugs whose index.md carries sync-org-docs.mjs's generated
