@@ -35,7 +35,8 @@ The homepage links to `/#contributors`, where `src/components/WallOfFame`
 renders the committed `src/data/contributors.json` feed. It credits authors
 of merged pull requests to public repositories in `tuna-os`, with forks
 and archived projects included. It skips known bots and AI agents.
-Each author's `merged_prs` count excludes inherited commits and unmerged PRs.
+For each author, `merged_prs` is the number of merged pull requests.
+It does not use inherited commit history.
 The wall does not credit direct commits.
 
 Run `GH_TOKEN=… npm run contributors` to refresh the feed locally.
