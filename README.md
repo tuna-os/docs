@@ -42,8 +42,8 @@ The wall does not credit direct commits.
 Run `GH_TOKEN=… npm run contributors` to refresh the feed locally.
 `.github/workflows/update-contributors.yml` refreshes it every Monday at
 06:00 UTC or on manual dispatch, validates it, and opens a refresh PR.
-The workflow dispatches the normal lint and site checks for that PR.
-Merge the PR to update the live wall through the normal production build.
+A maintainer must approve the PR workflows when GitHub asks.
+Merge the PR after checks pass to update the live wall through production.
 
 ## Deployment
 
