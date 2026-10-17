@@ -14,7 +14,6 @@ concurrency:
 permissions:
   contents: write
   pull-requests: write
-  actions: write
 
 jobs:
   update-wall:
@@ -36,7 +35,6 @@ jobs:
           node scripts/__tests__/contributors-data.test.mjs
 
       - name: Create refresh PR
-        id: contributors-pr
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -48,14 +46,4 @@ jobs:
           body: |
             Refresh authors of merged pull requests to public tuna-os repositories.
             Includes forks and archived projects; excludes known bots and AI agents.
-            Merge after the site and lint checks pass to update the live wall.
-
-      # GITHUB_TOKEN-created PRs do not trigger pull_request workflows.
-      # Explicit dispatches run the same checks against the new branch SHA.
-      - name: Run refresh PR checks
-        if: steps.contributors-pr.outputs.pull-request-operation == 'created' || steps.contributors-pr.outputs.pull-request-operation == 'updated'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh workflow run lint.yml --ref automation/update-contributors
-          gh workflow run workers-build.yml --ref automation/update-contributors
+            Approve the PR workflows if GitHub requests it, then merge after checks pass.
