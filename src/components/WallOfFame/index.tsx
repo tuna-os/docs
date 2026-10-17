@@ -21,10 +21,10 @@ export default function WallOfFame(): ReactNode {
   if (contributors.length === 0) return null;
   const generated = new Date(FEED.generated_at).toISOString().slice(0, 10);
   return (
-    <section id="contributors" className={styles.wall} aria-label="Wall of fame">
+    <section className={styles.wall} aria-label="Wall of fame">
       <div className="container">
         <span className={styles.eyebrow}>Wall of fame</span>
-        <Heading as="h2" className={styles.title}>
+        <Heading as="h2" id="contributors" className={styles.title}>
           Built by {contributors.length} humans
         </Heading>
         <p className={styles.sub}>
