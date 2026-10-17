@@ -96,8 +96,9 @@ function Hero(): ReactNode {
             </div>
             <p className={styles.heroContribute}>
               No time to write code?{' '}
-              <a href="https://hub.tunaos.org#contribute">Lend your AI CLI</a> to School and Reef,
-              the two official TunaOS hives. <Link to="#contributors">Meet our contributors</Link>.
+              <a href="https://hub.tunaos.org/#contribute">Lend your AI CLI</a> through Hive.
+              Tasks rotate between School (OS and builds) and Reef (apps), using your provider&apos;s
+              subscription quota or API billing. <Link to="#contributors">Meet our contributors</Link>.
             </p>
           </div>
         </div>

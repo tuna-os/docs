@@ -108,7 +108,7 @@ const config: Config = {
           items: [
             {type: 'html', value: '<div style="padding:0.5rem 1rem;max-width:280px;font-size:0.875rem;line-height:1.5;color:var(--ifm-dropdown-link-color)">All the projects here are made primarily with LLMs. They span the range of slop to not. Some are very useful and usable while others are definitely not.</div>'},
             {type: 'html', value: '<hr style="margin:0.3rem 0;opacity:0.3">'},
-            {href: 'https://hive.tunaos.org', label: 'Hive'},
+            {href: 'https://hub.tunaos.org/#contribute', label: 'Donate AI CLI time'},
           ],
         },
         {to: '/download', label: 'Download', position: 'left'},
@@ -192,8 +192,8 @@ const config: Config = {
               href: 'https://github.com/tuna-os/tunaOS',
             },
             {
-              label: 'Hive',
-              href: 'https://hive.tunaos.org',
+              label: 'Donate AI CLI time',
+              href: 'https://hub.tunaos.org/#contribute',
             },
             {
               label: 'Flatpaks',

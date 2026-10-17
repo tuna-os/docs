@@ -53,7 +53,16 @@ export default function WallOfFame(): ReactNode {
           ))}
         </ul>
         <p className={styles.more}>
-          <Link to="/docs/community">Contribute to TunaOS</Link>
+          <a className="button button--primary" href="https://hub.tunaos.org/#contribute">
+            Donate AI CLI time
+          </a>
+        </p>
+        <p className={styles.sub}>
+          Hive alternates tasks between School (OS and builds) and Reef (apps).
+          Your local AI CLI uses your provider&apos;s subscription quota or API billing.
+        </p>
+        <p className={styles.more}>
+          Prefer code or docs? <Link to="/docs/community">Find starter issues and community channels</Link>.
         </p>
       </div>
     </section>
