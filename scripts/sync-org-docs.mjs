@@ -13,6 +13,7 @@ import {pathToFileURL} from 'node:url';
 import {
   sanitizeHtml,
   fixRelativeLinks,
+  onProse,
   frontmatter,
   subFrontmatter,
   isSyncedIndex,
@@ -679,6 +680,13 @@ function withFormatMd(content) {
 }
 
 export {
+  sanitizeHtml,
+  fixRelativeLinks,
+  onProse,
+  frontmatter,
+  subFrontmatter,
+  isSyncedIndex,
+  getStatusBanner,
   filesToRemove,
   isRootDoc,
   markUnparseable,
