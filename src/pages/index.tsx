@@ -8,6 +8,7 @@ import VariantCarousel from '@site/src/components/VariantCarousel';
 import ProjectCarousel from '@site/src/components/ProjectCarousel';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Icon, {type IconName} from '@site/src/components/Icon';
+import WallOfFame from '@site/src/components/WallOfFame';
 import Heading from '@theme/Heading';
 
 import {VARIANTS as ALL_VARIANTS} from '@site/src/data/variants';
@@ -93,6 +94,11 @@ function Hero(): ReactNode {
                 Compare images
               </Link>
             </div>
+            <p className={styles.heroContribute}>
+              No time to write code?{' '}
+              <a href="https://hub.tunaos.org#contribute">Lend your AI CLI</a> to School and Reef,
+              the two official TunaOS hives. <Link to="#contributors">Meet our contributors</Link>.
+            </p>
           </div>
         </div>
       </div>
@@ -449,6 +455,7 @@ export default function Home(): ReactNode {
         <PipelineBand />
         <AppsBand />
         <DocsBand />
+        <WallOfFame />
       </main>
     </Layout>
   );

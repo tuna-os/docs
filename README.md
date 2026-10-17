@@ -29,6 +29,20 @@ npm run build
 This command writes the static content to the `build` directory. Any service
 for static content can then serve it.
 
+## Homepage contributor wall
+
+The homepage links to `/#contributors`, where `src/components/WallOfFame`
+renders the committed `src/data/contributors.json` feed. The feed aggregates
+GitHub commit contributors from active, non-fork repositories in `tuna-os`;
+known bot and AI-agent accounts are filtered out. Inherited upstream commits
+can credit contributors who have not worked directly on TunaOS.
+
+Run `GH_TOKEN=… npm run contributors` to refresh the feed locally.
+`.github/workflows/update-contributors.yml` refreshes it every Monday at
+06:00 UTC or on manual dispatch, validates it, and commits changes to `main`
+for the normal production build. The component, feed, homepage integration,
+and workflow must all be committed and pushed before they can appear live.
+
 ## Deployment
 
 The **`tunaos-org` Cloudflare Worker** serves the live site (tunaos.org).
