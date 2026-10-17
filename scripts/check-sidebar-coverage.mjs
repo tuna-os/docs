@@ -22,7 +22,7 @@
 import {readFileSync, readdirSync, statSync} from 'node:fs';
 import {join} from 'node:path';
 import {pathToFileURL} from 'node:url';
-import {isSyncedIndex} from './sync-org-docs.mjs';
+import {isSyncedIndex} from './lib/org-doc-transform.mjs';
 import {walkMarkdownFiles as findMarkdownFiles} from './lib/fs-walk.mjs';
 
 const ROOT = process.cwd();
@@ -68,10 +68,10 @@ function isReachable(slug, sidebarIds) {
   return false;
 }
 
-// Only slugs whose index.md carries sync-org-docs.mjs's generated
-// frontmatter are in scope: this check is about the producer/consumer gap
-// between that script and sidebars.ts, not about every hand-authored page
-// under docs/. A slug with files but no index.md (e.g. docs/guides/) is
+// Only slugs whose index.md carries the generated frontmatter produced by
+// org-doc-transform.mjs are in scope: this check is about the producer-consumer
+// gap between the sync command and sidebars.ts, not about every hand-authored
+// page under docs/. A slug with files but no index.md (e.g. docs/guides/) is
 // hand-maintained content with its own top-level sidebar category and is
 // out of scope the same way.
 function syncedSlugs() {

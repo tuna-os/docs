@@ -1,19 +1,15 @@
 #!/usr/bin/env node
 
-// Unit tests for sync-org-docs.mjs.
+// Unit tests for the sync command and its document transform module.
 //
 // Tests the pure helper functions used by the org-wide doc aggregation
 // script. Clone/git/gh operations are not tested here — those are
 // integration/end-to-end concerns.
 //
-// These import the real functions. The previous harness read the script as
-// text and re-derived each function with `eval`, falling back to an inline
-// copy when that failed. It always failed, so every case printed
-// "skipped (function not extractable)" and the file exited 0: a suite that
-// reported success while running nothing, and which could not have caught a
-// regression in the script even when the eval worked, because it tested a
-// copy. sync-org-docs.mjs now exports its helpers and guards main() behind a
-// run-as-command check, so there is nothing left to work around.
+// These tests import the real functions. The transformation cases import the
+// pure module directly, while orchestration and reconciliation cases import
+// the command module. The command guards its main() call so importing either
+// module never touches the network.
 //
 // Usage:
 //   node scripts/__tests__/sync-org-docs.test.mjs
@@ -29,12 +25,14 @@ import {
   frontmatter,
   subFrontmatter,
   isSyncedIndex,
+  getStatusBanner,
+} from '../lib/org-doc-transform.mjs';
+import {
   filesToRemove,
   isRootDoc,
   markUnparseable,
   rejectExpressions,
   withFormatMd,
-  getStatusBanner,
   slugify,
   listOrgRepos,
   checkListing,
