@@ -1,9 +1,10 @@
 #!/usr/bin/env node
-// Tests for build-iso-index.mjs
+// Tests for build-iso-index.mjs and its pure transformation module
+// scripts/lib/iso-index.mjs.
 //
 // Runs the script with fixture rclone JSON on stdin and validates the
 // output iso-index structure. Also directly tests the pure helper
-// functions imported from the script.
+// functions imported from the library module.
 //
 // Usage:
 //   node scripts/build-iso-index.test.mjs
@@ -14,19 +15,22 @@ import {mkdtempSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 
-// ── Import helpers from the script ─────────────────────────────────────
-// The script has a top-level `await readStdin()`, so importing it for its
-// pure-function exports runs that read too. In CI this resolves instantly
-// because the runner's stdin is already closed, but a contributor running
-// this file directly from an interactive shell (open, never-EOF stdin)
-// would otherwise hang here forever. Force EOF on our own stdin first so
-// this test behaves the same everywhere, not just by accident in CI.
-process.stdin.push(null);
+// ── Import helpers from the library module ─────────────────────────────
+// The pure functions live in scripts/lib/iso-index.mjs without stdin or
+// process I/O side effects, so imports resolve cleanly without process.stdin workarounds.
+import {
+  detectArch,
+  titleCase,
+  buildIsoIndex,
+  CATEGORIES,
+} from './lib/iso-index.mjs';
+
+// Also verify backward-compatible exports from build-iso-index.mjs without stdin blocking
 const scriptUrl = new URL('./build-iso-index.mjs', import.meta.url);
 const mod = await import(scriptUrl);
-
-const detectArch = mod.detectArch;
-const titleCase = mod.titleCase;
+assert.equal(typeof mod.detectArch, 'function');
+assert.equal(typeof mod.titleCase, 'function');
+assert.equal(typeof mod.buildIsoIndex, 'function');
 
 // ── Pure function tests ────────────────────────────────────────────────
 
@@ -102,10 +106,17 @@ function runScript(stdinData) {
   const out = execSync(`node "${scriptPath}"`, {
     input: stdinData,
     encoding: 'utf8',
-    maxBuffer: 10 * 1024 * 1024,
+    timeout: 5000,
   });
   return JSON.parse(out);
 }
+
+// Direct library call test without subshell or stdin
+const fixtureData = JSON.parse(buildFixture());
+const directResult = buildIsoIndex(fixtureData);
+assert.equal(directResult.count, 4);
+assert.equal(directResult.categories.length, 3);
+console.log('  ✓ buildIsoIndex library call verified directly');
 
 // Run integration test
 const result = runScript(buildFixture());
