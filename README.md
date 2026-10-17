@@ -29,6 +29,22 @@ npm run build
 This command writes the static content to the `build` directory. Any service
 for static content can then serve it.
 
+## Homepage contributor wall
+
+The homepage links to `/#contributors`, where `src/components/WallOfFame`
+renders the committed `src/data/contributors.json` feed. It credits authors
+of merged pull requests to public repositories in `tuna-os`, with forks
+and archived projects included. It skips known bots and AI agents.
+For each author, `merged_prs` is the number of merged pull requests.
+It does not use inherited commit history.
+The wall does not credit direct commits.
+
+Run `GH_TOKEN=… npm run contributors` to refresh the feed locally.
+`.github/workflows/update-contributors.yml` refreshes it every Monday at
+06:00 UTC or on manual dispatch, validates it, and opens a refresh PR.
+The workflow dispatches the normal lint and site checks for that PR.
+Merge the PR to update the live wall through the normal production build.
+
 ## Deployment
 
 The **`tunaos-org` Cloudflare Worker** serves the live site (tunaos.org).

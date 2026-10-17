@@ -153,6 +153,18 @@
   text-underline-offset: 3px;
 }
 
+.heroContribute {
+  margin: 1rem 0 0;
+  font-size: 0.95rem;
+  color: #a0a8b0;
+}
+
+.heroContribute a {
+  color: var(--tu-accent-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .carouselGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;

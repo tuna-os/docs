@@ -1,0 +1,60 @@
+.wall {
+  padding: 3.5rem 0;
+  background: var(--ifm-background-color);
+  border-top: 1px solid var(--ifm-hr-background-color);
+}
+
+.eyebrow {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ifm-color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  margin-bottom: 0.5rem;
+}
+
+.sub {
+  color: var(--ifm-color-content-secondary);
+  max-width: 65ch;
+}
+
+.grid {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.grid li {
+  margin: 0;
+  padding: 0;
+}
+
+.grid a {
+  display: block;
+  border-radius: 50%;
+  line-height: 0;
+  transition: transform 0.15s ease;
+}
+
+.grid a:hover {
+  transform: scale(1.15);
+}
+
+.grid img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--ifm-hr-background-color);
+}
+
+.more {
+  margin-top: 1.25rem;
+}

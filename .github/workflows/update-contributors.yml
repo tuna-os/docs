@@ -1,0 +1,61 @@
+# Refresh merged-PR credits and propose them through the protected main
+# branch's normal review path. Merging the PR triggers the site deployment.
+name: update-contributors
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: update-contributors
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+jobs:
+  update-wall:
+    runs-on: ubuntu-26.04
+    if: ${{ github.repository == 'tuna-os/docs' }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Regenerate contributors data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node scripts/build-contributors.mjs
+          node scripts/__tests__/contributors-wall.test.mjs
+          node scripts/__tests__/contributors-data.test.mjs
+
+      - name: Create refresh PR
+        id: contributors-pr
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/update-contributors
+          delete-branch: true
+          add-paths: src/data/contributors.json
+          commit-message: 'chore: refresh merged-PR contributor credits'
+          title: 'chore: refresh merged-PR contributor credits'
+          body: |
+            Refresh authors of merged pull requests to public tuna-os repositories.
+            Includes forks and archived projects; excludes known bots and AI agents.
+            Merge after the site and lint checks pass to update the live wall.
+
+      # GITHUB_TOKEN-created PRs do not trigger pull_request workflows.
+      # Explicit dispatches run the same checks against the new branch SHA.
+      - name: Run refresh PR checks
+        if: steps.contributors-pr.outputs.pull-request-operation == 'created' || steps.contributors-pr.outputs.pull-request-operation == 'updated'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run lint.yml --ref automation/update-contributors
+          gh workflow run workers-build.yml --ref automation/update-contributors
