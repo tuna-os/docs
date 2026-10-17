@@ -1,17 +1,9 @@
-# Regenerates src/data/contributors.json from the live tuna-os org so the
-# homepage wall of fame reflects current contributors, with no per-release
-# action needed here.
-#
-# Runs scripts/build-contributors.mjs (human-only filter lives there), runs
-# the wall tests against the fresh data, and commits the result. The commit
-# triggers the site's normal redeploy, so the published wall updates within
-# a build cycle.
+# Refresh merged-PR credits and propose them through the protected main
+# branch's normal review path. Merging the PR triggers the site deployment.
 name: update-contributors
 
 on:
   schedule:
-    # Weekly — contributors change slowly, and the step only commits on a
-    # real diff.
     - cron: '0 6 * * 1'
   workflow_dispatch:
 
@@ -21,6 +13,8 @@ concurrency:
 
 permissions:
   contents: write
+  pull-requests: write
+  actions: write
 
 jobs:
   update-wall:
@@ -41,14 +35,27 @@ jobs:
           node scripts/__tests__/contributors-wall.test.mjs
           node scripts/__tests__/contributors-data.test.mjs
 
-      - name: Commit if changed
+      - name: Create refresh PR
+        id: contributors-pr
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/update-contributors
+          delete-branch: true
+          add-paths: src/data/contributors.json
+          commit-message: 'chore: refresh merged-PR contributor credits'
+          title: 'chore: refresh merged-PR contributor credits'
+          body: |
+            Refresh authors of merged pull requests to public tuna-os repositories.
+            Includes forks and archived projects; excludes known bots and AI agents.
+            Merge after the site and lint checks pass to update the live wall.
+
+      # GITHUB_TOKEN-created PRs do not trigger pull_request workflows.
+      # Explicit dispatches run the same checks against the new branch SHA.
+      - name: Run refresh PR checks
+        if: steps.contributors-pr.outputs.pull-request-operation == 'created' || steps.contributors-pr.outputs.pull-request-operation == 'updated'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if git diff --quiet -- src/data/contributors.json; then
-            echo "No change to contributors.json"
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/data/contributors.json
-          git commit -m "chore: refresh wall-of-fame contributors data"
-          git push
+          gh workflow run lint.yml --ref automation/update-contributors
+          gh workflow run workers-build.yml --ref automation/update-contributors

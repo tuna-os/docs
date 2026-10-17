@@ -1,12 +1,12 @@
-// build-contributors.mjs — aggregate human contributors across the tuna-os
-// org into src/data/contributors.json for the homepage wall of fame.
+// build-contributors.mjs — credit authors of merged PRs to tuna-os projects
+// in src/data/contributors.json for the homepage wall of fame.
 //
 // Usage: GH_TOKEN=... node scripts/build-contributors.mjs [--org tuna-os]
 //
-// Network: lists org repos (skips forks + archived), then contributors per
-// repo. Needs a token for the org's repo count; unauthenticated works but
-// will hit rate limits fast. Writes committed JSON; the site hotlinks
-// avatars.githubusercontent.com so no images are vendored.
+// Network: lists public org repos, including forks and archived projects,
+// then their closed PRs. Only merged PR authors receive credit; inherited
+// commit history is not a contribution to this org. Writes committed JSON;
+// the site loads avatars from avatars.githubusercontent.com.
 //
 // Human-only rule (exported for tests): exclude API type Bot, [bot] suffix,
 // and a curated blocklist of automation + AI-agent accounts. Extend
@@ -70,25 +70,27 @@ export function isHumanContributor(login, type) {
 }
 
 export function mergeContributors(perRepo) {
-  // perRepo: [{repo, contributors: [{login, id, type, contributions}]}]
+  // perRepo: [{repo, pulls: [{id, merged_at, user: {login, id, type}}]}]
   const byLogin = new Map();
-  for (const {repo, contributors} of perRepo) {
-    for (const c of contributors ?? []) {
-      if (!isHumanContributor(c.login, c.type)) continue;
-      if (!Number.isSafeInteger(c.contributions) || c.contributions <= 0) continue;
-      if (!Number.isSafeInteger(c.id)) continue;
+  const seenPulls = new Set();
+  for (const {repo, pulls} of perRepo) {
+    for (const pull of pulls ?? []) {
+      const c = pull.user;
+      if (!pull.merged_at || !Number.isSafeInteger(pull.id) || seenPulls.has(pull.id)) continue;
+      if (!isHumanContributor(c?.login, c?.type) || !Number.isSafeInteger(c.id)) continue;
+      seenPulls.add(pull.id);
       const key = c.login.toLowerCase();
       const existing = byLogin.get(key);
       if (existing) {
-        existing.contributions += c.contributions;
+        existing.merged_prs += 1;
         if (!existing.repos.includes(repo)) existing.repos.push(repo);
       } else {
-        byLogin.set(key, {login: c.login, id: c.id, contributions: c.contributions, repos: [repo]});
+        byLogin.set(key, {login: c.login, id: c.id, merged_prs: 1, repos: [repo]});
       }
     }
   }
   return [...byLogin.values()].sort(
-    (a, b) => b.contributions - a.contributions || a.login.localeCompare(b.login),
+    (a, b) => b.merged_prs - a.merged_prs || a.login.localeCompare(b.login),
   );
 }
 
@@ -101,14 +103,14 @@ export function validateFeed(feed) {
     throw Error('Invalid generated_at');
   if (!Array.isArray(feed.contributors)) throw Error('Invalid contributors');
   for (const c of feed.contributors) {
-    if (Object.keys(c).sort().join() !== 'contributions,id,login,repos')
+    if (Object.keys(c).sort().join() !== 'id,login,merged_prs,repos')
       throw Error('Invalid contributor fields');
     if (
       typeof c.login !== 'string' ||
       !c.login ||
       !Number.isSafeInteger(c.id) ||
-      !Number.isSafeInteger(c.contributions) ||
-      c.contributions <= 0
+      !Number.isSafeInteger(c.merged_prs) ||
+      c.merged_prs <= 0
     )
       throw Error('Invalid contributor');
     if (
@@ -150,18 +152,16 @@ async function main() {
     ? process.argv[process.argv.indexOf('--org') + 1]
     : 'tuna-os';
   const token = process.env.GH_TOKEN ?? process.env.GITHUB_TOKEN ?? null;
-  const repos = (await api(`/orgs/${org}/repos?per_page=100&type=sources`, token)).filter(
-    (r) => !r.fork && !r.archived,
-  );
+  const repos = await api(`/orgs/${org}/repos?per_page=100&type=public`, token);
   console.error(`repos: ${repos.length}`);
   const perRepo = [];
   for (const repo of repos) {
-    const contributors = await api(
-      `/repos/${org}/${repo.name}/contributors?per_page=100&anon=false`,
+    const pulls = await api(
+      `/repos/${org}/${repo.name}/pulls?state=closed&sort=created&direction=asc&per_page=100`,
       token,
     );
-    perRepo.push({repo: repo.name, contributors});
-    console.error(`  ${repo.name}: ${contributors.length}`);
+    perRepo.push({repo: repo.name, pulls});
+    console.error(`  ${repo.name}: ${pulls.length} closed PRs`);
   }
   const feed = {
     org,

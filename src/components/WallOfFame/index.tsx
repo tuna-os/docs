@@ -1,4 +1,5 @@
 import type {ReactNode} from 'react';
+import Link from '@docusaurus/Link';
 import Heading from '@theme/Heading';
 import feed from '@site/src/data/contributors.json';
 import styles from './styles.module.css';
@@ -6,7 +7,7 @@ import styles from './styles.module.css';
 type Contributor = {
   login: string;
   id: number;
-  contributions: number;
+  merged_prs: number;
   repos: string[];
 };
 
@@ -25,18 +26,18 @@ export default function WallOfFame(): ReactNode {
       <div className="container">
         <span className={styles.eyebrow}>Wall of fame</span>
         <Heading as="h2" id="contributors" className={styles.title}>
-          Built by {contributors.length} humans
+          {contributors.length} contributors
         </Heading>
         <p className={styles.sub}>
-          Every human contributor across the {FEED.org} organisation — bots and AI agents need not
-          apply. Data refreshed {generated}.
+          Authors of merged pull requests in the {FEED.org} organisation, including forks and
+          archived projects. Known bots and AI agents are excluded. Updated {generated}.
         </p>
         <ul className={styles.grid}>
           {contributors.map((c) => (
             <li key={c.login}>
               <a
                 href={`https://github.com/${c.login}`}
-                title={`${c.login} — ${c.contributions} contributions`}
+                title={`${c.login} — ${c.merged_prs} merged pull ${c.merged_prs === 1 ? 'request' : 'requests'}`}
                 aria-label={`${c.login} on GitHub`}
               >
                 <img
@@ -52,7 +53,7 @@ export default function WallOfFame(): ReactNode {
           ))}
         </ul>
         <p className={styles.more}>
-          <a href={`https://github.com/orgs/${FEED.org}/people`}>Join them</a>
+          <Link to="/docs/community">Contribute to TunaOS</Link>
         </p>
       </div>
     </section>

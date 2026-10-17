@@ -1,5 +1,6 @@
 .wall {
   padding: 3.5rem 0;
+  background: var(--ifm-background-color);
   border-top: 1px solid var(--ifm-hr-background-color);
 }
 

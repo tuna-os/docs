@@ -32,16 +32,17 @@ for static content can then serve it.
 ## Homepage contributor wall
 
 The homepage links to `/#contributors`, where `src/components/WallOfFame`
-renders the committed `src/data/contributors.json` feed. The feed lists authors
-of commits in active, non-fork repositories in `tuna-os`. It skips known bots
-and AI agents. Inherited upstream commits
-can credit contributors who have not worked directly on TunaOS.
+renders the committed `src/data/contributors.json` feed. It credits authors
+of merged pull requests to public repositories in `tuna-os`, with forks
+and archived projects included. It skips known bots and AI agents.
+Each author's `merged_prs` count excludes inherited commits and unmerged PRs.
+The wall does not credit direct commits.
 
 Run `GH_TOKEN=… npm run contributors` to refresh the feed locally.
 `.github/workflows/update-contributors.yml` refreshes it every Monday at
-06:00 UTC or on manual dispatch, validates it, and commits changes to `main`
-for the normal production build. Commit and push the component, feed,
-homepage integration, and workflow before they can appear live.
+06:00 UTC or on manual dispatch, validates it, and opens a refresh PR.
+The workflow dispatches the normal lint and site checks for that PR.
+Merge the PR to update the live wall through the normal production build.
 
 ## Deployment
 

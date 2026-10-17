@@ -31,49 +31,50 @@ assert.equal(isHumanContributor(null, 'User'), false);
 // EXTRA_BOT_LOGINS is read at import time; covered by the -bot suffix rule instead.
 assert.equal(isHumanContributor('org-greeter-bot', 'User'), false);
 
-// --- merge across repos ---
+// Only merged PRs count; inherited commits never enter this input.
+const mergedAt = '2026-10-17T17:00:00.000Z';
 const merged = mergeContributors([
   {
     repo: 'a',
-    contributors: [
-      {login: 'HanThor', id: 1, type: 'User', contributions: 10},
-      {login: 'renovate', id: 99, type: 'Bot', contributions: 500},
+    pulls: [
+      {id: 101, merged_at: mergedAt, user: {login: 'HanThor', id: 1, type: 'User'}},
+      {id: 102, merged_at: mergedAt, user: {login: 'renovate', id: 99, type: 'Bot'}},
+      {id: 103, merged_at: null, user: {login: 'not-merged', id: 3, type: 'User'}},
+      {id: 104, merged_at: mergedAt, user: null},
     ],
   },
   {
     repo: 'b',
-    contributors: [
-      {login: 'hanthor', id: 1, type: 'User', contributions: 5},
-      {login: 'octocat', id: 2, type: 'User', contributions: 3},
+    pulls: [
+      {id: 201, merged_at: mergedAt, user: {login: 'hanthor', id: 1, type: 'User'}},
+      {id: 202, merged_at: mergedAt, user: {login: 'octocat', id: 2, type: 'User'}},
+      // Page overlap must not count a merged PR twice.
+      {id: 202, merged_at: mergedAt, user: {login: 'octocat', id: 2, type: 'User'}},
     ],
   },
 ]);
 assert.deepEqual(merged, [
-  {login: 'HanThor', id: 1, contributions: 15, repos: ['a', 'b']},
-  {login: 'octocat', id: 2, contributions: 3, repos: ['b']},
+  {login: 'HanThor', id: 1, merged_prs: 2, repos: ['a', 'b']},
+  {login: 'octocat', id: 2, merged_prs: 1, repos: ['b']},
 ]);
-// zero/negative contributions and missing ids are dropped, not rendered.
-assert.deepEqual(
-  mergeContributors(
-    [{repo: 'a', contributors: [{login: 'ghost', id: 3, type: 'User', contributions: 0}]}],
-    [],
-  ),
-  [],
-);
 
 // --- feed schema ---
 const feed = {
   org: 'tuna-os',
   generated_at: '2026-10-17T17:00:00.000Z',
-  contributors: [{login: 'hanthor', id: 1, contributions: 15, repos: ['a']}],
+  contributors: [{login: 'hanthor', id: 1, merged_prs: 2, repos: ['a']}],
 };
 assert.deepEqual(validateFeed(feed), feed);
 for (const mutate of [
   (f) => (f.org = ''),
   (f) => (f.generated_at = 'yesterday'),
-  (f) => (f.contributors[0].contributions = 0),
+  (f) => (f.contributors[0].merged_prs = 0),
   (f) => (f.contributors[0].repos = []),
   (f) => (f.extra = 1),
+  (f) => {
+    delete f.contributors[0].merged_prs;
+    f.contributors[0].contributions = 12031;
+  },
 ]) {
   const bad = structuredClone(feed);
   mutate(bad);
