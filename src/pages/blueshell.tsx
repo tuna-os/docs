@@ -56,6 +56,7 @@ export default function BlueshellPage(): ReactNode {
         <meta name="twitter:title" content={`${project.name} — TunaOS`} />
         <meta name="twitter:description" content={project.tagline} />
         <meta name="twitter:image" content="https://tunaos.org/img/tunaos-social-card.png" />
+        <meta name="adw-color-scheme" content="dark" />
       </Head>
       <main>
         <section className={pageStyles.section}>
