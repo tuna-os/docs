@@ -1,154 +1,30 @@
-.win {
-  --term-bg: #242424;
-  --term-bar: #303030;
-  --term-border: #0f0f0f;
-  --term-fg: #eeeeec;
-  --term-dim: #9a9996;
-  --term-green: #8ff0a4;
-  --term-blue: #99c1f1;
-  --term-red: #f66151;
-  --term-tab: #3a3a3a;
-  border: 1px solid var(--term-border);
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--term-bg);
-  color: var(--term-fg);
-  box-shadow: 0 24px 64px -24px rgba(0, 0, 0, 0.65);
-  font-family: var(--tu-mono);
-  font-size: 13.5px;
-  line-height: 1.55;
+.frame {
+  min-height: 420px;
   text-align: left;
 }
 
-.win.light {
-  --term-bg: #ffffff;
-  --term-bar: #ebebeb;
-  --term-border: #c9c5c0;
-  --term-fg: #2e3436;
-  --term-dim: #5e5c64;
-  --term-green: #26a269;
-  --term-blue: #1c71d8;
-  --term-red: #c01c28;
-  --term-tab: #deddda;
-  box-shadow: 0 24px 64px -32px rgba(0, 0, 0, 0.4);
-}
-
-.win:focus-within {
+.frame:focus-within {
   outline: 2px solid #62a0ea;
   outline-offset: 3px;
+  border-radius: 12px;
 }
 
-.bar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  background: var(--term-bar);
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--term-border);
+.skeleton {
+  min-height: 420px;
+  border-radius: 12px;
+  background: var(--view-bg-color, #242424);
 }
 
-.title {
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: 0.02em;
-}
-
-.themeBtn {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: transparent;
-  border: 1px solid var(--term-dim);
-  border-radius: 6px;
-  color: inherit;
-  font: inherit;
-  font-size: 11.5px;
-  padding: 2px 8px;
-  cursor: pointer;
-  opacity: 0.85;
-}
-
-.themeBtn:hover {
-  opacity: 1;
-  border-color: var(--term-blue);
-}
-
-.tabs {
-  display: flex;
-  align-items: flex-end;
-  gap: 4px;
-  background: var(--term-bar);
-  padding: 6px 8px 0;
-  border-bottom: 1px solid var(--term-border);
-  overflow-x: auto;
-}
-
-.tab {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  background: var(--term-tab);
-  border: 1px solid var(--term-border);
-  border-bottom: none;
-  border-radius: 8px 8px 0 0;
-  padding: 4px 4px 4px 10px;
-  opacity: 0.75;
-}
-
-.tabActive {
-  opacity: 1;
-  background: var(--term-bg);
-  position: relative;
-}
-
-.tabActive::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 1px;
-  background: var(--term-bg);
-}
-
-.tabBtn,
-.tabNew {
-  background: transparent;
-  border: none;
-  color: inherit;
-  font: inherit;
-  font-size: 12px;
-  cursor: pointer;
-  padding: 2px 4px;
-  border-radius: 4px;
-  white-space: nowrap;
-}
-
-.tabClose {
-  background: transparent;
-  border: none;
-  color: inherit;
-  font: inherit;
-  font-size: 13px;
-  line-height: 1;
-  cursor: pointer;
-  padding: 2px 6px;
-  min-width: 24px;
-  min-height: 24px;
-  border-radius: 4px;
-  opacity: 0.6;
-}
-
-
-.tabClose:hover {
-  opacity: 1;
-  background: var(--term-red);
-  color: #fff;
-}
-
+/* Terminal surface: the app's view colors under real Adwaita chrome, with
+   fallbacks for the no-JavaScript static transcript (no library, no tokens).
+   Prompt colors are ANSI-style, so they adapt through the theme classes the
+   library puts on <html>, not through view tokens. */
 .body {
+  background: var(--view-bg-color, #242424);
+  color: var(--view-fg-color, #eeeeec);
+  font-family: var(--tu-mono);
+  font-size: 13.5px;
+  line-height: 1.55;
   padding: 12px 14px;
   min-height: 320px;
   max-height: 420px;
@@ -163,21 +39,37 @@
 }
 
 .g {
-  color: var(--term-green);
+  color: #8ff0a4;
   font-weight: 700;
 }
 
 .b {
-  color: var(--term-blue);
+  color: #99c1f1;
 }
 
 .d {
-  color: var(--term-dim);
+  color: #9a9996;
 }
 
 .e {
-  color: var(--term-red);
+  color: #f66151;
   font-weight: 700;
+}
+
+:global(.theme-light) .g {
+  color: #26a269;
+}
+
+:global(.theme-light) .b {
+  color: #1c71d8;
+}
+
+:global(.theme-light) .d {
+  color: #5e5c64;
+}
+
+:global(.theme-light) .e {
+  color: #c01c28;
 }
 
 .input {
@@ -189,7 +81,11 @@
   padding: 0;
   margin: 0;
   width: 60%;
-  caret-color: var(--term-green);
+  caret-color: #8ff0a4;
+}
+
+:global(.theme-light) .input {
+  caret-color: #26a269;
 }
 
 .caret {
@@ -198,16 +94,88 @@
   height: 1.1em;
   margin-left: 1px;
   vertical-align: text-bottom;
-  background: var(--term-green);
+  background: #8ff0a4;
   animation: blink 1.1s steps(1) infinite;
+}
+
+:global(.theme-light) .caret {
+  background: #26a269;
 }
 
 .hint {
   margin: 0;
-  padding: 6px 14px 9px;
+  padding: 8px 2px 0;
+  font-family: var(--tu-mono);
   font-size: 11.5px;
-  color: var(--term-dim);
-  border-top: 1px dashed var(--term-tab);
+  color: var(--ifm-color-emphasis-600);
+}
+
+/* Container picker: real buttons in Adwaita card colors, overlaid on the
+   tab view so the strip never unmounts beneath React. */
+.viewWrap {
+  position: relative;
+}
+.overview {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-content: start;
+  gap: 12px;
+  padding: 16px 14px;
+  background: var(--view-bg-color);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+  text-align: left;
+  background: var(--card-bg-color);
+  color: var(--card-fg-color);
+  border: 1px solid var(--card-shade-color);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.card:hover {
+  border-color: var(--accent-blue);
+}
+
+.cardName {
+  font-weight: 700;
+}
+
+.cardSub {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.cardNote {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+/* Static no-JavaScript transcript chrome. */
+.staticBar {
+  background: var(--view-bg-color, #242424);
+  color: var(--view-fg-color, #eeeeec);
+  font-family: var(--tu-mono);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 12px 12px 0 0;
+}
+
+.staticTitle {
+  letter-spacing: 0.02em;
 }
 
 @keyframes blink {
@@ -219,5 +187,11 @@
 @media (prefers-reduced-motion: reduce) {
   .caret {
     animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .overview {
+    grid-template-columns: 1fr;
   }
 }
