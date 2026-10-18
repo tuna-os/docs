@@ -9,6 +9,7 @@ import {AxeBuilder} from '@axe-core/playwright';
 const pin = JSON.parse(await readFile(new URL('./build-health-source.json', import.meta.url), 'utf8'));
 const requiredCount = pin.requiredCount;
 const coverage = JSON.parse(await readFile(new URL('../src/data/build-health-required.json', import.meta.url), 'utf8'));
+const fixture = JSON.parse(await readFile(new URL('./fixtures/build-health.json', import.meta.url), 'utf8'));
 const albacoreCount = coverage.targets.filter(row => row.target.variant === 'albacore').length;
 const albacoreV2Count = coverage.targets.filter(row => row.target.variant === 'albacore' && row.target.platform === 'linux/amd64/v2').length;
 const port = 3402;
