@@ -126,7 +126,7 @@ try {
   assert.equal(await table.locator('tbody tr').count(), 0);
   for (const variant of ['albacore', 'yellowfin']) {
     await page.goto(`http://localhost:${port}/${variant}`);
-    assert.equal(await page.getByText('AMD64 (x86-64-v2) · ARM64', {exact: true}).count(), 1);
+    assert.equal(await page.getByText('AMD64 · AMD64 (x86-64-v2) · ARM64', {exact: true}).count(), 1);
   }
   await page.goto(`http://localhost:${port}/marlin`);
   assert.equal(await page.getByText('AMD64 · ARM64', {exact: true}).count(), 1);
