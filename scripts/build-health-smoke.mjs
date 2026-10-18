@@ -57,7 +57,7 @@ try {
 
   // An old publication must remain distinct from a failed latest attempt.
   response.targets[0].lastVerifiedPublication = {
-    repository: 'ghcr.io/tuna-os/albacore', digest: `sha256:${'a'.repeat(64)}`,
+    repository: 'ghcr.io/tuna-os/albacore', tag: 'base-hwe', digest: `sha256:${'a'.repeat(64)}`,
     evidence: ['https://github.com/tuna-os/tunaOS/actions/runs/38038637097/attempts/1'],
   };
   await visit();
