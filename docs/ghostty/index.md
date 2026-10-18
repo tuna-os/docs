@@ -62,16 +62,16 @@ A maintainer can also dispatch
 [`publish-ghostty-flatpak.yml`](https://github.com/tuna-os/blueshell/actions/workflows/publish-ghostty-flatpak.yml)
 with a ref, to build a given commit from upstream before the next run.
 
-## BlueShell or Ghostty?
+## Blueshell or Ghostty?
 
 The remote carries both, and the app IDs differ, so you can install one or
 both.
 
 * Pick **Ghostty** for the stock terminal, exactly as upstream ships it.
-* Pick **[BlueShell](/docs/blueshell)** for the same engine, with container tabs, profiles, and a preferences window on top.
+* Pick **[Blueshell](/docs/blueshell)** for the same engine, with container tabs, profiles, and a preferences window on top.
 
 ## Links
 
 * [ghostty.org](https://ghostty.org)
 * [GitHub](https://github.com/ghostty-org/ghostty)
-* [BlueShell](/docs/blueshell) — the TunaOS fork of this terminal
+* [Blueshell](/docs/blueshell) — the TunaOS fork of this terminal

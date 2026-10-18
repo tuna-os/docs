@@ -295,8 +295,8 @@ function AppsBand(): ReactNode {
     },
     {
       icon: 'code',
-      name: 'BlueShell and Ghostty',
-      desc: 'BlueShell is a container-native terminal for GNOME built on the Ghostty engine with a Ptyxis-style interface. Upstream Ghostty is republished here unmodified and rebuilt weekly.',
+      name: 'Blueshell and Ghostty',
+      desc: 'Blueshell is a container-native terminal for GNOME built on the Ghostty engine with a Ptyxis-style interface. Upstream Ghostty is republished here unmodified and rebuilt weekly.',
       to: '/blueshell',
     },
     {
