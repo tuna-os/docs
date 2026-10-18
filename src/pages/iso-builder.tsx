@@ -51,7 +51,9 @@ export default function IsoBuilderPage(): ReactNode {
           <p className={styles.heroLede}>
             Four questions land you on one image. From there you can download its live
             ISO, copy the one-line rebase command, or hand it to the in-browser builder
-            for an ISO with your own flatpak set.
+            for an ISO with your own flatpak set. Flavors that have qualified for
+            browser generation link here with a preset — variant, flavor, and
+            platform already filled in.
           </p>
         </div>
       </header>

@@ -320,7 +320,57 @@
   color: var(--tu-dim);
 }
 
-/* ── Responsive & motion ────────────────────────────────────────── */
+.platformRow {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.platformBtn {
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--tu-panel-2);
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--tu-mono);
+  font-size: 0.75rem;
+  color: var(--tu-dim);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.platformBtn:hover {
+  border-color: var(--tu-accent);
+  color: var(--tu-ink);
+}
+
+.platformActive {
+  border-color: var(--tu-accent);
+  background: var(--tu-panel-2);
+  color: var(--tu-ink);
+}
+
+.qualBadge {
+  display: inline-block;
+  margin-bottom: 0.6rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: var(--tu-accent);
+  font-family: var(--tu-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #1d1f21;
+}
+
+.prereqList {
+  margin: 0 0 1.25rem;
+  padding-left: 1.1rem;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--tu-dim);
+}
 
 @media (max-width: 600px) {
   .optionGrid {

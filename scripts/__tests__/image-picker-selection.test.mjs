@@ -141,3 +141,141 @@ test('builder and docs URLs', () => {
   assert.equal(sel.getDocsUrl({product: 'tunaos', variant: 'bonito', desktop: 'kde', edition: 'nvidia'}), '/docs/bonito#kde-nvidia');
   assert.equal(sel.getDocsUrl({product: 'xfce'}), '/xfce-linux');
 });
+
+// --- Delivery routing: public downloads vs qualified builder presets ---
+// (Task 15 cut-over). Policies here are synthetic — empty, one entry, or a
+// removed entry — so these tests assert routing behavior, never the current
+// reviewed table contents.
+
+const ISO_NAME = 'albacore-gnome-hwe-latest';
+const ISO_URL = `https://download.tunaos.org/live-isos/${ISO_NAME}.iso`;
+const CUTOVER_SEL = {product: 'tunaos', variant: 'albacore', desktop: 'gnome', edition: 'hwe', platform: 'x86_64-v2'};
+const UPSTREAM_V2 = 'linux/amd64/v2';
+
+function cutoverPolicy(platform = UPSTREAM_V2) {
+  return {
+    schemaVersion: 1,
+    kind: 'delivery-cutover',
+    cutover: [
+      {
+        target: {variant: 'albacore', flavor: 'gnome-hwe', platform},
+        evidence: 'synthetic-test-entry',
+        preset: {},
+      },
+    ],
+    retained: [`${ISO_NAME}.iso`],
+  };
+}
+
+const EMPTY_POLICY = {schemaVersion: 1, kind: 'delivery-cutover', cutover: [], retained: []};
+
+test('default platform is the v2 baseline where the variant ships one', () => {
+  assert.equal(sel.defaultPlatform('albacore'), 'x86_64-v2');
+  assert.equal(sel.defaultPlatform('yellowfin'), 'x86_64-v2');
+  // Behavioral cross-check against the real coverage data, not a second
+  // hardcoded table: the default follows whatever the variant publishes.
+  for (const v of VARIANTS) {
+    const expected = v.platforms.includes('amd64-v2')
+      ? 'x86_64-v2'
+      : v.platforms.includes('amd64')
+        ? 'x86_64'
+        : 'aarch64';
+    assert.equal(sel.defaultPlatform(v.id), expected, `${v.id} defaults from its published platforms`);
+  }
+});
+
+test('empty policy keeps prebuilt R2 behavior, including the v2 default', () => {
+  const names = new Set([ISO_NAME]);
+  const explicit = sel.getDeliveryRoute(CUTOVER_SEL, names, EMPTY_POLICY);
+  assert.equal(explicit.kind, 'prebuilt');
+  assert.equal(explicit.url, ISO_URL);
+  assert.equal(explicit.url, sel.getIsoUrl(CUTOVER_SEL, names));
+  // No platform picked: albacore defaults to x86_64-v2 and still prebuilt.
+  const {platform: _dropped, ...noPlatform} = CUTOVER_SEL;
+  const implicit = sel.getDeliveryRoute(noPlatform, names, EMPTY_POLICY);
+  assert.equal(implicit.kind, 'prebuilt');
+  assert.equal(implicit.url, ISO_URL);
+});
+
+test('qualified target routes browser-first with the retained R2 ISO secondary', () => {
+  const route = sel.getDeliveryRoute(CUTOVER_SEL, new Set([ISO_NAME]), cutoverPolicy());
+  assert.equal(route.kind, 'builder-preset');
+  assert.equal(
+    route.url,
+    'https://iso.tunaos.org/?image=tuna-os%2Falbacore%3Agnome-hwe&platform=x86_64-v2',
+  );
+  assert.equal(route.retainedUrl, ISO_URL, 'retained R2 download exposed as the fallback');
+  assert.ok(route.prerequisites?.browsers, 'browser prerequisites travel with the builder action');
+  // The picker-id default resolves to the same qualified target.
+  const {platform: _dropped, ...noPlatform} = CUTOVER_SEL;
+  const viaDefault = sel.getDeliveryRoute(noPlatform, new Set([ISO_NAME]), cutoverPolicy());
+  assert.equal(viaDefault.kind, 'builder-preset');
+  assert.equal(viaDefault.retainedUrl, ISO_URL);
+});
+
+test('qualified target without a published ISO still routes builder-first with null retained', () => {
+  const route = sel.getDeliveryRoute(CUTOVER_SEL, new Set(), cutoverPolicy());
+  assert.equal(route.kind, 'builder-preset');
+  assert.equal(route.retainedUrl, null);
+});
+
+test('ARM64 without a prebuilt is unsupported, never an x86_64 download', () => {
+  // Published ISOs are x86-64 builds: the index hit must not leak through.
+  const route = sel.getDeliveryRoute({...CUTOVER_SEL, platform: 'aarch64'}, new Set([ISO_NAME]), EMPTY_POLICY);
+  assert.equal(route.kind, 'unsupported');
+  assert.equal(route.reason, 'no-prebuilt');
+  assert.ok(!('url' in route && route.url), 'no mismatched-arch download offered');
+  assert.ok(route.builderUrl.includes('platform=aarch64'), 'fallback keeps the requested platform');
+});
+
+test('local-build-only stays blocked even with a matching cut-over entry', () => {
+  const local = VARIANTS.find((v) => v.localBuildOnly);
+  if (!local) return;
+  const policy = {
+    schemaVersion: 1,
+    kind: 'delivery-cutover',
+    cutover: [
+      {
+        target: {variant: local.id, flavor: 'gnome', platform: 'linux/amd64'},
+        evidence: 'synthetic-test-entry',
+        preset: {},
+      },
+    ],
+    retained: [],
+  };
+  const route = sel.getDeliveryRoute(
+    {product: 'tunaos', variant: local.id, desktop: 'gnome', platform: 'x86_64'},
+    new Set([`${local.id}-gnome-latest`]),
+    policy,
+  );
+  assert.equal(route.kind, 'unsupported');
+  assert.equal(route.reason, 'local-build-only');
+});
+
+test('platform outside the variant coverage is an explicit blocker, not a substitution', () => {
+  // Only the v2-baseline variants publish amd64-v2: a v2 pick elsewhere has no build.
+  const nonV2 = VARIANTS.find((v) => !v.localBuildOnly && !v.platforms.includes('amd64-v2'));
+  assert.ok(nonV2, 'expected a variant without v2 coverage to test against');
+  const route = sel.getDeliveryRoute(
+    {product: 'tunaos', variant: nonV2.id, desktop: 'gnome', platform: 'x86_64-v2'},
+    new Set([ISO_NAME]),
+    EMPTY_POLICY,
+  );
+  assert.equal(route.kind, 'unsupported');
+  assert.equal(route.reason, 'unsupported-platform');
+  assert.ok(!('url' in route && route.url), 'no download from another platform substituted');
+});
+
+test('rollback: removing the cut-over entry restores prebuilt routing', () => {
+  const names = new Set([ISO_NAME]);
+  assert.equal(sel.getDeliveryRoute(CUTOVER_SEL, names, cutoverPolicy()).kind, 'builder-preset');
+  const rolledBack = sel.getDeliveryRoute(CUTOVER_SEL, names, EMPTY_POLICY);
+  assert.equal(rolledBack.kind, 'prebuilt');
+  assert.equal(rolledBack.url, ISO_URL);
+});
+
+test('non-tunaOS products stay on prebuilt even with a cut-over policy', () => {
+  const route = sel.getDeliveryRoute({product: 'dakota'}, null, cutoverPolicy());
+  assert.equal(route.kind, 'prebuilt');
+  assert.match(route.url, /^https:\/\/download\.tunaos\.org\/dakota\//);
+});

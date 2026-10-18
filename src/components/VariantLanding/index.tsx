@@ -8,7 +8,16 @@ import {VARIANTS, type Variant} from '@site/src/data/variants';
 import {markFor, desktopLogo} from '@site/src/data/marks';
 import useIsoNames from '@site/src/hooks/useIsoNames';
 import {ISO_BASE_URL, isoNameForImage} from '@site/src/utils/isoNaming';
+import {defaultPlatform} from '@site/src/components/ImagePicker/selection';
+import {getBuilderPresetUrl, isCutOver} from '@site/src/data/delivery-policy.mjs';
 
+// Flavor tag is the image ref part after the colon
+// (ghcr.io/tuna-os/albacore:gnome -> gnome), matching both the ISO
+// filename scheme and the delivery-policy target identity.
+function flavorTagForImage(image: string): string | null {
+  const tag = image.split(':')[1];
+  return tag || null;
+}
 import styles from './styles.module.css';
 
 // Bases with a hand-written reference page in docs/. Kept explicit: the docs
@@ -20,10 +29,18 @@ function Hero({variant, isoNames}: {variant: Variant; isoNames: Set<string> | nu
     (f) => isoNames && isoNames.has(isoNameForImage(variant.id, f.image) ?? ''),
   );
   const heroIsoUrl = heroFlavor ? `${ISO_BASE_URL}/${isoNameForImage(variant.id, heroFlavor.image)}.iso` : null;
+  const heroTag = heroFlavor ? flavorTagForImage(heroFlavor.image) : null;
+  const heroPlatform = defaultPlatform(variant.id);
+  const heroCutOver = heroFlavor && heroTag ? isCutOver(variant.id, heroTag, heroPlatform) : false;
+  const heroPresetUrl =
+    heroFlavor && heroTag && heroCutOver
+      ? getBuilderPresetUrl({variant: variant.id, flavor: heroTag, platform: heroPlatform})
+      : null;
   return (
     <header className={styles.hero}>
       <div className={clsx('container', styles.heroInner)}>
         {variant.recommended && <span className={styles.recommendedTag}>Recommended</span>}
+        {heroCutOver && <span className={styles.recommendedTag}>Qualified browser build</span>}
         {/* The variant's own mark from tuna-os/branding — see src/data/marks.ts. */}
         <img
           className={styles.heroMark}
@@ -50,7 +67,18 @@ function Hero({variant, isoNames}: {variant: Variant; isoNames: Set<string> | nu
         </div>
 
         <div className={styles.heroButtons}>
-          {heroIsoUrl ? (
+          {heroPresetUrl ? (
+            <>
+              <a className={clsx('button button--lg', styles.btnPrimary)} href={heroPresetUrl}>
+                Build ISO in the browser
+              </a>
+              {heroIsoUrl && (
+                <a className={clsx('button button--lg', styles.btnGhost)} href={heroIsoUrl}>
+                  Download prebuilt ISO
+                </a>
+              )}
+            </>
+          ) : heroIsoUrl ? (
             <a className={clsx('button button--lg', styles.btnPrimary)} href={heroIsoUrl}>
               Download ISO
             </a>
@@ -132,12 +160,17 @@ function Flavors({variant, isoNames}: {variant: Variant; isoNames: Set<string> |
       <div className="container">
         <div className={styles.sectionHead}>
           <Heading as="h2">Images & flavors</Heading>
-          <p>Pull any flavor directly, or grab a live ISO where one's published.</p>
+          <p>Pull any flavor directly, or grab a live ISO where one's published. Qualified flavors build in the browser instead, with the retained prebuilt ISO kept alongside.</p>
         </div>
         <div className={styles.flavorTable}>
           {variant.flavors.map((f) => {
             const isoName = isoNameForImage(variant.id, f.image);
             const isoUrl = isoName && isoNames?.has(isoName) ? `${ISO_BASE_URL}/${isoName}.iso` : null;
+            const tag = flavorTagForImage(f.image);
+            const platform = defaultPlatform(variant.id);
+            const cutOver = tag ? isCutOver(variant.id, tag, platform) : false;
+            const presetUrl =
+              tag && cutOver ? getBuilderPresetUrl({variant: variant.id, flavor: tag, platform}) : null;
             return (
               <div key={f.image} className={styles.flavorRow}>
                 <span className={styles.flavorName}>
@@ -145,13 +178,32 @@ function Flavors({variant, isoNames}: {variant: Variant; isoNames: Set<string> |
                   {f.note && <span className={styles.flavorNote}>{f.note}</span>}
                 </span>
                 <code className={styles.flavorImage}>{f.image}</code>
-                {isoUrl && (
-                  <a
-                    href={isoUrl}
-                    className={clsx('button button--sm button--primary', styles.flavorDownload)}
-                  >
-                    ⬇️ ISO
-                  </a>
+                {presetUrl ? (
+                  <>
+                    <a
+                      href={presetUrl}
+                      className={clsx('button button--sm button--primary', styles.flavorDownload)}
+                    >
+                      🛠️ Build
+                    </a>
+                    {isoUrl && (
+                      <a
+                        href={isoUrl}
+                        className={clsx('button button--sm button--outline', styles.flavorDownload)}
+                      >
+                        ⬇️ ISO
+                      </a>
+                    )}
+                  </>
+                ) : (
+                  isoUrl && (
+                    <a
+                      href={isoUrl}
+                      className={clsx('button button--sm button--primary', styles.flavorDownload)}
+                    >
+                      ⬇️ ISO
+                    </a>
+                  )
                 )}
               </div>
             );

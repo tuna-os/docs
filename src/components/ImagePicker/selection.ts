@@ -1,6 +1,13 @@
 import {VARIANTS} from '@site/src/data/variants';
 import {ISO_BASE_URL} from '@site/src/utils/isoNaming';
 import {markFor} from '@site/src/data/marks';
+import {
+  DELIVERY_POLICY,
+  BUILDER_PREREQUISITES,
+  getBuilderPresetUrl,
+  isCutOver,
+  toDocsPlatform,
+} from '@site/src/data/delivery-policy.mjs';
 
 // Pure release-selection policy for the image picker: option catalogs, the
 // step-flow state machine, and the derived image/ISO/docs URLs for a
@@ -25,7 +32,13 @@ export type Selection = {
   variant?: Variant;
   desktop?: Desktop;
   edition?: Edition;
+  platform?: Platform;
 };
+
+// CPU platform the ISO is built for. Picker ids stay architecture-neutral
+// ('x86_64-v2', not 'amd64-v2') so they never collide with the docs short
+// ids or the upstream linux/* strings — see delivery-policy.mjs for maps.
+export type Platform = 'x86_64' | 'x86_64-v2' | 'aarch64';
 
 // Rolling-release siblings that ride the same desktop/edition catalog as
 // their stable base — kept out of the main variant grid so the picker
@@ -244,6 +257,80 @@ export const BUILDER_URL = 'https://iso.tunaos.org';
 export function getBuilderUrl(imageName: string): string {
   const short = imageName.replace(/^ghcr\.io\//, '');
   return `${BUILDER_URL}/?image=${encodeURIComponent(short)}`;
+}
+
+export const PLATFORM_OPTIONS: Option<Platform>[] = [
+  {value: 'x86_64', label: 'x86-64', description: 'Runs on any 64-bit Intel or AMD PC from the last 15 years.'},
+  {value: 'x86_64-v2', label: 'x86-64-v2', badge: 'Most Common', description: 'Needs a ~2009-or-newer x86-64 CPU; faster builds for modern PCs.'},
+  {value: 'aarch64', label: 'ARM64', description: 'For ARM64 machines such as the ThinkPad X13s and Apple Silicon VMs.'},
+];
+
+// The platform a variant defaults to: the v2 baseline where the variant
+// ships one (Albacore, Yellowfin), else plain x86-64, else ARM64.
+export function defaultPlatform(variantId: Variant | undefined): Platform {
+  const meta = VARIANTS.find((v) => v.id === variantId);
+  if (meta?.platforms.includes('amd64-v2')) return 'x86_64-v2';
+  if (!meta || meta.platforms.includes('amd64')) return 'x86_64';
+  return 'aarch64';
+}
+
+export function flavorTag(sel: Selection): string {
+  const desktop = sel.desktop ?? (getDesktopOptions(sel.variant)[0]?.value ?? 'base');
+  return `${desktop}${editionSuffix(sel.edition)}`;
+}
+
+export type DeliveryRoute =
+  | {kind: 'builder-preset'; url: string; retainedUrl: string | null; prerequisites: typeof BUILDER_PREREQUISITES}
+  | {kind: 'prebuilt'; url: string; builderUrl: string}
+  | {kind: 'unsupported'; reason: 'local-build-only' | 'unsupported-platform' | 'no-prebuilt'; builderUrl: string};
+
+// Shared delivery routing for a picker selection: a builder-preset deep
+// link (variant/flavor/platform) is primary when the delivery policy marks
+// the target cut over, with the retained R2 URL secondary; otherwise the
+// prebuilt R2 ISO stays primary; unsupported targets get an explicit
+// reason — never a mismatched-arch download. Published ISOs are x86-64
+// builds, so an ARM64 selection without a cut-over entry has no prebuilt.
+// With the empty initial policy this always lands on prebuilt/unsupported
+// exactly as before (getIsoUrl untouched).
+export function getDeliveryRoute(
+  sel: Selection,
+  isoNames: Set<string> | null,
+  policy = DELIVERY_POLICY,
+): DeliveryRoute {
+  const imageName = buildImageName(sel);
+  const platform: Platform = sel.platform ?? defaultPlatform(sel.variant);
+  const variant = sel.variant ?? 'albacore';
+  const flavor = flavorTag(sel);
+  const presetUrl = getBuilderPresetUrl({variant, flavor, platform});
+  if (VARIANTS.find((v) => v.id === sel.variant)?.localBuildOnly) {
+    return {kind: 'unsupported', reason: 'local-build-only', builderUrl: presetUrl};
+  }
+  const docsPlatform = toDocsPlatform(platform);
+  const supported =
+    !sel.variant ||
+    VARIANTS.find((v) => v.id === sel.variant)?.platforms.includes(
+      docsPlatform as 'amd64' | 'amd64-v2' | 'arm64',
+    );
+  if (!supported) {
+    return {kind: 'unsupported', reason: 'unsupported-platform', builderUrl: presetUrl};
+  }
+  if (sel.product === 'tunaos' && isCutOver(variant, flavor, platform, policy)) {
+    return {
+      kind: 'builder-preset',
+      url: presetUrl,
+      retainedUrl: getIsoUrl(sel, isoNames),
+      prerequisites: BUILDER_PREREQUISITES,
+    };
+  }
+  const isoUrl = getIsoUrl(sel, isoNames);
+  if (isoUrl && (platform !== 'aarch64' || sel.product !== 'tunaos')) {
+    return {kind: 'prebuilt', url: isoUrl, builderUrl: getBuilderUrl(imageName)};
+  }
+  if (isoUrl && sel.product === 'tunaos') {
+    // Published ISOs are x86-64 builds: an ARM64 pick must not offer them.
+    return {kind: 'unsupported', reason: 'no-prebuilt', builderUrl: presetUrl};
+  }
+  return {kind: 'unsupported', reason: 'no-prebuilt', builderUrl: getBuilderUrl(imageName)};
 }
 
 export function getDocsUrl(sel: Selection): string {

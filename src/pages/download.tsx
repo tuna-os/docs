@@ -17,7 +17,10 @@ function DownloadHeader(): ReactNode {
         </Heading>
         <p className={page.heroLede}>
           Live ISOs for every TunaOS image and product line, served from{' '}
-          <a href="https://download.tunaos.org">download.tunaos.org</a>. The{' '}
+          <a href="https://download.tunaos.org">download.tunaos.org</a>. Flavors
+          that have qualified for browser generation build on demand in the{' '}
+          <a href="/iso-builder">ISO builder</a> instead, with their retained
+          prebuilt ISO kept alongside. The{' '}
           <a href="/docs/desktop-comparison">desktop comparison</a> covers what separates
           them, and <a href="/variants">the variants page</a> covers the bases.
         </p>

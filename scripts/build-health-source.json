@@ -1,7 +1,7 @@
 {
   "repository": "tuna-os/tunaOS",
-  "revision": "48e4833ac7b9f4ae5caf0584b200f210ba2665b1",
-  "requiredCount": 269,
-  "coverageDigest": "sha256:b18eb495d710513cda36b490f8ae65312896b045ce521b6ea35a2f1f2858d475",
+  "revision": "e69f8c900c90a7854760fceb7f3d2805fb736490",
+  "requiredCount": 252,
+  "coverageDigest": "sha256:7e7b903d82acacc114b32e604a1d1a398ebac92058b957a45e95bf660a4ae18f",
   "pyyamlVersion": "6.0.2"
 }
