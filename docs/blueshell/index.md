@@ -1,14 +1,14 @@
 ---
 sidebar_position: 1
-sidebar_label: "BlueShell"
+sidebar_label: "Blueshell"
 status: alpha
 ---
 
 :::tip[Visual overview]
-Prefer a visual tour? See the **[BlueShell overview →](/blueshell)** page.
+Prefer a visual tour? See the **[Blueshell overview →](/blueshell)** page.
 :::
 
-**BlueShell** is a container-native terminal for GNOME. It is a fork of
+**Blueshell** is a container-native terminal for GNOME. It is a fork of
 [Ghostty](https://ghostty.org) that carries the features of
 [Ptyxis](https://gitlab.gnome.org/chergert/ptyxis). You get the Ghostty
 terminal engine with the container-first workflow that Ptyxis brought to
@@ -20,7 +20,7 @@ Ptyxis style, drives the Ghostty config live, so you never have to edit a
 config file. The file stays at `~/.config/ghostty/config`, and you can
 still edit it by hand.
 
-App ID: `org.tunaos.BlueShell`
+App ID: `org.tunaos.blueshell`
 
 ## ✨ Key features
 
@@ -39,7 +39,7 @@ App ID: `org.tunaos.BlueShell`
 
 ```bash
 flatpak remote-add --if-not-exists tuna-os https://tunaos.org/flatpak/tuna-os.flatpakrepo
-flatpak install tuna-os org.tunaos.BlueShell
+flatpak install tuna-os org.tunaos.blueshell
 ```
 
 CI publishes x86_64 and aarch64 builds on every push to `ptyxis-port`.
@@ -47,7 +47,7 @@ CI publishes x86_64 and aarch64 builds on every push to `ptyxis-port`.
 ### Flatpak (build it yourself)
 
 ```bash
-flatpak-builder --install --user build-dir flatpak/org.tunaos.BlueShell.yml
+flatpak-builder --install --user build-dir flatpak/org.tunaos.blueshell.yml
 ```
 
 ### From source
@@ -63,7 +63,7 @@ The binary lands at `zig-out/bin/ghostty`.
 
 ## How it tracks Ghostty
 
-BlueShell is a patch-set on top of Ghostty, not a hard fork. Every day, CI
+Blueshell is a patch-set on top of Ghostty, not a hard fork. Every day, CI
 rebases it onto `ghostty-org/ghostty:main`. A clean rebase opens a pull
 request. A conflict opens an issue that names each file and its resolution
 recipe.
@@ -75,18 +75,18 @@ of silent drift.
 
 ## Credits
 
-BlueShell exists because of two other projects:
+Blueshell exists because of two other projects:
 
 * **[Ghostty](https://ghostty.org)** by Mitchell Hashimoto — the terminal itself, and the project this forks.
 * **[Ptyxis](https://gitlab.gnome.org/chergert/ptyxis)** by Christian Hergert — the container-first design that this fork carries over.
 
-BlueShell has no affiliation with either project. Report BlueShell bugs to
+Blueshell has no affiliation with either project. Report Blueshell bugs to
 [tuna-os/blueshell](https://github.com/tuna-os/blueshell/issues), never to
 Ghostty or Ptyxis.
 
 ## Status
 
-BlueShell is **alpha**. The features above work, and the fork tracks
+Blueshell is **alpha**. The features above work, and the fork tracks
 Ghostty every day.
 
 ## Links

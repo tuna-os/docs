@@ -10,7 +10,7 @@
     {"name": "tuna-os/finupdate", "id": "org.tunaos.finupdate", "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/tavern", "id": "org.tunaos.tavern", "archs": ["amd64"]},
     {"name": "tuna-os/compass", "id": "org.tunaos.compass", "archs": ["amd64"], "display": "wayland"},
-    {"name": "tuna-os/blueshell", "id": "org.tunaos.BlueShell", "archs": ["amd64", "arm64"]},
+    {"name": "tuna-os/blueshell", "id": "org.tunaos.blueshell", "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/ghostty", "issue_repo": "tuna-os/blueshell", "id": "com.mitchellh.ghostty", "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/bootc-installer", "ids": ["org.bootcinstaller.Installer", "org.tunaos.InstallerCosmic", "org.tunaos.InstallerKde", "org.tunaos.InstallerNiri", "org.tunaos.InstallerXfce"], "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/quickcast", "id": "org.tunaos.Quickcast", "archs": ["amd64"]}

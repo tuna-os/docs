@@ -48,8 +48,8 @@ const APPS: {
     description: 'Homebrew client for Linux — GTK 4 + Libadwaita.',
   },
   {
-    id: 'org.tunaos.BlueShell',
-    name: 'BlueShell',
+    id: 'org.tunaos.blueshell',
+    name: 'Blueshell',
     icon: 'activity',
     description:
       'Container-native terminal for GNOME — the Ghostty engine, the Ptyxis experience.',
@@ -104,7 +104,7 @@ export default function Flatpak(): ReactNode {
             Flatpaks
           </Heading>
           <p className={styles.heroLede}>
-            Letters, Tables, Decks, Mariner, Tavern, BlueShell, Ghostty, Compass and
+            Letters, Tables, Decks, Mariner, Tavern, Blueshell, Ghostty, Compass and
             bootc-installer, built here and installable on any distribution that runs
             Flatpak. Add one remote and they all show up.
           </p>
