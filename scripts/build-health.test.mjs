@@ -3,12 +3,13 @@ import {readFileSync} from 'node:fs';
 import {validateBuildHealth, parseBuildHealth, displayStatus, requiredBuildTargets} from '../src/data/build-health.mjs';
 import {buildHealthResponse} from '../worker/build-health.mjs';
 const now = Date.parse('2026-10-10T12:00:00Z');
+const pin = JSON.parse(readFileSync(new URL('./build-health-source.json', import.meta.url)));
 const coverage = JSON.parse(readFileSync(new URL('../src/data/build-health-required.json', import.meta.url)));
 const fixture = () => ({schemaVersion: 1, kind: 'build-health', generatedAt: new Date(now).toISOString(), sourceRevision: 'a'.repeat(40), coverageDigest: coverage.coverageDigest,
   collection: {status: 'available', sources: [{id: 'tunaos', repository: 'tuna-os/tunaOS', status: 'available', evidence: []}]},
   freshnessPolicy: {buildSeconds: 172800, feedSeconds: 3600}, targets: requiredBuildTargets.map(target => ({target: {...target}, required: true, scheduled: true,
     latestAttempt: null, lastVerifiedPublication: null, packageReadiness: {status: 'missing', measuredAt: null, evidence: []}, contractStatus: 'missing', status: 'missing', reasons: ['required-attempt-missing'], measuredAt: null}))});
-assert.equal(validateBuildHealth(fixture(), now).targets.length, 269);
+assert.equal(validateBuildHealth(fixture(), now).targets.length, pin.requiredCount);
 for (const mutate of [f => f.extra = true, f => f.schemaVersion = 2, f => f.targets.pop(), f => f.targets.push(f.targets[0]),
   f => f.targets[0].target.platform = 'linux/amd64/v3', f => f.targets[0].required = false, f => f.coverageDigest = 'sha256:' + 'b'.repeat(64),
   f => f.generatedAt = '2026-02-31T00:00:00Z', f => f.generatedAt = '2027-01-01T00:00:00Z', f => f.targets[0].status = 'healthy',
@@ -29,7 +30,7 @@ const healthy = () => {
     runId: 1, runAttempt: 1, sourceRevision: 'a'.repeat(40), startedAt: feed.generatedAt},
     status: 'success', measuredAt: feed.generatedAt, imageDigest: digest,
     evidence: [{url: 'https://github.com/tuna-os/tunaOS/actions/runs/1', digest}]};
-  row.lastVerifiedPublication = {repository: 'ghcr.io/tuna-os/albacore', digest,
+  row.lastVerifiedPublication = {repository: 'ghcr.io/tuna-os/albacore', tag: 'base-hwe', digest,
     evidence: ['https://ghcr.io/tuna-os/albacore@' + digest]};
   return feed;
 };

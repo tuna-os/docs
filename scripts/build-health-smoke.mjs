@@ -6,7 +6,11 @@ import {spawn} from 'node:child_process';
 import {chromium} from 'playwright';
 import {AxeBuilder} from '@axe-core/playwright';
 
-const fixture = JSON.parse(await readFile(new URL('./fixtures/build-health.json', import.meta.url), 'utf8'));
+const pin = JSON.parse(await readFile(new URL('./build-health-source.json', import.meta.url), 'utf8'));
+const requiredCount = pin.requiredCount;
+const coverage = JSON.parse(await readFile(new URL('../src/data/build-health-required.json', import.meta.url), 'utf8'));
+const albacoreCount = coverage.targets.filter(row => row.target.variant === 'albacore').length;
+const albacoreV2Count = coverage.targets.filter(row => row.target.variant === 'albacore' && row.target.platform === 'linux/amd64/v2').length;
 const port = 3402;
 const server = spawn('npm', ['run', 'serve', '--', '--port', String(port), '--no-open'], {stdio: 'ignore'});
 let browser;
@@ -35,17 +39,17 @@ try {
   };
   await visit();
   const table = page.getByRole('table', {name: 'Required image and package evidence'});
-  assert.equal(await table.locator('tbody tr').count(), 269);
-  assert.match(await page.locator('main').innerText(), /Required targets: 269/);
+  assert.equal(await table.locator('tbody tr').count(), requiredCount);
+  assert.match(await page.locator('main').innerText(), new RegExp(`Required targets: ${requiredCount}`));
   assert.match(await table.innerText(), /linux\/amd64\/v2/);
   assert.match(await table.innerText(), /armv8-a/);
   assert.match(await table.innerText(), /Hardware:/);
   assert.match(await table.innerText(), /No verified publication/);
   await page.getByLabel('Variant', {exact: true}).selectOption('albacore');
-  assert.equal(await table.locator('tbody tr').count(), 36);
+  assert.equal(await table.locator('tbody tr').count(), albacoreCount);
   await page.getByLabel('Platform', {exact: true}).selectOption('linux/amd64/v2');
-  assert.equal(await table.locator('tbody tr').count(), 18);
-  assert.match(await page.getByRole('status').innerText(), /Showing 18 of 269 targets/);
+  assert.equal(await table.locator('tbody tr').count(), albacoreV2Count);
+  assert.match(await page.getByRole('status').innerText(), new RegExp(`Showing ${albacoreV2Count} of ${requiredCount} targets`));
   await page.getByLabel('Status', {exact: true}).selectOption('healthy');
   assert.equal(await table.locator('tbody tr').count(), 0);
   assert.match(await page.locator('main').innerText(), /No targets match/);
@@ -97,26 +101,26 @@ try {
   response = {...fixture, generatedAt: new Date().toISOString(), targets: fixture.targets.slice(1)};
   await visit();
   assert.match(await page.getByRole('alert').innerText(), /unavailable/);
-  assert.equal(await table.locator('tbody tr').count(), 269);
+  assert.equal(await table.locator('tbody tr').count(), requiredCount);
   assert.match(await table.innerText(), /Scheduling unknown/);
   bodyOverride = ' '.repeat(2 * 1024 * 1024 + 1);
   await visit();
   assert.match(await page.getByRole('alert').innerText(), /unavailable/);
-  assert.equal(await table.locator('tbody tr').count(), 269);
+  assert.equal(await table.locator('tbody tr').count(), requiredCount);
   bodyOverride = '{invalid json';
   await visit();
   assert.match(await page.getByRole('alert').innerText(), /unavailable/);
   bodyOverride = JSON.stringify({...fixture, generatedAt: new Date().toISOString()}).replace('"schemaVersion":1', '"schemaVersion":1,"schemaVersion":1');
   await visit();
   assert.match(await page.getByRole('alert').innerText(), /unavailable/);
-  assert.equal(await table.locator('tbody tr').count(), 269);
+  assert.equal(await table.locator('tbody tr').count(), requiredCount);
   bodyOverride = null;
   unavailable = true;
   await visit();
   assert.match(await page.getByRole('alert').innerText(), /Missing data does not mean builds are healthy/);
-  assert.equal(await table.locator('tbody tr').count(), 269);
+  assert.equal(await table.locator('tbody tr').count(), requiredCount);
   await page.getByLabel('Status', {exact: true}).selectOption('unknown');
-  assert.equal(await table.locator('tbody tr').count(), 269);
+  assert.equal(await table.locator('tbody tr').count(), requiredCount);
   await page.getByLabel('Status', {exact: true}).selectOption('healthy');
   assert.equal(await table.locator('tbody tr').count(), 0);
   for (const variant of ['albacore', 'yellowfin']) {
@@ -125,7 +129,7 @@ try {
   }
   await page.goto(`http://localhost:${port}/marlin`);
   assert.equal(await page.getByText('AMD64 · ARM64', {exact: true}).count(), 1);
-  console.log('build health browser: all 269 targets, platform filters, stale/invalid/unavailable feeds, latest versus publication and accessibility pass');
+  console.log(`build health browser: all ${requiredCount} targets, platform filters, stale/invalid/unavailable feeds, latest versus publication and accessibility pass`);
 } finally {
   await browser?.close();
   server.kill();
