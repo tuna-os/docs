@@ -27,9 +27,9 @@ const CTX_SHELL: Record<Ctx, string> = {
 // transcript stay identical by construction.
 function promptSpans(ctx: Ctx): Span[] {
   return [
-    {t: 'user@', c: 'g'},
-    {t: CTX_LABEL[ctx], c: 'b'},
-    {t: ' ~ $ '},
+    {t: `user@${CTX_LABEL[ctx]}:`},
+    {t: '~', c: 'b'},
+    {t: '$ '},
   ];
 }
 
@@ -391,8 +391,6 @@ export default function BlueshellTerminal({installCode}: {installCode: string}):
     view.addEventListener('page-detached', onDetached);
     const seeds: {ctx: Ctx; script: Step[] | null; started: boolean}[] = [
       {ctx: 'host', script: HOST_SCRIPT, started: true},
-      {ctx: 'toolbox', script: TOOLBOX_SCRIPT, started: false},
-      {ctx: 'web', script: null, started: false},
     ];
     const fresh: Tab[] = [];
     for (const s of seeds) {
@@ -431,13 +429,13 @@ export default function BlueshellTerminal({installCode}: {installCode: string}):
     return null;
   };
 
-  const appendTab = (ctx: Ctx) => {
+  const appendTab = (ctx: Ctx, script: Step[] | null = null, started = false) => {
     const view = viewRef.current as AdwTabViewElement | null;
     if (!view) return;
     const el = document.createElement('div');
     const key = tabKey.current++;
     view.appendPage({id: `tab-${key}`, title: CTX_LABEL[ctx], content: el});
-    setTabs((prev) => [...prev, {key, ctx, script: null, started: false, portalEl: el}]);
+    setTabs((prev) => [...prev, {key, ctx, script, started, portalEl: el}]);
     setOverview(false);
     requestAnimationFrame(() => {
       const v = viewRef.current as AdwTabViewElement | null;
@@ -445,14 +443,14 @@ export default function BlueshellTerminal({installCode}: {installCode: string}):
     });
   };
 
-  const openCtxTab = (ctx: Ctx) => {
+  const openCtxTab = (ctx: Ctx, script: Step[] | null = null, started = false) => {
     const at = tabs.findIndex((t) => t.ctx === ctx);
     if (at >= 0) {
       selectIndex(at);
       setOverview(false);
       return;
     }
-    appendTab(ctx);
+    appendTab(ctx, script, started);
   };
 
   const applyTheme = (arg: string) => {
@@ -475,13 +473,12 @@ export default function BlueshellTerminal({installCode}: {installCode: string}):
     return <BlueshellTerminalStatic />;
   }
 
-  const active = tabs[Math.min(activeIdx, tabs.length - 1)] ?? tabs[0];
 
   return (
     <div className={styles.frame}>
       <adw-window>
         <adw-toolbar-view>
-          <adw-header-bar slot="top" title="Blueshell" subtitle={active ? CTX_LABEL[active.ctx] : 'Terminal'}>
+          <adw-header-bar slot="top" title="~">
             <gtk-button slot="start" icon-name="list-add" tooltip-text="New tab" onClick={() => appendTab('host')} />
             <gtk-button
               slot="end"
@@ -492,7 +489,7 @@ export default function BlueshellTerminal({installCode}: {installCode: string}):
             />
           </adw-header-bar>
           <div className={styles.viewWrap}>
-            <adw-tab-view ref={viewRef} inert={overview ? true : undefined} no-close>
+            <adw-tab-view ref={viewRef} inert={overview ? true : undefined} no-close autohide>
               {tabs.map((t) =>
                 t.portalEl === null ? null : (
                   createPortal(
@@ -502,10 +499,7 @@ export default function BlueshellTerminal({installCode}: {installCode: string}):
                       script={t.script}
                       start={t.started}
                       onScriptEvent={(step) => {
-                        if (step.k === 'opentab') {
-                          setTabs((prev) => prev.map((p) => (p.ctx === 'toolbox' ? {...p, started: true} : p)));
-                          openCtxTab(step.ctx);
-                        }
+                        if (step.k === 'opentab') openCtxTab(step.ctx, TOOLBOX_SCRIPT, true);
                       }}
                       onTheme={applyTheme}
                       onCloseTab={closeCurrentTab}

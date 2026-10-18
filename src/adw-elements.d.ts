@@ -22,6 +22,7 @@ declare module 'react' {
       };
       'adw-tab-view': AdwProps & {
         'no-close'?: boolean;
+        autohide?: boolean;
       };
       'adw-tab-page': AdwProps & {
         title?: string;
