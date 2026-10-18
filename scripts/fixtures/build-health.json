@@ -88,7 +88,7 @@
     ],
     "status": "available"
   },
-  "coverageDigest": "sha256:b18eb495d710513cda36b490f8ae65312896b045ce521b6ea35a2f1f2858d475",
+  "coverageDigest": "sha256:7e7b903d82acacc114b32e604a1d1a398ebac92058b957a45e95bf660a4ae18f",
   "freshnessPolicy": {
     "buildSeconds": 172800,
     "feedSeconds": 3600
@@ -181,80 +181,24 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38038637097/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38038637097,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T11:12:31Z",
-          "workflow": ".github/workflows/build-albacore.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
+      "latestAttempt": null,
       "measuredAt": null,
       "packageReadiness": {
-        "evidence": [],
+        "status": "missing",
         "measuredAt": null,
-        "status": "missing"
+        "evidence": []
       },
       "reasons": [
-        "latest-attempt-missing"
+        "required-attempt-missing"
       ],
       "required": true,
-      "scheduled": false,
+      "scheduled": true,
       "status": "missing",
       "target": {
-        "cpuBaseline": "x86-64-v2",
+        "cpuBaseline": "x86-64",
         "flavor": "base-nvidia",
         "hardwareScope": "generic",
-        "platform": "linux/amd64/v2",
-        "variant": "albacore"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38038637097/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38038637097,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T11:12:31Z",
-          "workflow": ".github/workflows/build-albacore.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "base-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
+        "platform": "linux/amd64",
         "variant": "albacore"
       }
     },
@@ -368,7 +312,7 @@
         "latest-attempt-failed"
       ],
       "required": true,
-      "scheduled": true,
+      "scheduled": false,
       "status": "failed",
       "target": {
         "cpuBaseline": "x86-64-v2",
@@ -408,7 +352,7 @@
         "latest-attempt-failed"
       ],
       "required": true,
-      "scheduled": true,
+      "scheduled": false,
       "status": "failed",
       "target": {
         "cpuBaseline": "armv8-a",
@@ -421,80 +365,24 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38038637097/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38038637097,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T11:12:31Z",
-          "workflow": ".github/workflows/build-albacore.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
+      "latestAttempt": null,
       "measuredAt": null,
       "packageReadiness": {
-        "evidence": [],
+        "status": "missing",
         "measuredAt": null,
-        "status": "missing"
+        "evidence": []
       },
       "reasons": [
-        "latest-attempt-missing"
+        "required-attempt-missing"
       ],
       "required": true,
-      "scheduled": false,
+      "scheduled": true,
       "status": "missing",
       "target": {
-        "cpuBaseline": "x86-64-v2",
+        "cpuBaseline": "x86-64",
         "flavor": "cosmic-nvidia",
         "hardwareScope": "generic",
-        "platform": "linux/amd64/v2",
-        "variant": "albacore"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38038637097/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38038637097,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T11:12:31Z",
-          "workflow": ".github/workflows/build-albacore.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "cosmic-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
+        "platform": "linux/amd64",
         "variant": "albacore"
       }
     },
@@ -528,7 +416,7 @@
         "latest-attempt-failed"
       ],
       "required": true,
-      "scheduled": true,
+      "scheduled": false,
       "status": "failed",
       "target": {
         "cpuBaseline": "x86-64-v2",
@@ -568,7 +456,7 @@
         "latest-attempt-failed"
       ],
       "required": true,
-      "scheduled": true,
+      "scheduled": false,
       "status": "failed",
       "target": {
         "cpuBaseline": "armv8-a",
@@ -661,80 +549,24 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38038637097/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38038637097,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T11:12:31Z",
-          "workflow": ".github/workflows/build-albacore.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
+      "latestAttempt": null,
       "measuredAt": null,
       "packageReadiness": {
-        "evidence": [],
+        "status": "missing",
         "measuredAt": null,
-        "status": "missing"
+        "evidence": []
       },
       "reasons": [
-        "latest-attempt-missing"
+        "required-attempt-missing"
       ],
       "required": true,
-      "scheduled": false,
+      "scheduled": true,
       "status": "missing",
       "target": {
-        "cpuBaseline": "x86-64-v2",
+        "cpuBaseline": "x86-64",
         "flavor": "gnome-nvidia",
         "hardwareScope": "generic",
-        "platform": "linux/amd64/v2",
-        "variant": "albacore"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38038637097/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38038637097,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T11:12:31Z",
-          "workflow": ".github/workflows/build-albacore.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "gnome-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
+        "platform": "linux/amd64",
         "variant": "albacore"
       }
     },
@@ -901,80 +733,24 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38038637097/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38038637097,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T11:12:31Z",
-          "workflow": ".github/workflows/build-albacore.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
+      "latestAttempt": null,
       "measuredAt": null,
       "packageReadiness": {
-        "evidence": [],
+        "status": "missing",
         "measuredAt": null,
-        "status": "missing"
+        "evidence": []
       },
       "reasons": [
-        "latest-attempt-missing"
+        "required-attempt-missing"
       ],
       "required": true,
-      "scheduled": false,
+      "scheduled": true,
       "status": "missing",
       "target": {
-        "cpuBaseline": "x86-64-v2",
+        "cpuBaseline": "x86-64",
         "flavor": "kde-nvidia",
         "hardwareScope": "generic",
-        "platform": "linux/amd64/v2",
-        "variant": "albacore"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38038637097/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38038637097,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T11:12:31Z",
-          "workflow": ".github/workflows/build-albacore.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "kde-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
+        "platform": "linux/amd64",
         "variant": "albacore"
       }
     },
@@ -1141,6 +917,30 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": true,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "x86-64",
+        "flavor": "niri-nvidia",
+        "hardwareScope": "generic",
+        "platform": "linux/amd64",
+        "variant": "albacore"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
       "latestAttempt": {
         "evidence": [
           {
@@ -1156,7 +956,7 @@
           "workflow": ".github/workflows/build-albacore.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
+        "status": "blocked"
       },
       "measuredAt": null,
       "packageReadiness": {
@@ -1165,14 +965,14 @@
         "status": "missing"
       },
       "reasons": [
-        "latest-attempt-missing"
+        "latest-attempt-blocked"
       ],
       "required": true,
-      "scheduled": false,
-      "status": "missing",
+      "scheduled": true,
+      "status": "blocked",
       "target": {
         "cpuBaseline": "x86-64-v2",
-        "flavor": "niri-nvidia",
+        "flavor": "niri",
         "hardwareScope": "generic",
         "platform": "linux/amd64/v2",
         "variant": "albacore"
@@ -1196,7 +996,7 @@
           "workflow": ".github/workflows/build-albacore.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
+        "status": "blocked"
       },
       "measuredAt": null,
       "packageReadiness": {
@@ -1205,14 +1005,14 @@
         "status": "missing"
       },
       "reasons": [
-        "latest-attempt-missing"
+        "latest-attempt-blocked"
       ],
       "required": true,
-      "scheduled": false,
-      "status": "missing",
+      "scheduled": true,
+      "status": "blocked",
       "target": {
         "cpuBaseline": "armv8-a",
-        "flavor": "niri-nvidia",
+        "flavor": "niri",
         "hardwareScope": "generic",
         "platform": "linux/arm64",
         "variant": "albacore"
@@ -1221,38 +1021,22 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38038637097/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38038637097,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T11:12:31Z",
-          "workflow": ".github/workflows/build-albacore.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "blocked"
-      },
+      "latestAttempt": null,
       "measuredAt": null,
       "packageReadiness": {
-        "evidence": [],
+        "status": "missing",
         "measuredAt": null,
-        "status": "missing"
+        "evidence": []
       },
       "reasons": [
-        "latest-attempt-blocked"
+        "required-attempt-missing"
       ],
       "required": true,
-      "scheduled": true,
-      "status": "blocked",
+      "scheduled": false,
+      "status": "missing",
       "target": {
         "cpuBaseline": "x86-64-v2",
-        "flavor": "niri",
+        "flavor": "tuna",
         "hardwareScope": "generic",
         "platform": "linux/amd64/v2",
         "variant": "albacore"
@@ -1261,38 +1045,22 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38038637097/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38038637097,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T11:12:31Z",
-          "workflow": ".github/workflows/build-albacore.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "blocked"
-      },
+      "latestAttempt": null,
       "measuredAt": null,
       "packageReadiness": {
-        "evidence": [],
+        "status": "missing",
         "measuredAt": null,
-        "status": "missing"
+        "evidence": []
       },
       "reasons": [
-        "latest-attempt-blocked"
+        "required-attempt-missing"
       ],
       "required": true,
-      "scheduled": true,
-      "status": "blocked",
+      "scheduled": false,
+      "status": "missing",
       "target": {
         "cpuBaseline": "armv8-a",
-        "flavor": "niri",
+        "flavor": "tuna",
         "hardwareScope": "generic",
         "platform": "linux/arm64",
         "variant": "albacore"
@@ -1381,80 +1149,24 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38038637097/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38038637097,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T11:12:31Z",
-          "workflow": ".github/workflows/build-albacore.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
+      "latestAttempt": null,
       "measuredAt": null,
       "packageReadiness": {
-        "evidence": [],
+        "status": "missing",
         "measuredAt": null,
-        "status": "missing"
+        "evidence": []
       },
       "reasons": [
-        "latest-attempt-missing"
+        "required-attempt-missing"
       ],
       "required": true,
-      "scheduled": false,
+      "scheduled": true,
       "status": "missing",
       "target": {
-        "cpuBaseline": "x86-64-v2",
+        "cpuBaseline": "x86-64",
         "flavor": "xfce-nvidia",
         "hardwareScope": "generic",
-        "platform": "linux/amd64/v2",
-        "variant": "albacore"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38038637097/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38038637097,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T11:12:31Z",
-          "workflow": ".github/workflows/build-albacore.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "xfce-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
+        "platform": "linux/amd64",
         "variant": "albacore"
       }
     },
@@ -1676,46 +1388,6 @@
           "workflow": ".github/workflows/build-bonito-rawhide.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "unknown"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-unknown"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "unknown",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "base-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
-        "variant": "bonito-rawhide"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38079337681/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38079337681,
-          "sourceRevision": "c6684c56655a08d4bc7b6f3167c2e481dd00174f",
-          "startedAt": "2026-10-10T19:19:27Z",
-          "workflow": ".github/workflows/build-bonito-rawhide.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
         "status": "blocked"
       },
       "measuredAt": null,
@@ -1815,46 +1487,6 @@
         "flavor": "cosmic-nvidia",
         "hardwareScope": "generic",
         "platform": "linux/amd64",
-        "variant": "bonito-rawhide"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38079337681/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38079337681,
-          "sourceRevision": "c6684c56655a08d4bc7b6f3167c2e481dd00174f",
-          "startedAt": "2026-10-10T19:19:27Z",
-          "workflow": ".github/workflows/build-bonito-rawhide.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "unknown"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-unknown"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "unknown",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "cosmic-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
         "variant": "bonito-rawhide"
       }
     },
@@ -2076,46 +1708,6 @@
           "workflow": ".github/workflows/build-bonito-rawhide.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "unknown"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-unknown"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "unknown",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "gnome-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
-        "variant": "bonito-rawhide"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38079337681/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38079337681,
-          "sourceRevision": "c6684c56655a08d4bc7b6f3167c2e481dd00174f",
-          "startedAt": "2026-10-10T19:19:27Z",
-          "workflow": ".github/workflows/build-bonito-rawhide.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
         "status": "running"
       },
       "measuredAt": null,
@@ -2215,46 +1807,6 @@
         "flavor": "kde-nvidia",
         "hardwareScope": "generic",
         "platform": "linux/amd64",
-        "variant": "bonito-rawhide"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38079337681/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38079337681,
-          "sourceRevision": "c6684c56655a08d4bc7b6f3167c2e481dd00174f",
-          "startedAt": "2026-10-10T19:19:27Z",
-          "workflow": ".github/workflows/build-bonito-rawhide.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "unknown"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-unknown"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "unknown",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "kde-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
         "variant": "bonito-rawhide"
       }
     },
@@ -2396,46 +1948,6 @@
           "workflow": ".github/workflows/build-bonito-rawhide.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "unknown"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-unknown"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "unknown",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "niri-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
-        "variant": "bonito-rawhide"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38079337681/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38079337681,
-          "sourceRevision": "c6684c56655a08d4bc7b6f3167c2e481dd00174f",
-          "startedAt": "2026-10-10T19:19:27Z",
-          "workflow": ".github/workflows/build-bonito-rawhide.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
         "status": "running"
       },
       "measuredAt": null,
@@ -2501,6 +2013,54 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": true,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "x86-64",
+        "flavor": "tuna",
+        "hardwareScope": "generic",
+        "platform": "linux/amd64",
+        "variant": "bonito-rawhide"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": false,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "armv8-a",
+        "flavor": "tuna",
+        "hardwareScope": "generic",
+        "platform": "linux/arm64",
+        "variant": "bonito-rawhide"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
       "latestAttempt": {
         "evidence": [
           {
@@ -2535,46 +2095,6 @@
         "flavor": "xfce-nvidia",
         "hardwareScope": "generic",
         "platform": "linux/amd64",
-        "variant": "bonito-rawhide"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38079337681/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38079337681,
-          "sourceRevision": "c6684c56655a08d4bc7b6f3167c2e481dd00174f",
-          "startedAt": "2026-10-10T19:19:27Z",
-          "workflow": ".github/workflows/build-bonito-rawhide.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "unknown"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-unknown"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "unknown",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "xfce-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
         "variant": "bonito-rawhide"
       }
     },
@@ -2796,46 +2316,6 @@
           "workflow": ".github/workflows/build-bonito.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "base-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
-        "variant": "bonito"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38066857081/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38066857081,
-          "sourceRevision": "23351fb0d1f596099b6a22c66495b7bc13690fe5",
-          "startedAt": "2026-10-10T16:14:32Z",
-          "workflow": ".github/workflows/build-bonito.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
         "status": "blocked"
       },
       "measuredAt": null,
@@ -2935,46 +2415,6 @@
         "flavor": "cosmic-nvidia",
         "hardwareScope": "generic",
         "platform": "linux/amd64",
-        "variant": "bonito"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38066857081/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38066857081,
-          "sourceRevision": "23351fb0d1f596099b6a22c66495b7bc13690fe5",
-          "startedAt": "2026-10-10T16:14:32Z",
-          "workflow": ".github/workflows/build-bonito.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "cosmic-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
         "variant": "bonito"
       }
     },
@@ -3215,46 +2655,6 @@
         "flavor": "gnome-nvidia",
         "hardwareScope": "generic",
         "platform": "linux/amd64",
-        "variant": "bonito"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38066857081/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38066857081,
-          "sourceRevision": "23351fb0d1f596099b6a22c66495b7bc13690fe5",
-          "startedAt": "2026-10-10T16:14:32Z",
-          "workflow": ".github/workflows/build-bonito.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "gnome-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
         "variant": "bonito"
       }
     },
@@ -3436,46 +2836,6 @@
           "workflow": ".github/workflows/build-bonito.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "kde-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
-        "variant": "bonito"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38066857081/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38066857081,
-          "sourceRevision": "23351fb0d1f596099b6a22c66495b7bc13690fe5",
-          "startedAt": "2026-10-10T16:14:32Z",
-          "workflow": ".github/workflows/build-bonito.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
         "status": "success"
       },
       "measuredAt": null,
@@ -3596,46 +2956,6 @@
           "workflow": ".github/workflows/build-bonito.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "niri-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
-        "variant": "bonito"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38066857081/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38066857081,
-          "sourceRevision": "23351fb0d1f596099b6a22c66495b7bc13690fe5",
-          "startedAt": "2026-10-10T16:14:32Z",
-          "workflow": ".github/workflows/build-bonito.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
         "status": "blocked"
       },
       "measuredAt": null,
@@ -3693,6 +3013,54 @@
       "target": {
         "cpuBaseline": "armv8-a",
         "flavor": "niri",
+        "hardwareScope": "generic",
+        "platform": "linux/arm64",
+        "variant": "bonito"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": true,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "x86-64",
+        "flavor": "tuna",
+        "hardwareScope": "generic",
+        "platform": "linux/amd64",
+        "variant": "bonito"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": false,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "armv8-a",
+        "flavor": "tuna",
         "hardwareScope": "generic",
         "platform": "linux/arm64",
         "variant": "bonito"
@@ -3735,46 +3103,6 @@
         "flavor": "xfce-nvidia",
         "hardwareScope": "generic",
         "platform": "linux/amd64",
-        "variant": "bonito"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38066857081/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38066857081,
-          "sourceRevision": "23351fb0d1f596099b6a22c66495b7bc13690fe5",
-          "startedAt": "2026-10-10T16:14:32Z",
-          "workflow": ".github/workflows/build-bonito.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "xfce-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
         "variant": "bonito"
       }
     },
@@ -3996,46 +3324,6 @@
           "workflow": ".github/workflows/build-flounder-sid.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "gnome-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
-        "variant": "flounder-sid"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38016633921/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38016633921,
-          "sourceRevision": "8e7780b5d3d26f4b6b4832c3d3a027986d872fd3",
-          "startedAt": "2026-10-10T02:20:59Z",
-          "workflow": ".github/workflows/build-flounder-sid.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
         "status": "success"
       },
       "measuredAt": null,
@@ -4156,46 +3444,6 @@
           "workflow": ".github/workflows/build-flounder-sid.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "kde-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
-        "variant": "flounder-sid"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38016633921/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38016633921,
-          "sourceRevision": "8e7780b5d3d26f4b6b4832c3d3a027986d872fd3",
-          "startedAt": "2026-10-10T02:20:59Z",
-          "workflow": ".github/workflows/build-flounder-sid.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
         "status": "success"
       },
       "measuredAt": null,
@@ -4261,6 +3509,54 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": true,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "x86-64",
+        "flavor": "tuna",
+        "hardwareScope": "generic",
+        "platform": "linux/amd64",
+        "variant": "flounder-sid"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": false,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "armv8-a",
+        "flavor": "tuna",
+        "hardwareScope": "generic",
+        "platform": "linux/arm64",
+        "variant": "flounder-sid"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
       "latestAttempt": {
         "evidence": [
           {
@@ -4295,46 +3591,6 @@
         "flavor": "xfce-nvidia",
         "hardwareScope": "generic",
         "platform": "linux/amd64",
-        "variant": "flounder-sid"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38016633921/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38016633921,
-          "sourceRevision": "8e7780b5d3d26f4b6b4832c3d3a027986d872fd3",
-          "startedAt": "2026-10-10T02:20:59Z",
-          "workflow": ".github/workflows/build-flounder-sid.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "xfce-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
         "variant": "flounder-sid"
       }
     },
@@ -4556,46 +3812,6 @@
           "workflow": ".github/workflows/build-flounder.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "kde-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
-        "variant": "flounder"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38011240129/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38011240129,
-          "sourceRevision": "8e7780b5d3d26f4b6b4832c3d3a027986d872fd3",
-          "startedAt": "2026-10-10T00:57:37Z",
-          "workflow": ".github/workflows/build-flounder.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
         "status": "success"
       },
       "measuredAt": null,
@@ -4661,6 +3877,54 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": true,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "x86-64",
+        "flavor": "tuna",
+        "hardwareScope": "generic",
+        "platform": "linux/amd64",
+        "variant": "flounder"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": false,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "armv8-a",
+        "flavor": "tuna",
+        "hardwareScope": "generic",
+        "platform": "linux/arm64",
+        "variant": "flounder"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
       "latestAttempt": {
         "evidence": [
           {
@@ -4695,46 +3959,6 @@
         "flavor": "xfce-nvidia",
         "hardwareScope": "generic",
         "platform": "linux/amd64",
-        "variant": "flounder"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38011240129/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38011240129,
-          "sourceRevision": "8e7780b5d3d26f4b6b4832c3d3a027986d872fd3",
-          "startedAt": "2026-10-10T00:57:37Z",
-          "workflow": ".github/workflows/build-flounder.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "xfce-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
         "variant": "flounder"
       }
     },
@@ -5261,6 +4485,54 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": true,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "x86-64",
+        "flavor": "tuna",
+        "hardwareScope": "generic",
+        "platform": "linux/amd64",
+        "variant": "grouper"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": false,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "armv8-a",
+        "flavor": "tuna",
+        "hardwareScope": "generic",
+        "platform": "linux/arm64",
+        "variant": "grouper"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
       "latestAttempt": {
         "evidence": [
           {
@@ -5413,6 +4685,54 @@
       "target": {
         "cpuBaseline": "armv8-a",
         "flavor": "base",
+        "hardwareScope": "generic",
+        "platform": "linux/arm64",
+        "variant": "guppy"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": true,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "x86-64",
+        "flavor": "gnome",
+        "hardwareScope": "generic",
+        "platform": "linux/amd64",
+        "variant": "guppy"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": false,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "armv8-a",
+        "flavor": "gnome",
         "hardwareScope": "generic",
         "platform": "linux/arm64",
         "variant": "guppy"
@@ -6196,46 +5516,6 @@
           "workflow": ".github/workflows/build-marlin.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "cosmic-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
-        "variant": "marlin"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38073591156/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38073591156,
-          "sourceRevision": "be07569f37bafed3d2fff8e4053aeb6c646fe592",
-          "startedAt": "2026-10-10T17:53:42Z",
-          "workflow": ".github/workflows/build-marlin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
         "status": "blocked"
       },
       "measuredAt": null,
@@ -6415,46 +5695,6 @@
         "flavor": "gnome-nvidia",
         "hardwareScope": "generic",
         "platform": "linux/amd64",
-        "variant": "marlin"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38073591156/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38073591156,
-          "sourceRevision": "be07569f37bafed3d2fff8e4053aeb6c646fe592",
-          "startedAt": "2026-10-10T17:53:42Z",
-          "workflow": ".github/workflows/build-marlin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "gnome-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
         "variant": "marlin"
       }
     },
@@ -6676,46 +5916,6 @@
           "workflow": ".github/workflows/build-marlin.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "kde-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
-        "variant": "marlin"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38073591156/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38073591156,
-          "sourceRevision": "be07569f37bafed3d2fff8e4053aeb6c646fe592",
-          "startedAt": "2026-10-10T17:53:42Z",
-          "workflow": ".github/workflows/build-marlin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
         "status": "success"
       },
       "measuredAt": null,
@@ -6916,46 +6116,6 @@
           "workflow": ".github/workflows/build-marlin.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "niri-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
-        "variant": "marlin"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38073591156/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38073591156,
-          "sourceRevision": "be07569f37bafed3d2fff8e4053aeb6c646fe592",
-          "startedAt": "2026-10-10T17:53:42Z",
-          "workflow": ".github/workflows/build-marlin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
         "status": "blocked"
       },
       "measuredAt": null,
@@ -7021,38 +6181,22 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38073591156/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38073591156,
-          "sourceRevision": "be07569f37bafed3d2fff8e4053aeb6c646fe592",
-          "startedAt": "2026-10-10T17:53:42Z",
-          "workflow": ".github/workflows/build-marlin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "success"
-      },
+      "latestAttempt": null,
       "measuredAt": null,
       "packageReadiness": {
-        "evidence": [],
+        "status": "missing",
         "measuredAt": null,
-        "status": "missing"
+        "evidence": []
       },
       "reasons": [
-        "package-or-image-contract-blocked"
+        "required-attempt-missing"
       ],
       "required": true,
       "scheduled": true,
-      "status": "blocked",
+      "status": "missing",
       "target": {
         "cpuBaseline": "x86-64",
-        "flavor": "roost",
+        "flavor": "tuna",
         "hardwareScope": "generic",
         "platform": "linux/amd64",
         "variant": "marlin"
@@ -7061,38 +6205,22 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38073591156/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38073591156,
-          "sourceRevision": "be07569f37bafed3d2fff8e4053aeb6c646fe592",
-          "startedAt": "2026-10-10T17:53:42Z",
-          "workflow": ".github/workflows/build-marlin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
+      "latestAttempt": null,
       "measuredAt": null,
       "packageReadiness": {
-        "evidence": [],
+        "status": "missing",
         "measuredAt": null,
-        "status": "missing"
+        "evidence": []
       },
       "reasons": [
-        "latest-attempt-missing"
+        "required-attempt-missing"
       ],
       "required": true,
       "scheduled": false,
       "status": "missing",
       "target": {
         "cpuBaseline": "armv8-a",
-        "flavor": "roost",
+        "flavor": "tuna",
         "hardwareScope": "generic",
         "platform": "linux/arm64",
         "variant": "marlin"
@@ -7215,46 +6343,6 @@
         "flavor": "xfce-nvidia",
         "hardwareScope": "generic",
         "platform": "linux/amd64",
-        "variant": "marlin"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38073591156/attempts/1"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 1,
-          "runId": 38073591156,
-          "sourceRevision": "be07569f37bafed3d2fff8e4053aeb6c646fe592",
-          "startedAt": "2026-10-10T17:53:42Z",
-          "workflow": ".github/workflows/build-marlin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "xfce-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
         "variant": "marlin"
       }
     },
@@ -7733,6 +6821,54 @@
       "target": {
         "cpuBaseline": "armv8-a",
         "flavor": "niri",
+        "hardwareScope": "generic",
+        "platform": "linux/arm64",
+        "variant": "sailfin"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": true,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "x86-64",
+        "flavor": "tuna",
+        "hardwareScope": "generic",
+        "platform": "linux/amd64",
+        "variant": "sailfin"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": false,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "armv8-a",
+        "flavor": "tuna",
         "hardwareScope": "generic",
         "platform": "linux/arm64",
         "variant": "sailfin"
@@ -7956,46 +7092,6 @@
           "workflow": ".github/workflows/build-skipjack.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "base-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
-        "variant": "skipjack"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38063516417/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38063516417,
-          "sourceRevision": "23351fb0d1f596099b6a22c66495b7bc13690fe5",
-          "startedAt": "2026-10-10T18:07:00Z",
-          "workflow": ".github/workflows/build-skipjack.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
         "status": "blocked"
       },
       "measuredAt": null,
@@ -8128,7 +7224,7 @@
         "latest-attempt-failed"
       ],
       "required": true,
-      "scheduled": true,
+      "scheduled": false,
       "status": "failed",
       "target": {
         "cpuBaseline": "armv8-a",
@@ -8196,46 +7292,6 @@
           "workflow": ".github/workflows/build-skipjack.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "cosmic-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
-        "variant": "skipjack"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38063516417/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38063516417,
-          "sourceRevision": "23351fb0d1f596099b6a22c66495b7bc13690fe5",
-          "startedAt": "2026-10-10T18:07:00Z",
-          "workflow": ".github/workflows/build-skipjack.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
         "status": "failed"
       },
       "measuredAt": null,
@@ -8288,7 +7344,7 @@
         "latest-attempt-failed"
       ],
       "required": true,
-      "scheduled": true,
+      "scheduled": false,
       "status": "failed",
       "target": {
         "cpuBaseline": "armv8-a",
@@ -8415,46 +7471,6 @@
         "flavor": "gnome-nvidia",
         "hardwareScope": "generic",
         "platform": "linux/amd64",
-        "variant": "skipjack"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38063516417/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38063516417,
-          "sourceRevision": "23351fb0d1f596099b6a22c66495b7bc13690fe5",
-          "startedAt": "2026-10-10T18:07:00Z",
-          "workflow": ".github/workflows/build-skipjack.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "gnome-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
         "variant": "skipjack"
       }
     },
@@ -8676,46 +7692,6 @@
           "workflow": ".github/workflows/build-skipjack.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "kde-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
-        "variant": "skipjack"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38063516417/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38063516417,
-          "sourceRevision": "23351fb0d1f596099b6a22c66495b7bc13690fe5",
-          "startedAt": "2026-10-10T18:07:00Z",
-          "workflow": ".github/workflows/build-skipjack.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
         "status": "success"
       },
       "measuredAt": null,
@@ -8916,46 +7892,6 @@
           "workflow": ".github/workflows/build-skipjack.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "niri-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
-        "variant": "skipjack"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38063516417/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38063516417,
-          "sourceRevision": "23351fb0d1f596099b6a22c66495b7bc13690fe5",
-          "startedAt": "2026-10-10T18:07:00Z",
-          "workflow": ".github/workflows/build-skipjack.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
         "status": "blocked"
       },
       "measuredAt": null,
@@ -9013,6 +7949,54 @@
       "target": {
         "cpuBaseline": "armv8-a",
         "flavor": "niri",
+        "hardwareScope": "generic",
+        "platform": "linux/arm64",
+        "variant": "skipjack"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": true,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "x86-64-v3",
+        "flavor": "tuna",
+        "hardwareScope": "generic",
+        "platform": "linux/amd64",
+        "variant": "skipjack"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": false,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "armv8-a",
+        "flavor": "tuna",
         "hardwareScope": "generic",
         "platform": "linux/arm64",
         "variant": "skipjack"
@@ -9421,6 +8405,54 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": true,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "x86-64-v3",
+        "flavor": "tuna",
+        "hardwareScope": "generic",
+        "platform": "linux/amd64",
+        "variant": "wahoo"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": false,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "armv8-a",
+        "flavor": "tuna",
+        "hardwareScope": "generic",
+        "platform": "linux/arm64",
+        "variant": "wahoo"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
       "latestAttempt": {
         "evidence": [
           {
@@ -9501,80 +8533,24 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38029192158/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38029192158,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T08:29:31Z",
-          "workflow": ".github/workflows/build-yellowfin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
+      "latestAttempt": null,
       "measuredAt": null,
       "packageReadiness": {
-        "evidence": [],
+        "status": "missing",
         "measuredAt": null,
-        "status": "missing"
+        "evidence": []
       },
       "reasons": [
-        "latest-attempt-missing"
+        "required-attempt-missing"
       ],
       "required": true,
-      "scheduled": false,
+      "scheduled": true,
       "status": "missing",
       "target": {
-        "cpuBaseline": "x86-64-v2",
+        "cpuBaseline": "x86-64",
         "flavor": "base-nvidia",
         "hardwareScope": "generic",
-        "platform": "linux/amd64/v2",
-        "variant": "yellowfin"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38029192158/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38029192158,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T08:29:31Z",
-          "workflow": ".github/workflows/build-yellowfin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "base-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
+        "platform": "linux/amd64",
         "variant": "yellowfin"
       }
     },
@@ -9688,7 +8664,7 @@
         "latest-attempt-failed"
       ],
       "required": true,
-      "scheduled": true,
+      "scheduled": false,
       "status": "failed",
       "target": {
         "cpuBaseline": "x86-64-v2",
@@ -9728,7 +8704,7 @@
         "latest-attempt-failed"
       ],
       "required": true,
-      "scheduled": true,
+      "scheduled": false,
       "status": "failed",
       "target": {
         "cpuBaseline": "armv8-a",
@@ -9741,80 +8717,24 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38029192158/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38029192158,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T08:29:31Z",
-          "workflow": ".github/workflows/build-yellowfin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
+      "latestAttempt": null,
       "measuredAt": null,
       "packageReadiness": {
-        "evidence": [],
+        "status": "missing",
         "measuredAt": null,
-        "status": "missing"
+        "evidence": []
       },
       "reasons": [
-        "latest-attempt-missing"
+        "required-attempt-missing"
       ],
       "required": true,
-      "scheduled": false,
+      "scheduled": true,
       "status": "missing",
       "target": {
-        "cpuBaseline": "x86-64-v2",
+        "cpuBaseline": "x86-64",
         "flavor": "cosmic-nvidia",
         "hardwareScope": "generic",
-        "platform": "linux/amd64/v2",
-        "variant": "yellowfin"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38029192158/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38029192158,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T08:29:31Z",
-          "workflow": ".github/workflows/build-yellowfin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "cosmic-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
+        "platform": "linux/amd64",
         "variant": "yellowfin"
       }
     },
@@ -9848,7 +8768,7 @@
         "latest-attempt-failed"
       ],
       "required": true,
-      "scheduled": true,
+      "scheduled": false,
       "status": "failed",
       "target": {
         "cpuBaseline": "x86-64-v2",
@@ -9888,7 +8808,7 @@
         "latest-attempt-failed"
       ],
       "required": true,
-      "scheduled": true,
+      "scheduled": false,
       "status": "failed",
       "target": {
         "cpuBaseline": "armv8-a",
@@ -9981,80 +8901,24 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38029192158/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38029192158,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T08:29:31Z",
-          "workflow": ".github/workflows/build-yellowfin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
+      "latestAttempt": null,
       "measuredAt": null,
       "packageReadiness": {
-        "evidence": [],
+        "status": "missing",
         "measuredAt": null,
-        "status": "missing"
+        "evidence": []
       },
       "reasons": [
-        "latest-attempt-missing"
+        "required-attempt-missing"
       ],
       "required": true,
-      "scheduled": false,
+      "scheduled": true,
       "status": "missing",
       "target": {
-        "cpuBaseline": "x86-64-v2",
+        "cpuBaseline": "x86-64",
         "flavor": "gnome-nvidia",
         "hardwareScope": "generic",
-        "platform": "linux/amd64/v2",
-        "variant": "yellowfin"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38029192158/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38029192158,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T08:29:31Z",
-          "workflow": ".github/workflows/build-yellowfin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "gnome-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
+        "platform": "linux/amd64",
         "variant": "yellowfin"
       }
     },
@@ -10221,80 +9085,24 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38029192158/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38029192158,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T08:29:31Z",
-          "workflow": ".github/workflows/build-yellowfin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
+      "latestAttempt": null,
       "measuredAt": null,
       "packageReadiness": {
-        "evidence": [],
+        "status": "missing",
         "measuredAt": null,
-        "status": "missing"
+        "evidence": []
       },
       "reasons": [
-        "latest-attempt-missing"
+        "required-attempt-missing"
       ],
       "required": true,
-      "scheduled": false,
+      "scheduled": true,
       "status": "missing",
       "target": {
-        "cpuBaseline": "x86-64-v2",
+        "cpuBaseline": "x86-64",
         "flavor": "kde-nvidia",
         "hardwareScope": "generic",
-        "platform": "linux/amd64/v2",
-        "variant": "yellowfin"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38029192158/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38029192158,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T08:29:31Z",
-          "workflow": ".github/workflows/build-yellowfin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "kde-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
+        "platform": "linux/amd64",
         "variant": "yellowfin"
       }
     },
@@ -10461,6 +9269,30 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
+      "latestAttempt": null,
+      "measuredAt": null,
+      "packageReadiness": {
+        "status": "missing",
+        "measuredAt": null,
+        "evidence": []
+      },
+      "reasons": [
+        "required-attempt-missing"
+      ],
+      "required": true,
+      "scheduled": true,
+      "status": "missing",
+      "target": {
+        "cpuBaseline": "x86-64",
+        "flavor": "niri-nvidia",
+        "hardwareScope": "generic",
+        "platform": "linux/amd64",
+        "variant": "yellowfin"
+      }
+    },
+    {
+      "contractStatus": "missing",
+      "lastVerifiedPublication": null,
       "latestAttempt": {
         "evidence": [
           {
@@ -10476,7 +9308,7 @@
           "workflow": ".github/workflows/build-yellowfin.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
+        "status": "blocked"
       },
       "measuredAt": null,
       "packageReadiness": {
@@ -10485,14 +9317,14 @@
         "status": "missing"
       },
       "reasons": [
-        "latest-attempt-missing"
+        "latest-attempt-blocked"
       ],
       "required": true,
-      "scheduled": false,
-      "status": "missing",
+      "scheduled": true,
+      "status": "blocked",
       "target": {
         "cpuBaseline": "x86-64-v2",
-        "flavor": "niri-nvidia",
+        "flavor": "niri",
         "hardwareScope": "generic",
         "platform": "linux/amd64/v2",
         "variant": "yellowfin"
@@ -10516,7 +9348,7 @@
           "workflow": ".github/workflows/build-yellowfin.yml"
         },
         "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
+        "status": "blocked"
       },
       "measuredAt": null,
       "packageReadiness": {
@@ -10525,14 +9357,14 @@
         "status": "missing"
       },
       "reasons": [
-        "latest-attempt-missing"
+        "latest-attempt-blocked"
       ],
       "required": true,
-      "scheduled": false,
-      "status": "missing",
+      "scheduled": true,
+      "status": "blocked",
       "target": {
         "cpuBaseline": "armv8-a",
-        "flavor": "niri-nvidia",
+        "flavor": "niri",
         "hardwareScope": "generic",
         "platform": "linux/arm64",
         "variant": "yellowfin"
@@ -10541,38 +9373,22 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38029192158/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38029192158,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T08:29:31Z",
-          "workflow": ".github/workflows/build-yellowfin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "blocked"
-      },
+      "latestAttempt": null,
       "measuredAt": null,
       "packageReadiness": {
-        "evidence": [],
+        "status": "missing",
         "measuredAt": null,
-        "status": "missing"
+        "evidence": []
       },
       "reasons": [
-        "latest-attempt-blocked"
+        "required-attempt-missing"
       ],
       "required": true,
-      "scheduled": true,
-      "status": "blocked",
+      "scheduled": false,
+      "status": "missing",
       "target": {
         "cpuBaseline": "x86-64-v2",
-        "flavor": "niri",
+        "flavor": "tuna",
         "hardwareScope": "generic",
         "platform": "linux/amd64/v2",
         "variant": "yellowfin"
@@ -10581,38 +9397,22 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38029192158/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38029192158,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T08:29:31Z",
-          "workflow": ".github/workflows/build-yellowfin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "blocked"
-      },
+      "latestAttempt": null,
       "measuredAt": null,
       "packageReadiness": {
-        "evidence": [],
+        "status": "missing",
         "measuredAt": null,
-        "status": "missing"
+        "evidence": []
       },
       "reasons": [
-        "latest-attempt-blocked"
+        "required-attempt-missing"
       ],
       "required": true,
-      "scheduled": true,
-      "status": "blocked",
+      "scheduled": false,
+      "status": "missing",
       "target": {
         "cpuBaseline": "armv8-a",
-        "flavor": "niri",
+        "flavor": "tuna",
         "hardwareScope": "generic",
         "platform": "linux/arm64",
         "variant": "yellowfin"
@@ -10701,80 +9501,24 @@
     {
       "contractStatus": "missing",
       "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38029192158/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38029192158,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T08:29:31Z",
-          "workflow": ".github/workflows/build-yellowfin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
+      "latestAttempt": null,
       "measuredAt": null,
       "packageReadiness": {
-        "evidence": [],
+        "status": "missing",
         "measuredAt": null,
-        "status": "missing"
+        "evidence": []
       },
       "reasons": [
-        "latest-attempt-missing"
+        "required-attempt-missing"
       ],
       "required": true,
-      "scheduled": false,
+      "scheduled": true,
       "status": "missing",
       "target": {
-        "cpuBaseline": "x86-64-v2",
+        "cpuBaseline": "x86-64",
         "flavor": "xfce-nvidia",
         "hardwareScope": "generic",
-        "platform": "linux/amd64/v2",
-        "variant": "yellowfin"
-      }
-    },
-    {
-      "contractStatus": "missing",
-      "lastVerifiedPublication": null,
-      "latestAttempt": {
-        "evidence": [
-          {
-            "url": "https://github.com/tuna-os/tunaOS/actions/runs/38029192158/attempts/2"
-          }
-        ],
-        "identity": {
-          "repository": "tuna-os/tunaOS",
-          "runAttempt": 2,
-          "runId": 38029192158,
-          "sourceRevision": "7009976bcb9c6afc790a7107d8919160cd2522fc",
-          "startedAt": "2026-10-10T08:29:31Z",
-          "workflow": ".github/workflows/build-yellowfin.yml"
-        },
-        "measuredAt": "2026-10-10T19:43:26Z",
-        "status": "missing"
-      },
-      "measuredAt": null,
-      "packageReadiness": {
-        "evidence": [],
-        "measuredAt": null,
-        "status": "missing"
-      },
-      "reasons": [
-        "latest-attempt-missing"
-      ],
-      "required": true,
-      "scheduled": false,
-      "status": "missing",
-      "target": {
-        "cpuBaseline": "armv8-a",
-        "flavor": "xfce-nvidia",
-        "hardwareScope": "generic",
-        "platform": "linux/arm64",
+        "platform": "linux/amd64",
         "variant": "yellowfin"
       }
     },
