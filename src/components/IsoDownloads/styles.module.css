@@ -155,6 +155,22 @@
   color: var(--ifm-color-primary);
 }
 
+.tagQualified {
+  background: var(--tu-accent);
+  color: #1d1f21;
+}
+
+.buildBtn {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  background: var(--ifm-color-primary);
+  color: #fff;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+
 .archiveToggle {
   align-self: flex-start;
   margin-top: 0.7rem;

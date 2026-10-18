@@ -8,11 +8,13 @@ import styles from './styles.module.css';
 import {
   type Selection,
   type StepId,
+  type Platform,
   ROLLING_SIBLING_OF,
   type Option,
   PRODUCT_OPTIONS,
   VARIANT_OPTIONS,
   DESKTOP_OPTIONS,
+  PLATFORM_OPTIONS,
   getEditionOptions,
   getDesktopOptions,
   hasDesktopOptions,
@@ -25,7 +27,10 @@ import {
   getBuilderUrl,
   getDocsUrl,
   getVisibleSteps,
+  defaultPlatform,
+  getDeliveryRoute,
 } from './selection';
+import {toDocsPlatform} from '@site/src/data/delivery-policy.mjs';
 
 function ProgressBar({steps, current}: {steps: StepId[]; current: StepId}) {
   const currentIdx = steps.indexOf(current);
@@ -109,6 +114,12 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
   const variantOpt = VARIANT_OPTIONS.find((o) => o.value === sel.variant);
   const desktopOpt = DESKTOP_OPTIONS.find((o) => o.value === sel.desktop);
   const editionOpt = sel.edition ? getEditionOptions(sel.variant).find((o) => o.value === sel.edition) : null;
+  const [platform, setPlatform] = useState<Platform>(() => sel.platform ?? defaultPlatform(sel.variant));
+  const route = getDeliveryRoute({...sel, platform}, isoNames);
+  const platformChoices = PLATFORM_OPTIONS.filter(
+    (o) => !variantMeta || variantMeta.platforms.includes(toDocsPlatform(o.value) as 'amd64' | 'amd64-v2' | 'arm64'),
+  );
+  const platformOpt = PLATFORM_OPTIONS.find((o) => o.value === platform);
 
   // Non-tunaOS result
   if (!isTunaOS) {
@@ -170,6 +181,58 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
     );
   }
 
+  // Qualified delivery target: the browser-built preset is primary, the
+  // retained R2 ISO (when still published) secondary. Unreachable while
+  // the delivery policy's cutover list is empty.
+  if (route.kind === 'builder-preset') {
+    return (
+      <div className={styles.resultCard}>
+        <div className={styles.resultHeader}>
+          <span className={styles.qualBadge}>Qualified browser build</span>
+          <h3 className={styles.resultTitle}>Your TunaOS Image</h3>
+          <p className={styles.resultSummary}>
+            {variantOpt?.label}
+            {desktopOpt ? ` · ${desktopOpt?.label}` : ''}
+            {editionOpt && editionOpt.value !== 'standard' ? ` · ${editionOpt.label}` : ''}
+            {platformOpt ? ` · ${platformOpt.label}` : ''}
+          </p>
+        </div>
+
+        <ul className={styles.prereqList}>
+          <li>{route.prerequisites.browsers}</li>
+          <li>{route.prerequisites.memory}</li>
+          <li>{route.prerequisites.disk}</li>
+        </ul>
+
+        <div className={styles.resultActions}>
+          <a href={route.url} className="button button--primary button--lg">
+            Build this ISO in the browser
+          </a>
+          {route.retainedUrl && (
+            <a href={route.retainedUrl} className="button button--outline button--md">
+              Download retained prebuilt ISO
+            </a>
+          )}
+          <Link to={docsUrl} className="button button--outline button--md">
+            Docs
+          </Link>
+        </div>
+
+        <div className={styles.resultImageBox}>
+          <span className={styles.resultImageLabel}>Local tacklebox fallback</span>
+          <div className={styles.resultImageRow}>
+            <code className={styles.resultImageName}>{`just build ${sel.variant} ${sel.desktop ?? 'gnome'}`}</code>
+            <CopyButton text={`just build ${sel.variant} ${sel.desktop ?? 'gnome'}`} />
+          </div>
+        </div>
+
+        <button className={styles.resetBtn} onClick={onReset} type="button">
+          ← Start Over
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.resultCard}>
       <div className={styles.resultHeader}>
@@ -192,13 +255,38 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
         </div>
       </div>
 
+      {platformChoices.length > 1 && (
+        <div className={styles.platformRow} role="group" aria-label="Platform">
+          {platformChoices.map((o) => (
+            <button
+              key={o.value}
+              type="button"
+              aria-pressed={platform === o.value}
+              title={o.description}
+              className={clsx(styles.platformBtn, {[styles.platformActive]: platform === o.value})}
+              onClick={() => setPlatform(o.value)}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+      )}
+
       <div className={styles.resultActions}>
-        {isoUrl ? (
-          <a href={isoUrl} className="button button--primary button--lg">
+        {route.kind === 'prebuilt' ? (
+          <a href={route.url} className="button button--primary button--lg">
             Download ISO
           </a>
         ) : isoNames === null ? (
           <div className={styles.resultNoIso}>Checking what is published…</div>
+        ) : route.reason === 'unsupported-platform' ? (
+          <div className={styles.resultNoIso}>
+            {`This flavor isn't published for ${platformOpt?.label ?? platform} — pick a supported platform above, or build it in the browser below.`}
+          </div>
+        ) : platform === 'aarch64' ? (
+          <div className={styles.resultNoIso}>
+            {`No prebuilt ARM64 ISO for this combination. Build one in the browser below, or install a standard ISO and run \`bootc-migrate --target-image ${imageName}\` afterward.`}
+          </div>
         ) : (
           <div className={styles.resultNoIso}>
             {`No prebuilt ISO for this combination. Build one below, or install a standard ISO and run \`bootc-migrate --target-image ${imageName}\` afterward.`}

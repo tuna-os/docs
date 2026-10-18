@@ -1,8 +1,9 @@
 import type {ReactNode} from 'react';
 import {useEffect, useState} from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import {defaultPlatform} from '@site/src/components/ImagePicker/selection';
+import {getBuilderPresetUrl, isCutOver} from '@site/src/data/delivery-policy.mjs';
 import styles from './styles.module.css';
-
 // Shape of static/iso-index.json (produced by scripts/build-iso-index.mjs
 // from a live `rclone lsjson` of the R2 bucket).
 type Iso = {
@@ -70,7 +71,49 @@ function prettyName(iso: Iso): string {
   return iso.name;
 }
 
+function presetUrlForIso(iso: Iso): string | null {
+  // Only latest builds map to a delivery target; dated archives stay
+  // plain downloads. "<variant>-<flavor>-latest" splits into the
+  // delivery-policy {variant, flavor} identity.
+  if (!iso.latest) return null;
+  const base = iso.name.replace(/-latest$/i, '');
+  const [variant, ...rest] = base.split('-');
+  const flavor = rest.join('-');
+  if (!variant || !flavor) return null;
+  const platform = defaultPlatform(variant.toLowerCase());
+  if (!isCutOver(variant.toLowerCase(), flavor.toLowerCase(), platform)) return null;
+  return getBuilderPresetUrl({variant: variant.toLowerCase(), flavor: flavor.toLowerCase(), platform});
+}
+
 function IsoRow({iso}: {iso: Iso}): ReactNode {
+  // A nested link inside the row link would be invalid HTML, so cut-over
+  // rows render as a div with two explicit actions. With the empty initial
+  // policy presetUrl is always null and every row renders exactly as before.
+  const presetUrl = presetUrlForIso(iso);
+  if (presetUrl) {
+    return (
+      <div className={styles.isoRow}>
+        <div className={styles.isoMain}>
+          <span className={styles.isoName}>{prettyName(iso)}</span>
+          <span className={styles.isoMeta}>
+            {iso.arch && <span className={styles.tag}>{iso.arch}</span>}
+            {iso.latest && <span className={`${styles.tag} ${styles.tagLatest}`}>latest</span>}
+            <span className={`${styles.tag} ${styles.tagQualified}`}>browser build</span>
+            {formatDate(iso.modified) && <span className={styles.isoDate}>{formatDate(iso.modified)}</span>}
+          </span>
+        </div>
+        <div className={styles.isoRight}>
+          <span className={styles.isoSize}>{formatBytes(iso.size)}</span>
+          <a className={styles.buildBtn} href={presetUrl}>
+            🛠️ Build
+          </a>
+          <a className={styles.buildBtn} href={iso.url} download>
+            ⬇ ISO
+          </a>
+        </div>
+      </div>
+    );
+  }
   return (
     <a className={styles.isoRow} href={iso.url} download>
       <div className={styles.isoMain}>
@@ -88,7 +131,6 @@ function IsoRow({iso}: {iso: Iso}): ReactNode {
     </a>
   );
 }
-
 function groupByVariant(isos: Iso[]): Record<string, Iso[]> {
   const groups: Record<string, Iso[]> = {};
   for (const iso of isos) {
