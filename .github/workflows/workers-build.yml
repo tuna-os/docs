@@ -50,6 +50,9 @@ jobs:
       - name: Verify build health and accessibility
         run: npm run test:build-health
 
+      - name: Verify site accessibility audit
+        run: npm run a11y
+
       - name: Install Wrangler
         run: npm install --global wrangler@4
 
