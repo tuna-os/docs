@@ -1,31 +1,26 @@
 {
   "org": "tuna-os",
-  "generated_at": "2026-10-17T18:44:42.484Z",
+  "generated_at": "2026-10-19T12:53:35.811Z",
   "contributors": [
     {
       "login": "hanthor",
       "id": 5840441,
-      "merged_prs": 4399,
+      "merged_prs": 4422,
       "repos": [
         "tunaOS",
         "docs",
         "bluefin-cli",
-        "dakota-iso",
         "tunaos-packages",
         ".github",
         "fisherman",
         "tromso",
         "xfce-linux",
-        "tromso-iso",
         "tacklebox",
-        "xfce-linux-iso",
         "Tavern",
         "blueshell",
         "corral",
-        "ubuntu",
         "bootc-migrate",
         "flatpak-index",
-        "suite-common-rust",
         "gtk-office-suite",
         "mariner",
         "changelog-action",
@@ -91,7 +86,7 @@
     {
       "login": "j1mc",
       "id": 718362,
-      "merged_prs": 3,
+      "merged_prs": 4,
       "repos": [
         ".github"
       ]
