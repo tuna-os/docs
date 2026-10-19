@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "comment": "Auto-QA self-tuning policy (ACMM L4 acmm:auto-qa-tuning). Window and sample counts measure CI workflow runs. Step size limits rate of ratchet adjustments.",
+  "window_days": 30,
+  "min_sample_runs": 5,
+  "step": 0.05,
+  "gates": [
+    {
+      "name": "js-syntax",
+      "workflow": "lint.yml",
+      "job": "js-syntax",
+      "alert_threshold": 0.1,
+      "min_threshold": 0.02,
+      "max_threshold": 0.25
+    },
+    {
+      "name": "markdown-lint",
+      "workflow": "lint.yml",
+      "job": "markdown-lint",
+      "alert_threshold": 0.15,
+      "min_threshold": 0.05,
+      "max_threshold": 0.3
+    },
+    {
+      "name": "link-check",
+      "workflow": "lint.yml",
+      "job": "link-check",
+      "alert_threshold": 0.1,
+      "min_threshold": 0.02,
+      "max_threshold": 0.2
+    },
+    {
+      "name": "ste-lint",
+      "workflow": "lint.yml",
+      "job": "ste",
+      "alert_threshold": 0.15,
+      "min_threshold": 0.05,
+      "max_threshold": 0.3
+    },
+    {
+      "name": "workers-build",
+      "workflow": "workers-build.yml",
+      "job": "build",
+      "alert_threshold": 0.1,
+      "min_threshold": 0.02,
+      "max_threshold": 0.25
+    }
+  ]
+}
