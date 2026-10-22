@@ -129,7 +129,7 @@ index page at the start of a project tree identifies the source repository.
 - A duplicate slug shadows the other post at the same URL and breaks canonical links.
 - If you rewrite a post, reuse the existing file (update it in place).
 - Do not add a second file with the same slug.
-- **Publish before you merge.** A post is visible on tunaos.org/blog only when it has no `draft: true` in its frontmatter. Merge posts with `draft: false` (or no draft field) unless you schedule them for a future date (for example, 08-22). If you leave `draft: true` after the merge, the post stays hidden — flip the flag in the same PR.
+- **Publish before you merge.** A post is visible on tunaos.org/blog only when its frontmatter has no `draft: true`. Posts merge to `main` and publish at once when `draft` is `false` or absent. The `date` field does not gate visibility, so a future `date` never delays a post. Keep `draft: true` with a future `date` (for example, `date: 2026-12-25`) to hide the post. Flip the flag to `draft: false` when you want it live.
 - After you edit a post, run `just preflight` and `just build`. These checks
   include blog content in the prose budget and production build.
 
