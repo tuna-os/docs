@@ -72,6 +72,12 @@ static assets, and `worker/index.js` routes requests.
 - **Content sync** — `.github/workflows/sync-org-docs.yml` runs daily
   (cron `0 6 * * *`) and opens a PR when org-synced content changes.
 
+The workflow that deploys the Flatpak index (`.github/workflows/deploy-flatpak.yml`)
+also publishes the site when `static/flatpak/**` changes on `main`, or on a
+manual run. Before you run it, set the GitHub Actions secrets
+`CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in this repository. Use the
+account ID for the account that owns the `tunaos-org` Worker.
+
 The adoption API uses the `COUNTME` service binding to the `tunaos-countme`
 Worker in the same account. Deploy the collector before the site. Its source
 and D1 migrations live in `tuna-os/tunaos/services/countme`.
