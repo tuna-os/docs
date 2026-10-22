@@ -35,13 +35,14 @@ The desktop takes much RAM and GPU on weak hardware. Use a lighter desktop to fr
 
 See [Desktop comparison](desktop-comparison.md) for the full table. Pick an image that ships your desktop. Read [the variant guide](choosing-a-variant.md) for help.
 
-To switch desktops, install one, then log out and pick it on the login screen. For example:
+TunaOS is an immutable bootc operating system. Switch to an image that ships your preferred desktop natively. You can also layer packages in a Containerfile (see the [layer guide](layering.md)). For example, switch to the lightweight XFCE desktop:
 
 ```bash
-sudo dnf install @xfce-desktop
+sudo bootc switch ghcr.io/tuna-os/xfce-linux:latest
+sudo systemctl reboot
 ```
 
-Log out, click the gear menu on the login screen, and choose XFCE. Then log in.
+Then log into your new desktop environment.
 
 ---
 
@@ -81,10 +82,10 @@ Check your swap and zram:
 
 ```bash
 swapon --show
-lsblk -o NAME,SIZE,STATUS | grep zram
+lsblk -o NAME,SIZE,STATE | grep zram
 ```
 
-Swapiness decides how hard the system swaps. The kernel default is 60. Many distros lower it to keep apps in RAM. On a low-memory machine with zram, a higher value keeps more apps open:
+Swappiness decides how hard the system swaps. The kernel default is 60. Many distros lower it to keep apps in RAM. On a low-memory machine with zram, a higher value keeps more apps open:
 
 ```bash
 sudo sysctl vm.swappiness=100
