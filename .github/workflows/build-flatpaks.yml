@@ -49,14 +49,14 @@ jobs:
             branch: master
     steps:
       - name: Checkout ${{ matrix.app.repo }}
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: ${{ matrix.app.repo }}
           ref: ${{ matrix.app.branch || 'main' }}
           submodules: recursive
 
       - name: Build Flatpak
-        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        uses: flatpak/flatpak-github-actions/flatpak-builder@79327416609af08178ad73b352877e51450790b3 # v6.8
         with:
           manifest-path: ${{ matrix.app.manifest }}
           cache-key: flatpak-builder-${{ matrix.app.name }}-${{ github.sha }}
@@ -68,7 +68,7 @@ jobs:
           flatpak build-bundle --oci --arch=x86_64 repo ${{ matrix.app.name }}.oci ${{ matrix.app.id }}
 
       - name: Upload OCI artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: oci-${{ matrix.app.name }}
           path: ${{ matrix.app.name }}.oci/
@@ -79,10 +79,10 @@ jobs:
     needs: build
     runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Download all OCI artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: oci-*
           path: artifacts
