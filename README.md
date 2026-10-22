@@ -87,6 +87,11 @@ They do not share build artifacts across events or workflows.
 They have no issue-write permission.
 The separate issue job runs only for pushes, schedules, and manual runs.
 Lint uses `npm ci` without an unlocked install fallback.
+The workflow that deploys the Flatpak index (`.github/workflows/deploy-flatpak.yml`)
+also publishes the site when `static/flatpak/**` changes on `main`, or on a
+manual run. Before you run it, set the GitHub Actions secrets
+`CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in this repository. Use the
+account ID for the account that owns the `tunaos-org` Worker.
 
 The adoption API uses the `COUNTME` service binding to the `tunaos-countme`
 Worker in the same account. Deploy the collector before the site. Its source
