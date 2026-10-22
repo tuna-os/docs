@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {extractBrewPackages, checkFormula, checkTap, resolve, tapRepo, codeBlocks} from './check-install-commands.mjs';
+import {extractBrewPackages, checkFormula, checkTap, resolve, tapRepo, codeBlocks} from '../check-install-commands.mjs';
 
 // --- extraction -----------------------------------------------------------
 
