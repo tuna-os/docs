@@ -85,7 +85,7 @@ the sync rules and more detail about these mixed directories.
 Install the Markdown linter used by the repository recipe:
 
 ```bash
-npm install --global markdownlint-cli
+npm install --global markdownlint-cli@0.49.1
 ```
 
 Run all local pre-submission checks:
