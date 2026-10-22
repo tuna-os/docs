@@ -88,11 +88,36 @@ const sidebars: SidebarsConfig = {
           link: {type: 'doc', id: 'bootc-migrate/index'},
           items: ['bootc-migrate/architecture', 'bootc-migrate/filesystem-support', 'bootc-migrate/luks-testing', 'bootc-migrate/testing', 'bootc-migrate/references', 'bootc-migrate/ROADMAP', 'bootc-migrate/CONTRIBUTING', 'bootc-migrate/cfs-cli-generations'],
         },
-        {type: 'category', label: 'Flatpak', link: {type: 'doc', id: 'flatpak/index'}, items: ['flatpak/guide']},
+        {type: 'category', label: 'Flatpak', link: {type: 'doc', id: 'flatpak/index'}, items: ['flatpak/guide', 'flatpak-index/index', 'flatpak-index/METAINFO', 'flatpak-index/SCREENSHOTS', 'flatpak-index/OBSERVABILITY', 'flatpak-index/CONTRIBUTING', 'flatpak-index/ROADMAP']},
         {type: 'category', label: 'tunaos-packages', link: {type: 'doc', id: 'tunaos-packages/index'}, items: ['tunaos-packages/ARCHITECTURE', 'tunaos-packages/PACKAGE_FACTORY', 'tunaos-packages/PATCH_POLICY', 'tunaos-packages/ROADMAP', 'tunaos-packages/SECURITY', 'tunaos-packages/TIDEFORGE-READINESS', 'tunaos-packages/UPSTREAM_PARITY', 'tunaos-packages/XFWL4-PORTING', 'tunaos-packages/hummingbird-desktop-gap', 'tunaos-packages/CONTRIBUTING']},
         {type: 'category', label: 'Ubuntu', link: {type: 'doc', id: 'ubuntu/index'}, items: ['ubuntu/CONTRIBUTING', 'ubuntu/SECURITY']},
         {type: 'category', label: 'bootc-installer-tui', link: {type: 'doc', id: 'bootc-installer-tui/index'}, items: ['bootc-installer-tui/CONTRIBUTING']},
         {type: 'category', label: 'chunkah', link: {type: 'doc', id: 'chunkah/index'}, items: ['chunkah/CONTRIBUTING']},
+      ],
+    },
+    {
+      type: 'category', label: 'Services', collapsed: true,
+      items: [
+        {type: 'category', label: 'Spindle', link: {type: 'doc', id: 'spindle/index'}, items: [
+          'spindle/SPEC', 'spindle/lifecycle', 'spindle/maintenance',
+          'spindle/matrix-rtc', 'spindle/mesh-federation', 'spindle/delegated-auth',
+          'spindle/benchmarks', 'spindle/conformance-testing', 'spindle/metrics',
+          'spindle/releasing', 'spindle/synapse-migration-drill',
+          'spindle/CONTRIBUTING', 'spindle/ROADMAP', 'spindle/SECURITY']},
+        {type: 'category', label: 'Hive', link: {type: 'doc', id: 'hive/index'}, items: [
+          'hive/architecture', 'hive/federation-design', 'hive/backend-setup',
+          'hive/inference-backends', 'hive/OBSERVABILITY', 'hive/HUB_DISASTER_RECOVERY',
+          'hive/troubleshooting', 'hive/migration-v1-v2', 'hive/development',
+          'hive/CONTRIBUTING', 'hive/ROADMAP', 'hive/SECURITY',
+          {type: 'category', label: 'Hive Operator', link: {type: 'doc', id: 'hive-operator/index'}, items: [
+            'hive-operator/release', 'hive-operator/rotation-promotion',
+            'hive-operator/liveness-promotion', 'hive-operator/housekeeping',
+            'hive-operator/upstream-ccusage']}]},
+        {type: 'category', label: 'Protota', link: {type: 'doc', id: 'protota/index'}, items: [
+          'protota/components', 'protota/diagnostics-design', 'protota/designer-experience',
+          'protota/render-api', 'protota/runtime-probe', 'protota/source-widget-architecture',
+          'protota/OBSERVABILITY_ASSESSMENT',
+          'protota/CONTRIBUTING', 'protota/ROADMAP', 'protota/SECURITY']},
       ],
     },
     {
@@ -106,6 +131,24 @@ const sidebars: SidebarsConfig = {
         {type: 'doc', id: 'ubuntu-26-04-iso/index', label: 'Ubuntu 26.04 ISO'},
         {type: 'doc', id: 'bonito-x13s/index', label: 'Bonito X13s'},
         {type: 'doc', id: 'dakota-x13s/index', label: 'Dakota X13s'},
+      ],
+    },
+    {
+      type: 'category', label: 'Installers', collapsed: true,
+      items: [
+        {type: 'category', label: 'bootc-installer', link: {type: 'doc', id: 'bootc-installer/index'}, items: [
+          'bootc-installer/gui-walkthrough', 'bootc-installer/MIGRATION', 'bootc-installer/PARITY',
+          'bootc-installer/RELEASE', 'bootc-installer/live-iso', 'bootc-installer/DESIGN-AUDIT',
+          'bootc-installer/CONTRIBUTING', 'bootc-installer/ROADMAP']},
+        {type: 'category', label: 'bootc-installer-asahi', link: {type: 'doc', id: 'bootc-installer-asahi/index'}, items: [
+          'bootc-installer-asahi/gui-walkthrough', 'bootc-installer-asahi/UNIFIED-INSTALL-CONTRACT',
+          'bootc-installer-asahi/TESTING-CHECKLIST', 'bootc-installer-asahi/DESIGN',
+          'bootc-installer-asahi/CONTRIBUTING', 'bootc-installer-asahi/ROADMAP']},
+        {type: 'category', label: 'Desktop variants', items: [
+          {type: 'doc', id: 'tuna-installer-cosmic/gui-walkthrough', label: 'COSMIC walkthrough'},
+          {type: 'doc', id: 'tuna-installer-kde/gui-walkthrough', label: 'KDE walkthrough'},
+          {type: 'doc', id: 'tuna-installer-niri/gui-walkthrough', label: 'Niri walkthrough'},
+          {type: 'doc', id: 'tuna-installer-xfce/gui-walkthrough', label: 'XFCE walkthrough'}]},
       ],
     },
     {
@@ -125,6 +168,14 @@ const sidebars: SidebarsConfig = {
         {type: 'category', label: 'Mandelbrot', link: {type: 'doc', id: 'mandelbrot/index'}, items: ['mandelbrot/features']},
         {type: 'category', label: 'Blueshell', link: {type: 'doc', id: 'blueshell/index'}, items: []},
         {type: 'category', label: 'Ghostty', className: 'sidebar-external', link: {type: 'doc', id: 'ghostty/index'}, items: []},
+        {type: 'category', label: 'Finupdate', link: {type: 'doc', id: 'finupdate/index'}, items: [
+          'finupdate/app-logic-map', 'finupdate/control-center-integration', 'finupdate/uupd-config',
+          'finupdate/POLKIT_RULES', 'finupdate/GUI_TESTING',
+          'finupdate/CONTRIBUTING', 'finupdate/ROADMAP']},
+        {type: 'category', label: 'GNOME Hive Monitor', link: {type: 'doc', id: 'gnome-hive-monitor/index'}, items: [
+          'gnome-hive-monitor/observability',
+          'gnome-hive-monitor/CONTRIBUTING', 'gnome-hive-monitor/ROADMAP']},
+        {type: 'category', label: 'Quickcast', link: {type: 'doc', id: 'quickcast/index'}, items: []},
       ],
     },
     {type: 'html', value: '<div class="sidebar-section-label">Community</div>', defaultStyle: true},
