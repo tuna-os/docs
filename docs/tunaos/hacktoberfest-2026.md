@@ -19,10 +19,10 @@ Hacktoberfest is DigitalOcean's annual month-long celebration of open source, ru
 
 Look for issues tagged [`good first issue`](https://github.com/tuna-os/tunaOS/labels/good%20first%20issue) — a fresh batch is curated each September. Recent examples:
 
-- Document the `pantheon` desktop suffix in the README ([tunaOS#1350](https://github.com/tuna-os/tunaOS/issues/1350))
-- Write the Pantheon desktop guide for the Gurnard variant ([tunaOS#1351](https://github.com/tuna-os/tunaOS/issues/1351))
+- Document the `pantheon` desktop suffix in the README ([tuna-os#1350](https://github.com/tuna-os/tunaOS/issues/1350))
+- Write the Pantheon desktop guide for the Gurnard variant ([tuna-os#1351](https://github.com/tuna-os/tunaOS/issues/1351))
 - Add unit tests for the Flatpak publish helper ([letters#13](https://github.com/tuna-os/letters/issues/13))
-- Add a "Verifying downloads" (checksums/SBOM) section to the README ([tunaOS#1366](https://github.com/tuna-os/tunaOS/issues/1366))
+- Add a "Verifying downloads" (checksums/SBOM) section to the README ([tuna-os#1366](https://github.com/tuna-os/tunaOS/issues/1366))
 - Fold top GitHub Discussion questions into the FAQ ([docs#157](https://github.com/tuna-os/docs/issues/157))
 
 > The org-wide backlog goal for 2026 is **8 tagged starter tasks by 09-15** — if you see a task you'd like, claim it early.
