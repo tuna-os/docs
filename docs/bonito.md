@@ -12,6 +12,18 @@ Prefer a visual tour? See the **[Bonito overview →](/bonito)** start page.
 
 Bonito is the most experimental variant of TunaOS, based on Fedora 44. It provides the latest packages, kernels, and desktop features ahead of any Enterprise Linux release.
 
+## Who it's for
+
+Bonito is for people who want the newest Fedora. It is a good pick for early adopters who like new software. Start here if you want the latest kernel and drivers. Do not use it for work that must stay stable.
+
+## Why choose this variant
+
+- Built on Fedora 44, the latest mainline Fedora.
+- The newest kernel, Mesa drivers, and desktop tools.
+- Choose this over stable variants when you want the newest software.
+
+To see every variant side by side, read [Choose a variant](./choosing-a-variant).
+
 ## Features
 
 - **Newest software**: Fedora 44 is the base. The kernel and the userland are
