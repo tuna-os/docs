@@ -115,6 +115,19 @@ jobs:
               --tags latest || true
           done
 
+      - name: Sanity-check index before commit
+        # Fail before we commit and push: a partial build (an app missing a
+        # required architecture) or broken metadata must never reach main, where
+        # it would go live with no automated rollback. This is the same
+        # working-tree check flatpak-sanity.yml runs, applied to the freshly
+        # mutated index inside index-repo.
+        run: |
+          cd index-repo
+          node scripts/prepare-flatpak-icons.mjs
+          python3 .github/scripts/check-flatpak-remote.py
+
+      - name: Commit and push index
+        run: |
           cd index-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
