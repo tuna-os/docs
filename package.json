@@ -31,7 +31,7 @@
     "@fontsource-variable/geist": "^5.3.0",
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
     "@gjsify/adwaita-web": "0.64.4",
-    "@gjsify/app-settings": "0.64.1",
+    "@gjsify/app-settings": "0.64.4",
     "@mdx-js/mdx": "^3.1.1",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
@@ -54,7 +54,8 @@
     "serialize-javascript": "^7.0.5",
     "tinypool": "^2.2.0",
     "uuid": "^14.0.0",
-    "image-size": "^2.0.4"
+    "image-size": "^2.0.4",
+    "braces": "npm:@franciscosolis/braces@3.1.1"
   },
   "browserslist": {
     "production": [
