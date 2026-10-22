@@ -14,6 +14,11 @@ of enterprise desktops.
 Enterprise Linux gives **stability and long-term support**. Developers and
 workstation users also need **new tools**. TunaOS supplies both.
 
+## Start here
+
+Follow the **[quick-start guide](getting-started.md)** to choose a variant and
+desktop, then install, rebase, or try TunaOS in a VM.
+
 ## Why TunaOS?
 
 - **Latest GNOME**: The newest GNOME on a stable base, with the
@@ -60,10 +65,10 @@ Six desktop environments are available:
 
 To start:
 
-1.  **[Pick Your Variant](choosing-a-variant)** - Choose the right base and desktop for your needs.
-2.  **[System Requirements](system-requirements)** - Make sure the system supports your hardware.
-3.  **[Installation Guide](installation)** - Read how to install TunaOS.
-4.  **[Download ISOs](/download)** - Get a pre-built image.
+1. **[Pick Your Variant](choosing-a-variant)** - Choose the right base and desktop for your needs.
+2. **[System Requirements](system-requirements)** - Make sure the system supports your hardware.
+3. **[Installation Guide](installation)** - Read how to install TunaOS.
+4. **[Download ISOs](/download)** - Get a pre-built image.
 
 ## Beyond the OS
 
