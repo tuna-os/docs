@@ -40,7 +40,7 @@ All contributors must follow our [Code of Conduct](https://github.com/tuna-os/tu
 
 ## Contribution Pathways
 
-It lists every TunaOS project by work type. Each row links to that project's
+The [Contributor Hub](/docs/contributing-hub) lists every TunaOS project by work type. Each row links to that project's
 `CONTRIBUTING` page and names the work it does. It also points to the live
 list of good first issues across the org.
 
