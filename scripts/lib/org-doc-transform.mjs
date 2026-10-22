@@ -1,10 +1,8 @@
 // Pure Markdown-to-MDX transformations used by the organization-doc sync.
 //
 // This module deliberately has no filesystem, process, or network dependencies.
-// The command entrypoint owns repository discovery and destination mutation;
+// Separate discovery and sync modules own repository I/O;
 // callers can use these helpers without loading that orchestration.
-
-const ORG = 'tuna-os';
 
 // onProse applies fn to the prose of a markdown document, leaving fenced code
 // blocks and inline-code spans exactly as they were.
@@ -105,7 +103,7 @@ const HTML_ELEMENTS = new Set([
 // docs/user-guide.md saying `screenshots/a.png` means docs/screenshots/a.png.
 // Ignoring srcDir produced URLs that 404: the site still built, because
 // Docusaurus only validates repo-local images, and shipped broken ones.
-function fixRelativeLinks(content, repo, srcDir = '', branch = 'main') {
+function fixRelativeLinks(content, repo, srcDir = '', branch = 'main', org = 'tuna-os') {
   // Convert relative repo links to absolute GitHub links.
   // [something](./foo.md) → [something](https://github.com/tuna-os/<repo>/blob/<branch>/foo.md)
   // But keep intra-doc links within the Docusaurus site as-is.
@@ -118,12 +116,12 @@ function fixRelativeLinks(content, repo, srcDir = '', branch = 'main') {
   // use master. Hardcoding main here rewrote their links to a branch that
   // does not exist for them, 404ing every repo-relative link and image.
   const prefix = srcDir ? `${srcDir.replace(/\/+$/, '')}/` : '';
-  const base = `https://github.com/${ORG}/${repo}/blob/${branch}`;
+  const base = `https://github.com/${org}/${repo}/blob/${branch}`;
   // Images need bytes, not a page. github.com/…/blob/… answers text/html, so
   // an <img> pointed at it renders broken; raw.githubusercontent.com answers
   // image/png. Only the site's own assets can use a repo-relative path, and the
   // synced files' assets are not copied into this repo.
-  const raw = `https://raw.githubusercontent.com/${ORG}/${repo}/${branch}`;
+  const raw = `https://raw.githubusercontent.com/${org}/${repo}/${branch}`;
   const IMAGE = /\.(?:png|svg|jpe?g|gif|webp)$/i;
   // Resolve a path written inside srcDir against the repo root, collapsing
   // the ./ and ../ segments the way the source repo's own renderer would.
@@ -160,7 +158,7 @@ function fixRelativeLinks(content, repo, srcDir = '', branch = 'main') {
   // the source repo, not on the docs site, so they must resolve against
   // github.com — the previous .md/.rst-only regexes left the rest 404ing
   // (#135).
-  const github = `https://github.com/${ORG}/${repo}`;
+  const github = `https://github.com/${org}/${repo}`;
   c = c.replace(
     /(?<!!)]\(([^()\s][^()]*)\)/g,
     (m, target) => {
@@ -222,7 +220,7 @@ status: ${status || 'unknown'}
 // in scripts/__tests__/sync-org-docs.test.mjs feeds frontmatter()'s real output
 // through isSyncedIndex, so the two cannot drift apart quietly: edit one and
 // that test fails.
-// `mdx: {format: md}` is added after the fact by markUnparseable (below), so an
+// `mdx: {format: md}` can be added by the MDX validation pipeline, so an
 // index it marked is still one this script wrote.
 const SYNCED_INDEX = /^---\nsidebar_position: \d+\nsidebar_label: "[^"]*"\n\nstatus: \S+\n(?:mdx:\n  format: md\n)?---\n/;
 
