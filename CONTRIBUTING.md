@@ -80,6 +80,15 @@ this repository owns `docs/tunaos/introduction.md`, while the sync copies
 that directory's `index.md` from its source. See [`AGENTS.md`](./AGENTS.md) for
 the sync rules and more detail about these mixed directories.
 
+### Vendored Flatpak index script
+
+`.github/scripts/update-index.py` is a vendored copy of the canonical script
+in [`tuna-os/flatpak-index`](https://github.com/tuna-os/flatpak-index).
+Do not edit the copy here. Make changes in the source repository instead.
+The two copies have drifted before, and no check confirms that they match.
+For fixes that must apply to both copies, open an issue in
+[`tuna-os/flatpak-index`](https://github.com/tuna-os/flatpak-index/issues).
+
 ## Validation
 
 Install the Markdown linter used by the repository recipe:
