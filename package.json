@@ -5,7 +5,9 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
-    "prebuild": "node scripts/prepare-flatpak-icons.mjs && node scripts/compile-adwaita-web.mjs",
+    "prebuild": "node scripts/prepare-flatpak-icons.mjs --check && node scripts/compile-adwaita-web.mjs",
+    "generate:flatpak": "node scripts/prepare-flatpak-icons.mjs",
+    "check:flatpak": "node scripts/prepare-flatpak-icons.mjs --check",
     "postinstall": "node scripts/compile-adwaita-web.mjs",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",

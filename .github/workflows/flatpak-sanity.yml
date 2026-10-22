@@ -17,9 +17,13 @@ on:
     branches: [main]
     paths:
       - 'static/flatpak/**'
+      - 'scripts/*flatpak*'
+      - '.github/workflows/flatpak-sanity.yml'
   pull_request:
     paths:
       - 'static/flatpak/**'
+      - 'scripts/*flatpak*'
+      - '.github/workflows/flatpak-sanity.yml'
   schedule:
     - cron: '0 12 * * *'  # daily at 12:00 UTC, well after any overnight publish jobs
   workflow_dispatch:
@@ -38,7 +42,7 @@ jobs:
       - name: Check working tree
         if: github.event_name != 'schedule'
         run: |
-          node scripts/prepare-flatpak-icons.mjs
+          node scripts/prepare-flatpak-icons.mjs --check
           python3 .github/scripts/check-flatpak-remote.py
 
       - name: Check live remote
