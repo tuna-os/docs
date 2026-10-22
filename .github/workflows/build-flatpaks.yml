@@ -86,39 +86,59 @@ jobs:
         with:
           pattern: oci-*
           path: artifacts
-          merge-multiple: true
 
-      - name: Push to GHCR & update index
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FLATPAK_INDEX_TOKEN: ${{ secrets.FLATPAK_INDEX_TOKEN }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Prepare candidate index
         run: |
-          echo "${{ env.GITHUB_TOKEN }}" | skopeo login ghcr.io -u "${{ github.actor }}" --password-stdin
-          git clone --depth 1 \
+          git clone --depth 1 --branch main \
             https://github.com/tuna-os/docs.git \
             index-repo
-          # Use header-based auth so the token never lands in the remote URL
-          # (avoids leaks via .git/config, `git remote -v`, and process listings).
-          git -C index-repo config --local http.extraheader \
-            "AUTHORIZATION: basic $(printf 'x-access-token:%s' "$FLATPAK_INDEX_TOKEN" | base64 -w0)"
-          pip install requests
-
-          for dir in artifacts/*/; do
+          for dir in artifacts/oci-*/; do
             app=$(basename "$dir")
-            echo "=== Publishing $app ==="
-            skopeo copy "oci:${dir}" "docker://${REGISTRY}/${app}:latest" || true
-
+            app=${app#oci-}
             python3 .github/scripts/update-index.py \
               --oci-dir "${dir}" \
               --index-file index-repo/static/flatpak/index/static \
               --repo-name "tuna-os/${app}" \
-              --tags latest || true
+              --tags latest
           done
 
-          cd index-repo
+      # Check the mutated clone, including the icon enrichment used by the
+      # site build, before changing registry tags or publishing the index.
+      - name: Validate candidate index
+        working-directory: index-repo
+        run: |
+          node scripts/prepare-flatpak-icons.mjs
+          python3 .github/scripts/check-flatpak-remote.py
+
+      - name: Push to GHCR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "$GITHUB_TOKEN" | skopeo login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          for dir in artifacts/oci-*/; do
+            app=$(basename "$dir")
+            app=${app#oci-}
+            echo "=== Publishing $app ==="
+            skopeo copy "oci:${dir}" "docker://${REGISTRY}/${app}:latest"
+          done
+
+      # A failed validation, index update, or registry upload skips this step.
+      # A concurrent main update makes the push fail; never force the candidate.
+      - name: Publish validated index
+        working-directory: index-repo
+        env:
+          FLATPAK_INDEX_TOKEN: ${{ secrets.FLATPAK_INDEX_TOKEN }}
+        run: |
+          # Use header-based auth so the token never lands in the remote URL.
+          git config --local http.extraheader \
+            "AUTHORIZATION: basic $(printf 'x-access-token:%s' "$FLATPAK_INDEX_TOKEN" | base64 -w0)"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add static/flatpak/index/static
+          git add static/flatpak/index/static static/flatpak/icons
           if git diff --cached --quiet; then
             echo "No index changes"
           else
