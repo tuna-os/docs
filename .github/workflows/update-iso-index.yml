@@ -25,6 +25,8 @@ permissions:
 jobs:
   update-index:
     runs-on: ubuntu-26.04
+    permissions:
+      contents: write
     # Forks won't have the R2 secret; skip rather than fail.
     if: ${{ github.repository == 'tuna-os/docs' }}
     steps:

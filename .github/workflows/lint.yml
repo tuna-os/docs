@@ -45,6 +45,8 @@ jobs:
   markdown-lint:
     name: Markdown Lint
     runs-on: ubuntu-26.04
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
@@ -89,6 +91,8 @@ jobs:
   js-syntax:
     name: Node.js Syntax & Tests
     runs-on: ubuntu-26.04
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
@@ -149,10 +153,14 @@ jobs:
     # that prose is only ever checked where it is written. Same rules, applied
     # at the source.
     uses: tuna-os/.github/.github/workflows/ste-lint.yml@main
+    permissions:
+      contents: read
 
   link-check:
     name: Internal Link Check
     runs-on: ubuntu-26.04
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
