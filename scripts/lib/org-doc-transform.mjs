@@ -192,12 +192,13 @@ function fixRelativeLinks(content, repo, srcDir = '', branch = 'main') {
   return c;
 }
 
-function frontmatter(title, position, slug, status) {
+function frontmatter(title, position, slug, status, repo) {
   return `---
 sidebar_position: ${position}
 sidebar_label: "${title}"
 
 status: ${status || 'unknown'}
+source_repo: ${repo ? `${ORG}/${repo}` : ''}
 ---
 
 `;
@@ -224,7 +225,12 @@ status: ${status || 'unknown'}
 // that test fails.
 // `mdx: {format: md}` is added after the fact by markUnparseable (below), so an
 // index it marked is still one this script wrote.
-const SYNCED_INDEX = /^---\nsidebar_position: \d+\nsidebar_label: "[^"]*"\n\nstatus: \S+\n(?:mdx:\n  format: md\n)?---\n/;
+// frontmatter() also writes `source_repo: tuna-os/<repo>` when given a repo,
+// so the matcher allows an optional source_repo line after status: rather than
+// requiring it. The discriminator is the four base keys plus the blank line
+// before status; source_repo is additive metadata, and every real index
+// carries it because the caller always passes its repo.
+const SYNCED_INDEX = /^---\nsidebar_position: \d+\nsidebar_label: "[^"]*"\n\nstatus: \S+(?:\nsource_repo: \S*)?\n(?:mdx:\n  format: md\n)?---\n/;
 
 // isSyncedIndex reports whether a document's front matter was written by this
 // script's frontmatter() rather than by a person.

@@ -457,6 +457,12 @@ test('matches what frontmatter() writes', () => {
   assert.ok(isSyncedIndex(frontmatter('X', 1, 'x', null)), 'including the unknown-status default');
 });
 
+test('emits source_repo from its repo, and an index carrying it still matches', () => {
+  const page = frontmatter('Corral', 101, 'corral', 'stable', 'corral');
+  assert.match(page, /source_repo: tuna-os\/corral\n/);
+  assert.ok(isSyncedIndex(page));
+});
+
 test('matches an index page with its body and status banner', () => {
   const page = frontmatter('Tromsø', 1, 'tromso', 'alpha') +
     getStatusBanner('alpha') + '\n\nThe image builds with BuildStream.\n';

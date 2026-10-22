@@ -113,7 +113,8 @@ Run two additional checks before you submit:
 The daily sync of documentation generates many `docs/<project>/` trees from
 their source repositories. Fix documentation for a generated project in its
 source repository. The next sync overwrites direct changes here. The generated
-index page at the start of a project tree identifies the source repository.
+index page at the start of a project tree carries a `source_repo:` field in
+its front matter. This field names the source repository.
 
 ## Pull Requests
 

@@ -480,7 +480,7 @@ function main() {
         // Remove the leading # Title (Docusaurus uses frontmatter for title)
         content = content.replace(/^# .*\n\n?/, '');
         const statusBanner = getStatusBanner(meta.status || 'unknown');
-        let fm = frontmatter(meta.label, localPos++, slug, meta.status || 'unknown');
+        let fm = frontmatter(meta.label, localPos++, slug, meta.status || 'unknown', repo);
         if (statusBanner) {
           fm += statusBanner + '\n\n';
         }
