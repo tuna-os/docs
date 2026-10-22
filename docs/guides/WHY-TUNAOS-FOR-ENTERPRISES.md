@@ -45,13 +45,15 @@ Each supported variant has a stated support window. The [tunaOS roadmap](/docs/t
 
 TunaOS signs and scans every image. The [security policy](/docs/tunaos/SECURITY) lists the model:
 
-- **Keyless verification.** TunaOS signs every image keylessly with [Sigstore Cosign](https://github.com/sigstore/cosign). The build uses the short-lived identity of the CI workflow. There is no long-lived verification key to steal or rotate.
+<!-- ste-disable: industry term of art and supply-chain security specification -->
+- **Keyless signing.** TunaOS signs every image keylessly with [Sigstore Cosign](https://github.com/sigstore/cosign). The build uses the short-lived identity of the CI workflow. There is no long-lived signing key to steal or rotate.
 - **SBOM attestations.** Each image ships with a signed Software Bill of Materials (SBOM). The SBOM lists every package in the image.
 - **Pinned base images.** TunaOS builds from base images that use explicit digests. The build blocks if a base image changes.
 - **Security scans.** The build scans the image for known vulnerabilities.
 - **Coordinated disclosure.** Teams fix flaws, ship updates, and post advisories.
 
-No permanent verification key or password can leak. This shrinks the attack surface for software delivery.
+No permanent signing key or password can leak. This shrinks the attack surface for software delivery.
+<!-- ste-enable -->
 
 ## Where to go next
 
