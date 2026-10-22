@@ -420,6 +420,40 @@ test('sends a bare non-markdown file link to the blob URL', () => {
   );
 });
 
+test('rewrites a relative reference-style link definition to the blob URL', () => {
+  const out = fixRelativeLinks(
+    '[ADR 0001]: architecture-decisions/0001-linear-storage-dag-overlay.md\n',
+    'spindle',
+    'docs',
+  );
+  assert.equal(
+    out.trim(),
+    '[ADR 0001]: https://github.com/tuna-os/spindle/blob/main/docs/architecture-decisions/0001-linear-storage-dag-overlay.md',
+  );
+});
+
+test('leaves an already-absolute reference-style link definition alone', () => {
+  const src = '[ruma]: https://github.com/ruma/ruma\n';
+  assert.equal(fixRelativeLinks(src, 'spindle', 'docs'), src);
+});
+
+test('leaves a footnote definition alone', () => {
+  const src = '[^1]: a prose footnote body\n';
+  assert.equal(fixRelativeLinks(src, 'spindle', 'docs'), src);
+});
+
+test('rewrites a bracketed reference-style definition, stripping the angle brackets', () => {
+  const out = fixRelativeLinks(
+    '[adr]: <architecture-decisions/0003.md>\n',
+    'spindle',
+    'docs',
+  );
+  assert.equal(
+    out.trim(),
+    '[adr]: https://github.com/tuna-os/spindle/blob/main/docs/architecture-decisions/0003.md',
+  );
+});
+
 // ── frontmatter ───────────────────────────────────────────────────────────────
 
 console.log('\nfrontmatter');
