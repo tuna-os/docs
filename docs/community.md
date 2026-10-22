@@ -38,6 +38,15 @@ See the full [Contributor Guide](https://github.com/tuna-os/tunaOS/blob/main/CON
 
 All contributors must follow our [Code of Conduct](https://github.com/tuna-os/tunaOS/blob/main/CODE_OF_CONDUCT.md).
 
+## Contribution Pathways
+
+It lists every TunaOS project by work type. Each row links to that project's
+`CONTRIBUTING` page and names the work it does. It also points to the live
+list of good first issues across the org.
+
+Start there to find a project that matches your skills. Then return to this
+page to join the chat, or open an issue to propose a change.
+
 ## Adoption
 
 If your organization uses TunaOS, we'd love to know!
