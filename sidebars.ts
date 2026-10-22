@@ -127,6 +127,12 @@ const sidebars: SidebarsConfig = {
         {type: 'category', label: 'Ghostty', className: 'sidebar-external', link: {type: 'doc', id: 'ghostty/index'}, items: []},
       ],
     },
+    {
+      type: 'category',
+      label: 'Site operations',
+      collapsed: true,
+      items: ['site-architecture'],
+    },
     {type: 'html', value: '<div class="sidebar-section-label">Community</div>', defaultStyle: true},
     'community',
     {type: 'category', label: 'Dakota (Bluefin)', className: 'sidebar-external', link: {type: 'doc', id: 'dakota/index'}, items: ['dakota/migration']},
