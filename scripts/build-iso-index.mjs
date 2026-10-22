@@ -14,6 +14,7 @@
 // repo that starts uploading is picked up automatically with no code
 // change here.
 
+import {pathToFileURL} from 'node:url';
 import {
   BASE_URL,
   CATEGORIES,
@@ -40,12 +41,7 @@ export async function main() {
 }
 
 // Only execute when invoked directly as a CLI script.
-const isMain = process.argv[1] && (
-  process.argv[1].endsWith('/build-iso-index.mjs') ||
-  process.argv[1].endsWith('build-iso-index.mjs')
-);
-
-if (isMain) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   await main();
 }
 
