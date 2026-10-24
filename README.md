@@ -91,3 +91,8 @@ npm run build
 
 For prerequisites and validation before submission, see the
 [contributor guide](./CONTRIBUTING.md).
+
+## Architecture and adoption blog drafts
+
+The [guide for review](runbooks/architecture-series-review.md) links the three
+drafts, outlines, claim evidence, and publication hold for tuna-os/tunaos#3301.
