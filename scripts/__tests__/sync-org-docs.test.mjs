@@ -17,7 +17,8 @@
 import { strict as assert } from 'node:assert';
 import { chmodSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import {dirname, join} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {
   sanitizeHtml,
   fixRelativeLinks,
@@ -995,6 +996,17 @@ test('gives up after a second attempt that is still short', () => {
 });
 
 // ── summary ───────────────────────────────────────────────────────────────────
+
+
+test("loadProtectedRepos loads all expected slugs and fails closed on empty or missing entries", async () => {
+  const { HAND_AUTHORED, loadProtectedRepos } = await import("../sync-org-docs.mjs");
+  assert.equal(HAND_AUTHORED.size, 7);
+  for (const slug of ["mariner", "gtk-office-suite", "mandelbrot", "remora", "dakota", "blueshell", "ghostty"]) {
+    assert.equal(HAND_AUTHORED.has(slug), true);
+  }
+  assert.throws(() => loadProtectedRepos({ protected_repos: [] }), /hand-authored protection is empty/);
+  assert.throws(() => loadProtectedRepos({ protected_repos: [{ slug: "mariner" }] }), /missing/);
+});
 
 for (const run of pending) await run();
 
