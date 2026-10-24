@@ -90,6 +90,16 @@ jobs:
 
       - name: Push to GHCR & update index
         env:
+          # FLATPAK_INDEX_TOKEN mutates a *different* repository than the one
+          # this workflow runs in: it writes the tuna-os/docs index that serves
+          # the Flatpak remote. Its scope is therefore the single most important
+          # thing to keep explicit, so that a leak's blast radius is clear.
+          #
+          #   Scope:    contents:write, tuna-os/docs, main branch only.
+          #   Lifetime: ephemeral -- one workflow run; the token is never stored.
+          #   Hardening: migrate from this shared token to a per-repository
+          #             GitHub App installation token so the scope is enforced
+          #             by GitHub rather than merely documented here (owner decision).
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FLATPAK_INDEX_TOKEN: ${{ secrets.FLATPAK_INDEX_TOKEN }}
         run: |
@@ -122,6 +132,10 @@ jobs:
           if git diff --cached --quiet; then
             echo "No index changes"
           else
-            git commit -m "chore(flatpak): update OCI index from centralized builder"
+            # Audit trail: this is a cross-repository mutation (the repo being written is tuna-os/docs, not the builder repo), so
+            # stamp the commit with its source workflow and token scope.
+            # Without it a docs main commit looks like an anonymous GH-bot edit.
+            git commit -m "chore(flatpak): update OCI index from centralized builder" \
+              -m "Cross-repository mutation from .github/workflows/build-flatpaks.yml (publish job) using FLATPAK_INDEX_TOKEN. Scoped to contents:write on tuna-os/docs main only."
             git push origin main
           fi
