@@ -79,8 +79,6 @@ jobs:
     needs: build
     runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v7
-
       - name: Download all OCI artifacts
         uses: actions/download-artifact@v8
         with:
@@ -88,33 +86,43 @@ jobs:
           path: artifacts
           merge-multiple: true
 
-      - name: Push to GHCR & update index
+      - name: Checkout shared actions repo
+        uses: actions/checkout@v7
+        with:
+          repository: tuna-os/.github
+          path: .github/actions-repo
+
+      - name: Login and clone index repo
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FLATPAK_INDEX_TOKEN: ${{ secrets.FLATPAK_INDEX_TOKEN }}
         run: |
           echo "${{ env.GITHUB_TOKEN }}" | skopeo login ghcr.io -u "${{ github.actor }}" --password-stdin
-          git clone --depth 1 \
-            https://github.com/tuna-os/docs.git \
-            index-repo
+          git clone --depth 1 https://github.com/tuna-os/docs.git index-repo
           # Use header-based auth so the token never lands in the remote URL
           # (avoids leaks via .git/config, `git remote -v`, and process listings).
           git -C index-repo config --local http.extraheader \
             "AUTHORIZATION: basic $(printf 'x-access-token:%s' "$FLATPAK_INDEX_TOKEN" | base64 -w0)"
-          pip install requests
 
+      - name: Push to GHCR & update index
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FLATPAK_INDEX_TOKEN: ${{ secrets.FLATPAK_INDEX_TOKEN }}
+        run: |
           for dir in artifacts/*/; do
             app=$(basename "$dir")
             echo "=== Publishing $app ==="
             skopeo copy "oci:${dir}" "docker://${REGISTRY}/${app}:latest" || true
 
-            python3 .github/scripts/update-index.py \
+            python3 .github/actions-repo/.github/actions/update-flatpak-index/update-index.py \
               --oci-dir "${dir}" \
               --index-file index-repo/static/flatpak/index/static \
               --repo-name "tuna-os/${app}" \
               --tags latest || true
           done
 
+      - name: Commit index
+        run: |
           cd index-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
