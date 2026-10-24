@@ -45,6 +45,7 @@ If your organization uses TunaOS, we'd love to know!
 - Add your org to **[ADOPTERS.md](https://github.com/tuna-os/tunaOS/blob/main/ADOPTERS.md)** — open a PR
 - Share your setup in [GitHub Discussions](https://github.com/tuna-os/tunaOS/discussions)
 - Write a case study or blog post (we'll help promote it!)
+- See how others use TunaOS in [case studies](/docs/case-studies)
 
 ## Project Resources
 
