@@ -16,6 +16,7 @@ const sidebars: SidebarsConfig = {
       items: [
         {type: 'category', label: 'Development', collapsed: true, items: ['guides/AI-DEVELOPMENT-QUICKSTART', 'guides/GAMEDEV-QUICKSTART', 'guides/KERNEL-DEVELOPER-QUICKSTART', 'guides/linux-audio-creative-bootc', 'guides/linux-gaming-bootc']},
         {type: 'category', label: 'Deployment', collapsed: true, items: ['guides/ENTERPRISE-VDI-DEPLOYMENT', 'guides/EDU-LAB-DEPLOYMENT', 'guides/DIGITAL-SIGNAGE-KIOSK-DEPLOYMENT', 'guides/INDUSTRIAL-IOT-EDGE-DEPLOYMENT', 'guides/PUBLIC-LIBRARY-DEPLOYMENT', 'guides/RETAIL-POS-DEPLOYMENT']},
+        {type: 'category', label: 'Enterprise', collapsed: true, items: ['guides/WHY-TUNAOS-FOR-ENTERPRISES', 'guides/MIGRATION-FROM-FEDORA-ATOMIC', 'guides/ENTERPRISE-DEPLOYMENT-GUIDE']},
         {type: 'category', label: 'Administration', collapsed: true, items: ['guides/SECURITY-WORKSTATION-QUICKSTART', 'guides/EPHEMERAL-SESSION-RESET']},
       ],
     },
