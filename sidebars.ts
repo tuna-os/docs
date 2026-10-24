@@ -128,6 +128,7 @@ const sidebars: SidebarsConfig = {
       ],
     },
     {type: 'html', value: '<div class="sidebar-section-label">Community</div>', defaultStyle: true},
+    'contributing-hub',
     'community',
     {type: 'category', label: 'Dakota (Bluefin)', className: 'sidebar-external', link: {type: 'doc', id: 'dakota/index'}, items: ['dakota/migration']},
   ],
