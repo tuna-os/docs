@@ -420,6 +420,29 @@ test('sends a bare non-markdown file link to the blob URL', () => {
   );
 });
 
+test('rewrites a reference-style definition pointing at a directory to the tree URL', () => {
+  const out = fixRelativeLinks('[runtime]: runtime/\n', 'iced', '', 'master');
+  assert.match(out, /github\.com\/tuna-os\/iced\/tree\/master\/runtime/);
+});
+
+test('rewrites a reference-style definition from docs/ against the repo root', () => {
+  const out = fixRelativeLinks(
+    '[ADR 0001]: architecture-decisions/0001-linear-storage-dag-overlay.md\n',
+    'spindle', 'docs',
+  );
+  assert.match(out, /github\.com\/tuna-os\/spindle\/blob\/main\/docs\/architecture-decisions\/0001-linear-storage-dag-overlay\.md/);
+});
+
+test('keeps the anchor on a reference-style definition', () => {
+  const out = fixRelativeLinks('[tour example]: examples/README.md#tour\n', 'iced', '', 'master');
+  assert.match(out, /blob\/master\/examples\/README\.md#tour/);
+});
+
+test('leaves absolute and footnote definitions alone', () => {
+  const src = '[ruma]: https://github.com/ruma/ruma\n[^1]: See the matrix spec\n';
+  assert.equal(fixRelativeLinks(src, 'spindle', 'docs'), src);
+});
+
 // ── frontmatter ───────────────────────────────────────────────────────────────
 
 console.log('\nfrontmatter');
