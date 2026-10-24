@@ -38,6 +38,7 @@ import {
   checkListing,
   discoverRepos,
   findCaseCollisions,
+  claimTargetName,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
   RETRY_DELAY_MS,
@@ -118,6 +119,14 @@ test('escapes a placeholder that is not an HTML element (hive backend-setup, a t
 test('escapes a placeholder inside emphasis', () => {
   const out = sanitizeHtml('*Talks to the <frontend> over a socket*\n');
   assert.equal(out, '*Talks to the &lt;frontend> over a socket*\n');
+});
+
+test('escapes the placeholders that broke ten consecutive sync runs (#359)', () => {
+  // tunaos-packages TIDEFORGE-ACTION-CACHE.md and wootc manual-testing.md:
+  // prose on GitHub, an unclosed JSX tag to MDX, and the daily sync red from
+  // 08-22 to 08-31 until both shapes are escaped here.
+  assert.match(sanitizeHtml('restore key is <artifact-digest>\n'), /&lt;artifact-digest>/);
+  assert.match(sanitizeHtml('run it on <your> machine\n'), /&lt;your>/);
 });
 
 test('escapes a < that cannot start a tag (paperwm: <<, <-)', () => {
@@ -848,6 +857,48 @@ test('flags a directory-name collision, not just a filename collision', () => {
 test('does not flag files with the same case in different directories', () => {
   const root = mkTree({tacklebox: {'index.md': 'a'}, tromso: {'index.md': 'b'}});
   assert.deepEqual(findCaseCollisions(root), []);
+});
+
+// ── claimTargetName: one bad upstream pair must not stop the whole sync ───────
+//
+// dualcut shipped OBSERVABILITY.md and observability.md in the same docs/
+// folder; both land in the flat docs/dualcut/ here, findCaseCollisions saw
+// the pair and every daily run exited 1 from 09-05 on (#359) — with no fix
+// available in this repo. The second page is dropped instead.
+
+console.log('\nclaimTargetName');
+
+test('claims a free name', () => {
+  const claimed = new Map();
+  assert.equal(claimTargetName(claimed, 'observability.md'), null);
+});
+
+test('names the page already holding the slot when only the case differs (#359)', () => {
+  const claimed = new Map();
+  claimTargetName(claimed, 'OBSERVABILITY.md');
+  assert.equal(claimTargetName(claimed, 'observability.md'), 'OBSERVABILITY.md');
+});
+
+test('lets a later stage overwrite the same name, as it always has', () => {
+  // A repo's docs/CONTRIBUTING.md replacing the copy taken from its root is
+  // one file written twice, not two pages competing for one slot.
+  const claimed = new Map();
+  claimTargetName(claimed, 'CONTRIBUTING.md');
+  assert.equal(claimTargetName(claimed, 'CONTRIBUTING.md'), null);
+});
+
+test('protects the index page a README wrote from a docs/Index.md', () => {
+  const claimed = new Map();
+  claimTargetName(claimed, 'index.md');
+  assert.equal(claimTargetName(claimed, 'Index.md'), 'index.md');
+});
+
+test('keeps each colliding name reported against the page that won the slot', () => {
+  const claimed = new Map();
+  claimTargetName(claimed, 'guide.md');
+  assert.equal(claimTargetName(claimed, 'GUIDE.md'), 'guide.md');
+  // The loser never takes the slot, so a third spelling still names the winner.
+  assert.equal(claimTargetName(claimed, 'Guide.md'), 'guide.md');
 });
 
 // ── checkListing: truncation has to be loud ───────────────────────────────────
