@@ -1,15 +1,12 @@
 #!/usr/bin/env node
 
-// Unit tests for the sync command and its document transform module.
+// Unit tests for the organization-doc sync modules.
 //
 // Tests the pure helper functions used by the org-wide doc aggregation
 // script. Clone/git/gh operations are not tested here — those are
 // integration/end-to-end concerns.
 //
-// These tests import the real functions. The transformation cases import the
-// pure module directly, while orchestration and reconciliation cases import
-// the command module. The command guards its main() call so importing either
-// module never touches the network.
+// These tests import each concern directly. All imports are network-free.
 //
 // Usage:
 //   node scripts/__tests__/sync-org-docs.test.mjs
@@ -27,21 +24,13 @@ import {
   isSyncedIndex,
   getStatusBanner,
 } from '../lib/org-doc-transform.mjs';
+import {filesToRemove, findCaseCollisions} from '../lib/org-doc-validation.mjs';
+import {isRootDoc, slugify} from '../lib/org-doc-policy.mjs';
+import {markUnparseable, rejectExpressions, withFormatMd} from '../lib/org-doc-mdx.mjs';
 import {
-  filesToRemove,
-  isRootDoc,
-  markUnparseable,
-  rejectExpressions,
-  withFormatMd,
-  slugify,
-  listOrgRepos,
-  checkListing,
-  discoverRepos,
-  findCaseCollisions,
-  PER_PAGE,
-  DEFAULT_PAGE_SIZE,
-  RETRY_DELAY_MS,
-} from '../sync-org-docs.mjs';
+  listOrgRepos, checkListing, discoverRepos,
+  PER_PAGE, DEFAULT_PAGE_SIZE, RETRY_DELAY_MS,
+} from '../lib/org-doc-discovery.mjs';
 
 // ── Test helpers ──────────────────────────────────────────────────────────────
 let pass = 0;
