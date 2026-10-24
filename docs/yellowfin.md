@@ -12,6 +12,18 @@ Prefer a visual tour? See the **[Yellowfin overview →](/yellowfin)** start pag
 
 Yellowfin is the "developer's daily drive" variant of TunaOS. It tracks AlmaLinux Kitten, the more experimental branch of AlmaLinux that follows upstream more closely. This variant is closest to the experience of upstream Bluefin LTS.
 
+## Who it's for
+
+Yellowfin is for developers who want new packages on a stable base. It is the daily driver the TunaOS team uses to build TunaOS. Pick this if you want fresh software without a risky base.
+
+## Why choose this variant
+
+- Newer packages than Albacore, on the same enterprise base.
+- The daily driver for TunaOS developers.
+- A good pick when Albacore is too slow to update.
+
+To see every variant side by side, read [Choose a variant](./choosing-a-variant).
+
 ## Features
 
 - **Baked-in Homebrew**: Access thousands of CLI tools and fonts immediately.

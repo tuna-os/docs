@@ -19,6 +19,18 @@ builds in the catalog. In exchange, it does not give the stability guarantees
 of the Enterprise Linux variants (Albacore and Yellowfin). Arch has no bootc
 package yet, so Marlin builds bootc from source in the image.
 
+## Who it's for
+
+Marlin is for Arch users who want the newest packages. It is a good pick for power users who like rolling release. Start here if you want the latest GNOME and kernel with no wait.
+
+## Why choose this variant
+
+- Follows Arch Linux, so packages arrive with no delay.
+- The newest GNOME, KDE, and kernel in the catalog.
+- Choose this over stable variants when you want everything new. It is Beta, so keep a backup before you update.
+
+To see every variant side by side, read [Choose a variant](./choosing-a-variant).
+
 ## Features
 
 - **Continuous updates**: Marlin gets new Arch packages with no backport delay.

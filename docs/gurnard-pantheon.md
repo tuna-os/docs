@@ -19,6 +19,18 @@ Gurnard is an **Experimental** variant (see the [ROADMAP](https://github.com/tun
 report is welcome and useful; see "Bug reports" below.
 :::
 
+## Who it's for
+
+Gurnard is for people who like the elementary OS Pantheon desktop. It is a good pick for those who want a simple, clean desktop. Start here if you want Pantheon on a stable LTS base.
+
+## Why choose this variant
+
+- Runs Pantheon, the simple elementary OS desktop.
+- Built on Ubuntu 24.04 LTS, a long-term base.
+- Choose this over other desktops when you want a clean, simple look.
+
+To see every variant side by side, read [Choose a variant](./choosing-a-variant).
+
 ## What Pantheon is
 
 Pantheon is a Wayland/GTK desktop built from scratch for elementary OS:
