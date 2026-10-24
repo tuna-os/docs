@@ -13,7 +13,7 @@ import {readFileSync, readdirSync} from 'node:fs';
 import {dirname, join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
-const MARKS_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'static', 'img', 'marks');
+const MARKS_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'static', 'img', 'marks');
 
 let failures = 0;
 function check(name, ok, detail = '') {

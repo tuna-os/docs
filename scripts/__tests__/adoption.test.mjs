@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {validateAdoption, estimateText, adoptionWarnings} from '../src/data/adoption.mjs';
+import {validateAdoption, estimateText, adoptionWarnings} from '../../src/data/adoption.mjs';
 // index.js is a Worker module; this repository's package otherwise defaults to CJS.
-const source = readFileSync(new URL('../worker/index.js', import.meta.url), 'utf8').replace("'../src/data/adoption.mjs'", JSON.stringify(new URL('../src/data/adoption.mjs', import.meta.url).href)).replace("'./build-health.mjs'", JSON.stringify(new URL('../worker/build-health.mjs', import.meta.url).href));
+const source = readFileSync(new URL('../../worker/index.js', import.meta.url), 'utf8').replace("'../src/data/adoption.mjs'", JSON.stringify(new URL('../../src/data/adoption.mjs', import.meta.url).href)).replace("'./build-health.mjs'", JSON.stringify(new URL('../../worker/build-health.mjs', import.meta.url).href));
 const {default: worker} = await import(`data:text/javascript,${encodeURIComponent(source)}`);
 const now = Date.parse('2026-09-27T12:00:00Z');
 const margin = (key) => ({status: 'reported', counts: {[{variant: 'yellowfin', flavor: 'gnome', arch: 'x86_64', age_bucket: '2'}[key]]: 20}});

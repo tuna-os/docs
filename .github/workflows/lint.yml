@@ -1,7 +1,7 @@
 name: Lint
 
 # scripts/** and .ste-budget are here because this workflow is what runs them:
-# js-syntax runs scripts/**/*.test.mjs, and the ste job runs scripts/ste-lint.mjs
+# js-syntax runs unit tests and standalone checks; the ste job checks prose
 # against the budget in .ste-budget. Without them a change to the checker, to its
 # tests, or to the number they are measured against merged with no job having
 # looked at it.
@@ -103,10 +103,8 @@ jobs:
         run: |
           echo "=== Checking Node.js scripts ==="
           FAILED=0
-          for f in scripts/*.mjs scripts/*.js; do
+          for f in scripts/*.mjs scripts/*.js scripts/lib/*.mjs scripts/checks/*.mjs scripts/__tests__/*.test.mjs; do
             [[ -f "$f" ]] || continue
-            # Skip test files in syntax check (they import from production scripts)
-            [[ "$f" == *.test.mjs ]] && continue
             echo "  Checking: $f"
             if ! node --check "$f" 2>/dev/null; then
               echo "    FAILED"
@@ -121,7 +119,7 @@ jobs:
         run: |
           echo "=== Running unit tests ==="
           FAILED=0
-          for f in scripts/__tests__/*.test.mjs scripts/*.test.mjs; do
+          for f in scripts/__tests__/*.test.mjs; do
             [[ -f "$f" ]] || continue
             echo "  Running: $f"
             if ! node "$f"; then
@@ -132,6 +130,14 @@ jobs:
             fi
           done
           exit $FAILED
+
+      - name: Run standalone checks
+        run: |
+          set -euo pipefail
+          for f in scripts/checks/*.mjs; do
+            [[ -f "$f" ]] || continue
+            node "$f"
+          done
 
       - name: Check documented install commands
         run: npm run check-install-commands
