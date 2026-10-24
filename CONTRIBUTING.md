@@ -85,7 +85,7 @@ the sync rules and more detail about these mixed directories.
 Install the Markdown linter used by the repository recipe:
 
 ```bash
-npm install --global markdownlint-cli
+npm install --global markdownlint-cli@0.49.1
 ```
 
 Run all local pre-submission checks:
@@ -100,6 +100,73 @@ scripts. Also run `just build` when the change can affect the generated site.
 
 Use `just --list` to see individual setup, preview, build, and validation
 recipes.
+
+### Simplified Technical English (STE)
+
+STE is a set of rules for clear technical English. It favors common words,
+short sentences, and active voice. These rules help readers whose first
+language is not English and readers who use assistive technology.
+TunaOS checks prose to keep its documentation clear and easy to follow.
+
+If the STE check fails, run:
+
+```bash
+just ste
+```
+
+This prints counts per file and fails when the total exceeds
+[`.ste-budget`](./.ste-budget). To see details with the file, line,
+rule number, and text, run the cached linter after `just ste`:
+
+```bash
+node "${XDG_CACHE_HOME:-$HOME/.cache}/tuna-os/ste-lint/ste-lint.mjs"
+```
+
+Read the rule and revise the affected prose. Split long sentences, choose
+simple words, and say who does the action. For example, replace
+`The system will be updated` with `We will update the system`.
+Run `just ste` again to check the total. The shared
+[STE linter and rules](https://github.com/tuna-os/.github/tree/main/.github/actions/ste-lint)
+live in `tuna-os/.github`. Fix findings in synced pages in their source
+repository; see [Content Ownership](#content-ownership).
+
+### Markdown lint findings
+
+Markdown lint checks the format, such as heading levels, spaces around lists,
+and code fences. Its output includes a file, line, rule ID (such as `MD032`),
+and a message. Use those details to fix the affected Markdown.
+The rules and exclusions live in [`.markdownlint.yaml`](./.markdownlint.yaml).
+
+`just lint` reports Markdown findings but continues after them. CI counts
+findings and fails when the total exceeds
+[`.markdownlint-budget`](./.markdownlint-budget). A successful local
+`just preflight` therefore does not guarantee a pass in CI for Markdown.
+To see findings with the same version and file selection as CI, run:
+
+```bash
+markdownlint 'docs/**/*.md' '*.md' --ignore docs/docs/tacklebox
+```
+
+This command exits with a failure if it finds any violations, including
+existing ones within the budget. To compare the total with the CI budget:
+
+```bash
+markdownlint 'docs/**/*.md' '*.md' --ignore docs/docs/tacklebox > /tmp/tunaos-markdownlint.out 2>&1
+# Continue here even if markdownlint exits with a failure.
+grep -c ' error ' /tmp/tunaos-markdownlint.out
+cat .markdownlint-budget
+```
+
+Review the output file and fix findings from your changes before you submit.
+
+### Budgets only decrease
+
+Both budgets are ratchets: they allow existing findings so cleanup can happen
+in small steps, while CI rejects totals above the limit. Read the budget
+files for the current limits. Do not raise either budget to make a PR pass.
+When you remove a batch of findings, lower the matching budget to the new
+total so later changes cannot add them back. Fix new findings even if the
+total still fits within the budget.
 
 ### Additional validation before submission
 
