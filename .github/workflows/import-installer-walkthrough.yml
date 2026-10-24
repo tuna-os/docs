@@ -31,6 +31,8 @@ permissions:
 jobs:
   import:
     runs-on: ubuntu-26.04
+    permissions:
+      contents: write
     if: ${{ github.repository == 'tuna-os/docs' }}
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

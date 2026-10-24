@@ -18,6 +18,9 @@ permissions:
 jobs:
   update-wall:
     runs-on: ubuntu-26.04
+    permissions:
+      contents: write
+      pull-requests: write
     if: ${{ github.repository == 'tuna-os/docs' }}
     steps:
       - uses: actions/checkout@v7

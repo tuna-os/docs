@@ -40,6 +40,8 @@ jobs:
   markdown-lint:
     name: Markdown Lint
     runs-on: ubuntu-26.04
+    permissions:
+      contents: read
     steps:
       - name: Nothing to lint
         run: echo 'No prose, no lint tooling, no budget changed in this pull request.'

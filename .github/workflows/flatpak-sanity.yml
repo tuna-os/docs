@@ -32,6 +32,9 @@ jobs:
   check:
     name: Check ${{ github.event_name == 'schedule' && 'live remote' || 'working tree' }}
     runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+      packages: read
     steps:
       - uses: actions/checkout@v7
 
