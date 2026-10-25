@@ -30,7 +30,7 @@
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",
     "@fontsource-variable/geist": "^5.3.0",
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
-    "@gjsify/adwaita-web": "0.64.8",
+    "@gjsify/adwaita-web": "0.64.9",
     "@gjsify/app-settings": "0.64.8",
     "@mdx-js/mdx": "^3.1.1",
     "@mdx-js/react": "^3.0.0",
