@@ -239,6 +239,14 @@ title: "${title}"
 ---\n\n`;
 }
 
+// This line is generated with the page, so an offline build never changes it.
+// The full SHA and path make the inspected source immutable and traceable.
+function sourceNotice(repo, revision, path, fetchedAt) {
+  const encodedPath = path.split('/').map(segment => encodeURIComponent(segment).replace(/[()]/g, c => `%${c.charCodeAt(0).toString(16).toUpperCase()}`)).join('/');
+  const url = `https://github.com/${ORG}/${repo}/blob/${revision}/${encodedPath}`;
+  return `> **Source:** [revision ${revision.slice(0, 12)}](${url}) · Last successful fetch: ${fetchedAt} · Status: current\n\n`;
+}
+
 function getStatusBanner(status) {
   const banners = {
     alpha:        '> ⚠️ **Alpha** — early development. Not production-ready. APIs and behaviour may change without notice.',
@@ -256,6 +264,7 @@ export {
   onProse,
   frontmatter,
   subFrontmatter,
+  sourceNotice,
   isSyncedIndex,
   getStatusBanner,
 };

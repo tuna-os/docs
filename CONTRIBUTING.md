@@ -112,8 +112,16 @@ Run two additional checks before you submit:
 
 The daily sync of documentation generates many `docs/<project>/` trees from
 their source repositories. Fix documentation for a generated project in its
-source repository. The next sync overwrites direct changes here. The generated
-index page at the start of a project tree identifies the source repository.
+source repository. The next sync overwrites direct changes here.
+
+After the next successful sync, each generated page links to its source file at
+the fetched commit. It also shows the time of the last successful fetch.
+“Current” means the last refresh succeeded. The source can change after that.
+
+An offline site build uses the checked-in snapshot and does not change its
+timestamp. If a refresh fails, it marks the existing snapshots as stale on disk
+and exits with an error. The workflow does not publish a partial or failed sync. Older
+snapshots have no revision notice until a successful sync adds one.
 
 ## Pull Requests
 
