@@ -75,6 +75,11 @@ Other files can come from the source root or its `docs/` directory.
 For example, `docs/bluefin-cli/index.md` comes from the bluefin-cli README.
 Look at the sync script and the source repository to confirm a file's owner.
 
+The sync writes all of a project's pages into one flat directory. Two source
+files with names that differ only in case become one page. The sync keeps the
+first file, skips the second, and names the skipped file in its log. Rename
+one of the two files in the source repository to publish both.
+
 Some project directories also contain pages written here. For example,
 this repository owns `docs/tunaos/introduction.md`, while the sync copies
 that directory's `index.md` from its source. See [`AGENTS.md`](./AGENTS.md) for
