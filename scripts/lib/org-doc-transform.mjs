@@ -189,6 +189,32 @@ function fixRelativeLinks(content, repo, srcDir = '', branch = 'main') {
       return `](${base}/${cleaned}${anchor})`;
     },
   );
+  // Reference-style link definitions ([label]: target) are not seen by the
+  // inline-link regex above, which only matches ](...). Their target shipped
+  // as a bare relative path and broke in the synced copy: docs/spindle/
+  // divergence.md linked architecture-decisions/000{1,2}*.md, which live in
+  // the source repo, not the synced tree (tuna-os/docs#450). Rewrite the
+  // target to the blob URL, resolved against the source subdirectory.
+  c = c.replace(
+    /^[ \t]{0,3}\[(?!\^)(?<label>[^\]]+)\]:[ \t]*(?:<(?<bt>[^>]+)>|(?<bb>\S+))(?:[ \t]+(?<title>"[^"]*"|'[^']*'))?[ \t]*$/gm,
+    (m, label, bt, bb, title) => {
+      const target = bt ?? bb;
+
+      // Absolute URLs, mailto:/data:/ftp: links, pure anchors and
+      // site-absolute paths are not repo-relative; leave the definition as a
+      // reader can still follow. The (?!^) in the pattern skips footnote
+      // definitions, whose body is prose, not a path to resolve.
+      if (/^(?:[a-z][a-z0-9+.-]*:|\/|#)/i.test(target)) {
+        return m;
+      }
+
+      const cleaned = clean(target);
+      if (cleaned === '') return m;
+
+      const indent = m.match(/^[ \t]*/)[0];
+      return `${indent}[${label}]: ${base}/${cleaned}${title ?? ''}`;
+    },
+  );
   return c;
 }
 
