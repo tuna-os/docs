@@ -21,11 +21,11 @@ report is welcome and useful; see "Bug reports" below.
 
 ## Who it's for
 
-Gurnard is for people who like the elementary OS Pantheon desktop. It is a good pick for those who want a simple, clean desktop. Start here if you want Pantheon on a stable LTS base.
+Gurnard is for people who like Pantheon from elementary OS. It is a good pick for those who want a simple, clean desktop. Start here if you want Pantheon on a stable LTS base.
 
 ## Why choose this variant
 
-- Runs Pantheon, the simple elementary OS desktop.
+- Runs Pantheon, the desktop from elementary OS.
 - Built on Ubuntu 24.04 LTS, a long-term base.
 - Choose this over other desktops when you want a clean, simple look.
 

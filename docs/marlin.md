@@ -21,7 +21,7 @@ package yet, so Marlin builds bootc from source in the image.
 
 ## Who it's for
 
-Marlin is for Arch users who want the newest packages. It is a good pick for power users who like rolling release. Start here if you want the latest GNOME and kernel with no wait.
+Marlin is for Arch users who want the newest packages. It is a good pick for power users who want updates often. Start here if you want the latest GNOME and kernel with no wait.
 
 ## Why choose this variant
 
