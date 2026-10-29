@@ -1,4 +1,5 @@
 ---
+slug: /xfce-linux/readme
 sidebar_position: 6
 title: "README"
 ---
