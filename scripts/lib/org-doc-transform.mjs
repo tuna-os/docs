@@ -225,11 +225,24 @@ status: ${status || 'unknown'}
 // `mdx: {format: md}` is added after the fact by markUnparseable (below), so an
 // index it marked is still one this script wrote.
 const SYNCED_INDEX = /^---\nsidebar_position: \d+\nsidebar_label: "[^"]*"\n\nstatus: \S+\n(?:mdx:\n  format: md\n)?---\n/;
+// SYNCED_SUBPAGE matches the front matter subFrontmatter() writes for a synced
+// subpage (a root doc or docs/ file synced out of a repo). It is distinct from
+// SYNCED_INDEX: a subpage carries `title:` and no `status:`, so a page a person
+// typed (either key, neither, or different values) does not match it.
+const SYNCED_SUBPAGE = /^---\nsidebar_position: \d+\ntitle: "[^"]*"\n---\n\n/;
 
 // isSyncedIndex reports whether a document's front matter was written by this
 // script's frontmatter() rather than by a person.
 function isSyncedIndex(content) {
   return SYNCED_INDEX.test(content);
+}
+
+// isSyncedPage reports whether content is a page this script's front matter
+// helpers wrote — an index page (isSyncedIndex) or a synced subpage
+// (SYNCED_SUBPAGE). The sync uses it to tell a synced page it may overwrite on
+// purpose from a hand-authored page it must not silently clobber (docs#525).
+function isSyncedPage(content) {
+  return isSyncedIndex(content) || SYNCED_SUBPAGE.test(content);
 }
 
 function subFrontmatter(title, position) {
@@ -257,5 +270,6 @@ export {
   frontmatter,
   subFrontmatter,
   isSyncedIndex,
+  isSyncedPage,
   getStatusBanner,
 };
