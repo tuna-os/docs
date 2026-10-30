@@ -91,3 +91,6 @@ npm run build
 
 For prerequisites and validation before submission, see the
 [contributor guide](./CONTRIBUTING.md).
+
+See [Telemetry and adoption proxy operations](TELEMETRY.md) for application log
+fields, privacy guarantees, and cache measurement limits.
