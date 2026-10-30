@@ -38,6 +38,7 @@ import {
   checkListing,
   discoverRepos,
   findCaseCollisions,
+  docOutputNames,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
   RETRY_DELAY_MS,
@@ -84,6 +85,21 @@ console.log('\n📋 sync-org-docs tests\n');
 // run — strictly worse than the build failure it replaced.
 
 console.log('onProse');
+
+test('flattened imports preserve both root ROADMAP and docs roadmap', () => {
+  const outputs = docOutputNames(['index.md', 'ROADMAP.md'], ['roadmap.md', 'install.md']);
+  assert.equal(outputs.get('roadmap.md'), 'docs-roadmap.md');
+  assert.equal(outputs.get('install.md'), 'install.md');
+});
+
+test('flattened imports reserve index and natural prefixed filenames', () => {
+  const files = ['index.md', 'roadmap.md', 'docs-roadmap.md', 'ROADMAP.md'];
+  const outputs = docOutputNames(['ROADMAP.md'], files);
+  assert.equal(outputs.get('index.md'), 'docs-index.md');
+  assert.equal(outputs.get('docs-roadmap.md'), 'docs-roadmap.md');
+  assert.equal(new Set([...outputs.values(), 'index.md', 'ROADMAP.md'].map(s => s.toLowerCase())).size, 6);
+  assert.deepEqual(docOutputNames(['ROADMAP.md'], [...files].reverse()), outputs);
+});
 
 test('leaves fenced blocks untouched', () => {
   const src = 'prose\n\n```bash\ngit log --since=<30d>\n```\n\nmore prose\n';
