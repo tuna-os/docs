@@ -20,6 +20,8 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-26.04
+    permissions:
+      contents: read
     if: ${{ github.repository == 'tuna-os/docs' }}
     steps:
       - uses: actions/checkout@v7

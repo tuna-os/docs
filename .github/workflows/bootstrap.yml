@@ -29,6 +29,9 @@ jobs:
         os: [ubuntu-24.04, macos-latest]
     runs-on: ${{ matrix.os }}
     if: ${{ github.repository == 'tuna-os/docs' }}
+    permissions:
+      contents: read
+      issues: write
 
     steps:
       - uses: actions/checkout@v7

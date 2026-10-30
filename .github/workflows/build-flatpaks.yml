@@ -26,6 +26,8 @@ jobs:
   build:
     name: Build ${{ matrix.app.name }}
     runs-on: ubuntu-26.04
+    permissions:
+      contents: read
     container:
       image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-50
       options: --privileged
@@ -78,6 +80,9 @@ jobs:
     name: Publish
     needs: build
     runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v7
 
