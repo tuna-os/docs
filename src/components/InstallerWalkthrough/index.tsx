@@ -1,15 +1,17 @@
 import {useState} from 'react';
 import type {ReactNode} from 'react';
 import Heading from '@theme/Heading';
+import ShotImg from '@site/src/components/ShotImg';
+import {installerShotPath} from '@site/src/components/ShotImg/screenshot-urls';
 
 import styles from './styles.module.css';
 
 // Real installer-flow captures, published weekly by tunaOS's
 // installer-screenshots.yml workflow (QEMU boots a fresh live ISO, drives the
-// installer, screendumps every step, uploads to R2). Same graceful-404
+// installer, screendumps every step, uploads to the `screenshots` GitHub
+// release and R2). ShotImg tries the release first. Same graceful-404
 // pattern as DesktopScreenshots: steps that aren't published yet are hidden,
 // and if a whole flow is missing the section disappears.
-const SHOT_BASE = 'https://download.tunaos.org/screenshots/installer';
 
 export type WalkthroughStep = {
   file: string; // e.g. "01_welcome"
@@ -46,10 +48,6 @@ export function numberedSteps(count: number): WalkthroughStep[] {
   });
 }
 
-function shotUrl(prefix: string, file: string): string {
-  return `${SHOT_BASE}/${prefix}${file}-latest.png`;
-}
-
 export default function InstallerWalkthrough({
   title = 'The install, step by step',
   subtitle = 'Captured automatically from a real ISO boot every week — what you see is what ships.',
@@ -70,9 +68,9 @@ export default function InstallerWalkthrough({
   const probes = (
     <div className={styles.probe} aria-hidden>
       {steps.map((s) => (
-        <img
+        <ShotImg
           key={s.file}
-          src={shotUrl(prefix, s.file)}
+          path={installerShotPath(prefix, s.file)}
           alt=""
           onError={() => setFailed((f) => ({...f, [s.file]: true}))}
           onLoad={() => setFailed((f) => (f[s.file] ? {...f, [s.file]: false} : f))}
@@ -94,8 +92,8 @@ export default function InstallerWalkthrough({
       </div>
 
       <figure className={styles.stage}>
-        <img
-          src={shotUrl(prefix, current.file)}
+        <ShotImg
+          path={installerShotPath(prefix, current.file)}
           alt={current.title}
           loading="lazy"
         />
@@ -117,7 +115,7 @@ export default function InstallerWalkthrough({
             onClick={() => setActive(i)}
             title={s.title}
           >
-            <img src={shotUrl(prefix, s.file)} alt={s.title} loading="lazy" />
+            <ShotImg path={installerShotPath(prefix, s.file)} alt={s.title} loading="lazy" />
             <span>{s.title}</span>
           </button>
         ))}
