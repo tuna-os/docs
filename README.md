@@ -22,6 +22,10 @@ Never post account credentials or API keys in issues or pull requests.
 npm ci
 ```
 
+Dependency version changes must update `package.json` and `package-lock.json`
+together. Regenerate the lock using `npm install --package-lock-only --ignore-scripts`,
+then verify `npm ci`. Do not use an unlocked install fallback in CI.
+
 All standard tasks (`install`, `build`, `test`, `lint`) are also available
 via [`just`](https://github.com/casey/just) — see `just --list`.
 
