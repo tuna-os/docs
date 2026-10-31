@@ -13,6 +13,18 @@ Prefer a visual tour? See the **[Skipjack overview →](/skipjack)** start page.
 Skipjack is the TunaOS variant that follows upstream. CentOS Stream 10 is its
 base. It is where we test the features that go into RHEL and AlmaLinux later.
 
+## Who it's for
+
+Skipjack is for people who test future RHEL. It is a good pick for contributors who help build RHEL and AlmaLinux. Start here if you want to see the next RHEL early.
+
+## Why choose this variant
+
+- Tracks CentOS Stream 10, the path to RHEL.
+- Where TunaOS tests features for RHEL and AlmaLinux.
+- Choose this over stable variants when you want the next RHEL first.
+
+To see every variant side by side, read [Choose a variant](./choosing-a-variant).
+
 ## Features
 
 - **Modern GNOME**: A current GNOME desktop on Enterprise Linux.
