@@ -34,15 +34,17 @@ import {
   rejectExpressions,
   withFormatMd,
   slugify,
+  findCaseCollisions,
+  docOutputNames,
+} from '../sync-org-docs.mjs';
+import {
   listOrgRepos,
   checkListing,
   discoverRepos,
-  findCaseCollisions,
-  docOutputNames,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
   RETRY_DELAY_MS,
-} from '../sync-org-docs.mjs';
+} from '../lib/org-doc-source.mjs';
 
 // ── Test helpers ──────────────────────────────────────────────────────────────
 let pass = 0;
