@@ -128,3 +128,6 @@ For variant-specific driver details, see the [Installation Guide](installation.m
 - [Installation Guide](installation.md)
 - [LUKS & TPM 2.0 Reference](bootc-migrate/luks-testing.md)
 - [Runtime issues](tunaos/troubleshooting.md)
+
+For checks across desktops, hardware, and updates, see the
+[system diagnosis guide](troubleshooting.md).

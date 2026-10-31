@@ -95,18 +95,9 @@ After installation, TunaOS provides:
 
 ## Troubleshooting
 
-### Boot Issues
-- Ensure Secure Boot is disabled or properly configured
-- Check system requirements are met
-- Try the `x86_64_v2` variant for older hardware
-
-### Installation Problems
-- [Verify the ISO, its SBOM, and its signature](verifying-downloads.md) after download
-- Use a different tool to write the USB drive: Ventoy, Rufus, or dd
-- Make sure that the disk has enough free space
-
-### Post-Install Issues
-If an update breaks your system after installation, see the [Rollback & Update guide](bootc-rollback.md).
+For boot failures, installer errors, and post-install problems, start with the
+[system diagnosis guide](troubleshooting.md#boot-and-installation-failures).
+It includes checks for hardware, downloads, Secure Boot, and update recovery.
 
 ### Getting Help
 - **Report Issues**: [GitHub Issues](https://github.com/tuna-os/tunaOS/issues)

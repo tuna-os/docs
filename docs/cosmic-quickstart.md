@@ -300,3 +300,6 @@ journalctl --user -u cosmic-session -b
 - [COSMIC desktop overview](./tunaos/cosmic-desktop.md) — an overview of COSMIC on TunaOS
 - [Desktop environment comparison](./desktop-comparison.md) — how the TunaOS desktops compare
 - [Manage images with bootc](./tunaos/bootc-usage.md) — the full bootc guide for TunaOS
+
+For checks across desktops, hardware, and updates, see the
+[system diagnosis guide](troubleshooting.md).
