@@ -49,7 +49,7 @@ try {
   // (Cloudflare Workers Logs) so an operator can tell them apart without
   // reproducing the request. The log call must never carry the visitor's
   // cookie, IP, or query string — only fixed reasons and non-visitor detail
-  // (upstream status, byte size, parse/schema error text).
+  // (upstream status, byte size, fixed failure categories).
   const oldError = console.error;
   const logged = [];
   console.error = (...args) => logged.push(args);
@@ -108,3 +108,37 @@ assert.deepEqual(config.services, [{binding: 'COUNTME', service: 'tunaos-countme
 assert.match(readFileSync('src/pages/metrics.tsx', 'utf8'), /Missing data is not zero adoption/);
 console.log('adoption public-schema and application header-copy tests pass');
 
+
+// Structured events must be useful without logging request or upstream content.
+const oldLog = console.log;
+const oldErrorLog = console.error;
+const events = [];
+console.log = (line) => events.push(JSON.parse(line));
+console.error = () => {};
+try {
+  const request = (method = 'GET') => new Request('https://tunaos.org/api/adoption?secret=query', {method, headers: {Cookie: 'secret=cookie'}});
+  const run = (fetch, method) => worker.fetch(request(method), {COUNTME: {fetch}});
+  await run(async () => Response.json(fixture()));
+  assert.equal(events[0].status, 200);
+  assert.equal(events[0].upstream_status, 200);
+  assert.equal(events[0].cache_policy, 'public-300-900');
+  assert.ok(events[0].upstream_bytes > 0);
+  assert.ok(events[0].duration_ms >= events[0].upstream_duration_ms);
+  const head = await run(async () => Response.json(fixture()), 'HEAD');
+  assert.equal(await head.text(), '');
+  await run(async () => new Response(null, {status: 502}));
+  assert.equal(events[2].reason, 'upstream_http_error');
+  assert.equal(events[2].status, 503);
+  await run(async () => {throw Error('secret=exception');});
+  assert.equal(events[3].reason, 'upstream_fetch_failed');
+  await run(async () => new Response('"secret=payload"', {headers: {'Content-Type': 'application/json'}}));
+  assert.equal(events[4].reason, 'upstream_schema_mismatch');
+  await run(() => {throw Error('must not fetch');}, 'POST');
+  assert.equal(events[5].status, 405);
+  assert.equal(events[5].method, 'OTHER');
+  assert.equal(events.length, 6);
+  assert.ok(!JSON.stringify(events).includes('secret'));
+} finally {
+  console.log = oldLog;
+  console.error = oldErrorLog;
+}

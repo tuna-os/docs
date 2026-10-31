@@ -8,7 +8,7 @@ import BuildMatrix from '@site/src/components/BuildMatrix';
 import BuildPulse, {elapsed} from '@site/src/components/BuildPulse';
 import useIsoIndex from '@site/src/hooks/useIsoIndex';
 import {ALL_DESKTOPS} from '@site/src/data/variants';
-import {desktopLogo} from '@site/src/data/marks';
+import {desktopLogo} from '@site/src/data/identity';
 
 import page from '@site/src/css/page.module.css';
 import styles from './matrix.module.css';
