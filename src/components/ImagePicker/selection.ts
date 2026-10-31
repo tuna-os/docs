@@ -1,6 +1,6 @@
 import {VARIANTS} from '@site/src/data/variants';
 import {ISO_BASE_URL} from '@site/src/utils/isoNaming';
-import {markFor} from '@site/src/data/marks';
+import {emojiMarkFor} from '@site/src/data/identity';
 import {
   DELIVERY_POLICY,
   BUILDER_PREREQUISITES,
@@ -89,7 +89,7 @@ export const PRODUCT_OPTIONS: Option<Product>[] = [
 // secondary choice under their parent's card instead.
 export const VARIANT_OPTIONS: Option<Variant>[] = VARIANTS.filter((v) => !(v.id in ROLLING_SIBLING_OF)).map((v) => ({
   value: v.id,
-  mark: markFor(v.id),
+  mark: emojiMarkFor(v.id),
   label: v.name,
   description: v.blurb,
   badge: v.recommended ? 'Recommended' : undefined,
