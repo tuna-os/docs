@@ -69,7 +69,7 @@ jobs:
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
-          node-version: '24'
+          node-version: '26'
 
       # Pinned. The budget below is a count of findings, so it only means
       # anything against a fixed rule set — an unpinned install silently
@@ -113,10 +113,10 @@ jobs:
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
-          node-version: '24'
+          node-version: '26'
 
       - name: Install dependencies
-        run: npm ci || npm install
+        run: npm ci
 
       - name: Check Node.js script syntax
         run: |
