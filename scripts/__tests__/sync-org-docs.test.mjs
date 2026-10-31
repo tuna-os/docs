@@ -25,6 +25,7 @@ import {
   frontmatter,
   subFrontmatter,
   isSyncedIndex,
+  isSyncedPage,
   getStatusBanner,
 } from '../lib/org-doc-transform.mjs';
 import {
@@ -530,6 +531,48 @@ test('rejects a page with no front matter', () => {
 
 test('rejects front matter that is not at the start of the file', () => {
   assert.ok(!isSyncedIndex('Intro paragraph.\n\n' + frontmatter('X', 1, 'x', 'alpha')));
+});
+
+// ── isSyncedPage ─────────────────────────────────────────────────────────────
+//
+// The divergence guard in main() records a page before it writes only when the
+// page is not already one this script's front matter helpers wrote. isSyncedPage
+// is that check — an index page (isSyncedIndex) or a synced subpage (the
+// subFrontmatter shape). It must reject a page a person typed, or the guard
+// stays silent over the hand-authored pages it is meant to warn about.
+
+console.log('\nisSyncedPage');
+
+test('matches a synced index page', () => {
+  assert.ok(isSyncedPage(frontmatter('Corral', 101, 'corral', 'stable')));
+});
+
+test('matches a synced subpage', () => {
+  assert.ok(isSyncedPage(subFrontmatter('Testing', 5)));
+});
+
+test('matches a synced subpage with a body', () => {
+  assert.ok(isSyncedPage(subFrontmatter('Testing', 5) + 'Body text.\n'));
+});
+
+test('matches a synced subpage markUnparseable marked as CommonMark', () => {
+  // withFormatMd adds `mdx: {format: md}` to a subpage MDX cannot compile;
+  // the next run must still see it as synced, not as a hand-authored page.
+  assert.ok(isSyncedPage(withFormatMd(subFrontmatter('Keymap', 3) + 'Press {tap}.\n')));
+});
+
+test('rejects front matter a person typed on a subpage', () => {
+  // A hand-authored page often puts `title:` first. subFrontmatter() emits
+  // `sidebar_position:` first, so a different key order is not a synced page.
+  assert.ok(!isSyncedPage('---\ntitle: "Testing"\nsidebar_position: 5\n---\n\nBody.\n'));
+});
+
+test('rejects a page with no front matter', () => {
+  assert.ok(!isSyncedPage('# Mandelbrot\n\nA Matrix client.\n'));
+});
+
+test('rejects front matter that is not at the start of the file', () => {
+  assert.ok(!isSyncedPage('Intro paragraph.\n\n' + subFrontmatter('Testing', 5)));
 });
 
 // ── filesToRemove ─────────────────────────────────────────────────────────────

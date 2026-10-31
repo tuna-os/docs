@@ -17,6 +17,7 @@ import {
   frontmatter,
   subFrontmatter,
   isSyncedIndex,
+  isSyncedPage,
   getStatusBanner,
 } from './lib/org-doc-transform.mjs';
 
@@ -455,6 +456,9 @@ function main() {
   let protectedDirs = 0;
   let removed = 0;
   let refusedRemovals = 0;
+  // Problem 3 (docs#525): hand-authored pages this run overwrites that differ
+  // from upstream. Recorded so the summary can name them and say what to do.
+  const divergedPages = [];
   const failures = [];
 
   const sidebar = [];
@@ -478,6 +482,19 @@ function main() {
       ({dir, branch} = cloneRepo(repo));
       const targetDir = join(DOCS_DIR, slug);
       mkdirSync(targetDir, {recursive: true});
+
+      // Problem 3 (docs#525): the write path is unconditional, so a page a
+      // person hand-edited in docs/<slug>/ is overwritten silently the next
+      // sync. Record every such page before the write so the summary can name
+      // it. A synced page (isSyncedPage) is overwritten on purpose and is not
+      // recorded; only hand-authored content that diverged from upstream is.
+      const warnIfOverwritingHandWritten = (relPath, newContent) => {
+        const abs = join(targetDir, relPath);
+        const existing = existsSync(abs) ? readFileSync(abs, 'utf8') : null;
+        if (existing !== null && existing !== newContent && !isSyncedPage(existing)) {
+          divergedPages.push(`${slug}/${relPath}`);
+        }
+      };
 
       // Snapshot what's already there before writing anything, so removal
       // (below) can tell "was here before, not written this run" from "this
@@ -505,6 +522,7 @@ function main() {
           fm += statusBanner + '\n\n';
         }
         content = fm + content;
+        warnIfOverwritingHandWritten('index.md', content);
         writeFileSync(join(targetDir, 'index.md'), content);
         WRITTEN.push(join(targetDir, 'index.md'));
         writtenFiles.push('index.md');
@@ -529,6 +547,7 @@ function main() {
         content = content.replace(/^# .*\n\n?/, '');
         const title = upper.charAt(0) + upper.slice(1).toLowerCase();
         content = subFrontmatter(title, localPos++) + content;
+        warnIfOverwritingHandWritten(file, content);
         writeFileSync(join(targetDir, file), content);
         WRITTEN.push(join(targetDir, file));
         writtenFiles.push(file);
@@ -551,6 +570,7 @@ function main() {
           content = content.replace(/^# .*\n\n?/, '');
           const title = file.replace(/\.(md|rst)$/, '').replace(/[-_]/g, ' ');
           content = subFrontmatter(title, localPos++) + content;
+          warnIfOverwritingHandWritten(output, content);
           writeFileSync(join(targetDir, output), content);
           WRITTEN.push(join(targetDir, output));
           writtenFiles.push(output);
@@ -605,8 +625,23 @@ function main() {
   console.log(
     `\n📊 ${listed.length} listed · ${skipped.length} in SKIP · ` +
     `${protectedDirs} hand-authored · ${synced} synced · ${failures.length} failed · ` +
-    `${removed} removed (no longer upstream) · ${refusedRemovals} refused (looked hand-written)`,
+    `${removed} removed (no longer upstream) · ${refusedRemovals} refused (looked hand-written) · ` +
+    `${divergedPages.length} hand-authored pages overwritten (diverged from upstream)`,
   );
+  // Problem 3 (docs#525): name every hand-authored page this run overwrote that
+  // diverged from upstream, and say what to do — same shape as the removal
+  // refusal warning above. Synced pages overwrite on purpose and are not listed.
+  if (divergedPages.length) {
+    console.warn(
+      `\n⚠️  ${divergedPages.length} hand-authored page(s) were overwritten this sync ` +
+        '(they differ from upstream and are not themselves synced pages):',
+    );
+    for (const p of divergedPages) console.warn(`   · ${p}`);
+    console.warn(
+      'Add the slug to HAND_AUTHORED to protect it permanently, or edit its source ' +
+        'repository. This run still overwrote them, so review the diff before relying on it.',
+    );
+  }
   if (failures.length) {
     for (const f of failures) console.error(`  ✗ ${f}`);
     console.error(
