@@ -80,6 +80,13 @@ the sync can overwrite or remove it. The script skips archived and excluded
 repositories, so this step leaves their existing pages in place. Review those
 pages separately when you retire a project.
 
+If an existing page differs from the incoming content and its front matter
+does not match a generated index or subpage, the sync reports its slug and
+filename in the overwrite summary. This is a warning, not protection: the
+write still happens. Generated pages marked `mdx: {format: md}` remain
+recognized as generated. An edit that keeps the generated front matter
+cannot be distinguished from a normal generated page by this check.
+
 ## Pipeline resilience
 
 Discovery requests `per_page=100` and uses `--paginate`. It removes duplicates
