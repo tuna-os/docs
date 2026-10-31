@@ -40,15 +40,17 @@ CTA in the hero and has its own landing page.
    sidebar. Their pages still exist and their URLs still work.
 4. **Name things plainly.** No pitch copy, no "blazing fast", no exclamation
    points. Say what a thing is and what it runs on.
-5. **No emoji in the interface.** Each variant carries its mark from
-   [tuna-os/branding](https://github.com/tuna-os/branding) — vendored into
-   `static/img/marks/`, mapped in `src/data/marks.ts`, and verified against
-   the branding manifest by `scripts/check-branding-marks.test.mjs`. Each
-   project carries a glyph from `src/components/Icon.tsx`, named in its
-   `src/data/projects.ts` entry. Those marks are where a variant or project
-   gets to look like itself; the interface around them stays one hue. Emoji
-   survive only where they are content (a project's own docs, synced from its
-   repository).
+5. **Wordmark for wide contexts, emoji mark for icons.** The tunaOS identity
+   comes from [tuna-os/tunaOS](https://github.com/tuna-os/tunaOS). It is
+   vendored into `static/img/identity/`, mapped in `src/data/identity.ts`,
+   and verified against its manifest by
+   `scripts/check-identity-assets.test.mjs`. Headers, cards and the hero use
+   the variant wordmark (`src/components/Wordmark.tsx`). Small icons, the
+   navbar and the favicon use the Noto emoji mark. Each project carries a
+   glyph from `src/components/Icon.tsx`, named in its `src/data/projects.ts`
+   entry. The interface around these marks stays one hue. Put no other emoji
+   in interface text. Emoji stay only where they are content, for example a
+   project's own docs that sync from its repository.
 6. **Every list on the site derives from `src/data/`.** The nav, the footer,
    the matrix, the picker and the landing pages read the same arrays.
    A hand-maintained second copy is how images went missing from menus before.

@@ -35,7 +35,7 @@ Two ways:
 
 **Can I dual-boot TunaOS?**
 
-TunaOS uses bootc which manages the bootloader. Dual-boot is possible but not the primary use case. For multi-OS on one machine, use [Tacklebox](/docs/tacklebox/getting-started) to create a multi-boot USB.
+TunaOS uses bootc which manages the bootloader. Dual-boot is possible but not the primary use case. For multi-OS on one machine, use [Tacklebox](/docs/tacklebox/USER-GUIDE) to create a multi-boot USB.
 
 **Which variant should I choose?**
 

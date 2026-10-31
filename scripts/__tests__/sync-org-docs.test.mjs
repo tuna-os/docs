@@ -39,6 +39,7 @@ import {
   checkListing,
   discoverRepos,
   findCaseCollisions,
+  docOutputNames,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
   RETRY_DELAY_MS,
@@ -85,6 +86,21 @@ console.log('\n📋 sync-org-docs tests\n');
 // run — strictly worse than the build failure it replaced.
 
 console.log('onProse');
+
+test('flattened imports preserve both root ROADMAP and docs roadmap', () => {
+  const outputs = docOutputNames(['index.md', 'ROADMAP.md'], ['roadmap.md', 'install.md']);
+  assert.equal(outputs.get('roadmap.md'), 'docs-roadmap.md');
+  assert.equal(outputs.get('install.md'), 'install.md');
+});
+
+test('flattened imports reserve index and natural prefixed filenames', () => {
+  const files = ['index.md', 'roadmap.md', 'docs-roadmap.md', 'ROADMAP.md'];
+  const outputs = docOutputNames(['ROADMAP.md'], files);
+  assert.equal(outputs.get('index.md'), 'docs-index.md');
+  assert.equal(outputs.get('docs-roadmap.md'), 'docs-roadmap.md');
+  assert.equal(new Set([...outputs.values(), 'index.md', 'ROADMAP.md'].map(s => s.toLowerCase())).size, 6);
+  assert.deepEqual(docOutputNames(['ROADMAP.md'], [...files].reverse()), outputs);
+});
 
 test('leaves fenced blocks untouched', () => {
   const src = 'prose\n\n```bash\ngit log --since=<30d>\n```\n\nmore prose\n';
@@ -419,6 +435,29 @@ test('sends a bare non-markdown file link to the blob URL', () => {
     out.trim(),
     '[formula](https://github.com/tuna-os/bluefin-cli/blob/main/contrib/homebrew/bluefin-cli.rb)',
   );
+});
+
+test('rewrites a reference-style definition pointing at a directory to the tree URL', () => {
+  const out = fixRelativeLinks('[runtime]: runtime/\n', 'iced', '', 'master');
+  assert.match(out, /github\.com\/tuna-os\/iced\/tree\/master\/runtime/);
+});
+
+test('rewrites a reference-style definition from docs/ against the repo root', () => {
+  const out = fixRelativeLinks(
+    '[ADR 0001]: architecture-decisions/0001-linear-storage-dag-overlay.md\n',
+    'spindle', 'docs',
+  );
+  assert.match(out, /github\.com\/tuna-os\/spindle\/blob\/main\/docs\/architecture-decisions\/0001-linear-storage-dag-overlay\.md/);
+});
+
+test('keeps the anchor on a reference-style definition', () => {
+  const out = fixRelativeLinks('[tour example]: examples/README.md#tour\n', 'iced', '', 'master');
+  assert.match(out, /blob\/master\/examples\/README\.md#tour/);
+});
+
+test('leaves absolute and footnote definitions alone', () => {
+  const src = '[ruma]: https://github.com/ruma/ruma\n[^1]: See the matrix spec\n';
+  assert.equal(fixRelativeLinks(src, 'spindle', 'docs'), src);
 });
 
 // ── frontmatter ───────────────────────────────────────────────────────────────
