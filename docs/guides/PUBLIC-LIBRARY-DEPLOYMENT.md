@@ -6,7 +6,7 @@ TunaOS gives public libraries and civic technology centers a desktop base that p
 
 1. **Patron Privacy**: Set up the terminal with a session that resets. At logout or reboot the machine discards the browser history, the downloads, and the saved credentials from that session.
 2. **Immutable System Baseline**: The system files in `/usr` stay read-only. A patron cannot change a system binary, a driver, or the installed software.
-3. **Central Updates from OCI**: Look after a fleet of public terminals from one place. Schedule `bootc update` against a standard container registry.
+3. **Central Updates from OCI**: Look after a fleet of public terminals from one place. Schedule `bootc upgrade` against a standard container registry.
 
 ## Deployment Architecture
 
@@ -21,7 +21,7 @@ The base OS is TunaOS Yellowfin (GNOME) for a familiar desktop, or Skipjack (KDE
               │         Your registry             │
               │  library-terminal:2026-09-01(signed)│
               └──────────────────────────────────┘
-                   ▲ bootc update, pulls nightly
+                   ▲ bootc upgrade, pulls nightly
                    │
      ┌─────────────┼─────────────┐
      ▼             ▼             ▼
@@ -51,10 +51,10 @@ Start from a published TunaOS image. Yellowfin gives a familiar GNOME desktop. S
 
 ### Step 2: Build the terminal image
 
-Make the terminal image on top of the base. Add the browser as a Flatpak. Add the privacy settings. Build the image with `bootc`.
+Make the terminal image on top of the base. Add the browser as a Flatpak. Add the privacy settings. Build the image with `podman build`.
 
 ```dockerfile
-FROM quay.io/tuna-os/yellowfin:latest
+FROM ghcr.io/tuna-os/yellowfin:latest
 
 # Add the browser as a Flatpak with your privacy defaults.
 RUN dnf install -y flatpak && \
@@ -70,7 +70,7 @@ COPY idle-timeout.conf /etc/systemd/logind.conf.d/
 Push the built image to your registry. Tag it with a date. A dated tag lets you see and roll back each version.
 
 ```bash
-bootc push --tls-verify=false registry.registry.example.com/library-terminal:2026-09-01
+podman push registry.registry.example.com/library-terminal:2026-09-01
 ```
 
 ### Step 4: Set the image policy

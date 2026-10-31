@@ -21,7 +21,7 @@ The base OS is TunaOS Bonito (Fedora base) for newer packages, or Skipjack (Cent
             │         Your registry            │
             │   lab-image:2026-09-01 (signed)  │
             └─────────────────────────────────┘
-                     ▲ bootc update, pulls
+                     ▲ bootc upgrade, pulls
                      │
    ┌─────────────────┼─────────────────┐
    ▼                 ▼                 ▼
@@ -51,10 +51,10 @@ Start from a published TunaOS image. Bonito gives the newest packages. Skipjack 
 
 ### Step 2: Build the lab image
 
-Make the lab image on top of the base. Add the curriculum apps as Flatpaks. Add the lab policy. Build the image with `bootc`.
+Make the lab image on top of the base. Add the curriculum apps as Flatpaks. Add the lab policy. Build the image with `podman build`.
 
 ```dockerfile
-FROM quay.io/tuna-os/bonito:latest
+FROM ghcr.io/tuna-os/bonito:latest
 
 # Add the curriculum apps as Flatpaks.
 RUN dnf install -y flatpak && \
@@ -70,7 +70,7 @@ COPY idle-timeout.conf /etc/systemd/logind.conf.d/
 Push the built image to your registry. Tag it with a date so you can see and roll back each version.
 
 ```bash
-bootc push --tls-verify=false registry.registry.example.com/lab-image:2026-09-01
+podman push registry.registry.example.com/lab-image:2026-09-01
 ```
 
 ### Step 4: Set the image policy
@@ -118,7 +118,7 @@ Push the image to every machine. Set the systemd timer to pull a new image each 
 Use this list when a lab machine misbehaves:
 
 - **Machine will not pull the image**: Check the network path to the registry. Check the image policy allows your registry.
-- **An app is missing**: Rebuild the image with the app. Push a new tag. Push `bootc update` on the machine.
+- **An app is missing**: Rebuild the image with the app. Push a new tag. Run `sudo bootc upgrade` on the machine and reboot.
 - **The desktop looks wrong after a reboot**: A student changed a system file. Check the image policy and the signature. Rebuild the image if it drifted.
 - **The session does not reset**: Check the guest session and the idle-timeout drop-in. Test them on one machine first.
 

@@ -21,7 +21,7 @@ The base OS is a light TunaOS variant such as XFCE Linux or Bonito Niri. Set it 
              │          Your registry            │
              │  kiosk-screen:2026-09-01 (signed) │
              └───────────────────────────────────┘
-                  ▲ bootc update, pulls at night
+                  ▲ bootc upgrade, pulls at night
                   │
     ┌─────────────┼─────────────┐
     ▼             ▼             ▼
@@ -51,10 +51,10 @@ Start from a published image in a light TunaOS variant. XFCE Linux gives a full 
 
 ### Step 2: Build the kiosk image
 
-Make the kiosk image on top of the base. Add the kiosk app. Set it to run full-screen. Build the image with `bootc`.
+Make the kiosk image on top of the base. Add the kiosk app. Set it to run full-screen. Build the image with `podman build`.
 
 ```dockerfile
-FROM quay.io/tuna-os/xfce-linux:latest
+FROM ghcr.io/tuna-os/xfce-linux:latest
 
 # Add the kiosk app as a Flatpak and launch it full-screen.
 RUN dnf install -y flatpak && \
@@ -79,7 +79,7 @@ exec flatpak run org.chromium.Chromium --kiosk --incognito https://signage.inter
 Push the built image to your registry. Tag it with a date. A dated tag lets you see and roll back each version.
 
 ```bash
-bootc push --tls-verify=false registry.registry.example.com/kiosk-screen:2026-09-01
+podman push registry.registry.example.com/kiosk-screen:2026-09-01
 ```
 
 ### Step 5: Set the image policy
@@ -99,17 +99,14 @@ Put the image on the screens in three ways.
 Add a systemd timer that pulls a new image each night. Run the update in the quiet hours. The screens take the new image on their next timer.
 
 ```ini
-# /etc/systemd/system/bootc-update.timer
-[Unit]
-Description=Daily bootc update
-
+# /etc/systemd/system/bootc-fetch-apply-updates.timer.d/schedule.conf
 [Timer]
+OnCalendar=
 OnCalendar=*-*-* 03:00:00
 Persistent=true
-
-[Install]
-WantedBy=timers.target
 ```
+
+This drop-in moves the `bootc-fetch-apply-updates.timer` that bootc ships to 03:00. The timer runs `bootc upgrade --apply`, which stages the new image and reboots into it. Enable it with `sudo systemctl enable --now bootc-fetch-apply-updates.timer`.
 
 ### Step 8: Verify one screen
 
