@@ -41,6 +41,11 @@ def mod(tmp_path, monkeypatch):
     (apps_dir / "expected-apps.json").write_text('{"apps": []}')
     m = load_module()
     monkeypatch.setattr(m, "REPO_ROOT", tmp_path)
+
+    def unexpected_api_call(*args, **kwargs):
+        pytest.fail("Unit tests must mock GitHub API calls")
+
+    monkeypatch.setattr(m, "gh_api", unexpected_api_call)
     return m
 
 
@@ -239,10 +244,12 @@ def test_main_handles_multi_id_launch_failure(mod, monkeypatch):
     apps = [{"name": "tuna-os/suite", "ids": ["org.tunaos.app1", "org.tunaos.app2"]}]
     with patch.object(mod, "install", return_value=(True, "")), \
          patch.object(mod, "launch", side_effect=[(True, ""), (False, "crash")]), \
+         patch.object(mod, "close_if_recovered") as close_recovered, \
          patch.object(mod, "file_or_update_issue") as file_issue:
         code = _run_main(mod, apps, monkeypatch,
                           env={"FILE_ISSUES": "true", "ISSUE_TOKEN": "tok"})
     assert code == 1
+    close_recovered.assert_called_once_with("tuna-os/suite", "org.tunaos.app1", "tok")
     file_issue.assert_called_once()
     assert file_issue.call_args.args[0] == "tuna-os/suite"
     assert file_issue.call_args.args[1] == "org.tunaos.app2"
