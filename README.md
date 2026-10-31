@@ -110,3 +110,8 @@ For prerequisites and validation before submission, see the
 
 See [Telemetry and adoption proxy operations](TELEMETRY.md) for application log
 fields, privacy guarantees, and cache measurement limits.
+
+## Architecture and adoption blog drafts
+
+The [guide for review](runbooks/architecture-series-review.md) links the three
+drafts, outlines, claim evidence, and publication hold for tuna-os/tunaos#3301.
