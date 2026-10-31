@@ -492,7 +492,7 @@ function main() {
         const abs = join(targetDir, relPath);
         const existing = existsSync(abs) ? readFileSync(abs, 'utf8') : null;
         if (existing !== null && existing !== newContent && !isSyncedPage(existing)) {
-          divergedPages.push(relPath);
+          divergedPages.push(`${slug}/${relPath}`);
         }
       };
 

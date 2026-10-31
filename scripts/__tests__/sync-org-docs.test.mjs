@@ -547,6 +547,12 @@ test('matches a synced subpage with a body', () => {
   assert.ok(isSyncedPage(subFrontmatter('Testing', 5) + 'Body text.\n'));
 });
 
+test('matches a synced subpage markUnparseable marked as CommonMark', () => {
+  // withFormatMd adds `mdx: {format: md}` to a subpage MDX cannot compile;
+  // the next run must still see it as synced, not as a hand-authored page.
+  assert.ok(isSyncedPage(withFormatMd(subFrontmatter('Keymap', 3) + 'Press {tap}.\n')));
+});
+
 test('rejects front matter a person typed on a subpage', () => {
   // A hand-authored page often puts `title:` first. subFrontmatter() emits
   // `sidebar_position:` first, so a different key order is not a synced page.

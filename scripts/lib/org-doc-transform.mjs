@@ -260,8 +260,10 @@ const SYNCED_INDEX = /^---\nsidebar_position: \d+\nsidebar_label: "[^"]*"\n\nsta
 // SYNCED_SUBPAGE matches the front matter subFrontmatter() writes for a synced
 // subpage (a root doc or docs/ file synced out of a repo). It is distinct from
 // SYNCED_INDEX: a subpage carries `title:` and no `status:`, so a page a person
-// typed (either key, neither, or different values) does not match it.
-const SYNCED_SUBPAGE = /^---\nsidebar_position: \d+\ntitle: "[^"]*"\n---\n\n/;
+// typed (either key, neither, or different values) does not match it. Like
+// SYNCED_INDEX, it allows the `mdx: {format: md}` markUnparseable adds to a
+// subpage MDX cannot compile; that page is still one this script wrote.
+const SYNCED_SUBPAGE = /^---\nsidebar_position: \d+\ntitle: "[^"]*"\n(?:mdx:\n  format: md\n)?---\n/;
 
 // isSyncedIndex reports whether a document's front matter was written by this
 // script's frontmatter() rather than by a person.
