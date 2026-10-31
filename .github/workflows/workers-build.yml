@@ -4,28 +4,31 @@
 name: Workers Build
 
 on:
-  pull_request:
-    paths:
-      - '**'
-  push:
-    branches: [main]
-  workflow_dispatch:
+  workflow_call:
+    outputs:
+      install:
+        description: Linux onboarding dependency installation outcome
+        value: ${{ jobs.build.outputs.install }}
+      site:
+        description: Linux onboarding site build outcome
+        value: ${{ jobs.build.outputs.site }}
 
 permissions:
   contents: read
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
     name: Build tunaos-org
     runs-on: ubuntu-26.04
+    outputs:
+      install: ${{ steps.install.outcome }}
+      site: ${{ steps.site.outcome }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
@@ -33,12 +36,14 @@ jobs:
           cache: npm
 
       - name: Install dependencies
+        id: install
         run: npm ci
 
       - name: Typecheck site sources
         run: npm run typecheck
 
       - name: Build the site
+        id: site
         run: npm run build
 
       - name: Install browser for metrics checks

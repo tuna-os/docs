@@ -4,7 +4,7 @@ import Link from '@docusaurus/Link';
 import {MATRIX_DESKTOPS, MATRIX_VARIANTS, buildStatus} from '@site/src/data/matrix';
 import type {BuildStatus} from '@site/src/data/matrix';
 import type {Variant} from '@site/src/data/variants';
-import {desktopLogo, markFor} from '@site/src/data/marks';
+import {desktopLogo, emojiMarkFor} from '@site/src/data/identity';
 import {elapsed} from '@site/src/components/BuildPulse';
 import type {IsoIndex} from '@site/src/hooks/useIsoIndex';
 
@@ -210,7 +210,7 @@ export default function BuildMatrix({index}: {index: IsoIndex | null}): ReactNod
                   <span className={styles.variantInner}>
                     <img
                       className={styles.variantMark}
-                      src={markFor(variant.id)}
+                      src={emojiMarkFor(variant.id)}
                       alt=""
                       width={24}
                       height={24}
@@ -255,7 +255,7 @@ export default function BuildMatrix({index}: {index: IsoIndex | null}): ReactNod
               <header className={styles.cardHead}>
                 <img
                   className={styles.variantMark}
-                  src={markFor(variant.id)}
+                  src={emojiMarkFor(variant.id)}
                   alt=""
                   width={26}
                   height={26}
