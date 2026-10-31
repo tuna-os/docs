@@ -103,17 +103,66 @@ jobs:
             "AUTHORIZATION: basic $(printf 'x-access-token:%s' "$FLATPAK_INDEX_TOKEN" | base64 -w0)"
           pip install requests
 
+          staged_index="index-repo/static/flatpak/index/static"
+
+          # Fail closed: track any publication failure. If any app copy or index
+          # update fails, abort before committing or pushing changes.
+          FAILED=0
           for dir in artifacts/*/; do
             app=$(basename "$dir")
             echo "=== Publishing $app ==="
-            skopeo copy "oci:${dir}" "docker://${REGISTRY}/${app}:latest" || true
+            if ! skopeo copy "oci:${dir}" "docker://${REGISTRY}/${app}:latest"; then
+              echo "::error::Failed to copy OCI image for $app"
+              FAILED=1
+              continue
+            fi
 
-            python3 .github/scripts/update-index.py \
+            if ! python3 .github/scripts/update-index.py \
               --oci-dir "${dir}" \
-              --index-file index-repo/static/flatpak/index/static \
+              --index-file "${staged_index}" \
               --repo-name "tuna-os/${app}" \
-              --tags latest || true
+              --tags latest; then
+              echo "::error::Failed to update index for $app"
+              FAILED=1
+              continue
+            fi
           done
+
+          if [ "$FAILED" -ne 0 ]; then
+            echo "::error::One or more applications failed to publish. Aborting catalog update."
+            exit 1
+          fi
+
+          # Validate the staged index structure before committing
+          python3 -c "
+          import json
+          from pathlib import Path
+
+          index_path = Path('${staged_index}')
+          if not index_path.is_file():
+              raise SystemExit(f'Index file not found: {index_path}')
+          data = json.loads(index_path.read_text())
+          if not isinstance(data, dict):
+              raise SystemExit('Index root must be a JSON object')
+          if not data.get('Registry'):
+              raise SystemExit('Index missing Registry key')
+          results = data.get('Results')
+          if not isinstance(results, list):
+              raise SystemExit('Index Results must be a list')
+          for res in results:
+              if not res.get('Name'):
+                  raise SystemExit('Result entry missing Name')
+              images = res.get('Images')
+              if not isinstance(images, list) or not images:
+                  raise SystemExit(f'Result {res.get(\"Name\")} has no images')
+              for img in images:
+                  if not img.get('Digest') or not img.get('Architecture'):
+                      raise SystemExit(f'Image in {res.get(\"Name\")} missing Digest or Architecture')
+                  labels = img.get('Labels', {})
+                  if not labels.get('org.flatpak.ref') or not labels.get('org.flatpak.metadata'):
+                      raise SystemExit(f'Image in {res.get(\"Name\")} missing required Flatpak labels')
+          print('Staged index validation passed.')
+          "
 
           cd index-repo
           git config user.name "github-actions[bot]"
