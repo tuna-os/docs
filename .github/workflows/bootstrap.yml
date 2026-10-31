@@ -1,9 +1,5 @@
-# Tests the developer onboarding flow (npm install → build) on a
-# schedule so the next person to clone the repo doesn't hit a broken
-# setup. Auto-opens an issue when it breaks and closes it once green.
-#
-# Pattern from: https://mikemcquaid.com/make-github-actions-do-more-for-you/
-
+# One Linux build supplies both Workers validation and onboarding evidence.
+# macOS still exercises a fresh install/build for site/tooling changes and daily.
 name: bootstrap
 
 on:
@@ -12,28 +8,77 @@ on:
   pull_request:
   schedule:
     - cron: '0 0 * * *'  # daily at midnight UTC
+  workflow_dispatch:
 
 permissions:
   contents: read
-  issues: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  bootstrap:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-24.04, macos-latest]
-    runs-on: ${{ matrix.os }}
+  changes:
     if: ${{ github.repository == 'tuna-os/docs' }}
-
+    runs-on: ubuntu-26.04
+    outputs:
+      macos: ${{ steps.changes.outputs.macos }}
     steps:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Select macOS onboarding coverage
+        id: changes
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          if [[ "$EVENT" == schedule || "$EVENT" == workflow_dispatch ||
+                -z "$BASE" || "$BASE" =~ ^0+$ ]]; then
+            echo 'macos=true' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ "$EVENT" == pull_request ]]; then
+            git diff --no-renames --name-only -z "$BASE...$HEAD" > changed-paths
+          else
+            git diff --no-renames --name-only -z "$BASE" "$HEAD" > changed-paths
+          fi
+          macos=false
+          while IFS= read -r -d '' path; do
+            case "$path" in
+              docs/*|blog/*|src/*|static/*|scripts/*|worker/*|\
+              *.json|*.jsonc|*.js|*.mjs|*.ts|*.css|*.mdx|\
+              justfile|.npmrc|.nvmrc|.node-version|.tool-versions|.editorconfig|\
+              .github/scripts/*|.github/actions/*|\
+              .github/workflows/bootstrap.yml|.github/workflows/workers-build.yml|\
+              .github/workflows/lint.yml)
+                macos=true
+                break
+                ;;
+            esac
+          done < changed-paths
+          echo "macos=$macos" >> "$GITHUB_OUTPUT"
+
+  workers:
+    if: ${{ github.repository == 'tuna-os/docs' }}
+    uses: ./.github/workflows/workers-build.yml
+
+  macos:
+    needs: changes
+    if: needs.changes.outputs.macos == 'true'
+    runs-on: macos-latest
+    outputs:
+      install: ${{ steps.install.outcome }}
+      site: ${{ steps.site.outcome }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - uses: actions/setup-node@v7
         with:
@@ -45,34 +90,81 @@ jobs:
         run: npm ci
 
       - name: Build the site
-        id: build
+        id: site
         run: npm run build
 
-      # Open a tracking issue (one per OS) the first time bootstrap breaks.
-      - name: Open an issue on failure
-        if: failure() && (steps.install.outcome == 'failure' || steps.build.outcome == 'failure')
+  # Retain the existing check names, without a second Linux npm ci/site build.
+  bootstrap:
+    name: bootstrap (${{ matrix.os }})
+    needs: [changes, workers, macos]
+    if: ${{ always() && github.repository == 'tuna-os/docs' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-latest]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Report onboarding result
+        env:
+          OS: ${{ matrix.os }}
+          CHANGES: ${{ needs.changes.result }}
+          MACOS_REQUIRED: ${{ needs.changes.outputs.macos }}
+          MACOS_RESULT: ${{ needs.macos.result }}
+          INSTALL: ${{ needs[matrix.os == 'ubuntu-24.04' && 'workers' || 'macos'].outputs.install }}
+          SITE: ${{ needs[matrix.os == 'ubuntu-24.04' && 'workers' || 'macos'].outputs.site }}
+        run: |
+          if [[ "$OS" == macos-latest ]]; then
+            [[ "$CHANGES" == success ]]
+            if [[ "$MACOS_REQUIRED" != true ]]; then
+              echo 'No site or onboarding tooling changed; macOS runs daily and on manual dispatch.'
+              exit 0
+            fi
+            [[ "$MACOS_RESULT" == success ]]
+          fi
+          [[ "$INSTALL" == success && "$SITE" == success ]]
+
+  build:
+    name: Build tunaos-org
+    needs: workers
+    if: ${{ always() && github.repository == 'tuna-os/docs' }}
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Report Workers validation result
+        env:
+          RESULT: ${{ needs.workers.result }}
+        run: test "$RESULT" = success
+
+  # Only this job can write issues. It never checks out or executes PR code.
+  bootstrap-issues:
+    needs: [workers, macos]
+    if: ${{ always() && github.repository == 'tuna-os/docs' && github.event_name != 'pull_request' }}
+    permissions:
+      contents: read
+      issues: write
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-latest]
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Update onboarding tracking issue
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
           TITLE: "Bootstrap is broken on ${{ matrix.os }}"
           URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          INSTALL: ${{ needs[matrix.os == 'ubuntu-24.04' && 'workers' || 'macos'].outputs.install }}
+          SITE: ${{ needs[matrix.os == 'ubuntu-24.04' && 'workers' || 'macos'].outputs.site }}
         run: |
-          gh issue list --state open --search "${TITLE} in:title" \
-            --json number --jq '.[].number' | grep -q . || \
-          gh issue create \
-            --title "${TITLE}" \
-            --label bootstrap \
-            --body "Bootstrap failed: ${URL}"
-
-      # Close it again once bootstrap is green.
-      - name: Close the issue on success
-        if: success()
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TITLE: "Bootstrap is broken on ${{ matrix.os }}"
-        run: |
-          gh issue list --state open --search "${TITLE} in:title" \
-            --json number --jq '.[].number' | \
-          while read -r number; do
-            gh issue close "${number}" \
-              --comment "Bootstrap is green again."
-          done
+          if [[ "$INSTALL" == failure || "$SITE" == failure ]]; then
+            gh issue list --state open --search "${TITLE} in:title" \
+              --json number --jq '.[].number' | grep -q . || \
+            gh issue create --title "$TITLE" --label bootstrap \
+              --body "Bootstrap failed: ${URL}"
+          elif [[ "$INSTALL" == success && "$SITE" == success ]]; then
+            gh issue list --state open --search "${TITLE} in:title" \
+              --json number --jq '.[].number' |
+            while read -r number; do
+              gh issue close "$number" --comment "Bootstrap is green again."
+            done
+          fi

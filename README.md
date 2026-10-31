@@ -66,11 +66,27 @@ static assets, and `worker/index.js` routes requests.
 
 - **Production** — a push to `main` triggers Cloudflare Workers Builds,
   which runs the build and publishes the new assets.
-- **Pull requests** — `.github/workflows/workers-build.yml` runs the same
-  Docusaurus and Workers build. A deploy failure then appears on the PR
-  before it reaches production.
+- **Pull requests** — `.github/workflows/bootstrap.yml` calls the reusable
+  `workers-build.yml` workflow for Docusaurus and Workers validation.
+  A deploy failure then appears on the PR before it reaches production.
 - **Content sync** — `.github/workflows/sync-org-docs.yml` runs daily
   (cron `0 6 * * *`) and opens a PR when org-synced content changes.
+
+The shared Linux job runs `npm ci`, type checks, one site build, both browser
+smoke checks, and `wrangler deploy --dry-run`. It supplies results to the required
+`Build tunaos-org` and `bootstrap (ubuntu-24.04)` checks.
+The Ubuntu check does not build the site again.
+Production Workers Builds builds and deploys separately on pushes to `main`.
+
+`bootstrap (macos-latest)` checks a fresh macOS install and build for changes to
+the site, dependencies, or setup tools. It reports not applicable for other changes.
+Daily and manual `bootstrap` runs always check macOS setup.
+
+PR jobs check out the PR head SHA, not the default branch.
+They do not share build artifacts across events or workflows.
+They have no issue-write permission.
+The separate issue job runs only for pushes, schedules, and manual runs.
+Lint uses `npm ci` without an unlocked install fallback.
 
 The adoption API uses the `COUNTME` service binding to the `tunaos-countme`
 Worker in the same account. Deploy the collector before the site. Its source
