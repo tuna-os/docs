@@ -34,6 +34,13 @@ npm ci
 Fork the repository on GitHub first. Replace `YOUR-USERNAME` with your GitHub name.
 `npm ci` installs the versions in the lockfile.
 
+The Flatpak script tests also need Python 3.13 and pytest. In your Python
+virtual environment, install the test dependency:
+
+```bash
+python3 -m pip install -r .github/scripts/tests/requirements.txt
+```
+
 **Local development:**
 
 ```bash
@@ -97,6 +104,9 @@ just preflight
 This command type-checks the site, checks Markdown and JavaScript, enforces the
 prose budget for Simplified Technical English, and runs tests for documentation
 scripts. Also run `just build` when the change can affect the generated site.
+
+`just test-python` runs only the Flatpak Python tests. These tests use local
+fixtures and mocks; they do not need Flatpak, a display server, or credentials.
 
 Use `just --list` to see individual setup, preview, build, and validation
 recipes.

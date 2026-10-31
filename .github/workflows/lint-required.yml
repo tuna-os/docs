@@ -25,6 +25,7 @@ on:
       - 'blog/**'
       - '*.md'
       - 'scripts/**'
+      - '.github/scripts/**'
       - '.ste-budget'
       - '.markdownlint-budget'
       - '.github/workflows/lint.yml'
