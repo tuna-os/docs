@@ -7,7 +7,7 @@
 // functions imported from the library module.
 //
 // Usage:
-//   node scripts/build-iso-index.test.mjs
+//   node scripts/__tests__/build-iso-index.test.mjs
 
 import {strict as assert} from 'node:assert';
 import {execSync} from 'node:child_process';
@@ -23,10 +23,10 @@ import {
   titleCase,
   buildIsoIndex,
   CATEGORIES,
-} from './lib/iso-index.mjs';
+} from '../lib/iso-index.mjs';
 
 // Also verify backward-compatible exports from build-iso-index.mjs without stdin blocking
-const scriptUrl = new URL('./build-iso-index.mjs', import.meta.url);
+const scriptUrl = new URL('../build-iso-index.mjs', import.meta.url);
 const mod = await import(scriptUrl);
 assert.equal(typeof mod.detectArch, 'function');
 assert.equal(typeof mod.titleCase, 'function');
@@ -102,7 +102,7 @@ function runScript(stdinData) {
   const fixturePath = join(tmpDir, 'fixture.json');
   writeFileSync(fixturePath, stdinData);
 
-  const scriptPath = new URL('./build-iso-index.mjs', import.meta.url).pathname;
+  const scriptPath = new URL('../build-iso-index.mjs', import.meta.url).pathname;
   const out = execSync(`node "${scriptPath}"`, {
     input: stdinData,
     encoding: 'utf8',

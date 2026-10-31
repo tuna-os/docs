@@ -14,7 +14,7 @@ import {readFileSync, readdirSync, writeFileSync} from 'node:fs';
 import {dirname, join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', 'static', 'img', 'identity');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'static', 'img', 'identity');
 const MANIFEST = join(ROOT, 'identity-manifest.json');
 const DIRS = ['emoji', 'wordmarks'];
 
