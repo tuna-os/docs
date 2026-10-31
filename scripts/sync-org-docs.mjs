@@ -22,12 +22,6 @@ import {
   cloneRepo,
   discoverRepos,
   ORG,
-  PER_PAGE,
-  DEFAULT_PAGE_SIZE,
-  RETRY_DELAY_MS,
-  listOrgRepos,
-  orgPublicRepoCount,
-  checkListing,
 } from './lib/org-doc-source.mjs';
 
 // Projects that get their own doc section. Add a slug → label entry to
@@ -536,16 +530,9 @@ export {
   rejectExpressions,
   withFormatMd,
   slugify,
-  listOrgRepos,
-  orgPublicRepoCount,
-  checkListing,
-  discoverRepos,
   findCaseCollisions,
   docOutputNames,
   HAND_AUTHORED,
-  PER_PAGE,
-  DEFAULT_PAGE_SIZE,
-  RETRY_DELAY_MS,
 };
 
 // The command module is imported by tests for orchestration and reconciliation
