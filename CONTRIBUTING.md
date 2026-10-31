@@ -141,3 +141,16 @@ about discovery, changes to links, failure diagnosis, and pipeline maintenance.
 - [TunaOS Documentation](https://tunaos.org)
 - [GitHub Issues for the docs site](https://github.com/tuna-os/docs/issues)
 - For general TunaOS questions, see [TunaOS Issues](https://github.com/tuna-os/tunaOS/issues)
+
+## Flatpak icon artifacts
+
+After a publisher updates `static/flatpak/index/static`, run
+`npm run generate:flatpak`. This is the only step that writes remote icon
+metadata and the PNG files in `static/flatpak/icons/`. Commit both together.
+The Flatpak publish workflow runs the same producer before it stages files.
+
+`npm run check:flatpak`, the site build, and the sanity workflow check these
+artifacts and do not write to them. A stale artifact fails the check and names the
+generation command. The producer removes PNG files for entries no longer in
+the index. The producer warns if an icon label is absent or invalid. The remote sanity
+check reports missing remote icons.
