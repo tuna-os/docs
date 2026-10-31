@@ -12,7 +12,7 @@ collector's storage policy.
 The public schema allows weekly totals and approved dimensions only. Counts
 below 10 are suppressed; other counts are rounded to tens. The proxy validates
 the feed before it returns data. It rejects responses larger than 512,000 bytes.
-See `src/data/adoption.mjs` and `scripts/adoption.test.mjs` for the contract.
+See `src/data/adoption.mjs` and `scripts/__tests__/adoption.test.mjs` for the contract.
 
 This change adds no browser analytics, tracking cookies, identifiers, or client
 error reporting. Page views and dimension selections are not recorded by this

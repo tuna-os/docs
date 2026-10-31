@@ -39,12 +39,21 @@ test:
     #!/usr/bin/env bash
     set -euo pipefail
     FAILED=0
-    for f in scripts/__tests__/*.test.mjs scripts/*.test.mjs; do
+    for f in scripts/__tests__/*.test.mjs; do
         [[ -f "$f" ]] || continue
         echo "  Running: $f"
         node "$f" || FAILED=1
     done
     exit $FAILED
+
+# Run standalone repository checks.
+checks:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    for f in scripts/checks/*.mjs; do
+        [[ -f "$f" ]] || continue
+        node "$f"
+    done
 
 # Run the Flatpak Python unit tests (install .github/scripts/tests/requirements.txt first)
 test-python:
@@ -60,9 +69,8 @@ lint:
         --disable MD013 MD033 MD041 || \
         echo "NOTE: markdownlint found issues — review and fix"
     FAILED=0
-    for f in scripts/*.mjs scripts/*.js; do
+    for f in scripts/*.mjs scripts/*.js scripts/lib/*.mjs scripts/checks/*.mjs scripts/__tests__/*.test.mjs; do
         [[ -f "$f" ]] || continue
-        [[ "$f" == *.test.mjs ]] && continue
         echo "  Checking: $f"
         node --check "$f" 2>/dev/null || FAILED=1
     done
@@ -90,4 +98,4 @@ check-install-commands:
     node scripts/check-install-commands.mjs
 
 # Run the checks CI runs on PRs
-preflight: check lint test test-python check-install-commands
+preflight: check lint test checks test-python check-install-commands

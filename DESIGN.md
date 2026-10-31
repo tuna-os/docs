@@ -44,7 +44,7 @@ CTA in the hero and has its own landing page.
    comes from [tuna-os/tunaOS](https://github.com/tuna-os/tunaOS). It is
    vendored into `static/img/identity/`, mapped in `src/data/identity.ts`,
    and verified against its manifest by
-   `scripts/check-identity-assets.test.mjs`. Headers, cards and the hero use
+   `scripts/checks/check-identity-assets.mjs`. Headers, cards and the hero use
    the variant wordmark (`src/components/Wordmark.tsx`). Small icons, the
    navbar and the favicon use the Noto emoji mark. Each project carries a
    glyph from `src/components/Icon.tsx`, named in its `src/data/projects.ts`

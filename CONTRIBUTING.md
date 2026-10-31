@@ -111,6 +111,15 @@ fixtures and mocks; they do not need Flatpak, a display server, or credentials.
 Use `just --list` to see individual setup, preview, build, and validation
 recipes.
 
+### Script layout
+
+Put unit tests that import and assert on production modules in
+`scripts/__tests__/*.test.mjs`. Run them with `just test`. Put standalone
+repository checks in `scripts/checks/*.mjs` and run them with `just checks`.
+Both CI and `just lint` check syntax in both directories, including tests;
+`node --check` parses files without import resolution or execution.
+`just preflight` runs both groups.
+
 ### Additional validation before submission
 
 Run two additional checks before you submit:
