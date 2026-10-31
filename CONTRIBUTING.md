@@ -115,6 +115,66 @@ their source repositories. Fix documentation for a generated project in its
 source repository. The next sync overwrites direct changes here. The generated
 index page at the start of a project tree identifies the source repository.
 
+## Adding a Variant Page
+
+TunaOS provides multiple operating system variants (such as Albacore, Yellowfin,
+Bonito, and Gurnard). Follow these steps to add documentation for a new variant:
+
+### 1. File Location and Frontmatter
+
+Variant reference pages live at the top level of `docs/`:
+
+- Path: `docs/<variant>.md` (for example, `docs/yellowfin.md`).
+- Frontmatter must include `sidebar_position`:
+
+```markdown
+---
+sidebar_position: 11
+---
+
+# VariantName (Base Distribution)
+```
+
+Next, add your variant page to `sidebars.ts` under the **Variants** category in
+`tutorialSidebar`:
+
+- If the variant has a custom start page in `src/pages/`, add a link item: `{type: 'link', label: 'VariantName — Base', href: '/variantname'}`.
+- Add the doc ID (`'<variant>'`) to `tutorialSidebar` under `Variants` -> `Reference docs` items.
+
+### 2. Standard Page Structure
+
+A standard variant page includes the following sections:
+
+1. **Header and Overview:** A link to the start page or quick-start guide.
+2. **Metadata:** Upstream base name and link (for example, AlmaLinux, Fedora, or Ubuntu).
+3. **Features:** Key capabilities (for example, integrated Homebrew, desktop environment, kernel options).
+4. **Downloads:**
+   - Container image references on GitHub Packages (`ghcr.io/tuna-os/<variant>:<tag>`).
+   - Links to live ISO files at `https://download.tunaos.org/live-isos/<variant>-<flavor>-latest.iso`.
+5. **Installation:**
+   - Image pull command with `podman pull ghcr.io/tuna-os/<variant>:latest`.
+   - Local ISO build steps using `just build-iso <variant>` in the `tuna-os/tunaOS` repository.
+6. **Community Support and Help:** Links to TunaOS Matrix chat and upstream forums.
+
+### 3. Download Index and ISO Links
+
+The download catalog on `/download` reads metadata from `static/iso-index.json`.
+
+- The Cloudflare R2 bucket (`download.tunaos.org`) stores all published ISOs.
+- `scripts/build-iso-index.mjs` transforms the object list into structured categories.
+- Ensure your ISO file uses the standard name pattern (`<variant>-<flavor>-latest.iso`) so `detectArch()` in `scripts/lib/iso-index.mjs` detects the architecture correctly.
+
+### 4. Checklist for Pull Requests
+
+Before you submit a pull request with a new variant page:
+
+- [ ] The file exists at `docs/<variant>.md`.
+- [ ] You added the sidebar entry to `sidebars.ts` under `Reference docs`.
+- [ ] You added the variant to `docs/choosing-a-variant.md` in the table and decision paths.
+- [ ] All internal links resolve without 404 errors.
+- [ ] Preflight checks pass: run `just preflight`.
+- [ ] The production build succeeds: run `just build`.
+
 ## Pull Requests
 
 - Keep PRs focused — one change per PR.
