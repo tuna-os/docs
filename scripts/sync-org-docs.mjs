@@ -1,15 +1,19 @@
 #!/usr/bin/env node
-// Aggregates READMEs and docs from every active project in the tuna-os
-// GitHub org into the Docusaurus site. Reads no project-specific config
-// here — new repos with a README are automatically picked up.
+// READMEs and docs from every active project in the tuna-os
+// GitHub org into the Docusaurus site.
+//
+// Protection rules (which docs/<slug>/ trees the sync must never overwrite,
+// and which root docs each repo contributes) live in scripts/sync-org-docs.config.json
+// so documentation maintainers can change them without a code PR. This script
+// only holds the sync engine.
 //
 // Usage:
 //   node scripts/sync-org-docs.mjs
 
 import {execSync} from 'node:child_process';
 import {existsSync, readFileSync, readdirSync, writeFileSync, mkdirSync, rmSync} from 'node:fs';
-import {join} from 'node:path';
-import {pathToFileURL} from 'node:url';
+import {dirname, join} from 'node:path';
+import {fileURLToPath, pathToFileURL} from 'node:url';
 import {
   sanitizeHtml,
   fixRelativeLinks,
@@ -47,40 +51,50 @@ const SKIP = new Set([
   'tables', 'letters', 'decks',  // archived Python apps, superseded by gtk-office-suite
 ]);
 
-// Per-repo filter: only sync these root doc files (case-insensitive match).
-// Empty array = sync all root .md files.
-const ROOT_DOC_FILTER = {
-  tunaOS: ['README.md', 'ROADMAP.md', 'SECURITY.md', 'CONTRIBUTING.md'],
-};
+// The sync config. Loaded once at startup from scripts/sync-org-docs.config.json, next
+// to this script. Keeping it in a file (not a code comment) is the whole point
+// of this change: documentation maintainers edit protection rules there without
+// a code PR, and the file is auditable — every protected repo lists its slug,
+// why it is protected, and the date it was protected.
+const SYNC_CONFIG_PATH = join(
+  dirname(fileURLToPath(import.meta.url)),
+  'sync-org-docs.config.json',
+);
 
-// docs/<slug>/ trees that are written by hand here and must never be
-// overwritten from an upstream README, even though a repo of the same name
-// exists in the org.
-//
-// These survived only by accident: each maps to a repo that fell past the
-// first page of the unpaginated repo listing, so the sync never reached it
-// (#103). Paginating the listing reaches them all, and the write path is
-// unconditional — writeFileSync, no comparison, no prompt — so without this
-// set the first paginated run would replace every page below with its
-// upstream README and drop the site-specific content.
-//
-// What makes each one hand-authored, so a future reader can re-check rather
-// than trust the list:
-//   mariner          — :::tip pointing at the /mariner showcase page (#61)
-//   gtk-office-suite — landing page for three apps, one repo
-//   mandelbrot       — site-specific prose, no upstream equivalent
-//   remora           — site-specific prose, no upstream equivalent
-//   dakota           — :::tip plus an external-project banner (repo is also
-//                      in SKIP; listed here so the protection does not rest
-//                      on a SKIP entry that exists for a different reason)
-//   blueshell        — :::tip pointing at the /blueshell showcase page, plus
-//                      site-specific install and upstream-tracking prose; the
-//                      upstream README is written for contributors, not for
-//                      this site
-//   ghostty          — not a tuna-os repo at all: the page documents what the
-//                      TunaOS remote republishes. Listed so it stays safe if a
-//                      repo of that name ever appears in the org
-const HAND_AUTHORED = new Set([
+function loadSyncConfig() {
+  let raw;
+  try {
+    raw = readFileSync(SYNC_CONFIG_PATH, 'utf8');
+  } catch (e) {
+    throw new Error(
+      `sync-org-docs: could not read ${SYNC_CONFIG_PATH}: ${e.message}. ` +
+        'Refusing to sync — hand-authored protection is empty.',
+    );
+  }
+  try {
+    return JSON.parse(raw);
+  } catch (e) {
+    throw new Error(
+      `sync-org-docs: ${SYNC_CONFIG_PATH} is not valid JSON: ${e.message}. ` +
+        'Refusing to sync — hand-authored protection is empty.',
+    );
+  }
+}
+
+const SYNC_CONFIG = loadSyncConfig();
+
+// Per-repo filter: only sync these root doc files (case-insensitive match).
+// Empty array = sync all root .md files. Kept in the sync config next to the
+// other sync rules.
+const ROOT_DOC_FILTER = (SYNC_CONFIG.sync_filters || {}).tunaOS || [];
+
+// The slugs the sync MUST protect. This is the fail-closed guard: the write path
+// is unconditional (writeFileSync, no comparison, no prompt) and paginating the
+// org listing reaches every repo, so the first paginated run would replace every
+// protected page with its upstream README and drop the site-specific content.
+// If the config is missing, empty, or drops a slug, the sync throws and aborts
+// rather than silently overwriting a page that used to be protected.
+const HAND_AUTHORED_EXPECTED = new Set([
   'mariner',
   'gtk-office-suite',
   'mandelbrot',
@@ -89,6 +103,29 @@ const HAND_AUTHORED = new Set([
   'blueshell',
   'ghostty',
 ]);
+
+function loadProtectedRepos(config = SYNC_CONFIG) {
+  const protectedRepos = Array.isArray(config.protected_repos)
+    ? config.protected_repos
+    : [];
+  if (protectedRepos.length === 0) {
+    throw new Error(
+      'sync-org-docs: scripts/sync-org-docs.config.json has no protected_repos. ' +
+        'Refusing to sync — hand-authored protection is empty.',
+    );
+  }
+  const slugs = new Set(protectedRepos.map((entry) => entry.slug));
+  const missing = [...HAND_AUTHORED_EXPECTED].filter((slug) => !slugs.has(slug));
+  if (missing.length) {
+    throw new Error(
+      `sync-org-docs: protected_repos is missing ${missing.join(', ')}. ` +
+        'Refusing to sync — protection set is incomplete.',
+    );
+  }
+  return new Set(slugs);
+}
+
+const HAND_AUTHORED = loadProtectedRepos();
 
 // Repos whose docs/ folder should NOT be synced (too noisy / internal).
 const SKIP_DOCS_DIR = new Set([
@@ -702,6 +739,7 @@ function withFormatMd(content) {
 }
 
 export {
+  loadProtectedRepos,
   sanitizeHtml,
   fixRelativeLinks,
   onProse,
