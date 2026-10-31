@@ -129,6 +129,7 @@ const sidebars: SidebarsConfig = {
     },
     {type: 'html', value: '<div class="sidebar-section-label">Community</div>', defaultStyle: true},
     'community',
+    {type: 'category', label: 'Case studies', link: {type: 'doc', id: 'case-studies/index'}, items: ['case-studies/TEMPLATE']},
     {type: 'category', label: 'Dakota (Bluefin)', className: 'sidebar-external', link: {type: 'doc', id: 'dakota/index'}, items: ['dakota/migration']},
   ],
 };
