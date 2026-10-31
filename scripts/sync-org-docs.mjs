@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// READMEs and docs from every active project in the tuna-os
+// Aggregates READMEs and docs from every active project in the tuna-os
 // GitHub org into the Docusaurus site.
 //
 // Protection rules (which docs/<slug>/ trees the sync must never overwrite,
@@ -83,10 +83,10 @@ function loadSyncConfig() {
 
 const SYNC_CONFIG = loadSyncConfig();
 
-// Per-repo filter: only sync these root doc files (case-insensitive match).
-// Empty array = sync all root .md files. Kept in the sync config next to the
-// other sync rules.
-const ROOT_DOC_FILTER = (SYNC_CONFIG.sync_filters || {}).tunaOS || [];
+// Per-repo filter, keyed by repo name: only sync these root doc files.
+// A repo with no entry syncs the default ROOT_DOC_NAMES. Kept in the sync
+// config next to the other sync rules.
+const ROOT_DOC_FILTER = SYNC_CONFIG.sync_filters || {};
 
 // The slugs the sync MUST protect. This is the fail-closed guard: the write path
 // is unconditional (writeFileSync, no comparison, no prompt) and paginating the
@@ -618,7 +618,8 @@ function main() {
         refusedRemovals++;
         console.warn(
           `  ⚠️  ${file} looks hand-written and is no longer upstream — ` +
-          'left in place. Add its slug to HAND_AUTHORED if it should stay ' +
+          'left in place. Add its slug to protected_repos in ' +
+          'scripts/sync-org-docs.config.json if it should stay ' +
           'permanently, or delete it by hand if it should go.',
         );
       }
@@ -760,6 +761,7 @@ export {
   findCaseCollisions,
   docOutputNames,
   HAND_AUTHORED,
+  ROOT_DOC_FILTER,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
   RETRY_DELAY_MS,
