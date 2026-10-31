@@ -148,7 +148,7 @@ jobs:
     # is reverted by the next sync, and the author is another repository), so
     # that prose is only ever checked where it is written. Same rules, applied
     # at the source.
-    uses: tuna-os/.github/.github/workflows/ste-lint.yml@f835d4a4cdb18746e9b8abbc07defcef796a30a1 # main
+    uses: tuna-os/.github/.github/workflows/ste-lint.yml@e4efc64bbb63d3cc6c79fb9cf9f3e4a3b2ce2209 # main
 
   link-check:
     name: Internal Link Check
