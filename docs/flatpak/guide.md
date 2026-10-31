@@ -101,6 +101,7 @@ flatpak update --check
 
 ## See Also
 
+- [Flatpak remote operations](../flatpak-remote-operations.md) — publication and operator checks
 - [Office Suite](/office) — Tables, Decks, Letters overview
 - [Tavern Guide](/docs/tavern) — guide to the Homebrew GUI
 - [Flatpak Documentation](https://docs.flatpak.org) — official Flatpak docs
