@@ -38,7 +38,7 @@ import {
   checkListing,
   discoverRepos,
   findCaseCollisions,
-  claimTargetName,
+  docOutputNames,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
   RETRY_DELAY_MS,
@@ -85,6 +85,21 @@ console.log('\n📋 sync-org-docs tests\n');
 // run — strictly worse than the build failure it replaced.
 
 console.log('onProse');
+
+test('flattened imports preserve both root ROADMAP and docs roadmap', () => {
+  const outputs = docOutputNames(['index.md', 'ROADMAP.md'], ['roadmap.md', 'install.md']);
+  assert.equal(outputs.get('roadmap.md'), 'docs-roadmap.md');
+  assert.equal(outputs.get('install.md'), 'install.md');
+});
+
+test('flattened imports reserve index and natural prefixed filenames', () => {
+  const files = ['index.md', 'roadmap.md', 'docs-roadmap.md', 'ROADMAP.md'];
+  const outputs = docOutputNames(['ROADMAP.md'], files);
+  assert.equal(outputs.get('index.md'), 'docs-index.md');
+  assert.equal(outputs.get('docs-roadmap.md'), 'docs-roadmap.md');
+  assert.equal(new Set([...outputs.values(), 'index.md', 'ROADMAP.md'].map(s => s.toLowerCase())).size, 6);
+  assert.deepEqual(docOutputNames(['ROADMAP.md'], [...files].reverse()), outputs);
+});
 
 test('leaves fenced blocks untouched', () => {
   const src = 'prose\n\n```bash\ngit log --since=<30d>\n```\n\nmore prose\n';
@@ -427,6 +442,29 @@ test('sends a bare non-markdown file link to the blob URL', () => {
     out.trim(),
     '[formula](https://github.com/tuna-os/bluefin-cli/blob/main/contrib/homebrew/bluefin-cli.rb)',
   );
+});
+
+test('rewrites a reference-style definition pointing at a directory to the tree URL', () => {
+  const out = fixRelativeLinks('[runtime]: runtime/\n', 'iced', '', 'master');
+  assert.match(out, /github\.com\/tuna-os\/iced\/tree\/master\/runtime/);
+});
+
+test('rewrites a reference-style definition from docs/ against the repo root', () => {
+  const out = fixRelativeLinks(
+    '[ADR 0001]: architecture-decisions/0001-linear-storage-dag-overlay.md\n',
+    'spindle', 'docs',
+  );
+  assert.match(out, /github\.com\/tuna-os\/spindle\/blob\/main\/docs\/architecture-decisions\/0001-linear-storage-dag-overlay\.md/);
+});
+
+test('keeps the anchor on a reference-style definition', () => {
+  const out = fixRelativeLinks('[tour example]: examples/README.md#tour\n', 'iced', '', 'master');
+  assert.match(out, /blob\/master\/examples\/README\.md#tour/);
+});
+
+test('leaves absolute and footnote definitions alone', () => {
+  const src = '[ruma]: https://github.com/ruma/ruma\n[^1]: See the matrix spec\n';
+  assert.equal(fixRelativeLinks(src, 'spindle', 'docs'), src);
 });
 
 // ── frontmatter ───────────────────────────────────────────────────────────────
@@ -857,48 +895,6 @@ test('flags a directory-name collision, not just a filename collision', () => {
 test('does not flag files with the same case in different directories', () => {
   const root = mkTree({tacklebox: {'index.md': 'a'}, tromso: {'index.md': 'b'}});
   assert.deepEqual(findCaseCollisions(root), []);
-});
-
-// ── claimTargetName: one bad upstream pair must not stop the whole sync ───────
-//
-// dualcut shipped OBSERVABILITY.md and observability.md in the same docs/
-// folder; both land in the flat docs/dualcut/ here, findCaseCollisions saw
-// the pair and every daily run exited 1 from 09-05 on (#359) — with no fix
-// available in this repo. The second page is dropped instead.
-
-console.log('\nclaimTargetName');
-
-test('claims a free name', () => {
-  const claimed = new Map();
-  assert.equal(claimTargetName(claimed, 'observability.md'), null);
-});
-
-test('names the page already holding the slot when only the case differs (#359)', () => {
-  const claimed = new Map();
-  claimTargetName(claimed, 'OBSERVABILITY.md');
-  assert.equal(claimTargetName(claimed, 'observability.md'), 'OBSERVABILITY.md');
-});
-
-test('lets a later stage overwrite the same name, as it always has', () => {
-  // A repo's docs/CONTRIBUTING.md replacing the copy taken from its root is
-  // one file written twice, not two pages competing for one slot.
-  const claimed = new Map();
-  claimTargetName(claimed, 'CONTRIBUTING.md');
-  assert.equal(claimTargetName(claimed, 'CONTRIBUTING.md'), null);
-});
-
-test('protects the index page a README wrote from a docs/Index.md', () => {
-  const claimed = new Map();
-  claimTargetName(claimed, 'index.md');
-  assert.equal(claimTargetName(claimed, 'Index.md'), 'index.md');
-});
-
-test('keeps each colliding name reported against the page that won the slot', () => {
-  const claimed = new Map();
-  claimTargetName(claimed, 'guide.md');
-  assert.equal(claimTargetName(claimed, 'GUIDE.md'), 'guide.md');
-  // The loser never takes the slot, so a third spelling still names the winner.
-  assert.equal(claimTargetName(claimed, 'Guide.md'), 'guide.md');
 });
 
 // ── checkListing: truncation has to be loud ───────────────────────────────────

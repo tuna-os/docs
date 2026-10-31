@@ -406,32 +406,24 @@ function findCaseCollisions(rootDir) {
   return [...byLower.values()].filter((paths) => paths.length > 1);
 }
 
-// claimTargetName reserves `file` in a repo's flat docs/<slug>/ directory and
-// returns the name already holding that slot when an earlier claim differs
-// from it only in case (null when the name is free).
-//
-// Every stage of a repo's sync writes into one directory with no nesting, so
-// upstream docs/OBSERVABILITY.md and docs/observability.md (#359, dualcut)
-// arrive here as two files that are a single file on a case-insensitive
-// checkout — exactly what findCaseCollisions below refuses to publish.
-// Refusing them at the end of the run fails the whole daily sync, and the
-// only fix is a rename in a repo this one does not control, so the entire
-// org's docs stay stale until somebody over there acts: #359 sat red from
-// 09-05 on for that reason. Dropping the later of the two pages instead
-// costs one page from one repo, names it in the log, and lets the other
-// ~30 repos keep syncing.
-//
-// An exact repeat of a name is not a collision — it is the same file, and the
-// later stage overwriting it is what the stages have always done (a repo's
-// docs/CONTRIBUTING.md replaces the one taken from its root).
-function claimTargetName(claimed, file) {
-  const lower = file.toLowerCase();
-  const owner = claimed.get(lower);
-  if (owner === undefined) {
-    claimed.set(lower, file);
-    return null;
+// Root docs keep their public routes. Flattened docs/ pages receive a prefix
+// only when their name would overwrite another import, including index.md.
+// Reserve natural names first so a generated prefix cannot steal a later page.
+function docOutputNames(rootFiles, docFiles) {
+  const used = new Set(['index.md', ...rootFiles].map(name => name.toLowerCase()));
+  const reserved = new Set([...used, ...docFiles.map(name => name.toLowerCase())]);
+  const outputs = new Map();
+  for (const file of [...docFiles].sort()) {
+    let output = file;
+    if (used.has(output.toLowerCase())) {
+      output = `docs-${file}`;
+      while (reserved.has(output.toLowerCase())) output = `docs-${output}`;
+    }
+    used.add(output.toLowerCase());
+    reserved.add(output.toLowerCase());
+    outputs.set(file, output);
   }
-  return owner === file ? null : owner;
+  return outputs;
 }
 
 function main() {
@@ -463,7 +455,6 @@ function main() {
   let protectedDirs = 0;
   let removed = 0;
   let refusedRemovals = 0;
-  let caseSkips = 0;
   const failures = [];
 
   const sidebar = [];
@@ -497,17 +488,6 @@ function main() {
         .filter(e => e.isFile())
         .map(e => e.name);
       const writtenFiles = [];
-      // Names this repo's stages have already written into targetDir, by
-      // lowercased name — see claimTargetName.
-      const claimed = new Map();
-      const skipCaseClash = (file, owner) => {
-        caseSkips++;
-        console.warn(
-          `  ⚠️  skipped ${file}: it differs from ${owner} only in case, and the ` +
-          'two are one file on a case-insensitive checkout. Rename one of them ' +
-          `in ${repo} to publish both.`,
-        );
-      };
 
       let localPos = 1;
 
@@ -525,7 +505,6 @@ function main() {
           fm += statusBanner + '\n\n';
         }
         content = fm + content;
-        claimTargetName(claimed, 'index.md');
         writeFileSync(join(targetDir, 'index.md'), content);
         WRITTEN.push(join(targetDir, 'index.md'));
         writtenFiles.push('index.md');
@@ -544,11 +523,6 @@ function main() {
           // Default: only known doc files
           if (!ROOT_DOC_NAMES.includes(upper)) continue;
         }
-        const clash = claimTargetName(claimed, file);
-        if (clash) {
-          skipCaseClash(file, clash);
-          continue;
-        }
         let content = readFileSync(join(dir, file), 'utf8');
         content = sanitizeHtml(content);
         content = fixRelativeLinks(content, repo, '', branch);
@@ -565,25 +539,22 @@ function main() {
       const docsSubdir = DOCS_SUBDIR[repo] || 'docs';
       const docsDir = join(dir, docsSubdir);
       if (!SKIP_DOCS_DIR.has(repo) && existsSync(docsDir) && readdirSync(docsDir).length > 0) {
-        for (const file of readdirSync(docsDir).sort()) {
-          // Skip mdBook metadata files
-          if (file === 'SUMMARY.md') continue;
-          if (!file.endsWith('.md') && !file.endsWith('.rst')) continue;
-          const clash = claimTargetName(claimed, file);
-          if (clash) {
-            skipCaseClash(file, clash);
-            continue;
-          }
+        const docFiles = readdirSync(docsDir, {withFileTypes: true})
+          .filter(entry => entry.isFile() && entry.name !== 'SUMMARY.md' && /\.(md|rst)$/.test(entry.name))
+          .map(entry => entry.name);
+        const outputs = docOutputNames(writtenFiles, docFiles);
+        for (const file of docFiles.sort()) {
+          const output = outputs.get(file);
           let content = readFileSync(join(docsDir, file), 'utf8');
           content = sanitizeHtml(content);
           content = fixRelativeLinks(content, repo, docsSubdir, branch);
           content = content.replace(/^# .*\n\n?/, '');
           const title = file.replace(/\.(md|rst)$/, '').replace(/[-_]/g, ' ');
           content = subFrontmatter(title, localPos++) + content;
-          writeFileSync(join(targetDir, file), content);
-        WRITTEN.push(join(targetDir, file));
-          writtenFiles.push(file);
-          console.log(`  ✓ docs/${file}`);
+          writeFileSync(join(targetDir, output), content);
+          WRITTEN.push(join(targetDir, output));
+          writtenFiles.push(output);
+          console.log(`  ✓ ${docsSubdir}/${file} → ${output}`);
         }
       }
 
@@ -634,8 +605,7 @@ function main() {
   console.log(
     `\n📊 ${listed.length} listed · ${skipped.length} in SKIP · ` +
     `${protectedDirs} hand-authored · ${synced} synced · ${failures.length} failed · ` +
-    `${removed} removed (no longer upstream) · ${refusedRemovals} refused (looked hand-written) · ` +
-    `${caseSkips} skipped (name collides with another page's, case aside)`,
+    `${removed} removed (no longer upstream) · ${refusedRemovals} refused (looked hand-written)`,
   );
   if (failures.length) {
     for (const f of failures) console.error(`  ✗ ${f}`);
@@ -650,14 +620,6 @@ function main() {
   // Case-collision guard (#154): run after every write, not just the ones
   // this invocation made, so a collision introduced by a hand edit sitting
   // next to synced content is still caught the next time sync runs.
-  //
-  // A collision between two pages of the same upstream repo never reaches
-  // here any more — claimTargetName drops the second one as the repo is
-  // synced, and the reconcile above removes a copy an earlier run wrote. What
-  // is left is a collision this repo can act on by itself: a hand-authored
-  // page against a synced one (#153), or two hand-authored pages. Those stay
-  // fatal, because the fix is a rename here rather than in a repo nobody in
-  // this run controls.
   const collisions = findCaseCollisions(DOCS_DIR);
   if (collisions.length) {
     console.error(`\n✗ ${collisions.length} case-insensitive path collision(s) under ${DOCS_DIR}/:`);
@@ -758,7 +720,7 @@ export {
   checkListing,
   discoverRepos,
   findCaseCollisions,
-  claimTargetName,
+  docOutputNames,
   HAND_AUTHORED,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
