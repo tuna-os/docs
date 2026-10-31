@@ -30,3 +30,38 @@ If static site assets fail to serve:
 ### 3. Escalation Procedure
 - File an incident using `.github/ISSUE_TEMPLATE/incident_report.md`.
 - Notify documentation maintainers via release channel.
+
+## Daily organization sync
+
+The sync runs at 06:00 UTC. It imports source documents, validates path
+collisions and MDX, builds the site, then opens a review PR. Publication follows
+merge and a successful Workers deployment; the cron is not a publish deadline.
+
+Root documents retain their filenames. When a file from a source `docs/`
+directory would collide with a root document or `index.md`, the importer adds
+`docs-` to its filename. It repeats the prefix if necessary to keep both pages.
+For example, root `ROADMAP.md` and `docs/roadmap.md` become `ROADMAP.md` and
+`docs-roadmap.md`. Relative links still point to the original source on GitHub.
+The final collision check remains active for conflicts with hand-written pages.
+
+For MDX errors, inspect the named source file and the importer's CommonMark
+fallback warning. Add a fixture to `scripts/__tests__/sync-org-docs.test.mjs`
+when extending the sanitizer. Fix source content upstream when appropriate;
+direct edits to generated pages disappear on the next sync.
+
+To assess recovery, inspect three consecutive scheduled runs and their summaries:
+
+```bash
+gh run list --repo tuna-os/docs --workflow sync-org-docs.yml --limit 3
+gh run view RUN_ID --repo tuna-os/docs --log-failed
+```
+
+Record listed, synced, failed, and refused counts from the logs. A successful
+import does not establish publication: check the sync PR, its merge, and the
+Workers deployment before comparing the published `/docs/tunaos/ROADMAP` with
+the source revision.
+
+The `/api/adoption` route is served by the Worker, independently of doc imports.
+If it fails, inspect the response status and Worker logs as well as deployment
+health. A collector failure requires separate investigation; a green sync alone
+does not prove that metrics are available.
