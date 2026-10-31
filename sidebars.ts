@@ -88,7 +88,7 @@ const sidebars: SidebarsConfig = {
           link: {type: 'doc', id: 'bootc-migrate/index'},
           items: ['bootc-migrate/architecture', 'bootc-migrate/filesystem-support', 'bootc-migrate/luks-testing', 'bootc-migrate/testing', 'bootc-migrate/references', 'bootc-migrate/ROADMAP', 'bootc-migrate/CONTRIBUTING', 'bootc-migrate/cfs-cli-generations'],
         },
-        {type: 'category', label: 'Flatpak', link: {type: 'doc', id: 'flatpak/index'}, items: ['flatpak/guide']},
+        {type: 'category', label: 'Flatpak', link: {type: 'doc', id: 'flatpak/index'}, items: ['flatpak/guide', 'flatpak-remote-operations']},
         {type: 'category', label: 'tunaos-packages', link: {type: 'doc', id: 'tunaos-packages/index'}, items: ['tunaos-packages/ARCHITECTURE', 'tunaos-packages/PACKAGE_FACTORY', 'tunaos-packages/PATCH_POLICY', 'tunaos-packages/ROADMAP', 'tunaos-packages/SECURITY', 'tunaos-packages/TIDEFORGE-READINESS', 'tunaos-packages/UPSTREAM_PARITY', 'tunaos-packages/XFWL4-PORTING', 'tunaos-packages/hummingbird-desktop-gap', 'tunaos-packages/CONTRIBUTING']},
         {type: 'category', label: 'Ubuntu', link: {type: 'doc', id: 'ubuntu/index'}, items: ['ubuntu/CONTRIBUTING', 'ubuntu/SECURITY']},
         {type: 'category', label: 'bootc-installer-tui', link: {type: 'doc', id: 'bootc-installer-tui/index'}, items: ['bootc-installer-tui/CONTRIBUTING']},
