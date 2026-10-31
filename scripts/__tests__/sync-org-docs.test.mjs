@@ -1041,6 +1041,29 @@ test('gives up after a second attempt that is still short', () => {
   assert.match(result.fatal[0], /truncated/);
 });
 
+// ── sync config: scripts/sync-org-docs.config.json ───────────────────────────
+
+console.log('\nsync config');
+
+test("loadProtectedRepos loads all expected slugs and fails closed on empty or missing entries", async () => {
+  const { HAND_AUTHORED, loadProtectedRepos } = await import("../sync-org-docs.mjs");
+  assert.equal(HAND_AUTHORED.size, 7);
+  for (const slug of ["mariner", "gtk-office-suite", "mandelbrot", "remora", "dakota", "blueshell", "ghostty"]) {
+    assert.equal(HAND_AUTHORED.has(slug), true);
+  }
+  assert.throws(() => loadProtectedRepos({ protected_repos: [] }), /hand-authored protection is empty/);
+  assert.throws(() => loadProtectedRepos({ protected_repos: [{ slug: "mariner" }] }), /missing/);
+});
+
+test('ROOT_DOC_FILTER stays keyed by repo, so tunaOS keeps its root-doc allowlist', async () => {
+  // The consumer reads ROOT_DOC_FILTER[repo]; a bare array here would drop
+  // the tunaOS filter and sync every root doc instead.
+  const { ROOT_DOC_FILTER } = await import('../sync-org-docs.mjs');
+  assert.equal(Array.isArray(ROOT_DOC_FILTER), false);
+  assert.deepEqual(ROOT_DOC_FILTER.tunaOS, ['README.md', 'ROADMAP.md', 'SECURITY.md', 'CONTRIBUTING.md']);
+  assert.equal(ROOT_DOC_FILTER.wootc, undefined);
+});
+
 // ── summary ───────────────────────────────────────────────────────────────────
 
 for (const run of pending) await run();
