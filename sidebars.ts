@@ -31,7 +31,7 @@ const sidebars: SidebarsConfig = {
         {type: 'link', label: 'Skipjack — CentOS Stream 10', href: '/skipjack'},
         {type: 'link', label: 'Bonito — Fedora 44', href: '/bonito'},
         {type: 'link', label: 'All variants (Ubuntu, Arch, Debian, …)', href: '/variants'},
-        {type: 'category', label: 'Reference docs', collapsed: true, items: ['albacore', 'yellowfin', 'bonito', 'skipjack', 'grouper', 'gurnard/pantheon-shortcuts', 'marlin', 'gurnard-pantheon', 'niri-quickstart', 'cosmic-quickstart']},
+        {type: 'category', label: 'Reference docs', collapsed: true, items: ['albacore', 'yellowfin', 'bonito', 'skipjack', 'grouper', 'gurnard/index', 'gurnard/pantheon-shortcuts', 'marlin', 'gurnard-pantheon', 'niri-quickstart', 'cosmic-quickstart']},
       ],
     },
     {
