@@ -136,6 +136,14 @@ test('escapes a placeholder inside emphasis', () => {
   assert.equal(out, '*Talks to the &lt;frontend> over a socket*\n');
 });
 
+test('escapes the placeholders that broke ten consecutive sync runs (#359)', () => {
+  // tunaos-packages TIDEFORGE-ACTION-CACHE.md and wootc manual-testing.md:
+  // prose on GitHub, an unclosed JSX tag to MDX, and the daily sync red from
+  // 08-22 to 08-31 until both shapes are escaped here.
+  assert.match(sanitizeHtml('restore key is <artifact-digest>\n'), /&lt;artifact-digest>/);
+  assert.match(sanitizeHtml('run it on <your> machine\n'), /&lt;your>/);
+});
+
 test('escapes a < that cannot start a tag (paperwm: <<, <-)', () => {
   assert.equal(sanitizeHtml('Use Super+<< to move, a <- b\n'), 'Use Super+&lt;&lt; to move, a &lt;- b\n');
 });

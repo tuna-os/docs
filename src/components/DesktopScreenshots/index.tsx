@@ -2,18 +2,15 @@ import {useState} from 'react';
 import type {ReactNode} from 'react';
 import Heading from '@theme/Heading';
 import type {Desktop} from '@site/src/data/variants';
+import ShotImg from '@site/src/components/ShotImg';
+import {desktopShotPath} from '@site/src/components/ShotImg/screenshot-urls';
 
 import styles from './styles.module.css';
 
-// Public base for the booted-desktop screenshots produced weekly by the
-// tunaOS `weekly-qcow2-screenshots.yml` workflow (variant × desktop, booted in
-// QEMU and screendumped). The workflow uploads them to R2 at
-// screenshots/<variant>-<flavor>-latest.png, served from download.tunaos.org.
-const SHOT_BASE = 'https://download.tunaos.org/screenshots';
-
-function shotUrl(variant: string, tag: string): string {
-  return `${SHOT_BASE}/${variant}-${tag}-latest.png`;
-}
+// The booted-desktop screenshots come from the tunaOS weekly screenshot
+// workflows (variant × desktop, booted in QEMU and screendumped). ShotImg loads
+// each one from the rolling `screenshots` GitHub release and falls back to R2
+// (download.tunaos.org).
 
 // Renders the real, auto-captured desktop screenshots for a variant. Any combo
 // that isn't published yet (404s) is hidden client-side; if none load, the
@@ -35,9 +32,9 @@ export default function DesktopScreenshots({
     return (
       <div className={styles.probe} aria-hidden>
         {desktops.map((d) => (
-          <img
+          <ShotImg
             key={d.tag}
-            src={shotUrl(variant, d.tag)}
+            path={desktopShotPath(variant, d.tag)}
             alt=""
             onError={() => setFailed((f) => ({...f, [d.tag]: true}))}
             onLoad={() => setFailed((f) => (f[d.tag] ? {...f, [d.tag]: false} : f))}
@@ -57,8 +54,8 @@ export default function DesktopScreenshots({
         <div className={styles.grid}>
           {visible.map((d) => (
             <figure key={d.tag} className={styles.shot}>
-              <img
-                src={shotUrl(variant, d.tag)}
+              <ShotImg
+                path={desktopShotPath(variant, d.tag)}
                 alt={`${d.name} desktop on ${variant}`}
                 loading="lazy"
                 onError={() => setFailed((f) => ({...f, [d.tag]: true}))}
