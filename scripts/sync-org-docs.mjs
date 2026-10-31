@@ -6,7 +6,6 @@
 // Usage:
 //   node scripts/sync-org-docs.mjs
 
-import {execSync} from 'node:child_process';
 import {existsSync, readFileSync, readdirSync, writeFileSync, mkdirSync, rmSync} from 'node:fs';
 import {join} from 'node:path';
 import {pathToFileURL} from 'node:url';
@@ -29,7 +28,6 @@ import {
   listOrgRepos,
   orgPublicRepoCount,
   checkListing,
-  sleepSync,
 } from './lib/org-doc-source.mjs';
 
 // Projects that get their own doc section. Add a slug → label entry to
@@ -198,8 +196,19 @@ function isRootDoc(file, rootFilter = null) {
   return /\.(md|rst)$/.test(file) && ROOT_DOC_NAMES.includes(file.replace(/\.(md|rst)$/, ''));
 }
 
-
-
+// findCaseCollisions walks rootDir recursively and returns groups of file
+// paths (relative to rootDir, forward-slash separated) that are distinct but
+// become identical when lowercased.
+//
+// tacklebox/USER-GUIDE.md (synced) and tacklebox/user-guide.md (hand-authored)
+// coexisted in the tree until #153 removed the duplicate by hand. On a
+// case-sensitive filesystem (every CI runner, every Linux dev machine) that
+// is two files and nothing complains. On a case-insensitive one (macOS,
+// default-configured) it is one file silently overwriting the other on
+// checkout, and Docusaurus would serve the two source paths as duplicate
+// routes even where the filesystem itself tolerates it. A future sync run
+// can recreate this class of bug the same way the first one happened, so
+// this is a standing guard, not a one-off cleanup.
 function findCaseCollisions(rootDir) {
   const byLower = new Map();
   const walk = (dir, prefix) => {
@@ -216,6 +225,26 @@ function findCaseCollisions(rootDir) {
   };
   walk(rootDir, '');
   return [...byLower.values()].filter((paths) => paths.length > 1);
+}
+
+// Root docs keep their public routes. Flattened docs/ pages receive a prefix
+// only when their name would overwrite another import, including index.md.
+// Reserve natural names first so a generated prefix cannot steal a later page.
+function docOutputNames(rootFiles, docFiles) {
+  const used = new Set(['index.md', ...rootFiles].map(name => name.toLowerCase()));
+  const reserved = new Set([...used, ...docFiles.map(name => name.toLowerCase())]);
+  const outputs = new Map();
+  for (const file of [...docFiles].sort()) {
+    let output = file;
+    if (used.has(output.toLowerCase())) {
+      output = `docs-${file}`;
+      while (reserved.has(output.toLowerCase())) output = `docs-${output}`;
+    }
+    used.add(output.toLowerCase());
+    reserved.add(output.toLowerCase());
+    outputs.set(file, output);
+  }
+  return outputs;
 }
 
 function main() {
@@ -331,20 +360,22 @@ function main() {
       const docsSubdir = DOCS_SUBDIR[repo] || 'docs';
       const docsDir = join(dir, docsSubdir);
       if (!SKIP_DOCS_DIR.has(repo) && existsSync(docsDir) && readdirSync(docsDir).length > 0) {
-        for (const file of readdirSync(docsDir).sort()) {
-          // Skip mdBook metadata files
-          if (file === 'SUMMARY.md') continue;
-          if (!file.endsWith('.md') && !file.endsWith('.rst')) continue;
+        const docFiles = readdirSync(docsDir, {withFileTypes: true})
+          .filter(entry => entry.isFile() && entry.name !== 'SUMMARY.md' && /\.(md|rst)$/.test(entry.name))
+          .map(entry => entry.name);
+        const outputs = docOutputNames(writtenFiles, docFiles);
+        for (const file of docFiles.sort()) {
+          const output = outputs.get(file);
           let content = readFileSync(join(docsDir, file), 'utf8');
           content = sanitizeHtml(content);
           content = fixRelativeLinks(content, repo, docsSubdir, branch);
           content = content.replace(/^# .*\n\n?/, '');
           const title = file.replace(/\.(md|rst)$/, '').replace(/[-_]/g, ' ');
           content = subFrontmatter(title, localPos++) + content;
-          writeFileSync(join(targetDir, file), content);
-        WRITTEN.push(join(targetDir, file));
-          writtenFiles.push(file);
-          console.log(`  ✓ docs/${file}`);
+          writeFileSync(join(targetDir, output), content);
+          WRITTEN.push(join(targetDir, output));
+          writtenFiles.push(output);
+          console.log(`  ✓ ${docsSubdir}/${file} → ${output}`);
         }
       }
 
@@ -510,6 +541,7 @@ export {
   checkListing,
   discoverRepos,
   findCaseCollisions,
+  docOutputNames,
   HAND_AUTHORED,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
