@@ -65,6 +65,27 @@ Open an issue before a substantial documentation or site change (new sections,
 navigation rework, new components) so maintainers can confirm its scope.
 Small fixes (typos, links, single-page updates) do not need pre-approval.
 
+## Naming conventions
+
+Use these names in documentation:
+
+- **TunaOS** for the project and product in prose, including headings and link text.
+- **`tuna-os`** for the GitHub organization.
+- **`tunaos.org`** for the domain, including its subdomains and URL paths.
+- **`tunaos-org`** for the Cloudflare Worker that serves the site.
+- **`tuna-os#123`** for issue citations in the main OS repository. Link the
+  label to the full issue URL, for example
+  [tuna-os#1175](https://github.com/tuna-os/tunaOS/issues/1175).
+  An organization has no issue tracker of its own, so this label needs an
+  explicit link. Use `#123` for this repository's issues and a linked
+  `repo#123` label for other repositories.
+
+Keep literal identifiers as defined by their source: repository paths such as
+`tuna-os/tunaOS`, commands, filenames, service names, image references, and
+Matrix room addresses. For example, `tunaos-countme` is a service name;
+TunaOS is the product name. Apply prose fixes to copied project pages in their
+source repository, as described below.
+
 ## Content Ownership
 
 This repository owns the pages at the top level of `docs/` and in `blog/`.

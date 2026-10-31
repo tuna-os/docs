@@ -8,6 +8,9 @@ Human docs: [`README.md`](README.md) (deployment),
 [`CONTRIBUTING.md`](CONTRIBUTING.md) (`just preflight` and the validation
 list), [`ROADMAP.md`](ROADMAP.md).
 
+Follow the [naming conventions](CONTRIBUTING.md#naming-conventions): use
+TunaOS in prose and preserve literal repository and infrastructure identifiers.
+
 ## Most of `docs/` is generated — fix it upstream
 
 `sync-org-docs.yml` runs daily (`0 6 * * *`) and pulls READMEs and docs from

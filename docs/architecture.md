@@ -25,7 +25,7 @@ Fedora or Debian. A flavor is one desktop on that base, such as `gnome` or
 `kde`. The same scripts run on all of them.
 
 Six package managers are in use: `dnf`, `apt`, `zypper`, `pacman`, `emerge`
-and the tunaos package factory. This is the main source of complexity in the
+and the TunaOS package factory. This is the main source of complexity in the
 repository, and most of the code that looks odd exists to hold those six
 paths together.
 
@@ -296,7 +296,7 @@ EL10.
 
 ## 9. Reference
 
-### In the tunaOS repository
+### In the TunaOS repository
 
 - [`.github/build-config.yml`](https://github.com/tuna-os/tunaOS/blob/main/.github/build-config.yml) — the matrix. It is the authority for every variant.
 - [`manifests/desktops/`](https://github.com/tuna-os/tunaOS/tree/main/manifests/desktops) — one package list per desktop, per package manager.
