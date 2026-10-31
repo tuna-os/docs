@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {parseFactoryHealth, sweepAge} from '../src/data/factory-health.mjs';
+import {parseFactoryHealth, sweepAge} from '../../src/data/factory-health.mjs';
 
 const summary = {
   factory_health: {green: 47, total: 143},
