@@ -27,7 +27,6 @@ const config: Config = {
   baseUrl: '/',
   trailingSlash: false,
   onBrokenLinks: "warn",
-  onBrokenMarkdownLinks: 'warn',
 
   markdown: {
     // Every page is parsed as MDX, where `<!-- ... -->` is a syntax error.
@@ -39,6 +38,10 @@ const config: Config = {
     // MDX comment survives createExcerpt(), so a leading pragma becomes the
     // page's meta description.
     mdx1Compat: {comments: true},
+    hooks: {
+      // Moved from the top-level `onBrokenMarkdownLinks` option, deprecated for removal in Docusaurus v4.
+      onBrokenMarkdownLinks: 'warn',
+    },
   },
 
   // Even if you don't use internationalization, you can use this field to set
