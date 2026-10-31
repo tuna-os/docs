@@ -124,6 +124,9 @@ their source repositories. Fix documentation for a generated project in its
 source repository. The next sync overwrites direct changes here. The generated
 index page at the start of a project tree identifies the source repository.
 
+See the [documentation sync guide](./docs/sync-org-docs-guide.md) for details
+about discovery, changes to links, failure diagnosis, and pipeline maintenance.
+
 ## Pull Requests
 
 - Keep PRs focused — one change per PR.

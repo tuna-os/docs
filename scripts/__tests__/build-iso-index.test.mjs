@@ -10,8 +10,8 @@
 //   node scripts/__tests__/build-iso-index.test.mjs
 
 import {strict as assert} from 'node:assert';
-import {execSync} from 'node:child_process';
-import {mkdtempSync, writeFileSync} from 'node:fs';
+import {execSync, spawn} from 'node:child_process';
+import {mkdtempSync, rmSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 
@@ -25,12 +25,64 @@ import {
   CATEGORIES,
 } from '../lib/iso-index.mjs';
 
-// Also verify backward-compatible exports from build-iso-index.mjs without stdin blocking
+// Verify backward-compatible exports from build-iso-index.mjs without stdin blocking.
 const scriptUrl = new URL('../build-iso-index.mjs', import.meta.url);
-const mod = await import(scriptUrl);
-assert.equal(typeof mod.detectArch, 'function');
-assert.equal(typeof mod.titleCase, 'function');
-assert.equal(typeof mod.buildIsoIndex, 'function');
+
+// Keep the child's stdin open: an import must finish without waiting for EOF,
+// even when the importing script has the same filename as the CLI module.
+const importSource = `
+  import {strict as assert} from 'node:assert';
+  const events = ['data', 'end', 'error'];
+  const listeners = events.map(event => process.stdin.listenerCount(event));
+  const mod = await import(${JSON.stringify(scriptUrl.href)});
+  assert.equal(typeof mod.main, 'function');
+  assert.equal(typeof mod.detectArch, 'function');
+  assert.equal(typeof mod.titleCase, 'function');
+  assert.equal(typeof mod.buildIsoIndex, 'function');
+  assert.equal(process.stdin.readableFlowing, null);
+  assert.deepEqual(events.map(event => process.stdin.listenerCount(event)), listeners);
+  console.log('imported');
+`;
+
+async function checkImport(args) {
+  const child = spawn(process.execPath, args, {
+    stdio: ['pipe', 'pipe', 'pipe'],
+    timeout: 5000,
+  });
+  let stdout = '';
+  let stderr = '';
+  child.stdout.setEncoding('utf8');
+  child.stderr.setEncoding('utf8');
+  child.stdout.on('data', chunk => { stdout += chunk; });
+  child.stderr.on('data', chunk => { stderr += chunk; });
+  await new Promise((resolve, reject) => {
+    child.on('error', reject);
+    child.on('close', (code, signal) => {
+      try {
+        assert.equal(signal, null, `Import timed out: ${stderr}`);
+        assert.equal(code, 0, stderr);
+        assert.equal(stdout, 'imported\n');
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  });
+}
+
+const importDir = mkdtempSync(join(tmpdir(), 'iso-import-'));
+try {
+  for (const name of ['import-only.mjs', 'build-iso-index.mjs']) {
+    const importer = join(importDir, name);
+    writeFileSync(importer, importSource);
+    await checkImport([importer]);
+  }
+  // Evaluation mode has no process.argv[1].
+  await checkImport(['--input-type=module', '--eval', importSource]);
+} finally {
+  rmSync(importDir, {recursive: true, force: true});
+}
+console.log('  ✓ Imports leave stdin untouched and finish without EOF');
 
 // ── Pure function tests ────────────────────────────────────────────────
 
