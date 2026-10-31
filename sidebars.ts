@@ -129,6 +129,7 @@ const sidebars: SidebarsConfig = {
     },
     {type: 'html', value: '<div class="sidebar-section-label">Community</div>', defaultStyle: true},
     'community',
+    'sync-org-docs-guide',
     {type: 'category', label: 'Dakota (Bluefin)', className: 'sidebar-external', link: {type: 'doc', id: 'dakota/index'}, items: ['dakota/migration']},
   ],
 };
