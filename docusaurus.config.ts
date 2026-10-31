@@ -95,10 +95,13 @@ const config: Config = {
       disableSwitch: false,
     },
     navbar: {
-      title: 'TunaOS',
       logo: {
-        alt: 'TunaOS Logo',
-        src: 'img/identity/emoji/tunaos.svg',
+        alt: 'TunaOS',
+        // The header stays dark in both themes. The unsuffixed source has light ink.
+        src: 'img/identity/wordmarks/tunaos.svg',
+        className: 'tunaos-wordmark',
+        width: 125,
+        height: 32,
       },
       items: [
         {

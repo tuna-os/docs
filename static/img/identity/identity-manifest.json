@@ -2,7 +2,15 @@
   "schema_version": 1,
   "source": "tuna-os/tunaOS",
   "commit": "121cb9095068c673a80b742225c26bf8de16f0fa",
+  "source_overrides": {
+    "wordmarks/tunaos.svg": {
+      "commit": "95d55c725755b12e54b0c1a3d4f7e3c2a00ba62c",
+      "path": "system_files/usr/share/tunaos/lettermarks/tunaos.svg",
+      "transform": "none"
+    }
+  },
   "assets": {
+    "wordmarks/tunaos.svg": "sha256:896773af0c5b3b6aedfc1d5bf74326ba6c6ccb49c8f17909877ec5a8e6cbe45a",
     "emoji/albacore.svg": "sha256:9aa5a9ac45dcf4fb2d89d6f0aa9c90c1b6eda33e28bea331400ffa2f7fb50936",
     "emoji/bonito-rawhide.svg": "sha256:1b5bab31c33fd2eb0e70d592484b83dc0ec535096007fd47accf626217f5e91c",
     "emoji/bonito.svg": "sha256:2c6578b123eac5e75cd0cd749681277ce65959721a4a977c8504a7b0a048ff5e",
