@@ -13,6 +13,7 @@ The implementation has three main parts:
 - [Workflow](https://github.com/tuna-os/docs/blob/main/.github/workflows/sync-org-docs.yml): schedule, build, and sync PR.
 - [Sync script](https://github.com/tuna-os/docs/blob/main/scripts/sync-org-docs.mjs): repository discovery, filters, copies, and removals.
 - [Transform helpers](https://github.com/tuna-os/docs/blob/main/scripts/lib/org-doc-transform.mjs): changes to links, HTML cleanup, and page metadata.
+- [Sync configuration](https://github.com/tuna-os/docs/blob/main/scripts/sync-org-docs.config.json): protected directories, their rationale, and root-document filters.
 
 ## How sync works
 
@@ -197,21 +198,26 @@ The sync discovers new active repositories automatically. A root `README.md`
 supplies their index without an entry in `PROJECTS`. Check the generated
 output, add a sidebar entry, and review the project's status and label.
 
-The settings in `scripts/sync-org-docs.mjs` have distinct purposes:
+The settings in `scripts/sync-org-docs.mjs` and
+`scripts/sync-org-docs.config.json` have distinct purposes:
 
 | Setting | When to change it |
 | --- | --- |
 | `PROJECTS` | Set a display label, slug, or status for a known repository |
 | `SKIP` | Exclude a moved, retired, or internal repository entirely |
-| `HAND_AUTHORED` | Protect an entire site-owned project directory |
+| `protected_repos` in the JSON configuration | Protect an entire site-owned project directory; loaded as `HAND_AUTHORED` |
 | `SKIP_DOCS_DIR` | Keep source developer docs out while still copying root documents |
-| `ROOT_DOC_FILTER` | Use an exact root-filename allowlist for a repository |
+| `sync_filters` in the JSON configuration | Use an exact root-filename allowlist for a repository; loaded as `ROOT_DOC_FILTER` |
 | `DOCS_SUBDIR` | Read a different source documentation directory |
 
-Treat `ROOT_DOC_FILTER` values as exact filenames. The current code uses
+Treat `sync_filters` values as exact filenames. The script uses
 `includes(file)`: it is case-sensitive, and an empty array allows no additional
-root documents. The README has a separate step. The comments above this
-setting do not match those details of the implementation.
+root documents. The README has a separate step.
+
+Each `protected_repos` entry records a slug, reason, and protection date.
+The script stops if it cannot load the configuration or an existing protected
+slug is absent. To remove protection, also update `HAND_AUTHORED_EXPECTED`
+in the script after you review the ownership change.
 
 Before you change a filter, inspect existing pages for ownership and possible
 removals. A slug change can leave an old directory behind. The script does
