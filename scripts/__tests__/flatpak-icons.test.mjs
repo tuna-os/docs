@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { enrichFlatpakIndex } from './flatpak-icons.mjs';
+import { enrichFlatpakIndex } from '../flatpak-icons.mjs';
 
 const png = Buffer.alloc(24);
 Buffer.from('89504e470d0a1a0a', 'hex').copy(png);
@@ -80,7 +80,7 @@ test('check mode fails stale artifacts without writing; generation converges', a
     writeFileSync(path, original);
     writeFileSync(join(base, 'icons', 'obsolete.png'), png);
     const run = (...args) => spawnSync(process.execPath,
-      [new URL('./prepare-flatpak-icons.mjs', import.meta.url).pathname, ...args], { cwd: root, encoding: 'utf8' });
+      [new URL('../prepare-flatpak-icons.mjs', import.meta.url).pathname, ...args], { cwd: root, encoding: 'utf8' });
     assert.equal(run('--check').status, 1);
     assert.equal(readFileSync(path, 'utf8'), original);
     assert.deepEqual(readdirSync(join(base, 'icons')), ['obsolete.png']);
