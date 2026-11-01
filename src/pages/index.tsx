@@ -15,12 +15,37 @@ import {VARIANTS as ALL_VARIANTS} from '@site/src/data/variants';
 
 import styles from './index.module.css';
 
-const FEATURED_PROJECTS: Array<{name: string; desc: string; to: string; icon: IconName}> = [
+const FEATURED_PROJECTS: Array<{
+  name: string;
+  desc: string;
+  to: string;
+  icon: IconName;
+  mark?: string;
+}> = [
   {name: 'wootc', desc: 'Linux from inside Windows', to: '/wootc', icon: 'window'},
   {name: 'TunaOS', desc: 'Desktop images', to: '/tunaos', icon: 'fish'},
   {name: 'Tacklebox', desc: 'ISO and USB builder', to: '/tacklebox', icon: 'wrench'},
-  {name: 'Tromsø', desc: 'KDE Linux', to: '/tromso', icon: 'layers'},
-  {name: 'XFCE Linux', desc: 'XFCE desktop', to: '/xfce-linux', icon: 'monitor'},
+  {
+    name: 'Athens',
+    desc: 'Pantheon · experimental BuildStream image',
+    to: '/athens',
+    icon: 'monitor',
+    mark: '/img/buildstream/athens/athens-logo.svg',
+  },
+  {
+    name: 'Tromsø',
+    desc: 'KDE Plasma · BuildStream image',
+    to: '/tromso',
+    icon: 'layers',
+    mark: '/img/buildstream/tromso/tromso-logo.svg',
+  },
+  {
+    name: 'XFCE Linux',
+    desc: 'Brussels · XFCE Wayland',
+    to: '/xfce-linux',
+    icon: 'monitor',
+    mark: '/img/buildstream/brussels/brussels-logo.svg',
+  },
   {name: 'Tavern', desc: 'Homebrew front end', to: '/tavern', icon: 'package'},
   {name: 'bluefin-cli', desc: 'Shell setup', to: '/bluefin-cli', icon: 'terminal'},
   {name: 'COPR Builds', desc: 'RPM builder', to: '/copr', icon: 'box'},

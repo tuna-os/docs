@@ -33,11 +33,13 @@ CTA in the hero and has its own landing page.
    (from Windows, from a USB stick, by rebasing, in a VM) before they choose
    which image. The "Ways to install" band comes before the image lineup.
 3. **Four images, not fourteen.** Albacore, Yellowfin, Skipjack and Bonito are
-   the images we ask people to choose between. The other bases (Ubuntu, Arch,
-   Debian, openSUSE, Gentoo, RHEL, and the rolling siblings) are real, but
+   the images we ask people to choose between. The other distro bases (Ubuntu,
+   Arch, Debian, openSUSE, Gentoo, RHEL, and rolling releases) are real, but
    they are for people who came looking for them: they live on `/variants`
    and in the build matrix, not in the nav bar, the footer, or the docs
-   sidebar. Their pages still exist and their URLs still work.
+   sidebar. Their pages still exist and their URLs still work. BuildStream
+   products (Athens, Tromsø, and XFCE Linux/Brussels) also appear on `/variants`
+   and `/matrix` in their own family table, outside distro × desktop cell counts.
 4. **Name things plainly.** No pitch copy, no "blazing fast", no exclamation
    points. Say what a thing is and what it runs on.
 5. **Wordmark for wide contexts, emoji mark for icons.** The tunaOS identity

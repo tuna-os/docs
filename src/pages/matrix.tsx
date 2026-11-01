@@ -7,6 +7,7 @@ import Link from '@docusaurus/Link';
 import BuildMatrix from '@site/src/components/BuildMatrix';
 import BuildPulse, {elapsed} from '@site/src/components/BuildPulse';
 import useIsoIndex from '@site/src/hooks/useIsoIndex';
+import BuildStreamFamily from '@site/src/components/BuildStreamFamily';
 import {ALL_DESKTOPS} from '@site/src/data/variants';
 import {desktopLogo} from '@site/src/data/identity';
 
@@ -47,7 +48,7 @@ export default function Matrix(): ReactNode {
   return (
     <Layout
       title="Build matrix"
-      description="Every TunaOS base image against every desktop, with live build state: what has a published ISO, how recently it was built, and what shipped with it.">
+      description="The TunaOS distro × desktop image grid with live ISO state, plus a separate catalog of independently built BuildStream images.">
       <header className={page.hero}>
         <div className={clsx(page.heroInner, page.heroWide)}>
           <span className={page.eyebrow}>Build matrix</span>
@@ -55,10 +56,9 @@ export default function Matrix(): ReactNode {
             Every base, every desktop, as it stands right now
           </Heading>
           <p className={page.heroLede}>
-            Fourteen base distributions, six desktops, and the media the pipeline has
-            actually published. The numbers and the grid below are read from the release
-            bucket&apos;s own index, not written down here — so this page is as current as
-            the last build.
+            Fourteen base distributions × six desktops, with live ISO state from the release
+            index. The separately built BuildStream image family is listed below; its
+            products are not distro-by-desktop cells.
           </p>
         </div>
       </header>
@@ -117,6 +117,23 @@ export default function Matrix(): ReactNode {
               </p>
             </div>
             <Desktops />
+          </div>
+        </section>
+
+        <section className={clsx(page.section, page.sectionAlt)}>
+          <div className={page.sectionInner}>
+            <div className={page.sectionHead}>
+              <Heading as="h2" className={page.sectionTitle}>
+                <span className={page.sectionMark}>03.</span>
+                BuildStream image variants
+              </Heading>
+              <p className={page.sectionSub}>
+                These TunaOS images have independent BuildStream projects and release pipelines.
+                Their rows belong in this image matrix, but not in the distro × desktop counts
+                above. Athens is experimental and has no published image.
+              </p>
+            </div>
+            <BuildStreamFamily />
           </div>
         </section>
       </main>
