@@ -11,6 +11,7 @@ type Project = {
   desc: string;
   to: string;
   icon?: IconName;
+  mark?: string;
 };
 
 type ProjectCarouselProps = {
@@ -101,7 +102,11 @@ export default function ProjectCarousel({projects, interval = 8000}: ProjectCaro
           <div className={styles.slide} key={p.name}>
             <div className={styles.card}>
               <div className={styles.icon}>
-                <Icon name={p.icon || 'code'} size={26} />
+                {p.mark ? (
+                  <img src={p.mark} alt="" width={38} height={38} loading="lazy" />
+                ) : (
+                  <Icon name={p.icon || 'code'} size={26} />
+                )}
               </div>
               <Heading as="h3" className={styles.name}>
                 {p.name}

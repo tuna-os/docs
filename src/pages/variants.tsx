@@ -5,6 +5,7 @@ import Heading from '@theme/Heading';
 import Link from '@docusaurus/Link';
 import {MAIN_VARIANTS, OTHER_VARIANTS, type Variant} from '@site/src/data/variants';
 import {emojiMarkFor} from '@site/src/data/identity';
+import BuildStreamFamily from '@site/src/components/BuildStreamFamily';
 
 import page from '@site/src/css/page.module.css';
 import styles from './variants.module.css';
@@ -51,7 +52,7 @@ export default function Variants(): ReactNode {
   return (
     <Layout
       title="Variants"
-      description="The four main TunaOS images, and every other base TunaOS publishes.">
+      description="The four main TunaOS images, other distro bases, and the separately built BuildStream image family.">
       <header className={page.hero}>
         <div className={page.heroInner}>
           <span className={page.eyebrow}>Images</span>
@@ -59,8 +60,8 @@ export default function Variants(): ReactNode {
             Which TunaOS image
           </Heading>
           <p className={page.heroLede}>
-            Each image is one base distribution with a choice of desktop. Four of them
-            cover most people; the rest exist for anyone who wants that specific base.
+            The distro × desktop images are listed first. The independent BuildStream
+            family follows, with its own outputs and release status.
           </p>
         </div>
       </header>
@@ -102,9 +103,8 @@ export default function Variants(): ReactNode {
                 Other bases
               </Heading>
               <p className={page.sectionSub}>
-                The same desktop layer on other distributions, plus the rolling-release
-                siblings of the images above. These are published and updated, but they
-                get less testing than the four above.
+                The same desktop layer on other distributions, plus rolling-release
+                siblings. These are separate from the BuildStream projects listed below.
               </p>
             </div>
             <div className={styles.rows}>
@@ -112,6 +112,23 @@ export default function Variants(): ReactNode {
                 <OtherRow key={v.id} variant={v} />
               ))}
             </div>
+          </div>
+        </section>
+
+        <section className={page.section}>
+          <div className={page.sectionInner}>
+            <div className={page.sectionHead}>
+              <Heading as="h2" className={page.sectionTitle}>
+                <span className={page.sectionMark}>03.</span>
+                BuildStream variants
+              </Heading>
+              <p className={page.sectionSub}>
+                Independent TunaOS image projects with their own build graphs. Athens is
+                experimental and local-only; Tromsø and XFCE Linux (Brussels) declare OCI
+                image references.
+              </p>
+            </div>
+            <BuildStreamFamily />
           </div>
         </section>
       </main>

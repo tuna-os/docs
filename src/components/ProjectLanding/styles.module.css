@@ -82,7 +82,7 @@
 }
 
 .status-alpha { background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-.status-experimental { background: rgba(239, 68, 68, 0.12); border-color: rgba(239, 68, 68, 0.2); color: #ef4444; }
+.status-experimental { background: rgba(239, 68, 68, 0.12); border-color: rgba(239, 68, 68, 0.2); color: #ff6b6b; }
 .status-internal { background: rgba(148, 163, 184, 0.12); border-color: rgba(148, 163, 184, 0.2); color: #94a3b8; }
 
 .heroTagline {
@@ -217,6 +217,7 @@
 
 /* Underlined: the accent alone is too close to --tu-dim to mark a link. */
 .sectionSub a,
+.highlightText a,
 .featText a {
   color: var(--tu-accent);
   text-decoration: underline;

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Athens logo</title>
+  <desc id="desc">An original golden sunrise framed by a classical arch.</desc>
+  <defs>
+    <linearGradient id="field" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#10243d"/><stop offset="1" stop-color="#243d5b"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe2a2"/><stop offset="1" stop-color="#d89a4c"/></linearGradient>
+  </defs>
+  <circle cx="128" cy="128" r="120" fill="url(#field)"/>
+  <circle cx="128" cy="128" r="107" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="2"/>
+  <path d="M62 170V112a66 66 0 0 1 132 0v58" fill="none" stroke="url(#gold)" stroke-width="12" stroke-linecap="round"/>
+  <path d="M81 167v-48m31 48v-57m32 57v-57m31 57v-48" stroke="#f4e8d1" stroke-width="8" stroke-linecap="round"/>
+  <path d="M66 178h124M54 193h148" stroke="url(#gold)" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="128" cy="82" r="18" fill="#f1bd68"/>
+  <path d="M98 99a36 36 0 0 1 60 0" fill="none" stroke="#f1bd68" stroke-width="5" stroke-linecap="round"/>
+</svg>
