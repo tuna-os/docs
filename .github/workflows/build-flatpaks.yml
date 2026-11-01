@@ -2,7 +2,7 @@
 # Builds apps that don't publish their own OCI, or as a fallback
 # for any app. Runs daily and on workflow_dispatch.
 #
-# To add an app: add an entry to the APPS list below.
+# To add an app: add a build matrix entry and matching download/index steps below.
 
 name: Build Flatpaks
 
@@ -85,14 +85,25 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: Download all OCI artifacts
+      - name: Download tavern OCI artifact
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
-          pattern: oci-*
-          path: artifacts
-          merge-multiple: true
+          name: oci-tavern
+          path: artifacts/tavern
 
-      - name: Push to GHCR & update index
+      - name: Download bootc-installer OCI artifact
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: oci-bootc-installer
+          path: artifacts/bootc-installer
+
+      - name: Download mariner OCI artifact
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: oci-mariner
+          path: artifacts/mariner
+
+      - name: Prepare index checkout and push images to GHCR
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FLATPAK_INDEX_TOKEN: ${{ secrets.FLATPAK_INDEX_TOKEN }}
@@ -105,20 +116,48 @@ jobs:
           # (avoids leaks via .git/config, `git remote -v`, and process listings).
           git -C index-repo config --local http.extraheader \
             "AUTHORIZATION: basic $(printf 'x-access-token:%s' "$FLATPAK_INDEX_TOKEN" | base64 -w0)"
-          pip install requests
 
           for dir in artifacts/*/; do
             app=$(basename "$dir")
             echo "=== Publishing $app ==="
             skopeo copy "oci:${dir}" "docker://${REGISTRY}/${app}:latest" || true
-
-            python3 .github/scripts/update-index.py \
-              --oci-dir "${dir}" \
-              --index-file index-repo/static/flatpak/index/static \
-              --repo-name "tuna-os/${app}" \
-              --tags latest || true
           done
 
+      # Keep updates sequential: each app merges into the same index file.
+      # Match the previous per-app `|| true` policy so one failure does not
+      # prevent other apps from updating the index.
+      - name: Update tavern index
+        uses: tuna-os/.github/.github/actions/update-flatpak-index@main
+        continue-on-error: true
+        with:
+          oci-dir: artifacts/tavern/
+          index-file: index-repo/static/flatpak/index/static
+          repo-name: tuna-os/tavern
+          tags: latest
+          require-appstream: 'false'
+
+      - name: Update bootc-installer index
+        uses: tuna-os/.github/.github/actions/update-flatpak-index@main
+        continue-on-error: true
+        with:
+          oci-dir: artifacts/bootc-installer/
+          index-file: index-repo/static/flatpak/index/static
+          repo-name: tuna-os/bootc-installer
+          tags: latest
+          require-appstream: 'false'
+
+      - name: Update mariner index
+        uses: tuna-os/.github/.github/actions/update-flatpak-index@main
+        continue-on-error: true
+        with:
+          oci-dir: artifacts/mariner/
+          index-file: index-repo/static/flatpak/index/static
+          repo-name: tuna-os/mariner
+          tags: latest
+          require-appstream: 'false'
+
+      - name: Commit and push index
+        run: |
           cd index-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
