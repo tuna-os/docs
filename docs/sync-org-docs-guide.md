@@ -42,6 +42,30 @@ Maintainers can also run it through `workflow_dispatch`. Its job runs only in
 A maintainer must review and merge the sync PR. A successful run alone does not
 publish content. A push to `main` starts the production build and deployment.
 
+### Source revision and freshness
+
+Synced pages show a compact source indicator after their first refresh with
+provenance enabled. Its link names the source file at the commit that
+the sync inspected. The timestamp is the last successful source fetch,
+not the time of a site build or a change to the source file. It does not
+claim that the source has no newer commits.
+
+The sync generates `src/data/synced-docs.json` from the files it copies,
+including renamed pages. This is a checked snapshot, not a project registry.
+Protected pages have no generated source entry. Existing pages gain entries
+on the next successful sync; the first snapshot is for rust-atomicwrites.
+
+If a refresh fails, the sync retains the prior revision, paths, content, and
+fetch time. It records a stale/error status. The indicator then reports the failed
+refresh. The command still exits nonzero, and the workflow still stops before
+it opens a publication PR. A failed run does not automatically publish its
+stale status. A successful retry replaces it with the new snapshot.
+
+`npm run build` reads checked pages and metadata. It does not run the sync,
+contact source repositories, or rewrite provenance. A build of an old or
+stale snapshot cannot give it a new fetch time. Run the sync explicitly
+to refresh sources, and review its content and metadata together.
+
 ### Which files become pages
 
 | Source | Destination or rule |
