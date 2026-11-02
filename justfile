@@ -46,6 +46,10 @@ test:
     done
     exit $FAILED
 
+# Run the Flatpak Python unit tests (install .github/scripts/tests/requirements.txt first)
+test-python:
+    python3 -m pytest .github/scripts/tests/ -v
+
 # Lint markdown and Node.js scripts, and enforce the STE budget.
 # Needs markdownlint-cli (npm install -g markdownlint-cli), like lint.yml.
 lint:
@@ -86,4 +90,4 @@ check-install-commands:
     node scripts/check-install-commands.mjs
 
 # Run the checks CI runs on PRs
-preflight: check lint test check-install-commands
+preflight: check lint test test-python check-install-commands

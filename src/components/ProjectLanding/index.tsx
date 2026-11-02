@@ -100,6 +100,23 @@ function Screenshots({project}: {project: Project}): ReactNode {
   );
 }
 
+function BrandArtwork({project}: {project: Project}): ReactNode {
+  if (!project.wallpaper) return null;
+  return (
+    <section className={styles.section}>
+      <div className="container">
+        <div className={styles.sectionHead}>
+          <Heading as="h2">Original desktop artwork</Heading>
+        </div>
+        <figure className={styles.shot}>
+          <img src={project.wallpaper.src} alt={project.wallpaper.alt} loading="lazy" />
+          <figcaption>{project.wallpaper.alt}</figcaption>
+        </figure>
+      </div>
+    </section>
+  );
+}
+
 function Highlights({project}: {project: Project}): ReactNode {
   if (!project.highlights?.length) return null;
   return (
@@ -287,6 +304,7 @@ export default function ProjectLanding({project}: {project: Project}): ReactNode
       <main className={project.id === 'tromso' ? 'aurora-page' : undefined}>
         <Highlights project={project} />
         <Screenshots project={project} />
+        <BrandArtwork project={project} />
         <Features project={project} />
         <Comparison project={project} />
         <Performance project={project} />

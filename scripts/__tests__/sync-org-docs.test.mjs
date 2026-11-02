@@ -26,6 +26,7 @@ import {
   subFrontmatter,
   isSyncedIndex,
   getStatusBanner,
+  readmeIndex,
 } from '../lib/org-doc-transform.mjs';
 import {
   filesToRemove,
@@ -101,6 +102,37 @@ test('flattened imports reserve index and natural prefixed filenames', () => {
   assert.deepEqual(docOutputNames(['ROADMAP.md'], [...files].reverse()), outputs);
 });
 
+test('README imports have distinct routes from the generated index and natural prefixed pages', () => {
+  const outputs = docOutputNames(['index.md'], ['README.md', 'index.md', 'docs-README.md']);
+  assert.equal(outputs.get('README.md'), 'docs-docs-README.md');
+  assert.equal(outputs.get('index.md'), 'docs-index.md');
+  assert.equal(outputs.get('docs-README.md'), 'docs-README.md');
+  assert.equal(docOutputNames([], ['readme.md']).get('readme.md'), 'docs-readme.md');
+});
+
+asyncTest('README index retargets links to the removed H1 to the page top', async () => {
+  const source = '# TunaOS Flatpak Index\n\n[Top](#tunaos-flatpak-index)\n';
+  const out = await readmeIndex(source, {
+    repo: 'flatpak-index', branch: 'main', label: 'flatpak-index',
+    position: 1, slug: 'flatpak-index',
+  });
+  assert.ok(isSyncedIndex(out));
+  assert.ok(out.endsWith('[Top](#)\n'));
+  assert.doesNotMatch(out, /^# TunaOS Flatpak Index$/m);
+});
+
+asyncTest('README title link rewrites preserve other anchors and code examples', async () => {
+  const source = '# Title\n\n[Top](#title "Start") and [Other](#other)\n' +
+    '[top]: #title\n\n`[Top](#title)`\n\n```md\n[Top](#title)\n```\n';
+  const out = await readmeIndex(source, {
+    repo: 'example', branch: 'main', label: 'Example', position: 1, slug: 'example',
+  });
+  assert.ok(out.includes('[Top](# "Start") and [Other](#other)'));
+  assert.ok(out.includes('[top]: #\n'));
+  assert.ok(out.includes('`[Top](#title)`'));
+  assert.ok(out.includes('```md\n[Top](#title)\n```'));
+});
+
 test('leaves fenced blocks untouched', () => {
   const src = 'prose\n\n```bash\ngit log --since=<30d>\n```\n\nmore prose\n';
   const out = onProse(src, (s) => s.replace(/</g, '&lt;'));
@@ -134,6 +166,14 @@ test('escapes a placeholder that is not an HTML element (hive backend-setup, a t
 test('escapes a placeholder inside emphasis', () => {
   const out = sanitizeHtml('*Talks to the <frontend> over a socket*\n');
   assert.equal(out, '*Talks to the &lt;frontend> over a socket*\n');
+});
+
+test('escapes the placeholders that broke ten consecutive sync runs (#359)', () => {
+  // tunaos-packages TIDEFORGE-ACTION-CACHE.md and wootc manual-testing.md:
+  // prose on GitHub, an unclosed JSX tag to MDX, and the daily sync red from
+  // 08-22 to 08-31 until both shapes are escaped here.
+  assert.match(sanitizeHtml('restore key is <artifact-digest>\n'), /&lt;artifact-digest>/);
+  assert.match(sanitizeHtml('run it on <your> machine\n'), /&lt;your>/);
 });
 
 test('escapes a < that cannot start a tag (paperwm: <<, <-)', () => {

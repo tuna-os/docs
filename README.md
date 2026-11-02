@@ -1,4 +1,4 @@
-# Website
+# TunaOS website
 
 This website uses [Docusaurus](https://docusaurus.io/), a modern generator
 of static websites.
@@ -111,6 +111,9 @@ npm run build
 
 For prerequisites and validation before submission, see the
 [contributor guide](./CONTRIBUTING.md).
+
+For project names and infrastructure identifiers, see the
+[naming conventions](./CONTRIBUTING.md#naming-conventions).
 
 See [Telemetry and adoption proxy operations](TELEMETRY.md) for application log
 fields, privacy guarantees, and cache measurement limits.
