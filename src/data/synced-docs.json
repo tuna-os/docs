@@ -1,0 +1,10 @@
+{
+  "rust-atomicwrites": {
+    "revision": "d71cb7f87e00262305c59d77653e6b656c95a053",
+    "lastSuccessfulFetch": "2026-11-02T15:58:12.002Z",
+    "status": "ok",
+    "pages": {
+      "rust-atomicwrites/index": "README.md"
+    }
+  }
+}
