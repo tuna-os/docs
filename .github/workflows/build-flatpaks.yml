@@ -18,9 +18,6 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  REGISTRY: ghcr.io/tuna-os
-
 jobs:
   build:
     name: Build ${{ matrix.app.name }}
@@ -73,6 +70,7 @@ jobs:
         with:
           name: oci-${{ matrix.app.name }}
           path: ${{ matrix.app.name }}.oci/
+          if-no-files-found: error
           retention-days: 1
 
   publish:
@@ -90,14 +88,15 @@ jobs:
         with:
           pattern: oci-*
           path: artifacts
-          merge-multiple: true
+          merge-multiple: false
 
       - name: Push to GHCR & update index
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FLATPAK_INDEX_TOKEN: ${{ secrets.FLATPAK_INDEX_TOKEN }}
         run: |
-          echo "${{ env.GITHUB_TOKEN }}" | skopeo login ghcr.io -u "${{ github.actor }}" --password-stdin
+          set -euo pipefail
+          echo "$GITHUB_TOKEN" | skopeo login ghcr.io -u "${{ github.actor }}" --password-stdin
           git clone --depth 1 \
             https://github.com/tuna-os/docs.git \
             index-repo
@@ -105,27 +104,6 @@ jobs:
           # (avoids leaks via .git/config, `git remote -v`, and process listings).
           git -C index-repo config --local http.extraheader \
             "AUTHORIZATION: basic $(printf 'x-access-token:%s' "$FLATPAK_INDEX_TOKEN" | base64 -w0)"
-          pip install requests
-
-          for dir in artifacts/*/; do
-            app=$(basename "$dir")
-            echo "=== Publishing $app ==="
-            skopeo copy "oci:${dir}" "docker://${REGISTRY}/${app}:latest" || true
-
-            python3 .github/scripts/update-index.py \
-              --oci-dir "${dir}" \
-              --index-file index-repo/static/flatpak/index/static \
-              --repo-name "tuna-os/${app}" \
-              --tags latest || true
-          done
-
-          cd index-repo
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add static/flatpak/index/static
-          if git diff --cached --quiet; then
-            echo "No index changes"
-          else
-            git commit -m "chore(flatpak): update OCI index from centralized builder"
-            git push origin main
-          fi
+          git -C index-repo config user.name "github-actions[bot]"
+          git -C index-repo config user.email "github-actions[bot]@users.noreply.github.com"
+          python3 .github/scripts/publish-flatpaks.py
