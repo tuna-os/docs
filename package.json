@@ -20,7 +20,8 @@
     "contributors": "node scripts/build-contributors.mjs",
     "a11y": "node scripts/a11y.mjs",
     "test:metrics": "node scripts/metrics-smoke.mjs",
-    "test:build-health": "node scripts/build-health-smoke.mjs"
+    "test:build-health": "node scripts/build-health-smoke.mjs",
+    "test:unit": "vitest run"
   },
   "dependencies": {
     "@docusaurus/core": "3.10.2",
@@ -47,7 +48,8 @@
     "@docusaurus/types": "3.10.2",
     "@types/react-dom": "19.3.0",
     "playwright": "^1.63.0",
-    "typescript": "~7.0.0"
+    "typescript": "~7.0.0",
+    "vitest": "^5.0.5"
   },
   "overrides": {
     "follow-redirects": "^1.16.1",

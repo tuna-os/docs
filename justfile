@@ -34,7 +34,7 @@ check: typecheck
 
 # ── Checks (mirror .github/workflows/lint.yml) ─────────────────────────
 
-# Run the Node.js unit tests for scripts/
+# Run frontend and script unit tests
 test:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -44,6 +44,7 @@ test:
         echo "  Running: $f"
         node "$f" || FAILED=1
     done
+    npm run test:unit || FAILED=1
     exit $FAILED
 
 # Run the Flatpak Python unit tests (install .github/scripts/tests/requirements.txt first)
