@@ -18,6 +18,10 @@ on:
       - 'scripts/**'
       - 'worker/**'
       - 'src/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vitest.config.mts'
+      - 'justfile'
       - '.github/scripts/**'
       - '.ste-budget'
       - '.markdownlint-budget'
@@ -31,6 +35,10 @@ on:
       - 'scripts/**'
       - 'worker/**'
       - 'src/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vitest.config.mts'
+      - 'justfile'
       - '.github/scripts/**'
       - '.ste-budget'
       - '.markdownlint-budget'
@@ -163,6 +171,9 @@ jobs:
             [[ -f "$f" ]] || continue
             node "$f"
           done
+
+      - name: Run frontend data unit tests
+        run: npm run test:unit
 
       - name: Check documented install commands
         run: npm run check-install-commands
