@@ -157,6 +157,7 @@ jobs:
 
 
   ste:
+    name: ste / Simplified Technical English
     # The linter, its rules and its tests live in tuna-os/.github's ste-lint
     # action, shared with every other repo in the org rather than copied into
     # each one. This repo keeps only .ste-budget -- the number it is measured
@@ -167,7 +168,27 @@ jobs:
     # is reverted by the next sync, and the author is another repository), so
     # that prose is only ever checked where it is written. Same rules, applied
     # at the source.
-    uses: tuna-os/.github/.github/workflows/ste-lint.yml@7c0708158bc2dae611750fceed2c98d2ca7f52f4 # main
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+          # The advisory report needs the PR base's history.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '24'
+
+      # Generated-tree detection imports sync-org-docs.mjs, whose transforms
+      # need github-slugger. Without dependencies the shared linter cannot
+      # load the sync module and counts generated prose against our budget.
+      - name: Install dependencies for generated-tree detection
+        run: npm ci --ignore-scripts
+
+      - uses: tuna-os/.github/.github/actions/ste-lint@91f5bd72c61421cd7408d846ded13ea778138e7b # main
+        with:
+          base-ref: ${{ github.base_ref }}
 
   link-check:
     name: Internal Link Check
