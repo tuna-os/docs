@@ -26,6 +26,7 @@ import {
   subFrontmatter,
   isSyncedIndex,
   getStatusBanner,
+  readmeIndex,
 } from '../lib/org-doc-transform.mjs';
 import {
   filesToRemove,
@@ -99,6 +100,37 @@ test('flattened imports reserve index and natural prefixed filenames', () => {
   assert.equal(outputs.get('docs-roadmap.md'), 'docs-roadmap.md');
   assert.equal(new Set([...outputs.values(), 'index.md', 'ROADMAP.md'].map(s => s.toLowerCase())).size, 6);
   assert.deepEqual(docOutputNames(['ROADMAP.md'], [...files].reverse()), outputs);
+});
+
+test('README imports have distinct routes from the generated index and natural prefixed pages', () => {
+  const outputs = docOutputNames(['index.md'], ['README.md', 'index.md', 'docs-README.md']);
+  assert.equal(outputs.get('README.md'), 'docs-docs-README.md');
+  assert.equal(outputs.get('index.md'), 'docs-index.md');
+  assert.equal(outputs.get('docs-README.md'), 'docs-README.md');
+  assert.equal(docOutputNames([], ['readme.md']).get('readme.md'), 'docs-readme.md');
+});
+
+test('README index retargets links to the removed H1 to the page top', () => {
+  const source = '# TunaOS Flatpak Index\n\n[Top](#tunaos-flatpak-index)\n';
+  const out = readmeIndex(source, {
+    repo: 'flatpak-index', branch: 'main', label: 'flatpak-index',
+    position: 1, slug: 'flatpak-index',
+  });
+  assert.ok(isSyncedIndex(out));
+  assert.ok(out.endsWith('[Top](#)\n'));
+  assert.doesNotMatch(out, /^# TunaOS Flatpak Index$/m);
+});
+
+test('README title link rewrites preserve other anchors and code examples', () => {
+  const source = '# Title\n\n[Top](#title "Start") and [Other](#other)\n' +
+    '[top]: #title\n\n`[Top](#title)`\n\n```md\n[Top](#title)\n```\n';
+  const out = readmeIndex(source, {
+    repo: 'example', branch: 'main', label: 'Example', position: 1, slug: 'example',
+  });
+  assert.ok(out.includes('[Top](# "Start") and [Other](#other)'));
+  assert.ok(out.includes('[top]: #\n'));
+  assert.ok(out.includes('`[Top](#title)`'));
+  assert.ok(out.includes('```md\n[Top](#title)\n```'));
 });
 
 test('leaves fenced blocks untouched', () => {
