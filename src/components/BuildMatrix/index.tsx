@@ -91,7 +91,7 @@ function Cell({variant, desktop, status, now, onPeek}: CellProps): ReactNode {
         : 'image';
   const body = (
     <>
-      <span className={styles.cellState}>{state}</span>
+      <span className={styles.cellState}>{state}</span>{' '}
       {age && <span className={styles.cellAge}>{age}</span>}
       {(status.nvidia || status.hwe) && (
         <span className={styles.cellEditions} aria-hidden>
@@ -105,7 +105,7 @@ function Cell({variant, desktop, status, now, onPeek}: CellProps): ReactNode {
   const shared = {
     className: status.iso ? styles.cellIso : styles.cellImage,
     'data-fresh': status.iso ? String(level) : undefined,
-    'aria-label': label,
+    'aria-label': `${state}${age ? ` ${age}` : ''} — ${label}`,
     onMouseEnter: (e: React.MouseEvent<HTMLElement>) => onPeek(label, e.currentTarget),
     onFocus: (e: React.FocusEvent<HTMLElement>) => onPeek(label, e.currentTarget),
     onMouseLeave: () => onPeek('', null),
