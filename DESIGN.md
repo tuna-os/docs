@@ -38,7 +38,7 @@ CTA in the hero and has its own landing page.
    they are for people who came looking for them: they live on `/variants`
    and in the build matrix, not in the nav bar, the footer, or the docs
    sidebar. Their pages still exist and their URLs still work. BuildStream
-   products (Athens, Tromsø, and XFCE Linux/Brussels) also appear on `/variants`
+   products (Athens, Tromsø, and Brussels) also appear on `/variants`
    and `/matrix` in their own family table, outside distro × desktop cell counts.
 4. **Name things plainly.** No pitch copy, no "blazing fast", no exclamation
    points. Say what a thing is and what it runs on.
@@ -53,6 +53,11 @@ CTA in the hero and has its own landing page.
    entry. The interface around these marks stays one hue. Put no other emoji
    in interface text. Emoji stay only where they are content, for example a
    project's own docs that sync from its repository.
+   BuildStream marks reference their namesakes: Athens uses the Parthenon,
+   Tromsø uses its bridge and an aurora, and Brussels uses an original iris.
+   Their wordmarks name Pantheon, KDE Plasma and Xfce, respectively.
+   Copy these assets from each project's `branding/` source directory.
+   Do not alter upstream desktop logos or use official city emblems as TunaOS marks.
 6. **Every list on the site derives from `src/data/`.** The nav, the footer,
    the matrix, the picker and the landing pages read the same arrays.
    A hand-maintained second copy is how images went missing from menus before.

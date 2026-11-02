@@ -1,20 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
-  <title id="title">Athens desktop wallpaper</title>
-  <desc id="desc">A warm sunrise over abstract classical arches, in midnight blue and sandstone.</desc>
+  <title id="title">Athens — first light on the Acropolis</title>
+  <desc id="desc">Original TunaOS Athens wallpaper: an abstract Parthenon-inspired pediment, Doric columns and stepped stylobate above the city at dawn. The left side remains quiet for desktop windows. Not upstream Elementary artwork.</desc>
   <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#101c32"/><stop offset=".52" stop-color="#263e5a"/><stop offset="1" stop-color="#805c55"/></linearGradient>
-    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe8b2"/><stop offset="1" stop-color="#e8a45d"/></linearGradient>
-    <linearGradient id="stone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#cda878" stop-opacity=".62"/><stop offset="1" stop-color="#f1d6a2" stop-opacity=".16"/></linearGradient>
-    <radialGradient id="glow"><stop stop-color="#f4be76" stop-opacity=".52"/><stop offset="1" stop-color="#f4be76" stop-opacity="0"/></radialGradient>
+    <linearGradient id="sky" x2="1" y2="1"><stop stop-color="#101e34"/><stop offset=".55" stop-color="#29475e"/><stop offset="1" stop-color="#a07360"/></linearGradient>
+    <linearGradient id="stone" x2="0" y2="1"><stop stop-color="#f4d9a3"/><stop offset="1" stop-color="#b48f70"/></linearGradient>
+    <linearGradient id="hill" x2="0" y2="1"><stop stop-color="#263e50"/><stop offset="1" stop-color="#101e30"/></linearGradient>
+    <radialGradient id="dawn"><stop stop-color="#f8c57d" stop-opacity=".33"/><stop offset="1" stop-color="#f8c57d" stop-opacity="0"/></radialGradient>
   </defs>
   <path fill="url(#sky)" d="M0 0h1920v1080H0z"/>
-  <circle cx="1330" cy="405" r="410" fill="url(#glow)"/>
-  <circle cx="1330" cy="405" r="136" fill="url(#sun)"/>
-  <path d="M0 789q315-152 622 0t618 0q330-160 680 0v291H0z" fill="#182b42" fill-opacity=".78"/>
-  <path d="M180 1080V676a226 226 0 0 1 452 0v404" fill="none" stroke="url(#stone)" stroke-width="46"/>
-  <path d="M241 1080V701a165 165 0 0 1 330 0v379" fill="none" stroke="#f0d4a2" stroke-opacity=".19" stroke-width="5"/>
-  <path d="M708 1080V761a155 155 0 0 1 310 0v319" fill="none" stroke="#e3bd8b" stroke-opacity=".34" stroke-width="34"/>
-  <path d="M760 1080V780a103 103 0 0 1 206 0v300" fill="none" stroke="#f4dfb8" stroke-opacity=".16" stroke-width="4"/>
-  <path d="M0 930q370-95 710 0t710 0q250-75 500 0v150H0z" fill="#111c2e" fill-opacity=".6"/>
-  <g fill="#e9bd7a" fill-opacity=".56"><circle cx="1110" cy="700" r="4"/><circle cx="1190" cy="746" r="3"/><circle cx="1485" cy="704" r="5"/><circle cx="1582" cy="768" r="3"/><circle cx="1050" cy="818" r="3"/></g>
+  <circle cx="1400" cy="330" r="490" fill="url(#dawn)"/>
+  <circle cx="1440" cy="285" r="118" fill="#f4d09a" fill-opacity=".82"/>
+  <path d="M0 835q290-103 565-14t462-7q225-95 420-38t473-35v339H0z" fill="#203a50" fill-opacity=".65"/>
+  <path d="m755 867 173-70 116-17 73-65 150 7 132-39 178 45 170 79 173 19v254H636z" fill="url(#hill)"/>
+  <g transform="translate(938 274)" fill="url(#stone)">
+    <path d="M0 198 370 10 740 198Z"/>
+    <path d="m91 166 279-140 279 140Z" fill="#3a4e59"/>
+    <path d="M-6 215h752v35H-6z"/>
+    <path d="M27 283h50l-6 244H33zM116 283h50l-6 244h-38zM205 283h50l-6 244h-38zM294 283h50l-6 244h-38zM383 283h50l-6 244h-38zM472 283h50l-6 244h-38zM561 283h50l-6 244h-38zM650 283h50l-6 244h-38z"/>
+    <path d="M16 260h72v24H16zM105 260h72v24h-72zM194 260h72v24h-72zM283 260h72v24h-72zM372 260h72v24h-72zM461 260h72v24h-72zM550 260h72v24h-72zM639 260h72v24h-72z"/>
+    <path d="M6 538h728v22H6zM-20 571h780v22H-20zM-46 604h832v22H-46z"/>
+  </g>
+  <g stroke="#344b59" stroke-width="5" stroke-opacity=".23"><path d="M990 573v215m89-215v215m89-215v215m89-215v215m89-215v215m89-215v215m89-215v215m89-215v215"/></g>
+  <path d="M0 989q310-92 645-13t665 21q335-65 610-9v92H0z" fill="#111e30" fill-opacity=".84"/>
+  <g fill="#e8c18b" fill-opacity=".45"><path d="M116 943h8v4h-8zM280 966h11v4h-11zM493 950h8v4h-8zM590 979h9v4h-9zM737 954h8v4h-8zM1735 970h9v4h-9zM1853 940h8v4h-8z"/></g>
 </svg>

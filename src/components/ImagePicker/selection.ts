@@ -73,12 +73,12 @@ export const PRODUCT_OPTIONS: Option<Product>[] = [
   {
     value: 'tromso',
     label: 'Tromsø',
-    description: 'Aurora KDE Plasma 6 — built from source on freedesktop-sdk.',
+    description: 'KDE Plasma 6 — built from source on freedesktop-sdk.',
   },
   {
     value: 'xfce',
-    label: 'XFCE Linux',
-    description: 'Lightweight XFCE Wayland — built from source on freedesktop-sdk.',
+    label: 'Brussels',
+    description: 'Xfce Wayland — built from source on freedesktop-sdk.',
   },
 ];
 
