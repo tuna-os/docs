@@ -18,6 +18,7 @@ import {
   subFrontmatter,
   isSyncedIndex,
   getStatusBanner,
+  readmeIndex,
 } from './lib/org-doc-transform.mjs';
 
 // Projects that get their own doc section. Add a slug → label entry to
@@ -410,17 +411,19 @@ function findCaseCollisions(rootDir) {
 // only when their name would overwrite another import, including index.md.
 // Reserve natural names first so a generated prefix cannot steal a later page.
 function docOutputNames(rootFiles, docFiles) {
-  const used = new Set(['index.md', ...rootFiles].map(name => name.toLowerCase()));
-  const reserved = new Set([...used, ...docFiles.map(name => name.toLowerCase())]);
+  // Docusaurus maps README.md and index.md to the same directory route.
+  const routeKey = name => name.toLowerCase().replace(/^readme\.md$/, 'index.md');
+  const used = new Set(['index.md', ...rootFiles].map(routeKey));
+  const reserved = new Set([...used, ...docFiles.map(routeKey)]);
   const outputs = new Map();
   for (const file of [...docFiles].sort()) {
     let output = file;
-    if (used.has(output.toLowerCase())) {
+    if (used.has(routeKey(output))) {
       output = `docs-${file}`;
-      while (reserved.has(output.toLowerCase())) output = `docs-${output}`;
+      while (reserved.has(routeKey(output))) output = `docs-${output}`;
     }
-    used.add(output.toLowerCase());
-    reserved.add(output.toLowerCase());
+    used.add(routeKey(output));
+    reserved.add(routeKey(output));
     outputs.set(file, output);
   }
   return outputs;
@@ -494,17 +497,10 @@ function main() {
       // ── README.md → index page ──
       const readmePath = join(dir, 'README.md');
       if (existsSync(readmePath)) {
-        let content = readFileSync(readmePath, 'utf8');
-        content = sanitizeHtml(content);
-        content = fixRelativeLinks(content, repo, '', branch);
-        // Remove the leading # Title (Docusaurus uses frontmatter for title)
-        content = content.replace(/^# .*\n\n?/, '');
-        const statusBanner = getStatusBanner(meta.status || 'unknown');
-        let fm = frontmatter(meta.label, localPos++, slug, meta.status || 'unknown');
-        if (statusBanner) {
-          fm += statusBanner + '\n\n';
-        }
-        content = fm + content;
+        const content = readmeIndex(readFileSync(readmePath, 'utf8'), {
+          repo, branch, label: meta.label, position: localPos++, slug,
+          status: meta.status || 'unknown',
+        });
         writeFileSync(join(targetDir, 'index.md'), content);
         WRITTEN.push(join(targetDir, 'index.md'));
         writtenFiles.push('index.md');
@@ -709,6 +705,7 @@ export {
   subFrontmatter,
   isSyncedIndex,
   getStatusBanner,
+  readmeIndex,
   filesToRemove,
   isRootDoc,
   markUnparseable,

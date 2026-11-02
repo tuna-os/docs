@@ -50,8 +50,14 @@ publish content. A push to `main` starts the production build and deployment.
 | Selected root documents | Same filename in `docs/<slug>/`; default names are `ARCHITECTURE`, `CONTRIBUTING`, `ROADMAP`, `TODO`, `SECURITY`, and `SPEC`, with `.md` or `.rst` extensions |
 | Files directly inside `docs/` | `.md` and `.rst` files, except `SUMMARY.md`, copied to `docs/<slug>/` |
 
-The script strips a leading Markdown title and adds page metadata. An entry
-in `ROOT_DOC_FILTER` replaces the default selection of root files.
+The script strips leading Markdown titles and adds page metadata. For the
+root README, it changes local links to that title to point to the page top.
+If a file in `docs/` would share a filename or route with another page, the
+script adds a `docs-` prefix. For example, `docs/README.md` becomes
+`docs-README.md` because `README.md` and `index.md` share a Docusaurus route.
+It repeats the prefix if that name is also in use.
+
+An entry in `ROOT_DOC_FILTER` replaces the default selection of root files.
 `DOCS_SUBDIR` can select another source directory. Despite the script's recursive-folder
 comment, the current loop copies only files directly inside that directory.
 It does not copy nested folders or image assets.

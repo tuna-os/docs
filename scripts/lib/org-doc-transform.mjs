@@ -4,6 +4,8 @@
 // The command entrypoint owns repository discovery and destination mutation;
 // callers can use these helpers without loading that orchestration.
 
+import {slug as githubSlug} from 'github-slugger';
+
 const ORG = 'tuna-os';
 
 // onProse applies fn to the prose of a markdown document, leaving fenced code
@@ -282,7 +284,27 @@ function getStatusBanner(status) {
   return banners[status] || null;
 }
 
+// Docusaurus omits IDs on H1 headings. Retarget local links to the removed
+// README title to the page top instead of leaving a fragment with no target.
+function readmeIndex(content, {repo, branch, label, position, slug, status = 'unknown'}) {
+  let body = fixRelativeLinks(sanitizeHtml(content), repo, '', branch);
+  const title = body.match(/^# (.*)\n\n?/);
+  if (title) {
+    body = body.slice(title[0].length);
+    const anchor = githubSlug(title[1]);
+    body = onProse(body, prose => prose
+      .replace(/(\]\(\s*)#([^\s)]+)(?=[\s)])/g,
+        (match, prefix, id) => id === anchor ? `${prefix}#` : match)
+      .replace(/^( {0,3}\[[^\]\n]+\]:\s*)#(\S+)/gm,
+        (match, prefix, id) => id === anchor ? `${prefix}#` : match));
+  }
+  const banner = getStatusBanner(status);
+  return frontmatter(label, position, slug, status) +
+    (banner ? banner + '\n\n' : '') + body;
+}
+
 export {
+  readmeIndex,
   sanitizeHtml,
   fixRelativeLinks,
   onProse,
