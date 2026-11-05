@@ -429,7 +429,7 @@ function docOutputNames(rootFiles, docFiles) {
   return outputs;
 }
 
-function main() {
+async function main() {
   // Discover repos from the org.
   const {listed, publicRepos, fatal, warnings, attempts} = discoverRepos();
 
@@ -497,7 +497,7 @@ function main() {
       // ── README.md → index page ──
       const readmePath = join(dir, 'README.md');
       if (existsSync(readmePath)) {
-        const content = readmeIndex(readFileSync(readmePath, 'utf8'), {
+        const content = await readmeIndex(readFileSync(readmePath, 'utf8'), {
           repo, branch, label: meta.label, position: localPos++, slug,
           status: meta.status || 'unknown',
         });
@@ -727,6 +727,6 @@ export {
 // The command module is imported by tests for orchestration and reconciliation
 // helpers; its guarded main() call keeps those imports network-free.
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  main();
+  await main();
   await markUnparseable(WRITTEN);
 }

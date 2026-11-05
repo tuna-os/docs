@@ -75,10 +75,12 @@ CTA in the hero and has its own landing page.
 ## Accessibility
 
 The site is audited with axe-core (WCAG 2.2 A and AA rules) against the built
-output; `npm run a11y` runs it over the pages people actually land on. Keep it
-at zero violations — the checks that matter most here are contrast on the dark
-panels, a visible focus ring on every control, and real button/label semantics
-in the image picker and the carousels.
+output; `npm run a11y` runs it over the pages people actually land on and gates
+the Workers Build workflow. Keep it at zero violations — the checks that matter
+most here are contrast on the dark panels, a visible focus ring on every control,
+and real button/label semantics in the image picker and the carousels. Matrix
+link names include their visible status and age; inline rebase links are
+underlined so they do not rely on color alone.
 
 ## Credits
 

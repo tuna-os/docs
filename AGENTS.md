@@ -23,6 +23,9 @@ fix belongs in the source repository. The STE budget skips those trees for the
 same reason, and decides which they are from the sync's own index-page
 template rather than guessing from a file's links (#102).
 
+The STE job has no site dependencies. Keep the sync's ownership exports
+importable without `node_modules`; load rendering packages only when needed.
+
 Hand-written pages live at the top level of `docs/` (`architecture.md`,
 `choosing-a-variant.md`, …) and in `blog/`.
 
