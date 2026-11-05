@@ -4,7 +4,9 @@
 // The command entrypoint owns repository discovery and destination mutation;
 // callers can use these helpers without loading that orchestration.
 
-import {slug as githubSlug} from 'github-slugger';
+import {createRequire} from 'node:module';
+
+const require = createRequire(import.meta.url);
 
 const ORG = 'tuna-os';
 
@@ -291,6 +293,9 @@ function readmeIndex(content, {repo, branch, label, position, slug, status = 'un
   const title = body.match(/^# (.*)\n\n?/);
   if (title) {
     body = body.slice(title[0].length);
+    // STE imports the sync's ownership helpers before npm dependencies exist.
+    // Load the slugger only when transforming a README (Node.js 24+).
+    const {slug: githubSlug} = require('github-slugger');
     const anchor = githubSlug(title[1]);
     body = onProse(body, prose => prose
       .replace(/(\]\(\s*)#([^\s)]+)(?=[\s)])/g,
