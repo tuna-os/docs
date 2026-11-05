@@ -40,8 +40,8 @@ const FEATURED_PROJECTS: Array<{
     mark: '/img/buildstream/tromso/tromso-logo.svg',
   },
   {
-    name: 'XFCE Linux',
-    desc: 'Brussels · XFCE Wayland',
+    name: 'Brussels',
+    desc: 'Xfce Wayland · BuildStream image',
     to: '/xfce-linux',
     icon: 'monitor',
     mark: '/img/buildstream/brussels/brussels-logo.svg',

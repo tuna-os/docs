@@ -1,15 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
-  <title id="title">Brussels artwork mark</title>
-  <desc id="desc">An original art-nouveau-inspired arch and rising sun, created for TunaOS.</desc>
+  <title id="title">Brussels iris — TunaOS product mark</title>
+  <desc id="desc">An original botanical yellow iris with three upright petals, three falling petals and green sword leaves. The flower recalls the Brussels region; this is not its official emblem or an Xfce logo.</desc>
   <defs>
-    <linearGradient id="field" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#152b3b"/><stop offset="1" stop-color="#294c57"/></linearGradient>
-    <linearGradient id="copper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f5c78e"/><stop offset="1" stop-color="#d47755"/></linearGradient>
+    <linearGradient id="field" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#102c40"/><stop offset="1" stop-color="#23535b"/></linearGradient>
+    <linearGradient id="petal" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#fff2b6"/><stop offset=".48" stop-color="#f6ce62"/><stop offset="1" stop-color="#d99b34"/></linearGradient>
+    <linearGradient id="fall" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe69b"/><stop offset="1" stop-color="#e6ae43"/></linearGradient>
   </defs>
   <circle cx="128" cy="128" r="120" fill="url(#field)"/>
-  <circle cx="128" cy="128" r="107" fill="none" stroke="#ffffff" stroke-opacity=".17" stroke-width="2"/>
-  <circle cx="128" cy="106" r="34" fill="#efb36c"/>
-  <path d="M52 183V112a76 76 0 0 1 152 0v71" fill="none" stroke="url(#copper)" stroke-width="10" stroke-linecap="round"/>
-  <path d="M73 183v-58a55 55 0 0 1 110 0v58" fill="none" stroke="#e6d8bf" stroke-opacity=".72" stroke-width="5"/>
-  <path d="M45 193h166M68 207h120" stroke="#efb36c" stroke-width="7" stroke-linecap="round"/>
-  <path d="M128 40v13M64 67l10 10m118-10-10 10" stroke="#efb36c" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="128" cy="128" r="108" fill="none" stroke="#d5e8df" stroke-opacity=".18" stroke-width="1.5"/>
+  <g id="iris">
+    <path d="M128 226c-4-39-3-70 0-105" fill="none" stroke="#81aa83" stroke-width="7" stroke-linecap="round"/>
+    <path d="M124 226C96 209 82 177 80 149c25 20 39 43 44 77Z" fill="#679a78"/>
+    <path d="M132 226c25-23 42-57 46-91-28 24-42 55-46 91Z" fill="#a0b77e"/>
+    <path d="M128 119c-20-24-38-36-53-31-8-19-7-34 4-41 24 2 42 28 49 72Z" fill="url(#petal)"/>
+    <path d="M128 119c20-24 38-36 53-31 8-19 7-34-4-41-24 2-42 28-49 72Z" fill="url(#petal)"/>
+    <path d="M128 119c-17-26-27-57-16-77 5-9 12-15 16-18 4 3 11 9 16 18 11 20 1 51-16 77Z" fill="url(#petal)"/>
+    <path d="M128 116c-24-13-54-13-74 4-7 6-12 15-13 24 15 15 34 18 51 10 20-9 29-24 36-38Z" fill="url(#fall)"/>
+    <path d="M128 116c24-13 54-13 74 4 7 6 12 15 13 24-15 15-34 18-51 10-20-9-29-24-36-38Z" fill="url(#fall)"/>
+    <path d="M128 114c-12 13-20 27-17 44 2 10 9 18 17 24 8-6 15-14 17-24 3-17-5-31-17-44Z" fill="url(#fall)"/>
+    <g fill="none" stroke="#a8732d" stroke-width="2.5" stroke-linecap="round" opacity=".75">
+      <path d="M128 56v51M90 71c12 10 22 23 29 39m47-39c-12 10-22 23-29 39M65 138c21-1 39-8 52-17m74 17c-21-1-39-8-52-17m-11 39v-28"/>
+    </g>
+    <path d="M119 119q9-13 18 0l-9 13Z" fill="#f9e6a1"/>
+  </g>
 </svg>

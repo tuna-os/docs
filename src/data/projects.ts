@@ -202,7 +202,7 @@ export const PROJECTS: Project[] = [
     mark: '/img/buildstream/athens/athens-logo.svg',
     wallpaper: {
       src: '/img/buildstream/athens/athens-wallpaper.svg',
-      alt: 'Original Athens wallpaper: a warm sunrise over abstract arches in midnight blue and sandstone.',
+      alt: 'Athens wallpaper with a Parthenon-inspired pediment and columns.',
     },
     buildstream: {
       base: 'GNOME OS OCI runtime',
@@ -223,7 +223,7 @@ export const PROJECTS: Project[] = [
     features: [
       {emoji: '🧱', title: 'BuildStream recipe', text: 'BuildStream defines the Pantheon and GNOME OS OCI image graph; CI checks the graph, not a completed image build.'},
       {emoji: '🔒', title: 'Local-only output', text: 'The OCI layout can be built and loaded locally. Registry publication, update feeds, and production signing are not configured.'},
-      {emoji: '🎨', title: 'Original TunaOS artwork', text: 'The Athens mark, wordmark, and wallpaper are original TunaOS artwork, separate from Elementary OS branding.'},
+      {emoji: '🎨', title: 'Athens and Pantheon', text: 'The mark references the Parthenon in Athens. The wordmark names the Pantheon desktop. TunaOS created this artwork; it does not replace Elementary OS or Pantheon project marks.'},
     ],
   },
   {
@@ -244,7 +244,7 @@ export const PROJECTS: Project[] = [
     mark: '/img/buildstream/tromso/tromso-logo.svg',
     wallpaper: {
       src: '/img/buildstream/tromso/tromso-wallpaper.svg',
-      alt: 'Original Tromsø wallpaper: an aurora above a northern mountain ridge.',
+      alt: 'Tromsø wallpaper with Tromsø Bridge beneath an aurora.',
     },
     buildstream: {
       base: 'freedesktop-sdk',
@@ -265,9 +265,9 @@ export const PROJECTS: Project[] = [
     features: [
       {emoji: '🧱', title: 'Built from source', text: 'BuildStream builds the KDE desktop stack on freedesktop-sdk.'},
       {emoji: '🔁', title: 'BuildStream pipeline', text: 'The project maintains its own pinned build graph and CI checks.'},
-      {emoji: '🎨', title: 'Original Tromsø artwork', text: 'The mountain-and-aurora mark, wordmark, and wallpaper are TunaOS artwork, not Aurora Linux branding.'},
+      {emoji: '🎨', title: 'Tromsø and KDE Plasma', text: 'The mark references Tromsø Bridge and the northern lights. The wordmark names KDE Plasma. This is original TunaOS artwork, not a KDE or Aurora Linux logo.'},
       {emoji: '🐳', title: 'bootc OCI image', text: 'The project publishes a bootc OCI image at <code>ghcr.io/tuna-os/tromso</code>.'},
-      {emoji: '🖥️', title: 'BuildStream family', text: 'Tromsø, XFCE Linux (Brussels), and Athens are separately built TunaOS image projects with different desktops and runtimes.'},
+      {emoji: '🖥️', title: 'BuildStream family', text: 'Tromsø, Brussels, and Athens are separately built TunaOS image projects with different desktops and runtimes.'},
     ],
     install: [
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/tromso.git\ncd tromso\njust build'},
@@ -698,11 +698,11 @@ export const PROJECTS: Project[] = [
     id: 'xfce-linux',
     icon: 'monitor',
     emoji: '🖥️',
-    name: 'XFCE Linux',
+    name: 'Brussels',
     status: 'alpha',
-    tagline: 'Brussels: XFCE Wayland, built with BuildStream.',
+    tagline: 'Xfce on Wayland, built with BuildStream for TunaOS.',
     lede:
-      'XFCE Linux, codenamed Brussels, is an independent TunaOS bootc image with XFCE Wayland. It shares a freedesktop-sdk base with Tromsø but has its own BuildStream project and build pipeline.',
+      'Brussels is an independent TunaOS bootc image with Xfce on Wayland. It shares a freedesktop-sdk base with Tromsø but has its own BuildStream project and build pipeline. The repository and registry retain the xfce-linux identifier.',
     accent: '#efb36c',
     accent2: '#d47755',
     repo: 'https://github.com/tuna-os/xfce-linux',
@@ -712,26 +712,25 @@ export const PROJECTS: Project[] = [
     mark: '/img/buildstream/brussels/brussels-logo.svg',
     wallpaper: {
       src: '/img/buildstream/brussels/brussels-wallpaper.svg',
-      alt: 'Original Brussels wallpaper: a city at dusk framed by warm art-nouveau arches.',
+      alt: 'Brussels wallpaper with an original iris motif that references the Brussels region.',
     },
     buildstream: {
       base: 'freedesktop-sdk',
-      desktop: 'XFCE Wayland',
+      desktop: 'Xfce Wayland',
       image: 'ghcr.io/tuna-os/xfce-linux:latest',
-      codename: 'Brussels',
     },
     stats: [
-      {label: 'Desktop', value: 'XFCE Wayland'},
+      {label: 'Desktop', value: 'Xfce Wayland'},
       {label: 'Built with', value: 'BuildStream'},
       {label: 'Base', value: 'freedesktop-sdk'},
-      {label: 'Codename', value: 'Brussels'},
+      {label: 'Namesake', value: 'Brussels, Belgium'},
     ],
     features: [
-      {emoji: '🪶', title: 'XFCE on Wayland', text: 'A Wayland session with the XFCE desktop.'},
+      {emoji: '🪶', title: 'Xfce on Wayland', text: 'A Wayland session with the Xfce desktop.'},
       {emoji: '🧱', title: 'freedesktop-sdk base', text: 'The same SDK base family used by <a href="/tromso">Tromsø</a>, built in a separate BuildStream repository.'},
       {emoji: '🔁', title: 'Pinned BuildStream graph', text: 'The project maintains its own source pins and build pipeline.'},
       {emoji: '🐳', title: 'bootc OCI image', text: 'The project publishes a bootc OCI image at <code>ghcr.io/tuna-os/xfce-linux</code>.'},
-      {emoji: '🎨', title: 'Brussels artwork', text: 'The Brussels arch-and-sun mark, XFCE Linux wordmark, and wallpaper are original TunaOS artwork.'},
+      {emoji: '🎨', title: 'Brussels and Xfce', text: 'The original iris motif references the Brussels region. The wordmark names Xfce. This is TunaOS artwork, not the official regional emblem or an Xfce project logo.'},
     ],
     install: [
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/xfce-linux.git\ncd xfce-linux\njust build'},
