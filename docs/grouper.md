@@ -10,19 +10,20 @@ Prefer a visual tour? See the **[Grouper overview →](/grouper)** start page.
 
 **Based on:** [Ubuntu 26.04](https://ubuntu.com/)
 
-Grouper brings the bootc model to the most familiar base in Linux: Ubuntu. Atomic image updates, composefs, and the same desktops as every other TunaOS variant — experimental today, parity-bound tomorrow.
+**Status:** Beta
+
+Grouper brings the bootc model to the most familiar base in Linux: Ubuntu. Atomic image updates, composefs, and the same desktops as every other TunaOS variant — beta today, parity-bound tomorrow.
 
 ## Features
 
-- **Experimental by design**: Where we prove the Ubuntu bootc work. It has a
+- **Test ground by design**: Where we prove the Ubuntu bootc work. It has a
   composefs root and apt-built desktops, and the newest ideas come here first.
 - **Baked-in Homebrew**: Standard across all TunaOS variants.
 - **Flatpak First**: Tuned for a desktop where containers hold the applications.
 
 ## Status
 
-Grouper is **Experimental** now. We do not recommend it for production. It is where we prove the Ubuntu bootc
-work.
+Grouper is in **Beta**. We publish Grouper images on [tunaos.org/download](/download) for user tests. We do not recommend Grouper for production use yet.
 
 ## Downloads
 
