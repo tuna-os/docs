@@ -181,3 +181,6 @@ sudo systemctl reboot
 - [Installation guide](./installation.md)
 - [Frequently asked questions](./faq.md)
 - [Verify downloads and images](./verifying-downloads.md)
+
+For checks across desktops, hardware, and updates, see the
+[system diagnosis guide](troubleshooting.md).
