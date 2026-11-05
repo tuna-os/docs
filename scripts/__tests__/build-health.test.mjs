@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {validateBuildHealth, parseBuildHealth, displayStatus, requiredBuildTargets} from '../src/data/build-health.mjs';
-import {buildHealthResponse} from '../worker/build-health.mjs';
+import {validateBuildHealth, parseBuildHealth, displayStatus, requiredBuildTargets} from '../../src/data/build-health.mjs';
+import {buildHealthResponse} from '../../worker/build-health.mjs';
 const now = Date.parse('2026-10-10T12:00:00Z');
-const pin = JSON.parse(readFileSync(new URL('./build-health-source.json', import.meta.url)));
-const coverage = JSON.parse(readFileSync(new URL('../src/data/build-health-required.json', import.meta.url)));
+const pin = JSON.parse(readFileSync(new URL('../build-health-source.json', import.meta.url)));
+const coverage = JSON.parse(readFileSync(new URL('../../src/data/build-health-required.json', import.meta.url)));
 const fixture = () => ({schemaVersion: 1, kind: 'build-health', generatedAt: new Date(now).toISOString(), sourceRevision: 'a'.repeat(40), coverageDigest: coverage.coverageDigest,
   collection: {status: 'available', sources: [{id: 'tunaos', repository: 'tuna-os/tunaOS', status: 'available', evidence: []}]},
   freshnessPolicy: {buildSeconds: 172800, feedSeconds: 3600}, targets: requiredBuildTargets.map(target => ({target: {...target}, required: true, scheduled: true,
