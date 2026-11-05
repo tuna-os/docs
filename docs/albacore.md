@@ -12,6 +12,19 @@ Prefer a visual tour? See the **[Albacore overview →](/albacore)** start page.
 
 Albacore is the flagship stable variant of TunaOS. It gives a solid desktop for the enterprise, experience built on the AlmaLinux foundation.
 
+## Who it's for
+
+Albacore is for people who want a stable desktop for work. It is a good pick for teams that need a system that works for many years. Start here if you want a daily driver you can trust.
+
+## Why choose this variant
+
+- Most stable TunaOS variant.
+- Ten-year support from AlmaLinux.
+- Best for work that must not break.
+- Choose this over newer variants when you value stability over new packages.
+
+To see every variant side by side, read [Choose a variant](./choosing-a-variant).
+
 ## Features
 
 - **Baked-in Homebrew**: Access thousands of CLI tools and fonts immediately.
