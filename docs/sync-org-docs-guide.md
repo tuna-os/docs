@@ -11,8 +11,9 @@ can be lost on the next sync.
 The implementation has three main parts:
 
 - [Workflow](https://github.com/tuna-os/docs/blob/main/.github/workflows/sync-org-docs.yml): schedule, build, and sync PR.
-- [Sync script](https://github.com/tuna-os/docs/blob/main/scripts/sync-org-docs.mjs): repository discovery, filters, copies, and removals.
+- [Sync script](https://github.com/tuna-os/docs/blob/main/scripts/sync-org-docs.mjs): filters, copies, and removals.
 - [Transform helpers](https://github.com/tuna-os/docs/blob/main/scripts/lib/org-doc-transform.mjs): changes to links, HTML cleanup, and page metadata.
+- [Source adapter](https://github.com/tuna-os/docs/blob/main/scripts/lib/org-doc-source.mjs): repository discovery, count checks, retry policy, and shallow clones.
 
 ## How sync works
 
