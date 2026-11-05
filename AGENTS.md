@@ -35,8 +35,10 @@ Hand-written pages live at the top level of `docs/` (`architecture.md`,
 a correct index over there can still be stale in production until it lands
 here. `deploy-flatpak.yml` deploys on any push touching `static/flatpak/**`.
 
-`.github/scripts/update-index.py` is a **vendored copy** of flatpak-index's
-script; the two have drifted before and nothing checks that they agree.
+`build-flatpaks.yml` updates the index through the shared
+`tuna-os/.github/.github/actions/update-flatpak-index@main` action. Its script
+is synced from `tuna-os/flatpak-index/scripts/update-index.py`; make changes
+in that canonical repository rather than adding a local copy here.
 
 ## What the lint gates actually enforce
 
