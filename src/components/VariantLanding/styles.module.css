@@ -359,6 +359,10 @@
   margin-bottom: 0.4rem;
 }
 
+.rebaseLabel a {
+  text-decoration: underline;
+}
+
 .rebaseCode {
   margin: 0;
   border-radius: 6px;

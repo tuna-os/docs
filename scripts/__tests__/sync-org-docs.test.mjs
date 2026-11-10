@@ -110,9 +110,9 @@ test('README imports have distinct routes from the generated index and natural p
   assert.equal(docOutputNames([], ['readme.md']).get('readme.md'), 'docs-readme.md');
 });
 
-test('README index retargets links to the removed H1 to the page top', () => {
+asyncTest('README index retargets links to the removed H1 to the page top', async () => {
   const source = '# TunaOS Flatpak Index\n\n[Top](#tunaos-flatpak-index)\n';
-  const out = readmeIndex(source, {
+  const out = await readmeIndex(source, {
     repo: 'flatpak-index', branch: 'main', label: 'flatpak-index',
     position: 1, slug: 'flatpak-index',
   });
@@ -121,10 +121,10 @@ test('README index retargets links to the removed H1 to the page top', () => {
   assert.doesNotMatch(out, /^# TunaOS Flatpak Index$/m);
 });
 
-test('README title link rewrites preserve other anchors and code examples', () => {
+asyncTest('README title link rewrites preserve other anchors and code examples', async () => {
   const source = '# Title\n\n[Top](#title "Start") and [Other](#other)\n' +
     '[top]: #title\n\n`[Top](#title)`\n\n```md\n[Top](#title)\n```\n';
-  const out = readmeIndex(source, {
+  const out = await readmeIndex(source, {
     repo: 'example', branch: 'main', label: 'Example', position: 1, slug: 'example',
   });
   assert.ok(out.includes('[Top](# "Start") and [Other](#other)'));
