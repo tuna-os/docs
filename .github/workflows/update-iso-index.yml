@@ -4,8 +4,13 @@
 #
 # Lists the bucket with rclone (org-wide R2 secrets, same as the ISO
 # repos), transforms the listing with scripts/build-iso-index.mjs, and
-# commits the result. The commit triggers the site's normal redeploy, so
-# the published download page updates within a build cycle.
+# lands the result via an auto-merged PR. Direct push is impossible:
+# main is protected (GH006 declined every GITHUB_TOKEN push since Sept
+# 2026 — runs 38137406478..38766316308 all red), and bot commits land
+# mid-run often enough to race a push anyway. This matches the
+# update-contributors/sync-org-docs PR pattern plus --auto (protection
+# requires only the Markdown Lint check, no reviews). The merge triggers
+# the site's normal redeploy, so the download page updates within a cycle.
 name: update-iso-index
 
 on:
@@ -21,6 +26,7 @@ concurrency:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   update-index:
@@ -28,11 +34,11 @@ jobs:
     # Forks won't have the R2 secret; skip rather than fail.
     if: ${{ github.repository == 'tuna-os/docs' }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
-          node-version: 24
+          node-version: 26
 
       - name: Install rclone
         run: sudo apt-get update && sudo apt-get install -y rclone
@@ -52,14 +58,22 @@ jobs:
           | node scripts/build-iso-index.mjs > static/iso-index.json
           echo "==> $(node -e 'console.log(require("./static/iso-index.json").count)') ISOs indexed"
 
-      - name: Commit if changed
-        run: |
-          if git diff --quiet -- static/iso-index.json; then
-            echo "No change to iso-index.json"
-            exit 0
-          fi
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add static/iso-index.json
-          git commit -m "chore: refresh ISO download index from R2"
-          git push
+      - name: Open or update index PR
+        id: cpr
+        uses: peter-evans/create-pull-request@15733dbdfeedb4f7fdb73d13c6f5ac83b710fab8 # v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/update-iso-index
+          delete-branch: true
+          add-paths: static/iso-index.json
+          commit-message: 'chore: refresh ISO download index from R2'
+          title: 'chore: refresh ISO download index from R2'
+          body: |
+            Automated refresh of the R2 ISO inventory for /download.
+            Auto-merges after the required checks pass.
+
+      - name: Enable auto-merge
+        if: steps.cpr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr merge --auto --squash "${{ steps.cpr.outputs.pull-request-number }}"

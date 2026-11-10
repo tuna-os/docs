@@ -1,7 +1,7 @@
 name: Lint
 
 # scripts/** and .ste-budget are here because this workflow is what runs them:
-# js-syntax runs scripts/**/*.test.mjs, and the ste job runs scripts/ste-lint.mjs
+# js-syntax runs unit tests and standalone checks; the ste job checks prose
 # against the budget in .ste-budget. Without them a change to the checker, to its
 # tests, or to the number they are measured against merged with no job having
 # looked at it.
@@ -18,6 +18,7 @@ on:
       - 'scripts/**'
       - 'worker/**'
       - 'src/**'
+      - '.github/scripts/**'
       - '.ste-budget'
       - '.markdownlint-budget'
       - '.github/workflows/lint.yml'
@@ -30,8 +31,10 @@ on:
       - 'scripts/**'
       - 'worker/**'
       - 'src/**'
+      - '.github/scripts/**'
       - '.ste-budget'
       - '.markdownlint-budget'
+      - '.github/workflows/lint.yml'
   workflow_dispatch:
 
 permissions:
@@ -42,6 +45,22 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  python-tests:
+    name: Flatpak Python Unit Tests
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: '3.13'
+
+      - name: Install pytest
+        run: python3 -m pip install -r .github/scripts/tests/requirements.txt
+
+      - name: Run Flatpak unit tests
+        run: python3 -m pytest .github/scripts/tests/ -v
+
   markdown-lint:
     name: Markdown Lint
     runs-on: ubuntu-26.04
@@ -50,7 +69,7 @@ jobs:
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
-          node-version: '24'
+          node-version: '26'
 
       # Pinned. The budget below is a count of findings, so it only means
       # anything against a fixed rule set — an unpinned install silently
@@ -94,7 +113,7 @@ jobs:
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
-          node-version: '24'
+          node-version: '26'
 
       - name: Install dependencies
         run: npm ci
@@ -103,10 +122,8 @@ jobs:
         run: |
           echo "=== Checking Node.js scripts ==="
           FAILED=0
-          for f in scripts/*.mjs scripts/*.js; do
+          for f in scripts/*.mjs scripts/*.js scripts/lib/*.mjs scripts/checks/*.mjs scripts/__tests__/*.test.mjs; do
             [[ -f "$f" ]] || continue
-            # Skip test files in syntax check (they import from production scripts)
-            [[ "$f" == *.test.mjs ]] && continue
             echo "  Checking: $f"
             if ! node --check "$f" 2>/dev/null; then
               echo "    FAILED"
@@ -121,7 +138,7 @@ jobs:
         run: |
           echo "=== Running unit tests ==="
           FAILED=0
-          for f in scripts/__tests__/*.test.mjs scripts/*.test.mjs; do
+          for f in scripts/__tests__/*.test.mjs; do
             [[ -f "$f" ]] || continue
             echo "  Running: $f"
             if ! node "$f"; then
@@ -132,6 +149,14 @@ jobs:
             fi
           done
           exit $FAILED
+
+      - name: Run standalone checks
+        run: |
+          set -euo pipefail
+          for f in scripts/checks/*.mjs; do
+            [[ -f "$f" ]] || continue
+            node "$f"
+          done
 
       - name: Check documented install commands
         run: npm run check-install-commands
@@ -148,7 +173,7 @@ jobs:
     # is reverted by the next sync, and the author is another repository), so
     # that prose is only ever checked where it is written. Same rules, applied
     # at the source.
-    uses: tuna-os/.github/.github/workflows/ste-lint.yml@main
+    uses: tuna-os/.github/.github/workflows/ste-lint.yml@794ded942d9de91b886b1bc82c1f663bc36ba61d # main
 
   link-check:
     name: Internal Link Check
