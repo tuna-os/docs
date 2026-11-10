@@ -4,7 +4,19 @@
 // The command entrypoint owns repository discovery and destination mutation;
 // callers can use these helpers without loading that orchestration.
 
-import {slug as githubSlug} from 'github-slugger';
+// github-slugger is the only package this module needs, and only readmeIndex
+// uses it. The shared STE lint job imports sync-org-docs.mjs (and so this
+// module) without `npm ci`, to read isSyncedIndex and HAND_AUTHORED. A static
+// import would throw there and turn off its generated-tree detection, so a
+// missing package is tolerated at load and reported when readmeIndex runs.
+let githubSlug = () => {
+  throw new Error('github-slugger is not installed; run npm ci');
+};
+try {
+  ({slug: githubSlug} = await import('github-slugger'));
+} catch (err) {
+  if (err?.code !== 'ERR_MODULE_NOT_FOUND') throw err;
+}
 
 const ORG = 'tuna-os';
 
