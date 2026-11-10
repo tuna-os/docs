@@ -108,6 +108,15 @@ this repository owns `docs/tunaos/introduction.md`, while the sync copies
 that directory's `index.md` from its source. See [`AGENTS.md`](./AGENTS.md) for
 the sync rules and more detail about these mixed directories.
 
+### Vendored Flatpak index script
+
+`.github/scripts/update-index.py` is a vendored copy of the canonical script
+in [`tuna-os/flatpak-index`](https://github.com/tuna-os/flatpak-index).
+Do not edit the copy here. Make changes in the source repository instead.
+The two copies have drifted before, and no check confirms that they match.
+For fixes that must apply to both copies, open an issue in
+[`tuna-os/flatpak-index`](https://github.com/tuna-os/flatpak-index/issues).
+
 ## Validation
 
 Install the Markdown linter used by the repository recipe:
@@ -131,6 +140,15 @@ fixtures and mocks; they do not need Flatpak, a display server, or credentials.
 
 Use `just --list` to see individual setup, preview, build, and validation
 recipes.
+
+### Script layout
+
+Put unit tests that import and assert on production modules in
+`scripts/__tests__/*.test.mjs`. Run them with `just test`. Put standalone
+repository checks in `scripts/checks/*.mjs` and run them with `just checks`.
+Both CI and `just lint` check syntax in both directories, including tests;
+`node --check` parses files without import resolution or execution.
+`just preflight` runs both groups.
 
 ### Additional validation before submission
 
@@ -172,3 +190,16 @@ about discovery, changes to links, failure diagnosis, and pipeline maintenance.
 - [TunaOS Documentation](https://tunaos.org)
 - [GitHub Issues for the docs site](https://github.com/tuna-os/docs/issues)
 - For general TunaOS questions, see [TunaOS Issues](https://github.com/tuna-os/tunaOS/issues)
+
+## Flatpak icon artifacts
+
+After a publisher updates `static/flatpak/index/static`, run
+`npm run generate:flatpak`. This is the only step that writes remote icon
+metadata and the PNG files in `static/flatpak/icons/`. Commit both together.
+The Flatpak publish workflow runs the same producer before it stages files.
+
+`npm run check:flatpak`, the site build, and the sanity workflow check these
+artifacts and do not write to them. A stale artifact fails the check and names the
+generation command. The producer removes PNG files for entries no longer in
+the index. The producer warns if an icon label is absent or invalid. The remote sanity
+check reports missing remote icons.

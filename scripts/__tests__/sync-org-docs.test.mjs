@@ -110,9 +110,9 @@ test('README imports have distinct routes from the generated index and natural p
   assert.equal(docOutputNames([], ['readme.md']).get('readme.md'), 'docs-readme.md');
 });
 
-test('README index retargets links to the removed H1 to the page top', () => {
+asyncTest('README index retargets links to the removed H1 to the page top', async () => {
   const source = '# TunaOS Flatpak Index\n\n[Top](#tunaos-flatpak-index)\n';
-  const out = readmeIndex(source, {
+  const out = await readmeIndex(source, {
     repo: 'flatpak-index', branch: 'main', label: 'flatpak-index',
     position: 1, slug: 'flatpak-index',
   });
@@ -121,10 +121,10 @@ test('README index retargets links to the removed H1 to the page top', () => {
   assert.doesNotMatch(out, /^# TunaOS Flatpak Index$/m);
 });
 
-test('README title link rewrites preserve other anchors and code examples', () => {
+asyncTest('README title link rewrites preserve other anchors and code examples', async () => {
   const source = '# Title\n\n[Top](#title "Start") and [Other](#other)\n' +
     '[top]: #title\n\n`[Top](#title)`\n\n```md\n[Top](#title)\n```\n';
-  const out = readmeIndex(source, {
+  const out = await readmeIndex(source, {
     repo: 'example', branch: 'main', label: 'Example', position: 1, slug: 'example',
   });
   assert.ok(out.includes('[Top](# "Start") and [Other](#other)'));
@@ -1071,6 +1071,29 @@ test('gives up after a second attempt that is still short', () => {
   assert.equal(result.attempts, 2);
   assert.equal(result.fatal.length, 1);
   assert.match(result.fatal[0], /truncated/);
+});
+
+// ── sync config: scripts/sync-org-docs.config.json ───────────────────────────
+
+console.log('\nsync config');
+
+test("loadProtectedRepos loads all expected slugs and fails closed on empty or missing entries", async () => {
+  const { HAND_AUTHORED, loadProtectedRepos } = await import("../sync-org-docs.mjs");
+  assert.equal(HAND_AUTHORED.size, 7);
+  for (const slug of ["mariner", "gtk-office-suite", "mandelbrot", "remora", "dakota", "blueshell", "ghostty"]) {
+    assert.equal(HAND_AUTHORED.has(slug), true);
+  }
+  assert.throws(() => loadProtectedRepos({ protected_repos: [] }), /hand-authored protection is empty/);
+  assert.throws(() => loadProtectedRepos({ protected_repos: [{ slug: "mariner" }] }), /missing/);
+});
+
+test('ROOT_DOC_FILTER stays keyed by repo, so tunaOS keeps its root-doc allowlist', async () => {
+  // The consumer reads ROOT_DOC_FILTER[repo]; a bare array here would drop
+  // the tunaOS filter and sync every root doc instead.
+  const { ROOT_DOC_FILTER } = await import('../sync-org-docs.mjs');
+  assert.equal(Array.isArray(ROOT_DOC_FILTER), false);
+  assert.deepEqual(ROOT_DOC_FILTER.tunaOS, ['README.md', 'ROADMAP.md', 'SECURITY.md', 'CONTRIBUTING.md']);
+  assert.equal(ROOT_DOC_FILTER.wootc, undefined);
 });
 
 // ── summary ───────────────────────────────────────────────────────────────────

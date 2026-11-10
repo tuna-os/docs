@@ -22,7 +22,7 @@ places too small for text.
 - Consumers pin a tunaOS commit and copy the files they need.
 - Consumers verify the copied files against a SHA-256 manifest. This site
   keeps its copy in `static/img/identity/` with `identity-manifest.json`.
-  `scripts/check-identity-assets.test.mjs` verifies it.
+  `scripts/checks/check-identity-assets.mjs` verifies it.
 - Put no other emoji in interface text.
 
 ## License

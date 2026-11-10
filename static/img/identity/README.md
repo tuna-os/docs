@@ -13,7 +13,7 @@ there, then vendor it again here. A local edit breaks the digest check.
   Use them for small icons, the navbar logo and the favicon.
 
 `identity-manifest.json` binds each file to its SHA-256 digest.
-`scripts/check-identity-assets.test.mjs` verifies every vendored SVG against
+`scripts/checks/check-identity-assets.mjs` verifies every vendored SVG against
 it.
 
 To refresh:
@@ -24,8 +24,8 @@ T=~/src/tunaOS/system_files/usr/share
 cp $T/tunaos/lettermarks/*.svg static/img/identity/wordmarks/
 cp $T/tunaos/logos/*.svg static/img/identity/emoji/
 cp $T/pixmaps/tunaos.svg static/img/identity/emoji/tunaos.svg
-node scripts/check-identity-assets.test.mjs --write
-node scripts/check-identity-assets.test.mjs
+node scripts/checks/check-identity-assets.mjs --write
+node scripts/checks/check-identity-assets.mjs
 ```
 
 Then set the `commit` field in the manifest to the tunaOS commit you copied.
