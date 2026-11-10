@@ -89,13 +89,15 @@ function Cell({variant, desktop, status, now, onPeek}: CellProps): ReactNode {
       : status.localOnly
         ? 'local'
         : 'image';
+  const visibleName = [state, age, status.nvidia ? 'N' : null, status.hwe ? 'H' : null]
+    .filter(Boolean).join(' ');
   const body = (
     <>
-      <span className={styles.cellState}>{state}</span>
+      <span className={styles.cellState}>{state}</span>{' '}
       {age && <span className={styles.cellAge}>{age}</span>}
       {(status.nvidia || status.hwe) && (
         <span className={styles.cellEditions} aria-hidden>
-          {status.nvidia && <span className={styles.edition}>N</span>}
+          {' '}{status.nvidia && <span className={styles.edition}>N</span>}{' '}
           {status.hwe && <span className={styles.edition}>H</span>}
         </span>
       )}
@@ -105,7 +107,7 @@ function Cell({variant, desktop, status, now, onPeek}: CellProps): ReactNode {
   const shared = {
     className: status.iso ? styles.cellIso : styles.cellImage,
     'data-fresh': status.iso ? String(level) : undefined,
-    'aria-label': label,
+    'aria-label': `${visibleName} — ${label}`,
     onMouseEnter: (e: React.MouseEvent<HTMLElement>) => onPeek(label, e.currentTarget),
     onFocus: (e: React.FocusEvent<HTMLElement>) => onPeek(label, e.currentTarget),
     onMouseLeave: () => onPeek('', null),

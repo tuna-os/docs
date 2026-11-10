@@ -41,7 +41,7 @@ const paths = process.argv.slice(2).length ? process.argv.slice(2) : DEFAULT_PAT
 async function serve() {
   const child = spawn(
     'npx',
-    ['docusaurus', 'serve', '--port', String(PORT), '--no-open'],
+    ['docusaurus', 'serve', '--host', '127.0.0.1', '--port', String(PORT), '--no-open'],
     {stdio: 'ignore'},
   );
   // Poll rather than parse the server's banner: the banner text changes

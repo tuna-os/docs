@@ -46,7 +46,7 @@ CTA in the hero and has its own landing page.
    comes from [tuna-os/tunaOS](https://github.com/tuna-os/tunaOS). It is
    vendored into `static/img/identity/`, mapped in `src/data/identity.ts`,
    and verified against its manifest by
-   `scripts/check-identity-assets.test.mjs`. Headers, cards and the hero use
+   `scripts/checks/check-identity-assets.mjs`. Headers, cards and the hero use
    the variant wordmark (`src/components/Wordmark.tsx`). Small icons, the
    navbar and the favicon use the Noto emoji mark. Each project carries a
    glyph from `src/components/Icon.tsx`, named in its `src/data/projects.ts`
@@ -75,10 +75,12 @@ CTA in the hero and has its own landing page.
 ## Accessibility
 
 The site is audited with axe-core (WCAG 2.2 A and AA rules) against the built
-output; `npm run a11y` runs it over the pages people actually land on. Keep it
-at zero violations — the checks that matter most here are contrast on the dark
-panels, a visible focus ring on every control, and real button/label semantics
-in the image picker and the carousels.
+output; `npm run a11y` runs it over the pages people actually land on and gates
+the Workers Build workflow. Keep it at zero violations — the checks that matter
+most here are contrast on the dark panels, a visible focus ring on every control,
+and real button/label semantics in the image picker and the carousels. Matrix
+link names include their visible status and age; inline rebase links are
+underlined so they do not rely on color alone.
 
 ## Credits
 
