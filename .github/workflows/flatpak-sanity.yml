@@ -2,9 +2,9 @@
 # expected app present with its required architectures, and every
 # appstream/*.flatpakref resolves to a live index entry.
 #
-# Runs against the working tree on PRs/pushes that touch static/flatpak/**
-# (catches breakage before it deploys) and against the live served remote
-# nightly (catches CDN/proxy drift after deploy).
+# Runs against the working tree on PRs/pushes that touch the remote or its
+# validation and publication tooling (catches breakage before it deploys),
+# and against the live served remote nightly (catches CDN/proxy drift).
 
 name: Flatpak Remote Sanity Check
 
@@ -18,12 +18,20 @@ on:
     paths:
       - 'static/flatpak/**'
       - 'scripts/*flatpak*'
+      - '.github/scripts/check-flatpak-remote.py'
+      - '.github/scripts/update-index.py'
       - '.github/workflows/flatpak-sanity.yml'
+      - '.github/workflows/build-flatpaks.yml'
+      - 'scripts/__tests__/flatpak-publication.test.mjs'
   pull_request:
     paths:
       - 'static/flatpak/**'
       - 'scripts/*flatpak*'
+      - '.github/scripts/check-flatpak-remote.py'
+      - '.github/scripts/update-index.py'
       - '.github/workflows/flatpak-sanity.yml'
+      - '.github/workflows/build-flatpaks.yml'
+      - 'scripts/__tests__/flatpak-publication.test.mjs'
   schedule:
     - cron: '0 12 * * *'  # daily at 12:00 UTC, well after any overnight publish jobs
   workflow_dispatch:
@@ -40,6 +48,13 @@ jobs:
       - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
+
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 24
+
+      - name: Test publication gate
+        run: node scripts/__tests__/flatpak-publication.test.mjs
 
       - name: Check working tree
         if: github.event_name != 'schedule'
