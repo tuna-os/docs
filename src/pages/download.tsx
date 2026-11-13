@@ -4,6 +4,7 @@ import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import Link from '@docusaurus/Link';
 import IsoDownloads from '@site/src/components/IsoDownloads';
+import FactoryHealth from '@site/src/components/FactoryHealth';
 import page from '@site/src/css/page.module.css';
 import styles from './download.module.css';
 
@@ -57,6 +58,7 @@ export default function Download(): ReactNode {
       <DownloadHeader />
       <main className={clsx('container', styles.main)}>
         <ChooseBanner />
+        <FactoryHealth />
         <IsoDownloads />
         <div className={styles.help}>
           <Heading as="h2">Writing the ISO to a USB drive</Heading>
