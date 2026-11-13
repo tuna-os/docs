@@ -10,7 +10,7 @@ jobs:
   pinned-source:
     runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
       - name: Read reviewed source pin
@@ -25,16 +25,16 @@ jobs:
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
               output.write(f"revision={pin['revision']}\npyyaml={pin['pyyamlVersion']}\n")
           PY
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@v7.0.1
         with:
           repository: tuna-os/tunaOS
           ref: ${{ steps.pin.outputs.revision }}
           path: .test-deps/tunaos
           persist-credentials: false
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: '26'
-      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: '3.15'
       - name: Install pinned resolver dependency

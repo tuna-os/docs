@@ -1,7 +1,15 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "local>tuna-os/.github",
-    "helpers:pinGitHubActionDigests"
+    "local>tuna-os/.github"
+  ],
+  "packageRules": [
+    {
+      "description": "@gjsify/adwaita-web has a peer dependency on the same release of @gjsify/app-settings. Separate PRs cannot update package-lock.json, so update them together.",
+      "matchPackageNames": [
+        "@gjsify/**"
+      ],
+      "groupName": "gjsify"
+    }
   ]
 }

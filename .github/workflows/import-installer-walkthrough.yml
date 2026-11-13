@@ -36,13 +36,15 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       SRC_REPO: tuna-os/tunaOS
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@v7.0.1 # zizmor: ignore[artipacked] the last step pushes with the persisted token
 
       - name: Resolve source run
         id: run
+        env:
+          RUN_ID_INPUT: ${{ inputs.run_id }}
         run: |
-          if [ -n "${{ inputs.run_id }}" ]; then
-            RID="${{ inputs.run_id }}"
+          if [ -n "$RUN_ID_INPUT" ]; then
+            RID="$RUN_ID_INPUT"
           else
             RID=$(gh run list -R "$SRC_REPO" --workflow "Installer Smoke" \
               --status success --limit 1 --json databaseId -q '.[0].databaseId')
@@ -53,9 +55,11 @@ jobs:
 
       - name: Download walkthrough artifacts
         if: steps.run.outputs.rid != ''
+        env:
+          RID: ${{ steps.run.outputs.rid }}
         run: |
           mkdir -p shots
-          gh run download "${{ steps.run.outputs.rid }}" -R "$SRC_REPO" \
+          gh run download "$RID" -R "$SRC_REPO" \
             --pattern 'installer-smoke-*' --dir shots || true
           find shots -name 'walkthrough-*.png' -o -name 'installer-*.png' | head -50 || true
 
@@ -117,6 +121,8 @@ jobs:
 
       - name: Commit if changed
         if: steps.run.outputs.rid != ''
+        env:
+          RID: ${{ steps.run.outputs.rid }}
         run: |
           git config user.name "tunaos-ci"
           git config user.email "ci@tunaos.org"
@@ -124,6 +130,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "no changes"
           else
-            git commit -m "docs: refresh installer walkthrough from ${SRC_REPO} run ${{ steps.run.outputs.rid }}"
+            git commit -m "docs: refresh installer walkthrough from ${SRC_REPO} run ${RID}"
             git push
           fi
