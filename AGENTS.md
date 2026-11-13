@@ -8,6 +8,9 @@ Human docs: [`README.md`](README.md) (deployment),
 [`CONTRIBUTING.md`](CONTRIBUTING.md) (`just preflight` and the validation
 list), [`ROADMAP.md`](ROADMAP.md).
 
+Follow the [naming conventions](CONTRIBUTING.md#naming-conventions): use
+TunaOS in prose and preserve literal repository and infrastructure identifiers.
+
 ## Most of `docs/` is generated — fix it upstream
 
 `sync-org-docs.yml` runs daily (`0 6 * * *`) and pulls READMEs and docs from
@@ -19,6 +22,9 @@ So editing a page under a repo-slug directory is undone by the next sync. The
 fix belongs in the source repository. The STE budget skips those trees for the
 same reason, and decides which they are from the sync's own index-page
 template rather than guessing from a file's links (#102).
+
+The STE job has no site dependencies. Keep the sync's ownership exports
+importable without `node_modules`; load rendering packages only when needed.
 
 Hand-written pages live at the top level of `docs/` (`architecture.md`,
 `choosing-a-variant.md`, …) and in `blog/`.
@@ -46,7 +52,7 @@ just build         # run this whenever a change can affect the generated site
 
 | Job | Enforces |
 | --- | --- |
-| `js-syntax` | Yes — `node --check` on every script, plus every `*.test.mjs`, plus `check-install-commands` |
+| `js-syntax` | Yes — `node --check` on every script, runs `scripts/__tests__/*.test.mjs` and `scripts/checks/*.mjs`, plus `check-install-commands` |
 | `ste` | Yes — Simplified Technical English, against the number in `.ste-budget`. The linter itself lives in [tuna-os/.github](https://github.com/tuna-os/.github/tree/main/.github/actions/ste-lint); this repo keeps only the budget. Run it locally with `just ste`. |
 | `markdown-lint` | Against `.markdownlint-budget` |
 | `link-check` | Yes — broken internal `.md` links fail the job |

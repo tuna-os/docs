@@ -1,0 +1,43 @@
+{
+  "note": "Source of truth for scripts/sync-org-docs.mjs. The sync reads this file at startup. If protected_repos is missing, empty, or drops a slug the sync throws and aborts rather than overwriting a page that used to be protected (fail-closed). Edit this file, not the script, to change protection rules.",
+  "protected_repos": [
+    {
+      "slug": "mariner",
+      "reason": "Landing page with a :::tip pointing at the /mariner showcase page (tuna-os/docs#61). The upstream README is a code-repo readme; the page is site-specific showcase prose the readme does not carry.",
+      "protected_since": "2026-08-08"
+    },
+    {
+      "slug": "gtk-office-suite",
+      "reason": "Consolidated landing page for three apps (tables, letters, decks) behind one repo. The upstream README describes the monorepo, not the three-user-app landing this site needs.",
+      "protected_since": "2026-08-08"
+    },
+    {
+      "slug": "mandelbrot",
+      "reason": "Site-specific prose with no upstream README equivalent; the upstream readme is a build/usage readme, not the onboarding pages here.",
+      "protected_since": "2026-08-08"
+    },
+    {
+      "slug": "remora",
+      "reason": "Site-specific prose with no upstream README equivalent.",
+      "protected_since": "2026-08-08"
+    },
+    {
+      "slug": "dakota",
+      "reason": ":::tip plus an external-project banner. The repo is also in SKIP (buildstream infra); it is listed here so the protection does not rest on a SKIP entry that exists for a different reason.",
+      "protected_since": "2026-08-08"
+    },
+    {
+      "slug": "blueshell",
+      "reason": ":::tip pointing at the /blueshell showcase page, plus site-specific install and upstream-tracking prose. The upstream README is written for contributors, not for this site.",
+      "protected_since": "2026-09-06"
+    },
+    {
+      "slug": "ghostty",
+      "reason": "Not a tuna-os repo at all: the page documents what the TunaOS remote republishes. Listed so it stays safe if a repo of that name ever appears in the org.",
+      "protected_since": "2026-09-06"
+    }
+  ],
+  "sync_filters": {
+    "tunaOS": ["README.md", "ROADMAP.md", "SECURITY.md", "CONTRIBUTING.md"]
+  }
+}

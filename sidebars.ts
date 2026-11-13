@@ -14,6 +14,7 @@ const sidebars: SidebarsConfig = {
       label: 'Guides',
       collapsed: false,
       items: [
+        'accessibility-features-guide',
         {type: 'category', label: 'Development', collapsed: true, items: ['guides/AI-DEVELOPMENT-QUICKSTART', 'guides/GAMEDEV-QUICKSTART', 'guides/KERNEL-DEVELOPER-QUICKSTART', 'guides/linux-audio-creative-bootc', 'guides/linux-gaming-bootc']},
         {type: 'category', label: 'Deployment', collapsed: true, items: ['guides/ENTERPRISE-VDI-DEPLOYMENT', 'guides/EDU-LAB-DEPLOYMENT', 'guides/DIGITAL-SIGNAGE-KIOSK-DEPLOYMENT', 'guides/INDUSTRIAL-IOT-EDGE-DEPLOYMENT', 'guides/PUBLIC-LIBRARY-DEPLOYMENT', 'guides/RETAIL-POS-DEPLOYMENT']},
         {type: 'category', label: 'Administration', collapsed: true, items: ['guides/SECURITY-WORKSTATION-QUICKSTART', 'guides/EPHEMERAL-SESSION-RESET']},
@@ -31,7 +32,7 @@ const sidebars: SidebarsConfig = {
         {type: 'link', label: 'Skipjack — CentOS Stream 10', href: '/skipjack'},
         {type: 'link', label: 'Bonito — Fedora 44', href: '/bonito'},
         {type: 'link', label: 'All variants (Ubuntu, Arch, Debian, …)', href: '/variants'},
-        {type: 'category', label: 'Reference docs', collapsed: true, items: ['albacore', 'yellowfin', 'bonito', 'skipjack', 'grouper', 'gurnard/pantheon-shortcuts', 'marlin', 'gurnard-pantheon', 'niri-quickstart', 'cosmic-quickstart']},
+        {type: 'category', label: 'Reference docs', collapsed: true, items: ['albacore', 'yellowfin', 'bonito', 'skipjack', 'grouper', 'gurnard/index', 'gurnard/pantheon-shortcuts', 'marlin', 'gurnard-pantheon', 'niri-quickstart', 'cosmic-quickstart']},
       ],
     },
     {
@@ -58,7 +59,7 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         {type: 'category', label: 'Tromsø', link: {type: 'doc', id: 'tromso/index'}, items: ['tromso/SPEC', 'tromso/ROADMAP', 'tromso/SECURITY', 'tromso/CONTRIBUTING', 'tromso/ci-and-iso-pipeline']},
-        {type: 'category', label: 'XFCE Linux', className: 'sidebar-alpha', link: {type: 'doc', id: 'xfce-linux/index'}, items: ['xfce-linux/README', 'xfce-linux/PROJECT_STATUS', 'xfce-linux/CONTRIBUTING', 'xfce-linux/ROADMAP', 'xfce-linux/SECURITY', 'xfce-linux/ci-and-iso-pipeline']},
+        {type: 'category', label: 'XFCE Linux', className: 'sidebar-alpha', link: {type: 'doc', id: 'xfce-linux/index'}, items: ['xfce-linux/docs-README', 'xfce-linux/PROJECT_STATUS', 'xfce-linux/CONTRIBUTING', 'xfce-linux/ROADMAP', 'xfce-linux/SECURITY', 'xfce-linux/ci-and-iso-pipeline']},
       ],
     },
     {
@@ -88,7 +89,7 @@ const sidebars: SidebarsConfig = {
           link: {type: 'doc', id: 'bootc-migrate/index'},
           items: ['bootc-migrate/architecture', 'bootc-migrate/filesystem-support', 'bootc-migrate/luks-testing', 'bootc-migrate/testing', 'bootc-migrate/references', 'bootc-migrate/ROADMAP', 'bootc-migrate/CONTRIBUTING', 'bootc-migrate/cfs-cli-generations'],
         },
-        {type: 'category', label: 'Flatpak', link: {type: 'doc', id: 'flatpak/index'}, items: ['flatpak/guide']},
+        {type: 'category', label: 'Flatpak', link: {type: 'doc', id: 'flatpak/index'}, items: ['flatpak/guide', 'flatpak-remote-operations']},
         {type: 'category', label: 'tunaos-packages', link: {type: 'doc', id: 'tunaos-packages/index'}, items: ['tunaos-packages/ARCHITECTURE', 'tunaos-packages/PACKAGE_FACTORY', 'tunaos-packages/PATCH_POLICY', 'tunaos-packages/ROADMAP', 'tunaos-packages/SECURITY', 'tunaos-packages/TIDEFORGE-READINESS', 'tunaos-packages/UPSTREAM_PARITY', 'tunaos-packages/XFWL4-PORTING', 'tunaos-packages/hummingbird-desktop-gap', 'tunaos-packages/CONTRIBUTING']},
         {type: 'category', label: 'Ubuntu', link: {type: 'doc', id: 'ubuntu/index'}, items: ['ubuntu/CONTRIBUTING', 'ubuntu/SECURITY']},
         {type: 'category', label: 'bootc-installer-tui', link: {type: 'doc', id: 'bootc-installer-tui/index'}, items: ['bootc-installer-tui/CONTRIBUTING']},
@@ -129,6 +130,7 @@ const sidebars: SidebarsConfig = {
     },
     {type: 'html', value: '<div class="sidebar-section-label">Community</div>', defaultStyle: true},
     'community',
+    'sync-org-docs-guide',
     {type: 'category', label: 'Dakota (Bluefin)', className: 'sidebar-external', link: {type: 'doc', id: 'dakota/index'}, items: ['dakota/migration']},
   ],
 };

@@ -17,7 +17,6 @@ concurrency:
 
 permissions:
   contents: read
-  packages: write
 
 env:
   REGISTRY: ghcr.io/tuna-os
@@ -26,6 +25,8 @@ jobs:
   build:
     name: Build ${{ matrix.app.name }}
     runs-on: ubuntu-26.04
+    permissions:
+      contents: read
     container:
       image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-50
       options: --privileged
@@ -49,14 +50,15 @@ jobs:
             branch: master
     steps:
       - name: Checkout ${{ matrix.app.repo }}
-        uses: actions/checkout@v7
+        uses: actions/checkout@v7.0.1
         with:
           repository: ${{ matrix.app.repo }}
           ref: ${{ matrix.app.branch || 'main' }}
           submodules: recursive
+          persist-credentials: false
 
       - name: Build Flatpak
-        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v6.8
         with:
           manifest-path: ${{ matrix.app.manifest }}
           cache-key: flatpak-builder-${{ matrix.app.name }}-${{ github.sha }}
@@ -68,7 +70,7 @@ jobs:
           flatpak build-bundle --oci --arch=x86_64 repo ${{ matrix.app.name }}.oci ${{ matrix.app.id }}
 
       - name: Upload OCI artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: oci-${{ matrix.app.name }}
           path: ${{ matrix.app.name }}.oci/
@@ -78,11 +80,16 @@ jobs:
     name: Publish
     needs: build
     runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+      packages: write
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Download all OCI artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v8.0.2
         with:
           pattern: oci-*
           path: artifacts
@@ -93,7 +100,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FLATPAK_INDEX_TOKEN: ${{ secrets.FLATPAK_INDEX_TOKEN }}
         run: |
-          echo "${{ env.GITHUB_TOKEN }}" | skopeo login ghcr.io -u "${{ github.actor }}" --password-stdin
+          echo "$GITHUB_TOKEN" | skopeo login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
           git clone --depth 1 \
             https://github.com/tuna-os/docs.git \
             index-repo
@@ -118,7 +125,8 @@ jobs:
           cd index-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add static/flatpak/index/static
+          node scripts/prepare-flatpak-icons.mjs
+          git add static/flatpak/index/static static/flatpak/icons
           if git diff --cached --quiet; then
             echo "No index changes"
           else

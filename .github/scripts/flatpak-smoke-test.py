@@ -76,10 +76,9 @@ def install(app_id):
 
 def launch(app_id, display="x11"):
     # exit 124 (timeout hit == still running at the deadline) and 0 (a
-    # CLI-flavored app that exits cleanly on its own, e.g. finupdate
-    # --dry-run) both count as "launched fine". Anything else is a crash.
-    extra = ["--dev-mode", "--dry-run"] if app_id == "org.tunaos.finupdate" else []
-    command = ["timeout", str(LAUNCH_TIMEOUT), "flatpak", "run", app_id, *extra]
+    # CLI-flavored app that exits cleanly on its own) both count as
+    # "launched fine". Anything else is a crash.
+    command = ["timeout", str(LAUNCH_TIMEOUT), "flatpak", "run", app_id]
     if display == "wayland":
         return launch_on_wayland(command)
     r = run(["xvfb-run", "-a", *command], timeout=LAUNCH_TIMEOUT + 15)

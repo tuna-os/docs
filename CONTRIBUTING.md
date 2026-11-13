@@ -34,6 +34,13 @@ npm ci
 Fork the repository on GitHub first. Replace `YOUR-USERNAME` with your GitHub name.
 `npm ci` installs the versions in the lockfile.
 
+The Flatpak script tests also need Python 3.13 and pytest. In your Python
+virtual environment, install the test dependency:
+
+```bash
+python3 -m pip install -r .github/scripts/tests/requirements.txt
+```
+
 **Local development:**
 
 ```bash
@@ -58,6 +65,27 @@ Open an issue before a substantial documentation or site change (new sections,
 navigation rework, new components) so maintainers can confirm its scope.
 Small fixes (typos, links, single-page updates) do not need pre-approval.
 
+## Naming conventions
+
+Use these names in documentation:
+
+- **TunaOS** for the project and product in prose, including headings and link text.
+- **`tuna-os`** for the GitHub organization.
+- **`tunaos.org`** for the domain, including its subdomains and URL paths.
+- **`tunaos-org`** for the Cloudflare Worker that serves the site.
+- **`tuna-os#123`** for issue citations in the main OS repository. Link the
+  label to the full issue URL, for example
+  [tuna-os#1175](https://github.com/tuna-os/tunaOS/issues/1175).
+  An organization has no issue tracker of its own, so this label needs an
+  explicit link. Use `#123` for this repository's issues and a linked
+  `repo#123` label for other repositories.
+
+Keep literal identifiers as defined by their source: repository paths such as
+`tuna-os/tunaOS`, commands, filenames, service names, image references, and
+Matrix room addresses. For example, `tunaos-countme` is a service name;
+TunaOS is the product name. Apply prose fixes to copied project pages in their
+source repository, as described below.
+
 ## Content Ownership
 
 This repository owns the pages at the top level of `docs/` and in `blog/`.
@@ -80,6 +108,15 @@ this repository owns `docs/tunaos/introduction.md`, while the sync copies
 that directory's `index.md` from its source. See [`AGENTS.md`](./AGENTS.md) for
 the sync rules and more detail about these mixed directories.
 
+### Vendored Flatpak index script
+
+`.github/scripts/update-index.py` is a vendored copy of the canonical script
+in [`tuna-os/flatpak-index`](https://github.com/tuna-os/flatpak-index).
+Do not edit the copy here. Make changes in the source repository instead.
+The two copies have drifted before, and no check confirms that they match.
+For fixes that must apply to both copies, open an issue in
+[`tuna-os/flatpak-index`](https://github.com/tuna-os/flatpak-index/issues).
+
 ## Validation
 
 Install the Markdown linter used by the repository recipe:
@@ -98,8 +135,20 @@ This command type-checks the site, checks Markdown and JavaScript, enforces the
 prose budget for Simplified Technical English, and runs tests for documentation
 scripts. Also run `just build` when the change can affect the generated site.
 
+`just test-python` runs only the Flatpak Python tests. These tests use local
+fixtures and mocks; they do not need Flatpak, a display server, or credentials.
+
 Use `just --list` to see individual setup, preview, build, and validation
 recipes.
+
+### Script layout
+
+Put unit tests that import and assert on production modules in
+`scripts/__tests__/*.test.mjs`. Run them with `just test`. Put standalone
+repository checks in `scripts/checks/*.mjs` and run them with `just checks`.
+Both CI and `just lint` check syntax in both directories, including tests;
+`node --check` parses files without import resolution or execution.
+`just preflight` runs both groups.
 
 ### Additional validation before submission
 
@@ -114,6 +163,9 @@ The daily sync of documentation generates many `docs/<project>/` trees from
 their source repositories. Fix documentation for a generated project in its
 source repository. The next sync overwrites direct changes here. The generated
 index page at the start of a project tree identifies the source repository.
+
+See the [documentation sync guide](./docs/sync-org-docs-guide.md) for details
+about discovery, changes to links, failure diagnosis, and pipeline maintenance.
 
 ## Pull Requests
 
@@ -138,3 +190,16 @@ index page at the start of a project tree identifies the source repository.
 - [TunaOS Documentation](https://tunaos.org)
 - [GitHub Issues for the docs site](https://github.com/tuna-os/docs/issues)
 - For general TunaOS questions, see [TunaOS Issues](https://github.com/tuna-os/tunaOS/issues)
+
+## Flatpak icon artifacts
+
+After a publisher updates `static/flatpak/index/static`, run
+`npm run generate:flatpak`. This is the only step that writes remote icon
+metadata and the PNG files in `static/flatpak/icons/`. Commit both together.
+The Flatpak publish workflow runs the same producer before it stages files.
+
+`npm run check:flatpak`, the site build, and the sanity workflow check these
+artifacts and do not write to them. A stale artifact fails the check and names the
+generation command. The producer removes PNG files for entries no longer in
+the index. The producer warns if an icon label is absent or invalid. The remote sanity
+check reports missing remote icons.

@@ -189,6 +189,38 @@ function fixRelativeLinks(content, repo, srcDir = '', branch = 'main') {
       return `](${base}/${cleaned}${anchor})`;
     },
   );
+  // Reference-style link definitions: `[label]: target`.
+  //
+  // The rules above only see inline `](target)` links. A definition has no
+  // `](…)`, so a relative definition survived untouched and stayed
+  // site-relative: Docusaurus resolved it against the docs tree and 404'd
+  // (#410 — iced's README definitions for runtime/, wgpu/, … and spindle's
+  // ADR references are all this shape). Upstream these resolve on GitHub;
+  // rewrite them by the same rules as inline links, with two differences:
+  //   * directory targets (trailing '/', or no file extension) go to the
+  //     tree URL — blob/ names a file;
+  //   * image definitions go to the raw URL, like inline images.
+  // A definition is only rewritten when its target is path-like (contains
+  // '/' or '.'): footnote definitions (`[^1]: See …`) carry prose, not a
+  // path, and are left alone.
+  const tree = `https://github.com/${ORG}/${repo}/tree/${branch}`;
+  c = c.replace(
+    /^(\[[^\]\n]+\]:[ \t]*)(?:<([^>\n]+)>|(\S+))([ \t]+(?:"[^"\n]*"|'[^'\n]*'|\([^)\n]*\)))?[ \t]*$/gm,
+    (m, def, angleTarget, bareTarget, title = '') => {
+      const target = angleTarget ?? bareTarget;
+      const hash = target.indexOf('#');
+      const path = hash === -1 ? target : target.slice(0, hash);
+      const anchor = hash === -1 ? '' : target.slice(hash);
+      if (path === '' || /^(?:[a-z][a-z0-9+.-]*:|\/)/i.test(path)) return m;
+      if (!/[./]/.test(path)) return m;
+      const cleaned = clean(path);
+      if (cleaned === '') return m;
+      if (cleaned === 'releases') return `${def}${github}/releases${anchor}${title}`;
+      if (IMAGE.test(path)) return `${def}${raw}/${cleaned}${anchor}${title}`;
+      const isDir = path.endsWith('/') || !/[^/]+\.[^/]+$/.test(cleaned);
+      return `${def}${isDir ? tree : base}/${cleaned}${anchor}${title}`;
+    },
+  );
   return c;
 }
 
@@ -250,7 +282,30 @@ function getStatusBanner(status) {
   return banners[status] || null;
 }
 
+// Docusaurus omits IDs on H1 headings. Retarget local links to the removed
+// README title to the page top instead of leaving a fragment with no target.
+async function readmeIndex(content, {repo, branch, label, position, slug, status = 'unknown'}) {
+  let body = fixRelativeLinks(sanitizeHtml(content), repo, '', branch);
+  const title = body.match(/^# (.*)\n\n?/);
+  if (title) {
+    // Classification also imports this module in clean lint checkouts. Load
+    // the renderer's package only when a README title needs an anchor.
+    const {slug: githubSlug} = await import('github-slugger');
+    body = body.slice(title[0].length);
+    const anchor = githubSlug(title[1]);
+    body = onProse(body, prose => prose
+      .replace(/(\]\(\s*)#([^\s)]+)(?=[\s)])/g,
+        (match, prefix, id) => id === anchor ? `${prefix}#` : match)
+      .replace(/^( {0,3}\[[^\]\n]+\]:\s*)#(\S+)/gm,
+        (match, prefix, id) => id === anchor ? `${prefix}#` : match));
+  }
+  const banner = getStatusBanner(status);
+  return frontmatter(label, position, slug, status) +
+    (banner ? banner + '\n\n' : '') + body;
+}
+
 export {
+  readmeIndex,
   sanitizeHtml,
   fixRelativeLinks,
   onProse,

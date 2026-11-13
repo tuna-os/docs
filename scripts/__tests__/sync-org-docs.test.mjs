@@ -26,6 +26,7 @@ import {
   subFrontmatter,
   isSyncedIndex,
   getStatusBanner,
+  readmeIndex,
 } from '../lib/org-doc-transform.mjs';
 import {
   filesToRemove,
@@ -38,6 +39,7 @@ import {
   checkListing,
   discoverRepos,
   findCaseCollisions,
+  docOutputNames,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
   RETRY_DELAY_MS,
@@ -85,6 +87,52 @@ console.log('\n📋 sync-org-docs tests\n');
 
 console.log('onProse');
 
+test('flattened imports preserve both root ROADMAP and docs roadmap', () => {
+  const outputs = docOutputNames(['index.md', 'ROADMAP.md'], ['roadmap.md', 'install.md']);
+  assert.equal(outputs.get('roadmap.md'), 'docs-roadmap.md');
+  assert.equal(outputs.get('install.md'), 'install.md');
+});
+
+test('flattened imports reserve index and natural prefixed filenames', () => {
+  const files = ['index.md', 'roadmap.md', 'docs-roadmap.md', 'ROADMAP.md'];
+  const outputs = docOutputNames(['ROADMAP.md'], files);
+  assert.equal(outputs.get('index.md'), 'docs-index.md');
+  assert.equal(outputs.get('docs-roadmap.md'), 'docs-roadmap.md');
+  assert.equal(new Set([...outputs.values(), 'index.md', 'ROADMAP.md'].map(s => s.toLowerCase())).size, 6);
+  assert.deepEqual(docOutputNames(['ROADMAP.md'], [...files].reverse()), outputs);
+});
+
+test('README imports have distinct routes from the generated index and natural prefixed pages', () => {
+  const outputs = docOutputNames(['index.md'], ['README.md', 'index.md', 'docs-README.md']);
+  assert.equal(outputs.get('README.md'), 'docs-docs-README.md');
+  assert.equal(outputs.get('index.md'), 'docs-index.md');
+  assert.equal(outputs.get('docs-README.md'), 'docs-README.md');
+  assert.equal(docOutputNames([], ['readme.md']).get('readme.md'), 'docs-readme.md');
+});
+
+asyncTest('README index retargets links to the removed H1 to the page top', async () => {
+  const source = '# TunaOS Flatpak Index\n\n[Top](#tunaos-flatpak-index)\n';
+  const out = await readmeIndex(source, {
+    repo: 'flatpak-index', branch: 'main', label: 'flatpak-index',
+    position: 1, slug: 'flatpak-index',
+  });
+  assert.ok(isSyncedIndex(out));
+  assert.ok(out.endsWith('[Top](#)\n'));
+  assert.doesNotMatch(out, /^# TunaOS Flatpak Index$/m);
+});
+
+asyncTest('README title link rewrites preserve other anchors and code examples', async () => {
+  const source = '# Title\n\n[Top](#title "Start") and [Other](#other)\n' +
+    '[top]: #title\n\n`[Top](#title)`\n\n```md\n[Top](#title)\n```\n';
+  const out = await readmeIndex(source, {
+    repo: 'example', branch: 'main', label: 'Example', position: 1, slug: 'example',
+  });
+  assert.ok(out.includes('[Top](# "Start") and [Other](#other)'));
+  assert.ok(out.includes('[top]: #\n'));
+  assert.ok(out.includes('`[Top](#title)`'));
+  assert.ok(out.includes('```md\n[Top](#title)\n```'));
+});
+
 test('leaves fenced blocks untouched', () => {
   const src = 'prose\n\n```bash\ngit log --since=<30d>\n```\n\nmore prose\n';
   const out = onProse(src, (s) => s.replace(/</g, '&lt;'));
@@ -118,6 +166,14 @@ test('escapes a placeholder that is not an HTML element (hive backend-setup, a t
 test('escapes a placeholder inside emphasis', () => {
   const out = sanitizeHtml('*Talks to the <frontend> over a socket*\n');
   assert.equal(out, '*Talks to the &lt;frontend> over a socket*\n');
+});
+
+test('escapes the placeholders that broke ten consecutive sync runs (#359)', () => {
+  // tunaos-packages TIDEFORGE-ACTION-CACHE.md and wootc manual-testing.md:
+  // prose on GitHub, an unclosed JSX tag to MDX, and the daily sync red from
+  // 08-22 to 08-31 until both shapes are escaped here.
+  assert.match(sanitizeHtml('restore key is <artifact-digest>\n'), /&lt;artifact-digest>/);
+  assert.match(sanitizeHtml('run it on <your> machine\n'), /&lt;your>/);
 });
 
 test('escapes a < that cannot start a tag (paperwm: <<, <-)', () => {
@@ -418,6 +474,29 @@ test('sends a bare non-markdown file link to the blob URL', () => {
     out.trim(),
     '[formula](https://github.com/tuna-os/bluefin-cli/blob/main/contrib/homebrew/bluefin-cli.rb)',
   );
+});
+
+test('rewrites a reference-style definition pointing at a directory to the tree URL', () => {
+  const out = fixRelativeLinks('[runtime]: runtime/\n', 'iced', '', 'master');
+  assert.match(out, /github\.com\/tuna-os\/iced\/tree\/master\/runtime/);
+});
+
+test('rewrites a reference-style definition from docs/ against the repo root', () => {
+  const out = fixRelativeLinks(
+    '[ADR 0001]: architecture-decisions/0001-linear-storage-dag-overlay.md\n',
+    'spindle', 'docs',
+  );
+  assert.match(out, /github\.com\/tuna-os\/spindle\/blob\/main\/docs\/architecture-decisions\/0001-linear-storage-dag-overlay\.md/);
+});
+
+test('keeps the anchor on a reference-style definition', () => {
+  const out = fixRelativeLinks('[tour example]: examples/README.md#tour\n', 'iced', '', 'master');
+  assert.match(out, /blob\/master\/examples\/README\.md#tour/);
+});
+
+test('leaves absolute and footnote definitions alone', () => {
+  const src = '[ruma]: https://github.com/ruma/ruma\n[^1]: See the matrix spec\n';
+  assert.equal(fixRelativeLinks(src, 'spindle', 'docs'), src);
 });
 
 // ── frontmatter ───────────────────────────────────────────────────────────────
@@ -992,6 +1071,29 @@ test('gives up after a second attempt that is still short', () => {
   assert.equal(result.attempts, 2);
   assert.equal(result.fatal.length, 1);
   assert.match(result.fatal[0], /truncated/);
+});
+
+// ── sync config: scripts/sync-org-docs.config.json ───────────────────────────
+
+console.log('\nsync config');
+
+test("loadProtectedRepos loads all expected slugs and fails closed on empty or missing entries", async () => {
+  const { HAND_AUTHORED, loadProtectedRepos } = await import("../sync-org-docs.mjs");
+  assert.equal(HAND_AUTHORED.size, 7);
+  for (const slug of ["mariner", "gtk-office-suite", "mandelbrot", "remora", "dakota", "blueshell", "ghostty"]) {
+    assert.equal(HAND_AUTHORED.has(slug), true);
+  }
+  assert.throws(() => loadProtectedRepos({ protected_repos: [] }), /hand-authored protection is empty/);
+  assert.throws(() => loadProtectedRepos({ protected_repos: [{ slug: "mariner" }] }), /missing/);
+});
+
+test('ROOT_DOC_FILTER stays keyed by repo, so tunaOS keeps its root-doc allowlist', async () => {
+  // The consumer reads ROOT_DOC_FILTER[repo]; a bare array here would drop
+  // the tunaOS filter and sync every root doc instead.
+  const { ROOT_DOC_FILTER } = await import('../sync-org-docs.mjs');
+  assert.equal(Array.isArray(ROOT_DOC_FILTER), false);
+  assert.deepEqual(ROOT_DOC_FILTER.tunaOS, ['README.md', 'ROADMAP.md', 'SECURITY.md', 'CONTRIBUTING.md']);
+  assert.equal(ROOT_DOC_FILTER.wootc, undefined);
 });
 
 // ── summary ───────────────────────────────────────────────────────────────────
