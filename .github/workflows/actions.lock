@@ -15,10 +15,6 @@ workflows:
         - 'actions/setup-node@v7.1.0'
         - 'actions/upload-artifact@v7.0.2'
         - 'flatpak/flatpak-github-actions@v6.8'
-    '.github/workflows/build-health-source.yml':
-        - 'actions/checkout@v7.0.1'
-        - 'actions/setup-node@v7.1.0'
-        - 'actions/setup-python@v7.1.0'
     '.github/workflows/deploy-flatpak.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/setup-node@v7.1.0'
@@ -30,7 +26,6 @@ workflows:
         - 'actions/checkout@v7.0.1'
     '.github/workflows/import-installer-walkthrough.yml':
         - 'actions/checkout@v7.0.1'
-    '.github/workflows/lint-required.yml': []
     '.github/workflows/lint.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/setup-node@v7.1.0'
