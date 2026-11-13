@@ -32,6 +32,7 @@ import {
   filesToRemove,
   isRootDoc,
   markUnparseable,
+  unwrapMdxCodeBlocks,
   rejectExpressions,
   withFormatMd,
   slugify,
@@ -711,6 +712,40 @@ asyncTest('rejectExpressions fails a page whose prose MDX would read as JavaScri
   assert.ok(await rejects('<img src={logo} />\n'));
   assert.ok(await rejects('import x from "y"\n\nText\n'));
   assert.ok(!(await rejects('Plain text, `{code}` and <img src="a.png" />.\n\n```\n{fenced}\n```\n')));
+});
+
+asyncTest('markUnparseable marks a page that hides MDX in an mdx-code-block fence', async () => {
+  // Docusaurus unwraps a ```mdx-code-block fence before compiling, so a
+  // JavaScript expression or import inside one reaches the build even though it
+  // looks like fenced code in the synced file. markUnparseable must see the
+  // same unwrapped body the build does and downgrade the page to CommonMark,
+  // or the upstream README's code runs at build time. An ordinary code fence
+  // carrying the same braces must stay untouched.
+  const dir = mkdtempSync(join(tmpdir(), 'mdx-fence-'));
+  const smuggled = join(dir, 'smuggled.md');
+  const ordinary = join(dir, 'ordinary.md');
+  writeFileSync(
+    smuggled,
+    subFrontmatter('Smuggled', 1) +
+      'Intro.\n\n```mdx-code-block\n{process.env}\n```\n\nOutro.\n',
+  );
+  writeFileSync(
+    ordinary,
+    subFrontmatter('Ordinary', 2) + 'A sample:\n\n```\n{process.env}\n```\n',
+  );
+  const marked = await markUnparseable([smuggled, ordinary]);
+  assert.equal(marked, 1, 'only the mdx-code-block page should be downgraded');
+  assert.ok(readFileSync(smuggled, 'utf8').includes('mdx:\n  format: md\n'));
+  assert.ok(!readFileSync(ordinary, 'utf8').includes('format: md'));
+});
+
+asyncTest('unwrapMdxCodeBlocks strips only the mdx-code-block fence', () => {
+  const unwrapped = unwrapMdxCodeBlocks('a\n\n```mdx-code-block\n{x}\n```\n\nb\n');
+  assert.ok(!unwrapped.includes('mdx-code-block'));
+  assert.ok(/^\{x\}$/m.test(unwrapped));
+  // An ordinary fence is left exactly as it was.
+  const plain = 'a\n\n```\n{x}\n```\n';
+  assert.equal(unwrapMdxCodeBlocks(plain), plain);
 });
 
 // ── getStatusBanner ───────────────────────────────────────────────────────────

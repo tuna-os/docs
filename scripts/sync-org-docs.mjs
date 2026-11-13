@@ -694,6 +694,24 @@ async function main({
 // Every page this run wrote, for markUnparseable.
 const WRITTEN = [];
 
+// unwrapMdxCodeBlocks strips the ```mdx-code-block fence wrapper, leaving its
+// contents inline — exactly what Docusaurus's own MDX preprocessor does before
+// compiling any page (see @docusaurus/mdx-loader preprocessor.js, which calls
+// @docusaurus/utils unwrapMdxCodeBlocks). Copied verbatim from
+// @docusaurus/utils 3.10.2 lib/markdownUtils.js so the guard below compiles the
+// same text the site build will. Only the `mdx-code-block` info-string is
+// touched; an ordinary ``` code fence is left intact.
+function unwrapMdxCodeBlocks(content) {
+  // We only support 3/4 backticks on purpose, should be good enough
+  const regexp3 = /(?<begin>^|\r?\n)(?<indentStart>\x20*)```(?<spaces>\x20*)mdx-code-block\r?\n(?<children>.*?)\r?\n(?<indentEnd>\x20*)```(?<end>\r?\n|$)/gs;
+  const regexp4 = /(?<begin>^|\r?\n)(?<indentStart>\x20*)````(?<spaces>\x20*)mdx-code-block\r?\n(?<children>.*?)\r?\n(?<indentEnd>\x20*)````(?<end>\r?\n|$)/gs;
+  const replacer = (substring, ...args) => {
+    const groups = args.at(-1);
+    return `${groups.begin}${groups.children}${groups.end}`;
+  };
+  return content.replaceAll(regexp3, replacer).replaceAll(regexp4, replacer);
+}
+
 // markUnparseable compiles each synced page as MDX, the way the site build
 // will, and marks one that does not compile `mdx: {format: md}` (Docusaurus's
 // per-page front matter, `frontMatter.mdx.format`) so Docusaurus reads
@@ -705,6 +723,13 @@ const WRITTEN = [];
 // until someone teaches the sanitizer the new shape. As CommonMark the page
 // builds, and only its raw HTML is lost (it shows as text). The warning names
 // the page so the sanitizer can learn the shape later.
+//
+// The body is run through unwrapMdxCodeBlocks first, because Docusaurus does
+// the same before it compiles. Without that, a ```mdx-code-block fence hid its
+// contents from this guard — rejectExpressions saw only a fenced code span and
+// passed — while the build unwrapped the fence and compiled (and prerendered)
+// the JavaScript expression or `import`/`export` inside it. The guard must see
+// what the build sees, or an upstream README smuggles executable MDX past it.
 async function markUnparseable(paths, compile = null) {
   const mdxCompile = compile ?? (await import('@mdx-js/mdx')).compile;
   const remarkGfm = compile ? null : (await import('remark-gfm')).default;
@@ -714,8 +739,9 @@ async function markUnparseable(paths, compile = null) {
     const fm = content.match(/^---\n[\s\S]*?\n---\n/);
     if (!fm || /\nmdx:\n  format: md\n/.test(fm[0])) continue;
     try {
-      // HTML comments as the site's markdown.mdx1Compat.comments reads them.
-      const body = content.slice(fm[0].length).replace(/<!--[\s\S]*?-->/g, '');
+      // Mirror the site build's preprocessing: unwrap mdx-code-block fences,
+      // then drop HTML comments as markdown.mdx1Compat.comments reads them.
+      const body = unwrapMdxCodeBlocks(content.slice(fm[0].length)).replace(/<!--[\s\S]*?-->/g, '');
       await mdxCompile(body, remarkGfm ? {remarkPlugins: [remarkGfm, rejectExpressions]} : {});
     } catch (e) {
       writeFileSync(path, withFormatMd(content));
@@ -774,6 +800,7 @@ export {
   filesToRemove,
   isRootDoc,
   markUnparseable,
+  unwrapMdxCodeBlocks,
   rejectExpressions,
   withFormatMd,
   slugify,
