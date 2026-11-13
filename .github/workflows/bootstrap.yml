@@ -1,5 +1,8 @@
 # One Linux build supplies both Workers validation and onboarding evidence.
-# macOS still exercises a fresh install/build for site/tooling changes and daily.
+# It runs when the change touches the site or its tooling, and on main, daily
+# and on dispatch. macOS repeats a fresh install/build on main, daily, on
+# dispatch and on a PR labelled run-heavy; on a PR the Linux lane already runs
+# the same `npm ci` and `npm run build`.
 name: bootstrap
 
 on:
@@ -21,7 +24,11 @@ jobs:
   changes:
     if: ${{ github.repository == 'tuna-os/docs' }}
     runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+      pull-requests: read # the run-heavy label, read live so a re-run sees it
     outputs:
+      site: ${{ steps.changes.outputs.site }}
       macos: ${{ steps.changes.outputs.macos }}
     steps:
       - uses: actions/checkout@v7.0.1
@@ -30,16 +37,19 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
-      - name: Select macOS onboarding coverage
+      - name: Select onboarding coverage
         id: changes
         env:
           EVENT: ${{ github.event_name }}
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
           HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          PR: ${{ github.event.pull_request.number }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           if [[ "$EVENT" == schedule || "$EVENT" == workflow_dispatch ||
                 -z "$BASE" || "$BASE" =~ ^0+$ ]]; then
-            echo 'macos=true' >> "$GITHUB_OUTPUT"
+            { echo 'site=true'; echo 'macos=true'; } >> "$GITHUB_OUTPUT"
             exit 0
           fi
           if [[ "$EVENT" == pull_request ]]; then
@@ -47,7 +57,7 @@ jobs:
           else
             git diff --no-renames --name-only -z "$BASE" "$HEAD" > changed-paths
           fi
-          macos=false
+          site=false
           while IFS= read -r -d '' path; do
             case "$path" in
               docs/*|blog/*|src/*|static/*|scripts/*|worker/*|\
@@ -56,15 +66,21 @@ jobs:
               .github/scripts/*|.github/actions/*|\
               .github/workflows/bootstrap.yml|.github/workflows/workers-build.yml|\
               .github/workflows/lint.yml)
-                macos=true
+                site=true
                 break
                 ;;
             esac
           done < changed-paths
-          echo "macos=$macos" >> "$GITHUB_OUTPUT"
+          macos=$site
+          if [[ "$EVENT" == pull_request ]]; then
+            labels=$(gh pr view "$PR" --json labels --jq '.labels[].name')
+            grep -qx run-heavy <<<"$labels" || macos=false
+          fi
+          { echo "site=$site"; echo "macos=$macos"; } >> "$GITHUB_OUTPUT"
 
   workers:
-    if: ${{ github.repository == 'tuna-os/docs' }}
+    needs: changes
+    if: ${{ github.repository == 'tuna-os/docs' && needs.changes.outputs.site == 'true' }}
     uses: $/.github/workflows/workers-build.yml
 
   macos:
@@ -109,6 +125,7 @@ jobs:
           OS: ${{ matrix.os }}
           CHANGES: ${{ needs.changes.result }}
           MACOS_REQUIRED: ${{ needs.changes.outputs.macos }}
+          LINUX_REQUIRED: ${{ needs.changes.outputs.site }}
           MACOS_RESULT: ${{ needs.macos.result }}
           INSTALL: ${{ needs[matrix.os == 'ubuntu-24.04' && 'workers' || 'macos'].outputs.install }}
           SITE: ${{ needs[matrix.os == 'ubuntu-24.04' && 'workers' || 'macos'].outputs.site }}
@@ -116,23 +133,33 @@ jobs:
           if [[ "$OS" == macos-latest ]]; then
             [[ "$CHANGES" == success ]]
             if [[ "$MACOS_REQUIRED" != true ]]; then
-              echo 'No site or onboarding tooling changed; macOS runs daily and on manual dispatch.'
+              echo 'macOS did not run: it runs on main, daily, on manual dispatch and on a pull request labelled run-heavy.'
               exit 0
             fi
             [[ "$MACOS_RESULT" == success ]]
+            exit 0
+          fi
+          [[ "$CHANGES" == success ]]
+          if [[ "$LINUX_REQUIRED" != true ]]; then
+            echo 'No site or onboarding tooling changed; the Linux build runs on those changes, on main, daily and on manual dispatch.'
+            exit 0
           fi
           [[ "$INSTALL" == success && "$SITE" == success ]]
 
   build:
     name: Build tunaos-org
-    needs: workers
+    needs: [changes, workers]
     if: ${{ always() && github.repository == 'tuna-os/docs' }}
     runs-on: ubuntu-26.04
     steps:
       - name: Report Workers validation result
         env:
+          CHANGES: ${{ needs.changes.result }}
+          LINUX_REQUIRED: ${{ needs.changes.outputs.site }}
           RESULT: ${{ needs.workers.result }}
-        run: test "$RESULT" = success
+        run: |
+          [[ "$CHANGES" == success ]]
+          [[ "$LINUX_REQUIRED" != true ]] || test "$RESULT" = success
 
   # Only this job can write issues. It never checks out or executes PR code.
   bootstrap-issues:

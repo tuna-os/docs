@@ -9,40 +9,16 @@ name: Lint
 # blog/** is here for the same reason: ste-lint counts blog posts towards the
 # budget wherever it runs, so without the filter a blog-only PR could push the
 # total over the budget and only be caught by the next PR touching docs/**.
+# The path filter lives in the `changes` job, not under `on:`: Markdown Lint is
+# a required check, and a workflow that a path filter skips never reports, so
+# the pull request would wait forever on a check that never appears. A job that
+# its `if:` skips reports success, which is what a pull request with nothing to
+# lint should show. That replaces lint-required.yml, the paths-ignore twin that
+# used to report a no-op `Markdown Lint` on every other pull request.
 on:
   pull_request:
-    paths:
-      - 'docs/**'
-      - 'blog/**'
-      - '*.md'
-      - 'scripts/**'
-      - 'worker/**'
-      - 'src/**'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'vitest.config.mts'
-      - 'justfile'
-      - '.github/scripts/**'
-      - '.ste-budget'
-      - '.markdownlint-budget'
-      - '.github/workflows/lint.yml'
   push:
     branches: [main]
-    paths:
-      - 'docs/**'
-      - 'blog/**'
-      - '*.md'
-      - 'scripts/**'
-      - 'worker/**'
-      - 'src/**'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'vitest.config.mts'
-      - 'justfile'
-      - '.github/scripts/**'
-      - '.ste-budget'
-      - '.markdownlint-budget'
-      - '.github/workflows/lint.yml'
   workflow_dispatch:
 
 permissions:
@@ -53,7 +29,63 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  # lint: the inputs of the jobs below (the old `paths:` list).
+  # build-health: the inputs of the pinned build-health source policy check.
+  # A dispatch, or a push range that cannot be read, selects both.
+  changes:
+    name: select path-scoped jobs
+    runs-on: ubuntu-26.04
+    timeout-minutes: 5
+    outputs:
+      lint: ${{ steps.scope.outputs.lint }}
+      build-health: ${{ steps.scope.outputs.build-health }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: scope
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+          lint=false build=false
+          case "$EVENT" in
+            pull_request) range=("$BASE_SHA...HEAD") ;;
+            push)
+              if [ -n "$BEFORE" ] && [ "${BEFORE//0/}" != "" ] && git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+                range=("$BEFORE" HEAD)
+              else
+                range=()
+              fi ;;
+            *) range=() ;;
+          esac
+          if [ "${#range[@]}" -eq 0 ]; then
+            lint=true build=true
+          else
+            while IFS= read -r f; do
+              [ -n "$f" ] || continue
+              case "$f" in
+                docs/* | blog/* | scripts/* | worker/* | src/* | package.json | package-lock.json | \
+                vitest.config.mts | justfile | .github/scripts/* | .ste-budget | .markdownlint-budget | \
+                .github/workflows/lint.yml) lint=true ;;
+                */*) ;;
+                *.md) lint=true ;;
+              esac
+              case "$f" in
+                scripts/build-health-source.json | scripts/check-build-health-source.mjs | \
+                src/data/build-health* | .github/workflows/lint.yml) build=true ;;
+              esac
+            done < <(git diff --name-only "${range[@]}" | tee /dev/stderr)
+          fi
+          echo "lint=$lint" >> "$GITHUB_OUTPUT"
+          echo "build-health=$build" >> "$GITHUB_OUTPUT"
+
   python-tests:
+    needs: changes
+    if: needs.changes.outputs.lint == 'true'
     name: Flatpak Python Unit Tests
     runs-on: ubuntu-26.04
     steps:
@@ -72,6 +104,8 @@ jobs:
         run: python3 -m pytest .github/scripts/tests/ -v
 
   markdown-lint:
+    needs: changes
+    if: needs.changes.outputs.lint == 'true'
     name: Markdown Lint
     runs-on: ubuntu-26.04
     steps:
@@ -118,6 +152,8 @@ jobs:
 
   # Check for broken internal links using a lightweight markdown link checker
   js-syntax:
+    needs: changes
+    if: needs.changes.outputs.lint == 'true'
     name: Node.js Syntax & Tests
     runs-on: ubuntu-26.04
     steps:
@@ -180,6 +216,8 @@ jobs:
 
 
   ste:
+    needs: changes
+    if: needs.changes.outputs.lint == 'true'
     # The linter, its rules and its tests live in tuna-os/.github's ste-lint
     # action, shared with every other repo in the org rather than copied into
     # each one. This repo keeps only .ste-budget -- the number it is measured
@@ -193,6 +231,8 @@ jobs:
     uses: tuna-os/.github/.github/workflows/ste-lint.yml@4078f531ac74703f203bde835ef6c25e9321b97b # main # zizmor: ignore[ref-version-mismatch] pinned to a reviewed main commit; Renovate bumps the digest, so main may be ahead
 
   link-check:
+    needs: changes
+    if: needs.changes.outputs.lint == 'true'
     name: Internal Link Check
     runs-on: ubuntu-26.04
     steps:
@@ -239,3 +279,44 @@ jobs:
           echo "| Check | Status |" >> "$GITHUB_STEP_SUMMARY"
           echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
           echo "| Internal Link Check | ${JOB_STATUS} |" >> "$GITHUB_STEP_SUMMARY"
+
+  # The reviewed tuna-os/tunaOS pin and the schemas copied from it. Not a
+  # required check, and only these inputs can change its result.
+  pinned-source:
+    needs: changes
+    if: needs.changes.outputs.build-health == 'true'
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - name: Read reviewed source pin
+        id: pin
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          pin = json.load(open('scripts/build-health-source.json'))
+          assert pin['repository'] == 'tuna-os/tunaOS'
+          assert re.fullmatch('[0-9a-f]{40}', pin['revision'])
+          assert re.fullmatch('[0-9]+\.[0-9]+\.[0-9]+', pin['pyyamlVersion'])
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write(f"revision={pin['revision']}\npyyaml={pin['pyyamlVersion']}\n")
+          PY
+      - uses: actions/checkout@v7.0.1
+        with:
+          repository: tuna-os/tunaOS
+          ref: ${{ steps.pin.outputs.revision }}
+          path: .test-deps/tunaos
+          persist-credentials: false
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '26'
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.15'
+      - name: Install pinned resolver dependency
+        env:
+          PYYAML_VERSION: ${{ steps.pin.outputs.pyyaml }}
+        run: python3 -m pip install "PyYAML==$PYYAML_VERSION"
+      - name: Check copied schemas and required architecture policy
+        run: node scripts/check-build-health-source.mjs .test-deps/tunaos
