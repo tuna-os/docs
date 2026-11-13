@@ -13,7 +13,7 @@ high-level pitch; this page is the how-to.
 > [`native/e2e/walkthrough.sh`](https://github.com/tuna-os/iso-builder/blob/main/native/e2e/walkthrough.sh)
 > — a virtual X server drives the real app and captures its actual
 > rendered output, the same "regenerate on change" approach the browser
-> [ISO Builder's walkthrough](/docs/iso-builder#quick-start) uses. If the app changes,
+> [ISO Builder's walkthrough](/docs/iso-builder) uses. If the app changes,
 > rerun it and commit the refreshed images.
 
 ## 1. Install

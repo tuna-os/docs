@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 180" role="img" aria-labelledby="title desc">
+  <rect width="760" height="180" rx="18" fill="#f5f1e8"/>
+  <title id="title">Athens wordmark</title>
+  <desc id="desc">Athens, a Pantheon desktop built by TunaOS.</desc>
+  <defs>
+    <linearGradient id="field" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#10243d"/><stop offset="1" stop-color="#243d5b"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe2a2"/><stop offset="1" stop-color="#d89a4c"/></linearGradient>
+  </defs>
+  <circle cx="92" cy="90" r="77" fill="url(#field)"/>
+  <path d="M51 114V77a41 41 0 0 1 82 0v37" fill="none" stroke="url(#gold)" stroke-width="7" stroke-linecap="round"/>
+  <path d="M63 113V83m20 30V73m20 40V73m20 40V83M48 120h88m-96 12h104" stroke="#f4e8d1" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="92" cy="58" r="11" fill="#f1bd68"/>
+  <text x="194" y="105" fill="#172b45" font-family="sans-serif" font-size="72" font-weight="700" letter-spacing="2">ATHENS</text>
+  <text x="199" y="145" fill="#63758b" font-family="sans-serif" font-size="22" letter-spacing="5">PANTHEON · TUNAOS</text>
+</svg>
