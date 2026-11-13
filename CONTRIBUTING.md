@@ -153,10 +153,21 @@ Both CI and `just lint` check syntax in both directories, including tests;
 
 ### Additional validation before submission
 
-Run two additional checks before you submit:
+These checks open the built site in a Playwright browser. `npm ci` does not
+download that browser. Install it one time, with the same command as CI:
 
-- **Accessibility:** `npm run a11y` audits the built site with axe-core (WCAG 2.2 A/AA) and must pass with zero violations. Run this after `npm run build`.
+```bash
+npx playwright install --with-deps chromium
+```
+
+On Linux, `--with-deps` also installs the system libraries for the browser,
+and it asks for `sudo`. Without these libraries, the browser does not start.
+
+Run `npm run build` first, then run these checks before you submit:
+
+- **Accessibility:** `npm run a11y` audits the built site with axe-core (WCAG 2.2 A/AA) and must pass with zero violations.
 - **Metrics:** `npm run test:metrics` validates the adoption metrics page with browser automation. Useful for changes that affect `/metrics`.
+- **Build health:** `npm run test:build-health` validates the `/build-health` page with browser automation. Useful for changes that affect `/build-health`.
 
 ## Synchronized Project Documentation
 
