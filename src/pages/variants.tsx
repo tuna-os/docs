@@ -124,7 +124,7 @@ export default function Variants(): ReactNode {
               </Heading>
               <p className={page.sectionSub}>
                 Independent TunaOS image projects with their own build graphs. Athens is
-                experimental and local-only; Tromsø and XFCE Linux (Brussels) declare OCI
+                experimental and local-only; Tromsø and Brussels declare OCI
                 image references.
               </p>
             </div>
