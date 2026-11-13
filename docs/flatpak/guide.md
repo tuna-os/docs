@@ -16,7 +16,6 @@ TunaOS publishes its Flatpak applications through a custom OCI remote. Each app 
 | **Letters** 📝 | Pure Rust GTK4 word processor | `org.tunaos.letters` | [GitHub](https://github.com/tuna-os/gtk-office-suite) |
 | **Tavern** 🍺 | Homebrew GUI client | `org.tunaos.tavern` | [GitHub](https://github.com/tuna-os/Tavern) |
 | **Mariner** 🛠️ | GTK4 + libadwaita file manager (GNOME Files alternative with type-ahead, dual-pane, Quick Look) | `org.tunaos.mariner` | [GitHub](https://github.com/tuna-os/mariner) |
-| **Finupdate** 🔄 | GTK4/libadwaita update frontend (bootc/flatpak/brew/distrobox) | `org.tunaos.finupdate` | [GitHub](https://github.com/tuna-os/finupdate) |
 | **Mandelbrot** 🌀 | GNOME Matrix messaging client (forked from Fractal, MatrixRTC voice/video) | `org.tunaos.mandelbrot` | [GitHub](https://github.com/tuna-os/mandelbrot) |
 | **Dualcut** ✂️ | GNOME video editor (manual timeline + live JSON/scriptable editing) | `org.tunaos.dualcut` | [GitHub](https://github.com/tuna-os/dualcut) |
 | **TunaOS Installer (COSMIC)** 🚀 | Live-ISO installer frontend | `org.tunaos.InstallerCosmic` | [GitHub](https://github.com/tuna-os/tuna-installer-cosmic) |
@@ -56,7 +55,7 @@ flatpak install tuna-os org.tunaos.tables org.tunaos.decks org.tunaos.letters
 
 # Everything on the remote
 flatpak install tuna-os org.tunaos.tables org.tunaos.decks org.tunaos.letters \
-  org.tunaos.tavern org.tunaos.mariner org.tunaos.finupdate \
+  org.tunaos.tavern org.tunaos.mariner \
   org.tunaos.mandelbrot org.tunaos.dualcut
 ```
 

@@ -60,7 +60,7 @@ def test_is_installer_matches_dot_installer_suffix(mod):
 
 
 def test_is_installer_false_for_regular_app(mod):
-    assert mod.is_installer("org.tunaos.finupdate") is False
+    assert mod.is_installer("org.tunaos.mariner") is False
 
 
 # ── find_open_issue ──────────────────────────────────────────────────────
