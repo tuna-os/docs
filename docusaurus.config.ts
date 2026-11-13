@@ -14,7 +14,7 @@ const UNLISTED_ROUTES = ['/switch-to-bazzite'];
 const config: Config = {
   title: 'TunaOS',
   tagline: 'A Collection of Cloud-Native Enterprise Linux OS Images',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/identity/emoji/tunaos.svg',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -27,7 +27,6 @@ const config: Config = {
   baseUrl: '/',
   trailingSlash: false,
   onBrokenLinks: "warn",
-  onBrokenMarkdownLinks: 'warn',
 
   markdown: {
     // Every page is parsed as MDX, where `<!-- ... -->` is a syntax error.
@@ -39,6 +38,10 @@ const config: Config = {
     // MDX comment survives createExcerpt(), so a leading pragma becomes the
     // page's meta description.
     mdx1Compat: {comments: true},
+    hooks: {
+      // Moved from the top-level `onBrokenMarkdownLinks` option, deprecated for removal in Docusaurus v4.
+      onBrokenMarkdownLinks: 'warn',
+    },
   },
 
   // Even if you don't use internationalization, you can use this field to set
@@ -95,10 +98,13 @@ const config: Config = {
       disableSwitch: false,
     },
     navbar: {
-      title: 'TunaOS',
       logo: {
-        alt: 'TunaOS Logo',
-        src: 'img/logo.png',
+        alt: 'TunaOS',
+        // The header stays dark in both themes. The unsuffixed source has light ink.
+        src: 'img/identity/wordmarks/tunaos.svg',
+        className: 'tunaos-wordmark',
+        width: 125,
+        height: 32,
       },
       items: [
         {

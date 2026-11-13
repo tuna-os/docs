@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Athens desktop wallpaper</title>
+  <desc id="desc">A warm sunrise over abstract classical arches, in midnight blue and sandstone.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#101c32"/><stop offset=".52" stop-color="#263e5a"/><stop offset="1" stop-color="#805c55"/></linearGradient>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe8b2"/><stop offset="1" stop-color="#e8a45d"/></linearGradient>
+    <linearGradient id="stone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#cda878" stop-opacity=".62"/><stop offset="1" stop-color="#f1d6a2" stop-opacity=".16"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#f4be76" stop-opacity=".52"/><stop offset="1" stop-color="#f4be76" stop-opacity="0"/></radialGradient>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h1920v1080H0z"/>
+  <circle cx="1330" cy="405" r="410" fill="url(#glow)"/>
+  <circle cx="1330" cy="405" r="136" fill="url(#sun)"/>
+  <path d="M0 789q315-152 622 0t618 0q330-160 680 0v291H0z" fill="#182b42" fill-opacity=".78"/>
+  <path d="M180 1080V676a226 226 0 0 1 452 0v404" fill="none" stroke="url(#stone)" stroke-width="46"/>
+  <path d="M241 1080V701a165 165 0 0 1 330 0v379" fill="none" stroke="#f0d4a2" stroke-opacity=".19" stroke-width="5"/>
+  <path d="M708 1080V761a155 155 0 0 1 310 0v319" fill="none" stroke="#e3bd8b" stroke-opacity=".34" stroke-width="34"/>
+  <path d="M760 1080V780a103 103 0 0 1 206 0v300" fill="none" stroke="#f4dfb8" stroke-opacity=".16" stroke-width="4"/>
+  <path d="M0 930q370-95 710 0t710 0q250-75 500 0v150H0z" fill="#111c2e" fill-opacity=".6"/>
+  <g fill="#e9bd7a" fill-opacity=".56"><circle cx="1110" cy="700" r="4"/><circle cx="1190" cy="746" r="3"/><circle cx="1485" cy="704" r="5"/><circle cx="1582" cy="768" r="3"/><circle cx="1050" cy="818" r="3"/></g>
+</svg>

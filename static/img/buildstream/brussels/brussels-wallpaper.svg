@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Brussels desktop wallpaper</title>
+  <desc id="desc">An abstract city at dusk, with warm art-nouveau arches and deep blue-green forms.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#122638"/><stop offset=".56" stop-color="#33545c"/><stop offset="1" stop-color="#996c60"/></linearGradient>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe0ad"/><stop offset="1" stop-color="#e89a66"/></linearGradient>
+    <linearGradient id="arch" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f0c48c" stop-opacity=".65"/><stop offset="1" stop-color="#f6dcc0" stop-opacity=".13"/></linearGradient>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h1920v1080H0z"/>
+  <circle cx="1395" cy="364" r="248" fill="#f0b47b" fill-opacity=".09"/>
+  <circle cx="1395" cy="364" r="116" fill="url(#sun)" fill-opacity=".92"/>
+  <path d="M0 770q380-130 715 8t666-5q298-106 539-20v327H0z" fill="#1a3545" fill-opacity=".66"/>
+  <path d="M194 1080V619a246 246 0 0 1 492 0v461" fill="none" stroke="url(#arch)" stroke-width="42"/>
+  <path d="M256 1080V639a184 184 0 0 1 368 0v441" fill="none" stroke="#f2dbc1" stroke-opacity=".18" stroke-width="4"/>
+  <path d="M766 1080V748a173 173 0 0 1 346 0v332" fill="none" stroke="#e8bd91" stroke-opacity=".42" stroke-width="34"/>
+  <path d="M816 1080V765a123 123 0 0 1 246 0v315" fill="none" stroke="#f5e0c3" stroke-opacity=".17" stroke-width="4"/>
+  <path d="M1190 828h182v252h-182zm212-93h158v345h-158zm186 118h168v227h-168z" fill="#172d3b" fill-opacity=".7"/>
+  <path d="M1190 828h182v18h-182zm212-93h158v18h-158zm186 118h168v18h-168z" fill="#d89c70" fill-opacity=".8"/>
+  <g fill="#f1c38c" fill-opacity=".72"><rect x="1222" y="877" width="18" height="38" rx="8"/><rect x="1270" y="877" width="18" height="38" rx="8"/><rect x="1435" y="779" width="17" height="34" rx="8"/><rect x="1480" y="779" width="17" height="34" rx="8"/><rect x="1630" y="875" width="18" height="38" rx="8"/><rect x="1678" y="875" width="18" height="38" rx="8"/></g>
+  <path d="M0 945q345-70 650 10t628 0q323-82 642-2v127H0z" fill="#112534" fill-opacity=".78"/>
+</svg>
