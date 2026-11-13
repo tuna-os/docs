@@ -9,7 +9,7 @@ import {pathToFileURL} from 'node:url';
 const root = mkdtempSync(join(tmpdir(), 'sync-ownership-'));
 try {
   mkdirSync(join(root, 'scripts/lib'), {recursive: true});
-  for (const file of ['sync-org-docs.mjs', 'lib/org-doc-transform.mjs']) {
+  for (const file of ['sync-org-docs.mjs', 'sync-org-docs.config.json', 'lib/org-doc-transform.mjs']) {
     copyFileSync(new URL(`../${file}`, import.meta.url), join(root, 'scripts', file));
   }
   const {isSyncedIndex, HAND_AUTHORED, frontmatter} = await import(
