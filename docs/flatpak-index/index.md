@@ -30,7 +30,6 @@ Cloudflare Pages serves the remote at `https://tunaos.org/flatpak/`. The files c
 | Tables | `flatpak install tuna-os org.tunaos.tables` |
 | Decks | `flatpak install tuna-os org.tunaos.decks` |
 | Mariner | `flatpak install tuna-os org.tunaos.mariner` |
-| Finupdate | `flatpak install tuna-os org.tunaos.finupdate` |
 | Dualcut | `flatpak install tuna-os org.tunaos.dualcut` |
 | Mandelbrot | `flatpak install tuna-os org.tunaos.mandelbrot` |
 | Tavern | `flatpak install tuna-os org.tunaos.tavern` |
