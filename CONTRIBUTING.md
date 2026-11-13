@@ -131,9 +131,10 @@ Run all local pre-submission checks:
 just preflight
 ```
 
-This command type-checks the site, checks Markdown and JavaScript, enforces the
-prose budget for Simplified Technical English, and runs tests for documentation
-scripts. Also run `just build` when the change can affect the generated site.
+This command type-checks the site, checks Markdown and JavaScript, and enforces the
+prose budget for Simplified Technical English. It also tests documentation
+scripts and frontend data. Run `npm run test:unit` for the Vitest data-layer
+tests under `src/`. Also run `just build` when the change can affect the generated site.
 
 `just test-python` runs only the Flatpak Python tests. These tests use local
 fixtures and mocks; they do not need Flatpak, a display server, or credentials.
