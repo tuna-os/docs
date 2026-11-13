@@ -152,7 +152,7 @@ const PER_PAGE = 100;
 const DEFAULT_PAGE_SIZE = 30;
 const RETRY_DELAY_MS = 5000;
 
-// Returns {dir, branch}. `git clone` with no --branch checks out the repo's
+// Returns {dir, branch, revision}. `git clone` with no --branch checks out the repo's
 // actual default branch (dev/master, not always main — see tuna-os/docs#263,
 // bootc-installer/changelog-action/kde-build-meta/mariner all use something
 // other than main), so read it back from the clone itself instead of
@@ -167,7 +167,8 @@ function cloneRepo(repo) {
     cwd: tmp,
     encoding: 'utf8',
   }).trim();
-  return {dir: tmp, branch};
+  const revision = execSync('git rev-parse HEAD', {cwd: tmp, encoding: 'utf8'}).trim();
+  return {dir: tmp, branch, revision};
 }
 
 function slugify(name) {
@@ -466,9 +467,17 @@ function docOutputNames(rootFiles, docFiles) {
   return outputs;
 }
 
-async function main() {
+async function main({
+  discover = discoverRepos, clone = cloneRepo,
+  docsDir: destination = DOCS_DIR, provenancePath = 'src/data/synced-docs.json',
+  now = () => new Date().toISOString(),
+} = {}) {
+  const provenance = existsSync(provenancePath)
+    ? JSON.parse(readFileSync(provenancePath, 'utf8')) : {};
+  // Only the sync writes this snapshot; site builds consume it unchanged.
+  const saveProvenance = () => writeFileSync(provenancePath, JSON.stringify(provenance, null, 2) + '\n');
   // Discover repos from the org.
-  const {listed, publicRepos, fatal, warnings, attempts} = discoverRepos();
+  const {listed, publicRepos, fatal, warnings, attempts} = discover();
 
   console.log(
     `🔎 ${listed.length} repos listed in ${ORG}` +
@@ -484,7 +493,7 @@ async function main() {
   // A slug in HAND_AUTHORED that matches nothing on disk protects nothing, and
   // does it quietly — the same shape of bug as the truncation above.
   for (const slug of HAND_AUTHORED) {
-    if (!existsSync(join(DOCS_DIR, slug))) {
+    if (!existsSync(join(destination, slug))) {
       console.warn(`⚠️  HAND_AUTHORED lists '${slug}', but docs/${slug}/ does not exist`);
     }
   }
@@ -514,9 +523,14 @@ async function main() {
 
     let dir;
     let branch;
+    let revision;
+    let fetchedAt;
     try {
-      ({dir, branch} = cloneRepo(repo));
-      const targetDir = join(DOCS_DIR, slug);
+      ({dir, branch, revision} = clone(repo));
+      if (!/^[a-f0-9]{40}$/.test(revision)) throw new Error('Source revision is missing or invalid');
+      fetchedAt = now();
+      const pages = {};
+      const targetDir = join(destination, slug);
       mkdirSync(targetDir, {recursive: true});
 
       // Snapshot what's already there before writing anything, so removal
@@ -541,6 +555,7 @@ async function main() {
         writeFileSync(join(targetDir, 'index.md'), content);
         WRITTEN.push(join(targetDir, 'index.md'));
         writtenFiles.push('index.md');
+        pages[`${slug}/index`] = 'README.md';
         console.log(`  ✓ README.md → index.md`);
       }
 
@@ -565,6 +580,7 @@ async function main() {
         writeFileSync(join(targetDir, file), content);
         WRITTEN.push(join(targetDir, file));
         writtenFiles.push(file);
+        pages[`${slug}/${file.replace(/\.(md|rst)$/, '')}`] = file;
         console.log(`  ✓ ${file}`);
       }
 
@@ -587,6 +603,7 @@ async function main() {
           writeFileSync(join(targetDir, output), content);
           WRITTEN.push(join(targetDir, output));
           writtenFiles.push(output);
+          pages[`${slug}/${output.replace(/\.(md|rst)$/, '')}`] = `${docsSubdir}/${file}`;
           console.log(`  ✓ ${docsSubdir}/${file} → ${output}`);
         }
       }
@@ -620,8 +637,15 @@ async function main() {
         );
       }
 
+      provenance[repo] = {revision, lastSuccessfulFetch: fetchedAt, status: 'ok', pages};
+      saveProvenance();
       synced++;
     } catch (e) {
+      if (provenance[repo]) {
+        provenance[repo].status = 'stale';
+        provenance[repo].error = 'Source refresh failed';
+        saveProvenance();
+      }
       failures.push(`${repo}: ${e.message}`);
       console.error(`  ✗ Failed: ${e.message}`);
     } finally {
@@ -648,13 +672,13 @@ async function main() {
       'Exiting non-zero: ' +
       'a run that covered part of the org must not report success.',
     );
-    process.exit(1);
+    throw new Error('Documentation sync failed');
   }
 
   // Case-collision guard (#154): run after every write, not just the ones
   // this invocation made, so a collision introduced by a hand edit sitting
   // next to synced content is still caught the next time sync runs.
-  const collisions = findCaseCollisions(DOCS_DIR);
+  const collisions = findCaseCollisions(destination);
   if (collisions.length) {
     console.error(`\n✗ ${collisions.length} case-insensitive path collision(s) under ${DOCS_DIR}/:`);
     for (const group of collisions) console.error(`  ✗ ${group.join('  ==  ')}`);
@@ -737,6 +761,8 @@ function withFormatMd(content) {
 
 export {
   loadProtectedRepos,
+  main,
+  cloneRepo,
   sanitizeHtml,
   fixRelativeLinks,
   onProse,
