@@ -39,6 +39,36 @@ const NOT_NAVIGABLE = new Set([
   // provenance), but there is no tuna-os/branding repo — this tree is
   // hand-authored and was never meant to appear in a top-level nav category.
   'branding',
+  // dualcut: deprecated; development moved to soirihiroka/shrimply.
+  'dualcut',
+  // suite-common: deprecated Python implementation, bugfix-only; canonical docs live under gtk-office-suite.
+  'suite-common',
+  // suite-common-rust: early extraction superseded by gtk-office-suite/suite-common.
+  'suite-common-rust',
+  // kde-build-meta: superseded by tuna-os/tromso; retained as historical reference only.
+  'kde-build-meta',
+  // bst-ci: internal CI tooling; contributor docs live in the repo.
+  'bst-ci',
+  // changelog-action: internal GitHub Action; contributor docs live in the repo.
+  'changelog-action',
+  // debian-copr: packaging repo; not end-user documentation.
+  'debian-copr',
+  // homebrew-tap: packaging tap; not end-user documentation.
+  'homebrew-tap',
+  // scoop-bucket: packaging bucket; not end-user documentation.
+  'scoop-bucket',
+  // iced: synced upstream README of a forked third-party GUI library, not tuna-os docs.
+  'iced',
+  // libcosmic: synced upstream README of a forked third-party toolkit, not tuna-os docs.
+  'libcosmic',
+  // paperwm: synced upstream README of a forked GNOME extension, not tuna-os docs.
+  'paperwm',
+  // rdocx: synced upstream README of a mirrored third-party crate, not tuna-os docs.
+  'rdocx',
+  // rust-atomicwrites: synced upstream README of a mirrored third-party crate, not tuna-os docs.
+  'rust-atomicwrites',
+  // ccleft: single-README utility stub; graduate to a sidebar entry when its docs grow.
+  'ccleft',
 ]);
 
 // Extract every quoted doc id from sidebars.ts. This intentionally does not
