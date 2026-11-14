@@ -21,6 +21,9 @@ agrees with your needs.
 - **x86_64_v2**: Optimized for older CPUs (pre-2013) - available for Albacore and Yellowfin
 - **ARM64**: 64-bit ARM processors (Apple Silicon, Raspberry Pi 4+, etc.)
 
+For hypervisor settings, bootc storage, snapshots, and migration, see the
+[VM setup guide](virtual-machines.md).
+
 ## Installation Methods
 
 ### Method 1: Download Pre-built ISOs
