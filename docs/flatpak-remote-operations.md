@@ -57,9 +57,15 @@ npm dependencies, builds the **whole site**, installs Wrangler 4, then runs
 secrets. Cloudflare Workers Builds also publishes on pushes to `main`, as
 described in the [repository README](https://github.com/tuna-os/docs#deployment).
 
-Application publishers use `GITHUB_TOKEN` for their GHCR upload and
-`FLATPAK_INDEX_TOKEN` for the cross-repository index commit. The latter needs
-Contents read/write access scoped to `tuna-os/docs`.
+Application publishers use `GITHUB_TOKEN` for their GHCR upload. For the index
+commit in `tuna-os/docs`, they use the `FLATPAK_INDEX_DEPLOY_KEY` organization
+secret. This secret is the private half of a write deploy key on `tuna-os/docs`.
+The shared `publish-flatpak-index` action gets it as its `ssh-key` input. Only
+the application repositories that publish can see the secret. A deploy key can
+bypass the required check on `main`, so its push lands directly.
+
+The `build-flatpaks.yml` workflow in this repository still pushes with
+`FLATPAK_INDEX_TOKEN`, an access token from a personal account.
 
 GitHub [suppresses workflow runs](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow#triggering-a-workflow-from-a-workflow)
 for pushes made with the repository's own `GITHUB_TOKEN`. If the index commit has no deploy run, check which token made it.
