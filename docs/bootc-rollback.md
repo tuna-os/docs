@@ -130,55 +130,10 @@ sudo bootc switch ghcr.io/tuna-os/yellowfin:gnome
 
 ## Troubleshooting Boot Failures
 
-If your system won't boot after an update, you have several recovery options.
-
-### Option 1: Select Previous Deployment at Boot
-
-When the system boots, the systemd-boot menu shows the available deployments. Use the arrow keys to select the previous entry and press Enter. This boots into the rollback target without any commands.
-
-### Option 2: Boot into a Live ISO
-
-If the boot menu itself fails:
-
-1. Download a TunaOS ISO from [tunaos.org/download](https://tunaos.org/download)
-2. Boot from USB
-3. Mount your root filesystem and inspect logs:
-
-```bash
-# Find your root partition
-lsblk
-
-# Mount it (adjust /dev/sda3 as needed)
-sudo mount /dev/sda3 /mnt
-
-# Check bootc status from the live environment
-sudo bootc status --sysroot /mnt
-```
-
-### Option 3: Check Boot Logs
-
-From a good boot or rescue entry:
-
-```bash
-# View boot logs from the current session
-journalctl -b -o short-monotonic
-
-# View logs from the previous boot
-journalctl -b -1 -o short-monotonic
-
-# Check for systemd ordering cycles or failed units
-journalctl -b -p err
-```
-
-### Common Issues
-
-| Problem | Cause | Fix |
-|---------|-------|-----|
-| "Ordering cycle found" at boot | A systemd unit has a circular dependency | Boot into the rollback deployment and remove the offending unit from your custom image |
-| Black screen after boot | Display driver or compositor issue | Roll back, then check if the issue is in the new image before re-updating |
-| Network not available after update | NetworkManager or DNS config changed | Roll back, then file an issue with `journalctl -b -u NetworkManager` logs |
-| Boot drops to emergency shell | Missing root filesystem or broken fstab | Use a live ISO to inspect `/etc/fstab` and the bootc deployment list |
-| `bootc upgrade` fails to pull | Registry auth or network issue | Check `podman pull ghcr.io/tuna-os/yellowfin:gnome` first to isolate the problem |
+Start with [boot and installation failures](troubleshooting.md#boot-and-installation-failures)
+for boot menu recovery, emergency shells, and live ISO checks. For failed pulls,
+stuck deployments, or a failed rollback, see
+[update and rollback problems](troubleshooting.md#update-and-rollback-problems).
 
 ## Further Reading
 
