@@ -119,11 +119,15 @@ For fixes that must apply to both copies, open an issue in
 
 ## Validation
 
-Install the Markdown linter used by the repository recipe:
+Install the Markdown linter at the version that CI uses:
 
 ```bash
-npm install --global markdownlint-cli
+npm install --global markdownlint-cli@0.49.1
 ```
+
+CI compares the number of findings with `.markdownlint-budget`. A different
+release can add rules and change that number. `just lint` shows the findings
+but does not fail on them, so compare the count with the budget yourself.
 
 Run all local pre-submission checks:
 
