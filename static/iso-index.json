@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-13T04:04:23.297Z",
+  "generatedAt": "2026-11-14T05:28:48.244Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 366,
+  "count": 372,
   "categories": [
     {
       "id": "live-isos",
@@ -2490,6 +2490,86 @@
           "modified": "2026-03-27T10:45:01.959284680Z",
           "arch": "aarch64",
           "latest": true
+        }
+      ]
+    },
+    {
+      "id": "tromso",
+      "label": "Tromsø",
+      "blurb": "Aurora KDE Plasma 6 — built from source on freedesktop-sdk with BuildStream.",
+      "icon": "🌌",
+      "order": 4,
+      "checksums": null,
+      "isos": [
+        {
+          "category": "tromso",
+          "name": "tromso-live-latest",
+          "path": "tromso/tromso-live-latest.iso",
+          "url": "https://download.tunaos.org/tromso/tromso-live-latest.iso",
+          "size": 9461497856,
+          "modified": "2026-11-13T11:38:36.558930388Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "tromso",
+          "name": "tromso-live-20261113-09aed9c-43414836567-1",
+          "path": "tromso/tromso-live-20261113-09aed9c-43414836567-1.iso",
+          "url": "https://download.tunaos.org/tromso/tromso-live-20261113-09aed9c-43414836567-1.iso",
+          "size": 9461497856,
+          "modified": "2026-11-13T11:38:36.558930388Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "tromso",
+          "name": "tromso-live-20261113-af82668-43396827877-1",
+          "path": "tromso/tromso-live-20261113-af82668-43396827877-1.iso",
+          "url": "https://download.tunaos.org/tromso/tromso-live-20261113-af82668-43396827877-1.iso",
+          "size": 9461497856,
+          "modified": "2026-11-13T09:25:36.638443764Z",
+          "arch": "",
+          "latest": false
+        }
+      ]
+    },
+    {
+      "id": "xfce-linux",
+      "label": "XFCE Linux",
+      "blurb": "Lightweight XFCE Wayland desktop — built from source on freedesktop-sdk.",
+      "icon": "🖥️",
+      "order": 5,
+      "checksums": null,
+      "isos": [
+        {
+          "category": "xfce-linux",
+          "name": "xfce-linux-live-latest",
+          "path": "xfce-linux/xfce-linux-live-latest.iso",
+          "url": "https://download.tunaos.org/xfce-linux/xfce-linux-live-latest.iso",
+          "size": 6561439744,
+          "modified": "2026-11-13T07:43:17.920894196Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "xfce-linux",
+          "name": "xfce-linux-live-20261113-e077aa4",
+          "path": "xfce-linux/xfce-linux-live-20261113-e077aa4.iso",
+          "url": "https://download.tunaos.org/xfce-linux/xfce-linux-live-20261113-e077aa4.iso",
+          "size": 6561439744,
+          "modified": "2026-11-13T07:43:17.920894196Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "xfce-linux",
+          "name": "xfce-linux-live-20261113-2395bad",
+          "path": "xfce-linux/xfce-linux-live-20261113-2395bad.iso",
+          "url": "https://download.tunaos.org/xfce-linux/xfce-linux-live-20261113-2395bad.iso",
+          "size": 6561439744,
+          "modified": "2026-11-13T07:35:53.444824091Z",
+          "arch": "",
+          "latest": false
         }
       ]
     },
