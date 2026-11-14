@@ -175,6 +175,12 @@ const sidebars: SidebarsConfig = {
         {type: 'category', label: 'Quickcast', link: {type: 'doc', id: 'quickcast/index'}, items: []},
       ],
     },
+    {
+      type: 'category',
+      label: 'Site operations',
+      collapsed: true,
+      items: ['site-architecture'],
+    },
     {type: 'html', value: '<div class="sidebar-section-label">Community</div>', defaultStyle: true},
     'community',
     'sync-org-docs-guide',
