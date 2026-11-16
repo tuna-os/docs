@@ -46,6 +46,18 @@ function sanitizeHtml(content) {
   c = c.replace(/<picture>[\s\S]*?<img\s[^>]*alt="([^"]*)"[^>]*>[\s\S]*?<\/picture>/gi, '![]');
   // Remove align attributes on divs that confuse MDX
   c = c.replace(/<div\s+align="[^"]*">/gi, '<div>');
+  // A link whose destination holds a `<placeholder>` host, such as
+  // `[the address](https://corral.<tailnet>.ts.net)`, is correct GFM and a
+  // dead link on GitHub too. The escape below turns `<tailnet>` into an entity
+  // that Markdown decodes straight back into the URL, and Docusaurus then fails
+  // the whole build with "Can't parse URL". There is no real target to link,
+  // so keep the text and show the destination as code, which MDX leaves alone.
+  c = onProse(c, (s) =>
+    s.replace(
+      /\[([^\]\n]*)\]\(((?:https?|ftp):\/\/[^()\s<>]*<[^<>\s]+>[^()\s]*)\)/g,
+      '$1 (`$2`)',
+    ),
+  );
   // Remove HTML comments that contain markdown (breaks MDX)
   c = onProse(c, (s) => s.replace(/<!--[\s\S]*?-->/g, ''));
 
