@@ -57,9 +57,25 @@ npm dependencies, builds the **whole site**, installs Wrangler 4, then runs
 secrets. Cloudflare Workers Builds also publishes on pushes to `main`, as
 described in the [repository README](https://github.com/tuna-os/docs#deployment).
 
-Application publishers use `GITHUB_TOKEN` for their GHCR upload and
-`FLATPAK_INDEX_TOKEN` for the cross-repository index commit. The latter needs
-Contents read/write access scoped to `tuna-os/docs`.
+Application publishers use `GITHUB_TOKEN` for their GHCR upload. For the
+cross-repository index commit, they pass the org secret
+`FLATPAK_INDEX_DEPLOY_KEY` to the shared `publish-flatpak-index` action. That
+secret is the private half of a write deploy key on `tuna-os/docs`. Its scope
+is one repository, Git contents read and write over SSH, and no GitHub API
+access. It cannot open or merge pull requests, change settings, or read another
+repository.
+
+`FLATPAK_INDEX_TOKEN` is a legacy token and the action reads it only when no
+key is set. The central builder in this repository still uses it. Issue #483
+tracks its removal.
+
+Each index commit that the shared action makes ends with `Source-Repository`,
+`Source-Workflow` and `Source-Run` trailers. To find the run that changed the
+index, use this command:
+
+```bash
+git log --format='%h %(trailers:key=Source-Run,valueonly)' -- static/flatpak/index/static
+```
 
 GitHub [suppresses workflow runs](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow#triggering-a-workflow-from-a-workflow)
 for pushes made with the repository's own `GITHUB_TOKEN`. If the index commit has no deploy run, check which token made it.
