@@ -34,6 +34,7 @@ import {
   markUnparseable,
   unwrapMdxCodeBlocks,
   rejectExpressions,
+  rejectUnlistedElements,
   withFormatMd,
   slugify,
   listOrgRepos,
@@ -278,7 +279,7 @@ test('leaves an already self-closed void tag alone', () => {
 });
 
 test('self-closes every void element', () => {
-  for (const tag of ['br', 'hr', 'input', 'meta', 'link', 'source']) {
+  for (const tag of ['br', 'hr', 'input', 'source']) {
     assert.match(sanitizeHtml(`<${tag}>\n`), new RegExp(`<${tag} />`), `${tag} not closed`);
   }
 });
@@ -292,6 +293,24 @@ test('does not treat a shell placeholder as a tag', () => {
   // `corral ct create <name> --image <img>` lives in a fenced block.
   const src = '```\ncorral ct create <name> --image <img>\n```\n';
   assert.equal(sanitizeHtml(src), src);
+});
+
+test('escapes an element that acts on the page instead of marking up text', () => {
+  // Each of these is live in a built page: a framed document with the site's
+  // origin, a new base for every relative URL, a redirect, a foreign
+  // stylesheet, a plugin document.
+  const sources = [
+    '<iframe srcdoc="x"></iframe>\n',
+    '<base href="https://example.com/">\n',
+    '<meta http-equiv="refresh" content="0;url=https://example.com/">\n',
+    '<link rel="stylesheet" href="https://example.com/x.css">\n',
+    '<embed src="https://example.com/x.html" type="text/html">\n',
+  ];
+  for (const src of sources) {
+    const out = sanitizeHtml(src);
+    assert.ok(!out.includes('<'), out);
+    assert.equal(out, src.replace(/</g, '&lt;'));
+  }
 });
 
 // ── fixRelativeLinks ──────────────────────────────────────────────────────────
@@ -748,6 +767,87 @@ asyncTest('markUnparseable marks a page that hides MDX in an mdx-code-block fenc
   assert.equal(marked, 1, 'only the mdx-code-block page should be downgraded');
   assert.ok(readFileSync(smuggled, 'utf8').includes('mdx:\n  format: md\n'));
   assert.ok(!readFileSync(ordinary, 'utf8').includes('format: md'));
+});
+
+// Writes a page the way the sync does (sanitizeHtml, then front matter), runs
+// markUnparseable on it and returns what is on disk afterwards.
+async function syncedPage(source) {
+  const dir = mkdtempSync(join(tmpdir(), 'mdx-guard-'));
+  const path = join(dir, 'page.md');
+  writeFileSync(path, subFrontmatter('Page', 1) + sanitizeHtml(source));
+  const marked = await markUnparseable([path]);
+  return {marked, page: readFileSync(path, 'utf8')};
+}
+
+asyncTest('markUnparseable marks an expression between two code spans that hold comment markers', async () => {
+  // `<!--` and `-->` inside code spans are code to the parser, so the text
+  // between them is prose and the expression in it compiles. A guard that
+  // removes `<!-- … -->` from the text first never sees that expression.
+  const inline = await syncedPage('Write `<!--` to open. {process.env} Close with `-->`.\n');
+  assert.equal(inline.marked, 1);
+  assert.ok(inline.page.includes('mdx:\n  format: md\n'), inline.page);
+  const fenced = await syncedPage('```html\n<!--\n```\n\n{process.env}\n\n```html\n-->\n```\n');
+  assert.equal(fenced.marked, 1);
+  assert.ok(fenced.page.includes('mdx:\n  format: md\n'), fenced.page);
+});
+
+asyncTest('markUnparseable leaves no tag in a page whose markup sanitizeHtml read as code', async () => {
+  // Each source closes or opens code in a way CommonMark accepts and the
+  // sanitizer's patterns do not, so sanitizeHtml escapes nothing after it. The
+  // parser reads the markup as markup; the page must not keep it.
+  const script = '<script>document.title = 1</script>';
+  const sources = {
+    'closing fence with trailing spaces': '```\ncode\n```  \n\n' + script + '\n\n```\n',
+    'indented closing fence': '```\ncode\n   ```\n\n' + script + '\n\n```\n',
+    'tilde fence closed by a longer run': '~~~\ncode\n~~~~\n\n' + script + '\n\n~~~\n',
+    'four-backtick fence around a three-backtick line': '````\n```\n````\n\n' + script + '\n\n```\nx\n```\n',
+    'backtick in the info string': 'text\n\n``` a`b\n' + script + '\n\n```\nend\n',
+    'double-backtick code span': 'a `` x ` y `` ' + script + ' ` z\n',
+    'escaped backticks': 'a \\` ' + script + ' \\` b\n',
+  };
+  for (const [name, source] of Object.entries(sources)) {
+    const {marked, page} = await syncedPage(source);
+    assert.equal(marked, 1, name);
+    assert.ok(page.includes('mdx:\n  format: md\n'), name);
+    assert.ok(!page.slice(page.indexOf('\n---\n')).includes('<'), `${name}: ${page}`);
+    assert.ok(page.includes('&lt;script>'), name);
+  }
+});
+
+asyncTest('markUnparseable keeps a page that uses only listed elements and real code', async () => {
+  const {marked, page} = await syncedPage(
+    '<details>\n<summary>More</summary>\n\nText with <kbd>Ctrl</kbd> and <img src="https://example.com/a.png">.\n\n</details>\n\n' +
+      '<!-- a comment -->\n\n```html\n<script>alert(1)</script>\n<!-- {process.env} -->\n```\n\nUse `<script>` and `{braces}` in code.\n',
+  );
+  assert.equal(marked, 0, page);
+  assert.ok(page.includes('<details>') && page.includes('<script>alert(1)</script>'), page);
+});
+
+asyncTest('markUnparseable reads a directive the way the build does and keeps the page', async () => {
+  // The build parses `:name` as a directive. Its attributes are not a JSX
+  // attribute list, and `{key=value}` after it is not an expression.
+  const {marked, page} = await syncedPage('Ratio 3:x, done :tada: and :kbd[Ctrl]{key=value}.\n\n:::note\n\nBody\n\n:::\n');
+  assert.equal(marked, 0, page);
+});
+
+asyncTest('rejectUnlistedElements reads the element name from the tree in both formats', async () => {
+  const {compile} = await import('@mdx-js/mdx');
+  const rejects = async (body, format) => {
+    try {
+      await compile(body, {format, remarkPlugins: [rejectUnlistedElements]});
+      return false;
+    } catch {
+      return true;
+    }
+  };
+  assert.ok(await rejects('<script>x</script>\n', 'mdx'));
+  assert.ok(await rejects('Text <iframe></iframe> text\n', 'mdx'));
+  // A JSX name is case-sensitive: `IMG` is a component, not the `img` element.
+  assert.ok(await rejects('<IMG />\n', 'mdx'));
+  assert.ok(!(await rejects('<details>\n<summary>x</summary>\n\nBody\n\n</details>\n', 'mdx')));
+  assert.ok(await rejects('<ScRiPt>x</ScRiPt>\n', 'md'));
+  assert.ok(await rejects('Text <base href="https://example.com/"> text\n', 'md'));
+  assert.ok(!(await rejects('<div>\n<img src="a.png">\n</div>\n\n`<script>`\n', 'md')));
 });
 
 asyncTest('unwrapMdxCodeBlocks strips only the mdx-code-block fence', () => {

@@ -82,7 +82,7 @@ function sanitizeHtml(content) {
     // against whatever closes next — the error names </details>, several
     // lines away from the actual cause.
     s = s.replace(
-      /<(img|br|hr|input|meta|link|source|col|area|base|embed|track|wbr)\b([^>]*?)\s*\/?>/gi,
+      /<(img|br|hr|input|source|col|area|track|wbr)\b([^>]*?)\s*\/?>/gi,
       (_, tag, attrs) => `<${tag}${attrs.trimEnd()} />`,
     );
     // Anything else after `<` is text. A synced README never means JSX, so
@@ -99,11 +99,18 @@ function sanitizeHtml(content) {
 }
 
 // The HTML elements a synced README may use and MDX renders as HTML.
+//
+// An element is here because it marks up text or shows media. One that acts on
+// the page is not: `iframe` (its `srcdoc` document has the site's origin),
+// `base` (moves every relative URL, script chunks included, to another origin),
+// `meta` (`http-equiv="refresh"`), `link` (a foreign stylesheet) and `embed`.
+// A README that names one of those gets the text of the tag, like any other
+// tag outside this list.
 const HTML_ELEMENTS = new Set([
-  'a', 'abbr', 'area', 'audio', 'b', 'base', 'embed', 'link', 'meta', 'track', 'blockquote', 'br', 'caption', 'center', 'cite',
+  'a', 'abbr', 'area', 'audio', 'b', 'track', 'blockquote', 'br', 'caption', 'center', 'cite',
   'code', 'col', 'colgroup', 'dd', 'del', 'details', 'dfn', 'div', 'dl', 'dt',
   'em', 'figcaption', 'figure', 'font', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-  'hr', 'i', 'iframe', 'img', 'input', 'ins', 'kbd', 'li', 'mark', 'ol', 'p',
+  'hr', 'i', 'img', 'input', 'ins', 'kbd', 'li', 'mark', 'ol', 'p',
   'picture', 'pre', 'q', 's', 'samp', 'small', 'source', 'span', 'strong',
   'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead',
   'tr', 'u', 'ul', 'var', 'video', 'wbr',
@@ -317,6 +324,7 @@ async function readmeIndex(content, {repo, branch, label, position, slug, status
 }
 
 export {
+  HTML_ELEMENTS,
   readmeIndex,
   sanitizeHtml,
   fixRelativeLinks,
