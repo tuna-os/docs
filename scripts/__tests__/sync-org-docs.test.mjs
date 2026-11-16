@@ -177,6 +177,17 @@ test('escapes the placeholders that broke ten consecutive sync runs (#359)', () 
   assert.match(sanitizeHtml('run it on <your> machine\n'), /&lt;your>/);
 });
 
+test('turns a link with a placeholder host into text plus code (corral deployment-modes, #742)', () => {
+  // Docusaurus fails the build on "Can't parse URL https://corral.<tailnet>.ts.net",
+  // which kept the daily sync red from 2026-11-08.
+  assert.equal(
+    sanitizeHtml('Open [the MagicDNS address](https://corral.<tailnet>.ts.net) now.\n'),
+    'Open the MagicDNS address (`https://corral.<tailnet>.ts.net`) now.\n',
+  );
+  const real = 'See [docs](https://example.com/a?b=1) and `[x](https://a.<b>.c)`.\n';
+  assert.equal(sanitizeHtml(real), real);
+});
+
 test('escapes a < that cannot start a tag (paperwm: <<, <-)', () => {
   assert.equal(sanitizeHtml('Use Super+<< to move, a <- b\n'), 'Use Super+&lt;&lt; to move, a &lt;- b\n');
 });
