@@ -208,7 +208,10 @@ def close_if_recovered(repo, app_id, token):
 
 
 def main():
-    token = os.environ.get("ISSUE_TOKEN")
+    # Take the token out of the environment before anything is started. Every
+    # child process inherits os.environ, and `flatpak run` starts the sandbox
+    # from it, so a launched application would otherwise read the token.
+    token = os.environ.pop("ISSUE_TOKEN", None)
     run_url = os.environ.get("RUN_URL", "(no run URL provided)")
     file_issues = os.environ.get("FILE_ISSUES") == "true"
 

@@ -14,6 +14,8 @@ module) rather than depending on any shared conftest.py, since this repo
 has no tests/ directory on main yet to share one with.
 """
 import importlib.util
+import os
+import subprocess
 import sys
 from pathlib import Path
 from unittest.mock import patch
@@ -164,6 +166,33 @@ def _run_main(mod, apps, monkeypatch, env=None):
     except SystemExit as e:
         return e.code
     return None
+
+
+def test_main_keeps_the_issue_token_out_of_every_child_process(mod, monkeypatch):
+    # `flatpak run` starts the sandbox from the caller's environment, so an
+    # application launched by this script reads whatever its children inherit.
+    # The token is for the GitHub API calls of the script itself.
+    apps = [{"id": "org.tunaos.foo", "name": "tuna-os/foo"}]
+    child_envs = []
+
+    def fake_run(cmd, **kwargs):
+        child_envs.append(dict(kwargs.get("env") or os.environ))
+        return subprocess.CompletedProcess(cmd, 0, stdout="", stderr="")
+
+    monkeypatch.setattr(mod, "EXPECTED_APPS", apps)
+    monkeypatch.setattr(mod.subprocess, "run", fake_run)
+    monkeypatch.setenv("ISSUE_TOKEN", "tok")
+    monkeypatch.setenv("FILE_ISSUES", "true")
+    with patch.object(mod, "close_if_recovered") as close:
+        with pytest.raises(SystemExit) as exit_info:
+            mod.main()
+
+    assert exit_info.value.code == 0
+    # Two remote-add calls, one install, one launch.
+    assert len(child_envs) == 4
+    assert all("ISSUE_TOKEN" not in env for env in child_envs)
+    # The script still has the token for its own API calls.
+    close.assert_called_once_with("tuna-os/foo", "org.tunaos.foo", "tok")
 
 
 def test_main_exits_zero_when_everything_passes(mod, monkeypatch):
