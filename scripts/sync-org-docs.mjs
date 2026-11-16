@@ -15,6 +15,7 @@ import {existsSync, readFileSync, readdirSync, writeFileSync, mkdirSync, rmSync}
 import {dirname, join} from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import {
+  HTML_ELEMENTS,
   sanitizeHtml,
   fixRelativeLinks,
   onProse,
@@ -721,8 +722,10 @@ function unwrapMdxCodeBlocks(content) {
 // upstream README is free to contain anything GitHub renders, and one page MDX
 // cannot parse fails the whole site build: every synced update then waits
 // until someone teaches the sanitizer the new shape. As CommonMark the page
-// builds, and only its raw HTML is lost (it shows as text). The warning names
-// the page so the sanitizer can learn the shape later.
+// builds. Raw HTML is live in that format, so the page is compiled once more
+// as CommonMark with the element allowlist, and one that fails has every `<`
+// escaped. The warning names the page so the sanitizer can learn the shape
+// later.
 //
 // The body is run through unwrapMdxCodeBlocks first, because Docusaurus does
 // the same before it compiles. Without that, a ```mdx-code-block fence hid its
@@ -732,24 +735,57 @@ function unwrapMdxCodeBlocks(content) {
 // what the build sees, or an upstream README smuggles executable MDX past it.
 async function markUnparseable(paths, compile = null) {
   const mdxCompile = compile ?? (await import('@mdx-js/mdx')).compile;
-  const remarkGfm = compile ? null : (await import('remark-gfm')).default;
+  const options = compile
+    ? {}
+    : {remarkPlugins: [...(await buildSyntax()), rejectExpressions, rejectUnlistedElements]};
   let marked = 0;
   for (const path of paths) {
     const content = readFileSync(path, 'utf8');
     const fm = content.match(/^---\n[\s\S]*?\n---\n/);
     if (!fm || /\nmdx:\n  format: md\n/.test(fm[0])) continue;
+    const body = unwrapMdxCodeBlocks(content.slice(fm[0].length));
+    let reason;
     try {
-      // Mirror the site build's preprocessing: unwrap mdx-code-block fences,
-      // then drop HTML comments as markdown.mdx1Compat.comments reads them.
-      const body = unwrapMdxCodeBlocks(content.slice(fm[0].length)).replace(/<!--[\s\S]*?-->/g, '');
-      await mdxCompile(body, remarkGfm ? {remarkPlugins: [remarkGfm, rejectExpressions]} : {});
+      await mdxCompile(body, options);
+      continue;
     } catch (e) {
-      writeFileSync(path, withFormatMd(content));
-      marked++;
-      console.warn(`  ⚠️  ${path} is not valid MDX (${String(e.message).split('\n')[0]}); built as CommonMark`);
+      reason = String(e.message).split('\n')[0];
     }
+    // CommonMark renders raw HTML as it is written, so a page that leaves MDX
+    // needs the element check again in the format it will be built in. A page
+    // that fails it keeps its text and loses every tag.
+    let page = content;
+    try {
+      await mdxCompile(body, {...options, format: 'md'});
+    } catch (e) {
+      page = fm[0] + content.slice(fm[0].length).replace(/</g, '&lt;');
+      reason += `; ${String(e.message).split('\n')[0]}, so every \`<\` is escaped`;
+    }
+    writeFileSync(path, withFormatMd(page));
+    marked++;
+    console.warn(`  ⚠️  ${path} is not valid MDX (${reason}); built as CommonMark`);
   }
   return marked;
+}
+
+// buildSyntax returns the syntax extensions the site build parses a page with.
+//
+// The guard is only as good as its agreement with the build about what is
+// code, what is a comment and what is markup. A regular expression that removed
+// `<!-- … -->` from the page first did not agree: a comment marker inside a
+// code span is code to the parser, so the text between two such spans was
+// hidden from the guard and still compiled by the build. Parse with the build's
+// own extensions instead, loaded from the loader that builds the site, in the
+// order that loader applies them.
+async function buildSyntax() {
+  const {createRequire} = await import('node:module');
+  const loader = createRequire(createRequire(import.meta.url).resolve('@docusaurus/mdx-loader'));
+  const plugin = async (name) => (await import(pathToFileURL(loader.resolve(name)).href)).default;
+  return [
+    await plugin('remark-directive'),
+    await plugin('remark-gfm'),
+    await plugin('@slorber/remark-comment'),
+  ];
 }
 
 // rejectExpressions fails the compile on a JavaScript expression or import.
@@ -773,9 +809,46 @@ function findExpression(node) {
   if ((node.type === 'mdxFlowExpression' || node.type === 'mdxTextExpression') && node.value.trim()) {
     return `{${node.value.trim()}}`;
   }
-  for (const attr of node.attributes ?? []) {
+  // A directive node (`:name[label]{key=value}`) keeps its attributes in an
+  // object. Only a JSX element has the list this loop reads.
+  for (const attr of Array.isArray(node.attributes) ? node.attributes : []) {
     if (attr.type === 'mdxJsxExpressionAttribute') return `{${attr.value}}`;
     if (attr.value?.type === 'mdxJsxAttributeValueExpression') return `{${attr.value.value}}`;
+  }
+  return null;
+}
+
+// rejectUnlistedElements fails a page whose parsed tree holds an HTML element
+// outside the allowlist.
+//
+// sanitizeHtml escapes those elements in the text, but it finds code blocks
+// and code spans with regular expressions, and the parser does not always
+// agree with it: a fence closed by a line with trailing spaces is closed for
+// the parser and still open for the regular expression. Markup after such a
+// line reached the build as written. The tree is what the build renders, so
+// the allowlist is checked there too.
+function rejectUnlistedElements() {
+  return (tree) => {
+    const walk = (node) => {
+      const found = findUnlistedElement(node);
+      if (found) throw new Error(`Element \`<${found}>\` is outside the allowlist`);
+      node.children?.forEach(walk);
+    };
+    walk(tree);
+  };
+}
+
+function findUnlistedElement(node) {
+  // MDX: a tag is a JSX element. JSX names are case-sensitive, and a name that
+  // is not a listed HTML element is a component the site does not define.
+  if (node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement') {
+    return node.name === null || HTML_ELEMENTS.has(node.name) ? null : node.name;
+  }
+  // CommonMark: raw HTML is one opaque node that the build parses as HTML.
+  if (node.type === 'html') {
+    for (const [, name] of node.value.matchAll(/<\/?([a-zA-Z][^\s/>]*)/g)) {
+      if (!HTML_ELEMENTS.has(name.toLowerCase())) return name;
+    }
   }
   return null;
 }
@@ -802,6 +875,7 @@ export {
   markUnparseable,
   unwrapMdxCodeBlocks,
   rejectExpressions,
+  rejectUnlistedElements,
   withFormatMd,
   slugify,
   listOrgRepos,
