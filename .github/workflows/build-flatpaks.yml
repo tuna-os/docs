@@ -138,11 +138,25 @@ jobs:
       - name: Publish validated index
         working-directory: index-repo
         env:
+          FLATPAK_INDEX_DEPLOY_KEY: ${{ secrets.FLATPAK_INDEX_DEPLOY_KEY }}
           FLATPAK_INDEX_TOKEN: ${{ secrets.FLATPAK_INDEX_TOKEN }}
         run: |
-          # Use header-based auth so the token never lands in the remote URL.
-          git config --local http.extraheader \
-            "AUTHORIZATION: basic $(printf 'x-access-token:%s' "$FLATPAK_INDEX_TOKEN" | base64 -w0)"
+          # Push with the docs write deploy key, which the "required checks
+          # (deploy-key publisher bypass)" ruleset lets through. The legacy
+          # token is the fallback; neither ever lands in the remote URL.
+          if [ -n "$FLATPAK_INDEX_DEPLOY_KEY" ]; then
+            key="$RUNNER_TEMP/index-deploy-key"
+            known="$RUNNER_TEMP/github-known-hosts"
+            (umask 077 && printf '%s\n' "$FLATPAK_INDEX_DEPLOY_KEY" > "$key")
+            # GitHub's published SSH host key, pinned rather than scanned.
+            echo "github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl" > "$known"
+            git config --local core.sshCommand \
+              "ssh -i $key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$known"
+            git remote set-url --push origin git@github.com:tuna-os/docs.git
+          else
+            git config --local http.extraheader \
+              "AUTHORIZATION: basic $(printf 'x-access-token:%s' "$FLATPAK_INDEX_TOKEN" | base64 -w0)"
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
