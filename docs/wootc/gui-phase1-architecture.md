@@ -1,5 +1,5 @@
 ---
-sidebar_position: 22
+sidebar_position: 25
 title: "gui phase1 architecture"
 ---
 
@@ -89,6 +89,8 @@ idempotent so a failed install can be re-run without manual cleanup:
 7. Write vault.json (unchanged).
 8. Configure BCD: create "wootc" firmware entry pointing at shim, arm
    **one-shot** `bootsequence` only. No `displayorder` change.
+   The arm is the last change before reboot (#286). Until then the entry
+   is in no boot order. `app/boot_txn.go` has the journal and the rollback.
 9. Write `state.json` → `armed`.
 
 ### 2.3 Lifecycle state machine + deployer contract

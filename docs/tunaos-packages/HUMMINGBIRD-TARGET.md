@@ -1,5 +1,5 @@
 ---
-sidebar_position: 8
+sidebar_position: 11
 title: "HUMMINGBIRD TARGET"
 ---
 
@@ -111,7 +111,9 @@ plan.
 
 `scripts/check-hummingbird-installability.py` runs daily
 (`.github/workflows/hummingbird-installability.yml`), advisory, per arch.
-It becomes a gate the day a desktop first resolves.
+It becomes a gate the day a desktop first resolves. Since §10 it is also
+a *ratchet* on the publish path. This does not wait for that day:
+a wave may fix blockers, but it may not add one.
 
 ## 4. What utah-packages does differently, and what this repository took
 
@@ -161,20 +163,22 @@ the case.
   1.48`, `gsettings-desktop-schemas >= 51.alpha`) will surface as
   `preflight-buildrequires.py` findings and become build-order entries.
   That is the expected cost, and it is the cost utah paid.
-- **The three GLIBC_2.44 packages must be rebuilt**, and the prefix should
-  be re-verified for any other symbol-version leak (`GLIBC_2.44`,
-  `OPENSSL_3.5`+, `libpython3.15`).  The checker's `needer_from:
-  published` column is the list.
-- **Name masking is the overlay's inherent cost.**  dnf's priority filter
-  drops a *name* from every lower-priority repo, so a Fedora 44 package that
-  needs a library the base ships under the same name at a different soname
-  cannot resolve: F44 `fontforge` wants `libxml2.so.2`, the base's
-  `libxml2` 2.15 provides `.so.16`, and F44's `libxml2` is never a
-  candidate.  The old `includepkgs` list handled four such names by keeping
-  them *out*; the answer per package is the same either way -- exclude the
-  Fedora name or build the package against the base -- and it is a
-  per-package decision, not a global list.  utah-packages carries exactly
-  this list as `HB_EXCLUDE` (libicu, ruby-default-gems, gpgme, qt6-qtbase).
+- **Published GLIBC_2.44 leaks must be rebuilt.**  The static installability
+  check covers both every desktop closure and `retained_packages`: served
+  output that is intentionally outside those closures but still needs repair.
+  `pandoc-cli` is retained until its full runtime closure (`ghc-pandoc` and
+  `pandoc-cli`) is rebuilt in the Fedora 44 root; otherwise removing it from
+  a desktop build order leaves the incompatible artifact published (#557).
+  The checker's `needer_from: published` column identifies these leaks.
+- **The overlay uses name masks for packages.**  DNF's priority filter drops a *name*
+  from every lower-priority repo. A Fedora 44 package can need a library that
+  the base ships with another soname. The package does not resolve that
+  library. F44 `fontforge` wants `libxml2.so.2`. The base `libxml2` 2.15
+  provides `.so.16`, so F44's `libxml2` is never a candidate.
+  The list had four names. It kept those names *out*. For each package, choose
+  one action: exclude the Fedora name or build against the base. This is a
+  per-package decision, not a global list. utah-packages carries this list as
+  `HB_EXCLUDE` (libicu, ruby-default-gems, gpgme, qt6-qtbase).
 - **Upstream sources.**  utah's direct-source model (fetch the release
   tarball, verify SHA-512, fail closed) is the Hummingbird project's own
   freshness model; this repository still builds from dist-git lookaside.
@@ -314,3 +318,175 @@ The rule that falls out: **a BuildRequires-only tool whose Fedora 44 copy
 cannot install beside the target's own packages is built here from the
 Rawhide reference.**  `tests/test_the_first_fedora44_legs_taught_two_buildroot_gaps.py`
 pins both fixes to the files the chain reads.
+
+## 9. Buildroot consumes utah-packages (2026-10-08)
+
+§8 put utah in the gap engine and the installability walk. The mock
+buildroot still resolved utah-shipped BuildRequires from Fedora 44.
+The build order already excludes what utah ships. Measure-target-gap
+counts 421 utah binaries as had. The rest of the rebuild was all in
+the root, not in the plan.
+
+`mock/hummingbird-ci*.cfg` now has `[utah]` at priority 11. It sits
+between the base (10) and our prefix (12, was 11). Utah wins ties, so
+a stale factory RPM can never hide the build utah did. The repo is
+`file:///run/utah-repo/repository`. Utah has no HTTP baseurl.
+
+`scripts/materialize-consumed-repo.py` streams the pinned OCI digest.
+It fails closed. With `--allow-empty` it writes valid empty repodata
+for arches utah does not publish (aarch64 today).
+
+The chain-band workflow caches the tree by pin and mounts it for
+the build. Its cache action is commit-pinned to a published release:
+an unresolved action reference stops every fan-out shard before the
+package build begins. `build-chain.sh` stops a hummingbird config
+without the tree. `tests/test_materialize_consumed_repo.py` covers the
+extractor, the fail-closed paths, and the empty-repo shape.
+
+## 10. Why the leak outlived the root move, and what now stops it (2026-10-24)
+
+§2 named three packages that leaked from the Rawhide buildroot:
+`gstreamer1-plugins-good`, `libavutil-free`, and `zvbi`.
+They need `libm.so.6(GLIBC_2.44)`, which Hummingbird's glibc 2.43 cannot provide.
+§6 said they "must be rebuilt". The root moved to Fedora 44 on 2026-09-02.
+The measurement on 2026-10-24 used the live indexes
+(`repo.tunaos.org/hummingbird/20251124-x86_64`, 8822 binaries, utah
+`38da5357…` consumed). The prefix still answers:
+
+| capability | needed by, in OUR prefix | class |
+|---|---|---|
+| `libm.so.6(GLIBC_2.44)(64bit)` | `libavutil-free`, `libavfilter-free`, `zvbi` | `abi_symbol` |
+| `libjsoncpp.so.26()(64bit)` | `openxr-libs`, `waybar` | `abi_soname` |
+
+The root was never the whole mechanism. `build-chain.sh --served-nvrs`
+treats the published index as the durable record of what exists (#544).
+A package from the wrong root has exactly the NVR that the correct root
+would produce: the same `%{VERSION}` and `.bfin1`.
+Every leg since the move computed the NVR, found it served, and skipped it.
+Seven weeks of waves could not fix these packages; no step requested a rebuild.
+
+Three changes, each small, together a closed loop:
+
+1. **The checker classifies each unresolved capability.**
+   `scripts/check-hummingbird-installability.py` assigns one of three labels.
+   With `abi_symbol`, the index serves the library but not the symbol version.
+   With `abi_soname`, it serves another major version.
+   With `absent`, nothing serves the name at any version: build that package.
+
+   A rebuild can fix the first two classes, but only for a package from our prefix.
+   `--print-rebuild-names` prints exactly those packages.
+2. **Do not skip served packages that the target cannot install.**
+   `scripts/list-served-nvrs.py --except-names` withholds these names and all binaries from the same source.
+   The skip uses the first binary that `rpmspec -q` names for the spec.
+   Thus, to withhold `libavutil-free` alone changes nothing if the index still serves `ffmpeg-free`.
+   Both chain callers (`publish-build-chain-rpms.yml`, `chain-band.yml`) pass this option for hummingbird.
+
+   On the live index, 5 names withhold 146 NVRs out of 14353 served.
+   These are the ffmpeg, zvbi, openxr and waybar source builds.
+   Everything else still skips, so legs stay incremental.
+3. **A wave that regresses installability does not publish.**
+   `publish-rpm-wave.sh` signs and indexes the tree.
+   Before `rclone sync` makes it the served index, the publisher checks the exact bytes about to ship.
+   It walks `file://…/repo` with `--fail-on-regression` against `docs/hummingbird-installability-baseline.json`.
+   A wave may fix blockers, but it may not add one.
+
+   A desktop that resolved must continue to resolve.
+   The contract compares sets, not counts.
+
+This is not a green gate: no desktop resolves yet.
+The x86_64 counts on this date were: gnome 24 unresolved, kde 24, niri 22, tuna 17, xfce 14, cosmic 10.
+A requirement for green would refuse every wave forever.
+The baseline records this distance per architecture, with provenance for the indexes used in the measurement.
+When the target's own repository changes, refresh it deliberately:
+
+```
+scripts/check-hummingbird-installability.py --arch x86_64 --write-baseline
+scripts/check-hummingbird-installability.py --arch aarch64 --write-baseline
+```
+
+and commit the diff — a baseline that refreshes itself is a gate that
+ratchets nothing.
+
+## 11. Native Tuna power and sound closure (2026-10-31)
+
+Image run `tunaOS/41213419115`, job `124573016129`, stops in the
+Tuna package transaction. Both the native and Utah TuneD 2.28 packages
+need `(rpm-ostree if bootc)`. Commit
+`552f03c0fd7fbd62e62d7a1e89c4fa7bb01a291f` in Fedora TuneD dist-git gives
+the reason. The bootloader plugin uses rpm-ostree to manage kernel arguments
+when the native bootc API `loader-entries set-options-for-source` is not
+available. The dependency is real. Do not remove it, fabricate a capability
+or drop the power-profile provider.
+
+The Tuna roots now explicitly include the real `rpm-ostree` source.
+At commit `daf6d42a0d7c21f60fb770ddd56bd7bf7cab442c`, the Fedora dist-git
+spec builds rpm-ostree 2026.3 with its vendored Rust source. The
+existing native chain imports and builds it in the Fedora 44 plus
+Hummingbird root. The image gets no Fedora binary repository.
+The generated order includes its runtime closure and the real BuildRequires
+order. It does not assume that a rich dependency became a build root.
+
+Tuna Desktop beta.2 release 2 built in run `41213268502`, but the
+publisher refused to sync: `libcanberra` was a new unresolved Tuna
+requirement. A signature on the unpublished tree did not publish it. The
+baseline stays unchanged. The roots now explicitly include libcanberra and
+use the Fedora dist-git spec for it, not the EL10 replacement rules in
+`src/deps/libcanberra`. The inspected upstream commit was
+`58ede5c70d9f6885b0d5e24695fc50c258ebe5c8`.
+The generated chain builds libvorbis before libcanberra and keeps its
+real ALSA, GStreamer and PulseAudio backend packages.
+
+The source change is not a package or image qualification receipt.
+Native build CI must produce the real RPMs. Then the signed publisher must
+pass its unchanged regression gate and serve the new index.
+Only then may tunaOS advance its package pin and run image and runtime
+qualification. Existing image PR `tunaOS#3885` retains its manual merge
+fence and the observed beta.1 pin until that served evidence exists.
+
+## 12. The current utah-packages pin closes Tuna (2026-11-14)
+
+The section 11 blockers came from a stale input, not from a missing build.
+The consumed utah-packages pin was `sha256:9cb66729…`, set on 2026-09-02.
+Renovate moves the tunaOS pin, but nothing moved this one.
+
+On 2026-11-14, the pin on tunaOS main is `sha256:fc3c1f34…`. That
+repository has 2615 binary packages, against 421 in the old pin. Utah
+builds them in Hummingbird's own root. They include these packages:
+
+- `rpm-ostree-2026.3-1.hum1.bfin`, the provider for TuneD's
+  `(rpm-ostree if bootc)`.
+- `tuned-2.28.0-1.hum1.bfin` and `tuned-ppd`.
+- `libcanberra-0.30-1.hum1.bfin` with its backends, and `libvorbis`.
+- `iw`, which `tuned` needs.
+
+Run `41213268502` measured the old pin, so its gate saw no `libcanberra`.
+With the new pin, `scripts/check-hummingbird-installability.py --arch x86_64`
+resolves the `tuna` set with zero blockers. dnf gives the same answer.
+
+We used the pinned `bootc-os` base (`sha256:00006de2…`), with
+`tunaos-hummingbird` at priority 5 and utah at priority 4. In it, dnf
+resolves the full Tuna list of tunaOS. That transaction installs 527
+packages. `rpm-ostree`, `libcanberra` and `tuned` come from utah.
+
+This change moves the pin to the tunaOS pin and records a new x86_64
+baseline. The aarch64 baseline does not change, because utah has no
+aarch64 build. The new pin also adds three blockers outside Tuna:
+
+- `gnome`: `ppp`, which `NetworkManager-ppp` from the target needs.
+- `kde` and `niri`: `libIex-3_2.so.31` and `libOpenEXR-3_2.so.31`, which
+  `kf6-kimageformats` from utah needs.
+
+These blockers do not come from our packages. The baseline records them,
+and also each blocker that the new pin closes. A wave that adds a new
+blocker still fails the gate.
+
+This change does not regenerate the build order. A regeneration against
+the Rawhide of today adds `glibc`, `openssl`, `llvm` and `python3.15`.
+That drift is for the scheduled drift review, not for this change. The
+order keeps `rpm-ostree` and `libcanberra` as the fallback if utah drops
+them. Images prefer utah at priority 4.
+
+To publish Tuna Desktop beta.3, dispatch `publish-build-chain-rpms.yml`
+with `cells=hummingbird-x86_64` and `tiers=local-00`. That leg builds
+only `src/hummingbird/tuna-desktop`. Its buildroot uses the new utah pin,
+and its gate compares against the new baseline.

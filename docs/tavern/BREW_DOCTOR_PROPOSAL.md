@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 7
 title: "BREW DOCTOR PROPOSAL"
 ---
 
@@ -16,6 +16,7 @@ installation for problems in the configuration, unlinked formulae,
 old packages and environments that Homebrew does not support.
 
 The goals for Brew Doctor in Tavern are:
+
 1. **Accurate diagnosis**: Show each Homebrew diagnostic with a clear severity.
    The severity comes from the support tier.
 2. **Safe fixes**: Let users run safe, verified fixes from the user interface.
@@ -35,7 +36,9 @@ BrewUI, the Homebrew client for macOS, has a tested model for Homebrew
 diagnostics.
 
 ### UI States and Layout
+
 BrewUI shows the diagnostic in one of four states:
+
 - **Progress**: A progress indicator shows while `brew doctor` runs.
 - **Healthy**: A message tells the user that Homebrew found no problems.
 - **Issues**: A list shows the issues in groups by severity. A detail pane
@@ -44,15 +47,19 @@ BrewUI shows the diagnostic in one of four states:
   previous report.
 
 ### Two Runs
+
 BrewUI runs `brew doctor` two times:
+
 1. **Structured run** (`brew doctor --json`): This run gives the issues,
    the support tiers and the data for each fix.
 2. **Transcript run** (plain `brew doctor`): This run keeps all of the output,
    stderr messages too. The raw view and the clipboard use this output.
 
 ### The Rule for Fixes
+
 BrewUI has a strict limit for automatic fixes. A fix can run from the app
 only when all of these conditions are true:
+
 - The fix has only one command.
 - The command starts with `brew`.
 - The app can get the argv arguments from the command.
@@ -62,6 +69,7 @@ A fix that needs administrator access (`needsAdmin`) or has many steps is
 text that the user can copy. The app marks it "runs in Terminal".
 
 ### A Hash to Keep the Selection
+
 The selection must not move or clear when the user fixes an issue or when the
 list loads again. For this, BrewUI makes a hash of the title and the body of
 each issue. The detail view follows the selected hash through each new check.
@@ -73,6 +81,7 @@ each issue. The detail view follows the selected hash through each new check.
 Tavern has the first phases of this proposal:
 
 ### Phase 1: Doctor Page That Only Reads (PR #176)
+
 - **UI**: Added `TavernDoctorPage` (`src/doctor_page.py`, `src/doctor-page.blp`).
   It has Run Check and Run Again controls, a spinner and status labels.
   It also has a card for each issue that expands, and a raw output view.
@@ -86,6 +95,7 @@ Tavern has the first phases of this proposal:
 - **Clipboard**: One click copies the full output of the diagnostic.
 
 ### Homebrew 7 Structured Output (PR #177)
+
 - **JSON**: Added `parse_json_report()` for the Homebrew 7 `Finding#to_h`
   format, the support tiers (Tier 1 to 3, unsupported) and the fix data.
 - **Fallback for Homebrew 6**: Kept the regex parser for text. Tavern uses it
@@ -102,8 +112,10 @@ Tavern has the first phases of this proposal:
 The next phase adds safe fixes to the task pipeline of Tavern.
 
 ### Allowlist for Fix Commands
+
 A **Fix** button shows only for a fix command that matches one of these
 patterns:
+
 - `brew link <formula>`
 - `brew link --overwrite <formula>`
 - `brew unlink <formula>`
@@ -114,6 +126,7 @@ A fix with semicolons, shell pipes, subshells, variable expansion or `sudo`
 stays as text. It does not run.
 
 ### Task Queue
+
 - Fix actions go to `TaskManager.submit_command()`.
 - A key for each fix (for example `doctor-fix:<command>`) stops two runs of
   the same fix at the same time.
@@ -121,6 +134,7 @@ stays as text. It does not run.
 - Each row shows a spinner. The row shows an error message if the fix fails.
 
 ### New Check After a Fix, and Selection Tracking
+
 - After a fix task is successful, Tavern starts a new doctor check in the
   background (`force=True`).
 - Each issue gets a SHA-256 `content_id` from its title and body.
@@ -133,15 +147,18 @@ stays as text. It does not run.
 ## 5. Phase 3: Other Parity Items and Export
 
 ### Report Export
+
 - Add an **Export Report** action. It saves the diagnostic summary and the
   raw output to a local text file.
 - Remove private local paths, or ask the user to confirm before the save.
 
 ### Task Panel
+
 - Give maintenance tasks and doctor tasks an origin tag. The Task Panel can
   then sort and filter them together with package installs and upgrades.
 
 ### Terminal Instructions for Admin Tasks
+
 - Some fixes need more permissions, for example to change system directories.
   For these, show a command card with a copy button.
 - The card tells the user to run the command in a terminal.

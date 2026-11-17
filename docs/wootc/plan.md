@@ -1,25 +1,25 @@
 ---
-sidebar_position: 31
+sidebar_position: 35
 title: "plan"
 ---
 
 *Generated 2026-07-17 from the GUI/Phase-1 worktree session.*
 
 > **Historical note (2026-07-23):** both lanes below merged to `main`.
-> The VHDX exploration concluded in a RAW `root.disk` (8136ae6) and the
-> full three-phase E2E is green (see docs/milestones.md). Read this file
+> The VHDX exploration concluded in a RAW `root.disk` (8136ae6), and the
+> E2E of all three phases passes (see docs/milestones.md). Read this file
 > as a snapshot of remaining SPEC coverage, not as live lane status.
 
 ## State at handoff
 
-Two active lanes running in parallel across 3 E2E hosts:
+At handoff, two lanes ran in parallel across 3 E2E hosts:
 
 | Lane | Branch | Host(s) | Status |
 |------|--------|---------|--------|
 | GUI / Phase 1 | `worktree-gui-phase1` | runner-b (local), runner-a | 5 commits ahead of main; LUKS backend dirty |
 | VHDX / Phase 2 | `explore/vhdx-root-disk` | runner-c, runner-b | Deployer reaches fisherman; partitioning NBD race fixed; OCI export fix landed |
 
-Fisherman fork (`tuna-os/fisherman`) is unarchived, `dev` branch carries both fixes.
+The maintainer unarchived the Fisherman fork (`tuna-os/fisherman`). Its `dev` branch carries both fixes.
 Communication between tracks: `handoff.md` (untracked, live file in main checkout).
 
 ---
@@ -31,6 +31,7 @@ Communication between tracks: `handoff.md` (untracked, live file in main checkou
 **Backend**: plumbed but uncommitted. `InstallConfig.Encryption` (`"none"` | `"tpm2-luks"` | `"luks-passphrase"`) + `LuksPassphrase` field. grub.cfg forwards `wootc.luks=<type>` on the cmdline.
 
 **Remaining**:
+
 - [x] Commit the dirty `app/app.go` + `app/installer_windows.go` changes (→ `4543d8b`)
 - [ ] Add `Encryption` field to non-Windows `getSystemInfo()` stub
 - [x] GUI: encryption section on launchpad (radio: None / TPM auto-unlock / Passphrase) — **source written, not yet built**
@@ -49,9 +50,10 @@ The LUKS test fails because `dist/` still has the old bundle.
 
 ### 2. NTFS defrag preflight (§3.6)
 
-**What**: Before creating root.vhdx, check the NTFS volume's fragmentation level. If heavily fragmented, offer to defrag so VHDX extent allocation is reasonably contiguous (performance, not correctness).
+**What**: Before you create root.vhdx, check the NTFS volume's fragmentation level. If heavily fragmented, offer to defrag so VHDX extent allocation is reasonably contiguous (performance, not correctness).
 
 **Implementation**:
+
 - [ ] Add `defragRecommended` to `SystemInfo` — call `defrag C: /A /V` and parse "You should defragment this volume"
 - [ ] GUI: warning banner on launchpad when defrag recommended, with a "Defrag now" button
 - [ ] Backend: `DefragDrive()` exported method — runs `defrag C: /U /V` (admin)
@@ -68,10 +70,11 @@ The LUKS test fails because `dist/` still has the old bundle.
 **Already done**: `app/vm_windows.go` (QEMU launcher), `app/vm_other.go` (stubs), "Boot in VM" button on control panel.
 
 **Remaining**:
+
 - [ ] Bundle QEMU for Windows (or document that the user needs to install it)
 - [ ] Detect WHPX: check `Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-All`
 - [ ] Detect HAXM: check for Intel HAXM driver
-- [ ] `GetVMCapability()` returns richer info: which accelerator, QEMU path, whether QEMU is bundled
+- [ ] `GetVMCapability()` returns richer info: which accelerator, QEMU path, whether QEMU comes with wootc
 - [ ] "Boot in VM" button shows disabled state with reason when no accelerator
 - [ ] If QEMU not found, offer download link or bundle path
 
@@ -84,6 +87,7 @@ The LUKS test fails because `dist/` still has the old bundle.
 **What**: Offer systemd-boot as an alternative bootloader in the UI. However, systemd-boot won't chain-load under Secure Boot for EL targets (shim only signs GRUB). For a non-Secure-Boot or UKI future, add it as a hidden/advanced option.
 
 **Implementation**:
+
 - [ ] Add `"systemd-boot"` to the bootloader dropdown (hidden behind an "Advanced" toggle)
 - [ ] Backend: stage `systemd-bootx64.efi` on ESP, write loader entries for the deployer
 - [ ] Document: Secure Boot limitation — this path only works with SB off or a future signed UKI
@@ -94,11 +98,12 @@ The LUKS test fails because `dist/` still has the old bundle.
 
 ### 5. polkit policy hookup
 
-**What**: The migration helpers (`wootc-convert-dir`, `wootc-apply-look`) currently use `pkexec` with a generic prompt. Ship a polkit policy so the prompt reads "TunaOS migration needs to…" instead of a raw binary path.
+**What**: The migration helpers (`wootc-convert-dir`, `wootc-apply-look`) now use `pkexec` with a generic prompt. Ship a polkit policy so the prompt reads "TunaOS migration needs to…" instead of a raw binary path.
 
 **Already done**: `org.tunaos.wootc.policy` file exists.
 
 **Remaining**:
+
 - [ ] Wire it into deploy.sh's migration install block (copy the .policy to /usr/share/polkit-1/actions/)
 - [ ] Verify `pkaction --action-id org.tunaos.wootc.convert-dir` works post-install
 - [ ] Test: run `wootc-convert-dir` as non-root, confirm the polkit dialog text
@@ -112,6 +117,7 @@ The LUKS test fails because `dist/` still has the old bundle.
 **What**: Run the Playwright mock suite on every PR, and the CDP (real wootc.exe) suite on a Windows self-hosted runner.
 
 **Implementation**:
+
 - [ ] GitHub Actions workflow: `tests/gui/` Playwright suite (Linux, 9 tests)
 - [ ] GitHub Actions workflow: `tests/gui/cdp.spec.js` on Windows self-hosted runner (gated by `WOOTC_CDP_URL`)
 - [ ] Upload screenshots as artifacts
@@ -160,6 +166,6 @@ Cleanup (7) ─── do first
 2. **Finish LUKS** — GUI wiring + test (unblocks "all SPEC" claim)
 3. **NTFS defrag preflight** — quick win, no dependencies
 4. **polkit hookup** — quick win, already have the .policy file
-5. **VM modes detection** — needs QEMU-bundling decision first
+5. **VM modes detection** — needs a decision about the QEMU bundle first
 6. **systemd-boot** — low priority, hidden option
 7. **CI** — benefits from all tests green

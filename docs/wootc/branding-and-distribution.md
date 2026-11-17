@@ -1,12 +1,12 @@
 ---
-sidebar_position: 13
+sidebar_position: 14
 title: "branding and distribution"
 ---
 
 Status: SPEC + phase-1 implementation (2026-08-22). Owner intent (maintainer,
 verbatim requirements): automated GitHub releases; an un-branded **wootc**
 build plus branded builds for **TunaOS**, the **Bluefin family**
-(bluefin / dakota / bluefin-lts), **Aurora**, and **Bazzite**; branding via a
+(bluefin / dakota), **Aurora**, and **Bazzite**; branding via a
 per-brand config + assets override; branded installers do not use the wootc
 name (wootc is the generic project name only); branded distributions
 pre-bundle or pre-download the bootc image **on Windows**, because the
@@ -27,24 +27,31 @@ masking that.
   the release is cut from the exact SHA the nightly proved. No green nightly,
   no auto release.
 
-**Assets.** Every release ships, for each brand (see §2):
+**Assets.** Every release ships the native setup packages for each eligible
+brand (see §2), plus the shared boot set:
 
 | Asset | Source |
 |---|---|
-| `<Product>-Setup.exe` (e.g. `wootc.exe`, `TunaOS-Installer.exe`) | per-brand app build |
+| `<Product>-Installer-Setup.exe` (e.g. `wootc-Installer-Setup.exe`, `TunaOS-Installer-Setup.exe`) | WinUI setup workflow, per-brand native package |
+| `wootc-legacy.exe` | one-release Wails compatibility build |
 | `deployer-vmlinuz`, `deployer-initramfs.img` | deployer image build (`payload/deployer/Containerfile`) |
 | `shimx64.efi`, `grubx64.efi` | signed Fedora chain (same extraction the E2E uses) |
 | `wubildr.efi` | wubildr build |
-| `SHA256SUMS` | sha256sum over every asset above |
+| `SHA256SUMS` | sha256sum over the boot and legacy assets |
+| `native-SHA256SUMS` | sha256sum over the attached setup assets |
 
-This closes the today-gap where `deployerBaseURL()` points at release assets
-that have never existed (documented on #196): after the first automated
-release, a plain online install works with zero pre-staging.
+The setup package embeds the native shell, its protected Go engine, and the
+public key for release verification. This cut-over release keeps the Wails
+executable only as a compatibility fallback, not a second branded installer.
 
-**Branded downloads.** Each branded exe embeds its own
-`deployerBaseURL`-compatible layout expectation; boot artifacts are shared
-across brands (the deployer is brand-neutral), so one artifact set + one
-SHA256SUMS serves all brand exes on the same release.
+`deployerBaseURL()` previously pointed at release assets that did not exist
+(documented on #196). The first automated release closes that gap. A plain
+online install then works without advance setup.
+
+**Branded downloads.** Each branded setup has its own layout expectation for
+`deployerBaseURL`. All brands share the boot artifacts because the deployer is
+brand-neutral. One artifact set serves all setup packages from the same release.
+A native manifest covers that set.
 
 ## 2. Branding
 
@@ -59,7 +66,7 @@ from the first pixel with no sidecar file.
 branding/
   wootc/brand.json          # generic (default; current strings)
   tunaos/brand.json
-  bluefin/brand.json        # covers bluefin, dakota, bluefin-lts via catalog
+  bluefin/brand.json        # covers bluefin, dakota via catalog
   aurora/brand.json
   bazzite/brand.json
   <brand>/logo.svg          # the REAL mark (→ LogoDataURI); emoji only
@@ -103,7 +110,7 @@ fields:
 
 - `catalog`: image ids from `app/data/images.json` this brand offers.
   Empty = full catalog (wootc generic). The Bluefin brand lists
-  `["bluefin", "dakota", "bluefin-lts"]`.
+  `["bluefin", "dakota"]`. Its default is `bluefin`.
 - `defaultImage`: pre-selected card.
 - `hideCustomImage`: branded builds hide the custom-OCI field regardless of
   support policy.
@@ -158,7 +165,7 @@ bug. Today's dependencies and their fates:
 | dracut `rd.neednet=1` + initqueue/**online** hook | see "starting without a network" below |
 
 **The bundle: an OCI layout on NTFS.** `C:\wootc\bundle\oci\` — `index.json`
-+ `blobs/sha256/*`. Chosen over a containers-storage store because it is
+- `blobs/sha256/*`. Chosen over a containers-storage store because it is
 plain files (FAT/NTFS-safe: no xattrs, no whiteouts, no overlay driver
 mismatch — exactly the #196 items 1-2 trap), digest-addressed (verification
 is inherent), and already a fisherman-supported source.
@@ -184,6 +191,7 @@ pinning, #196 item on `BundleInfo.Digest`).
 **Deployer consumption.** Early in deploy.sh, after the NTFS mount: if
 `/mnt/ntfs/wootc/bundle/oci/index.json` exists and its ref matches
 `bundleRef`, set `WOOTC_BUNDLE=/mnt/ntfs/wootc/bundle/oci` and
+
 - fisherman recipe uses `--source-imgref oci:$WOOTC_BUNDLE`;
 - backend + btrfs probes read the image config from the layout (no podman
   pull, no network);

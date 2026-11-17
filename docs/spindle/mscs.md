@@ -1,5 +1,5 @@
 ---
-sidebar_position: 16
+sidebar_position: 22
 title: "mscs"
 mdx:
   format: md
@@ -22,13 +22,14 @@ what became of each proposal.
 | [MSC2246](https://github.com/matrix-org/matrix-spec-proposals/pull/2246) | Asynchronous media uploads | v1.7 | — | `spec_wave2.rs` | POST /media/v1/create mints the mxc:// URI; PUT /media/v3/upload/{server}/{id} fills it once; a reader in between gets 504 M_NOT_YET_UPLOADED. Reservations lapse after 24 hours, twenty live per user. |
 | [MSC2409](https://github.com/matrix-org/matrix-spec-proposals/pull/2409) | Appservices receive to-device messages and ephemeral events | v1.13 | — | `appservice_transactions.rs` |  |
 | [MSC2659](https://github.com/matrix-org/matrix-spec-proposals/pull/2659) | Appservice ping | v1.7 | — | `appservice_ping.rs` |  |
-| [MSC2666](https://github.com/matrix-org/matrix-spec-proposals/pull/2666) | Mutual rooms | — | — | `spec_wave2.rs` | GET /_matrix/client/v1/mutual_rooms, one page: the rooms both users are joined to. |
+| [MSC2666](https://github.com/matrix-org/matrix-spec-proposals/pull/2666) | Mutual rooms | v1.19 | — | `spec_wave2.rs` | GET /_matrix/client/v1/mutual_rooms, one page: the rooms both users are joined to. |
 | [MSC2675](https://github.com/matrix-org/matrix-spec-proposals/pull/2675) | Serverside aggregations of relations | v1.3 | — | `aggregation.rs` |  |
 | [MSC2965](https://github.com/matrix-org/matrix-spec-proposals/pull/2965) | OAuth 2.0 server metadata discovery | v1.15 | — | `delegated_auth.rs` | Served at /v1/auth_metadata and the unstable path js-sdk asks first. |
 | [MSC2967](https://github.com/matrix-org/matrix-spec-proposals/pull/2967) | OAuth 2.0 API scopes | v1.15 | — | `delegated_auth.rs` | The v1.15 scope spelling and the draft one older clients still send. |
 | [MSC3083](https://github.com/matrix-org/matrix-spec-proposals/pull/3083) | Restricted room joins | v1.2 | — | `restricted_join.rs` |  |
 | [MSC3202](https://github.com/matrix-org/matrix-spec-proposals/pull/3202) | Appservice E2EE: device masquerading and OTK counts | — | — | `appservice_transactions.rs`, `appservice_key_proxy.rs` |  |
 | [MSC3266](https://github.com/matrix-org/matrix-spec-proposals/pull/3266) | Room summary API | v1.15 | `im.nheko.summary` | `room_summary.rs` |  |
+| [MSC3706](https://github.com/matrix-org/matrix-spec-proposals/pull/3706) | Faster joins: partial state on send_join | v1.6 | — | `federation_faster_join.rs`, `federation_join.rs`, `partial_state_fill.rs`, `SPEC.md`, `divergence.md` | Both sides, in the stable spelling Synapse speaks (omit_members, members_omitted, servers_in_room); there is no /versions flag, it is federation-only. As resident: the member events a joiner can resync are left out (heroes kept in an unnamed room), the auth chain does not repeat the state, and servers_in_room names the servers with joined members. As joiner: every remote join asks for it; a partial room is usable at once, its events reach servers_in_room, incoming events take an omitted member's slot from their own auth events, /members and /joined_members and membership changes aimed at remote users wait, and a background resync from /state_ids and /state fills every snapshot from the join on, surviving a restart. Events placed while partial are not re-judged after the resync (docs/divergence.md). |
 | [MSC3757](https://github.com/matrix-org/matrix-spec-proposals/pull/3757) | Restricting state keys to a user's own ID | — | — | `rtc_membership.rs` | What lets m.rtc.member state keys carry the sender. Closed unmerged upstream; MatrixRTC clients send the underscore-prefixed keys regardless, so the rule stays served. |
 | [MSC3771](https://github.com/matrix-org/matrix-spec-proposals/pull/3771) | Read receipts for threads | v1.4 | — | `thread_badges.rs` | A receipt names its thread (`main` or a root) and is echoed with it; a threaded receipt moves only its thread's count. |
 | [MSC3773](https://github.com/matrix-org/matrix-spec-proposals/pull/3773) | Notifications for threads | v1.4 | — | `thread_badges.rs` | With `unread_thread_notifications` on the timeline filter, /sync counts the main timeline apart and each thread under `unread_thread_notifications`. Counts are what the reader's push rules notify for. |
@@ -39,14 +40,15 @@ what became of each proposal.
 | [MSC3861](https://github.com/matrix-org/matrix-spec-proposals/pull/3861) | Delegated authentication (OIDC) | v1.15 | — | `delegated_auth.rs`, `delegated-auth.md` | Both ways: the built-in provider, or a real MAS through the /_synapse/mas/* surface. |
 | [MSC3881](https://github.com/matrix-org/matrix-spec-proposals/pull/3881) | Remotely toggling push notifications for another client | — | `org.matrix.msc3881` | `pushers.rs` | Pushers carry `enabled` and `device_id` under the unstable and the plain names; a disabled pusher stays registered and receives nothing. |
 | [MSC3882](https://github.com/matrix-org/matrix-spec-proposals/pull/3882) | Login tokens for a second client | v1.7 | — | `spec_wave2.rs` | POST /login/get_token behind the password UIA stage, m.login.token on /login, the m.get_login_token capability and the get_login_token flow flag. Tokens are single use and live two minutes. |
-| [MSC3916](https://github.com/matrix-org/matrix-spec-proposals/pull/3916) | Authenticated media | v1.11 | — | `federation_media.rs`, `media.rs`, `spec_wave2.rs` |  |
+| [MSC3916](https://github.com/matrix-org/matrix-spec-proposals/pull/3916) | Authenticated media | v1.11 | `org.matrix.msc3916.stable` | `federation_media.rs`, `media.rs`, `spec_wave2.rs` |  |
 | [MSC3983](https://github.com/matrix-org/matrix-spec-proposals/pull/3983) | Appservices claim one-time keys | — | — | `appservice_key_proxy.rs` |  |
 | [MSC3984](https://github.com/matrix-org/matrix-spec-proposals/pull/3984) | Appservices answer key queries | — | — | `appservice_key_proxy.rs` |  |
-| [MSC4075](https://github.com/matrix-org/matrix-spec-proposals/pull/4075) | MatrixRTC ringing (m.rtc.notification) | — | — | `push_delivery.rs`, `rate-limits.md` | Rings are pushed and budgeted per sender (rings_per_minute). |
-| [MSC4140](https://github.com/matrix-org/matrix-spec-proposals/pull/4140) | Delayed events | — | `org.matrix.msc4140` | `delayed_events.rs`, `rtc_membership.rs` | All four endpoints, plus the token-less `/delayed_events/{delay_id}/{action}` form lk-jwt-service uses for delegated leave events; the dead-man's switch MatrixRTC members rely on. |
+| [MSC4075](https://github.com/matrix-org/matrix-spec-proposals/pull/4075) | MatrixRTC invites and notifications (m.rtc.invite) | — | — | `push_delivery.rs`, `push_rules.rs`, `rate-limits.md` | Rings are pushed through the MSC's own default rules (`.org.matrix.msc4075.rule.rtc.invite_for_me` / `invite_for_room`, ring sound, ahead of the mention rules, as Synapse ships them), merged into rulesets stored before they existed, and budgeted per sender (rings_per_minute). The event keeps its unstable name `org.matrix.msc4075.rtc.notification`, which is what the MSC's own unstable table says. |
+| [MSC4140](https://github.com/matrix-org/matrix-spec-proposals/pull/4140) | Delayed events | merged, unreleased | `org.matrix.msc4140`, `org.matrix.msc4140.stable` | `delayed_events.rs`, `delayed_events_merged.rs`, `rtc_membership.rs` | Merged 2026-10-06 and served in the merged shape -- the `delayed_event` scheduling endpoint with its transaction, lookup by id after a delay has finished, 409 for an action that contradicts how it ended, both limits as `m.delayed_events` capabilities, 429 with Retry-After, the delay id in the sent event's `unsigned`, stable paths and `org.matrix.msc4140.stable` -- beside the unstable query-parameter form shipping clients call, and the token-less `/delayed_events/{delay_id}/{action}` older lk-jwt-service releases use. |
 | [MSC4143](https://github.com/matrix-org/matrix-spec-proposals/pull/4143) | MatrixRTC transport discovery (rtc/transports) | — | `org.matrix.msc4143` | `rtc_transports.rs`, `matrix-rtc.md` | Served under the unstable and the v1 path; answers an empty list when no backend is configured. Absorbed MSC4158. |
-| [MSC4186](https://github.com/matrix-org/matrix-spec-proposals/pull/4186) | Simplified sliding sync | merged, unreleased | `org.matrix.simplified_msc3575` | `sliding_sync.rs` | Lists, room subscriptions, required_state, timeline, extensions, invites in the list, heroes and bump_stamp. What Element X syncs with. |
+| [MSC4186](https://github.com/matrix-org/matrix-spec-proposals/pull/4186) | Simplified sliding sync | merged, unreleased | `org.matrix.simplified_msc3575` | `sliding_sync.rs` | Lists, room subscriptions, required_state, timeline, extensions, invites in the list, heroes and bump_stamp. Connections per device and conn_id, held in memory and written behind to the store so a restart keeps them (seven days idle): sticky parameters, rooms sent once in full and then as deltas, widened required_state and expanded timelines, extension lists/rooms scoping; an unknown or expired pos is M_UNKNOWN_POS. List filters are not applied. What Element X syncs with. |
 | [MSC4190](https://github.com/matrix-org/matrix-spec-proposals/pull/4190) | Appservice device management | merged, unreleased | — | `appservice_devices.rs`, `appservice_transactions.rs` |  |
+| [MSC4191](https://github.com/matrix-org/matrix-spec-proposals/pull/4191) | Account management deep-linking | — | — | `account_management.rs` | Built-in provider only: account_management_uri and account_management_actions_supported in the discovery document and auth_metadata, both the session_*and device_* action spellings, ?action= and device_id= deep links. Under delegation the provider (MAS) advertises its own. |
 | [MSC4195](https://github.com/matrix-org/matrix-spec-proposals/pull/4195) | LiveKit as a MatrixRTC transport | — | — | `livekit_jwt.rs`, `matrix-rtc.md` | The built-in JWT service, or the OpenID round trip for an external one. |
 | [MSC4196](https://github.com/matrix-org/matrix-spec-proposals/pull/4196) | Push rule defaults | — | — | `push_rules.rs` |  |
 | [MSC4222](https://github.com/matrix-org/matrix-spec-proposals/pull/4222) | use_state_after in sync | v1.16 | `org.matrix.msc4222.use_state_after` | `state_after.rs`, `sync.rs` |  |
@@ -54,31 +56,27 @@ what became of each proposal.
 | [MSC4289](https://github.com/matrix-org/matrix-spec-proposals/pull/4289) | Explicitly privilege room creators (room v12) | v1.16 | — | `restricted_join.rs`, `rtc_membership.rs` |  |
 | [MSC4291](https://github.com/matrix-org/matrix-spec-proposals/pull/4291) | Room IDs as hashes of the create event (room v12) | v1.16 | — | `rooms.rs`, `federation_remote_join.rs` |  |
 | [MSC4309](https://github.com/matrix-org/matrix-spec-proposals/pull/4309) | Finalised delayed events in sync | — | — | `delayed_events.rs` | The org.matrix.msc4140.finalised_delayed_events sync section. |
-| [MSC4310](https://github.com/matrix-org/matrix-spec-proposals/pull/4310) | MatrixRTC ring decline | — | — | `push_delivery.rs` |  |
 | [MSC4354](https://github.com/matrix-org/matrix-spec-proposals/pull/4354) | Sticky events | — | `org.matrix.msc4354` | `sticky_events.rs`, `rtc_membership.rs` | sticky_duration_ms on a send, the key on the event, the sync section, federation push, and delayed+sticky. What MatrixRTC 2.0 makes m.rtc.member. |
+| [MSC4502](https://github.com/matrix-org/matrix-spec-proposals/pull/4502) | Targeted and unrestricted room member queries (is_joined) | — | `io.element.msc4502` | `appservice_proxy.rs` | `/rooms/{roomId}/is_joined` for one user or one server, to an application service whose registration grants the scope (`io.element.msc4502.scopes`) and to server admins. What lk-jwt-service 0.7 and later ask before minting a token. |
+| [MSC4512](https://github.com/matrix-org/matrix-spec-proposals/pull/4512) | Delegating parts of the C-S and S-S API to application services | — | — | `appservice_proxy.rs` | A registration's `io.element.msc4512.proxy_prefix` / `proxy_url` claims a prefix under both APIs; requests there are authenticated and forwarded with the hs_token and X-Matrix-User-Identifier / X-Matrix-Origin, and `fed_proxy` sends the federation twin under the service's own prefix. How lk-jwt-service runs as the homeserver's sidecar and serves MSC4195's homeserver endpoints. |
 
 ## Partly served
 
 | MSC | Title | Stable in | Flags | Evidence | Notes |
 |---|---|---|---|---|---|
+| [MSC3995](https://github.com/matrix-org/matrix-spec-proposals/pull/3995) | Linearized Matrix | — | — | `SPEC.md`, `divergence.md`, `hub_mode.rs`, `hub_mode_disabled.rs`, `hub_mode_test.go` | The design basis: an append-only per-room log with materialized state and no state resolution on the hot path. Hub mode is opt-in per room, behind the off-by-default hub-mode Cargo feature, between Spindle peers in ordinary room versions: compare-and-append ordering, signed chain attestations and checkpoints, epochs with co-signed handoff and backup failover that cannot truncate an attested prefix, and equivocation and truncation proofs. Complement proves ordinary-PDU interop with Synapse both during normal operation and while a Spindle backup replaces a failed Spindle hub. The MSC's own LM room version and relayed delivery are designed only. The MSC is a WIP that has not changed since 2023, and its IETF draft has expired. SPEC.md section 12 records where Spindle follows each text. |
 | [MSC4108](https://github.com/matrix-org/matrix-spec-proposals/pull/4108) | QR code login | — | `org.matrix.msc4108` | `rendezvous.rs` | Homeserver rendezvous mailbox with conditional reads and writes, expiry and capacity limits. OAuth device authorization and secure-channel negotiation belong to MAS and the clients; their integrated rehearsal is pending. |
+| [MSC4284](https://github.com/matrix-org/matrix-spec-proposals/pull/4284) | Policy servers | v1.18 | — | `policy_servers.rs`, `policy-servers.md` | Homeserver participation: stable m.room.policy and MSC4284 compatibility, outbound signing, room-key verification, and live-event soft failure. Spindle consumes an external service; it does not host a policy service or publish policy-service discovery. |
 
 ## Planned
 
 | MSC | Title | Stable in | Flags | Evidence | Notes |
 |---|---|---|---|---|---|
-| [MSC3706](https://github.com/matrix-org/matrix-spec-proposals/pull/3706) | Faster joins: partial state on send_join | — | — | `SPEC.md` | SPEC.md says partial-state joins are accepted on the receive side; nothing in the code or the tests handles members_omitted, so this ledger does not repeat the claim. Not started. |
-| [MSC4038](https://github.com/matrix-org/matrix-spec-proposals/pull/4038) | Key backup for MLS | — | — | `SPEC.md` |  |
-| [MSC4244](https://github.com/matrix-org/matrix-spec-proposals/pull/4244) | MLS over Matrix | — | — | `SPEC.md`, `ROADMAP.md` | Milestone M6, behind a feature flag, deliberately last. The linear index is epoch order for free. |
-| [MSC4256](https://github.com/matrix-org/matrix-spec-proposals/pull/4256) | MLS mode with deterministic epochs | — | — | `SPEC.md`, `ROADMAP.md` |  |
+| [MSC4038](https://github.com/matrix-org/matrix-spec-proposals/pull/4038) | Key backup for MLS | — | — | `SPEC.md`, `mls.md` |  |
+| [MSC4244](https://github.com/matrix-org/matrix-spec-proposals/pull/4244) | RFC 9420 MLS for Matrix | — | — | `SPEC.md`, `ROADMAP.md`, `mls.md` | Milestone M6, behind a feature flag, deliberately last. The linear index is commit order for free. No-go until a stable MSC, a maintained client and hub mode (#22): docs/mls.md. |
+| [MSC4256](https://github.com/matrix-org/matrix-spec-proposals/pull/4256) | RFC 9420 MLS mode Matrix | — | — | `SPEC.md`, `ROADMAP.md`, `mls.md` |  |
 | [MSC4428](https://github.com/matrix-org/matrix-spec-proposals/pull/4428) | Hydra: stable member identifiers | — | — | `mesh-federation.md` | Named with MSC4242 as the phase-2 set; not started. |
 | [MSC4430](https://github.com/matrix-org/matrix-spec-proposals/pull/4430) | Hydra: member keys | — | — | `mesh-federation.md` | Named with MSC4242 as the phase-2 set; not started. |
-
-## Design basis
-
-| MSC | Title | Stable in | Flags | Evidence | Notes |
-|---|---|---|---|---|---|
-| [MSC3995](https://github.com/matrix-org/matrix-spec-proposals/pull/3995) | Linearized Matrix | — | — | `SPEC.md`, `divergence.md` | The design basis: an append-only per-room log with materialized state and no state resolution on the hot path. Hub mode is opt-in per room. |
 
 ## Superseded
 
@@ -86,6 +84,7 @@ what became of each proposal.
 |---|---|---|---|---|---|
 | [MSC3575](https://github.com/matrix-org/matrix-spec-proposals/pull/3575) | Sliding sync (original) | — | — | `sliding_sync.rs` | Superseded by MSC4186, which kept the org.matrix.simplified_msc3575 route prefix; that is why the route names this number. |
 | [MSC4158](https://github.com/matrix-org/matrix-spec-proposals/pull/4158) | MatrixRTC foci (earlier form) | — | — | `rtc_transports.rs` | Absorbed into MSC4143. |
+| [MSC4310](https://github.com/matrix-org/matrix-spec-proposals/pull/4310) | MatrixRTC ring decline | — | — | `push_delivery.rs` | Closed as obsolete upstream: `m.rtc.decline` is now part of MSC4075, keeping `org.matrix.msc4310.rtc.decline` as its unstable name. Still served: a decline pushes nobody. |
 
 ## Declined
 

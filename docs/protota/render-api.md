@@ -3,14 +3,14 @@ sidebar_position: 15
 title: "render api"
 ---
 
-Protota is statically hosted (GitHub Pages, `https://tuna-os.github.io/protota/`).
+Protota is a set of static files on GitHub Pages ([https://tuna-os.github.io/protota/](https://tuna-os.github.io/protota/)).
 There is **no server-side PNG endpoint**: the app renders in the browser, so a
-plain `curl` of any URL returns the HTML shell, never an image. To obtain a
-screenshot an agent must drive a headless browser (Playwright, Puppeteer, CDP)
-and screenshot the rendered page itself.
+plain `curl` of any URL returns the HTML shell, never an image. To get a
+screenshot, an agent must drive a headless browser (Playwright, Puppeteer, CDP)
+and take a screenshot of the rendered page.
 
-Two surfaces exist, both validated loudly — a bad parameter produces visible
-error text or a rejected promise, never a silently-wrong frame.
+Two surfaces exist, and both validate their input loudly. A bad parameter
+gives visible error text or a rejected promise, never a silently-wrong frame.
 
 ## 1. URL render mode
 
@@ -35,17 +35,17 @@ https://tuna-os.github.io/protota/?render=1&preset=files&width=500&height=440&th
 | `theme`  | `light` \| `dark`                   | the document's color scheme | Forces the color scheme. |
 
 `width`/`height` are the "states" lever: **Adw.Breakpoints evaluate against
-the effective dimensions** (`src/utils/breakpoints.ts`), so a screen renders
-in exactly the adaptive state it would have at that size — e.g. GNOME
-Settings' navigation split view collapses its sidebar below its
+the effective dimensions** (`src/utils/breakpoints.ts`). Thus a screen renders
+in exactly the adaptive state that it has at that size. For example, the
+navigation split view in GNOME Settings collapses its sidebar below its
 `max-width: 550sp` breakpoint.
 
 ### Readiness contract
 
-Rendering settles asynchronously (webfonts, icon CSS, custom-element
-upgrades, preset fetch). Wait for the flag before screenshotting:
+The render settles asynchronously (webfonts, icon CSS, custom-element
+upgrades, preset fetch). Wait for the flag before you take a screenshot:
 
-- `html[data-protota-ready="true"]` — the frame is settled. The same flag the
+- `html[data-protota-ready="true"]` — the frame is stable. The same flag the
   editor publishes; render mode re-publishes it after its own content paints.
 - On failure (unknown preset/screen, invalid param) the ready flag still
   fires and `#protota-render-root [data-protota-render-error]` contains
@@ -67,11 +67,11 @@ pixel-faithful (real browser rasterisation, no html2canvas approximation).
 ## 2. Programmatic API — `protota.renderScreenshot(options)`
 
 The live agent handle (`window.protota`, see `src/runtime/agentHandle.ts`) can
-capture a PNG of any screen of the **live document** without disturbing the
-editor — zoom, pan, selection, undo history, and persistence are untouched.
-The screen renders into a hidden offscreen container through the same
-renderer + breakpoint-override path the canvas uses, html2canvas rasterises
-it, and the container is removed.
+capture a PNG of any screen of the **live document**. The capture does not
+change the editor: zoom, pan, selection, undo history, and persistence stay
+the same. The screen renders into a hidden offscreen container, through the
+same renderer + breakpoint-override path that the canvas uses. Then
+html2canvas rasterises it, and the API removes the container.
 
 ```ts
 const blob = await protota.renderScreenshot({
@@ -92,20 +92,21 @@ pixels.
 `renderScreenshot` uses [html2canvas], which re-draws the DOM onto a canvas
 and does not support everything a real browser paints:
 
-- **CSS `mask-image` is unsupported** — Protota draws symbolic icons via CSS
-  masks, so icons can appear as solid boxes or go missing in captures.
+- **html2canvas does not support CSS `mask-image`**. Protota uses CSS masks
+  for symbolic icons. Thus icons can show as solid boxes, or not show.
 - Box shadows, blend modes, and some gradients are approximate.
 
-For pixel-faithful output, use the URL render mode with a real browser
-screenshot instead; `renderScreenshot` is for quick in-page feedback loops
-(an agent checking layout/breakpoint state it just built).
+For pixel-faithful output, use the URL render mode and take the screenshot in
+a real browser. `renderScreenshot` is for fast feedback loops in the page. For
+example, an agent can use it to check the layout/breakpoint state of a screen
+that it built.
 
 [html2canvas]: https://html2canvas.hertzen.com/features
 
 ## No server-side rendering — plainly
 
 `curl https://tuna-os.github.io/protota/?render=1&preset=files` returns the
-HTML shell only. Static hosting has no image endpoint and never will without
-a rendering service; a headless browser is required. Local equivalent:
+HTML shell only. A static host has no image endpoint, and never will without
+a render service. You must use a headless browser. Local equivalent:
 `npm run dev` and point the browser at
 `http://localhost:5173/protota/?render=1&…`.

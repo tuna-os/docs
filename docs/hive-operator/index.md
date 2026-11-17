@@ -19,6 +19,18 @@ the hive image version ([`docs/release.md`](https://github.com/tuna-os/hive-oper
 hive-ops CronJobs are owned by `HiveHousekeeping`, and `hive-shared-auth` is
 replaced by `SharedAuth` ([`docs/housekeeping.md`](https://github.com/tuna-os/hive-operator/blob/main/docs/housekeeping.md)).
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## Why
 
 The scripts work. What they lack is a way to *notice*. Every incident this
@@ -153,11 +165,13 @@ fleet or keeps filling a dead pool. `-1` is the sentinel.
 `hive_release_target_phase{phase}`, `hive_release_rollbacks_total`.
 
 Usage (operator):
+
 - `hive_provider_usage_ratio`, `hive_pool_used_percent{source}`, `hive_provider_reading_percent`
 - `hive_provider_{consumed,remaining,limit,burn_per_hour}`, `hive_provider_exhaustion_eta_seconds`
 - `hive_agent_usage`, `hive_usage_source_up`, `hive_rotation_plan_decisions`
 
 Usage (sidecar, `:9464/metrics`):
+
 - `hive_usage_tokens_total`, `hive_usage_cost_usd_total`
 - `hive_usage_window_{cost_usd,tokens}`
 - `hive_usage_collect_{success,duration_seconds}`, `hive_usage_unpriced_model`
@@ -180,13 +194,18 @@ make build test
 make run                  # against your current kubecontext; dashboard on :8082
 ```
 
+The samples are the live fleet's desired state, so most of them are in
+**Enforce**: applying them lets the operator write. To see only the plan, set
+`mode: Shadow` (and `rotationMode`/`livenessMode: Shadow` on each `HiveSpoke`)
+before applying.
+
 ```bash
 kubectl apply -f config/crd
 kubectl apply -f config/rbac
 kubectl apply -f config/manager
-kubectl apply -f config/samples/fleet.yaml
-kubectl apply -f config/samples/release.yaml   # HiveRelease, Shadow
-kubectl apply -f config/samples/housekeeping.yaml   # HiveHousekeeping, Shadow (docs/housekeeping.md)
+kubectl apply -f config/samples/fleet.yaml          # SharedAuth + HiveSpoke rotation/liveness Enforce; ModelLadder Shadow
+kubectl apply -f config/samples/release.yaml        # HiveRelease, Enforce (docs/release.md)
+kubectl apply -f config/samples/housekeeping.yaml   # HiveHousekeeping, Enforce (docs/housekeeping.md)
 kubectl apply -f config/usage/usagepools.yaml
 ```
 
@@ -208,28 +227,28 @@ See DESIGN.md §7 for how to classify a difference before calling it a bug.
 
 ## Roadmap
 
-1. ~~`SharedAuth` (shadow)~~ — done, now at parity with the live script.
-   Promote it to Enforce and suspend `hive-shared-auth` in one change
+1. ~~`SharedAuth`~~ — done, at parity with the live script. In Enforce since
+   #50, with `hive-shared-auth` suspended in the same change
    ([`docs/housekeeping.md`](https://github.com/tuna-os/hive-operator/blob/main/docs/housekeeping.md) step 3).
-8. ~~Housekeeping~~ — `HiveHousekeeping` owns the remaining hive-ops CronJobs
+2. ~~Housekeeping~~ — `HiveHousekeeping` owns the remaining hive-ops CronJobs
    and retires the superseded rotate/watchdog jobs.
-2. ~~`ModelLadder`~~ — done (PR #15): inventory gate, benchmark union, and
+3. ~~`ModelLadder`~~ — done (PR #15): inventory gate, benchmark union, and
    band derivation are implemented. It stays read-only by design — rotation
    consumes `Status.Effective`, `ModelLadder` itself never applies anything.
-3. ~~`Rotation` shadow controller~~ — done (PR #15): provider probes and
-   placement now run in Shadow across all three spokes. Promoting to Enforce
-   and suspending the legacy `hive-rotate*` CronJobs is tracked in
+4. ~~`Rotation` shadow controller~~ — done (PR #15): provider probes and
+   placement run in Enforce on all three spokes (#45, #46), with the legacy
+   `hive-rotate*` CronJobs suspended; see
    [`docs/rotation-promotion.md`](https://github.com/tuna-os/hive-operator/blob/main/docs/rotation-promotion.md).
-4. ~~`HiveRelease` shadow controller~~ — done: image version with canary, gate,
-   soak, rollback, blocklist and drift detection. Promote to Enforce and
-   **delete** `hive/hive-upgrade` in the same change; see
+5. ~~`HiveRelease` shadow controller~~ — done: image version with canary, gate,
+   soak, rollback, blocklist and drift detection. In Enforce since #40, which
+   deleted `hive/hive-upgrade` in the same change; see
    [`docs/release.md`](https://github.com/tuna-os/hive-operator/blob/main/docs/release.md).
-5. ~~`Watchdog`~~ — ported into the HiveSpoke controller under
+6. ~~`Watchdog`~~ — ported into the HiveSpoke controller under
    `spec.livenessMode` (Shadow): pane classification with a live-pane
    recheck, stall detection, exponential heal backoff, mismatch/effort
    repair, rotate-off through the rotation planner. Promote per spoke with
    [`docs/liveness-promotion.md`](https://github.com/tuna-os/hive-operator/blob/main/docs/liveness-promotion.md).
-6. ~~`Nudge`~~ — the budget-aware kick backstop, same field and doc.
-7. ~~`Pace`~~ — ported with rotation (branch `rotation/enforce-ready`): the
+7. ~~`Nudge`~~ — the budget-aware kick backstop, same field and doc.
+8. ~~`Pace`~~ — ported with rotation (branch `rotation/enforce-ready`): the
    hive-pace fit and the Kiro credit budget run under `rotationMode`; promote
    per spoke with [`docs/rotation-promotion.md`](https://github.com/tuna-os/hive-operator/blob/main/docs/rotation-promotion.md).

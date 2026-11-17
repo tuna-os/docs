@@ -5,6 +5,18 @@ title: "Contributing"
 
 Thank you for your interest in this project! It is part of the [TunaOS](https://tunaos.org) ecosystem.
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## Getting Started
 
 1. Fork the repo and clone it locally.
@@ -19,11 +31,13 @@ Thank you for your interest in this project! It is part of the [TunaOS](https://
 Run the fast checks used for every pull request:
 
 ```bash
+just check
 just build
-just test
 go vet ./...
 go test -tags=integration -run='Help' ./...
 ```
+
+You can format Go files with `just fmt`.
 
 If you change an example or fixture recipe, make sure that every JSON file
 still parses:
@@ -46,14 +60,40 @@ pull-request CI runs the broader smoke suite.
 - Update docs if your change affects usage.
 - Include the validation commands you ran in the PR description.
 
+## Versioning and Releases
+
+Use Conventional Commits for commits and squash-merge PR titles:
+
+- `feat:` adds a feature and bumps the minor version.
+- `fix:` fixes a bug and bumps the patch version.
+- `feat!:` or a `BREAKING CHANGE:` footer marks an incompatible change. Before
+  1.0, this bumps the minor version; from 1.0 onward, it bumps the major version.
+
+Release-please runs on pushes to `main` and opens a release PR with the
+version manifest and changelog. The first release is v0.1.0. A maintainer
+adds `docs/releases/<tag>.md` to the release PR, then merges it to create
+the tag and a draft GitHub Release. The repository must allow GitHub Actions
+to create pull requests.
+
+The release-please workflow then calls the binary and container publishers
+with that tag. These calls let the publishers run because tags created with
+`GITHUB_TOKEN` do not trigger other workflows. No personal access token is necessary.
+
+GoReleaser builds static Linux amd64/arm64 tarballs and SHA-256 checksums
+with a read-only token. A separate job verifies the checksums and release
+notes, then uploads all assets together before it makes the draft public.
+It preserves release-please's notes. Each binary reports its version with
+`tacklebox --version`.
+
+The container workflow publishes both `v0.1.0` and `0.1.0` style tags to GHCR,
+as well as the existing `latest` and commit tags.
+
+Tag pushes from maintainers also run the publishers. To test binary archives
+without a release, run `goreleaser check` and
+`goreleaser release --snapshot --clean`, or dispatch the binary workflow on a
+branch. A manual run on a tag uploads assets to that release.
+
 ## Questions?
 
 - [TunaOS Documentation](https://tunaos.org)
-- [GitHub Issues](https://github.com/tuna-os/tunaOS/issues)
-
-
-## Contribute compute — no code needed
-
-No time to write code? You can still push this project's backlog forward. A TunaOS AI-agent hive works on this repository. Lend the hive your AI subscription or API tokens, and your machine runs tasks from this project's backlog.
-
-- 🏫 [Contribute compute to the school hive](https://school.tunaos.org/contribute)
+- [GitHub Issues](https://github.com/tuna-os/tacklebox/issues)

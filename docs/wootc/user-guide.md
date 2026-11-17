@@ -1,5 +1,5 @@
 ---
-sidebar_position: 41
+sidebar_position: 46
 title: "user guide"
 ---
 
@@ -47,8 +47,11 @@ You do not need a bootable USB for this path.
 
 ## 2. Install Linux
 
-Download the installer for your distribution and run it.
-The generic app is `wootc.exe`. The Launchpad shows the plan:
+Download the generic native setup `wootc-Installer-Setup.exe`, or the
+distribution-specific setup package, and run it as Administrator. The setup
+installs the WinUI shell and protected engine. `wootc-legacy.exe` is the
+one-release Wails compatibility build; it needs WebView2 and is not the
+primary installer.
 
 ![Launchpad](https://raw.githubusercontent.com/tuna-os/wootc/main/docs/screenshots/01-launchpad.png)
 
@@ -145,18 +148,33 @@ The experimental storage plan can put Linux on an unencrypted volume while Windo
 It can use another volume or propose a new partition.
 A partition change needs a separate safety review; it does not have the same scope as a disk-file install.
 
+**Your BitLocker recovery key.** Linux uses your recovery key to open the Windows drive on each start.
+It needs the key to show your Windows folders until you convert them to Linux folders.
+The installer writes a copy to the installer folder, which only administrators can read.
+The Linux installer moves that copy into the Linux disk and erases the copy on the Windows side.
+
+At the first Linux start, Linux seals the copy to this PC with its TPM.
+A PC with no TPM uses a key that it keeps on the PC.
+A copy of the Linux disk cannot open your Windows drive on a different PC.
+When you convert the last Windows folder, Linux erases the key.
+If you delete your Linux data when you uninstall, the uninstaller erases the key too.
+
+If the sealed copy fails, for example after a TPM clear, Linux writes a message to the system log.
+Your Windows folders stay on the Windows drive.
+To show them again, save your recovery key as `/etc/wootc/bitlocker-key`, readable only by root, and restart.
+
 Linux disk encryption is a separate choice:
 
 - **TPM auto-unlock:** LUKS uses your PC's TPM to unlock the Linux disk at boot.
 - **Passphrase:** you enter a password at boot.
 - **None:** anyone with access to the disk can read its contents.
 
-**One-time MOK enrollment.** Some distributions, such as Bazzite, use their own kernel key.
+**One-time MOK enrollment.** Some distributions sign their kernel or drivers with their own key.
+Universal Blue images such as Bazzite, Bluefin and Aurora do, so Secure Boot rejects those drivers until you enroll the key.
 The installer's final screen tells you if the chosen image needs enrollment.
-The blue **MOK management** screen asks for that key's approval:
-**Enroll MOK** → **Continue** → **Yes**.
+On the blue **MOK management** screen, approve the key: **Enroll MOK** → **Continue** → **Yes**.
 Use the distribution's documented enrollment password, `universalblue`, for supported images from Universal Blue.
-Secure Boot remains on. A later key change can need another enrollment.
+Secure Boot stays on, but a later key change can need another enrollment.
 
 <a id="8-go-linux-only-phase-3"></a>
 
@@ -179,7 +197,7 @@ Keep both systems until you have verified your work and a separate backup.
 ## 9. Uninstall
 
 Open **Settings → Apps → Installed apps** and choose **TunaOS (wootc)**.
-You can also run `wootc.exe` again as Administrator and choose **Uninstall** on the Manage screen.
+You can also open the installed **TunaOS (wootc)** app as Administrator and choose **Uninstall** on the Manage screen.
 
 The uninstaller tries to:
 
@@ -204,10 +222,23 @@ Uninstall does not undo work that you made on a graduated native disk.
   Boot Windows and use a full shutdown before you retry.
 - **Stuck at the boot menu:** choose **Windows Boot Manager**.
   If Windows does not start, use the recovery instructions for that failure.
+- **Setup stopped and Windows started again:** open wootc.
+  The recovery screen shows the boot configuration that wootc reads now.
+  **Keep Windows only** removes the wootc entries from the boot order. It keeps the files, so you can try again later.
+  **Repair boot** writes the installer boot files again and sets the next restart to the installer.
+  wootc disables a button when it cannot prove that it owns the boot entries or files.
+  From a command prompt, `wootc.exe recover --inspect` shows the same report and changes nothing.
+  Each check saves its evidence in `C:\wootc\install\repair\`. Attach that folder to a bug report.
 - **An import asks you to sign in:** authenticate again in the destination app.
   Browser profile transfer and account credentials have different limits.
 - **No TPM:** review the passphrase and unencrypted choices under **Advanced**.
   An encryption choice does not remove the UEFI requirement.
+- **Setup stopped before it finished:** open wootc again.
+  It shows how the last install ended (cancelled, closed, or failed) and the last step that finished.
+  **Continue setup** keeps the checked part of the download and asks for your password again.
+  If setup stopped during a change to the startup files, wootc offers **Remove** only.
+  Remove the installation, then install again.
+  To see the same result in a terminal, run `wootc.exe recover --classify`.
 - **Windows asks to scan a drive:** a power cut or forced shutdown can leave it unclean.
   Complete the Windows check and inspect its result. Do not assume every file survived a failed shutdown.
 

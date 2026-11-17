@@ -1,5 +1,5 @@
 ---
-sidebar_position: 19
+sidebar_position: 28
 title: "releasing"
 ---
 
@@ -39,19 +39,33 @@ Either way the run then:
 
 - builds `spindle` for `x86_64-unknown-linux-gnu` and
   `aarch64-unknown-linux-gnu` from the tagged tree with `--locked`, and
-  packages each as a tarball with the licences and the README, plus a
+  packages each as a tarball with the licences, the README, the example
+  config and the systemd unit, plus a
   `.sha256` beside it;
 - builds the runtime image (the `Dockerfile` at the root) for `amd64` and
   `arm64` and publishes a manifest at `ghcr.io/tuna-os/spindle:<tag>`;
+- uses the cargo features in `FEATURES` of `release.yml` for the
+  tarballs and the image. Today, that is `mas-import` (#802) and `synapse-import` (#826);
+- stops if `spindle import-mas` or `spindle import-synapse` does not print
+  its usage. The MAS cutover in [delegated-auth.md](https://github.com/tuna-os/spindle/blob/main/docs/delegated-auth.md) and
+  the Synapse migration in [migration-workspace.md](https://github.com/tuna-os/spindle/blob/main/docs/migration-workspace.md)
+  need these commands;
 - writes an SBOM for each tarball (SPDX, from `Cargo.lock`, so it names
   every crate the build pinned) and attests it to the tarball;
 - signs a provenance attestation for each tarball and each image, through
   Sigstore, tied to the workflow's own identity; the image attestations
   are pushed to the registry beside the images;
-- creates the GitHub release with the tarballs, the checksums, the SBOMs
-  and notes that say what the tag is, followed by the titles of the pull
-  requests merged since the previous tag, marked a prerelease for every
-  `v0.*` tag.
+- builds a `.deb` and an `.rpm` for each architecture from the tarball's
+  binary, in a separate `packages` job (`cargo-deb` and
+  `cargo-generate-rpm`, metadata in `crates/spindle-server/Cargo.toml`).
+  It writes a checksum for each and signs a provenance attestation. This
+  job may fail without blocking the release: the tarballs and the image
+  still go out, without packages;
+- creates the GitHub release with the tarballs, the packages when they
+  exist, the checksums, the SBOMs
+  and notes that say what the tag is and give the image digest, followed
+  by the titles of the pull requests merged since the previous tag,
+  marked a prerelease for every `v0.*` tag.
 
 The crate version in `Cargo.toml` is not the release version and is not
 bumped by a release; the tag is the name, and the binary carries the
@@ -76,6 +90,14 @@ by a workflow in this repository. The SBOM beside each tarball is an
 SPDX document; `gh attestation verify --predicate-type
 https://spdx.dev/Document` checks that it, too, was attested to the same
 tarball by the same workflow.
+
+## Packages
+
+Two scripts build and check the `.deb` and `.rpm`. `scripts/build-packages.sh` pins `cargo-deb` and `cargo-generate-rpm`. `scripts/check-packages.sh` lists the contents, checks the unit, the conffile and the licences, and runs the binary from an unpacked `.deb`.
+
+The release `packages` job and the `packages` job in `ci.yml` call the same scripts. A pull request that changes the package files runs them on a debug build. To change a tool version, edit the script only.
+
+The asset paths in `crates/spindle-server/Cargo.toml` name files under `package-staging/`. The script fills that directory and runs both tools from the crate directory.
 
 ## What a tag gives the rest of the project
 

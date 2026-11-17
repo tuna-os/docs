@@ -5,25 +5,41 @@ sidebar_label: "iso-builder"
 status: unknown
 ---
 
-Build a bootable **live ISO** from any bootable container image — **entirely in your browser**. No server, no upload: the same engine that CI uses ([tacklebox](https://github.com/tuna-os/tacklebox)) is compiled to WebAssembly and runs client-side.
+Build a bootable **live ISO** from any bootable container image — **entirely in your browser**. No server, no upload: CI uses the same engine ([tacklebox](https://github.com/tuna-os/tacklebox)). We compile it to WebAssembly, and it runs client-side.
 
 **Live:** [https://iso.tunaos.org](https://iso.tunaos.org)
 
 ---
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## The Intended Experience
 
-1. **Pick a Base & Desktop:** Select your base (AlmaLinux Kitten, Fedora, Debian, etc.) and desktop environment (GNOME, KDE Plasma, COSMIC, Niri, XFCE).
-2. **Instant Inspection:** The builder downloads metadata and inspects the image layers in seconds.
-3. **Build ISO:** Click build, and a custom bootable ISO is streamed directly to your local storage.
+For step-by-step browser instructions and current limits, see the [browser quickstart](https://github.com/tuna-os/iso-builder/blob/main/docs/browser-quickstart.md).
 
-Everything else — preloading Flatpaks, layering system packages ([remora](https://github.com/tuna-os/remora)), custom repos, or pointing to a custom registry relay — lives under **Advanced** and is entirely opt-in.
+1. **Pick a desktop:** the bare URL is one screen: desktop cards, a "Based on" menu and one button.
+2. **One click:** the button builds the ISO in your browser when the image has a qualification receipt. Your browser must also be able to build it. If not, the button downloads the ready-made ISO or offers TunaOS Media Writer.
+3. **Write the USB stick:** use Fedora Media Writer, balenaEtcher, or TunaOS Media Writer.
+
+**Customize apps and settings** (or `?customize=1`) opens the full builder. It offers any image and platform, Flatpaks, system packages ([remora](https://github.com/tuna-os/remora)), custom repos and a custom registry relay. It also has the build-on-your-computer fallback.
+
+**TunaOS Media Writer** ([`desktop/`](https://github.com/tuna-os/iso-builder/blob/main/desktop/README.md)) is the native app for macOS (SwiftUI), Windows (WinUI 3) and Linux (GTK4/libadwaita, Flatpak). It builds the same image on your computer with the same engine and writes it to a USB stick. Downloads: the latest [`media-writer-v*` release](https://github.com/tuna-os/iso-builder/releases); `downloads.json` links them from iso.tunaos.org at deploy time.
 
 ---
 
 ## How It Works (Architecture)
 
-The builder is a **serverless, client-side application** designed to bypass traditional resource limitations when handling multi-gigabyte container images in web browsers:
+The builder is a **serverless, client-side application**. Its design avoids the usual browser limits on memory and storage for multi-gigabyte container images:
 
 ```mermaid
 sequenceDiagram
@@ -51,9 +67,10 @@ sequenceDiagram
 ```
 
 ### Key Technical Pillars
-1. **Stateless CORS Relay (`worker/`):** Docker registries like GHCR do not emit browser `Access-Control-Allow-Origin` headers. The Cloudflare Worker shims the CORS preflight requests and adds edge caching (`cf: { cacheEverything: true }`) for immutable blob digests to absorb repeating downloads.
-2. **Back-to-Front Tar Scanning:** Decodes layer tars in reverse order (topmost first) to identify the kernel and initramfs in seconds, enabling it to abort connection streams early rather than pulling gigabytes of unnecessary data.
-3. **File System Access API Streaming:** Instead of buffering the final multi-gigabyte ISO in browser tab memory (which easily triggers OOM tab crashes), it streams chunks directly to disk via `showSaveFilePicker()`. Browsers without this support (Safari, Firefox) fall back to memory buffering with a warning.
+
+1. **Stateless CORS Relay (`worker/`):** Docker registries (for example, GHCR) do not emit browser `Access-Control-Allow-Origin` headers. The Cloudflare Worker shims the CORS preflight requests. It also keeps an edge cache (`cf: { cacheEverything: true }`) of immutable blob digests to absorb repeat downloads.
+2. **Back-to-Front Tar Scan:** The engine decodes the layer tars in reverse order (topmost first). It finds the kernel and initramfs in seconds. Then it stops the connection streams early, and does not pull gigabytes of unnecessary data.
+3. **Stream to Disk:** The final ISO is multi-gigabyte. A browser tab can crash with OOM if it holds the full ISO in memory. So the engine streams the chunks to disk through `showSaveFilePicker()`. Browsers without this support (Safari, Firefox) keep the ISO in memory instead, and show a warning.
 
 ---
 
@@ -62,7 +79,7 @@ sequenceDiagram
 | Path | Description |
 |------|-------------|
 | `app/public/` | Static web application assets. `tbox.wasm` is tacklebox compiled for `GOOS=js GOARCH=wasm`. |
-| `app/wrangler.jsonc` | Cloudflare Pages deployment configuration. Deployed to `iso.tunaos.org`. |
+| `app/wrangler.jsonc` | Cloudflare Workers static-assets deployment configuration. Deployed to `iso.tunaos.org`. |
 | `worker/` | `cors-shim.js` — Cloudflare Worker shim (`relay.tunaos.org`) proxying GHCR + Flathub/package search APIs. |
 | `e2e/` | Playwright test suite driving the real WASM engine against live container registries. |
 | [`native/`](https://github.com/tuna-os/iso-builder/blob/main/native/README.md) | Cross-platform desktop writer for creating and managing persistent multi-boot drives. |
@@ -73,10 +90,16 @@ sequenceDiagram
 
 ## Develop
 
+Run these from the root of this repository. They need Go, `just` and git.
+
 ```sh
-# Build the WASM engine first (not committed to git — see "Updating the WASM Engine")
-GOOS=js GOARCH=wasm go build -o app/public/tbox.wasm ./cmd/tbwasm   # from the pinned tacklebox checkout
-cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" app/public/
+# Build the WASM engine first (not committed to git — see "Updating the WASM Engine").
+# Check out tacklebox at the commit native/go.mod pins, into .tacklebox/ (where
+# `just wasm-build` looks for it). .tacklebox/ is not ignored; do not commit it.
+pin=$(cd native && go list -m -f '{{.Version}}' github.com/tuna-os/tacklebox)
+git clone https://github.com/tuna-os/tacklebox .tacklebox
+git -C .tacklebox checkout "${pin##*-}"
+just wasm-build   # writes app/public/tbox.wasm and the matching wasm_exec.js
 
 # Serve the app locally
 cd app/public && python3 -m http.server 8080   # → http://localhost:8080
@@ -86,8 +109,117 @@ cd e2e && npm ci && npx playwright install --with-deps chromium
 npx playwright test --grep-invert @full        # Runs UI & inspect network flow
 ```
 
+### Retained same-byte strict guest observations
+
+CI's opt-in `strict_roundtrip_test` route needs `run_full=true`,
+`retain_iso_artifact=true`, `keep_iso=false`, `retain_candidate=false`,
+`benchmark=false`, `pair=false` and exactly one `only=` cell. Its
+`strict_install_mode` choice applies **only** to this route:
+
+| Strict install mode | `diagnostic_unqualified` | `only=` | Evidence scope |
+|---|---|---|---|
+| `plain` (default) | `false` | `skipjack-gnome` | Observed plain install; `not-assessed`, not full qualification |
+| `luks` | `true` | `skipjack-gnome` | Diagnostic LUKS install; `diagnostic-unqualified`, never qualification |
+| `both` | `false` | one `qualify: true` `linux/amd64` cell | Plain then LUKS on the same ISO in one harness run; on `main`, an attested qualification receipt |
+
+For example, dispatch an observed plain run with:
+
+```sh
+gh workflow run ci.yml \
+  -f run_full=true -f only=skipjack-gnome -f retain_iso_artifact=true \
+  -f strict_roundtrip_test=true -f strict_install_mode=plain \
+  -f diagnostic_unqualified=false -f keep_iso=false \
+  -f retain_candidate=false -f benchmark=false -f pair=false
+```
+
+For diagnostic LUKS, use `strict_install_mode=luks` and
+`diagnostic_unqualified=true` together. The catalog/source admission guards
+still apply; a non-diagnostic run does not bypass them.
+
+All three modes retain the browser-built ISO and discard the local original.
+They download the chunks again, reconstruct the ISO, and verify its hash against
+the browser measurement **before** the guest starts. The helper checks that the
+receipt agrees with the source, browser, `GITHUB_RUN_ID`, `GITHUB_RUN_ATTEMPT`,
+and artifact identities for the strict invocation. Only LUKS with diagnostics
+sets `TUNAOS_INSTALLED_BOOT_DIAGNOSTIC=1`. Neither single-mode result is full
+qualification evidence.
+
+#### Qualification receipts (`strict_install_mode=both`)
+
+`both` runs the strict harness once with `--strict-offline-gui=plain,luks`
+against the round-tripped ISO. When that job passes on `refs/heads/main`,
+`scripts/build-qualification-receipt.py` writes a
+`BrowserIsoQualificationReceipt/v1`. Its inputs are the harness's
+`strict-qual-plain.json` and `strict-qual-luks.json` (copied verbatim), the
+same-byte binding, the harness revision pinned in `ci.yml` and the run's
+`GITHUB_*` identity. The receipt is canonical JSON
+(`sort_keys`, `(",", ":")` separators, no trailing newline), so
+`sha256(receipt.json)` is the receipt digest.
+
+The builder writes a receipt only when these conditions are true:
+
+- Both legs installed and did a cold boot and a warm boot.
+- Each warm boot has a kernel boot ID that is different from the cold boot.
+- Each leg created the account in GNOME Initial Setup and logged in through GDM.
+- The plain leg shows no passphrase prompt and the LUKS leg shows one.
+- The booted digest equals the source digest and the image digest.
+- The imgref is the target's published image, its catalog `publication.ref`.
+  That is `ghcr.io/tuna-os/<variant>:<flavor>` unless the variant sets a
+  publish name or tag suffix (`flounder-sid:gnome` is `flounder:gnome-sid`).
+- The run is not diagnostic, ran both modes, and ran on `main`.
+
+A branch dispatch still runs both legs but writes no receipt.
+
+The job attests `receipt.json` with `actions/attest-build-provenance`, which
+is why `full-matrix` alone holds `id-token: write` and `attestations: write`.
+It then checks the bundle the way a consumer will and uploads `receipt.json`
+and `bundle.jsonl` as `qualification-receipt-<slug>-run<id>-a<attempt>`.
+To authenticate a downloaded receipt:
+
+```sh
+gh attestation verify receipt.json --repo tuna-os/iso-builder \
+  --signer-workflow tuna-os/iso-builder/.github/workflows/ci.yml \
+  --source-ref refs/heads/main --bundle bundle.jsonl
+```
+
+### Brand assets and primary configuration
+
+The wide header uses `/wordmark.svg`, copied without modification from
+`system_files/usr/share/tunaos/lettermarks/tunaos.svg` at tunaOS
+[`95d55c725755b12e54b0c1a3d4f7e3c2a00ba62c`](https://github.com/tuna-os/tunaOS/commit/95d55c725755b12e54b0c1a3d4f7e3c2a00ba62c)
+(PR #4168). The favicon and notifications keep the fish from Noto Emoji;
+the old builder mascot is not a wordmark.
+Anime wallpapers remain tunaOS assets, not marks for the builder.
+
+Import the config, flavor metadata and wordmark from that same immutable
+primary checkout; do not hand-edit generated config or create a second catalog:
+
+```sh
+node scripts/sync-builder-config.cjs /path/to/tunaOS/docs/iso-builder.config.json \
+  --source-commit 95d55c725755b12e54b0c1a3d4f7e3c2a00ba62c \
+  --flavors /path/to/tunaOS/docs/iso-builder.flavors.json \
+  --wordmark /path/to/tunaOS/system_files/usr/share/tunaos/lettermarks/tunaos.svg
+node scripts/generate-builder-config.cjs
+node scripts/generate-guided-catalog.cjs
+node scripts/generate-experiences.cjs
+```
+
+The source config must declare `brand.logo_url: "/wordmark.svg"` and
+`brand.favicon_url: "/favicon-32.png"`. The sync script copies the bytes
+from the primary export without changes and records their commit and digest.
+The generators use the existing catalog snapshot and the manifest for
+deployment experiences.
+
+After regeneration, serve `app/public` with the command above and open
+[http://localhost:8080/](http://localhost:8080/) at desktop and 320px viewport widths. Confirm the whole
+wordmark is visible, navigation wraps, and the tab shows the emoji mark.
+Select each experience and confirm it retains the project's marks.
+
+This prepares source only: do not deploy until maintainers republish the overlay
+and put the agreed base binding in place.
+
 > [!IMPORTANT]
-> Playwright tests run in a persistent browser context located in `~/tmp/` instead of `/tmp`. This ensures Chrome doesn't run out of storage space when downloading real image layers on Linux environments that limit `/tmp` to a small `tmpfs` RAM disk.
+> Playwright tests run in a persistent browser context in `~/tmp/`, not in `/tmp`. Some Linux systems limit `/tmp` to a small `tmpfs` RAM disk. There, Chrome can run out of storage space when it downloads the layers of a real image.
 
 ### Native writer
 
@@ -101,34 +233,42 @@ for the drive-management lifecycle and safety model.
 ## Deploy
 
 ```sh
-cd app    && npx wrangler deploy   # Deploys to Pages (iso.tunaos.org)
+cd app    && npx wrangler deploy   # Deploys Workers static assets (iso.tunaos.org)
 cd worker && npx wrangler deploy   # Deploys to Workers (relay.tunaos.org)
 ```
 
-*Note: Requires `CLOUDFLARE_API_TOKEN` configured in your environment with Workers and Pages deployment scope.*
+*Note: You need `CLOUDFLARE_API_TOKEN` in your environment, with the Workers and Pages deployment scope.*
 
-Normally this is automatic: the `deploy` job in `.github/workflows/ci.yml` deploys both surfaces on every push to `main`. Nothing in CI checks production afterwards, so verify by hand — `curl -sS https://relay.tunaos.org/healthz` (expects `{"status":"ok"}`) and `curl -sSI https://iso.tunaos.org/tbox.wasm`. To roll a bad deploy back, and for the rest of the detection and verification checklist, see [`runbooks/deploy-and-rollback.md`](https://github.com/tuna-os/iso-builder/blob/main/runbooks/deploy-and-rollback.md).
+Normally this is automatic: the `deploy` job in `.github/workflows/ci.yml` deploys both surfaces on every push to `main`. Its final step checks the app response, compares the served engine digest with the tested artifact, and checks relay `/healthz`. A failed check stops the run; rollback remains manual. For checks after a manual deploy and rollback steps, see [`runbooks/deploy-and-rollback.md`](https://github.com/tuna-os/iso-builder/blob/main/runbooks/deploy-and-rollback.md).
 
 ---
 
 ## Updating the WASM Engine
 
-`app/public/tbox.wasm` is built from the [tacklebox](https://github.com/tuna-os/tacklebox) repository:
+Update the tacklebox module pin in `native/go.mod` and its checksums in
+`native/go.sum`. CI resolves that pin to a full commit, builds the WASM,
+tests it, and deploys the same artifact. A source fix in tacklebox alone
+does not change the engine served by ISO Builder.
 
-```sh
-GOOS=js GOARCH=wasm go build -o tbox.wasm ./cmd/tbwasm
-```
+For example, browser install run
+[`41270163456`](https://github.com/tuna-os/iso-builder/actions/runs/41270163456)
+reached the installer but failed with `bound blob size mismatch`: the
+index in `/OCI/index.json` omitted the retained manifest's size. The engine repair
+in [tacklebox#437](https://github.com/tuna-os/tacklebox/pull/437) supplies
+that exact byte count and preserves the manifest bytes and installer
+validation. The new pin needs a fresh browser-built ISO; retained
+media from the old engine still contains the defect. Build and source checks
+do not prove an offline installation through the GUI or detached cold and warm login.
 
-When updating the WASM file, always ensure you copy the matching `wasm_exec.js` from your Go installation:
-```sh
-cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" app/public/
-```
+`app/public/tbox.wasm` is built from the [tacklebox](https://github.com/tuna-os/tacklebox) repository.
+`just wasm-build` builds it from the `.tacklebox/` checkout and copies the matching
+`wasm_exec.js` from the same Go installation; see [Develop](#develop) for the steps.
 
 ## Updating systemd-boot
 
 `app/public/systemd-bootx64.efi` is a committed copy of the systemd-boot EFI
-stub, fetched by the app at runtime for the DDI build path. It is pinned to
-an exact Ubuntu package version with a checksum — see
-[`app/public/sdboot-NOTICE.txt`](https://github.com/tuna-os/iso-builder/blob/main/app/public/sdboot-NOTICE.txt) for the
-provenance, the pinned version, and the reproduction command used to verify
-or refresh it.
+stub. The app fetches it at runtime for the DDI build path. We pin it to
+one exact version of the Ubuntu package, with a checksum. For the provenance
+and the pinned version, see
+[`app/public/sdboot-NOTICE.txt`](https://github.com/tuna-os/iso-builder/blob/main/app/public/sdboot-NOTICE.txt). That file also
+has the command to verify or refresh the stub.

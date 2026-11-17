@@ -1,5 +1,5 @@
 ---
-sidebar_position: 20
+sidebar_position: 22
 title: "finish plan"
 ---
 
@@ -88,14 +88,14 @@ Each rung is one KVM run; do them in this order, one change per run:
 
 ## Definition of done for "support for dakota, composefs, btrfs"
 
-- dakota: Arm → Deploy → Phase-2 boot → seeded-file assertion green under
++ dakota: Arm → Deploy → Phase-2 boot → seeded-file assertion green under
   the ledger harness (Phase-3 graduation is a follow-on rung).
-- One non-dakota composefs-native family (marlin or flounder) green
++ One non-dakota composefs-native family (marlin or flounder) green
   through Phase-2, proving the path is image-agnostic, not dakota-shaped.
-- btrfs: bonito:gnome sealed-btrfs green through Phase-2 twice; #35 closed
++ btrfs: bonito:gnome sealed-btrfs green through Phase-2 twice; #35 closed
   (fix: modules-load.d + udev re-trigger); ext4 stays the sealed default —
   btrfs is opt-in via wootc.filesystem=btrfs on supported kernels
   (bluefin:lts is not a candidate — its btrfs kmod is rejected under Secure
   Boot, and the deployer's btrfs preflight now says so at deploy time).
-- All three keep their bats regression guards
++ All three keep their bats regression guards
   (`phase2-early-cpio.bats`, `btrfs-phase2.bats`) green in CI.

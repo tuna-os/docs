@@ -24,6 +24,50 @@ retires that spoke's share of the bash jobs **in the same change**. Two
 controllers actuating the same agents fight: that is how reef's sec-check was
 restarted ~25 times in one evening when pace and rotate disagreed.
 
+## Optional minimum quality score
+
+`ModelLadder.spec.minimumScore` is an opt-in, inclusive floor on each exact
+model **and reasoning effort**, using the existing rung `score` strings. For
+example, `minimumScore: "40.2"` admits a rung scored `"40.2"` but not `"39.7"`.
+Only supplied finite numeric scores count: missing/invalid scores, implicit or
+conflicting effort declarations and invalid floor values fail closed. The operator does not
+infer scores from model families, contributor variants, aliases or other efforts.
+Omitting the field retains legacy placement and hardcoded pacing behavior.
+
+Deploy the operator **and ModelLadder CRD schema** before setting the floor;
+older schemas prune unknown fields. Populate scored, inventory-supported exact
+rungs at every required tier, then enable the floor. `status.effective` and
+`status.dropped` expose eligibility and rejection reasons. With a floor enabled,
+consumers require a current-generation `Ready` condition and recheck scores.
+Removed, newly downgraded or unscored rungs in old status cannot authorize a launch.
+
+Rotation corrects active off-policy placements, including old pace demotions,
+but preserves pins, declared holds, intentional pauses and on-demand agents.
+Pinned off-policy placements require an explicit operator update; the controller
+does not override the pin. No eligible capacity means an active off-policy agent
+is stranded/paused rather than knowingly started below the floor. A qualifying
+model does not bypass provider thresholds, cadence guards or hot/over-budget
+pool controls. Pacing remains enabled: hardcoded down/up notches and journal
+restorations must be eligible, otherwise saturation/capacity is reported.
+Watchdog repairs/rotate-offs use the same ladder; restarting or nudging an
+off-policy placement is held for rotation to correct.
+Release snapshot restoration also checks the current floor: an old disallowed
+snapshot is reported as held, keeping the post-boot placement for rotation to
+re-evaluate rather than falsely failing or rolling back an otherwise healthy
+release. Non-spoke release targets have no ModelLadder policy.
+
+For agy, `-high`/`-medium`/`-low` requires the matching explicit launch effort;
+for pi, `:thinking` is launch syntax and authoritative. For omp, use selectors
+such as `google-antigravity/gemini-3.8-flash:high` or
+`anthropic/claude-sonnet-5:max`: placement atomically clears the separate
+`reasoning_effort` flag so it cannot override the encoded thinking level.
+Conflicting declared rung efforts fail closed. Encoded selectors also preserve
+Anthropic's trailing `-5` through the current Hive model normalizer and do not
+depend on the dashboard's potentially stale per-model thinking catalog.
+Other backends carry explicit effort in the same atomic placement request.
+Backend/provider routing and authentication remain deployment prerequisites;
+adding a scored rung alone does not add a new backend.
+
 ## What moves, what stays
 
 | bash | after promotion of spoke X |
