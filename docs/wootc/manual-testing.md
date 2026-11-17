@@ -1,5 +1,5 @@
 ---
-sidebar_position: 24
+sidebar_position: 28
 title: "manual testing"
 ---
 
@@ -40,7 +40,15 @@ Keep a backup before you test alpha boot software.
    (or set `WOOTC_PRELOAD=1` before launching) — it downloads the whole OS
    while still on Windows, and the deploy boot then needs no network at
    all.
-6. **Let it manage Fast Startup and hibernation.** The app turns them off
+6. **Read the hardware check before you restart.** After the download, the
+   installer reads the PCI and USB PnP IDs of this PC.
+   It compares them with the module aliases of the target kernel. A missing
+   driver for storage, network, wireless, display or USB controller stops
+   the install. Some results show as warnings, and the install continues.
+   A warning shows for degraded graphics (for example, NVIDIA on nouveau or
+   simpledrm). A warning also shows for an incomplete list of image or device
+   data. Write the exact result in the test report.
+7. **Let it manage Fast Startup and hibernation.** The app turns them off
    during install (and the uninstaller restores your original setting) —
    don't re-enable them mid-test.
 
@@ -105,6 +113,7 @@ baseline first:
 ```
 
 This command records:
+
 - The firmware boot entries.
 - Each ESP file, with its SHA-256.
 - The ESP ownership manifest.
@@ -156,6 +165,56 @@ delete, so the capture is the only way to grade the power box. Then add
 `-Orphaned` to the verify run.
 
 [#238]: https://github.com/tuna-os/wootc/issues/238
+
+## The three-machine hardware set (M2.2)
+
+Milestone [#210] needs evidence from real firmware, real scanners and real
+Wi-Fi. [#216] asks for three runs of the full journey. Use three different
+machines.
+
+The set of three machines must include:
+
+| Need | Why |
+|---|---|
+| Three different vendors | Each vendor has its own firmware and its own OEM partitions |
+| One laptop with Wi-Fi only | The deploy boot has no Wi-Fi. Use a branded exe, or set `WOOTC_PRELOAD=1` before you start the generic `wootc.exe` |
+| One machine with Secure Boot on | This proves the signed shim and GRUB chain on vendor firmware |
+
+One machine can satisfy two needs. For example, a laptop with Wi-Fi only and
+Secure Boot on satisfies both of the last two rows.
+
+Do each step of the run in this order. Record a pass or a fail for each step:
+
+1. Download the exe from the release page and run it. Do not copy files to
+   the machine first.
+2. Install, and let the app restart the machine.
+3. Let the deploy boot complete.
+4. Log in to Linux. Make sure that the welcome opens and that the file
+   manager shows the "Windows drive" bookmark.
+5. Restart. Make sure that Windows starts.
+6. In Windows, open the Manage screen. Select "Restart into" your
+   distribution, and make sure that Linux starts.
+7. Restart into Windows again. Capture the baseline with
+   `verify-uninstall.ps1 capture` (see above).
+8. Uninstall. Restart two times, and then run `verify-uninstall.ps1 verify`.
+
+File one report for each run with the
+[real hardware test report form](https://github.com/tuna-os/wootc/blob/main/.github/ISSUE_TEMPLATE/manual-test-report.yml).
+File a report for a run that fails too. Attach `checklist.md` from step 8.
+
+A maintainer then gives each report one of these results:
+
+- **Green**: all eight steps passed, and the checklist has no failed box.
+- **Fixed**: a step failed, a fix merged, and a new run on the same machine
+  passed.
+- **Filed**: a step failed because of a product defect. The defect has its
+  own issue, and that issue links to [#210].
+
+[#216] is done when three reports, one for each machine, have one of these
+results.
+
+[#210]: https://github.com/tuna-os/wootc/issues/210
+[#216]: https://github.com/tuna-os/wootc/issues/216
 
 ## Debug mode
 
@@ -222,4 +281,3 @@ The fresh-eyes usability gate is satisfied when:
 3. **Every hesitation triaged**: Every noted hesitation, confusing copy passage, or awkward interaction has either:
    - a linked GitHub issue filed to refine copy or workflow; or
    - an explicit maintainer won't-fix note with justification recorded in [#236](https://github.com/tuna-os/wootc/issues/236).
-

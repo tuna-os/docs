@@ -1,5 +1,5 @@
 ---
-sidebar_position: 18
+sidebar_position: 20
 title: "docs truth pass"
 ---
 
@@ -238,7 +238,6 @@ Its headings, tables and diagrams remain; earlier dated records remain.
 The shared count falls from 1589 to 1561, and the budget follows that count.
 RC, hardware, firmware, signatures, restoration and the soak still need proof.
 
-
 ## Pass — 2026-09-27, manual native hardware trials
 
 Checked the preparation and recovery claims in `docs/manual-testing.md` against
@@ -253,3 +252,17 @@ source `09f2698`. This is a static review, not a hardware run.
 
 Code samples, tables and the participant protocol remain unchanged.
 Hardware, timings and firmware outcomes still need the RC walk.
+
+## Pass — 2026-10-15, release claims
+
+Checked the release claims in the docs against the GitHub tags and releases
+of `tuna-os/wootc`, at source `426705f`. The only tag that is not `auto-v*` is
+`v0.1.0-alpha.1`. No `v0.2.0` or `v0.3.0-beta` tag or release exists.
+`tests/unit/docs-truth.bats` pins the corrections. Its list of published
+releases holds `v0.1.0-alpha.1` only.
+
+| Result | Previous claim | Source and correction |
+|---|---|---|
+| ✘ | `ROADMAP.md`: v0.3.0-beta *"shipped 2026-09-03"* | The milestone issue #211 closed on 2026-09-02, but nobody cut the release. The roadmap now says that the release is planned and its notes are a draft. |
+| ✘ | `docs/release-notes-v0.3.0-beta.md`: *"Status: Shipped"* | The notes now carry the draft marker, so `check-notes.sh` refuses to publish them before a person checks them again. |
+| ✘ | `README.md` and `ROADMAP.md`: an existing beta release | The earlier releases are `v0.1.0-alpha.1` and the automatic pre-releases. |

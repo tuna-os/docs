@@ -3,9 +3,11 @@ sidebar_position: 4
 title: "USER GUIDE"
 ---
 
-Screenshots on this page are regenerated automatically on every release
-by `scripts/walkthrough.sh` (the app's `DUALCUT_WALKTHROUGH` mode), so
-they always match the released build.
+The `screenshots` workflow captures the images on this page from the
+real app with `scripts/walkthrough.sh` (the app's `DUALCUT_WALKTHROUGH`
+mode). It uploads them as the `guide-screenshots` artifact. A pull
+request commits new images to `docs/guide/`, so an image can show an
+older build than the current release.
 
 ## Starting out
 

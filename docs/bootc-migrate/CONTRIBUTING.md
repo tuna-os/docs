@@ -3,27 +3,39 @@ sidebar_position: 2
 title: "Contributing"
 ---
 
-Thanks for your interest in improving `bootc-migrate`.
+Thank you for your interest in `bootc-migrate`.
 
-> **Note:** this tool performs an in-place, hard-to-reverse migration of a real
-> system. Treat changes to the migration phases (`src/migration/`) with extra
-> care and exercise them through the end-to-end suite before merging.
+> **Note:** this tool does an in-place migration of a real system.
+> Treat changes to the migration phases (`src/migration/`) with care.
+> Run the end-to-end test suite before you merge changes.
+
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
 
 ## Development setup
 
-You need a recent stable Rust toolchain (the crate targets edition 2024,
-`rust-version = 1.88.0`) and [`just`](https://github.com/casey/just).
+You need a stable Rust toolchain (edition 2024, `rust-version = 1.88.0`)
+and [`just`](https://github.com/casey/just).
 
 ```console
-$ cargo build
-$ just check        # clippy + rustfmt + unit tests + shellcheck — run before every PR
+cargo build
+just check        # clippy + rustfmt + unit tests + shellcheck — run before every PR
 ```
 
 ### IDE setup
 
 Standard `rust-analyzer` works out of the box. The crate uses `clippy` with
-several extra lints enabled (see `Cargo.toml`); run `just check` rather than
-`cargo clippy` alone to get the full lint set.
+extra lints (see `Cargo.toml`). Run `just check` instead of `cargo clippy`
+to get the full lint set.
 
 ---
 
@@ -45,8 +57,8 @@ You also need root (for loop mounts and pflash) and outbound registry access
 local registry cache first (saves ~8 GB of re-pulls on every run):
 
 ```console
-$ just registry-start   # start a local OCI registry on localhost:5000
-$ just registry-cache   # pull Bluefin + Dakota; push to local registry
+just registry-start   # start a local OCI registry on localhost:5000
+just registry-cache   # pull Bluefin + Dakota; push to local registry
 ```
 
 ### E2E scenarios
@@ -59,55 +71,52 @@ $ just registry-cache   # pull Bluefin + Dakota; push to local registry
 | `just e2e-lvm` | Bluefin LTS → Dakota (LVM-on-LUKS, separate `/var`) | 40 GB | Most complex |
 | `just e2e-tui` | Bluefin stable → Dakota, driven through the TUI wizard | 40 GB | `E2E_MODE=tui-migrate` |
 
-These are the **local** recipes and they deliberately differ from the CI
-matrix — `just e2e-lts` runs XFS at 20 GB to exercise the ext4-loopback store
-on a small disk, while CI's LTS cell runs `ext4` at 40 GB. The seven-cell CI
-matrix lives in `.github/workflows/e2e-tests.yml`, which is authoritative;
+The local recipes differ from the CI matrix.
+For example, `just e2e-lts` uses XFS and a 20 GB disk to test the ext4
+loopback store. The CI LTS cell uses ext4 and a 40 GB disk.
+The CI matrix lives in `.github/e2e-scenarios.yml`, which is authoritative;
 `README.md` reproduces it. Don't sync these two tables into one — they answer
 different questions.
 
 Run the default scenario:
 
 ```console
-$ just e2e
+just e2e
 ```
 
 Watch progress in another terminal:
 
 ```console
-$ just watch          # tails the latest .log; exits on errors or idle timeout
+just watch          # tails the latest .log; exits on errors or idle timeout
 ```
 
-Or ssh into the running VM to poke around:
+Or connect to the VM with SSH:
 
 ```console
-$ just e2e-ssh        # opens an interactive SSH session to port 2222
+just e2e-ssh        # opens an interactive SSH session to port 2222
 ```
 
 ### Debugging a failed E2E run
 
 ```console
-$ just e2e-failures   # grep log for failures/errors
-$ just e2e-composefs  # grep for composefs-related boot messages
-$ just e2e-tail       # tail the QEMU serial console (high-signal lines only)
-$ just e2e-status     # show disk.raw status + QEMU/SSH availability
+just e2e-failures   # grep log for failures/errors
+just e2e-composefs  # grep for composefs-related boot messages
+just e2e-tail       # tail the QEMU serial console (high-signal lines only)
+just e2e-status     # show disk.raw status + QEMU/SSH availability
 ```
 
-To reproduce a failure starting from after the migration (skipping setup):
+To reproduce a failure after the migration without setup:
 
 ```console
-$ SKIP_SETUP=1 just e2e-reboot-test
+SKIP_SETUP=1 just e2e-reboot-test
 ```
 
 ### Using Corral VMs for interactive testing
 
-[Corral](https://github.com/tuna-os/corral) is a VM manager that provisions
-KubeVirt (or local QEMU) VMs from bootc container images. It's useful for
-interactive TUI testing and exploratory debugging where the scripted QEMU
-harness is too rigid.
+[Corral](https://github.com/tuna-os/corral) provisions KubeVirt (or local QEMU) VMs from bootc container images.
+Corral is useful for interactive TUI tests when the scripted QEMU harness is too rigid.
 
-**Setup** — install the `corral` binary (see Corral's README), then create a
-Bluefin VM for testing:
+**Setup** — install the `corral` binary (see Corral's README), then create a Bluefin VM:
 
 ```console
 $ corral create tui-e2e --image ghcr.io/projectbluefin/bluefin:stable \
@@ -118,7 +127,7 @@ $ corral start tui-e2e
 **SSH into the VM:**
 
 ```console
-$ corral ssh tui-e2e --user root
+corral ssh tui-e2e --user root
 ```
 
 **Deploy a local build to the VM** (cross-compile or build on the VM):
@@ -174,7 +183,7 @@ convenience only and are not required to contribute.
 ### Cleaning up after E2E
 
 ```console
-$ just cleanup        # kill QEMU, prune podman, remove disk.raw and .log files
+just cleanup        # kill QEMU, prune podman, remove disk.raw and .log files
 ```
 
 ---
@@ -182,8 +191,10 @@ $ just cleanup        # kill QEMU, prune podman, remove disk.raw and .log files
 ## Adding a new E2E scenario
 
 1. Add a new recipe in `justfile` modelled on `e2e-luks` or `e2e-lvm`.
-2. Add the scenario to the CI matrix in `.github/workflows/e2e-tests.yml`
-   (follow the existing `include:` pattern, set `name`, `filesystem`, `disk-size`, and any env overrides).
+2. Add the scenario to `.github/e2e-scenarios.yml`. Set `name`, `base`,
+   `target`, `filesystem`, `disk_size`, and any overrides. While the scenario
+   is exploratory, add `allow_failure: true`. This keeps it out of the per-PR
+   round-robin, so only the nightly run uses it.
 3. Update the CI matrix table in [AGENTS.md](https://github.com/tuna-os/bootc-migrate/blob/main/AGENTS.md).
 4. Document the scenario in [docs/filesystem-support.md](https://github.com/tuna-os/bootc-migrate/blob/main/docs/filesystem-support.md).
 
@@ -194,39 +205,35 @@ $ just cleanup        # kill QEMU, prune podman, remove disk.raw and .log files
 - `just check` passes (clippy + rustfmt + unit tests + shellcheck — this is
   what CI's `validate` job runs).
 - `cargo deny check` passes if you touched dependencies.
-- Commits follow the `component: Summary` convention described in
-  [REVIEW.md](https://github.com/tuna-os/bootc-migrate/blob/main/REVIEW.md); fixups are squashed before merge.
-- New non-trivial logic has unit tests (prefer table-driven, per REVIEW.md),
-  and migration-path changes are exercised by at least the default E2E scenario.
-- If your change affects the kernel command line, boot artifacts, or any phase
-  output, run the full E2E matrix locally or wait for CI to do it on your PR.
-- The change satisfies the **Definition of Done** ([REVIEW.md](https://github.com/tuna-os/bootc-migrate/blob/main/REVIEW.md)):
-  every claim in the PR matches the diff, no undischarged validation caveats
-  remain, and all required checks have been observed passing on the head commit.
+- Commits follow the `component: Summary` format in [REVIEW.md](https://github.com/tuna-os/bootc-migrate/blob/main/REVIEW.md). Squash fixups before merge.
+- Add unit tests for new logic (prefer table-driven tests, per [REVIEW.md](https://github.com/tuna-os/bootc-migrate/blob/main/REVIEW.md)).
+- Exercise migration-path changes with the default E2E scenario.
+- If your change affects kernel args or boot artifacts, run the E2E matrix or wait for CI.
+- The change satisfies the **Definition of Done** ([REVIEW.md](https://github.com/tuna-os/bootc-migrate/blob/main/REVIEW.md)).
+  Every claim matches the diff. All required checks pass on the head commit.
 
 ## Code review
 
-Please read [REVIEW.md](https://github.com/tuna-os/bootc-migrate/blob/main/REVIEW.md) — it describes the Definition of Done (DoD),
-testing, code-quality, and commit-message expectations applied here. AI-assisted
-contributions must follow [AGENTS.md](https://github.com/tuna-os/bootc-migrate/blob/main/AGENTS.md) (no automatic `Signed-off-by`;
-add an `Assisted-by:` trailer, and discharge all validation steps).
+Read [REVIEW.md](https://github.com/tuna-os/bootc-migrate/blob/main/REVIEW.md). It describes the Definition of Done (DoD),
+test requirements, and commit conventions. AI contributions must follow
+[AGENTS.md](https://github.com/tuna-os/bootc-migrate/blob/main/AGENTS.md) (no automatic `Signed-off-by`; add an `Assisted-by:` trailer,
+and complete all validation steps).
 
 ---
 
 ## Dependency update policy
 
 Dependency updates come through [Renovate](https://docs.renovatebot.com/) (see
-`renovate.json`). Patch-level updates are auto-merged if CI is green. Minor and
-major updates get a PR for human review. When reviewing Renovate PRs:
+`renovate.json`). Renovate applies patch updates when CI passes.
+Minor and major updates get a PR for human review. When you review Renovate PRs:
 
-- Check the changelog / release notes for breaking changes.
+- Check the release notes for incompatible changes.
 - Verify `cargo deny check` still passes.
-- Run `just check` locally if the changed crate is a key dependency (`rustix`,
-  `clap`, `anyhow`, `serde_json`).
+- Run `just check` locally if the crate is a key dependency (`rustix`, `clap`, `anyhow`, `serde_json`).
 
 ---
 
 ## License
 
-By contributing, you agree that your contributions are dual-licensed under the
+By your contribution, you agree to dual-license your work under the
 [MIT](https://github.com/tuna-os/bootc-migrate/blob/main/LICENSE-MIT) and [Apache-2.0](https://github.com/tuna-os/bootc-migrate/blob/main/LICENSE-APACHE) licenses.

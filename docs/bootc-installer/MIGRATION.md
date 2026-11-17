@@ -27,14 +27,13 @@ nothing is lost in the shuffle. Tracking epic:
 `shared/` is where parity work lands from now on:
 
 - `shared/recipe/fisherman-recipe.schema.json`: the recipe every frontend
-  writes for fisherman. Canonical copy; `frontends/kde/` keeps a byte-identical
-  copy because its Flatpak builds from that directory alone, and
-  `tests/unit/test_shared_recipe_schema.py` fails when they diverge.
+  writes for fisherman. It is the only copy:
+  `tests/unit/test_shared_recipe_schema.py` fails when a frontend adds one.
 - `shared/walkthrough/parity_report.py`: the screen contract (which screens
   every installer must show, matched by heading text) and the report writer.
-  The niri and xfce harnesses import it; the GNOME harness imports it; KDE
-  (`tests/parity_report.h`) and COSMIC still vendor their own copy and are
-  checked for drift in CI.
+  The GNOME, niri and xfce harnesses import it. The KDE and COSMIC harnesses
+  write their page text to `texts.json`, and `report_from_pngs.py` makes
+  their report with this module.
 - `shared/walkthrough/aggregate.py`: builds
   [`docs/walkthrough/`](https://github.com/tuna-os/bootc-installer/blob/dev/docs/walkthrough/README.md), the one page that shows all
   five installers screen by screen with the parity matrix on top.
@@ -44,7 +43,9 @@ nothing is lost in the shuffle. Tracking epic:
 - Each old repo's `.github/workflows/*` became a root workflow with the
   frontend's name in it: `screenshots-<name>.yml`, `publish-flatpak-<name>.yml`,
   plus `ci-niri.yml` and `cargo-sources-cosmic.yml`. Bodies are unchanged
-  apart from `working-directory: frontends/<name>` and path filters.
+  apart from `working-directory: frontends/<name>` and path filters. Since
+  then, one `publish-flatpak.yml` with a `frontend` input replaced the
+  per-frontend publish workflows.
 - The GNOME frontend gained the screenshot harness it never had
   (`tests/gui/capture-screens.py`, `screenshots-gnome.yml`).
 - Publishing to the tuna-os Flatpak remote no longer happens on every push.
@@ -54,9 +55,17 @@ nothing is lost in the shuffle. Tracking epic:
   36 = 543). The per-frontend `.ste-budget` files are left in place as a
   record; only the root one is read.
 - Each frontend keeps its own `README.md`, `AGENTS.md`, `DESIGN.md`,
-  `docs/`, `LICENSE`, `renovate.json`, `codecov.yml`. The last two are
-  inert now (Renovate and Codecov read the root files); folding their rules
-  into the root configs is a follow-up.
+  `docs/`, `LICENSE`.
+- The per-frontend `codecov.yml` files are gone. Codecov reads only the root
+  file. Each copy had the same values as the root file, so nothing remained
+  to fold in.
+- The per-frontend `renovate.json` files are gone. Renovate reads only the
+  repository root. Keeping them as a record was therefore not safe, the way
+  it is safe for `.ste-budget`: `frontends/kde/renovate.json` held the rule
+  that blocks `quay.io/fedora/fedora` major bumps. While that file sat inert,
+  the two jobs that run in `fedora:45` (the kde job in `e2e.yml`, and
+  `screenshots-kde.yml`) had no such rule. The root `renovate.json` now holds
+  it.
 
 ## What did not move
 
@@ -86,8 +95,11 @@ nothing is lost in the shuffle. Tracking epic:
    can transfer issues between repos in the same org; PRs cannot be
    transferred and must be re-opened against `frontends/<name>/`).
 3. Archive the four old repositories.
-4. Fold `frontends/*/renovate.json` (notably COSMIC's Cargo.lock automerge)
-   into the root `renovate.json`.
+4. ~~Fold `frontends/*/renovate.json` into the root `renovate.json`.~~ Done.
+   The KDE fedora-major hold was the only live rule among the four, and the
+   root file now holds it. The other three only repeated the org preset. This
+   change deletes the nested files. It does not keep them, because a config
+   that Renovate never reads looks like a guard, but guards nothing.
 5. Point the four imported Flatpak manifests at the fisherman submodule.
 6. Move the GNOME frontend under `frontends/gnome/`.
 

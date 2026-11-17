@@ -8,11 +8,11 @@ only reports its wins is not evidence (#34).
 
 ## Where the current numbers are
 
-**Published automatically on every push to `main`:**
+**Published automatically every week from `main` (and on demand):**
 [https://tuna-os.github.io/spindle/](https://tuna-os.github.io/spindle/) — with
 [`latest.json`](https://tuna-os.github.io/spindle/latest.json) as the raw data
-and a per-commit copy kept beside it, so a regression can be traced to the push
-that caused it.
+and a per-commit copy kept beside it, so a regression can be traced to the run
+that caught it.
 
 **The tables in this document are dated snapshots, not the live figures.** They
 are here because the analysis around them needs something concrete to point at,
@@ -45,10 +45,69 @@ stale on a runner change. Wall times do.
 | The same vs **Tuwunel** | Done from M2 close-out on, below |
 | All four at three rounds a side, under the separation rule (#171) | Done, below — the first sitting the page judges by its own repeatability |
 | The same vs **Dendrite** (Element's Go server), five in the field | Done from the second M7 sitting on, below |
+| The three parity lines of #42, pass or fail per sitting | Done, below; line 3 has its federated and concurrent cells since #647, and fails against Tuwunel |
 
 Everything here is **algorithmic**, measured inside the library. None of it is a
 server throughput figure and none of it should be quoted as one. Server-to-
 server comparison starts at M1 and is defined in #42.
+
+### Interned state keys: before and after (#79, 2026-10-10)
+
+**Verdict: a trade, with a measured first-sight regression.** At 50,000 keys,
+replacement of existing slots has an after/before normalized median of 0.46×.
+Allocation of new slots has a median of 1.83×. This does not establish a general
+speedup. First-sight updates at 1,000 and 50,000 keys regress in every observed
+normalized range. The ranges overlap for every other comparison, including the
+large-room replacement result, so three noisy rounds do not establish a stable
+win there. Lookup remains several times slower than the HashMap control.
+
+The baseline is `496a77a`; the interned implementation is `10d269b`. Each runs
+with a control in the same process: `imbl` for updates, `HashMap` for lookup.
+The numbers below are medians of three **HAMT/control mean-time ratios**, with
+the observed minimum and maximum in parentheses. Lower is faster. The last
+column divides those medians; it is not a ratio of unpaired wall times. The
+ranges are observations, not confidence intervals.
+
+| Workload | Keys | Before / control (range) | After / control (range) | After / before medians |
+|---|---:|---:|---:|---:|
+| First-sight updates | 100 | 1.68× (1.30–1.72) | 1.23× (1.16–1.98) | 0.73× |
+| First-sight updates | 1,000 | 0.80× (0.65–1.36) | 1.56× (1.46–1.99) | 1.96× |
+| First-sight updates | 10,000 | 1.34× (1.08–2.25) | 1.17× (0.95–1.82) | 0.87× |
+| First-sight updates | 50,000 | 0.64× (0.51–0.95) | 1.18× (1.18–1.72) | 1.83× |
+| Existing-key replacements | 100 | 1.95× (1.24–2.75) | 2.24× (1.38–2.90) | 1.15× |
+| Existing-key replacements | 1,000 | 0.88× (0.47–1.17) | 1.53× (0.87–1.65) | 1.74× |
+| Existing-key replacements | 10,000 | 1.89× (0.81–2.92) | 1.06× (0.82–1.26) | 0.56× |
+| Existing-key replacements | 50,000 | 2.01× (1.04–2.15) | 0.92× (0.71–1.05) | 0.46× |
+| One warm lookup | 1,000 | 7.75× (4.17–8.04) | 5.76× (5.46–9.94) | 0.74× |
+| One warm lookup | 50,000 | 5.86× (3.75–9.00) | 7.55× (3.89–7.78) | 1.29× |
+
+First-sight updates begin with an empty trie and a fresh table, so the timed
+loop includes allocation of intern ids. Replacement updates seed the trie and
+table before timing, replace every existing slot once, and retain all snapshots.
+Both update groups time the release of that history too. The lookup benchmark repeats a warm key near the middle; it does not measure a distribution of room requests.
+
+Each leaf uses a u64 for its state key. It still stores
+string event ids and must resolve keys through the shared table. New keys pay
+for table allocation and its mutex; existing keys still pay for table lookup.
+This evidence does not attribute the timing changes to any one of those costs,
+and does not measure memory use, write bytes, or server throughput.
+
+Three rounds alternate baseline/branch, branch/baseline, baseline/branch. Each
+uses Criterion with 10 samples, 0.5 seconds of warm-up and a target of 1 second
+for measurement. Expensive groups extend the measurement to get 10 samples.
+
+The host has two logical CPUs: `Xeon Platinum 8259CL`.
+It runs Rust 1.90.0, concurrent builds and has swap pressure. Initial load averages were 12–24. Controls run
+sequentially within each process: normalization cannot remove changes in host
+contention during a run. Use a quiet host before you claim a stable win.
+
+[Collected estimates and normalized ratios](https://github.com/tuna-os/spindle/blob/main/docs/evidence/intern-state-keys-20261010.json)
+include all six runs and binary hashes. The
+[baseline benchmark patch](https://github.com/tuna-os/spindle/blob/main/docs/evidence/intern-state-keys-baseline.patch) adds the
+same 50,000-key and replacement workloads to `496a77a`. Apply it to that
+revision, build each arm with `cargo bench -p spindle-core --bench
+state_snapshot --no-run`, and run each binary in the recorded order with a
+separate `CRITERION_HOME`. The evidence records the exact filter and options.
 
 ### The other side of the trie's losses (#80)
 
@@ -165,6 +224,9 @@ just bench-field                 # fetch or build every competitor at its pin, o
 just bench-build                 # Spindle, release
 just bench-sitting m7-progress-2 # up, three rounds, down, and the sidecar
 just bench-render                # the site from the committed results
+just bench-gate m7-progress-2    # the three parity lines of #42, on that sitting
+just bench-targeted targeted-20261105             # line 3's federated cells (#647)
+just bench-gate "ci-20261010 targeted-20261105"  # a sitting and a targeted run, judged together
 ```
 
 - **`scripts/bench-field.sh`** holds the pins: Continuwuity 26.8.1 as its
@@ -200,6 +262,11 @@ just bench-render                # the site from the committed results
   reads the sidecar before the numbers join the record. That is what keeps
   the page current between milestones without letting a runner's noise
   overwrite a milestone's number.
+- **`scripts/federated-benchmark.py`** measures the three line 3 cells
+  that the client-server driver cannot make (#647). The
+  `targeted-sitting` workflow runs it on demand, and on each pull
+  request that changes it. "Line 3 against Synapse and Tuwunel" below
+  gives the method and the results.
 
 On the page itself, every rival is a toggle. Synapse's column is often ten
 times the Rust servers' and flattens their lines to the axis, so a reader
@@ -208,6 +275,33 @@ log scale — and the charts rescale and the tables drop the column. Hiding
 a server changes the drawing, never the data: the committed files, the
 tallies and every ratio are computed before the page knows what was
 chosen.
+
+### The parity gate
+
+# 42 sets three lines for the comparison:
+
+1. Spindle is never slower than Synapse.
+2. Spindle stays within 1.2× of Tuwunel on general workloads.
+3. Spindle is much faster on the workloads that the design targets.
+
+`scripts/parity-gate.py` reads the results of one group and gives each line a status.
+It uses the separation rule from `sitting.py` at each room size. A cell that
+the rounds do not separate is noise, not a loss. For line 3, "much faster"
+means a separated win of 1.38× or more against each rival. 1.38× is the
+repeatability that this host showed for one round.
+
+Line 3 does not pass while a target workload has no measurement. The
+weekly comparison does not hold three of the five target workloads: the
+10,000-member federated join, the catch-up after a partition, and
+concurrent send. `scripts/federated-benchmark.py` measures them in a
+`targeted-<date>` group. Give the gate the two group names, and it reads
+the two groups together.
+
+The gate compares each cell only in the group that measured it, and it
+stops if two groups hold the same cell. It lists each target workload
+that no group holds, or that has no Synapse side or no Tuwunel side. A
+failed line gives a non-zero exit. The weekly workflow puts the report in
+the body of its pull request.
 
 ## Client-server API vs Synapse, at M1
 
@@ -368,7 +462,7 @@ Nothing is slower than either competitor at any size measured.
 ## M2 close-out: all three siblings, one sitting — and the loss that earned its keep
 
 The milestone-closing run, 2026-08-27, on the M2-complete server (through
-#113). Four servers, one host, one sitting, cold databases, the machine
+# 113). Four servers, one host, one sitting, cold databases, the machine
 otherwise idle, every serving binary verified by `pgrep` before its leg:
 Spindle, Synapse 1.159.0, Continuwuity 26.8.1, and — for the first time —
 **Tuwunel 1.9.0, built from source** (the release-asset 403 recorded in #42
@@ -793,7 +887,7 @@ So three things now hold, and only the first two are automated:
    #181, and writing it down makes it a rule rather than a habit.
 
 None of this changes a published cell. Every sitting on the page predates
-#171 and is single-round, so it is coloured by the old band, where
+# 171 and is single-round, so it is coloured by the old band, where
 `2/C(2n, n)` says nothing at all — the count and the marker are both
 withheld there rather than applied to numbers they do not describe. They
 take effect on the first multi-round sitting the page carries.
@@ -1097,7 +1191,7 @@ scale-out at all (#24, deferred to M6).
 So the honest statement is per-process, and it is still a large one: on
 one process, Spindle does 25–50× the writes. What it does not establish
 is a win against a *sharded* Synapse deployment, and it will not until
-#24 exists.
+# 24 exists.
 
 The ceiling's cause is not a mystery, and it is not the storage engine:
 the single `Mutex<HashMap<String, RoomLog>>` in `Rooms::with_room` is
@@ -1111,7 +1205,7 @@ Every four-way table above is one round. #171 measured what one round is
 worth — six rounds of an *identical* binary moved the median cell by
 1.38× — and the apparatus to do better (`bench-rounds.sh`, the separation
 rule, the chance-call count, the isolated-call marker) landed across
-#176, #183 and #184. Then it sat unused, because a four-way at three
+# 176, #183 and #184. Then it sat unused, because a four-way at three
 rounds is an hour of a verified-idle machine. This is that hour.
 
 **The ritual, as run.** Main as of #295 (`816568c`, the tree that became
@@ -1319,16 +1413,16 @@ in the case Spindle claims to handle without state resolution.
 | 4 | 91.1 µs | **29.4 µs** | 3.10× |
 | 16 | 347 µs | **121 µs** | 2.87× |
 | 64 | 1.43 ms | **604 µs** | 2.37× |
-| 256 (a full `max_fork_window`) | 6.34 ms | **2.67 ms** | 2.37× |
+| 256 (a full 512-event fork window) | 6.34 ms | **2.67 ms** | 2.37× |
 
 We are consistently faster, by between two and three times. **Both sides scale
 linearly in the size of the fork, and per-event cost is flat for both** — about
 11 µs per event for `resolve()`, about 5 µs for ours. That is the result, and it
 is not the one SPEC §18.1's complexity table leads a reader to expect.
 
-#34 asks specifically for the deep case, on the grounds that it is where the
+# 34 asks specifically for the deep case, on the grounds that it is where the
 advantage should shrink. It does not: 256 events a side fills SPEC §9.1's
-512-event `max_fork_window` entirely, and the ratio there is the same 2.4× as at
+512-event fork window entirely (ADR 0005 later retired that cap), and the ratio there is the same 2.4× as at
 64. Whatever the advantage is, it is not something that erodes as the fork
 grows — but it is also not something that grows.
 
@@ -1365,7 +1459,7 @@ the library. Synapse and Tuwunel under protocol workload is #42, at M1–M3.
 
 ## M7: what a delayed event costs, and the tick that was reading everything
 
-#36 attaches a benchmark to delayed events because their design makes a
+# 36 attaches a benchmark to delayed events because their design makes a
 performance claim: `restart` is the hot path — MatrixRTC refreshes the
 pending departure of every participant in every live call, continuously —
 and it was built to bump an in-memory deadline rather than rewrite a row.
@@ -1471,7 +1565,7 @@ would have noticed because nothing about it was incorrect — only slow.
 
 ## M7: how long after a ring each phone is told
 
-#39 attaches a benchmark to push delivery for the same reason #36 did:
+# 39 attaches a benchmark to push delivery for the same reason #36 did:
 the design makes a claim — a `MatrixRTC` ring (MSC4075) is an ordinary
 event on the way in and, on the way out, one notification per mentioned
 member through the gateway each of their devices registered — and a
@@ -1539,3 +1633,385 @@ now, not a device.
 Both are the case #36 made, made again: a benchmark attached to a claim
 finds what a test cannot, because nothing about either was incorrect —
 only slow, and only at a size no test builds.
+
+## M7: delayed events against Synapse with MSC4140 on (#36)
+
+# 36 asked for its numbers to be set against a Synapse deployment with
+MSC4140 enabled once #42 gave the project a rig to do it on. The rig is
+`scripts/bench-servers.sh` (now with `max_event_delay_duration: 24h`, the
+switch Synapse keeps the feature behind) and the driver is
+`scripts/delayed-events-benchmark.py`, which speaks the unstable MSC4140
+paths both servers serve and nothing else. One host, one sitting, run
+back to back: a 3-core builder pod, Spindle's release build, Synapse 1.160.0
+(the field pin) on PostgreSQL 16.4 as its own documentation runs it, cold
+databases, every rate limit lifted on both. Shape, not absolute speed, is
+the result -- the host is small and shared.
+
+**restart** -- one participant's heartbeat over HTTP, with N delays live in
+one room (300 samples):
+
+| live delays | Spindle p50 | p99 | Synapse p50 | p99 |
+|---|---|---|---|---|
+| 10 | 0.25 ms | 0.38 ms | 2.88 ms | 4.32 ms |
+| 100 | 0.30 ms | 0.50 ms | 2.80 ms | 3.34 ms |
+| 1,000 | 0.28 ms | 0.42 ms | 5.61 ms | 8.42 ms |
+
+Flat from ten to a thousand, an order of magnitude under Synapse, and
+Synapse doubles at a thousand. That is the hot path #36 designed for: a
+restart moves an in-memory deadline and writes nothing.
+
+**firing** -- how late the event of a delay gets to a `/sync` long-poll,
+against its deadline. The N deadlines are spread over five seconds. Thus
+the bench samples each phase of the timer of each server. The delays are call leaves:
+state events in an N-member room.
+
+| delays (members) | Spindle p50 | p99 | Synapse p50 | p99 |
+|---|---|---|---|---|
+| 10 | 29 ms | 90 ms | 62 ms | 66 ms |
+| 100 | 61 ms | 112 ms | 61 ms | 89 ms |
+| 1,000 | 195 ms | 315 ms | did not finish: 382 of 1,000 had arrived two minutes after the last deadline | |
+
+### The first run lost, and why
+
+The table above is the second run. In the first run, Spindle fired at
+**504 ms p50, 1,085 ms p99 at a hundred**. At a thousand it was
+1,105 / 1,780 ms. Synapse was at 59 / 82 ms. #35
+said: "firing jitter under load should be materially better than a DAG
+server's". That claim was false by
+an order of magnitude.
+
+The cause was not the design but a number. The fire loop shipped with a
+**one-second** tick. The `delayed_firing` table on this page and the ring
+benchmark both give it as 100 ms. Those benches set their own tick. Thus
+they measured the loop that they got, not the deployed loop. With a
+one-second tick, p50 is half a second by construction.
+
+The tick was a second because
+an idle tick read each row in the queue. #350 made the idle tick read one row,
+so the long tick was no longer necessary, but nobody changed it. It is
+now 100 ms, the same as the tick of the push loop.
+
+The second run shows the true picture. At ten and a hundred, the
+per-delay timers of Synapse are more accurate than a loop that polls. Its
+p99 is a few milliseconds over its p50. The p99 of Spindle is one tick
+over: a delay that arrives after a tick waits for the next one.
+
+At a
+thousand, the result is different. Spindle still fires them within a third
+of a second, and Synapse cannot keep up at all. In two minutes, the path that
+persists its events cannot drain a thousand state events of membership that arrive
+in a thousand-member room inside five seconds.
+
+The linear model is for that row. The first two rows are a loss on p99. A
+wake-up at the deadline (sleep until the earliest row, with no poll)
+would get it back. That is the next step if a deployment needs a better
+tail for the departures from a ten-person call.
+
+The third of #36's measurements, the reload with 10k delays in the
+queue, has no equivalent over the wire. It is a start-up cost inside each server. The
+section above gives the figure for Spindle. Synapse reloads its queued
+delays with one query at start-up; this page does not measure it.
+
+The same steps also ran on a GitHub runner (run 37853447544). That run
+used the commit before the tick change, so its Spindle firing is from the
+one-second loop. It agrees on the parts that did not move.
+
+The restart of
+Spindle was 0.38 ms p50 at each size, against 2.64 / 2.68 / 5.37 ms for
+Synapse. Synapse again did not deliver the thousand-member case (620 of
+1,000 missing at two minutes). Its Synapse firing figures were higher
+than on the pod (88 / 220 ms p50 at 10 / 100). The runner is a different
+host. Thus the tables above come from one run on one host, and this
+paragraph only confirms their shape.
+
+To do this again, run
+`scripts/delayed-events-benchmark.py --base <url> --label <name>` against
+`scripts/bench-servers.sh up`. The temporary `delayed-events-vs-synapse`
+job ran the same steps on a GitHub runner, from the branch that completed
+M7.
+
+## M7: what a call costs at 5, 20 and 100 participants (#40)
+
+# 40 said that a hundred-party call is the place where a single-writer
+room could be a bottleneck. It asked for state churn and to-device
+throughput at 5, 20 and 100 participants.
+
+The bench is
+`cargo bench -p spindle-server --bench call_churn`. It runs against a real
+listener over TCP, with one `/sync` long-poll for each participant. It
+uses the compatibility mode of Element Call (membership as room state)
+and its timings: an 18-second delayed leave, restarted each four seconds.
+It ran on the same 3-core pod. The figures are wall-clock: a record, not
+a gate.
+
+**Join burst and key burst** -- all participants at once schedule their
+leave and write their membership. Then all participants at once send
+their media key to each other device in one `sendToDevice`: N(N-1)
+messages. A timeline message goes into the middle of that burst:
+
+| participants | membership write p50 | p99 | every membership seen | every key delivered | message, idle room | message, during key burst |
+|---|---|---|---|---|---|---|
+| 5 | 5.2 ms | 7.2 ms | 8.6 ms | 3.3 ms | 4.1 ms | 3.3 ms |
+| 20 | 17.6 ms | 33.5 ms | 56.2 ms | 10.6 ms | 5.1 ms | 8.1 ms |
+| 100 | 43.9 ms | 79.4 ms | 180 ms | 282 ms | 16.2 ms | 193 ms |
+
+**Churn under heartbeat** -- participants leave (membership cleared, delay
+cancelled) and rejoin (new delay, new membership) one after another while
+every participant heartbeats:
+
+| participants | membership write p50 | p99 | seen by a participant p50 | p99 | heartbeat p50 | p99 |
+|---|---|---|---|---|---|---|
+| 5 | 2.4 ms | 6.0 ms | 0.2 ms | 0.6 ms | 0.3 ms | 0.3 ms |
+| 20 | 2.4 ms | 4.5 ms | 0.0 ms | 0.1 ms | 0.3 ms | 0.6 ms |
+| 100 | 4.7 ms | 50.2 ms | 1.7 ms | 13.9 ms | 2.4 ms | 43.3 ms |
+
+### What it says
+
+A hundred people join at the same instant. Within 180 ms, each of them
+is in the call of each other person. Within 282 ms, each of the 9,900 key
+messages is on its device. The executor is not a bottleneck at a hundred.
+
+Churn at a hundred stays at 4.7 ms a write at the median. The p99 of
+50 ms, and the heartbeat p99 of 43 ms beside it, come from the fan-out.
+Each membership write wakes a hundred long-polls, and each makes a sync
+response, on three cores.
+
+**The result to note** is the last column. SPEC §16.1 gives to-device
+its own stream, so that a burst does not stop the events of the room. It
+does not stop them: the message arrives before the burst ends. But the
+message is late: 193 ms against 16 ms in the idle room at a hundred, which
+is twelve times. The two streams have separate tokens, but the same sync
+responses carry them. The message waits behind a response full of a
+hundred keys.
+
+This delay is less than a call shows: a user sees a join in under a fifth
+of a second in both cases. It also does not increase faster than the
+burst. If a fix becomes necessary, start with a limit on the to-device
+messages in each response. Then a timeline event never waits behind more
+than one response.
+
+The first run of this bench also found a bug in the bench, not in the
+server. The sync loops of the last size still made long-polls when the
+process stopped. The server was half shut down, and it answered them with
+500s. The bench now waits for each loop to stop before it continues.
+
+## v1 close-out: five servers, Synapse on Postgres, and the sync_delta losses
+
+Main at `0f2c143` holds the federated-timing bench from #644. A
+shared GitHub runner with 4 Xeon cores ran this comparison. The page
+shows a shared-runner result apart from the milestone runs. Three
+rounds ran, with reversed order on the even round. #645 commits the
+files as `ci-20261010.*`.
+
+This run measures Synapse 1.161.0 on Postgres for the first time.
+All milestone runs through m7 used SQLite.
+
+Versions: Continuwuity 26.9.0, Tuwunel 1.9.2, Dendrite 0.15.2. No
+server was absent.
+
+**Scoreboard, by the separation rule, median against median:**
+
+- **Synapse: Spindle takes 27 of 27 cells.** Joins run 60–64×
+  faster. Sends run 50–58× faster. `sliding_window` runs ~15×
+  faster. Incremental sync runs ~15× faster. Pagination runs 9–10×
+  faster. Deep context runs 8–8.5× faster. `state` runs ~6× faster.
+  The no-op poll runs 6.4–6.8× faster. Initial sync runs 2.3–2.4×
+  faster. Postgres closed no gap. The closest band is initial sync
+  at 2.21–2.56×.
+- **Tuwunel: Spindle takes 24 cells and drops 1.** Joins run
+  3.4–3.8× faster. Sends run 1.6–3.3× faster, with more lead in
+  big rooms. Pagination runs ~2× faster. Deep context runs
+  1.7–1.9× faster. `sliding_window` runs 1.3–1.5× faster. `state`
+  runs 1.3–1.4× faster. Incremental sync runs 1.1–1.7× faster. The
+  loss is `sync_delta` at 800 events: 0.90×, band 0.86–0.92×. The
+  rounds separate there, against us. The loss still fits the 1.2×
+  that parity line 2 allows, so the line holds. `sync_delta` at
+  200 and 3,200 events stays unresolved.
+- **Continuwuity: Spindle takes 24 cells and drops 1.** Joins run
+  5.2–5.8× faster. Sends run 2.1–6.5× faster. Deep context runs
+  4.4–4.8× faster. The sync poll runs 4.3–4.5× faster. Pagination
+  runs ~3.6× faster. `state` runs 1.6–1.8× faster. Initial sync
+  runs 1.5–1.7× faster. `sliding_window` runs 1.1–1.2× faster. The
+  loss is `sync_delta` at 3,200 events: 0.90×, band 0.85–1.00×.
+  The script calls it, but the band touches parity. Read it as the
+  weakest call in the run. `sync_delta` at 200 and 800 events
+  stays unresolved.
+- **Dendrite: Spindle takes 24 of 24 cells.** Dendrite skips the
+  `sync_delta` workload at all sizes. Its table thus holds three
+  fewer cells. No old run fills those cells.
+
+**The losses share a workload, not a rival.** `sync_delta` means one
+client posts and all clients then poll for the delta. It is the
+newest workload in the driver. It is also the sole workload where a
+rival in Rust beats us, each at one size.
+
+All aimed workloads but that one separate for us at all sizes.
+Pagination, deep context, and join do so against each rival. #79
+interns state keys. Small deltas over shared state form its target.
+Watch this workload when that work lands.
+
+**Parity verdict from `scripts/parity-gate.py`, also in the body of
+# 645.** Line 1 holds on 27 cells. Line 2 holds on 21. Line 3 stays
+open. Three cells keep line 3 open. No client-server driver can
+build them.
+
+The 10,000-member federated join and the partition catch-up have a
+Spindle-side driver since #644. They still need a rival side.
+Concurrent send has a result against Synapse sole. The record keeps
+that gap open. #42 shuts on lines 1 and 2, with both losses above on
+file. A lone follow-up tracks the federated rival harness, where it
+can fail stark.
+
+## Line 3 against Synapse and Tuwunel (#647): a fail, on Tuwunel
+
+The v1 close-out could not judge line 3, because three of its cells had
+no rival. #647 measures them with a rival in the seat. The
+`targeted-sitting` workflow did two runs of
+`scripts/federated-benchmark.py` on a shared GitHub runner with 4 cores.
+Each run has five rounds, and the even rounds reverse the order. The
+versions are Synapse 1.161.0 on Postgres and Tuwunel 1.9.2, the pins of
+the weekly comparison.
+
+- Run 42012452964, files `targeted-20261105-8769d09.*`: main with #760,
+  which adds partial-state joins (MSC3706) to Spindle. The gate judges
+  line 3 on this run.
+- Run 41972144517, files `targeted-20261105.*`: main before #760.
+
+The two runs had different runner CPUs, so compare a ratio between two
+runs, not a time.
+
+**The method.** One Spindle, the resident, holds the far side of each
+federation link. It is the same build and configuration for each
+subject. The subject is Spindle, Synapse or Tuwunel. Thus a ratio gives
+the difference between two joiners, or between two servers that catch
+up, and not between two pairs. The driver measures Spindle as a subject
+in the same rounds as its rivals. The Rust bench from #644 is a
+different instrument, and the gate does not compare against it.
+
+- **Federated join** (`federated_join/<members>`): the time from
+  `POST /join` to the joiner that serves the full membership through
+  `/joined_members`. The resident seeds the room through an
+  appservice, so no password hash per member slows the seed.
+- **Catch-up after a partition** (`partition_catchup/200`): a front
+  refuses traffic in the two directions while the resident sends 200
+  events. Then the front opens and the resident sends a marker. The
+  cell starts when the retry of the resident first gets to the subject.
+  The cell stops when the subject serves the 200 events and the marker
+  through `/messages`. The time from the heal to that first connection
+  is the backoff of the resident. That time is the same for each
+  subject. It was most of the 0.9–3.2 s spread in the Rust bench.
+  The files record it as `resident_retry_ns`, beside the cell.
+- **Concurrent send** (`send_throughput/<clients>`): the workload of
+  `api-benchmark.py --dimension concurrency`, with 2, 4 and 8 clients.
+  Each client sends into its own room. The cell is the wall time per
+  send, so a ratio is the throughput ratio. One client is the `send`
+  cell that lines 1 and 2 judge already.
+
+Each federation link uses TLS through a front of the driver, with a
+certificate from a CA that the run makes. Each subject verifies that
+certificate. Synapse and Tuwunel both document a reverse proxy as their
+production shape, and a Tuwunel release build has no TLS listener.
+
+Each subject runs its default configuration. As in the weekly
+comparison, its rate limits are off, and it can federate to loopback.
+The resident has one rig setting, `retry_base_ms = 50`, as in the Rust
+bench. CI tests the front: when it closes, it stops each live connection
+and refuses new ones. Thus a keep-alive connection cannot go across the
+partition.
+
+**The run on main with #760:**
+
+| cell | Spindle | Synapse | Tuwunel | vs Synapse | vs Tuwunel |
+|---|---|---|---|---|---|
+| join, 1,000 members | 273 ms | 2,818 ms | 348 ms | 10.3× win | 1.27× win |
+| join, 10,000 members | 2,535 ms | 26,151 ms | 2,014 ms | 10.3× win | 1.26× slower, loss |
+| catch-up, 200 events | 337 ms | 10,042 ms | 607 ms | 29.8× win | 1.80× win |
+| send, 2 clients | 1,710/s | 37/s | 1,443/s | 45.8× win | 1.19×, noise |
+| send, 4 clients | 1,941/s | 41/s | 1,695/s | 47.0× win | 1.15× win |
+| send, 8 clients | 1,813/s | 42/s | 1,578/s | 43.4× win | 1.15× win |
+
+Each value is the median of five rounds. Each call uses the separation
+rule.
+
+**Against Synapse, Spindle takes all six cells by 10× or more.** With
+# 760, the resident offers partial state. Thus Synapse and Spindle both
+do a partial-state join. Tuwunel does a full join. The cell waits for
+the full membership, because before the resync a server cannot serve
+`/joined_members` for the room. The time to the `/join` answer is in
+the files as `join_returned_ns`:
+
+| `/join` answer | Spindle | Synapse | Tuwunel |
+|---|---|---|---|
+| 1,000 members | 50 ms | 223 ms | 278 ms |
+| 10,000 members | 67 ms | 246 ms | 1,916 ms |
+
+**Against Tuwunel, line 3 fails on five of six cells.** The
+10,000-member join is a loss. Spindle answers the `/join` 29× sooner,
+but its resync to the full membership takes longer than the full join of
+Tuwunel. The band is 0.66–0.84×, so the rounds separate against us. The
+1,000-member join is a win of 1.27×, which is not material. The
+catch-up is a material win of 1.80×.
+
+Concurrent send is a win of 1.15× at 4 and 8 clients and a tie at 2
+clients. None of these wins is material.
+
+Thus Spindle stays near Tuwunel where the design targets a lead, and it
+loses the full 10,000-member join. The resync of #760 is the place to
+look.
+
+**The run before #760** also failed line 3, on four cells. In that run,
+each joiner did a full join. Against Tuwunel the joins were wins of
+1.60× and 1.39×, and the catch-up was a tie at 0.97×. Concurrent send
+was 1.13–1.18×. Against Synapse each cell was a win of 15× or more.
+
+Thus #760 moved the 10,000-member join from a small win to a loss
+against Tuwunel, as a ratio. The two runs had different CPUs, so this
+result is not a time comparison.
+
+**Parity verdict from `scripts/parity-gate.py docs/benchmarks/data
+ci-20261010 targeted-20261105-8769d09`.** Line 1 passes on 33 cells.
+Line 2 passes on 21. Line 3 fails on 36 cells. All the target workloads
+have a measurement now, so the gate gives line 3 a verdict. The failed
+cells are `federated_join/1000`, `federated_join/10000` and
+`send_throughput` at 2, 4 and 8 clients, each against Tuwunel.
+
+### After #766: the 10,000-member loss is gone
+
+# 766 made the resync of #760 cheaper. The resync now asks for one
+`/state` and not for `/state_ids` too. It hashes each event one time,
+and it checks the signatures on all the cores. It reads the shared
+auth events of the roster one time for the batch. The targeted sitting
+ran again on that commit (run 42062085399, five rounds,
+`targeted-20261105-62fd4b4`):
+
+| cell | Spindle | Synapse | Tuwunel | vs Synapse | vs Tuwunel |
+|---|---|---|---|---|---|
+| join, 1,000 members | 178 ms | 2,330 ms | 215 ms | 13.1× win | 1.21× win |
+| join, 10,000 members | 1,563 ms | 21,370 ms | 1,509 ms | 13.7× win | 0.97×, noise |
+| catch-up, 200 events | 347 ms | 9,433 ms | 580 ms | 27.2× win | 1.67× win |
+
+This runner was faster than the runner of the earlier run. Tuwunel did
+the 10,000-member join in 1,509 ms here and in 2,014 ms there. Thus
+compare the ratios, not the times. Against Tuwunel, the 10,000-member
+join went from a separated loss of 1.26× to noise at 0.97×. Line 3
+still fails. The joins and concurrent send are not material wins.
+
+**Parity verdict from `scripts/parity-gate.py docs/benchmarks/data
+ci-20261010 targeted-20261105-62fd4b4`.** Line 1 passes on 33 cells.
+Line 2 passes on 21. Line 3 fails on 36 cells. The failed cells are
+`federated_join/1000` (1.21×), `federated_join/10000` (0.97×) and
+`send_throughput` at 2, 4 and 8 clients (1.05–1.14×), each against
+Tuwunel.
+
+### The run that we did not keep
+
+The first full run (41969314661, three rounds) kept all the servers of a
+round up at the same time. The rounds showed an order effect. The
+server that came after Synapse lost about one third of its send
+throughput. Tuwunel did 1,548 and 1,592 sends/s after Synapse and 2,350
+before it. Spindle did 2,561 before Synapse and 1,770 after it.
+
+The cause was the background work of Synapse after its 10,000-member
+join. Now each subject runs alone beside its own cold resident, and the
+run has five rounds. The artifact of that run keeps its files. The
+record does not use them.

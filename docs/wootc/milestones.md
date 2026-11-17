@@ -1,5 +1,5 @@
 ---
-sidebar_position: 25
+sidebar_position: 29
 title: "milestones"
 ---
 
@@ -74,6 +74,7 @@ then reboot back to Windows and assert it comes up clean.
 Windows seed → deployer → Phase-2 boot → User Data Bridge in `$HOME` →
 Phase-3 graduation to a native disk → native boot → seeded file on the
 native disk — passed **29/29** (`just remote-e2e-phase3`, wootc bd11049
+
 + fisherman 5025d4d). `tests/migration/test-bridge.sh` is **54/54
 green** in a container
 (passthrough + write-through, Steam registration, browser import,
@@ -87,12 +88,12 @@ not automation now; #3 tracks dashboard integration.
 
 ## Working agreement
 
-- Fix at the lowest rung that reproduces a failure; never debug rung 3
++ Fix at the lowest rung that reproduces a failure; never debug rung 3
   symptoms while rung 2 is red.
-- Every rung's harness must run on any of the E2E hosts (runner-a,
++ Every rung's harness must run on any of the E2E hosts (runner-a,
   runner-c, runner-b) — host-specific setup goes in a bootstrap recipe, not
   in engineers' heads.
-- A rung's harness is part of its definition of done: no green harness,
++ A rung's harness is part of its definition of done: no green harness,
   no claimed rung.
 
 ## Rung 3b — GUI-driven full run: the product arms the machine

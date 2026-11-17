@@ -1,11 +1,21 @@
 ---
-sidebar_position: 35
+sidebar_position: 39
 title: "release notes v0.3.0 beta"
 ---
 
+
+
+# wootc v0.3.0-beta Release Notes — "The whole matrix, honestly"
+
+> **Draft. Not released.** No `v0.3.0-beta` tag or GitHub release exists.
+> The milestone issue #211 closed on 2026-09-02. These notes record the
+> milestone work. `release.yml` refuses to publish while the draft marker on
+> line 1 is present (`tools/release/check-notes.sh`). Remove the marker only
+> in the PR that cuts the release, after you check each claim below.
+
 **Release Milestone**: M3 (`v0.3.0-beta`)  
 **Tracking Issue**: [#211](https://github.com/tuna-os/wootc/issues/211)  
-**Status**: Shipped | **Date**: 2026-09-02  
+**Status**: Draft (not released) | **Milestone closed**: 2026-09-02  
 
 ---
 
@@ -18,6 +28,7 @@ title: "release notes v0.3.0 beta"
 ## Milestone M3 Deliverables & Evidence
 
 ### 1. Full-Tier Matrix Green across Catalog Images and Windows Editions (M3.1 / #222)
+
 * **Status**: Complete & Verified.
 * **Evidence**: [`tests/e2e/matrix.tsv`](https://github.com/tuna-os/wootc/blob/main/tests/e2e/matrix.tsv), [`app/data/images.json`](https://github.com/tuna-os/wootc/blob/main/app/data/images.json).
 * The full-tier matrix exercises the complete ladder across every green catalog entry:
@@ -27,6 +38,7 @@ title: "release notes v0.3.0 beta"
 * Transient QGA communication drops are classified and retried automatically rather than masking legitimate regressions ([#220](https://github.com/tuna-os/wootc/issues/220), [#320](https://github.com/tuna-os/wootc/pull/320)).
 
 ### 2. BitLocker Install Path Green & Policy Flip (M3.2 / #223, #34)
+
 * **Status**: Complete & Verified.
 * **Code**: [`app/app.go`](https://github.com/tuna-os/wootc/blob/main/app/app.go), [`docs/manual-testing.md`](https://github.com/tuna-os/wootc/blob/main/docs/manual-testing.md), [`docs/RELEASING.md`](https://github.com/tuna-os/wootc/blob/main/docs/RELEASING.md).
 * `BitLockerSupported: true` is now enabled on the `beta` channel in `GetSupportPolicy()`.
@@ -35,6 +47,7 @@ title: "release notes v0.3.0 beta"
 * Clear instructions for BitLocker recovery and returning to Windows are documented in `docs/manual-testing.md`.
 
 ### 3. Profile Migration Edge Cases & Identity Integrity (M3.3, M3.4 / #197, #224, #225)
+
 * **Status**: Complete & Verified.
 * **Non-Latin Usernames (#224)**: Profiles with non-ASCII characters (CJK, Cyrillic, accented Latin) receive deterministic fallback Linux usernames (`winuser1`, `winuser2`, ...) while preserving full directory mapping in the vault and Phase-2 User Data Bridge. No user profile is silently dropped.
 * **Localized Built-in Accounts (#224)**: Built-in system accounts across English, French, German, Spanish, Italian, Portuguese, Russian, Ukrainian, Polish, Dutch, Swedish, Turkish, Chinese, Japanese, Korean, Czech, and Hungarian are excluded from generating phantom Linux accounts.
@@ -42,21 +55,25 @@ title: "release notes v0.3.0 beta"
 * **Dedicated Volume Label Gate (#225)**: `dedicatedVolumeInfo` and `removePartitionAndExtendC` strictly require the filesystem label `wootc-data` and 0 extraneous non-system files before claiming volume ownership. Empty user personal partitions without the label are protected from accidental removal during uninstallation. The verified volume label is explicitly named in the uninstall confirmation dialog.
 
 ### 4. Branded Installer E2E Cells Proven (M3.5 / #226)
+
 * **Status**: Complete & Verified.
 * **Code**: [`app/data/images.json`](https://github.com/tuna-os/wootc/blob/main/app/data/images.json), [`tests/e2e/matrix.tsv`](https://github.com/tuna-os/wootc/blob/main/tests/e2e/matrix.tsv).
 * Branded installer builds for **Bazzite** (`ghcr.io/ublue-os/bazzite:stable`), **Aurora** (`ghcr.io/ublue-os/aurora:stable`), and plain **Bluefin** (`ghcr.io/projectbluefin/bluefin:stable`) have passed full GUI-driven ladder verification and graduated to `status: green` in the catalog.
 
 ### 5. Upstream Blessings Governance (M3.6 / #227, #319)
+
 * **Status**: Complete & Verified.
 * **Code & Docs**: [`app/branding/README.md`](https://github.com/tuna-os/wootc/blob/main/app/branding/README.md), [`docs/upstream-blessings.md`](https://github.com/tuna-os/wootc/blob/main/docs/upstream-blessings.md), [`packaging/brands.sh`](https://github.com/tuna-os/wootc/blob/main/packaging/brands.sh), [`packaging/winget/render-brand.sh`](https://github.com/tuna-os/wootc/blob/main/packaging/winget/render-brand.sh).
 * Established formal governance and decision tracking for brand assets, names, taglines, and winget namespaces. Unblessed builds are reported in release logs and can be gated with `WOOTC_REQUIRE_BLESSING=1`.
 
 ### 6. Session Migration Honesty (M3.7 / #228, #347, #1)
+
 * **Status**: Complete & Verified.
 * **Code & Docs**: [`docs/session-migration.md`](https://github.com/tuna-os/wootc/blob/main/docs/session-migration.md), [`app/frontend/src/screens/migrate.js`](https://github.com/tuna-os/wootc/blob/main/app/frontend/src/screens/migrate.js), [`app/frontend/src/screens/done.js`](https://github.com/tuna-os/wootc/blob/main/app/frontend/src/screens/done.js).
 * Clear disclosure that browser and app sessions are staged and require one-time re-authentication upon first login in Linux ("staged — you'll sign in once on Linux").
 
 ### 7. Support Policy Audit & Channel Gates
+
 * **Status**: Complete & Verified.
 * **Tests**: [`app/support_gate_test.go`](https://github.com/tuna-os/wootc/blob/main/app/support_gate_test.go).
 * Every flag in `GetSupportPolicy()` maps directly to verified matrix cells:

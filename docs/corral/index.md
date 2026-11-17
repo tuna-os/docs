@@ -39,6 +39,18 @@ VMs are cattle. Don't treat each one like a networking project.
 <img src="https://raw.githubusercontent.com/tuna-os/corral/main/docs/screenshots/dashboard-mobile.png" alt="Mobile view" width="390" />
 </details>
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## Why you'll like it
 
 - **Same commands everywhere.** `create` / `start` / `ssh` / `viewer` /
@@ -93,10 +105,11 @@ VMs are cattle. Don't treat each one like a networking project.
   `corral ssh` picks the right path: a Kubernetes API tunnel for cluster VMs,
   a Tailscale-bound port-forward for local ones. Or use `--vsock` for QEMU
   AF_VSOCK transport on live ISOs. It changes no config files.
-- **VMs that join the tailnet themselves.** Drop a Tailscale auth key in
-  `~/.config/tailvm/config.yaml` (or `TS_AUTHKEY`). Then every cloud-init VM
-  runs `tailscale up` on first boot. It shows up as a real machine on your
-  tailnet, MagicDNS name and all.
+- **Cluster VMs on your tailnet, no agent in the guest**. When the cluster
+  runs the Tailscale Kubernetes operator, `corral create` gives each KubeVirt
+  VM a proxy. The proxy shows up on your tailnet as `<name>-vm`, with SSH, VNC
+  and RDP. Guests do not run `tailscale up` themselves. To make a guest a
+  tailnet node of its own, install Tailscale in the guest.
 - **Extensions with a marketplace.** Niche features ship as plugins:
   `corral plugin search`, then `corral plugin install bootc`. Then
   `corral bootc create dev --image ghcr.io/...` builds an OS disk *on the
@@ -135,6 +148,31 @@ It works on Linux and macOS, amd64 and arm64:
 curl -fsSL https://raw.githubusercontent.com/tuna-os/corral/main/scripts/install.sh | sh
 ```
 
+CI signs each binary and the container image with Sigstore, and attests an
+SPDX SBOM for each. It uses no stored key. When `cosign` is on your `PATH`,
+the script also verifies the signature. Set `CORRAL_REQUIRE_SIGNATURE=1` to
+stop the install when `cosign` is not available. To verify by hand, use the
+exact identity of the workflow that signed the file:
+
+```bash
+iss=https://token.actions.githubusercontent.com
+# Rolling binary (from main)
+cosign verify-blob --bundle corral-linux-amd64.sigstore.json \
+  --certificate-identity https://github.com/tuna-os/corral/.github/workflows/ci.yml@refs/heads/main \
+  --certificate-oidc-issuer "$iss" corral-linux-amd64
+# Binary from the release of tag v0.7.0
+cosign verify-blob --bundle corral-linux-amd64.sigstore.json \
+  --certificate-identity https://github.com/tuna-os/corral/.github/workflows/release.yml@refs/tags/v0.7.0 \
+  --certificate-oidc-issuer "$iss" corral-linux-amd64
+# Container image and its SBOM attestations
+cosign verify ghcr.io/tuna-os/corral:latest \
+  --certificate-identity https://github.com/tuna-os/corral/.github/workflows/ci.yml@refs/heads/main \
+  --certificate-oidc-issuer "$iss"
+cosign verify-attestation --type spdxjson ghcr.io/tuna-os/corral:latest \
+  --certificate-identity https://github.com/tuna-os/corral/.github/workflows/ci.yml@refs/heads/main \
+  --certificate-oidc-issuer "$iss"
+```
+
 <details>
 <summary>…or via <code>brew</code> (Linux &amp; macOS)</summary>
 
@@ -145,6 +183,7 @@ already has an unrelated `corral`), but it still installs the `corral` command:
 ```bash
 brew install tuna-os/tap/corral-vm
 ```
+
 </details>
 
 <details>
@@ -159,6 +198,7 @@ curl -fsSL -o corral \
 chmod +x corral
 install corral ~/.local/bin/
 ```
+
 </details>
 
 <details>
@@ -167,6 +207,7 @@ install corral ~/.local/bin/
 ```bash
 go install github.com/tuna-os/corral@latest
 ```
+
 </details>
 
 <details>
@@ -178,6 +219,7 @@ cd corral
 go build -o corral .
 install corral ~/.local/bin/
 ```
+
 </details>
 
 <details>
@@ -192,6 +234,7 @@ podman cp corral-extract:/usr/local/bin/corral .
 podman rm corral-extract
 install corral ~/.local/bin/
 ```
+
 </details>
 
 Optional: `corral completion fish | source` (bash/zsh/fish, via Cobra).
@@ -200,10 +243,14 @@ Optional: `corral completion fish | source` (bash/zsh/fish, via Cobra).
 `corral web` starts at boot and restarts on failure:
 
 ```bash
-corral web service install                  # per-user unit (no root)
-corral web service install --system \        # or machine-wide (run under sudo)
-  --addr "$(tailscale ip -4):8006"
-corral web service status                    # / uninstall / print
+# Per-user unit (no root).
+corral web service install
+
+# Machine-wide unit; run under sudo.
+corral web service install --system --addr "$(tailscale ip -4):8006"
+
+# Show the unit status. The other subcommands are uninstall and print.
+corral web service status
 ```
 
 For a per-user unit to run after you log out, enable linger:
@@ -211,9 +258,13 @@ For a per-user unit to run after you log out, enable linger:
 
 Development tasks run through [`just`](https://github.com/casey/just), and a
 bare `just` lists them. They include `build`, `test`, `vet`, `ci` (the
-pre-push gate), and `regen-catalog`. That last one refreshes the Universal
-Blue / Bluefin / TunaOS bootc catalog from ghcr. It drops any image with no
-rebuild in ~60 days.
+pre-push gate), and `regen-catalog`. It checks bootc images on public GHCR
+and candidate installer ISOs. New entries and aliases need an upstream rebuild
+within 60 days. The script keeps stale or unavailable entries for manual review.
+
+Each week, the catalog-refresh workflow opens a PR and dispatches CI. Repository
+Actions settings must allow GitHub Actions to create pull requests. Renovate
+also tracks versions of the selected containerdisks.
 
 ## Try it in 30 seconds — no cluster needed
 
@@ -241,6 +292,10 @@ corral create web --kubevirt --container-disk quay.io/containerdisks/ubuntu:24.0
 corral start web
 corral ssh web
 
+# Copy literal files or directory trees through the KubeVirt API (SFTP)
+corral cp ./build.tar web:/tmp/build.tar -u ubuntu
+corral cp -r web:/home/ubuntu/results ./results -u ubuntu
+
 # Cluster VM from an installer ISO (CDI imports it for you, progress in `corral list`)
 corral create bluefin --kubevirt --iso https://download.example/bluefin.iso
 
@@ -260,6 +315,76 @@ corral ct console devbox
 corral ct create myproj --devcontainer ./myproj
 ```
 
+For persistent KubeVirt workspaces, use `--import URL` to put a bootable cloud
+image on a root PVC. A container disk remains ephemeral even with a separate
+`--disk` data PVC. See the [persistent workspace recipe](https://github.com/tuna-os/corral/blob/main/docs/user-guide.md#a-persistent-kubevirt-workspace-root)
+and [copy/authentication/trust details](https://github.com/tuna-os/corral/blob/main/docs/user-guide.md#copying-files-to-and-from-kubevirt).
+
+Local QEMU defaults to the host architecture. `--arch amd64|arm64` selects
+the **guest** architecture independently of the Corral binary: amd64 uses
+`qemu-system-x86_64` and the `q35` board; arm64 uses
+`qemu-system-aarch64` and `virt`. Linux uses KVM for native guests only if the
+caller can open `/dev/kvm` read/write. Otherwise Corral uses TCG and records
+that choice. Native guests use Hypervisor.framework on macOS.
+
+Cross-architecture guests always use TCG with an emulated CPU, never KVM/HVF
+or the host CPU model. For example, an amd64 guest on an Apple Silicon Mac
+uses the x86_64 emulator, `q35`, amd64 UEFI, and TCG.
+This is slower than native virtualization.
+
+To import a verified amd64 boot disk without a local disk build:
+
+```bash
+corral --backend qemu create NAME --qcow /absolute/path/disk.qcow2 --firmware uefi --arch amd64 --loopback
+```
+
+UEFI search follows the **guest** architecture. Firmware for amd64 comes from
+Homebrew on Apple Silicon; Corral does not replace it with firmware for ARM.
+ARM64 guests use UEFI: Corral selects it when `--firmware` is not set. Files from `CORRAL_OVMF_CODE` and
+`CORRAL_OVMF_VARS` must match the selected guest architecture.
+Intel Macs also discover Homebrew's ARM64 UEFI firmware under
+`/usr/local/share/qemu`; ARM64 guests there use TCG, not Hypervisor.framework.
+
+Corral records the guest `architecture` and `acceleration` in VM info.
+It saves the exact emulator command for subsequent starts.
+`--arch` works only for QEMU on the local host. Other backends reject it.
+The `--bootc` path also rejects it.
+`--loopback` binds the guest VNC console and forwarded SSH to `127.0.0.1`,
+even when Tailscale is active; it is also local-QEMU-create-only.
+
+Corral does not authenticate the disk's publisher or qualification: its
+product-specific consumer must verify the release artifact first. Argument
+and metadata tests are not proof that a particular guest boots on macOS;
+actual native-host disk and browser qualification is still required.
+
+Without a systemd user session, Corral records a direct QEMU process.
+Stop identifies that VM over its private QMP socket and requests `quit`.
+A PID file alone is not enough to send a signal to a process.
+
+QEMU can stop unexpectedly and leave its PID file. The system can then give that PID to a different process.
+Corral treats the VM as stopped if the PID runs a different command.
+Corral also treats it as stopped if no process listens on the recorded QMP socket.
+In both cases, Corral removes the PID file and sends no signal.
+
+If Corral cannot prove the identity or the retirement, stop fails.
+Delete then retains the disk and PID state for diagnosis.
+For an older direct VM without QMP, its actual supervisor must stop it first.
+
+CI runs on Linux and macOS with both amd64 and ARM64 hosts.
+It checks retirement of real QEMU processes and ownership of loopback RFB.
+A 200-character QMP sequence takes more than five seconds.
+The CLI also creates and starts an empty disk.
+It waits for firmware pixels with `qemu//local/NAME`, then stops and deletes
+the VM. CI keeps the frame and checks that Corral removed its own files.
+
+All four hosts retain the amd64-guest UEFI case.
+The Intel macOS job also runs an empty ARM64 guest with Homebrew firmware.
+It checks QMP's guest architecture, live TCG translation state and attached firmware files.
+Both cases keep runtime and owned-cleanup receipts with the firmware frame.
+
+These checks qualify backend/CLI behavior, not a Tuna guest or the desktop
+launcher. They do not prove firstboot, login, or a browser session.
+
 ## How VMs are reached
 
 | | Local (qemu) | Cluster (kubevirt) |
@@ -267,7 +392,7 @@ corral ct create myproj --devcontainer ./myproj
 | SSH | host's Tailscale IP, forwarded port | `virtctl ssh` API tunnel — works with zero exposure |
 | VNC | host's Tailscale IP, `vnc://…` | `virtctl vnc` proxy |
 | Published ports | — (host is already on the tailnet) | per-VM proxy Service tagged `tailscale.com/expose` → `<name>-vm.<tailnet>.ts.net` |
-| VM on the tailnet itself | — | automatic via cloud-init when an auth key is configured |
+| VM on the tailnet itself | — | not automatic; the proxy above is the tailnet device. Install Tailscale in the guest if you need it |
 
 Corral never binds anything to `0.0.0.0`. Ports of local VMs attach only to
 the host's Tailscale IP.
@@ -306,6 +431,27 @@ VM that runs, without any local tooling:
 `corral bootc rebuild|upgrade|switch` re-bakes the disk from a new image
 (Corral applies the SSH key again across the `--wipe`). Rebuild your OS in CI,
 `corral create` it as a VM in minutes.
+
+To make the greeter usable on a desktop image, create a login account before
+the first boot:
+
+```bash
+corral bootc create dev --image ghcr.io/tuna-os/marlin:tuna \
+  --user tuna --password-prompt
+# Scripts give the password as the first line of stdin:
+printf '%s\n' "$PASSWORD" | corral bootc create dev \
+  --image ghcr.io/tuna-os/marlin:tuna --user tuna --password-stdin
+# Or give a SHA-512 crypt hash:
+corral bootc create dev --image ghcr.io/tuna-os/marlin:tuna \
+  --user tuna --password-hash '$6$rounds=656000$<salt>$<hash>'
+```
+
+Corral hides the password prompt and rejects plaintext `--password`. The
+account goes into the installed deployment's `/etc`, with its home in
+`/var/home`, so it is there at the first boot. The `--user`,
+`--password-prompt`, `--password-stdin`, and `--password-hash` flags are also
+available on `bootc rebuild`, `bootc upgrade`, and `bootc switch`. A resumed
+build reuses an already-installed disk and cannot add an account.
 
 **Faster builds:** deploy `deploy/registry-cache.yaml` (an on-cluster
 pull-through cache for ghcr.io). The builder then pulls images through it
@@ -367,6 +513,16 @@ There is no broker, no self-serve web page, and no idle reclaim yet. See the
 RFC and [issue #69](https://github.com/tuna-os/corral/issues/69) for what's
 next. Pool membership and assignment are plain K8s labels on the VM objects,
 nothing more.
+
+`corral vdi ct-pool` keeps a declared pool of CTs: ephemeral Linux desktops
+built from a container image. When a user releases a member, Corral makes it
+again from the image. See [docs/vdi-ct-pools.md](https://github.com/tuna-os/corral/blob/main/docs/vdi-ct-pools.md).
+
+```bash
+corral vdi ct-pool apply desk --image ghcr.io/example/desktop:1 --size 3
+corral vdi ct-pool claim desk alice
+corral vdi ct-pool release desk desk-1 alice
+```
 
 ## Bootc images as a CI boot gate
 
@@ -472,14 +628,15 @@ Container" could recognize Corral natively.
 ## Configuration
 
 ```yaml
-# ~/.config/tailvm/config.yaml
-tailscale:
-  auth_key: tskey-...   # or export TS_AUTHKEY; flag --ts-authkey overrides
+# ~/.config/corral/config.yaml ($XDG_CONFIG_HOME/corral/ when that is set)
+default:
+  backend: kubevirt   # or: corral config set-default-backend kubevirt
 ```
 
 `corral config` shows what's active. State lives in
-`~/.local/share/tailvm/` (registry + local VM disks). The legacy `tailvm`
-tool shares this directory, so existing VMs still work.
+`~/.local/share/corral/` (`registry.json` and local VM disks under `vms/`).
+Corral does not read the legacy `tailvm` directories (`~/.config/tailvm/`,
+`~/.local/share/tailvm/`).
 
 Environment overrides (handy for the in-cluster web deployment):
 
@@ -526,12 +683,14 @@ corral list             all VMs, every configured context
 corral context          get | use <name> | add <name> --backend <bck> | list | rm <name>
 corral create <name>    --kubevirt | (default: local qemu)
                         --mem 4G --cpu 2 --disk 20G --iso … --container-disk …
-                        --pvc … --node … --cloud-init … --instancetype … --ts-authkey …
+                        --pvc … --node … --cloud-init … --instancetype …
                         --storage-class … --ephemeral --ttl 4h
                         --lan | --network-nad ns/name [--bridge-iface net1]  (LAN bridge NIC)
 corral gc               [kubevirt] [--dry-run] [--delete-after 72h]
                         stop --ephemeral VMs past their --ttl (PVCs kept),
                         delete them once stopped past --delete-after
+                        --builders [--builder-age 2h]: also purge interrupted
+                          bootc builds (builder VM with no final VM)
 corral clone <src> <dst>  [kubevirt] clone a VM's disk + config to a new name
 corral plugin           search | install <name> | list | remove <name>   (extensions)
 corral start|stop <name>
@@ -549,10 +708,17 @@ corral addnic <name>    [kubevirt] --network-nad ns/name --iface net1
                           bridge a LAN NIC onto an existing VM
 corral ssh <name>       [-u user] [-i key] [-c cmd] [-p port] [--password …]
                           [-L [bind:]port:host:hostport ...]  local port forward(s)
+corral cp <src> <dst>   [kubevirt] local ↔ instance:path; [-r] [-u user] [-i key]
 corral viewer <name>    VNC via xdg-open
+corral key <name> <key>...  [qemu|kubevirt] press a key combination (ret, ctrl alt f2)
+corral type <name> [text]   [qemu|kubevirt] [--file PATH|-] [--powershell] [--enter]
+                          type UTF-8 input; --powershell sends an encoded launcher
+corral pointer <name> <x> <y>  [kubevirt] [--click left|middle|right] [--double]
 corral logs <name>      journald (local) / virt-launcher (cluster)
 corral info <name>      raw JSON
-corral delete <name>    [-f] removes VM, disks, proxy, registry entry
+corral delete <name>…   [-f] [--wait [--timeout 5m]] [--json] removes each VM
+                          and every object corral made for it (disks, Secrets,
+                          proxy, snapshots, leftover bootc builder), registry entry
 
 corral ct create <name>  --image … [--cpu 1] [--mem 512Mi] [--disk 5Gi]
                           [--privileged]  (distrobox-style persistent rootfs)
@@ -565,6 +731,29 @@ corral vdi assign <pool> <user>
 corral vdi unassign <member>
 corral vdi connect <member>
 ```
+
+`corral type` needs one source: positional text, `--file PATH`, or `--file -`
+for stdin. Ordinary input must map to a US keyboard.
+
+With `--powershell`, Corral accepts Unicode in PowerShell source, with an
+optional UTF-8 BOM at the start. It types
+`powershell.exe -NoLogo -NoProfile -EncodedCommand` with UTF-16LE Base64.
+For example: `corral type winvm --file script.ps1 --powershell --enter`.
+Corral refuses empty or BOM-only PowerShell source.
+The launcher has a limit of 8,191 characters for Windows `cmd.exe` compatibility.
+
+Manually focus the guest's command field or shell first.
+Corral does not open Run, change focus, elevate through UAC, or handle credentials.
+`--enter` explicitly appends Return; ordinary input's own newlines still press Return.
+Success means Corral sent the input, not that a script ran.
+Check an observable guest result, such as a file the script creates.
+
+Base64 is reversible, not encryption or secret storage.
+Run or shell history can retain the source.
+Normal output stays silent.
+With `--json`, Corral reports only the VM, action, source character count, and whether the user chose `--enter`.
+This count excludes a stripped BOM or appended Return.
+Corral never prints the source or encoded payload.
 
 ### KubeVirt feature support & cluster requirements
 
@@ -596,12 +785,16 @@ Full design document: [SPEC.md](https://github.com/tuna-os/corral/blob/main/SPEC
 
 - **[`CONTRIBUTING.md`](https://github.com/tuna-os/corral/blob/main/CONTRIBUTING.md)** — how to build and test (`just ci`, the `-tags bootc` set), code style, and how to submit a change
 - **[`SPEC.md`](https://github.com/tuna-os/corral/blob/main/SPEC.md)** — full specification (commands, flags, types, backends, registry)
+- **[`docs/user-guide.md`](https://github.com/tuna-os/corral/blob/main/docs/user-guide.md)** — first commands for each backend, and common workflows: create, connect, clone, move, snapshots, plugins
+- **[`docs/troubleshooting.md`](https://github.com/tuna-os/corral/blob/main/docs/troubleshooting.md)** — what each `corral doctor` check means, error messages with their fixes, and how to collect evidence
 - **[`docs/api.md`](https://github.com/tuna-os/corral/blob/main/docs/api.md)** — the complete reference for the REST API
 - **[`docs/architecture.md`](https://github.com/tuna-os/corral/blob/main/docs/architecture.md)** — package map, design decisions, data flow, build system
 - **[`docs/backend-support.md`](https://github.com/tuna-os/corral/blob/main/docs/backend-support.md)** — what each backend context can do (local QEMU, KubeVirt, Incus, libvirt, Proxmox VE, Corral peer)
 - **[`docs/backend-parity.md`](https://github.com/tuna-os/corral/blob/main/docs/backend-parity.md)** — per-operation parity matrix, generated from `pkg/backend.Matrix` and enforced by conformance tests
 - **[`docs/ci-boot-gate.md`](https://github.com/tuna-os/corral/blob/main/docs/ci-boot-gate.md)** — how to gate CI publishes on bootc images that boot (QEMU + KubeVirt), with field-tested fixes for failures
 - **[`docs/kubevirt-proxmox-setup.md`](https://github.com/tuna-os/corral/blob/main/docs/kubevirt-proxmox-setup.md)** — from-scratch KubeVirt + Longhorn + Corral setup guide
+- **[`docs/incus-backend-setup.md`](https://github.com/tuna-os/corral/blob/main/docs/incus-backend-setup.md)** — Incus remotes, trust, contexts, and checks
+- **[`docs/libvirt-backend-setup.md`](https://github.com/tuna-os/corral/blob/main/docs/libvirt-backend-setup.md)** — libvirt URIs (local and `qemu+ssh://`), permissions, contexts, and checks
 - **[`docs/testing.md`](https://github.com/tuna-os/corral/blob/main/docs/testing.md)** — test strategy & plan (unit, integration, E2E)
 - **[`docs/vdi.md`](https://github.com/tuna-os/corral/blob/main/docs/vdi.md)** — setup guide for the VDI plugin (desktop pools)
 - **[`docs/vdi-epic-status.md`](https://github.com/tuna-os/corral/blob/main/docs/vdi-epic-status.md)** — status of the VDI epic: dependency chain & hardware gates (#69)
@@ -609,7 +802,10 @@ Full design document: [SPEC.md](https://github.com/tuna-os/corral/blob/main/SPEC
 
 ## Requirements
 
-- Local backend: `qemu-system-x86_64` + KVM, systemd user session
+- Local backend: `qemu-system-x86_64` or `qemu-system-aarch64` must match the guest.
+  Linux uses KVM for native guests; macOS uses Hypervisor.framework.
+  Cross-architecture guests use TCG. UEFI firmware must match the guest.
+  A systemd user session is optional.
 - Cluster backend: `kubectl` context with KubeVirt (+ CDI for ISO import),
   `virtctl`; Tailscale operator for published ports
 - `tailscale` on the host; `sshpass` only if you use password SSH
@@ -619,15 +815,6 @@ Full design document: [SPEC.md](https://github.com/tuna-os/corral/blob/main/SPEC
 A corral is one fence that holds the whole herd. Your VMs are the cattle;
 your tailnet is the fence. *(Formerly known as `tailvm`.)*
 
-
 ## Community
 
 [Discord](https://discord.gg/TeP2kxKQq)
-
-
-## Contribute compute — no code needed
-
-No time to write code? You can still push this project's backlog forward. TunaOS AI-agent hives work on this repository. Lend a hive your AI subscription or API tokens, and your machine runs contributor tasks from this project's backlog.
-
-- 🪸 [Contribute compute to the reef hive](https://reef.tunaos.org/contribute)
-- 🏫 [Contribute compute to the school hive](https://school.tunaos.org/contribute)

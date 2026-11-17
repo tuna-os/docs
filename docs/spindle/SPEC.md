@@ -43,11 +43,10 @@ outward as a federation profile:
    persistent hash-array-mapped trie with structural sharing. Advancing state by
    one event copies ~3 nodes. State at an arbitrary historical point is a single
    pointer lookup.
-3. **State resolution is an exception path.** It runs only over the bounded
-   window between a fork point and the current head, only when a legacy DAG peer
-   actually forks, and only when the fork contains conflicting *state* events.
-   It never runs over a whole room, and in a non-federated room it never runs at
-   all.
+3. **State resolution is an exception path.** It runs only when a legacy DAG
+   peer forks and the branches' states differ, it is the room
+   version's own algorithm when it does (§9, ADR 0005), and in a non-federated
+   room it never runs at all.
 4. **Wire format is unchanged.** Native Spindle rooms are ordinary **room
    version 11** rooms. A chain is a valid DAG. Existing clients and existing
    homeservers cannot tell the difference, which is what makes "completely
@@ -124,8 +123,8 @@ needing no resolution; both compute `auth_chain_difference` only inside
 Any framing of this project as "we skip state resolution and they don't" is
 false, and #56 measures the consequence: on a real fork our advantage over
 `ruma-state-res` is a flat 2.2–3.1× constant factor across the whole range out
-to a full `max_fork_window` — not the superlinear gap the cost column invites a
-reader to expect.
+to a 512-event fork, the window cap §9.1 then had — not the superlinear gap the
+cost column invites a reader to expect.
 
 What survives is the bottom four rows, and they have one thing in common:
 **they are bookkeeping, not algorithms.** Maintaining the extremity set,
@@ -222,6 +221,12 @@ the current earliest known event, so no insertion *between* two stored events is
 ever required and a plain integer key suffices — no fractional indexing, no
 rebalancing.
 
+The one exception is history missing from the *middle* of the log: a server
+that was offline longer than dependency recovery can span accepts the room's
+next event across a gap, and the history between its old head and that
+event has no `li` to take. It is stored as a *gap segment* outside the log
+(§6.6), not by renumbering it.
+
 `li` is the room's topological ordering by construction. `/messages` pagination
 is a reverse range scan. `prev_batch`/`next_batch` tokens are `t{li}`.
 
@@ -277,6 +282,13 @@ produce a different chain — attesting to sequence, not merely to membership.
 And a divergence never re-converges: two histories that differ at one index
 disagree at every index after, even where later events are identical, so the
 first differing value localises the change.
+
+**A truncated room restarts the chain from a checkpoint.** Retention (§14.3)
+deletes the entries below a floor. The room then stores `chain[floor - 1]`
+beside the floor, and every restore seeds the chain from it instead of from
+the domain seed. The checkpoint is written before the first delete, so an
+interrupted truncation still loads. Entries kept below the floor carry no
+chain value, like backfilled history.
 
 **Only forward-appended entries carry a chain value.** Backfilled history was
 sequenced by another server and arrives with its own provenance; attesting to
@@ -361,6 +373,10 @@ A room with 50k state events holds on the order of a few MB resident; rooms
 evict to disk under an LRU keyed by last activity, retaining only the 32-byte
 root.
 
+**Status.** The eviction of idle rooms in the paragraph above is designed only.
+An open room keeps its whole log index in memory until the process stops
+(#816). The snapshot window below is built.
+
 Within a room the same rule applies per entry. Every log entry keeps its state
 root — 32 bytes, forever — but the materialized snapshot it names is held only
 while something can still ask for it. Retaining one snapshot per entry sounds
@@ -371,11 +387,10 @@ rather than with the size of the state.
 
 Snapshots are therefore retained for:
 
-- the most recent `resident_window` entries, defaulting to `max_fork_window`
-  (§9.1). The coupling is the argument: a fork deeper than the window already
-  falls back to full state resolution, which reads the trie from the store, so
-  a window this size holds everything the fast path can reach and nothing that
-  only the slow path can;
+- the most recent `resident_window` entries (512 by default). This window
+  limits memory only. Spindle can still resolve a fork of any depth. If a
+  resolution needs the state of an older parent, Spindle reads it from the
+  store by its root. The window decides only which forks pay for that read;
 - every forward extremity, at any age. A class-D stale peer event can leave an
   extremity arbitrarily far back (ADR 0001), and the next local event has to
   merge that extremity's state with the head's;
@@ -386,6 +401,26 @@ Snapshots are therefore retained for:
 Anything else is rehydrated from `state_nodes` by its root, which is `O(log n)`
 in the size of the state. The bound is asserted rather than assumed: a room
 whose resident count tracks its length has lost it.
+
+**Status.** The number of resident rooms is bounded. The number of events kept
+per resident room is not.
+
+- `[storage] max_resident_rooms` (default 4096, `0` for no limit) caps the
+  open rooms. When a load or a new room takes the count past it, the rooms
+  untouched for longest are dropped. The metrics are
+  `spindle_rooms_resident` and `spindle_rooms_evicted_total`.
+- A room is dropped only when nothing holds it: no reader, writer or
+  federation task has its lock, no load is in flight for it, it is not
+  mid-resync (partial state), and it has no unmerged fork. A busy room
+  keeps the count above the limit until it is idle.
+- A dropped room loads from the store like a restart. Every cache kept for
+  it is cleared with it. Only `receipt_marks` and the extremity merge
+  bookkeeping stay, because the store cannot rebuild them.
+- A resident room still keeps its whole log index in memory (`entries` and
+  `positions` in `RoomLog`). Memory per resident room is `O(events)`. A tail
+  window over `EventIndex` is not built.
+- The retention rule in the first paragraph is therefore only half true
+  today: rooms evict, but the log index of a room that stays open does not.
 
 ### 6.5 Backfilled history
 
@@ -404,6 +439,70 @@ rather than a state res per event. Fetching state for backfilled ranges is
 asynchronous and does not block `/messages`: events are served with their
 `li` order immediately, and lazy-loaded member state resolves as the chunk's
 state materializes.
+
+### 6.6 Gap segments: history missing from the middle
+
+An event accepted across a federation gap (`append_across_gap`) is placed at
+`li = G`, directly above this server's old head; the room's history between
+the two is missing, and a durable gap marker names the predecessors `G` cites
+that this server lacks. A background task fills it, one chunk at a time, by
+the §6.5 procedure walked from the marker instead of from the earliest event:
+
+1. `/backfill` from the walk's frontier (initially the marker's missing
+   predecessors), keeping only events the walk asked for — the frontier and,
+   transitively, their `prev_events`. Event IDs are reference hashes, so
+   everything kept is pinned by `G`'s signature; a branch ends where it meets
+   an event this server holds.
+2. Verify each event (hash, signatures, ID); fetch, verify and authorize any
+   auth event this server lacks.
+3. `/state_ids` **once per chunk**, at its oldest event; fold that state
+   forward across the chunk, judging each event against its auth events and
+   the folded state before it. An event that fails is walked through but
+   kept out of the timeline.
+4. Store the chunk and the walk's new frontier (in the marker) in one atomic
+   write. A forged or refused chunk stores nothing; a restart resumes from
+   the last stored chunk. The marker is removed when the frontier is empty.
+
+There is no `li` between `G - 1` and `G`, so the chunk is not given one. Each
+gap's events are a **segment** keyed by its anchor `G`: positions in a band
+reserved far below every `li` (`-2^62 + G·2^20 + seq`), `seq` counting down
+from just below `G` as the walk goes back, so one segment's positions are
+contiguous and in order. Pagination reads the room in *stitched* order — the
+log's, with each segment spliced in directly below its anchor:
+
+    … G+1, G, [segment of G, newest first], G-1, G-2 …
+
+`/messages` tokens remain `t{position}`; a token inside a segment names a band
+position, and the walk resumes there in either direction. `/context` stitches
+the same way and returns the state stored with the segment event. A room
+with no segment pages by the plain range scan of §10.4.
+
+Segment events are outside the log by design: they take no stream position
+(so `/sync` never fans them out and push never sees them), never become
+forward extremities, and never change the room's current state. They are
+served to clients and over `/event`, but not over `/backfill` or
+`/get_missing_events`, are not searchable, and have no relation index. A
+segment is visible to a reader who may see both sides of the gap (`G - 1`
+and `G`). Redactions apply as they would have live: one inside the segment
+rewrites its target, and one whose target has not arrived yet is held
+until backfill brings the target in.
+
+Peers are chosen as for recovery — the server that served `G`'s state, `G`'s
+origin, then the servers with the most joined members — leaving out any still
+cooling down from a 429 or a 403 for that room. Only a server with a member
+joined now is asked. A server whose users all left is not asked, and a gap
+with no such server waits. The ranking comes from the membership index and is
+cached against the state root. In a partial-state room, the resident's
+`servers_in_room` follow the ranked servers. Chunks are paced
+(`gap_backfill_interval_ms`), a failed gap backs off, and a gap that outgrows
+`gap_backfill_max_events` is left truncated rather than fetched without end.
+
+A remote join leaves a gap of the same kind. The `send_join` response has the
+room's state and auth chain, but not its history (§11.5). The join is the
+anchor, and its `prev_events` are the first frontier. The events that the join
+put into the log are state, not history. Thus the walk goes through them and
+does not stop, and it folds their state into the chunk's state. The walk stops
+at the create event, or after 1,000 events.
 
 ---
 
@@ -435,11 +534,14 @@ it is the same six lookups.
 
 ### 7.2 Rejection and soft-fail
 
-Both are retained exactly per spec. A rejected event is persisted with
-`flags.rejected` and excluded from state and from client-visible timelines. A
-soft-failed event is persisted and not sent to clients, but remains a valid DAG
-ancestor. These flags live in the log entry, so "was this soft-failed" is a field
-read rather than a query.
+Both are retained exactly per spec (§9.3). A received event is checked against
+its auth events, against the state before it — its parents' states, resolved
+when they differ — and against the room's current state. A rejected event
+changes no state; a soft-failed one keeps its own write for any child that
+names it. Neither is sent to clients nor becomes a forward extremity, and both
+remain valid DAG ancestors. *Amended (ADR 0005):* they are kept as sidelined
+entries beside the log rather than flagged inside it, so no timeline reader
+can show one by forgetting a flag.
 
 ### 7.3 Power level changes
 
@@ -493,8 +595,9 @@ POST /_matrix/federation/v1/send/{txnId}
   ├─ 5. respond 200 with per-PDU results
   └─ 6. per-room executors drain their partitions:
          ├─ prev_events all known?  ── no ──▶ /get_missing_events, then retry
-         ├─ prev_events == our head? ── yes ─▶ append at tail (§8.1 steps 3–12)
-         └─ otherwise ─────────────────────▶ fork handling (§9)
+         ├─ state before = parents' states, resolved if they differ (§9.2)
+         ├─ receipt checks: auth events, state before, current state (§9.3)
+         └─ append at tail (§8.1 steps 3–12), or sideline if refused
 ```
 
 Step 3 uses batched Ed25519 verification, which amortizes the dominant per-PDU
@@ -514,6 +617,14 @@ microseconds. Three configurable modes:
 | `strict` | fsync before responding to the client | Regulated / single-node deployments |
 | `group` *(default)* | fsync batched, ≤1 ms window, response after batch | General |
 | `relaxed` | OS page cache, periodic fsync | Ephemeral / test |
+
+**Status.** All three modes are built. `[storage] durability` chooses one, and
+`group` is the default. The mode applies to room commits. Account, token,
+device, one-time key and signing key writes never fall below `group`: `strict`
+raises them to `strict`, and `relaxed` leaves them at `group`. Under `relaxed`
+a timer fsyncs the journal every `[storage] relaxed_sync_interval_ms` (1 s by
+default), so a crash loses at most that window. A batch can now delete as well
+as write. There is one journal for the whole store, not one for each shard.
 
 Because ordering is decided before durability, a crash can only lose a suffix of
 the log — never reorder it, never fork it. Recovery truncates to the last
@@ -541,71 +652,69 @@ Forks are possible only in class D, only from legacy peers, and only when a peer
 authors an event whose `prev_events` are not our head — i.e. it sent concurrently
 with us or was partitioned.
 
+*Amended by ADR 0005 (#563).* The fork merge this section first specified —
+three cases, two of them resolved without state resolution — does not equal
+Matrix state resolution, and a server whose state disagrees with its peers'
+after a fork never converges with them. What follows is what Spindle does
+instead; the counterexamples are in ADR 0005 and in
+`spindle-core/tests/state_res_equivalence.rs`.
+
 ### 9.1 The window
 
 Let `A` be the greatest `li` such that every `prev_event` of the incoming event
 is at `li <= A`. The **fork window** is `(A, head]`. In practice `|window|` is
 bounded by the network round trip times the room's event rate: single digits in
-almost every real case. Spindle caps it at `max_fork_window` (default 512); a
-window that exceeds the cap falls back to full spec-compliant state resolution
-over the affected range, which is correct but slow, and is logged as an anomaly.
+almost every real case.
 
-The cap bounds the **work**, not merely the answer. Discovering the window must
-not require walking each tip's full ancestry back to the room's first event and
-intersecting: that would make detecting a three-event fork in a million-event
-room cost a million-node traversal, which is exactly the cost this section
-claims to remove. The window is found by a bounded reverse breadth-first search
-from the tips that stops as soon as the frontiers meet, with the budget applied
-to nodes *visited*.
+The window is found by a bounded reverse breadth-first search from the tips
+that stops as soon as the frontiers meet, with the budget applied to nodes
+*visited* (`RoomLog::fork_window`). It no longer feeds resolution — resolution
+takes whole states, which every entry already has (§6) — and stays as the
+bounded ancestry measurement it is, for diagnostics and the benchmarks.
 
-### 9.2 Three cases, cheapest first
+### 9.2 One rule: resolve whenever the parents' states differ
 
-**Case 1 — non-state event, no state conflict (the common case, ~99%).**
-The incoming event is not a state event. It cannot conflict with anything. Its
-DAG position is behind our head, but the client-visible order is `li` order, and
-`li` order is a valid linearization of the DAG. Append at the tail with
-`prev_li = head`, preserving its original `prev_events` in `federation_json`
-(we must not alter a signed event). Cost: identical to §8.1. **No state
-resolution.**
+Wherever Spindle needs one state from several — the state before an event
+(received, authored here, or asked for by `/state_ids`), and the room's current
+state over its forward extremities — it compares the parents' state roots:
 
-**Case 2 — state event, no conflict in window.**
-The incoming event is a state event whose `(type, state_key)` was not modified
-by any event in the fork window. The fold is order-independent for
-non-overlapping keys, so `apply()` at the tail produces exactly the state that
-state res v2 would produce. Append at the tail. Cost: one `apply()`. **No state
-resolution.**
+- **One parent, or parents with identical state:** that state. No resolution.
+  This is the common case by far: a fork of messages, a non-state event on a
+  stale parent, and every event of a linear room. It is also the only case in
+  which the old fork merge provably equals state resolution: with identical
+  inputs the conflicted set is empty in every room version's algorithm, and
+  each returns the input unchanged.
+- **Parents with different states:** the room version's algorithm — v1 for
+  room version 1 (`state_res_v1`), v2 for versions 2–11, v2.1 for version 12
+  — over the parents' materialized states (`spindle_server::state_res`).
 
-**Case 3 — state event conflicting within the window.**
-Run State Resolution v2, but with both inputs bounded by the window:
+Cost is the fork's, not the room's. Inputs are snapshots in hand; the auth
+difference is Synapse's walk over a ranked, cached auth DAG, stopping as soon
+as every set reaches what is left; resolutions are cached by the content
+addresses of their inputs, so the next local event, the room's current state
+and a peer's event over the same tips share one. ADR 0005 has the details.
 
-- The conflicted state set is the ≤`|window|` state events in the window plus
-  the incoming event.
-- The auth difference is computed over the auth events of *those events only*,
-  which are already resident in the trie — not over the room's auth chain.
+### 9.3 Receipt checks and the current state
 
-The resolved state is materialized as a new root and appended as a state
-correction. Cost: O(|window| log |window|) with a small constant, over a set that
-is almost always under ten events.
+A received PDU passes the spec's checks in the spec's order: against its auth
+events, against the state before it (§9.2), and — unless its parents are
+exactly the forward extremities — against the room's current state. Failing
+either of the first two rejects it; failing only the third soft-fails it. Both
+are kept outside the linear log (`SidelinedEntry`): a later event may name
+them, and its state is computed through them, but they have no `li`, no stream
+position and no client-visible body, and neither is a forward extremity.
 
-### 9.3 Equivalence argument
-
-The claim that makes this safe: **on a chain, `fold` and `state_res_v2` agree,
-and on a fork, window-bounded state res agrees with full state res.**
-
-- On a chain, the conflicted state set is empty (no two branches), so state res
-  v2 reduces to "take the unconflicted state", which is exactly the fold.
-- On a fork, events at `li <= A` are common ancestors of both branches and
-  therefore unconflicted by definition; state res v2 passes unconflicted state
-  through unchanged. Restricting the input to the window is therefore not an
-  approximation — it discards only inputs that provably cannot change the output.
-
-This is stated as a theorem and tested as one: §19.2 specifies a differential
-property test that runs both algorithms over generated DAGs and asserts equality.
+The room's current state is its forward extremities' states resolved
+(`RoomLog::current_state`): with one extremity, that event's state; with
+several, recorded after every append and recomputed once when a room reopens
+with a fork open. It — not the state after the newest entry, which after a fork
+is one branch's — is what local events are authorized against and what
+clients are told.
 
 ### 9.4 Making forks impossible
 
-Case 3 exists only because legacy peers author their own `prev_events`. Under
-MSC3995 (§12) participants submit *proposals* and the hub assigns
+Forks exist only because legacy peers author their own `prev_events`. Under
+MSC3995 (§12) participants submit Linearized PDUs and the hub assigns
 `prev_event`, so a fork cannot be constructed. For rooms where every peer is
 LM-capable, the class is H, and §9 is unreachable code.
 
@@ -627,7 +736,7 @@ linear log underneath.
 | Events | `/send`, `/state`, `/event`, `/context`, `/messages`, `/relations`, `/redact` | §10.4–10.5 |
 | Threads | `/relations/{id}/m.thread`, `m.thread` aggregation, `/threads` (MSC3856) | Server-side aggregation from the `relations` index |
 | Receipts | `/receipt`, `/read_markers`, `m.fully_read` | Ephemeral stream |
-| Typing / presence | `/typing`, `/presence` | Presence off by default (§18.4) |
+| Typing / presence | `/typing`, `/presence` | Presence switchable, on by default (§18.4) |
 | E2EE | `/keys/upload`, `/keys/query`, `/keys/claim`, `/keys/changes`, `/sendToDevice`, `/room_keys/*`, cross-signing, key backup, dehydrated devices | Server is a transport; §16 |
 | Media | `/_matrix/client/v1/media/*` (authenticated media, Matrix 1.11) with legacy `/_matrix/media/v3` for compatibility | §17.3 |
 | Spaces | `/hierarchy`, `m.space.child`, `m.space.parent` | Hierarchy walked from the `relations` and state indexes |
@@ -661,6 +770,26 @@ s{events}_{receipts}_{account_data}_{to_device}_{device_lists}_{presence}
 Each component is an independent stream position, so a burst on one stream
 cannot stall another.
 
+#### Current-state deltas
+
+A client folds the timeline into its state, and the timeline is in arrival
+order. That is wrong when an event is not the newest word on its key. An event
+on a stale parent can lose state resolution. A fork can put a key back to an
+older event. An event accepted across a gap brings the peer's state with it.
+
+When an append moves the room's current state by more than the event itself,
+the server writes a delta row under the event's stream id, keyed
+`(room_id, stream_id)`. It lists each `(type, state_key, event_id)` that
+changed. The row is written before the stream id is released, so a sync that
+reads the event also reads the delta. A linear append has no row.
+
+An incremental `/sync` takes the current event of every key that its events or
+its deltas touched. With `use_state_after` that is the `state_after` block.
+Without it, events the timeline already carries are left out of `state`.
+Sliding sync counts the events a delta names as changed. A classic client still
+folds a losing event that sits inside its own timeline window, because the
+protocol gives it no way to undo that.
+
 ### 10.3 Sync as push, not poll
 
 Every long-polling `/sync` and every sliding-sync connection registers with the
@@ -687,10 +816,15 @@ a server restart degrades to a re-initial-sync rather than a wrong answer.
 `t{li}`. That is the whole implementation.
 
 This is worth stating plainly because it is the endpoint that most visibly
-misbehaves on DAG servers: back-paginating a large room requires topological
+misbehaves on DAG servers: back-paginating a large room needs topological
 ordering over a graph that may need backfilling mid-scan. Here, ordering was
 decided at write time, and a gap in history is a contiguous `li` range that is
 either present or not.
+
+A room with a filled federation gap is the one exception: its scan splices
+each gap segment in below the event accepted across the gap (§6.6). Paging
+back into a gap still being filled moves that room to the front of the
+backfill queue; the page is served from what is held and does not wait.
 
 `limit`, `filter`, and `dir` apply as specified. Filters that exclude by type or
 sender are evaluated against the fixed-width header fields of `LogEntry` without
@@ -745,15 +879,23 @@ about it is non-standard, and no peer needs to know Spindle exists.
 | Misc | `/openid/userinfo`, `3pid/onbind`, `/exchange_third_party_invite` |
 | EDUs | `m.typing`, `m.receipt`, `m.presence`, `m.direct_to_device`, `m.device_list_update`, `m.signing_key_update` |
 
+**Status.** Two parts of this table are designed only. The server does not
+serve `3pid/onbind` or `/exchange_third_party_invite`
+([spec-gaps.md](https://github.com/tuna-os/spindle/blob/main/docs/spec-gaps.md)). The client `/hierarchy` and room summary
+read only rooms that this server holds, and they do not ask other servers
+(#823).
+
 ### 11.3 Outbound
 
 One ordered queue per destination, drained by a dedicated task: up to 50 PDUs
 and 100 EDUs per transaction, one transaction in flight per destination as the
-spec requires. Exponential backoff with jitter on failure; destinations are
-marked down after a threshold and probed. On recovery, catch-up walks the
-`stream` index forward from the destination's last acknowledged position — a
-sequential scan, not a graph traversal, which is precisely the operation that
-makes federation catch-up expensive on DAG servers.
+spec requires. Exponential backoff on failure, capped at about a minute
+while the outage is young; after ten minutes each wait is as long as the
+outage so far, up to a day, and a request from the destination ends it. The
+backoff is stored, so a restart resumes it. On recovery from a long outage,
+catch-up sends the newest events of each room rather than the backlog, and
+the peer fetches the gap through `prev_events`; to-device messages and
+device-list updates are never dropped (#801).
 
 Hub fan-out in class H broadcasts to all participant destinations in parallel
 from the room's executor, with the per-destination queues absorbing slow peers.
@@ -767,7 +909,13 @@ A transaction touching ten rooms is fanned into ten partitions and never blocks
 on the slowest.
 
 Rate limiting is per-origin and per-room, with a separate budget for events that
-trigger `/get_missing_events` — the classic amplification vector.
+trigger `/get_missing_events` — the classic amplification vector. Accepting an
+event across a gap (§6.6) fetches a room's state and auth chain, so it is
+capped separately, per room and per origin over a window
+(`gap_acceptances_per_room`, `gap_acceptances_per_origin`). When a dependency
+fails verification, Spindle does not get it again for
+`dependency_failure_ttl_secs`. In that time, Spindle refuses at once each event
+that names it, and sends no request to a peer.
 
 ### 11.5 Joining an existing large room
 
@@ -778,14 +926,29 @@ trigger `/get_missing_events` — the classic amplification vector.
 2. Verifies signatures in batches during the stream.
 3. Sets `li = 1` at the join point, `next_backward = 0`, and starts serving
    immediately.
-4. Backfills asynchronously into negative `li` per §6.5.
+4. Records the history before the join as a gap at the join, and fills it
+   in the background per §6.6.
 
-Faster room joins (MSC3706 partial state / MSC3902) are designed for on the
-receive side, and not yet built: the room would be usable with partial state,
-marked `partial_state`, with the remaining state resynced in the background and
-membership-dependent operations blocking only until the relevant slice of state
-has arrived. Nothing handles `members_omitted` today; `docs/mscs.md` records
-MSC3706 as planned, and this paragraph is the design it will be built to.
+Faster room joins (MSC3706, spec v1.6) are built on both sides. Every remote
+join asks `send_join` for `omit_members`; a resident that answers
+`members_omitted` hands over the non-member state, the joiner's own member
+event and, in an unnamed room, the heroes', with `servers_in_room`. The join
+returns with the room marked partial (a persisted record), usable at once for
+reading and sending: this server's events also go to `servers_in_room`, and an
+incoming event takes a member slot the partial state lacks from its own,
+already verified auth events. Membership-dependent operations wait instead:
+`/members`, `/joined_members` and a membership change aimed at another
+server's user. A background resync asks the joined-through server, then the
+others, for `/state_ids` at the join, fetches what it lacks (one `/state` when
+that is a tenth or more), verifies and authorizes it, and fills the missing
+member slots of every snapshot from the join on in place, in one batch. An
+incremental `/sync` spanning the resync tells its client the room afresh, and
+a sync's state block carries any slot of the current state that neither the
+state before its window nor an event in it set -- the filled members, when the
+history before the join has not been backfilled. A restart resumes an
+unfinished resync. As a resident, Spindle serves
+`omit_members` the way Synapse does. `docs/divergence.md` §4.9 records where
+the joining side differs from Synapse's.
 
 ### 11.6 Room versions
 
@@ -795,7 +958,7 @@ MSC3706 as planned, and this paragraph is the design it will be built to.
 | 6–10 | Full | Served at their own rules: two-server join, event exchange and redaction tested per version; v7 knocks, v8/v9 restricted joins, v1–v9 string power levels |
 | **11** | **Full** | `MSC3820` cleanups: no top-level `origin` (MSC3989), no `creator` in create content (MSC2175), `redacts` in content (MSC2174), updated redaction algorithm (MSC2176/MSC3821) |
 | **12** | **Full; default candidate — see below** | Current stable version; supported by Ruma 0.16 and by both surveyed Rust homeservers |
-| `org.matrix.msc3995.v1` | Experimental | LM room version with hub-assigned `prev_event` (§12.4) |
+| `org.matrix.msc3995` | Designed, not built | MSC3995's LM room version, v10-based, with hub-assigned `prev_event` (§12.4); would be behind the `hub-mode` feature |
 
 The load-bearing decision is **not which version number** — it is that native
 rooms use an *ordinary* room version. A room whose DAG is a chain needs no new
@@ -820,73 +983,345 @@ create, and record it as an ADR rather than leaving it implied here.
 Class H/P is the MSC3995 star topology: participants send to the hub, the hub
 orders and fans out.
 
+### 12.0 Where the proposal stands
+
+Checked on 2026-10-02, and again on 2026-10-08 before the first wire code
+landed (#22): the MSC's head is still `ad2b46f`, last updated 2023-08-19.
+
+- **[MSC3995](https://github.com/matrix-org/matrix-spec-proposals/pull/3995)**
+  is open, titled "[WIP] Linearized Matrix", labelled `needs-implementation`,
+  and has not been updated since 2023-08-19. Its text describes "Linearized
+  Matrix v2", warns that it is "going through extremely rapid iteration", and
+  leaves hub transfers, DAG usage attestation and `insert_after` validation as
+  TODOs or open problems.
+- **[`draft-ralston-mimi-linearized-matrix`](https://datatracker.ietf.org/doc/draft-ralston-mimi-linearized-matrix/)**
+  stopped at `-04` (January 2024) and is expired. It is the more complete of
+  the two texts: it fixes the participant content hash that the MSC leaves
+  open (`hashes.lpdu`), and specifies the transport. Hub transfer is still a
+  TODO there.
+- **The MIMI working group did not adopt it.** Its adopted protocol is
+  [`draft-ietf-mimi-protocol`](https://datatracker.ietf.org/doc/draft-ietf-mimi-protocol/)
+  (HTTPS and MLS; `-06`, April 2026), which is not a Matrix room protocol.
+- **No interoperable peer exists.** Both texts name unstable identifiers for
+  testing against "other Linearized Matrix implementations"; none is
+  maintained today.
+
+So "the actual proposal" is two stalled drafts that disagree in places. This
+section follows them where they agree, follows the I-D where only it has an
+answer, says which it follows and why where they conflict, and marks
+everything else as a Spindle extension (§12.5). Hub mode is still the plan.
+What changed is the expectation that another implementation will speak it,
+which is why every Spindle-specific field below is kept out of the ordinary
+Matrix namespace.
+
+| This section said | The proposal says | Now |
+|---|---|---|
+| Room version `org.matrix.msc3995.v1`, room version 11 plus two rules | MSC: `org.matrix.msc3995`, based on **v10** plus MSC2174/2175/2176/3821/3989 (which v11 already contains) and MSC1767, with `depth` removed. I-D: `I.1`, tested as `org.matrix.i-d.ralston-mimi-linearized-matrix.02` | §12.4 |
+| A new `PUT .../org.matrix.msc3995/send_event/{roomId}` endpoint | MSC: none. Participants put Linearized PDUs (LPDUs) in the ordinary `/send` transaction. I-D: `PUT /_matrix/federation/v2/send/{txnId}`, tested at `PUT /_matrix/federation/unstable/org.matrix.i-d.ralston-mimi-linearized-matrix.02/send/{txnId}` | §12.2 (the MSC's) |
+| A "proposal" with an origin signature | An LPDU: a top-level `hub_server`, no `auth_events`, `prev_events` or top-level `hashes`, and (I-D only) a `hashes.lpdu` content hash, signed by the origin | §12.2 |
+| `m.room.hub` content carries `server_name`, `epoch` and the previous epoch's final chain entry | The hub is the server of the `sender` of `m.room.hub`, or of `m.room.create` when there is none. The event must be signed by the current hub. No content schema is defined | §12.1 |
+| The hub signs `(room_id, li, event_id, chain[li])` | The hub signs the finished PDU in the ordinary way. No chain, `li` or attestation exists in either text | §12.5 |
+| Peers advertise LM support | MSC: `"m.linearized": true` on `/_matrix/key/v2/server`, marked as not what implementations do; they treat a join carrying `hub_server` as LM | §4.1 |
+| Legacy members make a hub room class D | Agrees. The MSC routes DAG-server events to the hub through one chosen DAG-capable server, with an `insert_after` key in `unsigned` that the hub cannot verify | §12.3 |
+
 ### 12.1 Hub designation
 
-`m.room.hub` state event:
+The hub is named by the `m.room.hub` state event (empty state key). Per the
+MSC, and sketched the same way in a TODO in the I-D, the **current hub is the server of that event's `sender`**, or the
+server of the `m.room.create` sender when the room has no `m.room.hub`. The
+MSC adds two auth rules for the room version:
+
+1. an event carrying `hub_server` is rejected unless it names the current hub;
+2. an `m.room.hub` event is rejected unless the current hub signed it, and,
+   like every event, the sender's server signed it too.
+
+A transfer therefore needs the outgoing and incoming hubs to both sign the
+event. Neither text defines how that dual signature is requested, who sends
+the event, or what happens when the outgoing hub is down; the MSC lists all
+three as open problems. Spindle's answer is the epoch scheme, carried in the
+event's content under its own namespace:
 
 ```json
 {
   "type": "m.room.hub",
   "state_key": "",
+  "sender": "@admin:hub.example.org",
   "content": {
-    "server_name": "hub.example.org",
-    "epoch": 7,
-    "prev_epoch_final_li": 10432,
-    "prev_epoch_final_chain": "base64(chain[10432])"
+    "org.spindle.epoch": 7,
+    "org.spindle.prev_hub_event": "$the m.room.hub of epoch 6",
+    "org.spindle.prev_epoch_final": {"li": 10432, "event_id": "$...", "chain": "base64(chain[10432])"},
+    "org.spindle.backups": ["backup.example.org"]
   }
 }
 ```
 
-Absent an `m.room.hub` event, the hub is the server that sent `m.room.create`,
-per MSC3995. `epoch` is monotonic and, together with the chain commitment,
-prevents a deposed hub from continuing to serialize a divergent branch: an event
-signed by the hub of epoch `n` is invalid once the log contains an
-`m.room.hub` at epoch `n+1`, and the new epoch's first event must chain from the
-declared final entry of the previous epoch.
+The hub is still the `sender`'s server, so a peer that knows only the MSC
+reads the same hub from this event. The epoch is monotonic, and the stated
+final entry commits the new epoch to everything the old hub attested: no
+new epoch may start below an entry that a participant holds an attestation
+for (§13.2). §12.6 has the full rules as built. A deposed hub
+that is down cannot co-sign its own replacement, so failover (§13.2) is a
+departure from the MSC's auth rule and works only between Spindle peers.
 
-### 12.2 Proposal submission
+### 12.2 Event submission
 
-Participants POST an unlinked, origin-signed event to the hub:
+A participant does not author `prev_events` or `auth_events`. It sends the
+hub a Linearized PDU in the `pdus` array of an ordinary federation
+transaction, as the MSC says:
 
 ```
-PUT /_matrix/federation/unstable/org.matrix.msc3995/send_event/{roomId}
+PUT /_matrix/federation/v1/send/{txnId}
 ```
+
+The I-D's `v2/send` path is not used. The room version (§12.4) is the MSC's,
+an LPDU is only valid in a room of that version, and so the room version
+already gates the unstable behaviour without a second endpoint. A build
+without `hub-mode` rejects such a room before it reads an LPDU.
+
+This section and §12.4 describe the LM room version, which is designed and
+not built. What is built is hub mode in an ordinary room version (§12.6),
+where a participant submits a finished PDU instead of an LPDU.
+
+The LPDU is a PDU with `hub_server` set to the current hub and without
+`auth_events`, `prev_events` and the top-level `hashes`. Spindle follows the
+I-D and requires `hashes.lpdu`, a content hash over the partial event, which
+the participant computes and then signs. The MSC has no such hash and says
+the hub can therefore change an LPDU's content; that is the gap §13.1 depends
+on being closed.
 
 The hub:
-1. verifies the origin signature over the proposal;
-2. authorizes it against current state (§7.1);
-3. assigns `li`, `prev_event`, `depth`, and `auth_events`;
-4. adds its own signature and the chain attestation;
-5. fans the completed PDU out to every participant, including the originator.
 
-The originator learns its event's final `event_id` from the fan-out or the
-response. Clients see the standard `/send` response semantics because the
-originating server holds the client transaction open across the hub round trip,
-exactly as it already does for any event requiring remote authorization.
+1. verifies the origin signature and `hashes.lpdu` over the LPDU;
+2. authorizes it against current state (§7.1);
+3. assigns `li`, the single `prev_event` (its head), and `auth_events`;
+4. adds the top-level `hashes`, its own signature and the chain attestation
+   (§12.5);
+5. fans the completed PDU out to every server in the room, including the
+   originator.
+
+The originator learns its event's final `event_id` from the fan-out.
+Clients see the standard `/send` response semantics because the originating
+server holds the client transaction open across the hub round trip, exactly
+as it already does for any event requiring remote authorization.
 
 ### 12.3 Dual representation
 
-A hub emits ordinary room-version-11 PDUs. A legacy homeserver in the room
-consumes them as a normal DAG and is unaware of the hub. An LM-only participant
-consumes the same PDUs as a linked list and never implements state resolution.
-This is MSC3995's dual-representation property, and it is what allows a room to
+A hub emits ordinary PDUs. A legacy homeserver in the room consumes them as
+a normal DAG and is unaware of the hub. An LM-only participant consumes the
+same PDUs as a linked list and never does state resolution. This is
+MSC3995's dual-representation property, and it is what allows a room to
 contain both kinds of peer simultaneously — at the cost of readmitting the
-class-D fork path, which is why `m.room.hub` rooms with legacy members are class
-D, not class H.
+class-D fork path, which is why `m.room.hub` rooms with legacy members are
+class D, not class H.
+
+The MSC goes further than Spindle needs: it has the hub delegate
+linearization to one DAG-capable server, which marks each event's position
+with `unsigned.insert_after` and re-sends it when state resolution moves it.
+Spindle as a hub is itself DAG-capable (§9), so it never delegates, and it
+does not accept `insert_after` from a peer: the field is unsigned, and the
+MSC itself lists "how does a participant prove the hub didn't modify it" as
+unanswered.
 
 ### 12.4 The LM room version
 
-`org.matrix.msc3995.v1` is room version 11 plus two rules:
+The room version that makes forks structurally impossible is the one part of
+hub mode that is a wire format, so Spindle uses the MSC's own unstable
+identifier and accepts its rules as written rather than inventing a v11
+variant:
 
-1. `prev_events` MUST have exactly one element and MUST equal the hub's head at
-   the time of assignment.
-2. Every event MUST carry a hub signature over `(room_id, li, event_id, chain[li])`
-   from the server named in the current `m.room.hub`.
+- `org.matrix.msc3995` — room version 10 plus MSC2174, MSC2175, MSC2176,
+  MSC3821 and MSC3989, `depth` removed from the event format, and the two
+  auth rules of §12.1. It also lists MSC1767 (extensible events), a content
+  format rather than a room algorithm.
+- Every event carrying `hub_server` MUST have exactly one `prev_event` (the
+  I-D's rule), and its `auth_events` MUST include the current `m.room.hub`
+  (the MSC's auth events selection change).
+- `hub_server` is preserved by redaction; `depth` is not.
 
-A room created at this version cannot fork. Legacy servers cannot join it, which
-is the trade — hence rooms default to v11 and use this version only where every
+A room created at this version cannot fork while every event goes through
+the hub. Legacy servers cannot join it, which is the trade — hence rooms
+default to an ordinary version (§11.6) and use this one only where every
 peer is known to support it (federated MIMI/DMA interop deployments, or
-single-operator multi-server fleets).
+single-operator multi-server fleets). The I-D's `I.1` and its test string
+are not supported: the I-D is expired and no peer speaks either.
+
+### 12.5 Spindle extensions
+
+Everything in this list is in neither text. Each one is Spindle-namespaced on
+the wire, is negotiated only between Spindle peers, and must be absent from
+a build without the `hub-mode` feature (§15). A peer that knows only
+the MSC sees ordinary LM events with extra, ignorable keys.
+
+| Extension | Where | Why the proposal is not enough |
+|---|---|---|
+| Epochs, `prev_hub_event`, `prev_epoch_final` and `backups` on `m.room.hub` (**built**, §12.6) | §12.1 | The MSC has no answer for a transfer away from a hub that is down |
+| Chain attestation: the hub signs `(room_id, hub, epoch, li, event_id, chain[li])` and sends it in an `org.spindle.msc3995.attestations` EDU to hub-mode peers only (**built**, §12.6) | §13.3 | The MSC's "participants don't know what they don't know" problem has "no current solutions"; a signed chain makes withheld or reordered history provable |
+| Capability probe `GET /_matrix/federation/unstable/org.spindle.msc3995/capabilities` (**built**, §12.6) | §12.6 | The MSC's `m.linearized` flag means "not DAG-capable", which Spindle is not |
+| Compare-and-append submission `POST .../org.spindle.msc3995/submit/{roomId}` (**built**, §12.6) | §12.6 | The MSC's LPDU needs its own room version; this works in any room version |
+| Checkpoints: signed `(li, chain[li], state_root)` in the attestation EDU (**built**, §12.6) | §13.3 | No equivalent |
+| Failover at `epoch + 1` by the first listed backup, without the outgoing hub's signature (**built**, §13.2) | §13.2 | Contradicts the MSC's dual-signature rule, so it only works between Spindle peers |
+
+An earlier draft of this section put the attestation in the PDU's
+`unsigned`. The built slice sends it in an EDU instead: `unsigned` is part
+of what every server in the room receives, and a server that does not speak
+hub mode must receive nothing namespaced for it. The attestation carries its
+own signature, so it needs no PDU to vouch for it.
+
+### 12.6 What is built: hub mode in an ordinary room version (#22)
+
+Hub mode is behind the `hub-mode` Cargo feature (off by default) and
+then behind `[federation.hub] enabled` (off by default). It works in **any
+ordinary room version**, so a room can have a hub and Synapse members at the
+same time. That is the requirement for a room that is still a normal Matrix
+room. The MSC's own room version (§12.4) is still designed only.
+
+**Designation and epochs.** As in the MSC, the hub is the server of the
+sender of the room's current `m.room.hub` state event. A room with no
+`m.room.hub` is ordinary. That is a change from the MSC, where the creator
+is the hub by default: in an ordinary room version, hub mode is opt-in.
+
+The first `m.room.hub` opens epoch 0 and must come from the server that
+sent `m.room.create`. Each later one opens the next epoch, and its content
+has these keys:
+
+```json
+{
+  "org.spindle.epoch": 1,
+  "org.spindle.prev_hub_event": "$the m.room.hub of epoch 0",
+  "org.spindle.prev_epoch_final": {"li": 41, "event_id": "$...", "chain": "base64"},
+  "org.spindle.backups": ["backup.example.org"],
+  "org.spindle.failover": true
+}
+```
+
+`prev_epoch_final` is the outgoing hub's last attested entry, or `null` if
+it attested none. `backups` names the servers that may claim the epoch after
+this one if this hub fails; only the first may. `failover` is present on a
+failover claim only. A server reads the chain of `m.room.hub` events back
+to epoch 0 and accepts each step only if it is one of the following:
+
+- **A handoff.** The outgoing hub co-signed the event. This is the MSC rule
+  that the current hub signs a hub change. A client on the incoming hub's
+  server sends `m.room.hub`. Its server adds the epoch keys and
+  `POST`s the event to
+  `/_matrix/federation/unstable/org.spindle.msc3995/handoff/{roomId}`. The
+  outgoing hub attests everything up to its head. Then it checks, under the
+  room lock, that the event names its head and that `prev_epoch_final` is
+  its last entry. It co-signs the event, sequences it, and answers with the
+  co-signed event (or `409` with the head or with the correct final entry).
+- **A failover claim.** It has `failover: true` and comes from the first
+  backup of the outgoing epoch (§13.2).
+
+Each step must also keep the attested prefix (§13.2). If any step fails,
+the room is ordinary on that server: a server never follows a hub that it
+cannot trust. Power is the room's ordinary business: `m.room.hub` is a
+state event, and the auth rules decide who can send one.
+
+**Discovery.** A peer is asked
+`GET /_matrix/federation/unstable/org.spindle.msc3995/capabilities`. A
+definite answer is kept for `capability_ttl_ms`. Synapse's
+`404 M_UNRECOGNIZED` is a definite "no". No answer is kept as "no" for ten
+seconds.
+
+**Ordering (compare-and-append).** A participant builds the event as it
+always does: on its own head, with its own `prev_events`, `auth_events`,
+hashes and signature. It then sends the event to the hub before any other
+server sees it:
+
+```
+POST /_matrix/federation/unstable/org.spindle.msc3995/submit/{roomId}
+{"pdu": { ...the finished event... }}
+```
+
+The hub verifies the signature and the content hash, and it refuses a bad
+hash. It does not redact. Then, under the same room lock that its own
+appends take, it appends the event only if `prev_events` is exactly its
+current head. If so, it answers `200 {"event_id", "li", "attestation"}`. If
+not, it answers `409 ORG.SPINDLE.MSC3995_STALE_HEAD` with its head and up to
+50 events the participant does not have. The participant takes those
+events, builds the event again and tries again (`submit_attempts`). Every
+event that the hub accepts extends the one chain, so hub-ordered events
+cannot fork.
+
+**Dual ordinary-PDU projection.** The submitted event is already an
+ordinary PDU, so the projection is the identity. After the hub places the
+event, its origin commits it and sends it to every server in the room, the
+hub included, in the ordinary way. The hub does not relay it. A server that
+does not speak hub mode gets ordinary events from their own origins, each
+with one parent. The MSC's star delivery, where the hub relays all events,
+needs relayed-PDU acceptance and the LM room version. It is designed only.
+
+**Attestations.** After every event it sequences, local or submitted, the
+hub signs `{room_id, hub, epoch, li, event_id, chain}` for each new entry.
+An epoch's attestations start at that epoch's `m.room.hub` event. A
+participant keeps them by `(room, epoch, li)`. It accepts an attestation
+only from the hub of the epoch that the attestation names.
+It sends these in an `org.spindle.msc3995.attestations` EDU to the
+hub-mode servers in the room, and to no other server. It attests events
+from servers without hub mode as well, because it vouches for its order
+and not for their content. A participant verifies each attestation against
+the hub's key and keeps it. It checks that `chain[li] =
+BLAKE3(domain || chain[li-1] || event_id)` holds with each neighbour that it
+holds. A second, different attestation for a position it already holds is
+not stored. Together with the first, it is kept as a proof. A broken chain
+step is also kept as a proof (§13.3).
+
+**Failure.** If the hub cannot place an event (it is unreachable, too slow,
+too often stale, or it refuses), the participant commits the event that it
+already built and sends it in the ordinary way. It never builds a second
+event, so a submission whose answer was lost does not become two messages.
+The room then heals in the ordinary way: a fork that the next event merges.
+In an ordinary room version, liveness is never given up for ordering. This
+is the opposite of the MSC's trade (§13.1), and it is correct here.
+
+| Spindle already has | Gives hub mode, without new wire format |
+|---|---|
+| The signed linear index `li` (§5.1) | The sequence number in each attestation, and the position a stale participant catches up from |
+| The chain value `chain[li]` (§5.3), computed at append for live entries | The attestation's commitment. The hub signs it, and does not compute it again |
+| One write lock per room on every append (§15) | Compare-and-append is a check under that lock. No new concurrency control |
+| Ordinary PDUs, fork merging and state resolution (§9) | The fallback, and every room with a member that does not speak hub mode |
+
+| New, and Spindle-namespaced | Why |
+|---|---|
+| The capability probe | The MSC has no advertisement for a DAG-capable hub |
+| The submit endpoint and its `409` | An ordinary room version cannot carry an LPDU |
+| The attestation EDU and its format | Neither text has attestations |
+| The epoch keys in `m.room.hub` content, and the handoff endpoint | The MSC has no transport for the dual signature, and no answer for a hub that is down |
+| `GET .../attested/{roomId}?epoch=N` and `GET .../checkpoint/{roomId}` | A backup collects the highest attestation in the room; a new participant gets an anchor |
+| Checkpoints in the attestation EDU | Neither text has them |
+
+**Checkpoints.** Every `checkpoint_interval` entries (default 1000), the hub
+also signs a checkpoint: the attestation's fields plus `state_root`, the
+content address of the room state after the entry (§6.1). A participant
+that holds nothing for the current epoch first asks the hub for a fresh
+checkpoint of its head and anchors on it. Every later attestation chains
+from the anchor, so it does not have to replay the room to check the chain.
+Where the participant sequenced the same entry itself, it compares the
+state root with its own. A mismatch is logged and counted, because the
+two servers disagree about the room's state.
+
+**Metrics.** These counters are on `/metrics`, and each label takes one of
+a small, fixed set of words. No room, server or event becomes a label:
+
+- `spindle_hub_submissions_total{result}`
+- `spindle_hub_sequenced_total{result}`
+- `spindle_hub_attestations_total{result}`
+- `spindle_hub_proofs_total{kind}`
+- `spindle_hub_checkpoints_total{result}`
+- `spindle_hub_handoffs_total{result}`
+- `spindle_hub_failovers_total{result}`
+
+**Interop.** The `hub-mode-interop` job in `compliance.yml` runs nightly and
+on demand. It builds the Complement image with `SPINDLE_FEATURES=hub-mode`
+and `SPINDLE_HUB_MODE=1`. `TestHubModeRoomStaysOrdinary` runs beside both a
+second hub-mode Spindle and Element's Synapse image. A three-server
+`TestHubModeFailoverWithSynapse` then pauses the Spindle hub, has its Spindle
+backup claim the next epoch while Synapse remains in the room, and requires
+all three servers to converge after the old hub returns. Every run must pass.
+
+Still designed only: the LM room version and LPDUs (§12.4), relayed (star)
+delivery, publishing proofs to the room, and backups after the first
+(only the first listed backup can claim, in this version).
 
 ---
 
@@ -899,7 +1334,7 @@ single-operator multi-server fleets).
 | Decide event order | Yes | That is its function |
 | Delay or drop an event | Yes | Detectable by the originator (no fan-out), not preventable |
 | Forge an event from another server | **No** | Origin Ed25519 signature |
-| Modify an event's content | **No** | Content hash covers content; reference hash covers the redacted event |
+| Modify an event's content | **No** | `hashes.lpdu` covers the participant's content and its signature covers the LPDU (§12.2); the reference hash covers the redacted event. This holds only because Spindle follows the I-D here: under the MSC's text alone the answer is yes. In an ordinary room version (§12.6) the participant submits a finished event, so the ordinary content hash and the origin signature cover it |
 | Reorder committed history silently | **No** | Chain hash + hub signature per entry (§13.3) |
 | Present different histories to different participants | **No, not undetectably** | §13.3 |
 | Read E2EE content | **No** | Megolm/MLS; the hub is a transport |
@@ -909,21 +1344,51 @@ given up is *liveness independence*: a partitioned participant cannot make
 progress without the hub, whereas DAG Matrix would let it fork and merge later.
 That is the deliberate trade — forking and merging is exactly the expensive thing.
 
+That trade belongs to the LM room version. In an ordinary room version
+(§12.6) it is not made: a participant that cannot reach its hub sends the
+event as an ordinary event, and gives up only the hub's ordering of it.
+
 ### 13.2 Hub failover
 
-If the hub is unreachable for `hub_failover_timeout` (default 60s), participants
-may elect a new hub by sending an `m.room.hub` event at `epoch + 1`, authorized
-by the ordinary power-level rules (default: PL 100 required, i.e. room admins).
-Ties are broken by `(epoch, lexicographically smallest server_name)`. The new hub
-must include `prev_epoch_final_li` and the chain commitment it is continuing
-from; participants reject an epoch transition that would truncate entries they
-already hold attestations for.
+Built (§12.6). The rule is conservative so that a spec can state it:
 
-Because a partition can produce two candidate hubs, the epoch rule guarantees
-that at most one branch survives: the branch whose `m.room.hub` event wins the
-ordinary auth/state rules. Events serialized on the losing branch are re-proposed
-by their originators, which is the same recovery a client already performs on a
-failed send.
+1. **Who may claim.** Only the first server in the outgoing epoch's
+   `org.spindle.backups`. That list is set by the person who set the
+   outgoing hub, before any failure. No election takes place and no tie can
+   occur. A room with no backups has no failover: it stays live as an
+   ordinary room until its hub returns.
+2. **When.** The backup's own sends to the hub must have failed with no
+   answer for `failover_after_ms` (default 60 s). Other servers cannot
+   check this. The real checks are point 3 and the auth rules.
+3. **From where.** Before the backup claims, it asks every hub-mode server
+   in the room for the highest attestation of the outgoing epoch that it
+   holds (`GET .../attested/{roomId}?epoch=N`). It verifies each answer
+   against the outgoing hub's key and takes the highest. It fetches that
+   entry if it does not have it. Then it sends `m.room.hub` with
+   `failover: true` and that entry as `prev_epoch_final`. The claim is an
+   ordinary state event from one of the backup's users, so the room's power
+   levels decide whether it can be sent at all.
+4. **The invariant: failover cannot truncate an attested prefix.** Every
+   server checks every new epoch against the outgoing epoch's highest
+   attestation that it holds. When it was the outgoing hub itself, it uses
+   its own last attested entry. If `prev_epoch_final` is lower, or names a
+   different entry at the same position, the server refuses the epoch. It
+   also stores the claim and the attestation together as a proof:
+   `{"kind": "org.spindle.msc3995.truncation", "room_id", "hub", "epoch",
+   "li", "claim": <the m.room.hub event>, "attestation": <the outgoing hub's
+   signed attestation>}`. The proof is portable. The claim carries its
+   sender server's signature, the attestation carries the outgoing hub's
+   signature, and the two positions show the drop. For that server the room
+   is then ordinary.
+
+The events in a dropped tail are not lost. They are ordinary events in the
+DAG, and they merge like any fork. What failover must not do is take back
+an order that a hub has already attested.
+
+The MSC's auth rule requires the current hub to sign `m.room.hub`, and a hub
+that is down cannot. Failover therefore relaxes that rule, only between Spindle
+peers and only after the timeout (§12.5). A room with a non-Spindle LM peer has
+no failover: it waits for its hub, which is the MSC's own behaviour.
 
 ### 13.3 Equivocation detection
 
@@ -932,11 +1397,18 @@ entries at the same `li`, or two entries whose chain hashes are inconsistent, an
 participant holding both signatures possesses a self-contained, non-repudiable
 proof of misbehavior.
 
-Spindle additionally supports periodic `m.room.checkpoint` state events carrying
-`chain[li]` and the current `StateRoot`. Because the state root is a hash of the
-materialized state, a checkpoint lets a participant verify not only ordering but
-the resulting *state* — something DAG Matrix cannot offer without recomputing
-state resolution.
+Built (§12.6): a participant stores such a pair as
+`{"kind": "org.spindle.msc3995.equivocation", "reason":
+"conflicting_entries" | "broken_chain", "room_id", "hub", "li",
+"attestations": [a, b]}`. Anybody with the hub's public key can verify it.
+Publishing the proof to the room, and acting on it, is designed only.
+
+Spindle additionally signs periodic checkpoints carrying `chain[li]` and the
+`StateRoot` after it (built, §12.6; sent in the attestation EDU, not as
+state events). Because the state root is a hash of the materialized state, a
+checkpoint lets a participant verify not only ordering but the resulting
+*state* — something DAG Matrix cannot offer without recomputing state
+resolution.
 
 ### 13.4 General hardening
 
@@ -982,10 +1454,30 @@ dropping `li < X` for a room is a range delete plus a mark-and-sweep over
 There is no state-group compaction job, which removes an entire class of
 operator toil.
 
+**Status.** The truncation primitive is built (#817). `truncate_room_log`
+records a chain checkpoint `(floor, chain[floor - 1])` in its own keyspace,
+then deletes the log entries, bodies, stream rows, state-delta rows, relation rows and old
+membership rows below the floor. A load, `load_exhaustive` and `spindle
+verify` start the chain from the checkpoint (§5.3). The entries of the
+current state and of the parents of kept entries stay, without a chain
+value, and so do the bodies in the auth chain of kept events. `spindle gc`
+frees the state nodes that only the removed roots used. The floor never
+passes the head, an extremity or a gap anchor, and a room in hub mode, in a
+partial-state join or with a fork is left alone. The `[retention]` policy
+(off by default) and the room's `m.room.retention` event (MSC1763) set a
+maximum lifetime for each room, and a background job truncates each room
+below the events that lifetime has expired. The server limits clamp the
+room's choice. `purge_history` truncates when it is sent `"truncate": true`
+and otherwise deletes only bodies. Media retention is not built.
+
 ---
 
 ## 15. Concurrency and process model
 
+- **Status.** The next two points are the design, not the code. The server
+  has one lock for each open room, a registry lock and several shared maps,
+  and request handlers run on the Tokio pool. Rooms have no executors of
+  their own.
 - **Rooms shard by `hash(room_id) % N`** across `N` executors, `N` = available
   cores. Each executor is a single-threaded async task owning its rooms'
   mutable state: head, state root, hot tail, subscriber list.
@@ -999,12 +1491,13 @@ operator toil.
 - **Horizontal scale-out** is a v2 concern (§21). The design admits it — rooms
   are independent and the shard key is the room — but v1 targets vertical scale
   on a single node, which is where the interesting comparison lies anyway: the
-  point is to make one node do what currently requires a worker fleet.
+  point is to make one node do what now needs a worker fleet.
 
 Implementation language is **Rust**, on the `ruma` crate family for spec types:
 `ruma-events`, `ruma-client-api`, `ruma-federation-api`, `ruma-common`,
-`ruma-signatures`, and `ruma-state-res` (used *only* in the §9.2 case-3 path).
-Unstable MSCs are gated behind Cargo features (`unstable-msc3995`,
+`ruma-signatures`, and `ruma-state-res` (the auth predicate everywhere, and state
+resolution wherever an event's parents hold different states, §9.2).
+Unstable MSCs are gated behind Cargo features (`hub-mode` for MSC3995,
 `unstable-msc3820`, `unstable-msc4186`, `unstable-msc4244`, `unstable-msc4256`),
 so nothing experimental compiles into a production binary by accident.
 
@@ -1036,14 +1529,21 @@ Commits fork the TreeKEM epoch and desynchronize the group. This is the same
 requirement Spindle's log already satisfies structurally.
 
 The hub is a natural MLS Delivery Service: it already assigns a total order, and
-`li` order *is* epoch order. MSC4244 (MLS over linearized rooms) fits with no
-additional coordination mechanism; MSC4256 (MLS mode with deterministic epoch
-progression under enterprise auth rules) is an alternative profile.
+`li` order *is* commit order. Both live proposals put commit ordering on one
+server per room. MSC4244 (plain RFC 9420) makes one homeserver the Delivery
+Service for commits while every other event stays on the full mesh; MSC4256
+(MLS mode Matrix) is a new room version in which a `federation.powers` list
+names the servers allowed to commit, and the current commit is an
+`m.mls.commit` state event that later events cite in their auth events.
+Neither defines an epoch state event; the epoch lives in the MLS group state.
 
-Spindle's v2 plan is to implement MLS behind `unstable-msc4244` once the MSC
-stabilizes, with `m.room.mls_epoch` state carrying the epoch and the hub
-rejecting Commits that do not build on the current epoch — a single trie lookup.
-Key backup for MLS follows MSC4038.
+Spindle's v2 plan is to implement MLS behind `unstable-msc4244` or
+`unstable-msc4256` once one of them stabilizes, with the ordering server
+rejecting Commits that do not build on the current commit — a single trie
+lookup. Key backup for MLS would follow MSC4038, which was written for the
+decentralised variant (MSC2883); MSC4256 forbids key backup outright.
+[docs/mls.md](https://github.com/tuna-os/spindle/blob/main/docs/mls.md) is the go/no-go review: the gates, the state of
+each proposal and implementation, and what reopens the question.
 
 This is deliberately *not* v1 work. The MSCs are unstable, no shipping client
 implements them, and G1 (unmodified existing clients) forbids depending on them.
@@ -1056,7 +1556,7 @@ implements them, and G1 (unmodified existing clients) forbids depending on them.
 
 Single TOML file, no external dependencies required for a default deployment
 (embedded store, embedded media, no separate cache tier). Explicit knobs for
-everything this document names a default for: `max_fork_window`,
+everything this document names a default for:
 `durability`, `hot_tail_len`, `presence.enabled`, `shard_count`,
 `hub_failover_timeout`, retention.
 
@@ -1105,7 +1605,7 @@ the rows where Synapse and the Rust servers diverge.
 | `/sync` incremental (active client) | Stream queries per stream type | Ring-buffer slice, no storage read |
 | Join room with S state events | Fetch + state res over S | Fetch + S folds, no state res |
 | Federation catch-up after outage | Graph walk to find what to resend | Sequential scan of `stream` |
-| Concurrent-send merge | State res v2 over the conflicted set. Measured at 2.2–3.1× our cost across the whole fork range (`docs/benchmarks.md`) — a constant factor, not a superlinear gap | Case 1/2: none. Case 3: bounded window |
+| Concurrent-send merge | State res v2 over the conflicted set | Identical parent states: none. Otherwise the same algorithm, over snapshots in hand, with a cached auth DAG and resolution cache (§9.2, ADR 0005) |
 
 ### 18.2 Latency budget, local send, class L
 
@@ -1140,10 +1640,17 @@ measurements. They exist so the design can be falsified.
 ### 18.4 Presence
 
 Presence is the single largest source of federation traffic in the Matrix
-network and delivers little. It is **off by default**, configurable, and when
-enabled is rate-limited and coalesced per destination. This is a policy choice,
-stated explicitly because it materially affects the numbers above and because
-operators deserve to know it was deliberate.
+network and delivers little. It is switchable (`[presence] enabled`), and on
+by default because clients render an online indicator and Synapse ships it
+on; an operator who would rather not carry the traffic turns it off, and the
+server then answers `PUT /presence` without storing it, sends no `presence`
+section in `/sync`, and neither sends nor applies `m.presence`. When on, a
+change is announced only to servers sharing a room with the user, a sync's
+activity rewrites the row at most once a minute, and only visible changes
+(state, message, currently-active) take a stream position or an EDU. The
+EDUs ride the ephemeral queue one per change; they are not yet coalesced per
+destination, which is the next step if the volume measured by
+`spindle_federation_edus_sent_total{edu_type="m.presence"}` calls for it.
 
 ---
 
@@ -1160,16 +1667,17 @@ because Spindle is faster-but-different is a bug in Spindle.
 
 ### 19.2 Differential property testing — the core safety net
 
-The load-bearing claim of this design is §9.3. It is tested directly:
+The load-bearing claims of this design are the fold (§6) and §9.2's resolver.
+They are tested directly:
 
 ```
 property linear_fold_matches_state_res:
     for arbitrary chain DAG D:
         assert fold_state(D) == ruma_state_res_v2(D)
 
-property window_bounded_matches_full:
-    for arbitrary forked DAG D with fork depth ≤ max_fork_window:
-        assert window_state_res(D) == ruma_state_res_v2(D)
+property live_resolver_matches_reference:
+    for arbitrary contested fork F, in every room-version family:
+        assert RoomResolver(F) == ruma_state_res(F, full auth chains)
 
 property linearization_is_valid_topological_order:
     for arbitrary DAG D:
@@ -1247,15 +1755,15 @@ forward extremities.
 
 | # | Risk | Assessment / mitigation |
 |---|---|---|
-| R1 | **Case-3 forks are more common than assumed.** If real federation produces frequent conflicting concurrent state changes, the exception path becomes the normal path. | Instrumented from day one (§17.2). The window cap bounds the worst case to correct-but-slow, never incorrect. If the assumption is wrong, the design degrades to a well-optimized DAG server — still a net improvement, but the headline claim would need retracting. |
+| R1 | **Case-3 forks are more common than assumed.** If real federation produces frequent conflicting concurrent state changes, the exception path becomes the normal path. | Instrumented from day one (§17.2). The exception path is the room version's resolver (§9.2, ADR 0005), so a frequent case 3 is slower, never incorrect: parents with equal state roots skip it, and its results are cached by input roots, so the merging send, current state and a peer's event over the same tips pay for one resolution. If the assumption is wrong, the design degrades to a well-optimized DAG server — still a net improvement, but the headline claim would need retracting. |
 | R2 | **Hub liveness.** A partitioned participant cannot send. DAG Matrix can. | Explicit trade (§13.1). Failover in 60 s (§13.2); clients already retry sends. Deployments that require partition-tolerant writes should keep class-D rooms. |
-| R3 | **`max_fork_window` overflow.** A long partition with a busy legacy peer exceeds the cap. | Falls back to full spec state resolution over the affected range. Correct, slow, logged, alerted. |
+| R3 | **A deep fork.** A long partition with a busy legacy peer leaves a fork far deeper than usual. | There is no fork-window cap and no fallback (ADR 0005): resolution takes the parents' whole states, which every entry addresses by root (§6), at any depth. Depth costs the auth-difference walk and store reads for states older than `resident_window`; `RoomLog::fork_window` is diagnostic only. Every resolution is counted (`spindle_fork_resolutions_total{case="3"}`) and logged with its duration. |
 | R4 | **Pre-rendered `client_json` doubles event storage and must be regenerated when spec rendering changes.** | Versioned; regeneration is a background range scan. Storage is the cheapest resource in the system. |
 | R5 | **Spec drift.** Matrix moves; a from-scratch server must keep up. | Ruma tracks the spec and is used by multiple servers; Complement is the gate. Budget continuous spec-tracking work, not a one-time implementation. |
 | R6 | **Client dependence on Synapse-specific behavior** not covered by the spec. | §19.3 finds it empirically; each instance is a Spindle bug. This is the historical failure mode for every alternative homeserver and should be assumed to cost real time. |
 | R7 | **MSC3995 and MSC4244 are unstable and may change.** | Gated behind Cargo features and unstable prefixes; nothing in the v1 critical path depends on them (native rooms are plain v11). |
 | R8 | **Single-node scale ceiling.** | v1 targets vertical scale. The shard-by-room design admits horizontal partitioning, but cross-node room migration and a distributed stream watermark are genuine v2 work, not a config flag. |
-| R9 | **The equivalence theorem (§9.3) is wrong in some edge case.** | §19.2 tests it against the reference implementation continuously. A counterexample is a release blocker, not a bug report. |
+| R9 | **The live resolver disagrees with the reference algorithm in some edge case.** `RoomResolver` computes the auth difference and v2.1's conflicted subgraph itself and caches by input roots (§9.2); a mistake in either diverges from peers. | §19.2 tests it against ruma over full auth chains in every room-version family, and the partition tests and Complement compare its result with other servers'. A counterexample is a release blocker, not a bug report. |
 
 ---
 
@@ -1276,7 +1784,9 @@ forward extremities.
 ## 23. Prior art and relationship to it
 
 - **MSC3995 / `draft-ralston-mimi-linearized-matrix`** — the source of the
-  linearized model, the hub topology, and dual representation. Spindle's
+  linearized model, the hub topology, and dual representation. Both are
+  stalled: the MSC is a WIP last updated in 2023, the draft expired at `-04`,
+  and MIMI adopted an MLS protocol instead (§12.0). Spindle's
   contribution is applying it as an internal storage strategy for *all* rooms,
   including non-federated ones, rather than only as a federation profile for
   thin third-party implementations.

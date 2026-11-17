@@ -1,7 +1,9 @@
 ---
-sidebar_position: 29
+sidebar_position: 33
 title: "phase2 debug plan"
 ---
+
+
 
 Status as of 2026-07-18. Written after four consecutive failed E2E runs, none of
 which produced enough evidence to attribute the failure.
@@ -100,6 +102,7 @@ cannot execute — which fails exactly like a missing one, silently, at the last
 step before the root device would appear.
 
 Two sub-cases worth separating:
+
 - **A3a** binary absent from the initramfs (staging or `inst` failed);
 - **A3b** binary present but unable to run (missing/mismatched shared libs).
 

@@ -3,75 +3,119 @@ sidebar_position: 3
 title: "Roadmap"
 ---
 
-**Last updated**: 2026-09-17 | **Maintainer**: tuna-os (hanthor) / architect agent
+**Last updated**: 2026-10-15 | **Maintainer**: tuna-os (hanthor) / architect agent
 
 ---
 
 ## Mission
 
-Corral herds VMs — and containers — into your tailnet. A single Go binary with
-a CLI, TUI, and web dashboard, it manages VMs across five backends (qemu,
-kubevirt, incus, libvirt, proxmox) and exposes every guest over the Tailscale
-network your devices already share. It is also the org's emerging CI boot-gate
-tool: [tunaos#1273](https://github.com/tuna-os/tunaos/pull/1273) adopts Corral
-to gate ISO builds on boot evidence.
+Corral herds VMs — and containers — into your tailnet. Corral is a single Go binary
+with a CLI, TUI, and web dashboard. It manages VMs across nine backends. Five
+are Tier 1 or 2 (qemu, kubevirt, incus, libvirt, proxmox). Four are Tier 3
+(vsphere, nutanix, xen, virtualbox). It exposes every guest over the Tailscale
+network that your devices already share.
+
+Developers also use it to boot-gate tunaOS
+images on a KubeVirt cluster (`scripts/boot-gate.sh` in tunaOS).
 
 ---
 
-## Current Status (2026-09-17)
+## Current Status (2026-10-16)
 
-- Go rewrite of the legacy Python `tailvm`; on-disk/`tailvm-` prefixes retained
-  during the transition ([SPEC.md](https://github.com/tuna-os/corral/blob/main/SPEC.md)).
-- Five backends supported; `bootc` creation mode builds a bootable-container
-  disk on-cluster and runs it as a KubeVirt VM.
-- ✅ **Backend move parity closed 2026-08-11**: the Proxmox export adapter
-  (#163) and Incus image publishing (#164) both landed, and the Incus backend
-  gained end-to-end coverage (#123). `move` is no longer the weakest surface —
-  see [docs/backend-parity.md](https://github.com/tuna-os/corral/blob/main/docs/backend-parity.md).
-- ✅ **Distribution and release infrastructure repaired (September 2026)**:
-  - macOS release binary builds published and installer checksum verification added (#315).
-  - Release workflow updated to stamp release tags properly without crowding product releases under plugin artifacts (#316).
-- 🟡 **Org CI adoption blocked on rebase**: tunaos#1273 remains open (`CONFLICTING`), needing a rebase to gate ISO builds on boot evidence.
-- **No milestones on the repo**; work is tracked through issues and labels
-  (`needs-triage`, `ready-for-agent`, …) plus this file.
+- Corral is a Go rewrite of the legacy Python `tailvm`. On-disk and
+  in-cluster names use `corral` since the June 2026 rename ([SPEC.md](https://github.com/tuna-os/corral/blob/main/SPEC.md)).
+- Corral supports nine backends. The `bootc` mode builds a disk from a
+  bootable container on the cluster. Then it runs that disk as a KubeVirt VM.
+- ✅ **tunaOS CI uses Corral as its boot gate.** tunaOS#3249 replaced
+  `scripts/iso-e2e.sh` with `corral vmtest` v0.7.0 (#431).
+- ✅ **v0.7.0 is out** (2026-10-15): signed binaries with SBOMs,
+  and Homebrew is on v0.7.0 (#339, #210).
+- The repo has no milestones. This file and the issue labels track the work.
 
 ### Priorities
 
 | Priority | Item | Tracking | Status |
 |----------|------|----------|--------|
-| P0 | Fix advertised install path & macOS release publishing | #210, #315, #316 | ✅ Done |
-| P1 | Unblock the tunaOS boot-gate adoption — rebase the conflicting PR | tunaos#1273 | 🔴 Blocked on conflicts |
-| P1 | VDI plugin epic — Windows/Linux desktop pools | #69, [docs/vdi-epic-status.md](https://github.com/tuna-os/corral/blob/main/docs/vdi-epic-status.md) | 🟡 In progress |
-| P2 | Programmatic output — `--json` across commands | #205 | 🔴 Open |
-| P2 | Stable plugin API contract + marketplace schema v2 | [docs/plugin-marketplace.md](https://github.com/tuna-os/corral/blob/main/docs/plugin-marketplace.md) | 🟡 In progress |
-| P3 | Dependency dashboard / renovate hygiene | #97 | 🔴 Open |
+| P0 | Launch: Show HN and announcements (drafts in `docs/blog/`) | #423, #424, #425, #426 | 🟡 Drafts merged (#611); a person must post them |
+| P3 | Dependency hygiene | #97 | 🟢 Ongoing (Renovate) |
 
 ---
 
-## Quarterly Goals
+## Roadmap (dependency order)
 
-### Current Quarter (2026 Q3 — July–September)
+Phases 1 to 3 are done (see the Done list). The launch remains. Each
+launch item has a draft in `docs/blog/` and a `ready-for-human` label.
 
-**Theme**: Backend parity and release front-door repair.
+### Phase 4: Launch and outreach
 
-| Goal | Owner | Tracking | Status |
-|------|-------|----------|--------|
-| Proxmox export adapter (move source parity) | architect | #163 | ✅ Done — closed 08-11 |
-| Incus image publishing (move destination parity) | architect | #164 | ✅ Done — closed 08-11 |
-| Incus E2E suite | quality | #123 | ✅ Done — closed 08-11 |
-| Install path works on every OS the installer claims to support | — | #210, #315 | ✅ Done |
-| One visible product release channel, separate from plugin artifacts | — | #210, #316 | ✅ Done |
-| Merge tunaOS boot-gate adoption | ci-maintainer | tunaos#1273 | 🔴 Conflicting — rebase needed |
-| Document stable plugin API + marketplace schema v2 | guide | docs/plugin-marketplace.md | 🟡 In progress |
+The git history is clean (#264), v0.7.0 is public (#339), and tunaOS uses
+the gate (#431).
 
-### Next Quarter (2026 Q4 — October–December)
+| Item | Issue | Depends on |
+|------|-------|------------|
+| Show HN | #423 | — |
+| bootc case study | #426 | — |
+| VDI launch announcement | #425 | — |
+| KubeVirt ecosystem positioning | #424 | — |
 
-**Theme**: Enterprise readiness
+### Open after Phase 3
 
-- VDI plugin GA (desktop pools for Windows/Linux) — #69
-- Plugin marketplace growth: schema v2, signed releases, SBOM
-- Supply-chain hardening aligned with org Q4 (package signing/SBOM, tunaos#1187)
-- Backend support matrix + upgrade/migration documentation (5 backends × tailnet)
+- Run the manual pass for the Tier 3 backends against real systems
+  ([runbook](https://github.com/tuna-os/corral/blob/main/docs/runbooks/enterprise-backends-manual-pass.md)). Until then
+  VMware, Nutanix, XenServer/XCP-ng and VirtualBox stay Tier 3.
+- VDI surfaces without an end-to-end test stay Preview: the `corral vdi`
+  CLI, ephemeral and container pools, USB redirection and device checks.
+
+---
+
+## Done in 2026 Q3–Q4
+
+- Backend parity for `move`: #163, #164, #123.
+- Install path and macOS binaries: #315, #316.
+- Web workspace epic #350: all child issues are done.
+- Vendored asset provenance and SRI checks: #215, #396, #504.
+- Path traversal in local VM names: #497, #502.
+- Incus and libvirt commands, contexts and snapshots, and Proxmox create: #489–#493.
+- Config cache and cross-process lock: #359.
+- Enterprise readiness criteria
+  ([docs/enterprise-readiness.md](https://github.com/tuna-os/corral/blob/main/docs/enterprise-readiness.md)): #404.
+- Test backfill (RFC-0004), coverage floor 59.5% to 69.0%: #506. It
+  fixed two bugs. Gc stopped a VM with the same name in another
+  namespace (#538). VM stop could kill an unrelated process (#540).
+- Split `pkg/web/server.go` into routes, request middleware, task tracker,
+  and create-target files, with characterization tests first: #503
+  (#529, #559, #563).
+- VDI pools of ephemeral CT desktops
+  ([docs/vdi-ct-pools.md](https://github.com/tuna-os/corral/blob/main/docs/vdi-ct-pools.md)): #230.
+- Signed plugins with SBOMs, verified at install time: #505.
+- Signed core binaries and container image, with SBOMs: #584.
+- Self-service API for VDI: opt-in `/api/vdi/` routes in `corral web`
+  ([ADR-0013](https://github.com/tuna-os/corral/blob/main/docs/adr/0013-vdi-broker-placement.md)): #227.
+- TUI state machine: #305 (#511, #549, #567, #571, #575, #580). Tests
+  for each screen transition came first. Each screen has a typed mode, a
+  key handler, and a view. Backend work runs in commands, not in `Update`.
+- Structured logs with `log/slog` and request IDs, from the web request to
+  the backend commands: #419 (#578, #579).
+- Backend-specific code goes through `pkg/backend` adapters: #214
+  (#550, #521, #524, #553, #562, #564, #552, #576).
+  27 branches on a backend name remain. Each has a reason in
+  [docs/backend-parity.md](https://github.com/tuna-os/corral/blob/main/docs/backend-parity.md), and the ratchet in
+  `pkg/backend/matrix_test.go` holds the count.
+- VDI session records and conservative reclaim (disconnect grace, maximum
+  duration, ephemeral VM pools): #228.
+
+- VDI one-click connect: the web Desktops screen and `corral vdi connect`:
+  #229.
+- VDI GA: the broker on persistent VM pools is Stable on KubeVirt. CI tests
+  it end to end, and an upgrade test reads v0.6.0 state: #69 (#592, #593).
+- Enterprise backends (RFC-0003): VirtualBox, vSphere, XenServer/XCP-ng and
+  Nutanix, and CLI commands through the adapters: #507 (#586–#591, #594–#596).
+- TUI models in their own files (`cmd/tui.go` 1,496 to 590 lines): #554.
+- v0.7.0 released with signed binaries and SBOMs: #339, #210.
+- tunaOS CI boot gate on `corral vmtest` (tunaOS#3249): #431.
+- `e2e-kind` is a required check. Its path filter is a job, so PRs that
+  skip the end-to-end test do not block.
+- Old build files removed from the git history (33 MB to 12 MB): #264.
 
 ---
 
@@ -82,21 +126,17 @@ to gate ISO builds on boot evidence.
 | `pkg/proxmox` (compat server) vs `pkg/proxmoxbe` (client) naming confusion | CONTEXT.md | P2 | S |
 | Legacy `tailvm` prefix migration completion | SPEC.md | P2 | M |
 
----
-
 ## How to Contribute
 
-Issues are triaged with `needs-triage` / `ready-for-agent` / `ready-for-human`
-labels (see `docs/agents/issue-tracker.md`). The open surface is small right
-now — #205 (`--json` output) is the most self-contained pick, and #69 is the large VDI epic.
+Pick an item from the earliest phase that has open work. Earlier phases
+hold all of its dependencies. The labels `needs-triage`, `ready-for-agent` and
+`ready-for-human` show the state of each issue (see
+`docs/agents/issue-tracker.md`).
 
 ## Roadmap Governance
 
-Maintained by the strategist agent; updates after major milestones or
-quarterly. Propose changes via PR to this file with an issue reference.
+The strategist agent keeps this file current after each milestone and each
+quarter. To change it, open a PR that refers to an issue.
 
-**Currency rule**: a tracker cited in this file that closes must move its row in
-the same PR, or the row must name a successor.
-
----
-*Generated by strategist agent at ACMM L6 — full mode (ISSUES_AND_PRS).*
+**Currency rule**: when an issue in this file closes, the same PR must move
+its row, or the row must name a successor issue.

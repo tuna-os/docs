@@ -1,5 +1,5 @@
 ---
-sidebar_position: 36
+sidebar_position: 41
 title: "session migration"
 ---
 
@@ -31,6 +31,7 @@ carry the login with no decryption. Done in the deployer.
 
 **Chromium/Electron `safeStorage` (Discord, Slack, Spotify, Chrome, Edge)
 → decrypt-and-rewrap in Windows.** At slurp time the GUI:
+
 1. reads the app's `Local State`, DPAPI-decrypts the `os_crypt.encrypted_key`;
 2. uses it to decrypt the Cookies/Local Storage LevelDB entries;
 3. re-encrypts the payload under a key derived from the wootc vault

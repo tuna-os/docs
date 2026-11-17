@@ -1,5 +1,5 @@
 ---
-sidebar_position: 9
+sidebar_position: 10
 title: "ci boot gate"
 ---
 
@@ -35,7 +35,8 @@ corral vmtest gate --bootc ghcr.io/tuna-os/yellowfin:gnome-testing \
   --check 'systemctl --failed --no-legend' \
   --video
 # exit 0 → the image booted, the hook passed, every check passed
-ssh -i corral-vmtest-out/ssh/id_ed25519 -p 2242 tester@127.0.0.1
+# With --keep, use the SSH command printed in the summary. The private key
+# is kept outside corral-vmtest-out/ and is not uploaded with the evidence.
 corral delete gate
 ```
 
@@ -44,8 +45,10 @@ Add `--rm` for a pure gate, where nothing runs after it.
 ### What it writes
 
 Every run fills an artifact directory (`--artifacts`, default
-`corral-vmtest-out/`). Upload it from CI and a failure is diagnosable without
-a second run:
+`corral-vmtest-out/`). Upload it from CI; a failure is diagnosable without a
+second run. The generated SSH identity is kept in a private temporary directory
+outside the artifact directory. With the default `--keep`, use the SSH command
+printed in the summary.
 
 | File | What it tells you |
 |---|---|
@@ -55,8 +58,6 @@ a second run:
 | `ready.png` / `failure.png` | the screen at the moment the run ended |
 | `timelapse.webm` | the boot as a video (`--video`, needs ffmpeg) |
 | `diagnostics/` | failed units, `bootc status`, journal warnings |
-| `layer/Containerfile` | exactly what the run added to the image |
-| `ssh/id_ed25519` | the run's own keypair |
 
 ### Exit codes
 
@@ -134,14 +135,76 @@ deviation of its luminance is at or under 0.02. A guest that boots and never
 draws is the failure an SSH probe hides. Without this flag, no exit code
 catches it and somebody has to look at a picture.
 
-You can also drive the console keyboard directly, which is the only way into a
-LUKS passphrase prompt or a greeter:
+Paint is a point-in-time measurement, not proof of guest initialization or
+that a later screenshot will remain painted. QEMU's initial host-rendered
+“Guest has not initialized the display (yet).” message is nonuniform too.
+For guest boot gates, paint must accompany a readiness milestone.
+A host message does not prove that firmware or an OS drew.
+
+CI checks the native lifecycle of QEMU with an empty disk.
+This proves neither an OS boot nor a desktop boot.
+The ARM guest first waits for one of these EDK2 messages:
+`BdsDxe: loading Boot…`, `BdsDxe: starting Boot…`, or
+`BdsDxe: failed to load Boot…`.
+EDK2 prints these messages after it initializes the console.
+An empty disk can produce failed-load output.
+This shows firmware progress, not an OS boot.
+
+The CLI then runs `wait --paint` within the same 30-second budget.
+The 100 ms interval stays unchanged.
+The separate `screenshot --require-paint` captures the current framebuffer.
+Its 0.02 threshold stays unchanged.
+The check never uses an earlier image.
+
+Artifacts retain the milestone receipt, the serial output, and the live screenshot.
+On failure, cleanup saves the serial output before it stops or deletes the VM.
+
+An image that checks itself on boot can report a failure as well as a pass.
+Give that line to `--fail-marker`, and the run fails (exit 6) when the line
+appears. It does not wait for the timeout. corral checks the failure marker
+first, so a console that shows both lines fails:
+
+```bash
+corral vmtest desk --bootc "$IMAGE" --rm \
+  --ready-marker '(?s)BASE_CONTRACT_OK.*DESKTOP_CONTRACT_OK|DESKTOP_CONTRACT_OK.*BASE_CONTRACT_OK' \
+  --fail-marker 'CONTRACT_FAIL|Entering emergency mode|Kernel panic'
+```
+
+corral matches the markers against the whole console, not one line at a
+time. Thus one `(?s)` pattern can need two lines in either order.
+
+You can also drive the console keyboard and pointer directly. This is the only
+way into a LUKS passphrase prompt, or into a greeter on an image with no sshd:
 
 ```bash
 corral screenshot desk -o greeter.png
+corral key desk ret
 corral type desk 'correct horse battery staple' --enter
 corral key desk ctrl alt f2
+corral pointer desk 1236 12 --click left
 ```
+
+`corral screenshot` also captures a KubeVirt VM, through KubeVirt's VNC
+screenshot subresource (`virtctl vnc screenshot`). It reports the same frame
+size and deviation, and `--require-paint` fails a blank KubeVirt frame the same
+way.
+
+`type` and `key` work on local QEMU and KubeVirt VMs. `pointer` works on
+KubeVirt VMs that have a tablet input device. See
+[Console keyboard and pointer](https://github.com/tuna-os/corral/blob/main/docs/user-guide.md#console-keyboard-and-pointer).
+
+### Kernel arguments and the root filesystem
+
+`--karg` (repeatable, `kargs:` in the file) puts a kernel argument into the
+installed boot entry. The argument is there from the first boot, which a
+command that runs over SSH later cannot do. Use it to turn off telemetry in
+test guests, or to pick the boot target. corral always adds
+`console=ttyS0,115200n8` first, so that the console log exists.
+
+`--filesystem` (`filesystem:`) replaces the root filesystem that the image's
+bootc backend implies. Without it, ostree images get xfs, and composefs images
+get ext4 (or btrfs when the image has no `mkfs.ext4`). Use it for an image
+whose bootloader cannot read the default.
 
 ### The spec file (Lima-shaped)
 
@@ -196,6 +259,65 @@ A flag beats the file, and only when you pass it. An unknown field in the file
 is an error, not a warning: a misspelled `packages:` that installs nothing
 wastes the whole run.
 
+### Guest behavior assertions
+
+The guest suite is optional. It adapts the boot, identity and graphical scenarios from
+[Frostyard's smoke features](https://github.com/frostyard/testsuite/tree/4cd5e6096b4daca53c24d0eb3523013e07521d16/tests/smoke/features).
+It uses the same spec and SSH `checks:` machinery, not a BDD runner or a
+container test. For a headless image, omit `desktop`:
+
+```yaml
+bootc: quay.io/fedora/fedora-bootc:41
+guestAssertions:
+  id: fedora              # exact /etc/os-release ID
+  versionId: "41"         # optional exact VERSION_ID
+```
+
+For a desktop image, specify the installed session executable and the
+display-manager unit that systemd must show as active (names differ by distribution):
+
+```yaml
+bootc: ghcr.io/tuna-os/yellowfin:gnome-testing
+guestAssertions:
+  id: fedora              # replace with the image's actual ID
+  desktop:
+    sessionCommand: gnome-shell
+    displayManagerUnit: gdm.service
+screenshots:
+  requirePaint: true
+```
+
+The suite checks the system bus, journal, systemd service inventory and
+os-release identity and human-readable names. A desktop check also needs a
+graphical default target, the specified executable and an active manager.
+Missing tools and failed scenarios fail the run; their commands and
+output are in `result.json` alongside the serial log and other artifacts.
+Other `checks:` still run. A headless configuration makes no claim about the
+absence of a desktop.
+
+Add image-specific checks (including any failed-unit
+allowlist or provenance requirements) separately; the suite does not assume
+Frostyard's distribution or packages. A painted frame is useful evidence but
+not proof of a successful user login.
+
+These checks run only after the QEMU guest reports ready and SSH answers. A
+container-only layer test is not evidence that the VM booted. For real-boot
+regression coverage on a prepared KVM host, configure both images and run:
+
+```bash
+export CORRAL_VMTEST_HEADLESS_IMAGE=quay.io/fedora/fedora-bootc:41
+export CORRAL_VMTEST_HEADLESS_ID=fedora CORRAL_VMTEST_HEADLESS_VERSION=41
+export CORRAL_VMTEST_DESKTOP_IMAGE=your-desktop-bootc-image
+export CORRAL_VMTEST_DESKTOP_ID=your-os-id
+export CORRAL_VMTEST_DESKTOP_COMMAND=gnome-shell CORRAL_VMTEST_DESKTOP_UNIT=gdm.service
+sudo -E go test -tags e2evmtest -timeout 90m -count=1 -v ./pkg/vmtest/ -run 'TestE2E_GuestAssertion'
+```
+
+This also boots the headless image with a deliberately incorrect identity and
+asserts an `ExitCheck` failure with check output, serial log and result file.
+A test skips a case when you do not configure its image or when the host does not
+have a VM prerequisite. Read the test output: a skipped case is not boot evidence.
+
 ### GitHub Actions
 
 ```yaml
@@ -243,6 +365,19 @@ corral delete gate
 `--wait-ssh` starts the VM, then blocks until a root SSH probe over the
 forwarded port succeeds. bootc install injects the SSH key with
 `--root-ssh-authorized-keys`, and nothing changes the published image.
+
+### Kernel arguments
+
+`--karg` (repeatable) puts a kernel argument into the installed boot entry,
+as it does for `corral vmtest`. The argument is there from the first boot:
+
+```bash
+corral create gate --bootc ghcr.io/tuna-os/yellowfin:gnome-testing \
+  --karg tunaos.countme=0 --wait-ssh --timeout 900
+```
+
+Each value must be one argument with no spaces. `corral bootc create` also
+takes `--karg`.
 
 ### Locally built images
 
@@ -319,13 +454,44 @@ check "systemctl --failed --no-legend"         # empty, or a known allowlist
 check "bootc status --format json | jq -r '.status.booted.image.image.image'"
 ```
 
+Each `check` runs one time. To wait until a condition is true, use `corral wait`.
+It works on local QEMU and on KubeVirt, and it fails with the name of the
+condition that is not true:
+
+```bash
+corral wait gate --boot-complete --unit gdm.service --paint --timeout 15m
+```
+
+See [Wait until a VM is ready](https://github.com/tuna-os/corral/blob/main/docs/user-guide.md#wait-until-a-vm-is-ready).
+
 ## KubeVirt backend (clusters, heavy images, local dev parity)
 
 ```bash
 corral bootc create gate --image ghcr.io/tuna-os/yellowfin:gnome -n corral-vms
 # or: corral create gate --kubevirt --bootc <image> [-s <storage-class>]
 corral start gate      # bootc creates the VM stopped
+corral wait gate --unit gdm.service --paint --timeout 15m
 ```
+
+To test a desktop image with a real login account from its first boot:
+
+```bash
+corral bootc create gate --image ghcr.io/tuna-os/yellowfin:gnome \
+  --user tester --password-prompt
+```
+
+For automation, pipe the password to `--password-stdin`. Corral reads the
+first line of stdin:
+
+```bash
+printf '%s\n' "$PASSWORD" | corral bootc create gate \
+  --image ghcr.io/tuna-os/yellowfin:gnome --user tester --password-stdin
+```
+
+You can also use `--password-hash` with a SHA-512 crypt value. Do not put a
+plaintext password on a command line. The account flags work on local and
+KubeVirt backends. The account goes into the installed deployment's `/etc`
+and `/var`, so the greeter shows it at the first boot.
 
 The build runs in a builder VM **on the cluster** (`bootc install to-disk`
 onto a PVC). This is the only way to install images whose filesystems the
@@ -342,7 +508,10 @@ that matter in practice:
   upstream. A registry:2 aimed at quay is not able to serve content from ghcr.
 - **Interrupted builds**: sometimes the builder finishes but the final VM step
   does not. Then `corral bootc create --resume <name>` reuses the disk PVC that the
-  builder completed. It does not build the disk again.
+  builder completed. It does not build the disk again, so it cannot add a kernel
+  argument. With `--karg`, the resume continues only if the builder installed
+  each argument that you give. If not, it stops with an error. Then build
+  the disk again without `--resume`.
 
 ## Troubleshooting the gate
 
@@ -357,7 +526,7 @@ that matter in practice:
 | `vmtest` exits 2 | the runner cannot host a VM at all: no podman, no qemu, no `/dev/loop-control`, or corral is not root. The message names the missing one |
 | `Re-exec in host mountns: ... Permission denied` | `bootc install` needs the host's mount namespace, and a container inside a container does not have one. Run corral on the runner, not in a container on it |
 | `vmtest` exits 6 and `serial.log` is empty | the guest never reached the bootloader, or the VM predates console capture. Recreate it — the console karg is installed by `vmtest` itself, so a VM built another way may not have one |
-| `vmtest` exits 6 and the console stops in dracut | an ostree install on the wrong filesystem. Composefs images need btrfs, and the local builder refuses them for that reason — build those on a KubeVirt context |
+| `vmtest` exits 6 and the console stops in dracut | the root filesystem or the boot files are wrong for the image's backend. A composefs image needs a filesystem with fs-verity (ext4, else btrfs), and its kernel and initrd restored on the ESP after the install. The local builder does both — check the build log for `composefs: restoring the kernel and initrd`. An image that needs another filesystem takes `--filesystem` |
 | `vmtest` exits 7 | the first-boot hook failed. Its own output is in `result.json` under `hook.log`, and on the console between the `CORRAL_POSTBOOT_FAIL` and `CORRAL_VM_READY` markers |
 | `vmtest` exits 7 and the console shows the hook starting and nothing after | the hook waits for something that waits for the hook. `systemctl is-system-running --wait` is the usual one. Assert a unit's state instead of waiting for the boot |
 | `vmtest` exits 9 | the guest booted and painted nothing. Look at `ready.png` and the last frames: a greeter that crashed looks exactly like this |

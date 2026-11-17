@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 title: "RELEASING"
 ---
 
@@ -42,7 +42,7 @@ Windows is a good outcome; a walked-into-red user with a broken boot is not.
 
 ## Alpha (now)
 
-- **Image:** `ghcr.io/projectbluefin/bluefin:lts`. This combination passed the full cycle, including a run through the GUI.
+- **Image:** `ghcr.io/projectbluefin/bluefin:stable`, the same grub2 stack as the discontinued `bluefin:lts`, on which the full cycle passed, including a run through the GUI.
 - **Encryption:** off only. `tpm2-luks` (Phase-2 regen, [#33](https://github.com/tuna-os/wootc/issues/33))
   and BitLocker FDE ([#34](https://github.com/tuna-os/wootc/issues/34)) remain unavailable in alpha.
   The app detects BitLocker and tells the user about that limit. It refuses to continue into a known failure.
@@ -70,14 +70,15 @@ The gates for each axis open as their issues close.
 
 The [roadmap](https://github.com/tuna-os/wootc/blob/main/ROADMAP.md#native-shell-sequence-and-evidence-357) puts the
 WinUI default change before 1.0. Phase B packages remain preview assets.
-Phase C must prove the native consumer journey, the VM journey, and full cycles.
-Phase D changes the default only after those gates pass. Keep the legacy
-artifact for one release. Phase E follows a clean native release and the docs audit.
+Phase C proved the native consumer journey, the VM journey, and full cycles.
+Phase D now makes the native setup the primary release path and keeps the Wails
+build once as `wootc-legacy.exe`. Phase E follows a clean native release and
+the docs audit.
 
 A release cannot use old Wails passes as native UI or setup proof. Carry only
 component evidence whose engine code and contract did not change. Re-run the
 native hardware journeys, branded walks, accessibility checks, and matrix cells.
-A new artifact needs fresh signature checks and offline tests of its package.
+A new setup artifact needs fresh signature checks and offline tests of its package.
 
 The 1.0 soak needs phase D and all RC prerequisites complete, then a recorded
 start date. Each eligible row must name the native shell, source SHA, artifact
@@ -89,7 +90,7 @@ list alone or from dates before these gates pass.
 ## Cutting a release
 
 Releases are **E2E-gated**. The tagged gate uses Windows 11, Bluefin LTS,
-BitLocker off, GUI install, and `phase3: true` on a hosted runner.
+BitLocker off, the native GUI install, and `phase3: true` on a hosted runner.
 It ends in graduated Linux and checks this run's file from Windows Documents.
 That final boot does not prove a Windows return after graduation.
 
@@ -100,19 +101,71 @@ The release notes disclose that waiver.
 
 ```
 git tag v0.1.0-alpha.1 && git push origin v0.1.0-alpha.1
-# → tests → E2E gate (real Windows VM, bluefin:lts, GUI-driven) → build + publish
+# → tests → native E2E gate (real Windows VM, bluefin:stable) → build + publish
 ```
 
-Every release ships the **full artifact set** from `release.yml`.
-It includes one installer per brand directory: `wootc.exe`,
-`TunaOS-Installer.exe`, `Bluefin-Installer.exe`, `Bazzite-Installer.exe`, and
-`Aurora-Installer.exe`. These use Wails with Go and a web UI. Their Windows interface needs the WebView2 runtime.
+Every release ships the **full artifact set** from `release.yml` and the
+workflow for native packages. The primary GUI downloads are one Inno setup per eligible
+brand: `wootc-Installer-Setup.exe`, `TunaOS-Installer-Setup.exe`,
+`Bluefin-Installer-Setup.exe`, `Bazzite-Installer-Setup.exe`, and
+`Aurora-Installer-Setup.exe`. Each setup installs the WinUI shell beside its
+protected Go engine and carries the release's public verification key.
+
+This cut-over release publishes the Wails build once as `wootc-legacy.exe`.
+It is a compatibility fallback, not a branded primary installer. It needs
+WebView2.
 
 The shared boot artifacts are `deployer-vmlinuz`, `deployer-initramfs.img`,
 `shimx64.efi`, `grubx64.efi`, and `mmx64.efi`.
 The set also includes `wubildr.efi` when its build succeeds.
-`SHA256SUMS` lists hashes for all these files. `skip_e2e` exists for emergencies and
-documents itself in the release notes.
+`SHA256SUMS` lists the boot artifacts and `wootc-legacy.exe`.
+`native-SHA256SUMS` lists the setup assets that the workflow attaches.
+`skip_e2e` exists for emergencies and documents itself in the release notes.
+
+## Full-matrix evidence at the RC SHA (v1.0 criterion 3)
+
+The release notes for v1.0.0 cite one run set at the exact release SHA.
+A green from an earlier commit does not count. [#240] records this set.
+
+1. Dispatch `e2e-matrix.yml` at the RC SHA with `tier=full` two times.
+   Set `gui_install` off for script mode, and on for GUI mode.
+   The run title then shows the tier and the mode, for example
+   `E2E matrix (full, gui)`.
+2. If a cell fails, read its flake notice. The harness writes this notice only
+   for a known infra signature. Re-dispatch that cell with `grep=<cell>`, or
+   re-run the failed job. Do not re-run a red cell that has no flake notice.
+   Diagnose it, because it is a real failure.
+3. Grade the run set and paste the output into [#240] and the release notes:
+
+```
+tools/release/matrix-evidence.py check --sha <rc-sha> \
+    --run <script-run> --run <gui-run> [--run <retry> ...] \
+    --snapshot matrix-evidence.json
+```
+
+The matrix plan runs `tests/e2e/validate-matrix.py` before it fans out.
+The validator keeps `app/data/images.json` as evidence, not case input.
+It stops if the catalog marks an image green and no case covers that image on
+Windows 10 or 11 Pro. Axis-specific rows (BitLocker, filesystem, offline, recovery,
+firmware-db, and Phase 3) do not satisfy this primary-image gate.
+
+The tool reads `tests/e2e/matrix.tsv` at the RC SHA and expects each
+full-tier cell that the hosted plan runs. GUI mode expects only the cells that
+the `gui_install` guard drives. The BitLocker, `filesystem=`, and offline cells
+use script mode only. The tool marks a cell green only when all of these are true:
+
+- The last try of the cell has a passed job.
+- The job log shows the pass banner of `run-e2e.sh`. The harness prints this
+  banner only after it finds an empty failure ledger.
+- Each earlier red try of that cell has a flake notice.
+
+The tool exits with a non-zero code if a cell is missing, red, or has a red
+with no explanation. It also exits with a non-zero code if a run is at a
+different SHA, or if the matrix has no `bitlocker=on` or `offline=on` cell.
+The phase3 cells are too large for the disks of hosted runners. The record
+names them as not in the hosted matrix.
+Keep the `--snapshot` file with the evidence, because job logs expire after
+90 days. Use `tools/release/matrix-evidence.py grade` to grade the file again offline.
 
 ## Fresh-machine verification (v1.0 criterion 4)
 
@@ -136,22 +189,179 @@ It exits with a non-zero code if a box fails:
 | Box | How it is decided |
 |---|---|
 | winget serves the release | `winget show TunaOS.wootc` resolves **and** reports the version under test — a manifest that resolves to last month's alpha is a quieter failure than no package at all |
-| each asset matches `SHA256SUMS` | `Get-FileHash` against the published manifest; an asset the manifest does not list fails rather than being skipped |
-| each exe is Authenticode-signed | `Get-AuthenticodeSignature` must be `Valid` *and* name a signer. `HashMismatch` is called out separately — that is a tampered download, not an unsigned one |
-| each branded exe shows its own identity | the exe's VERSIONINFO `ProductName`/`FileDescription`/`CompanyName` match that brand and contain no "wootc" |
+| winget installs the release | `winget install TunaOS.wootc` exits 0, and the setup it installs has the release's `native-SHA256SUMS` hash. A winget success that installs a different file is a fail |
+| each published asset matches its manifest | `Get-FileHash` against `SHA256SUMS` for boot/legacy assets and `native-SHA256SUMS` for setup assets; an asset neither manifest lists fails rather than being skipped |
+| each Windows executable is Authenticode-signed | `Get-AuthenticodeSignature` must be `Valid` *and* name a signer when signing is enabled. `HashMismatch` is called out separately — that is a tampered download, not an unsigned one |
+| each branded setup shows its own identity | the installed shell's brand configuration and setup path match the selected brand; the generic setup remains `wootc` |
 
 A person must attach three screenshots, because a script cannot make them:
+
 - The UAC prompt.
 - The **Properties ▸ Details** tab of the exe.
 - The SmartScreen interstitial, or a note that it did not show.
 
 ### Signatures and file identity
 
-**No release has a signature.** `release.yml` has no step that signs the
-files. [#229] is the choice and purchase of a signature method. This is a
-spend decision for the maintainer. [#230] adds that method to the pipeline.
-Until both issues are done, each signature box is ✘. SmartScreen shows the
-wall for unknown apps, and UAC shows "unknown publisher".
+**No release has a signature yet.** [#229] is the choice and purchase of a
+signature method. This is a spend decision for the maintainer. Until a
+credential exists, each signature box is ✘. SmartScreen shows the wall for
+unknown apps, and UAC shows "unknown publisher".
+
+The pipeline side ([#230]) is ready for any credential that #229 selects.
+The release step `Authenticode-sign the installers` runs
+`packaging/sign-exes.sh` after the build of the exes and before the
+step that writes `SHA256SUMS`. Authenticode changes the bytes of the file, so the
+checksums must come after the signature. `tests/unit/release-pipeline.bats`
+keeps this order.
+
+The script uses [jsign], which supports the Azure `TRUSTEDSIGNING` service, cloud HSM keys
+for EV certificates, and PKCS12 files. Repository variables select the
+credential:
+
+| Name | Kind | Value |
+|------|------|-------|
+| `WOOTC_SIGN_STORETYPE` | variable | jsign `--storetype`, for example `TRUSTEDSIGNING`. Empty means that signing is not configured |
+| `WOOTC_SIGN_KEYSTORE` | variable | jsign `--keystore`: the endpoint, the vault, or the file |
+| `WOOTC_SIGN_ALIAS` | variable | jsign `--alias`: the key, or `account/profile` for Trusted Signing |
+| `WOOTC_SIGN_PUBLISHER` | variable | the CN that the signer certificate must show |
+| `WOOTC_SIGN_TSAURL` | variable | optional RFC 3161 timestamp server |
+| `WOOTC_SIGN_STOREPASS` | secret | the token or password. jsign reads it from the environment. Not used with the Azure OIDC login |
+| `WOOTC_SIGN_CA_PEM` | variable | optional PEM roots for the check of the signature and the timestamp |
+| `WOOTC_SIGN_CERTCHAIN_PEM` | variable | optional PEM chain for jsign `--certfile`. Some HSM store types need it |
+| `AZURE_CLIENT_ID` | variable | the Entra application (client) ID for the OIDC login. Only with `TRUSTEDSIGNING` |
+| `AZURE_TENANT_ID` | variable | the Entra tenant (directory) ID |
+| `AZURE_SUBSCRIPTION_ID` | variable | the subscription of the Trusted Signing account |
+
+The check uses the Ubuntu CA bundle. That bundle has TLS roots only.
+The Azure `TRUSTEDSIGNING` certificates chain to a Microsoft root that is not in
+the bundle (`Microsoft Identity Verification Root Certificate Authority 2020`).
+The timestamp service `timestamp.acs.microsoft.com` chains to the same root.
+
+For `TRUSTEDSIGNING`, the script adds this root from the repository file
+`packaging/authenticode-roots/microsoft-identity-verification-root-2020.pem`.
+A file in the repository gets a review when it changes, and a variable does not.
+`tests/unit/release-pipeline.bats` pins its SHA-256 fingerprint. Use
+`WOOTC_SIGN_CA_PEM` only for other credentials.
+
+For `TRUSTEDSIGNING`, jsign uses an Azure access token as the store password.
+Such a token expires after about one hour, so a static secret does not work for
+a release. The release job gets the token with GitHub OIDC. Refer to the
+[Azure setup](#setting-up-azure-trusted-signing) below.
+
+The script signs copies of each exe. It then makes `osslsigncode verify`
+examine each copy for a valid chain, a timestamp, and the expected
+publisher. It replaces the exes only when all copies pass. The results are:
+
+- `signed`: all exes have a verified signature.
+- `unsigned`: `WOOTC_SIGN_STORETYPE` is empty. The release continues and the
+  notes say "Not code-signed".
+- `failed`: a tagged release stops. An auto or manual pre-release continues
+  with the unsigned exes, and its notes say that the signature step failed.
+  Thus an outage of the signature service does not stop the nightly
+  releases.
+
+When #229 is done, set the variables. Then cut a tagged
+release and do the fresh-machine check above.
+
+### Setting up Azure Trusted Signing
+
+For #229, the maintainer selected the Azure service `Trusted Signing`.
+Microsoft now calls it `Artifact Signing`, and the portal and the role
+names can show either name. The release workflow is ready. It does nothing
+until the variables below exist, and until then the releases ship unsigned.
+
+**How the release job signs.** Only the `build + publish` job has
+`id-token: write`, and it runs in the GitHub environment `release`.
+When `WOOTC_SIGN_STORETYPE` is `TRUSTEDSIGNING` and `AZURE_CLIENT_ID` is set,
+`azure/login` logs in with the OIDC token of the job. The repository keeps
+no secret for this login. Immediately before the first signature,
+`packaging/sign-exes.sh` gets an access token for `https://codesigning.azure.net`.
+
+jsign signs the Wails compatibility asset `wootc-legacy.exe` in the release
+assets. The workflow for native setups embeds the public release key in each
+protected engine. It publishes the setup hashes as `native-SHA256SUMS`.
+MSIX signatures remain gated on #229/#230. The timestamp server is
+`http://timestamp.acs.microsoft.com`.
+`osslsigncode` examines each signature. If the login or the token fails, the
+result is `failed`. A tagged release stops, and a pre-release continues
+unsigned with a warning in its notes.
+
+The release job uses jsign on Linux, and not the Microsoft
+`azure/artifact-signing-action`, for these reasons:
+
+- The Microsoft action operates only on Windows runners.
+- The publish job is a Linux job. It holds the private key for the
+  `SHA256SUMS` signature of this release, and that key must not leave the job.
+  A Windows job would split the build, the signature, and the checksums
+  into three jobs.
+- jsign uses the same Azure service. The workflow pins the jsign download by
+  version and SHA-256.
+
+**Do these steps in Azure.** A person with the Owner role on the subscription
+must do them. The workflow does not create Azure resources.
+
+1. In the subscription, register the resource provider `Microsoft.CodeSigning`.
+2. Create an account of the service in a supported region. Record the
+   account name and the account URI, for example
+   `https://eus.codesigning.azure.net/`.
+3. On the account, give your own user the role
+   `Artifact Signing Identity Verifier`. Its old name is
+   `Trusted Signing Identity Verifier`.
+4. On the account, open **Identity validations** and request a **Public**
+   validation for the organization. Microsoft examines the legal documents.
+   The name that Microsoft validates becomes the `CN` and `O` of each
+   certificate. Wait until the status is `Completed`.
+5. On the account, create a certificate profile of the type **Public Trust**
+   and select the completed validation. Record the profile name.
+6. In Microsoft Entra ID, create an app registration, for example
+   `wootc-release-signing`. Record the application (client) ID and the
+   directory (tenant) ID.
+7. On that app registration, add a federated credential:
+   - Scenario: `GitHub Actions deploying Azure resources`.
+   - Organization `tuna-os`, repository `wootc`.
+   - Entity type **Environment**, name `release`.
+   - The subject must be `repo:tuna-os/wootc:environment:release`, the
+     issuer `https://token.actions.githubusercontent.com`, and the audience
+     `api://AzureADTokenExchange`.
+
+   A tag push, a dispatch, and the automatic channel each run under a
+   different ref. The environment gives one subject for all of them.
+8. Assign the role `Artifact Signing Certificate Profile Signer` to the
+   service principal of that app registration. Its old name is
+   `Trusted Signing Certificate Profile Signer`. Use the smallest scope:
+   the certificate profile.
+
+**Then set these repository variables** (Settings ▸ Secrets and variables ▸
+Actions ▸ Variables). Do not make secrets for them:
+
+| Variable | Value |
+|---|---|
+| `AZURE_CLIENT_ID` | the application (client) ID from step 6 |
+| `AZURE_TENANT_ID` | the directory (tenant) ID from step 6 |
+| `AZURE_SUBSCRIPTION_ID` | the subscription of the account |
+| `WOOTC_SIGN_STORETYPE` | `TRUSTEDSIGNING` |
+| `WOOTC_SIGN_KEYSTORE` | the host of the account URI, for example `eus.codesigning.azure.net` |
+| `WOOTC_SIGN_ALIAS` | `<account name>/<certificate profile name>` |
+| `WOOTC_SIGN_PUBLISHER` | the `CN` of the certificate: the validated name from step 4 |
+
+Do not set the secret `WOOTC_SIGN_STOREPASS` or the variable
+`WOOTC_SIGN_CA_PEM`. `WOOTC_SIGN_TSAURL` is optional.
+
+The first run of the publish job makes the environment `release` if it does
+not exist. If you add required reviewers to that environment, each release
+waits for a reviewer, and the automatic channel waits too.
+
+**Match the publisher name.** The UAC prompt shows the publisher from the
+certificate. The **Properties ▸ Details** tab shows `CompanyName` from the
+version resource of the exe. These two names must be the same.
+While a brand has no `blessed` record, its exe names the distributor
+`TunaOS` as its `CompanyName` (#604).
+If the validated name in step 4 is a different legal name, use that name.
+
+Change the distributor in `app/branding/ownership.json` and the `publisher`
+of the generic brands. A brand with a `blessed` record names its owner as
+its `CompanyName`, but the certificate still names the validated
+organization. Write that difference in the `blessing.json` of that brand.
 
 The release now builds a VERSIONINFO resource **per brand** through
 `packaging/build-windows.py`. It reads the product name, description,
@@ -165,11 +375,12 @@ The build uses the brand's `icon.ico` when present. Otherwise, it converts
 icon fallback. A conversion error stops the build. The release job installs
 `rsvg-convert`, so brands with a logo get their own icon.
 
-The helper builds from a temporary copy of the app. It does not change the resource file in the source tree. To build a brand after the frontend build:
+The helper builds the one-release Wails compatibility asset from a temporary
+copy of the app. It does not change the resource file in the source tree:
 
 ```sh
-python3 packaging/build-windows.py --brand bazzite \
-    --version v1.2.3 --output /tmp/Bazzite-Installer.exe
+python3 packaging/build-windows.py --brand wootc \
+    --version v1.2.3 --output /tmp/wootc-legacy.exe
 ```
 
 The resource tool keeps the administrator manifest, Windows compatibility,
@@ -180,8 +391,42 @@ The file identity does not sign the installer or set the UAC publisher.
 Use the field verifier and attach screenshots for the published files.
 
 [#241]: https://github.com/tuna-os/wootc/issues/241
+[#240]: https://github.com/tuna-os/wootc/issues/240
 [#229]: https://github.com/tuna-os/wootc/issues/229
 [#230]: https://github.com/tuna-os/wootc/issues/230
+[jsign]: https://ebourg.github.io/jsign/
+
+## Narrative release notes
+
+`release.yml` writes a short block that names the gate of each build. A final
+tag (`vX.Y.Z` with no suffix) also needs the story of the version. That story
+is in `docs/release-notes-<tag>.md`, and the publish job adds it to the
+release body after that block.
+
+`tools/release/check-notes.sh` enforces this before the E2E gate starts:
+
+- A final tag without its notes file stops the release.
+- A notes file with the marker `<!-- wootc-release-notes: draft -->` stops
+  every release of that tag, including pre-release tags. Draft notes hold
+  *To add* slots for evidence, and a published draft would claim proof that
+  does not exist.
+
+### Cutting v1.0.0 (#242)
+
+[`release-notes-v1.0.0.md`](https://github.com/tuna-os/wootc/blob/main/docs/release-notes-v1.0.0.md) is a draft now.
+Do these steps in order:
+
+1. Fill each *To add* slot in the notes with its evidence (M5.1 to M5.6).
+   Remove the draft marker in the PR that records the last evidence.
+2. Dispatch `release.yml` with `release_tag: v1.0.0` from the final green SHA
+   of the soak. Do not set `skip_e2e`. The E2E gate of the tagged channel
+   runs again before the publish.
+3. Monitor the `winget-publish.yml` run that the publish job dispatches, until
+   `winget show TunaOS.wootc` reports `1.0.0`.
+4. Change `ROADMAP.md` to the post-1.0 plan. Close the milestone issues
+   #210 to #213, each with links to its evidence.
+5. Announce the release in the channels that each brand agreed to
+   ([upstream blessings](https://github.com/tuna-os/wootc/blob/main/docs/upstream-blessings.md)).
 
 ## When a release has to be taken back
 
@@ -200,12 +445,12 @@ sets the decision order and verification steps for a bad release.
 
 ## User instructions (shipped in the release notes)
 
-1. Download `wootc.exe`. It is not code-signed yet (alpha) — SmartScreen will
-   warn; *More info → Run anyway*.
-2. The app checks for Windows 10/11 64-bit, UEFI + Secure Boot, TPM 2.0, and **BitLocker off** (alpha).
-   It also needs at least 35 GB free on `C:`.
-   This reserves 20 GB for Linux and 15 GB for Windows.
-3. Run it, pick Bluefin, set a username + password, and click Install.
+1. Download `wootc-Installer-Setup.exe` (or the branded setup for your
+   distribution). It is not code-signed yet (alpha) — SmartScreen will warn;
+   *More info → Run anyway*. The native shell does not need WebView2.
+2. The setup checks for Windows 10/11 64-bit, UEFI + Secure Boot, TPM 2.0,
+   and **BitLocker off** (alpha). It also needs at least 35 GB free on `C:`.
+3. Run the setup, pick Bluefin, set a username + password, and click Install.
    Install creates the Linux disk file and changes the boot setup before you
    click **Reboot Now**. Save your work before you restart.
 4. The one-time deployer boot prepares Linux. Windows normally returns after

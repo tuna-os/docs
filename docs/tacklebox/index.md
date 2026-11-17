@@ -11,6 +11,18 @@ status: stable
 
 Born from the `superiso` project, Tacklebox evolves the concept from static ISOs to dynamic, writable GPT disks with a unified bootloader.
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## ✨ Key Features
 
 * **🚀 Multi-Boot Control:** Automatically installs and manages `systemd-boot`
@@ -40,10 +52,12 @@ Born from the `superiso` project, Tacklebox evolves the concept from static ISOs
 ## 🏗️ Architecture
 
 ### Automatic initramfs preparation
+
 Tacklebox ships with a custom dracut module (`src/dracut/95tbox-root/`) that handles multi-tenancy at boot time:
-1.  Locates the target OS subdirectory on the `TBOX_STORE` partition.
-2.  Bind-mounts it to `/sysroot`.
-3.  Sets up the persistent home overlay if requested.
+
+1. Locates the target OS subdirectory on the `TBOX_STORE` partition.
+2. Bind-mounts it to `/sysroot`.
+3. Sets up the persistent home overlay if requested.
 
 Before it puts the initramfs on the ESP, Tacklebox checks for the required
 modules. If they are absent, it runs `dracut` inside a privileged container
@@ -69,6 +83,7 @@ If your image has the required modules, set
 then uses the initramfs from the image without a rebuild.
 
 ### Build caches
+
 Caches under `<output-base>/` use the image ID as a key. Incremental builds
 repeat only the work for an image that changed:
 
@@ -82,24 +97,79 @@ Tacklebox creates a new squashfs only for that environment. Delete the cache
 directories to force a full rebuild.
 
 ### Composefs Support
+
 Tacklebox automatically handles these requirements of the Composefs backend:
 
 * Enable `fs-verity` when Tacklebox formats the partition.
 * Manage the bootloader metadata that `bootc` needs.
 * Generate BLS entries with `rootflags=subvol=...` mappings.
 
+### Embedded-source installer recipes
+
+For pure native and browser/WASM builds with pinned offline inputs, the shared
+`WriteLiveMarkerFiles` finalizer writes MediaInput and the live-mode signal after live overlays.
+If the overlay supplies `/etc/bootc-installer/recipe.json`, the finalizer also
+binds its source fields to that descriptor.
+`imgref` and `targetImgref` name the canonical day-2 target.
+The finalizer removes stale `containers-storage:` overrides.
+
+Non-composefs bootc recipes use the GNOME processor's existing empty `image` override.
+Composefs recipes retain the identity of the actual source image.
+When source and day-2 refs differ, `local_imgref` names the image identity.
+It never names an `oci:` layout path that would bypass MediaInput's expected-manifest-digest binding.
+
+The finalizer preserves bootloader, filesystem, backend and unrelated frontend settings,
+unknown JSON fields, exact JSON numbers, and file mode and owner.
+Malformed descriptors or existing recipes fail the build.
+The finalizer does not create a recipe for frontends that construct their own requests.
+Native tar overlays run before both source-receipt completion and source binding.
+
+The native consumer needs a valid MediaInput on marked live media.
+It must resolve MediaInput before image-cache or registry checks.
+It must then preflight the layout against its expected digest before it changes the disk.
+Older Fisherman versions that ignore missing or invalid MediaInput do **not** meet this fail-closed requirement.
+Pin a compatible consumer and rebuild the installer overlay with the producer.
+
+Recipe synchronization alone does not enforce this requirement.
+It also does not change catalogs that independent frontends maintain.
+
+## 📚 Documentation
+
+* [User guide](https://github.com/tuna-os/tacklebox/blob/main/docs/USER-GUIDE.md) — commands, recipe reference, ISO/dedup layouts, day-2 operations, problem diagnosis
+* [Architecture](https://github.com/tuna-os/tacklebox/blob/main/ARCHITECTURE.md) — build pipeline, boot chain, package layout
+* [Environment variables](https://github.com/tuna-os/tacklebox/blob/main/docs/ENVIRONMENT-VARIABLES.md) — build settings, live image settings, and boot kernel arguments
+* [GitHub ISO setup](https://github.com/tuna-os/tacklebox/blob/main/docs/github-iso-setup.md) — ISO builds in CI, with the necessary host packages
+* [Runbooks](https://github.com/tuna-os/tacklebox/blob/main/runbooks) — build/ISO generation and boot/update problem diagnosis
+
+The Bazzite AIO, GNOME, KDE, and PoC workflows first upload each ISO to its dated R2 key.
+They then copy the same object within the same `R2:` remote to the existing `-latest.iso` key.
+Dated ISOs and checksum publication remain unchanged;
+the copy does not delete the dated object or change retention policy.
+[Rclone's S3 backend](https://rclone.org/s3/#s3-copy-cutoff) uses multipart
+server-side copy for large objects, including ISOs over 5 GiB.
+[R2 supports CopyObject and UploadPartCopy](https://developers.cloudflare.com/r2/api/s3/api/);
+its [object and multipart limits](https://developers.cloudflare.com/r2/platform/limits/)
+still apply. These workflows retain their existing chunk-size and concurrency settings.
+
 ## 🛠 Usage
 
 ### Installation
 
-Tagged releases provide static Linux binaries for AMD64 and ARM64 on the
-[GitHub Releases page](https://github.com/tuna-os/tacklebox/releases). Download
-the binary and matching `.sha256` file for your architecture, verify it, and
-install it on your `PATH`:
+Tagged releases provide static Linux binaries for AMD64 and ARM64 in tar archives
+on the [GitHub Releases page](https://github.com/tuna-os/tacklebox/releases).
+Download the archive for your architecture and the aggregate SHA-256 manifest.
+Verify the archive before you extract and install `tacklebox` on your `PATH`:
 
 ```bash
-sha256sum --check tacklebox-linux-amd64.sha256
-sudo install -m 0755 tacklebox-linux-amd64 /usr/local/bin/tacklebox
+VERSION=0.1.0
+ARCH=amd64 # Use arm64 for an ARM64 host.
+ARCHIVE="tacklebox_${VERSION}_linux_${ARCH}.tar.gz"
+CHECKSUMS="tacklebox_${VERSION}_checksums.txt"
+gh release download "v${VERSION}" --repo tuna-os/tacklebox \
+  --pattern "$ARCHIVE" --pattern "$CHECKSUMS"
+sha256sum --check --ignore-missing "$CHECKSUMS"
+tar -xzf "$ARCHIVE" tacklebox
+sudo install -m 0755 tacklebox /usr/local/bin/tacklebox
 ```
 
 To build from source, install the Go version declared by [`go.mod`](https://github.com/tuna-os/tacklebox/blob/main/go.mod),
@@ -115,25 +185,42 @@ sudo install -m 0755 tacklebox /usr/local/bin/tacklebox
 A container image is also published as `ghcr.io/tuna-os/tacklebox:latest` for
 CI and other container-based workflows. Pin a version or `sha-*` tag when you
 need reproducible builds.
+See [container image usage](https://github.com/tuna-os/tacklebox/blob/main/docs/CONTAINER-IMAGE.md) for Docker and Podman
+commands, required mounts, and CI setup.
 
 ### Build a Multi-Boot Image
+
 ```bash
 sudo tacklebox build recipe.json --xz
 ```
 
+### Build a Live ISO
+
+```bash
+sudo tacklebox build recipe.json --iso ./myos.iso
+```
+
+Every environment is installed in live mode. See the
+[user guide](https://github.com/tuna-os/tacklebox/blob/main/docs/USER-GUIDE.md) for the full ISO workflow and
+[`docs/github-iso-setup.md`](https://github.com/tuna-os/tacklebox/blob/main/docs/github-iso-setup.md) for ISO builds in CI.
+
 ### Provision a Physical USB Drive
+
 ```bash
 sudo tacklebox build recipe.json /dev/sda
 ```
 
 ### Refresh an Existing USB / Image
+
 Re-installs all environments from a recipe without wiping the `TBOX_PERSIST` partition.
 Useful when you add an env to the recipe, change image refs, or need to refresh stale deployments.
+
 ```bash
 sudo tacklebox update recipe.json /dev/sda
 ```
 
 ### Check Installed Environments
+
 ```bash
 # Auto-detect the TBOX_STORE partition (run from a booted tacklebox env)
 tacklebox status
@@ -144,6 +231,7 @@ tacklebox status /path/to/tacklebox.img
 ```
 
 ### Multi-Boot USB Manager GUI
+
 The `native/` directory in [`tuna-os/iso-builder`](https://github.com/tuna-os/iso-builder)
 has a desktop application for Linux, macOS, and Windows. The application uses
 the Tacklebox core. It finds connected drives and inspects installed
@@ -213,12 +301,30 @@ customize run and the re-squash:
 
 ```json
 {
-  "id": "tunaos-kde",
-  "image": "ghcr.io/tuna-os/yellowfin:kde",
-  "live_customize": ["live/customize-live.sh"],
+  "id": "bluefin",
+  "image": "ghcr.io/ublue-os/bluefin:stable",
+  "live_customize": ["customize-scripts/example-customize.sh"],
   "modes": ["live"]
 }
 ```
+
+See the complete [example recipe](https://github.com/tuna-os/tacklebox/blob/main/examples/iso-with-customize.json) and
+[commented customization script](https://github.com/tuna-os/tacklebox/blob/main/examples/customize-scripts/example-customize.sh).
+The script adds a console banner and masks SSH in the live environment. From
+the repository root, with the [ISO requirements](#-requirements) installed:
+
+```bash
+sudo env TBOX_CUSTOMIZE_CAPS=net_admin tacklebox build examples/iso-with-customize.json --iso ./custom-live.iso
+```
+
+The extra capability supports Flatpak deployment, including any preinstalls
+declared by the image and processed by the baseline. The script also has
+commented commands that install a Flatpak; uncomment them to add GNOME Calculator.
+The image must include `flatpak`, and installation needs network access.
+The baseline sets up the live user and autologin before this script runs.
+Customizations affect the live environment, not the source image or installed
+systems. After boot, check `/etc/issue.d/tacklebox-example.issue` and
+`systemctl is-enabled sshd.service` (which should report `masked`).
 
 `title` is optional and sets the human-facing boot menu entry name
 (e.g. "Bluefin (GNOME)"); the env `id` is used when omitted.
@@ -252,9 +358,9 @@ every image ID. See `examples/iso-dedup.json`.
 
 `shared_store.dedup_layout` selects the layout of a deduplicated store:
 
-- `"combined"` (default): Uses the single-squashfs layout described above.
+* `"combined"` (default): Uses the single-squashfs layout described above.
   It gives the best deduplication, but an image change rebuilds the full store.
-- `"delta"`: Uses one `base.rootfs.sfs` and a small `<env>.delta.sfs` for each
+* `"delta"`: Uses one `base.rootfs.sfs` and a small `<env>.delta.sfs` for each
   other environment. The base contains the full rootfs of the
   `shared_store.delta_base` environment, or the first environment by default.
   Each delta is a file-level difference against the base. OverlayFS whiteouts
@@ -275,6 +381,7 @@ every image ID. See `examples/iso-dedup.json`.
 | Flag | What it does |
 |---|---|
 | `-b, --output-base DIR` | Where intermediate artifacts and `tacklebox.img` are written. |
+| `--iso PATH` | Produce a UEFI-bootable `.iso` at `PATH` instead of a disk image. Installs every environment in live mode. |
 | `--xz` | Compress the resulting image or ISO with `xz -T0`. |
 | `-y, --yes` | Skip the destructive-target confirmation. Required in CI / non-tty contexts. |
 | `-v, --verbose` | Stream subprocess output and command traces. Default is quiet (stderr still captured on failure). |
@@ -284,17 +391,50 @@ every image ID. See `examples/iso-dedup.json`.
 ## 🏗 Requirements
 
 You need Go only to build Tacklebox from source. Use the version in
-[`go.mod`](https://github.com/tuna-os/tacklebox/blob/main/go.mod). To create media with the installed CLI, you also need:
+[`go.mod`](https://github.com/tuna-os/tacklebox/blob/main/go.mod). To create media with the installed CLI, you need root and
+the host tools below.
 
-*   `podman` & `bootc`
-*   `sgdisk` (gdisk)
-*   `mkfs.vfat`, `mkfs.ext4` (with verity support)
-*   `xz` (for compressed outputs)
+Every target:
+
+* `podman`
+* `skopeo` — backend auto-detection; not needed when every environment sets
+    `backend` explicitly in the recipe
+* `xz` (for `--xz` outputs)
+
+Disk image / USB targets also need:
+
+* `bootc`
+* `sgdisk` (gdisk)
+* `mkfs.vfat`, `mkfs.ext4` (with verity support)
+
+ISO targets (`--iso`) also need:
+
+* `mksquashfs` — squashes each environment's root filesystem
+* `xorriso` — wraps the staged tree into the ISO
+* `mcopy` (mtools) and `mkfs.fat` — build the embedded ESP image
+
+[`docs/github-iso-setup.md`](https://github.com/tuna-os/tacklebox/blob/main/docs/github-iso-setup.md) lists the distribution
+packages that provide the ISO tools, for both local builds and CI runners.
+
+### Desktop GUI (macOS & Windows)
+
+`bootc install to-filesystem` needs the semantics of a Linux kernel, so the
+GUI runs that step in a Linux helper on other hosts. On macOS, the helper is
+a QEMU virtual machine with TCG, and `authopen` gives it access to the USB
+disk. On Windows, the helper is WSL2, and `usbipd-win` attaches the USB disk.
+See [host virtualization](https://github.com/tuna-os/tacklebox/blob/main/ARCHITECTURE.md#cross-platform-gui-multi-boot-manager-integration).
 
 ## 📦 Releases & Operations
 
-`.github/workflows/release-image.yml` publishes `ghcr.io/tuna-os/tacklebox`
-on every `main` push and `v*` tag. If a bad image reaches `:latest`, see
+`.github/workflows/release.yml` publishes static binaries for Linux on AMD64
+and ARM64, with checksums, for every `v*` tag. A tag must have a matching
+`docs/releases/<tag>.md` file; the workflow verifies both checksums before it
+creates the GitHub Release.
+
+`.github/workflows/release-image.yml` publishes the multi-architecture
+`ghcr.io/tuna-os/tacklebox` image on every `main` push and `v*` tag. The
+workflow adds two tags for each version: one with a leading `v` and one
+without it. If a bad image reaches `:latest`, see
 [`runbooks/rollback-a-bad-tacklebox-image.md`](https://github.com/tuna-os/tacklebox/blob/main/runbooks/rollback-a-bad-tacklebox-image.md).
 Boot/update and build/ISO-generation failures have their own runbooks in
 [`runbooks/`](https://github.com/tuna-os/tacklebox/blob/main/runbooks).
@@ -320,10 +460,3 @@ just build-xz
 ---
 
 Part of the [TunaOS](https://tunaos.org) ecosystem. [Docs](https://tunaos.org) · [Contribution guide](https://github.com/tuna-os/tacklebox/blob/main/CONTRIBUTING.md)
-
-
-## Contribute compute — no code needed
-
-No time to write code? You can still push this project's backlog forward. A TunaOS AI-agent hive works on this repository. Lend the hive your AI subscription or API tokens, and your machine runs tasks from this project's backlog.
-
-- 🏫 [Contribute compute to the school hive](https://school.tunaos.org/contribute)

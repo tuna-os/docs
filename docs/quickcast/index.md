@@ -14,6 +14,18 @@ Kooha's authors and contributors built the capture, audio, region selection and
 GNOME application foundation. This fork adds webcam composition, automatic file
 copying, a compact MP4 preset and TunaOS packaging.
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## Install
 
 ```sh
@@ -97,7 +109,7 @@ Flatpak does not install host Shell extensions automatically.
 Install the GNOME 50 SDK and Rust extension for your user:
 
 ```sh
-flatpak install --user flathub org.gnome.Sdk//50 org.freedesktop.Sdk.Extension.rust-stable//25.08
+flatpak install --user flathub org.gnome.Sdk//50 org.gnome.Platform//50 org.freedesktop.Sdk.Extension.rust-stable//25.08
 ./scripts/build-local.sh
 flatpak install --user --reinstall ./Quickcast.flatpak
 ./scripts/test-local.sh
@@ -115,13 +127,28 @@ all three offered clipboard formats.
 Real GNOME portal selection, physical audio/video synchronization, and pasting
 into individual chat/browser apps still require interactive hardware testing.
 
+## Recording implementation layout
+
+The recording GObject keeps the public state machine and lifecycle API in
+`src/recording.rs`. Its integration boundaries are separated into focused
+modules:
+
+- `src/recording/portal_session.rs` handles desktop portal negotiation and
+  PipeWire stream setup.
+- `src/recording/pipeline_runner.rs` translates settings and selected sources
+  into a GStreamer pipeline.
+- `src/recording/pipeline_monitor.rs` owns bus messages, duration updates, and
+  finalization progress.
+- `src/recording/delay.rs` adapts the cancellable countdown timer to recording
+  state updates.
+
 ## Publishing
 
 Tag releases as `v0.1.0`, etc., or dispatch **Publish Quickcast Flatpak**. The
 workflow calls the shared `tuna-os/.github` publisher, pushes
-`ghcr.io/tuna-os/quickcast`, and updates the served TunaOS Flatpak index. It inherits
-`FLATPAK_INDEX_TOKEN` from the organization/repository; that credential needs access
-to the central index repository. When it is unavailable, the same shared workflow
+`ghcr.io/tuna-os/quickcast`, and updates the served TunaOS Flatpak index. It passes
+the `FLATPAK_INDEX_DEPLOY_KEY` organization secret (a write deploy key on the central
+index repository, tuna-os/docs) to the shared publisher. When it is unavailable, the same shared workflow
 builds the artifacts and the fallback publishes GHCR and the release bundle;
 an authorized maintainer must then update the central index from the OCI artifact.
 CI on `main` builds and tests without publishing.

@@ -1,11 +1,13 @@
 ---
-sidebar_position: 6
+sidebar_position: 9
 title: "FACTORY STATUS"
 ---
 
 
 
-Measured 2026-09-05T09:11:39+00:00 from the live published indexes;
+# Factory status — built vs needed, per target
+
+Measured 2026-10-16T10:19:18+00:00 from the live published indexes;
 provenance (repomd revision, primary.xml sha256) is in
 `docs/factory-status.json`, which also carries the full built and
 needed lists this page truncates.
@@ -17,50 +19,60 @@ needs catalog version pins, which most entries do not carry yet.
 
 ## Progress since the last measurement
 
-Compared against 2026-09-02T09:47:13+00:00, the last measurement
+Compared against 2026-10-15T10:09:50+00:00, the last measurement
 that actually MERGED — so a large gap here means the daily
 refresh is not landing, which is its own defect:
 
 | target/arch | built Δ | needed Δ | no movement for | newly built |
 |---|---|---|---|---|
-| debian/amd64 | +0 | +0 | 11 days | — |
-| debian/arm64 | +0 | +0 | 11 days | — |
-| el10/aarch64 | +0 | +0 | 11 days | — |
-| el10/x86_64 | +0 | +0 | 2 days | — |
-| fedora/x86_64 | +0 | +0 | ≥ 15 days | — |
-| hummingbird/aarch64 | -9 | -104 | — | SwayNotificationCenter, Thunar, appstream, at-spi2-core, atkmm, blueman, … (77 total) |
-| hummingbird/x86_64 | -93 | -20 | — | SwayNotificationCenter, gnome-disk-utility, gtksourceview4, libdbusmenu, libhandy, python-aiohappyeyeballs, … (15 total) |
-| opensuse-tumbleweed/aarch64 | +0 | +0 | 2 days | — |
-| opensuse-tumbleweed/x86_64 | +0 | +0 | 2 days | — |
-| ubuntu/amd64 | +0 | +0 | 11 days | — |
-| ubuntu/arm64 | +0 | +0 | 11 days | — |
+| debian/amd64 | +1 | +0 | — | tuna-desktop |
+| debian/arm64 | +1 | +0 | — | tuna-desktop |
+| el10/aarch64 | +2 | -1 | — | gtk4-layer-shell, tuna-desktop |
+| el10/x86_64 | +2 | -1 | — | gtk4-layer-shell, tuna-desktop |
+| fedora/x86_64 | +1 | +0 | — | tuna-desktop |
+| hummingbird/aarch64 | -5 | +19 | — | — |
+| hummingbird/x86_64 | -4 | +18 | — | libao |
+| opensuse-tumbleweed/aarch64 | +1 | +0 | — | tuna-desktop |
+| opensuse-tumbleweed/x86_64 | +1 | +0 | — | tuna-desktop |
+| ubuntu/amd64 | +1 | +0 | — | tuna-desktop |
+| ubuntu/arm64 | +1 | +0 | — | tuna-desktop |
 
 **Retired — built by the previous measurement, no longer in the catalog.** The target adopted them, so the factory stopped owing them; this is work REMOVED (RFC 011 criterion 2), and it is why `built` can fall without anything being lost:
 
-- hummingbird/aarch64: accountsservice, adw-gtk3-theme, adwaita-fonts, alsa-firmware, alsa-tools, augeas, chrony, containerd, ddcutil, distrobox, evtest, fastfetch, … (86 total)
-- hummingbird/x86_64: accountsservice, adw-gtk3-theme, adwaita-fonts, alsa-firmware, alsa-tools, augeas, chrony, containerd, ddcutil, distrobox, evtest, fastfetch, … (108 total)
+- hummingbird/aarch64: NetworkManager-vpnc, libuser, python-six, usermode, vpnc
+- hummingbird/x86_64: NetworkManager-vpnc, libuser, python-six, usermode, vpnc
 
 ## debian
 
 | arch | catalog entries | built | needed | index packages |
 |---|---|---|---|---|
-| amd64 | 45 | 5 | 40 | 16 |
-| arm64 | 45 | 5 | 40 | 16 |
+| amd64 | 57 | 6 | 51 | 20 |
+| arm64 | 57 | 6 | 51 | 20 |
 
-Needed on amd64 (40):
+Needed on amd64 (51; first 40, full list in the JSON):
 
 ```
 bazaar
 cli11-devel
+cosmic-app-library
+cosmic-applets
 cosmic-bg
 cosmic-comp
+cosmic-files
 cosmic-greeter
 cosmic-idle
+cosmic-initial-setup
+cosmic-launcher
 cosmic-notifications
 cosmic-osd
+cosmic-osk
+cosmic-screenshot
 cosmic-session
 cosmic-settings
 cosmic-settings-daemon
+cosmic-term
+cosmic-wallpapers
+cosmic-workspaces
 danksearch
 dgop
 dms
@@ -80,32 +92,32 @@ libadwaita
 libseat
 libunwind-devel
 libxfce4ui
-mutter
-ninja-build
-niri
-oversteer-udev
-quickshell
-uupd
-wayland-protocols
-xdg-desktop-portal-cosmic
-xfconf
-xfwl4
 ```
 
-Needed on arm64 (40):
+Needed on arm64 (51; first 40, full list in the JSON):
 
 ```
 bazaar
 cli11-devel
+cosmic-app-library
+cosmic-applets
 cosmic-bg
 cosmic-comp
+cosmic-files
 cosmic-greeter
 cosmic-idle
+cosmic-initial-setup
+cosmic-launcher
 cosmic-notifications
 cosmic-osd
+cosmic-osk
+cosmic-screenshot
 cosmic-session
 cosmic-settings
 cosmic-settings-daemon
+cosmic-term
+cosmic-wallpapers
+cosmic-workspaces
 danksearch
 dgop
 dms
@@ -125,42 +137,22 @@ libadwaita
 libseat
 libunwind-devel
 libxfce4ui
-mutter
-ninja-build
-niri
-oversteer-udev
-quickshell
-uupd
-wayland-protocols
-xdg-desktop-portal-cosmic
-xfconf
-xfwl4
 ```
 
 ## el10
 
 | arch | catalog entries | built | needed | index packages |
 |---|---|---|---|---|
-| aarch64 | 132 | 20 | 112 | 39 |
-| x86_64 | 132 | 98 | 34 | 421 |
+| aarch64 | 145 | 44 | 101 | 64 |
+| x86_64 | 145 | 115 | 30 | 439 |
 
-Needed on aarch64 (112; first 40, full list in the JSON):
+Needed on aarch64 (101; first 40, full list in the JSON):
 
 ```
 autoconf
 avahi
 cairo
 cli11-devel
-cosmic-bg
-cosmic-comp
-cosmic-greeter
-cosmic-icon-theme
-cosmic-idle
-cosmic-notifications
-cosmic-osd
-cosmic-session
-cosmic-settings
-cosmic-settings-daemon
 dms
 dms-cli
 dms-greeter
@@ -187,16 +179,22 @@ gsettings-desktop-schemas
 gtk4
 gtkgreet
 harfbuzz
+highway
+iio-niri
+input-remapper
+krunner-bazaar
+labwc
+libadwaita
+libei
+libfprint
+libgda
+libgee
 ```
 
-Needed on x86_64 (34):
+Needed on x86_64 (30):
 
 ```
 cli11-devel
-cosmic-greeter
-cosmic-session
-cosmic-settings
-cosmic-settings-daemon
 dms
 dms-cli
 dms-greeter
@@ -232,19 +230,24 @@ xdg-desktop-portal-gnome
 
 | arch | catalog entries | built | needed | index packages |
 |---|---|---|---|---|
-| x86_64 | 3 | 3 | 0 | 10 |
+| x86_64 | 4 | 4 | 0 | 11 |
 
 ## hummingbird
 
 | arch | catalog entries | built | needed | index packages |
 |---|---|---|---|---|
-| aarch64 | 665 | 624 | 41 | 3905 |
-| x86_64 | 665 | 643 | 22 | 8811 |
+| aarch64 | 679 | 620 | 59 | 3915 |
+| x86_64 | 679 | 640 | 39 | 8821 |
 
-Needed on aarch64 (41; first 40, full list in the JSON):
+Needed on aarch64 (59; first 40, full list in the JSON):
 
 ```
+brltty
 cockpit
+cosmic-osk
+cxx-rust-cssparser
+dotconf
+espeak-ng
 evolution-data-server
 evolution-ews
 firefox
@@ -257,6 +260,7 @@ gpsd
 grub2
 gstreamer1-plugins-bad-free
 intel-media-driver-free
+iw
 kf6-kcoreaddons
 kf6-kguiaddons
 kf6-kjobwidgets
@@ -265,31 +269,30 @@ kf6-kstatusnotifieritem
 kf6-kunitconversion
 kf6-kwidgetsaddons
 kf6-kxmlgui
+libao
 libayatana-ido
 libcanberra
-libosinfo
+liberation-fonts
+liblouis
 libphonenumber
 librist
 libsoup3
 libvorbis
 libvpl
 libxfce4util
+libxml2_2.13
 nautilus
-pavucontrol
-plasma-desktop
-plasma-workspace
-qt6-qtmultimedia
-qt6-qtwebengine
-samba
-stoken
-vdirsyncer
-xfce4-settings
 ```
 
-Needed on x86_64 (22):
+Needed on x86_64 (39):
 
 ```
+brltty
 cockpit
+cosmic-osk
+cxx-rust-cssparser
+dotconf
+espeak-ng
 evolution-data-server
 evolution-ews
 firefox
@@ -298,15 +301,27 @@ gnome-user-share
 gpsd
 grub2
 gstreamer1-plugins-bad-free
+iw
 libcanberra
-libosinfo
+liberation-fonts
+liblouis
 libphonenumber
 librist
 libvorbis
 libxfce4util
+libxml2_2.13
+oo7
+orca
+pcaudiolib
+plasma-union
+plymouth
+pyatspi
 qt6-qtwebengine
+rust-pathrs
 samba
+speech-dispatcher
 stoken
+tuna-desktop
 vdirsyncer
 webkitgtk
 xfce4-settings
@@ -317,8 +332,8 @@ xfdesktop
 
 | arch | catalog entries | built | needed | index packages |
 |---|---|---|---|---|
-| aarch64 | 19 | 10 | 9 | 21 |
-| x86_64 | 19 | 10 | 9 | 21 |
+| aarch64 | 20 | 11 | 9 | 22 |
+| x86_64 | 20 | 11 | 9 | 22 |
 
 Needed on aarch64 (9):
 
@@ -352,23 +367,33 @@ wayland-protocols
 
 | arch | catalog entries | built | needed | index packages |
 |---|---|---|---|---|
-| amd64 | 44 | 5 | 39 | 10 |
-| arm64 | 44 | 5 | 39 | 10 |
+| amd64 | 56 | 6 | 50 | 12 |
+| arm64 | 56 | 6 | 50 | 12 |
 
-Needed on amd64 (39):
+Needed on amd64 (50; first 40, full list in the JSON):
 
 ```
 bazaar
 cli11-devel
+cosmic-app-library
+cosmic-applets
 cosmic-bg
 cosmic-comp
+cosmic-files
 cosmic-greeter
 cosmic-idle
+cosmic-initial-setup
+cosmic-launcher
 cosmic-notifications
 cosmic-osd
+cosmic-osk
+cosmic-screenshot
 cosmic-session
 cosmic-settings
 cosmic-settings-daemon
+cosmic-term
+cosmic-wallpapers
+cosmic-workspaces
 danksearch
 dgop
 dms
@@ -388,31 +413,32 @@ libadwaita
 libseat
 libunwind-devel
 mutter
-ninja-build
-niri
-oversteer-udev
-quickshell
-uupd
-wayland-protocols
-xdg-desktop-portal-cosmic
-xfconf
-xfwl4
 ```
 
-Needed on arm64 (39):
+Needed on arm64 (50; first 40, full list in the JSON):
 
 ```
 bazaar
 cli11-devel
+cosmic-app-library
+cosmic-applets
 cosmic-bg
 cosmic-comp
+cosmic-files
 cosmic-greeter
 cosmic-idle
+cosmic-initial-setup
+cosmic-launcher
 cosmic-notifications
 cosmic-osd
+cosmic-osk
+cosmic-screenshot
 cosmic-session
 cosmic-settings
 cosmic-settings-daemon
+cosmic-term
+cosmic-wallpapers
+cosmic-workspaces
 danksearch
 dgop
 dms
@@ -432,15 +458,6 @@ libadwaita
 libseat
 libunwind-devel
 mutter
-ninja-build
-niri
-oversteer-udev
-quickshell
-uupd
-wayland-protocols
-xdg-desktop-portal-cosmic
-xfconf
-xfwl4
 ```
 
 ## fedora desktop coverage (x86_64)
@@ -466,6 +483,7 @@ desktops tunaOS can wire (tunaOS#1755).
 | gnome | 1/10 | gdm, gnome-control-center, gnome-initial-setup, gnome-session, gnome-settings-daemon, gnome-shell, … (9 total) |
 | kde | 3/5 | plasma-desktop, plasma-workspace |
 | niri | 3/6 | dms, dms-cli, dms-greeter |
+| tuna | 0/1 | tuna-desktop |
 | xfce | 5/6 | xfwl4 |
 
 ## hummingbird desktop coverage (x86_64)
@@ -481,6 +499,7 @@ desktops tunaOS can wire (tunaOS#1755).
 | gnome | 10/10 | — |
 | kde | 5/5 | — |
 | niri | 3/6 | dms, dms-cli, dms-greeter |
+| tuna | 0/1 | tuna-desktop |
 | xfce | 5/6 | xfwl4 |
 
 ## Not yet measured
@@ -490,4 +509,7 @@ absence of a gap:
 
 | target | format | catalog entries | why |
 |---|---|---|---|
-| arch | pkg.tar.zst | 26 | no published_index declared in package-factory.yaml |
+| arch | pkg.tar.zst | 28 | no published_index declared in package-factory.yaml |
+| eln | rpm | 4 | no published_index declared in package-factory.yaml |
+| rawhide | rpm | 1 | no published_index declared in package-factory.yaml |
+| trixie | deb | 1 | no published_index declared in package-factory.yaml |

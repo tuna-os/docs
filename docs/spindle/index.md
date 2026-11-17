@@ -5,23 +5,79 @@ sidebar_label: "spindle"
 status: unknown
 ---
 
-**A Matrix homeserver that stores rooms as a linear log, so state resolution
-never runs on the hot path.**
+**One binary for Matrix chat, login and calls. No PostgreSQL, no separate
+identity service and no JWT sidecar.**
+
+Spindle is a Matrix homeserver in Rust. It stores each room as a linear log
+with materialized state, so state resolution never runs on the hot path.
 
 [**Benchmarks vs Synapse, Dendrite, Continuwuity and Tuwunel**](https://tuna-os.github.io/spindle/comparisons.html)
 · [micro-benchmarks](https://tuna-os.github.io/spindle/)
 · [spec coverage dashboard](https://tuna-os.github.io/spindle/dashboard.html)
 · [SPEC.md](https://github.com/tuna-os/spindle/blob/main/SPEC.md)
 
-> **Status: an experiment under construction, not a deployment.** The
-> client-server surface is broad and tested, federation interoperates with real
-> Synapse, and nothing here has ever run in production. Releases are weekly
-> `v0.0.x` prereleases that name a build and promise nothing else: no
-> upgrade path, and the storage format has already broken once —
-> deliberately, with the [test that caught it](https://github.com/tuna-os/spindle/blob/main/crates/spindle-store/tests/backend_compatibility.rs)
-> kept and inverted rather than deleted.
+> **Status: prerelease.** The client-server surface is broad and tested,
+> and federation interoperates with Synapse. The first supported maturity
+> line is `v0.1.x`, subject to the exact candidate checks and evidence in
+> [v0.1.0 readiness](https://github.com/tuna-os/spindle/blob/main/docs/v0.1.0-readiness.md). Use the newest patch and the
+> [operator guide](https://github.com/tuna-os/spindle/blob/main/docs/operations.md). Explicit migrations can need downtime;
+> rollback restores a pre-migration backup. Earlier `v0.0.x` tags identify
+> experimental builds and receive no backports.
 
 ---
+
+## Why Spindle
+
+Spindle is for an operator who wants a full Matrix deployment for a family,
+a team or an event, and who does not want to operate five services to get it.
+
+| You need | With Spindle | Evidence |
+|---|---|---|
+| A homeserver without a database server | One process and one directory. The store is embedded ([fjall](https://github.com/fjall-rs/fjall)). | [SPEC.md](https://github.com/tuna-os/spindle/blob/main/SPEC.md) |
+| Element X login (MSC3861) | A built-in OIDC provider with account pages, upstream SSO, email confirmation and password reset. A real MAS also works. | [docs/delegated-auth.md](https://github.com/tuna-os/spindle/blob/main/docs/delegated-auth.md) |
+| Element Call | MatrixRTC is served: delayed events (MSC4140), sticky events (MSC4354) and a built-in LiveKit JWT service. You supply only the SFU. | [docs/matrix-rtc.md](https://github.com/tuna-os/spindle/blob/main/docs/matrix-rtc.md) |
+| Modern clients | Simplified Sliding Sync (MSC4186), E2EE transport, key backup, cross-signing, authenticated media and threads. | [docs/dashboard.md](https://github.com/tuna-os/spindle/blob/main/docs/dashboard.md) |
+| Your Synapse tools | The admin API is also mounted at `/_synapse/admin`, and CI runs `synadm` against it. | [docs/spec-gaps.md](https://github.com/tuna-os/spindle/blob/main/docs/spec-gaps.md) |
+| A way off Synapse | An importer that reads a Synapse PostgreSQL database, an importer for MAS accounts, and a fenced cutover procedure for ESS on Kubernetes. | [docs/migration-workspace.md](https://github.com/tuna-os/spindle/blob/main/docs/migration-workspace.md) |
+| Low write latency on small hardware | Per-process write throughput 25–50× that of Synapse in the published comparison. The cells that Spindle lost are published too. | [docs/benchmarks.md](https://github.com/tuna-os/spindle/blob/main/docs/benchmarks.md) |
+| Proof, not promises | CI holds the route count, the Complement ratchet, the configuration reference and the MSC ledger to the code. Releases have an SBOM and a signed provenance attestation. | [docs/maintenance.md](https://github.com/tuna-os/spindle/blob/main/docs/maintenance.md) |
+| A permissive licence | MIT or Apache-2.0. Synapse and Dendrite are AGPL-3.0. | [LICENSING.md](https://github.com/tuna-os/spindle/blob/main/LICENSING.md) |
+
+### How it compares
+
+This table is a summary on 2026-11-10. The other projects change; read their
+documentation before you decide.
+
+| | Spindle | Synapse | Continuwuity and Tuwunel |
+|---|---|---|---|
+| Language | Rust | Python and Rust | Rust |
+| Storage | Embedded fjall | PostgreSQL | Embedded RocksDB |
+| MSC3861 login | Built in, or MAS | MAS, a separate service | See their documentation |
+| LiveKit JWT for calls | Built in, or `lk-jwt-service` | `lk-jwt-service`, a separate service | See their documentation |
+| Administration | HTTP admin API with Synapse paths | HTTP admin API | Commands in an admin room |
+| Import from Synapse | Yes | Not applicable | No |
+| Scale-out across processes | No | Yes, with workers | No |
+| Maturity | Prerelease, one known production deployment | Many years in production at large scale | Production use by many small servers |
+| Licence | MIT or Apache-2.0 | AGPL-3.0 or commercial | Apache-2.0 |
+
+### When to choose a different server
+
+- You need more than one process for each deployment, or high availability.
+  Spindle runs one process against each store
+  ([#693](https://github.com/tuna-os/spindle/issues/693)).
+- Most of your traffic is in very large public rooms that many servers
+  share. Forks are frequent there, and the linear log then does the same
+  state resolution as each other server. Each open room also keeps its
+  index in memory ([#816](https://github.com/tuna-os/spindle/issues/816)).
+- You need open public registration. Spindle has registration tokens and
+  rate limits, but no CAPTCHA and no general storage quota for each account
+  ([#829](https://github.com/tuna-os/spindle/issues/829)).
+- You need message retention policies, LDAP or SAML, or third-party
+  invites. Spindle does not have them
+  ([#817](https://github.com/tuna-os/spindle/issues/817),
+  [docs/spec-gaps.md](https://github.com/tuna-os/spindle/blob/main/docs/spec-gaps.md)).
+- You need a long record of stable releases. Each Spindle release is a
+  prerelease, and a format migration can need downtime.
 
 ## Try it in three commands
 
@@ -61,9 +117,36 @@ and it works unmodified — Spindle serves ordinary rooms of room versions 1 to
 [`spindle.example.toml`](https://github.com/tuna-os/spindle/blob/main/spindle.example.toml) documents every setting, and a
 CI gate fails if a config field exists in the code and not in that file.
 
+**Registration is open in this minimum configuration.** That is safe on
+loopback only. Before you expose the server, set `[registration]
+require_token = true` and obey the [operator guide](https://github.com/tuna-os/spindle/blob/main/docs/operations.md).
+
+### Or run a release
+
+Each release has tarballs for `x86_64` and `aarch64` Linux and a container
+image for the same two architectures. No `latest` tag exists, so name a
+release:
+
+```bash
+docker run -v ./spindle.toml:/etc/spindle/spindle.toml:ro \
+           -v spindle-data:/var/lib/spindle \
+           -p 8008:8008 ghcr.io/tuna-os/spindle:v0.1.2
+```
+
+In the container, set `bind = "0.0.0.0:8008"` and `[storage] path =
+"/var/lib/spindle"`. [docs/releasing.md](https://github.com/tuna-os/spindle/blob/main/docs/releasing.md) tells how to
+verify the provenance of an image or a tarball.
+
 **Other commands:** `promote-admin` (mints the first admin offline),
-`backup` / `restore` / `verify-media`, `migrate`. See
-[docs/lifecycle.md](https://github.com/tuna-os/spindle/blob/main/docs/lifecycle.md).
+`set-password-hash` (imports Argon2 or bcrypt hashes),
+`issue-reset-link` (a password-reset link that needs no mail),
+`backup` / `restore` / `verify-media`, `migrate`, `gc` (frees unused state).
+`import-mas` moves MAS accounts to the built-in provider. The release
+builds have it; from source, build with `--features mas-import`.
+`import-synapse` reads a Synapse PostgreSQL database. The release builds
+have it too; from source, build with `--features synapse-import`.
+See [docs/lifecycle.md](https://github.com/tuna-os/spindle/blob/main/docs/lifecycle.md) and
+[docs/migration-workspace.md](https://github.com/tuna-os/spindle/blob/main/docs/migration-workspace.md).
 
 ---
 
@@ -98,12 +181,14 @@ In a non-federated room, state resolution never runs at all.
 Native Spindle rooms are ordinary room version 11 rooms. A chain is a valid DAG,
 so the performance properties come from the implementation, not a new wire
 format — no new room version, no client capability, no peer negotiation.
-Synapse, Dendrite and Conduit federate with it over the unmodified
-Server-Server API.
+Other homeservers federate with it over the unmodified Server-Server API.
+CI proves this against Synapse in both directions, and the benchmark rig
+federates with Tuwunel.
 
 MSC3995 hub mode is an opt-in optimisation layered on top, negotiated per room
 via `m.room.hub`. Where every peer supports it, forks become structurally
-impossible and the exception path is dead code.
+impossible and the exception path is dead code. It is behind the `hub-mode`
+cargo feature, which is off by default and is not in the release builds.
 
 ---
 
@@ -116,17 +201,22 @@ impossible and the exception path is dead code.
 | **M2** Modern clients | **Done** | Media + thumbnails, S3 backend, Simplified Sliding Sync, E2EE transport, device lists, key backup, cross-signing, URL previews |
 | **M3** Federation | Interoperating | Signed requests, join/invite/leave/knock handshakes, backfill, state reads, outbound queue with backoff — live Spindle↔Synapse rooms in both directions; MSC4242 state-DAG rooms (Hydra phase 2) and E2EE keys, to-device and device lists across the seam to a Neutrino mesh node, measured by a loopback rig |
 | **M4** Ecosystem | Substantial | Appservices (transactions, MSC2409 to-device, MSC4190), MSC3861 delegated auth, the `/_synapse/mas/*` surface, and a built-in OIDC provider so Element X login needs one binary |
-| **M5** Lifecycle | Substantial | 18 admin endpoints (also at `/_synapse/admin/v1`), `/metrics` with the fork-case counter, backup/restore/verify-media, versioned migrations |
-| **M6** Differentiators | Not started | Hub mode, MLS |
-| **M7** MatrixRTC | Server side served | **MSC4140 delayed events** — the dead-man's switch that stops calls accumulating ghost participants, which no other Rust homeserver has — plus MSC4354 sticky events, MSC4143 transport discovery, a built-in LiveKit JWT service or the OpenID round trip for an external one, ringing and decline. Element Call's own Playwright suite runs with Spindle in Synapse's seat: thirteen specs pass, among them a two-party call with video through LiveKit and MatrixRTC 2.0 sticky-event membership with a rejoin after an improper leave. Ringing, churn, a restart mid-call and the federated call are what remains of the gate |
+| **M5** Lifecycle | Substantial | An admin API (also at `/_synapse/admin`), `/metrics` with the fork-case counter, backup/restore/verify-media, versioned migrations, and a Synapse importer that carried one production cutover |
+| **M6** Differentiators | In progress | Hub mode is built behind the off-by-default `hub-mode` feature and tested between Spindle peers. MLS is a recorded no-go ([docs/mls.md](https://github.com/tuna-os/spindle/blob/main/docs/mls.md)) |
+| **M7** MatrixRTC | Server side served | **MSC4140 delayed events** — the dead-man's switch that stops calls accumulating ghost participants, which no other Rust homeserver served when Spindle added it — plus MSC4354 sticky events, MSC4143 transport discovery, a built-in LiveKit JWT service or the OpenID round trip for an external one, ringing and decline. Element Call's own Playwright suite runs with Spindle in Synapse's seat: thirteen specs pass, among them a two-party call with video through LiveKit and MatrixRTC 2.0 sticky-event membership with a rejoin after an improper leave. Spindle's own specs in the same rig add ringing, churn, a restart mid-call and a federated call |
 
-**228 routes** and a **310-test Complement ratchet** in CI, over a workspace of
+**332 routes** and a **424-test Complement ratchet** in CI, over a workspace of
 100+ test suites. The first two are gated — the [dashboard](https://github.com/tuna-os/spindle/blob/main/docs/dashboard.md)
 is parsed from the router and CI fails on drift, and the ratchet is a file every
 entry of which must pass — so what they say matches `main` rather than matching
 when someone last edited this paragraph.
 
-### Throughput
+### Throughput (dated snapshot)
+
+The table below is a dated analysis snapshot, not the current benchmark
+result. See the [published benchmark results](https://tuna-os.github.io/spindle/)
+for the latest run and [the benchmark notes](https://github.com/tuna-os/spindle/blob/main/docs/benchmarks.md) for the
+method and the limitations of comparing snapshots.
 
 Same host, same driver, same sitting; Synapse 1.159.0 on both back ends,
 because for a *write throughput* comparison the database is not a detail —
@@ -153,17 +243,18 @@ four-core constraint, so the handicap is shared and the ratio is the result.
 This section is longer than the marketing, on purpose.
 
 **The architectural win is a constant factor, not an asymptotic one.**
-Resolving a fork is 2.2–3.1× cheaper than `ruma-state-res` across the whole
-range out to a full `max_fork_window` — flat, not widening. And the current
+Resolving a fork was 2.2–3.1× cheaper than `ruma-state-res` across the whole
+measured range of fork depths — flat, not widening. And the current
 Rust homeservers already skip state resolution on a fork-free event, so "we
 skip it and they don't" was never true of them. What linear storage removes is
 the per-event *bookkeeping* the algorithm needs in order to exist — extremity
 sets, state-group delta stacks — not the algorithm.
 
-**The load-bearing claim is the equivalence theorem** (SPEC §9.3): that
-window-bounded state resolution produces exactly what full state resolution
-would. It is tested as one, differentially against `ruma-state-res`, for every
-fork the fast path claims to handle. A counterexample is a release blocker.
+**State resolution must agree with Matrix.** The old slot-wise fork merge
+had counterexamples and was retired (ADR 0005). Differing fork states use
+the room version's resolver. Scheduled checks preserve the counterexamples,
+compare with `ruma-state-res`, and test the fork-window search against an
+exhaustive walk. A disagreement on the live path is a release blocker.
 
 **Losses are published next to wins.** [docs/benchmarks.md](https://github.com/tuna-os/spindle/blob/main/docs/benchmarks.md)
 carries the cells where Spindle lost, the investigations, and two claims that
@@ -183,8 +274,17 @@ server. The architectural claim gets its real test as the federation rig grows.
 **Two authorization holes shipped and were found by reading, not by tests.**
 Nine read endpoints served any room's contents to any account
 (#257, #258). Both are fixed, with a route table walked by every test — and
-#268 exists because the finding rate was "however much someone happened to
+# 268 exists because the finding rate was "however much someone happened to
 look".
+
+**The rigour of the room log does not yet cover everything beside it.** A
+review in 2026-11 found that writes of one key do not sync
+([#810](https://github.com/tuna-os/spindle/issues/810)), that a restore is not
+atomic ([#811](https://github.com/tuna-os/spindle/issues/811)), that clients do
+not get the state that fork resolution changed
+([#819](https://github.com/tuna-os/spindle/issues/819)), and that open rooms
+stay in memory ([#816](https://github.com/tuna-os/spindle/issues/816)). The
+[roadmap](https://github.com/tuna-os/spindle/blob/main/ROADMAP.md#what-the-2026-11-review-found) has the full list.
 
 The risks that would invalidate the headline claim are enumerated in
 [SPEC §21](https://github.com/tuna-os/spindle/blob/main/SPEC.md).
@@ -196,14 +296,22 @@ The risks that would invalidate the headline claim are enumerated in
 | | |
 |---|---|
 | [**SPEC.md**](https://github.com/tuna-os/spindle/blob/main/SPEC.md) | The design the code is held against — the log, state without state resolution, authorization, fork handling, trust model, concurrency, performance model, risks |
+| [docs/operations.md](https://github.com/tuna-os/spindle/blob/main/docs/operations.md) | The supported release line and the controls a deployment must have |
+| [docs/developer-guide.md](https://github.com/tuna-os/spindle/blob/main/docs/developer-guide.md) | Crate boundaries and code paths for common contributor changes |
 | [docs/benchmarks.md](https://github.com/tuna-os/spindle/blob/main/docs/benchmarks.md) | Method, every measurement, and the retractions |
 | [docs/divergence.md](https://github.com/tuna-os/spindle/blob/main/docs/divergence.md) | The seam: what is inherited from Matrix, ruma and Complement; what is genuinely ours; what is deliberately deferred |
 | [docs/conformance-testing.md](https://github.com/tuna-os/spindle/blob/main/docs/conformance-testing.md) | How interoperability is proven |
 | [docs/delegated-auth.md](https://github.com/tuna-os/spindle/blob/main/docs/delegated-auth.md) | MSC3861, both ways — built-in provider or a real MAS |
 | [docs/metrics.md](https://github.com/tuna-os/spindle/blob/main/docs/metrics.md) | What is exported, including the number the architecture is falsified by |
 | [docs/lifecycle.md](https://github.com/tuna-os/spindle/blob/main/docs/lifecycle.md) | Backup, restore, migrations |
+| [docs/migration-workspace.md](https://github.com/tuna-os/spindle/blob/main/docs/migration-workspace.md) | Synapse cutover gates, evidence, authority, and recovery |
+| [docs/synapse-kubernetes-cutover.md](https://github.com/tuna-os/spindle/blob/main/docs/synapse-kubernetes-cutover.md) | Reversible ESS/Kubernetes quiesce and the production cutover gates |
+| [docs/ess-kubernetes-driver.md](https://github.com/tuna-os/spindle/blob/main/docs/ess-kubernetes-driver.md) | Discover, fence, switch, and recover an ESS deployment without two writers |
 | [docs/rate-limits.md](https://github.com/tuna-os/spindle/blob/main/docs/rate-limits.md) | Every rate and cap, and the growth nothing bounds yet |
 | [docs/matrix-rtc.md](https://github.com/tuna-os/spindle/blob/main/docs/matrix-rtc.md) | Calls end to end: the SFU, the JWT service built in or beside, and what a token cannot promise |
+| [docs/operator.md](https://github.com/tuna-os/spindle/blob/main/docs/operator.md) | The operator service and its admin console |
+| [docs/mls.md](https://github.com/tuna-os/spindle/blob/main/docs/mls.md) | Why MLS is a no-go today, and what reopens the question |
+| [docs/policy-servers.md](https://github.com/tuna-os/spindle/blob/main/docs/policy-servers.md) | Room opt-in, approval checks and Matrix Foundation enrollment |
 | [docs/mesh-federation.md](https://github.com/tuna-os/spindle/blob/main/docs/mesh-federation.md) | Federating with a Bluetooth mesh: the venue system, the loopback evidence, and the Neutrino gateway patch |
 | [docs/venue-playbook.md](https://github.com/tuna-os/spindle/blob/main/docs/venue-playbook.md) | Setting up the mesh and the conference Spindle, the test ladder, and the go/no-go list for 3,000 attendees |
 | [docs/venue-gateway.md](https://github.com/tuna-os/spindle/blob/main/docs/venue-gateway.md) | The venue gateway: the Neutrino node with the uplink, how to build, run, pair, and troubleshoot it |
@@ -211,27 +319,42 @@ The risks that would invalidate the headline claim are enumerated in
 | [docs/mscs.md](https://github.com/tuna-os/spindle/blob/main/docs/mscs.md) | Every MSC served, partly served, planned or declined — generated from the ledger CI holds to the code |
 | [docs/spec-gaps.md](https://github.com/tuna-os/spindle/blob/main/docs/spec-gaps.md) | What the pinned Matrix spec defines that the router does not serve, by the version that added it |
 | [docs/maintenance.md](https://github.com/tuna-os/spindle/blob/main/docs/maintenance.md) | Keeping up: the gates, the ratchets, the weekly upkeep report, and how a spec release or an MSC is absorbed |
+| [docs/releasing.md](https://github.com/tuna-os/spindle/blob/main/docs/releasing.md) | When the release workflow cuts a tag, what a release contains, and how to check a build |
 
 ---
 
 ## Building and contributing
 
 ```bash
-cargo test --workspace
-cargo clippy --workspace --all-targets -- -D warnings
+cargo test --workspace --all-features
+cargo clippy --workspace --all-targets --all-features -- -D warnings
 cargo fmt --all --check
 scripts/complement.sh               # the interop ratchet (needs Docker)
 ```
 
-`rust-toolchain.toml` pins **1.90.0**, so rustup fetches the right compiler on
-its own. Storage is [fjall](https://github.com/fjall-rs/fjall) 3 — embedded,
+`rust-toolchain.toml` pins **1.90.0** for development, so rustup fetches the
+right compiler on its own. The release image pins its own compiler in the
+`Dockerfile`. Storage is [fjall](https://github.com/fjall-rs/fjall) 3 — embedded,
 so there is no database to provision.
 
 CI gates on all of the above plus the Complement ratchet, a config-drift check,
 a generated-dashboard drift check, and pinned-action and benchmark-tooling
-checks. CONTRIBUTING.md has the longer version, and docs/releasing.md what a
-tag does. New performance work is expected to arrive with a counting assertion
-rather than a timing one, for the reason given above.
+checks. [CONTRIBUTING.md](https://github.com/tuna-os/spindle/blob/main/CONTRIBUTING.md) has the longer version, and
+[docs/releasing.md](https://github.com/tuna-os/spindle/blob/main/docs/releasing.md) tells what a tag does. New performance
+work is expected to arrive with a counting assertion rather than a timing one,
+for the reason given above.
+
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
 
 ## License
 
@@ -240,10 +363,3 @@ your option; contributions are accepted under the same terms.
 [`LICENSING.md`](https://github.com/tuna-os/spindle/blob/main/LICENSING.md) records what was checked before choosing, why
 not AGPL despite Synapse being AGPL, and why the copyright line reads as it
 does.
-
-
-## Contribute compute — no code needed
-
-No time to write code? You can still push this project's backlog forward. A TunaOS AI-agent hive works on this repository. Lend the hive your AI subscription or API tokens, and your machine runs contributor tasks from this project's backlog.
-
-- 🪸 [Contribute compute to the reef hive](https://reef.tunaos.org/contribute)

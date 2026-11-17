@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 9
 title: "SCREENSHOTS"
 ---
 
@@ -17,9 +17,10 @@ So CI generates them from the real app and references them from
   │  builds the app, then for each screen:
   ▼
 tuna-os/flatpak-index/.github/actions/capture-screenshots
-  │  Xvfb + the app's own window + ImageMagick
+  │  Xvfb + target readiness + ImageMagick
   ▼
 docs/screenshots/NN-name.png          committed back to main
+docs/screenshots/NN-name.receipt.json provenance and evidence
   │  referenced by
   ▼
 data/<app-id>.metainfo.xml            <screenshot><image>raw.githubusercontent…/main/…
@@ -33,22 +34,50 @@ further upkeep.
 
 ```yaml
 - uses: tuna-os/flatpak-index/.github/actions/capture-screenshots@main
+  id: capture
   with:
     command: ./target/release/myapp
     name: 01-main
     out-dir: docs/screenshots      # default
     geometry: 1000x700             # default, Flathub's maximum
     settle: "6"                    # seconds to let the window paint
+    app-id: org.tunaos.myapp       # optional explicit application ID
+    wm-class: MyApp                # optional explicit WM_CLASS
+    readiness-predicate: ""        # optional command asserting target readiness
+    deadline: "30"                 # optional monotonic deadline in seconds
+    capture-mode: window           # "window" (default) or "display"
+    required: "true"               # "true" (default) or "false" (advisory)
 ```
 
 It drives a real X server and photographs the application's own window. It
 is toolkit-agnostic: GTK, Qt, Electron and plain Xt apps all work, without an
 in-process harness written per toolkit.
 
-**It fails the job.** It never publishes a bad image. It covers each
-case: the app exits before it maps a window, maps no window at all, or
-paints a blank one. In every failure it writes nothing, because a blank PNG
-left on disk looks like a real screenshot.
+For direct calls, install `Xvfb`, `xdpyinfo`, `xprop`, `xwininfo`, `xdotool`,
+`import`, and `identify`. The action installs them for you.
+
+It writes temporary PNG files on the output filesystem. This keeps the final
+rename atomic across bind mounts. Process logs stay in a separate private
+directory.
+
+### Action outputs
+
+The action provides step outputs for pipeline verification:
+
+- `image`: Path to the captured PNG file.
+- `receipt`: Path to the JSON receipt, with its schema version.
+- `outcome`: Execution outcome (`passed`, `failed`, `blocked`, `not_run`, `unsupported`, `flaky`).
+- `window-id`: ID of the observed X11 window.
+- `frame-hash`: SHA-256 digest of the captured frame.
+- `target-pid`: ID of the target process.
+
+### Correctness contract
+
+- **Target identity**: Matches the host PID or descendants, explicit `app-id`, or explicit `wm-class`. Sandboxed apps use explicit or inferred identity. It rejects unrelated windows and blank surfaces.
+- **Process state and deadlines**: Checks app state before the window appears and after paint settles. A monotonic deadline limits the time for each readiness command. A timed-out predicate loses its own process group.
+- **Output integrity**: Deletes old PNG files before capture. After verification, it publishes output with an atomic file move. Failed captures produce a failure receipt, not a success image.
+- **Owned cleanup**: Keeps temporary state in private directories. Stops only owned processes and descendants. Xvfb removes its own socket and lock. The script does not remove shared X11 paths. If a display is in use, capture fails and leaves that server intact. The receipt shows all errors from teardown.
+- **Evidence receipt**: Writes JSON with `schema_version: 1`. Records source and action revisions, run identifiers, requested and observed identities, executable digest, environment, frame hash, and times. It also records diagnostics and outcome. It redacts recognized credentials in commands, predicate fields, logs, and errors.
 
 An app that renders its own screens more precisely should keep that setup.
 `tuna-installer-kde` renders each wizard step from the real QML module with

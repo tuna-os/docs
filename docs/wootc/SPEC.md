@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 title: "SPEC"
 ---
 
@@ -10,7 +10,7 @@ partition. Uninstalling is deleting one file and one BCD entry.
 **Prior art**: [WubiUEFI](https://github.com/hakuna-m/wubiuefi) proved the
 dual-boot loop-file model with millions of users. wootc replaces Wubi's
 Ubuntu-specific pipeline (ISO → casper → ubiquity → preseed) with
-[fisherman](https://github.com/projectbluefin/fisherman) driving
+[fisherman](https://github.com/tuna-os/fisherman) driving
 [bootc install](https://github.com/containers/bootc). The result: smaller
 downloads, no installer wizard, same system whether running from loop file
 or real disk.
@@ -386,7 +386,7 @@ populate root.disk with the chosen bootc image.
 | Component | Purpose |
 |---|---|
 | Fedora 44 kernel | Boots on wide range of hardware |
-| [fisherman](https://github.com/projectbluefin/fisherman) | Go binary: partition, format, bootc install to-filesystem |
+| [fisherman](https://github.com/tuna-os/fisherman) | Go binary: partition, format, bootc install to-filesystem |
 | podman + skopeo | Pull OCI images, run bootc container |
 | ntfs3 (in-kernel) | Mount Windows NTFS partition (no FUSE overhead) |
 | dracut + network modules | DHCP, DNS |
@@ -576,6 +576,7 @@ Generated at deploy time from kernel cmdline args (and vault.json if provided):
 
 The `image` field is the OCI reference for the target OS. fisherman
 handles:
+
 - **CheckImage**: compares remote vs local digest, determines if pull needed
 - **Pull**: `podman pull` to containers-storage
 - **Install**: `podman run --privileged <image> bootc install to-filesystem /target`
@@ -657,6 +658,7 @@ sparse file creation — replaces the ISO download and preseed generation.
 
 1. User runs `wootc.exe`
 2. Selects target image from catalog:
+
    ```
    ┌──────────────────────────────────────────┐
    │ Choose your TunaOS variant:              │
@@ -672,6 +674,7 @@ sparse file creation — replaces the ISO download and preseed generation.
    │ [Install]  [Cancel]                       │
    └──────────────────────────────────────────┘
    ```
+
 3. Selects disk size (default 40GB), hostname
 4. wootc.exe:
    - Downloads deployer kernel+initrd to `C:\wootc\install\`
@@ -973,6 +976,7 @@ The Windows installer (`wootc.exe`) has four screens:
 ```
 
 **Button actions:**
+
 - **[Try in VM]**: Required VM-first direction; current builds remain capability-gated until ADR 0004 passes.
   Bypasses BCD modification. Launches a background Alpine builder VM to pull
   the OCI image into a local virtual disk and starts QEMU immediately (§6.1).
@@ -1448,7 +1452,6 @@ performance. Two distinct modes:
 > The design below is historical input; disk ownership, readiness, and native promotion
 > must meet ADR 0004 before release claims.
 
-
 "Try before you install" — the user clicks **[Try in VM]** on the
 Launchpad, and wootc builds a bootable disk image and launches it in
 a QEMU window. No reboot. No BCD modification. If the user likes it,
@@ -1501,6 +1504,7 @@ The embedded startup script:
 3. **Target detection** — identifies the VirtIO block device
    (`/dev/vda`) mapped from `preview.raw`.
 4. **Deployment** — runs:
+
    ```bash
    podman pull "${IMAGE_REF}"
    podman run --rm --privileged \
@@ -1508,6 +1512,7 @@ The embedded startup script:
        "${IMAGE_REF}" \
        bootc install to-disk --generic-image --via-loopback /dev/vda
    ```
+
    This partitions `/dev/vda`, configures sub-volumes if btrfs,
    handles filesystem generation, and unpacks the immutable
    deployment trees directly onto the virtual disk.
@@ -1521,6 +1526,7 @@ sends `STATUS=SUCCESS` over the VirtIO serial channel and executes
 `poweroff -f`.
 
 Back on the host, wootc.exe:
+
 - Traps the closure of the background QEMU process handle
 - Closes the loopback IPC socket
 - Verifies the integrity of `preview.raw`
@@ -1685,7 +1691,7 @@ communicating with an MIT-licensed deployer over a process boundary
 | Project | Role | License |
 |---|---|---|
 | [WubiUEFI](https://github.com/hakuna-m/wubiuefi) | Windows installer, BCD, GRUB core images | GPL-2.0 |
-| [fisherman](https://github.com/projectbluefin/fisherman) | Disk partitioning, bootc install, data slurp | Apache-2.0 |
+| [fisherman](https://github.com/tuna-os/fisherman) | Disk partitioning, bootc install, data slurp | Apache-2.0 |
 | [bootc](https://github.com/containers/bootc) | Container-native OS install and updates | Apache-2.0 |
 | [bootupd](https://github.com/coreos/bootupd) | Bootloader installation (invoked by bootc) | Apache-2.0 |
 | [podman](https://github.com/containers/podman) | OCI image pull and container execution | Apache-2.0 |
@@ -1761,7 +1767,7 @@ wootc/
 │   └── recipes/
 │       └── (image catalogs, default recipes)
 │
-├── fisherman/                      ← git submodule: projectbluefin/fisherman
+├── fisherman/                      ← git submodule: tuna-os/fisherman
 ├── tests/
 │   ├── e2e/                        ← full KVM e2e test
 │   └── unit/                       ← platform + payload unit tests
@@ -1778,7 +1784,7 @@ wootc/
 | Project | Role | License |
 |---|---|---|
 | [WubiUEFI](https://github.com/hakuna-m/wubiuefi) | Windows installer, BCD, GRUB core images | GPL-2.0 |
-| [fisherman](https://github.com/projectbluefin/fisherman) | Disk partitioning, bootc install, data slurp | Apache-2.0 |
+| [fisherman](https://github.com/tuna-os/fisherman) | Disk partitioning, bootc install, data slurp | Apache-2.0 |
 | [bootc](https://github.com/containers/bootc) | Container-native OS install and updates | Apache-2.0 |
 | [bootupd](https://github.com/coreos/bootupd) | Bootloader installation (invoked by bootc) | Apache-2.0 |
 | [podman](https://github.com/containers/podman) | OCI image pull and container execution | Apache-2.0 |
