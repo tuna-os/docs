@@ -42,9 +42,11 @@ apps and source branches. It builds OCI artifacts, uploads them to GHCR,
 and uses this repository's `.github/scripts/update-index.py` to update the
 production index.
 
-Inspect the current workflow before you retry a build.
-Some publish commands use `|| true`. A successful job alone does not
-prove that every image upload and index update succeeded.
+The publish job validates the candidate index before it changes GHCR or the
+production index. It uploads images to GHCR only after validation passes, and
+it commits the index only after all uploads succeed. If one of these steps
+fails, the job stops before the index commit. If the build of one app fails,
+the publish job does not run, so that run publishes no app.
 
 ### Deployment triggers and credentials
 
@@ -65,9 +67,9 @@ is one repository, Git contents read and write over SSH, and no GitHub API
 access. It cannot open or merge pull requests, change settings, or read another
 repository.
 
-`FLATPAK_INDEX_TOKEN` is a legacy token and the action reads it only when no
-key is set. The central builder in this repository still uses it. Issue #483
-tracks its removal.
+`FLATPAK_INDEX_TOKEN` is a legacy token. The shared action and the central
+builder in this repository read it only when no key is set. Issue #483 tracks
+its removal.
 
 Each index commit that the shared action makes ends with `Source-Repository`,
 `Source-Workflow` and `Source-Run` trailers. To find the run that changed the
