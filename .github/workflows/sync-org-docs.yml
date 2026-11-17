@@ -45,7 +45,9 @@ jobs:
         run: | # zizmor: ignore[adhoc-packages] pinned to the markdownlint-cli release lint.yml uses
           mapfile -t synced < <( { git diff --name-only -- 'docs/**/*.md'; git ls-files --others --exclude-standard -- 'docs/**/*.md'; } | sort -u)
           if [ "${#synced[@]}" -gt 0 ]; then
-            npx --yes markdownlint-cli@0.49.1 --fix "${synced[@]}" || true
+            # MD034's fix wraps bare URLs in <...>, which MDX parses as JSX and
+            # fails to compile, so it is left out of the auto-fix.
+            npx --yes markdownlint-cli@0.49.1 --fix "${synced[@]}" --disable MD034 || true
           fi
 
       # Compile the generated pages before opening a PR. This keeps an
