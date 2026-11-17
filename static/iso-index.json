@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-13T04:04:23.297Z",
+  "generatedAt": "2026-11-17T15:42:27.742Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 366,
+  "count": 374,
   "categories": [
     {
       "id": "live-isos",
@@ -11,6 +11,96 @@
       "order": 0,
       "checksums": null,
       "isos": [
+        {
+          "category": "live-isos",
+          "name": "marlin-kde-nvidia-latest",
+          "path": "live-isos/marlin-kde-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-kde-nvidia-latest.iso",
+          "size": 9963044864,
+          "modified": "2026-11-15T11:33:08.908815653Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-kde-latest",
+          "path": "live-isos/marlin-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-kde-latest.iso",
+          "size": 7226195968,
+          "modified": "2026-11-15T10:58:41.942605448Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-kde-nvidia-latest",
+          "path": "live-isos/skipjack-kde-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-kde-nvidia-latest.iso",
+          "size": 10524295168,
+          "modified": "2026-11-14T21:26:54.962988447Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-niri-nvidia-latest",
+          "path": "live-isos/skipjack-niri-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-niri-nvidia-latest.iso",
+          "size": 7694712832,
+          "modified": "2026-11-14T21:26:11.280301767Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-kde-latest",
+          "path": "live-isos/skipjack-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-kde-latest.iso",
+          "size": 8926789632,
+          "modified": "2026-11-14T18:25:07.133907524Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-niri-latest",
+          "path": "live-isos/skipjack-niri-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-niri-latest.iso",
+          "size": 6096617472,
+          "modified": "2026-11-14T18:20:48.359444689Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-xfce-latest",
+          "path": "live-isos/skipjack-xfce-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-xfce-latest.iso",
+          "size": 5680594944,
+          "modified": "2026-11-14T18:19:46.029062529Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "flounder-kde-nvidia-latest",
+          "path": "live-isos/flounder-kde-nvidia-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-kde-nvidia-latest.iso",
+          "size": 5070389248,
+          "modified": "2026-11-14T14:37:09.735534156Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "flounder-kde-latest",
+          "path": "live-isos/flounder-kde-latest.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-kde-latest.iso",
+          "size": 3955359744,
+          "modified": "2026-11-14T14:04:01.891947829Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "live-isos",
           "name": "yellowfin-kde-nvidia-latest",
@@ -293,36 +383,6 @@
         },
         {
           "category": "live-isos",
-          "name": "skipjack-kde-latest",
-          "path": "live-isos/skipjack-kde-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-kde-latest.iso",
-          "size": 8760066048,
-          "modified": "2026-11-07T23:53:40.207950689Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-niri-latest",
-          "path": "live-isos/skipjack-niri-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-niri-latest.iso",
-          "size": 6001852416,
-          "modified": "2026-11-07T23:52:10.672068679Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-xfce-latest",
-          "path": "live-isos/skipjack-xfce-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-xfce-latest.iso",
-          "size": 5586878464,
-          "modified": "2026-11-07T23:50:25.906165006Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
           "name": "skipjack-cosmic-latest",
           "path": "live-isos/skipjack-cosmic-latest.iso",
           "url": "https://download.tunaos.org/live-isos/skipjack-cosmic-latest.iso",
@@ -333,41 +393,11 @@
         },
         {
           "category": "live-isos",
-          "name": "flounder-kde-nvidia-latest",
-          "path": "live-isos/flounder-kde-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/flounder-kde-nvidia-latest.iso",
-          "size": 5047058432,
-          "modified": "2026-11-07T05:30:31.144926997Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-kde-nvidia-latest",
-          "path": "live-isos/marlin-kde-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-kde-nvidia-latest.iso",
-          "size": 9921888256,
-          "modified": "2026-11-07T05:06:19.033495920Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
           "name": "marlin-gnome-nvidia-latest",
           "path": "live-isos/marlin-gnome-nvidia-latest.iso",
           "url": "https://download.tunaos.org/live-isos/marlin-gnome-nvidia-latest.iso",
           "size": 10207232000,
           "modified": "2026-11-07T05:03:11.711766388Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "flounder-kde-latest",
-          "path": "live-isos/flounder-kde-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/flounder-kde-latest.iso",
-          "size": 3953983488,
-          "modified": "2026-11-07T04:50:41.771145878Z",
           "arch": "",
           "latest": true
         },
@@ -493,26 +523,6 @@
         },
         {
           "category": "live-isos",
-          "name": "skipjack-kde-nvidia-latest",
-          "path": "live-isos/skipjack-kde-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-kde-nvidia-latest.iso",
-          "size": 8073052160,
-          "modified": "2026-11-07T00:58:35.781457932Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-niri-nvidia-latest",
-          "path": "live-isos/skipjack-niri-nvidia-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-niri-nvidia-latest.iso",
-          "size": 7601324032,
-          "modified": "2026-11-07T00:55:43.933007903Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
           "name": "skipjack-cosmic-nvidia-latest",
           "path": "live-isos/skipjack-cosmic-nvidia-latest.iso",
           "url": "https://download.tunaos.org/live-isos/skipjack-cosmic-nvidia-latest.iso",
@@ -528,16 +538,6 @@
           "url": "https://download.tunaos.org/live-isos/bonito-gnome-latest.iso",
           "size": 8112701440,
           "modified": "2026-11-07T00:11:17.288712193Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-kde-latest",
-          "path": "live-isos/marlin-kde-latest.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-kde-latest.iso",
-          "size": 7232290816,
-          "modified": "2026-11-06T23:41:02.861076028Z",
           "arch": "",
           "latest": true
         },
@@ -730,6 +730,256 @@
           "modified": "2026-10-04T01:35:45.174154095Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-kde-44-aarch64",
+          "path": "live-isos/bonito-kde-44-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-kde-44-aarch64.iso",
+          "size": 9559867392,
+          "modified": "2026-11-17T13:48:55.222125016Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-kde-latest-arm64",
+          "path": "live-isos/bonito-kde-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-kde-latest-arm64.iso",
+          "size": 9559867392,
+          "modified": "2026-11-17T13:48:55.222125016Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-xfce-44-aarch64",
+          "path": "live-isos/bonito-xfce-44-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-xfce-44-aarch64.iso",
+          "size": 8263892992,
+          "modified": "2026-11-17T13:48:07.430475402Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-xfce-latest-arm64",
+          "path": "live-isos/bonito-xfce-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-xfce-latest-arm64.iso",
+          "size": 8263892992,
+          "modified": "2026-11-17T13:48:07.430475402Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-niri-44-aarch64",
+          "path": "live-isos/bonito-niri-44-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-niri-44-aarch64.iso",
+          "size": 7118258176,
+          "modified": "2026-11-17T13:47:06.463196887Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-niri-latest-arm64",
+          "path": "live-isos/bonito-niri-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-niri-latest-arm64.iso",
+          "size": 7118258176,
+          "modified": "2026-11-17T13:47:06.463196887Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-gnome-44-aarch64",
+          "path": "live-isos/bonito-gnome-44-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-gnome-44-aarch64.iso",
+          "size": 7953776640,
+          "modified": "2026-11-17T13:46:49.648864833Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-gnome-latest-arm64",
+          "path": "live-isos/bonito-gnome-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-gnome-latest-arm64.iso",
+          "size": 7953776640,
+          "modified": "2026-11-17T13:46:49.648864833Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-cosmic-44-aarch64",
+          "path": "live-isos/bonito-cosmic-44-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-cosmic-44-aarch64.iso",
+          "size": 7682260992,
+          "modified": "2026-11-17T13:44:25.828190384Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-cosmic-latest-arm64",
+          "path": "live-isos/bonito-cosmic-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-cosmic-latest-arm64.iso",
+          "size": 7682260992,
+          "modified": "2026-11-17T13:44:25.828190384Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-kde-nvidia--x86_64",
+          "path": "live-isos/marlin-kde-nvidia--x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-kde-nvidia--x86_64.iso",
+          "size": 9963044864,
+          "modified": "2026-11-15T11:33:08.908815653Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-gnome--aarch64",
+          "path": "live-isos/marlin-gnome--aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-gnome--aarch64.iso",
+          "size": 6600654848,
+          "modified": "2026-11-15T11:07:35.123593614Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-gnome-latest-arm64",
+          "path": "live-isos/marlin-gnome-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-gnome-latest-arm64.iso",
+          "size": 6600654848,
+          "modified": "2026-11-15T11:07:35.123593614Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-kde--x86_64",
+          "path": "live-isos/marlin-kde--x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-kde--x86_64.iso",
+          "size": 7226195968,
+          "modified": "2026-11-15T10:58:41.942605448Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-kde-nvidia-10-x86_64",
+          "path": "live-isos/skipjack-kde-nvidia-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-kde-nvidia-10-x86_64.iso",
+          "size": 10524295168,
+          "modified": "2026-11-14T21:26:54.962988447Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-niri-nvidia-10-x86_64",
+          "path": "live-isos/skipjack-niri-nvidia-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-niri-nvidia-10-x86_64.iso",
+          "size": 7694712832,
+          "modified": "2026-11-14T21:26:11.280301767Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-kde-10-x86_64",
+          "path": "live-isos/skipjack-kde-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-kde-10-x86_64.iso",
+          "size": 8926789632,
+          "modified": "2026-11-14T18:25:07.133907524Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-kde-10-aarch64",
+          "path": "live-isos/skipjack-kde-10-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-kde-10-aarch64.iso",
+          "size": 8507359232,
+          "modified": "2026-11-14T18:23:44.271301529Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-kde-latest-arm64",
+          "path": "live-isos/skipjack-kde-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-kde-latest-arm64.iso",
+          "size": 8507359232,
+          "modified": "2026-11-14T18:23:44.271301529Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-niri-10-x86_64",
+          "path": "live-isos/skipjack-niri-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-niri-10-x86_64.iso",
+          "size": 6096617472,
+          "modified": "2026-11-14T18:20:48.359444689Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-niri-10-aarch64",
+          "path": "live-isos/skipjack-niri-10-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-niri-10-aarch64.iso",
+          "size": 5710544896,
+          "modified": "2026-11-14T18:19:59.165819685Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-niri-latest-arm64",
+          "path": "live-isos/skipjack-niri-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-niri-latest-arm64.iso",
+          "size": 5710544896,
+          "modified": "2026-11-14T18:19:59.165819685Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-xfce-10-x86_64",
+          "path": "live-isos/skipjack-xfce-10-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-xfce-10-x86_64.iso",
+          "size": 5680594944,
+          "modified": "2026-11-14T18:19:46.029062529Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "flounder-kde-nvidia-13-x86_64",
+          "path": "live-isos/flounder-kde-nvidia-13-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-kde-nvidia-13-x86_64.iso",
+          "size": 5070389248,
+          "modified": "2026-11-14T14:37:09.735534156Z",
+          "arch": "x86_64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "flounder-kde-13-x86_64",
+          "path": "live-isos/flounder-kde-13-x86_64.iso",
+          "url": "https://download.tunaos.org/live-isos/flounder-kde-13-x86_64.iso",
+          "size": 3955359744,
+          "modified": "2026-11-14T14:04:01.891947829Z",
+          "arch": "x86_64",
+          "latest": false
         },
         {
           "category": "live-isos",
@@ -1083,161 +1333,11 @@
         },
         {
           "category": "live-isos",
-          "name": "bonito-kde-44-aarch64",
-          "path": "live-isos/bonito-kde-44-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-kde-44-aarch64.iso",
-          "size": 9441705984,
-          "modified": "2026-11-10T12:57:58.530800671Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-kde-latest-arm64",
-          "path": "live-isos/bonito-kde-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-kde-latest-arm64.iso",
-          "size": 9441705984,
-          "modified": "2026-11-10T12:57:58.530800671Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
           "name": "bonito-niri-44-x86_64",
           "path": "live-isos/bonito-niri-44-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/bonito-niri-44-x86_64.iso",
           "size": 7304904704,
           "modified": "2026-11-10T12:56:49.511325692Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-xfce-44-aarch64",
-          "path": "live-isos/bonito-xfce-44-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-xfce-44-aarch64.iso",
-          "size": 8159035392,
-          "modified": "2026-11-10T12:56:28.877855478Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-xfce-latest-arm64",
-          "path": "live-isos/bonito-xfce-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-xfce-latest-arm64.iso",
-          "size": 8159035392,
-          "modified": "2026-11-10T12:56:28.877855478Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-cosmic-44-aarch64",
-          "path": "live-isos/bonito-cosmic-44-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-cosmic-44-aarch64.iso",
-          "size": 7666270208,
-          "modified": "2026-11-10T12:55:09.435126564Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-cosmic-latest-arm64",
-          "path": "live-isos/bonito-cosmic-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-cosmic-latest-arm64.iso",
-          "size": 7666270208,
-          "modified": "2026-11-10T12:55:09.435126564Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-niri-44-aarch64",
-          "path": "live-isos/bonito-niri-44-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-niri-44-aarch64.iso",
-          "size": 6958678016,
-          "modified": "2026-11-10T12:55:01.231393686Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-niri-latest-arm64",
-          "path": "live-isos/bonito-niri-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-niri-latest-arm64.iso",
-          "size": 6958678016,
-          "modified": "2026-11-10T12:55:01.231393686Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-gnome-44-aarch64",
-          "path": "live-isos/bonito-gnome-44-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-gnome-44-aarch64.iso",
-          "size": 7816937472,
-          "modified": "2026-11-10T12:53:48.997209094Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-gnome-latest-arm64",
-          "path": "live-isos/bonito-gnome-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-gnome-latest-arm64.iso",
-          "size": 7816937472,
-          "modified": "2026-11-10T12:53:48.997209094Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-kde-10-aarch64",
-          "path": "live-isos/skipjack-kde-10-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-kde-10-aarch64.iso",
-          "size": 8345485312,
-          "modified": "2026-11-07T23:54:25.808660002Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-kde-latest-arm64",
-          "path": "live-isos/skipjack-kde-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-kde-latest-arm64.iso",
-          "size": 8345485312,
-          "modified": "2026-11-07T23:54:25.808660002Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-kde-10-x86_64",
-          "path": "live-isos/skipjack-kde-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-kde-10-x86_64.iso",
-          "size": 8760066048,
-          "modified": "2026-11-07T23:53:40.207950689Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-niri-10-x86_64",
-          "path": "live-isos/skipjack-niri-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-niri-10-x86_64.iso",
-          "size": 6001852416,
-          "modified": "2026-11-07T23:52:10.672068679Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-xfce-10-x86_64",
-          "path": "live-isos/skipjack-xfce-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-xfce-10-x86_64.iso",
-          "size": 5586878464,
-          "modified": "2026-11-07T23:50:25.906165006Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -1253,61 +1353,11 @@
         },
         {
           "category": "live-isos",
-          "name": "skipjack-niri-10-aarch64",
-          "path": "live-isos/skipjack-niri-10-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-niri-10-aarch64.iso",
-          "size": 5618532352,
-          "modified": "2026-11-07T23:49:56.116638419Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-niri-latest-arm64",
-          "path": "live-isos/skipjack-niri-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-niri-latest-arm64.iso",
-          "size": 5618532352,
-          "modified": "2026-11-07T23:49:56.116638419Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "flounder-kde-nvidia-13-x86_64",
-          "path": "live-isos/flounder-kde-nvidia-13-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/flounder-kde-nvidia-13-x86_64.iso",
-          "size": 5047058432,
-          "modified": "2026-11-07T05:30:31.144926997Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-kde-nvidia--x86_64",
-          "path": "live-isos/marlin-kde-nvidia--x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-kde-nvidia--x86_64.iso",
-          "size": 9921888256,
-          "modified": "2026-11-07T05:06:19.033495920Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
           "name": "marlin-gnome-nvidia--x86_64",
           "path": "live-isos/marlin-gnome-nvidia--x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/marlin-gnome-nvidia--x86_64.iso",
           "size": 10207232000,
           "modified": "2026-11-07T05:03:11.711766388Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "flounder-kde-13-x86_64",
-          "path": "live-isos/flounder-kde-13-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/flounder-kde-13-x86_64.iso",
-          "size": 3953983488,
-          "modified": "2026-11-07T04:50:41.771145878Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -1573,26 +1623,6 @@
         },
         {
           "category": "live-isos",
-          "name": "skipjack-kde-nvidia-10-x86_64",
-          "path": "live-isos/skipjack-kde-nvidia-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-kde-nvidia-10-x86_64.iso",
-          "size": 8073052160,
-          "modified": "2026-11-07T00:58:35.781457932Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-niri-nvidia-10-x86_64",
-          "path": "live-isos/skipjack-niri-nvidia-10-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-niri-nvidia-10-x86_64.iso",
-          "size": 7601324032,
-          "modified": "2026-11-07T00:55:43.933007903Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
           "name": "skipjack-cosmic-nvidia-10-x86_64",
           "path": "live-isos/skipjack-cosmic-nvidia-10-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/skipjack-cosmic-nvidia-10-x86_64.iso",
@@ -1608,36 +1638,6 @@
           "url": "https://download.tunaos.org/live-isos/bonito-gnome-44-x86_64.iso",
           "size": 8112701440,
           "modified": "2026-11-07T00:11:17.288712193Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-gnome--aarch64",
-          "path": "live-isos/marlin-gnome--aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-gnome--aarch64.iso",
-          "size": 6599540736,
-          "modified": "2026-11-06T23:50:08.355587539Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-gnome-latest-arm64",
-          "path": "live-isos/marlin-gnome-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-gnome-latest-arm64.iso",
-          "size": 6599540736,
-          "modified": "2026-11-06T23:50:08.355587539Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-kde--x86_64",
-          "path": "live-isos/marlin-kde--x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-kde--x86_64.iso",
-          "size": 7232290816,
-          "modified": "2026-11-06T23:41:02.861076028Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -1698,16 +1698,6 @@
           "url": "https://download.tunaos.org/live-isos/marlin-gnome--x86_64.iso",
           "size": 7512457216,
           "modified": "2026-11-04T21:49:02.590204110Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-rawhide-gnome-nvidia-46-x86_64",
-          "path": "live-isos/bonito-rawhide-gnome-nvidia-46-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-gnome-nvidia-46-x86_64.iso",
-          "size": 9495379968,
-          "modified": "2026-10-31T07:46:46.075457034Z",
           "arch": "x86_64",
           "latest": false
         },
@@ -2494,6 +2484,86 @@
       ]
     },
     {
+      "id": "tromso",
+      "label": "Tromsø",
+      "blurb": "Aurora KDE Plasma 6 — built from source on freedesktop-sdk with BuildStream.",
+      "icon": "🌌",
+      "order": 4,
+      "checksums": null,
+      "isos": [
+        {
+          "category": "tromso",
+          "name": "tromso-live-latest",
+          "path": "tromso/tromso-live-latest.iso",
+          "url": "https://download.tunaos.org/tromso/tromso-live-latest.iso",
+          "size": 9461497856,
+          "modified": "2026-11-13T11:38:36.558930388Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "tromso",
+          "name": "tromso-live-20261113-09aed9c-43414836567-1",
+          "path": "tromso/tromso-live-20261113-09aed9c-43414836567-1.iso",
+          "url": "https://download.tunaos.org/tromso/tromso-live-20261113-09aed9c-43414836567-1.iso",
+          "size": 9461497856,
+          "modified": "2026-11-13T11:38:36.558930388Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "tromso",
+          "name": "tromso-live-20261113-af82668-43396827877-1",
+          "path": "tromso/tromso-live-20261113-af82668-43396827877-1.iso",
+          "url": "https://download.tunaos.org/tromso/tromso-live-20261113-af82668-43396827877-1.iso",
+          "size": 9461497856,
+          "modified": "2026-11-13T09:25:36.638443764Z",
+          "arch": "",
+          "latest": false
+        }
+      ]
+    },
+    {
+      "id": "xfce-linux",
+      "label": "XFCE Linux",
+      "blurb": "Lightweight XFCE Wayland desktop — built from source on freedesktop-sdk.",
+      "icon": "🖥️",
+      "order": 5,
+      "checksums": null,
+      "isos": [
+        {
+          "category": "xfce-linux",
+          "name": "xfce-linux-live-latest",
+          "path": "xfce-linux/xfce-linux-live-latest.iso",
+          "url": "https://download.tunaos.org/xfce-linux/xfce-linux-live-latest.iso",
+          "size": 6561439744,
+          "modified": "2026-11-13T07:43:17.920894196Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "xfce-linux",
+          "name": "xfce-linux-live-20261113-e077aa4",
+          "path": "xfce-linux/xfce-linux-live-20261113-e077aa4.iso",
+          "url": "https://download.tunaos.org/xfce-linux/xfce-linux-live-20261113-e077aa4.iso",
+          "size": 6561439744,
+          "modified": "2026-11-13T07:43:17.920894196Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "xfce-linux",
+          "name": "xfce-linux-live-20261113-2395bad",
+          "path": "xfce-linux/xfce-linux-live-20261113-2395bad.iso",
+          "url": "https://download.tunaos.org/xfce-linux/xfce-linux-live-20261113-2395bad.iso",
+          "size": 6561439744,
+          "modified": "2026-11-13T07:35:53.444824091Z",
+          "arch": "",
+          "latest": false
+        }
+      ]
+    },
+    {
       "id": "browser-iso",
       "label": "Browser Iso",
       "blurb": "",
@@ -2739,15 +2809,15 @@
       "blurb": "",
       "icon": "📀",
       "order": 99,
-      "checksums": "https://download.tunaos.org/tacklebox/SHA256SUMS-20261109-1bbb4df",
+      "checksums": "https://download.tunaos.org/tacklebox/SHA256SUMS-20261116-96b1f4e",
       "isos": [
         {
           "category": "tacklebox",
           "name": "tacklebox-poc-dedup-latest",
           "path": "tacklebox/tacklebox-poc-dedup-latest.iso",
           "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-latest.iso",
-          "size": 1734868992,
-          "modified": "2026-11-09T13:51:05.038335304Z",
+          "size": 1735983104,
+          "modified": "2026-11-16T13:34:28.086581007Z",
           "arch": "",
           "latest": true
         },
@@ -2756,8 +2826,8 @@
           "name": "tacklebox-poc-perenv-latest",
           "path": "tacklebox/tacklebox-poc-perenv-latest.iso",
           "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-latest.iso",
-          "size": 2814050304,
-          "modified": "2026-11-09T13:50:05.077454965Z",
+          "size": 2816344064,
+          "modified": "2026-11-16T13:33:37.019792845Z",
           "arch": "",
           "latest": true
         },
@@ -2800,6 +2870,36 @@
           "modified": "2026-07-31T12:34:11.169892931Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-aio-20261117-26db84d",
+          "path": "tacklebox/bazzite-aio-20261117-26db84d.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-aio-20261117-26db84d.iso",
+          "size": 12481724416,
+          "modified": "2026-11-17T14:46:55.090671172Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "tacklebox",
+          "name": "tacklebox-poc-dedup-20261116-96b1f4e",
+          "path": "tacklebox/tacklebox-poc-dedup-20261116-96b1f4e.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-20261116-96b1f4e.iso",
+          "size": 1735983104,
+          "modified": "2026-11-16T13:34:28.086581007Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "tacklebox",
+          "name": "tacklebox-poc-perenv-20261116-96b1f4e",
+          "path": "tacklebox/tacklebox-poc-perenv-20261116-96b1f4e.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-20261116-96b1f4e.iso",
+          "size": 2816344064,
+          "modified": "2026-11-16T13:33:37.019792845Z",
+          "arch": "",
+          "latest": false
         },
         {
           "category": "tacklebox",
