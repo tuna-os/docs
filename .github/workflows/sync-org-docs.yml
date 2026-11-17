@@ -37,6 +37,17 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/sync-org-docs.mjs
 
+      # Upstream READMEs arrive with markdownlint findings that the required
+      # Markdown Lint job counts against .markdownlint-budget, so a sync could
+      # push the total over budget (#754: 1836 > 1500). Apply markdownlint's
+      # safe auto-fixes to the synced files only, with the release lint.yml pins.
+      - name: Auto-fix markdownlint findings in synced files
+        run: | # zizmor: ignore[adhoc-packages] pinned to the markdownlint-cli release lint.yml uses
+          mapfile -t synced < <( { git diff --name-only -- 'docs/**/*.md'; git ls-files --others --exclude-standard -- 'docs/**/*.md'; } | sort -u)
+          if [ "${#synced[@]}" -gt 0 ]; then
+            npx --yes markdownlint-cli@0.49.1 --fix "${synced[@]}" || true
+          fi
+
       # Compile the generated pages before opening a PR. This keeps an
       # MDX-incompatible upstream document from blocking the next sync PR's
       # bootstrap checks with errors discovered only after creation.
