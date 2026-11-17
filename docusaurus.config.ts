@@ -1,6 +1,7 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import {readdirSync} from 'node:fs';
 import {MAIN_VARIANTS} from './src/data/variants';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
@@ -10,6 +11,15 @@ import {MAIN_VARIANTS} from './src/data/variants';
 // also sets `noindex, nofollow` and is named in static/_headers.
 // /switch-to-bazzite waits for Universal Blue's approval of the Bazzite mark.
 const UNLISTED_ROUTES = ['/switch-to-bazzite'];
+
+// One search index per top-level docs section. A single index for the whole
+// site outgrew the 25 MiB Cloudflare Workers asset limit (search-index.json
+// reached 25.5 MiB), so each docs/<section> gets its own search context and
+// file. Pages outside every section (home, landing pages) keep the ROOT index.
+const SEARCH_CONTEXTS = readdirSync('docs', {withFileTypes: true})
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => `docs/${entry.name}`)
+  .sort();
 
 const config: Config = {
   title: 'TunaOS',
@@ -83,6 +93,7 @@ const config: Config = {
         indexDocs: true,
         indexPages: true,
         docsRouteBasePath: '/docs',
+        searchContextByPaths: SEARCH_CONTEXTS,
         // Unlisted previews stay out of the search index too.
         ignoreFiles: UNLISTED_ROUTES.map((r) => new RegExp(`^${r.slice(1)}(/|$)`)),
       },
