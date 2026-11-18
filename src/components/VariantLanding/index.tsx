@@ -5,7 +5,8 @@ import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import DesktopScreenshots from '@site/src/components/DesktopScreenshots';
 import {VARIANTS, type Variant} from '@site/src/data/variants';
-import {markFor, desktopLogo} from '@site/src/data/marks';
+import {emojiMarkFor, desktopLogo} from '@site/src/data/identity';
+import Wordmark from '@site/src/components/Wordmark';
 import useIsoNames from '@site/src/hooks/useIsoNames';
 import {ISO_BASE_URL, isoNameForImage} from '@site/src/utils/isoNaming';
 import {defaultPlatform} from '@site/src/components/ImagePicker/selection';
@@ -41,16 +42,9 @@ function Hero({variant, isoNames}: {variant: Variant; isoNames: Set<string> | nu
       <div className={clsx('container', styles.heroInner)}>
         {variant.recommended && <span className={styles.recommendedTag}>Recommended</span>}
         {heroCutOver && <span className={styles.recommendedTag}>Qualified browser build</span>}
-        {/* The variant's own mark from tuna-os/branding — see src/data/marks.ts. */}
-        <img
-          className={styles.heroMark}
-          src={markFor(variant.id)}
-          alt=""
-          width={104}
-          height={104}
-        />
+        {/* The variant's wordmark from tuna-os/tunaOS — see src/data/identity.ts. */}
         <Heading as="h1" className={styles.heroTitle}>
-          {variant.name}
+          <Wordmark className={styles.heroMark} variantId={variant.id} height={104} alt={variant.name} />
         </Heading>
         <a className={styles.heroBase} href={variant.baseUrl} target="_blank" rel="noreferrer">
           Based on {variant.base}
@@ -235,7 +229,7 @@ function OtherVariants({variant}: {variant: Variant}): ReactNode {
         <div className={styles.otherGrid}>
           {others.map((v) => (
             <Link key={v.id} to={`/${v.id}`} className={styles.otherCard}>
-              <img className={styles.otherMark} src={markFor(v.id)} alt="" width={34} height={34} loading="lazy" />
+              <img className={styles.otherMark} src={emojiMarkFor(v.id)} alt="" width={34} height={34} loading="lazy" />
               <div>
                 <strong className={styles.otherName}>{v.name}</strong>
                 <span className={styles.otherBase}>{v.base}</span>
@@ -253,7 +247,7 @@ function Cta({variant}: {variant: Variant}): ReactNode {
   return (
     <section className={styles.ctaBand}>
       <div className="container text--center">
-        <img className={styles.ctaMark} src={markFor(variant.id)} alt="" width={56} height={56} loading="lazy" />
+        <Wordmark className={styles.ctaMark} variantId={variant.id} height={56} />
         <Heading as="h2" className={styles.ctaTitle}>Dive into {variant.name}</Heading>
         <p className={styles.ctaText}>
           Grab a live ISO, or rebase an existing bootc system in one command.

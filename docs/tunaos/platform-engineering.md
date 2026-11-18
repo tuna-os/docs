@@ -91,7 +91,7 @@ tacklebox build recipe.json --img provisioning.img
 sudo dd if=provisioning.img of=/dev/sdX bs=4M status=progress
 ```
 
-See the [Tacklebox Getting Started](/docs/tacklebox/getting-started) guide.
+See the [Tacklebox Getting Started](/docs/tacklebox/USER-GUIDE) guide.
 
 ## VM Infrastructure with Corral
 
@@ -109,7 +109,7 @@ corral ssh dev
 corral ssh web
 ```
 
-See the [Corral Getting Started](/docs/corral/getting-started) guide.
+See the [Corral Getting Started](/docs/corral/user-guide) guide.
 
 ## Security
 
@@ -137,6 +137,6 @@ journalctl -b -o short-monotonic
 - [Managing with Bootc](bootc-usage.md) — day-to-day bootc operations
 - [CI/CD Pipeline](ci-cd.md) — how TunaOS images are built
 - [Building Custom Images](building.md) — creating derivative images
-- [Corral Guide](/docs/corral/getting-started) — VM management
-- [Tacklebox Guide](/docs/tacklebox/getting-started) — multi-boot media
+- [Corral Guide](/docs/corral/user-guide) — VM management
+- [Tacklebox Guide](/docs/tacklebox/USER-GUIDE) — multi-boot media
 - [Homebrew Guide](homebrew.md) — developer tooling

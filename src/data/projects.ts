@@ -17,11 +17,20 @@ export type PComparison = {title: string; intro?: string; items: PHighlight[]};
 // one cell per column. `intro` (HTML) says what was measured and how.
 export type PPerformance = {intro: string; columns: string[]; rows: string[][]};
 
+export type PBuildStream = {
+  base: string;
+  desktop: string;
+  image?: string;
+  target?: string;
+  codename?: string;
+};
+
+export type BuildStreamProject = Project & {buildstream: PBuildStream};
+
 export type Project = {
   id: string; // route slug (/<id>) + docs slug (/docs/<id>)
   emoji: string;
-  // Glyph from src/components/Icon.tsx — the project's mark on cards, in the
-  // carousel and in its landing hero.
+  // Glyph used on cards and in the carousel when a project mark is not set.
   icon: IconName;
   name: string;
   status: ProjectStatus;
@@ -56,6 +65,10 @@ export type Project = {
   logo?: string;
   // If true, the logo is already light-colored — skip the invert filter.
   logoLight?: boolean;
+  // Product mark used in compact cards, separate from a hero wordmark.
+  mark?: string;
+  wallpaper?: PShot;
+  buildstream?: PBuildStream;
 };
 
 export const STATUS_LABELS: Record<ProjectStatus, string> = {
@@ -173,38 +186,88 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    id: 'athens',
+    icon: 'monitor',
+    emoji: '🏛️',
+    name: 'Athens',
+    status: 'experimental',
+    tagline: 'Pantheon, built with BuildStream for TunaOS.',
+    lede:
+      'Athens is a TunaOS BuildStream variant for the Pantheon desktop. Its initial recipe and image-build setup are adapted from JumpyVi’s elementary-build-meta; this is recipe-basis credit, not an original TunaOS implementation. The local OCI target is experimental: no public image or boot/install qualification is available.',
+    accent: '#d89a4c',
+    accent2: '#7d9ab6',
+    repo: 'https://github.com/tuna-os/athens',
+    logo: '/img/buildstream/athens/athens-wordmark.svg',
+    logoLight: true,
+    mark: '/img/buildstream/athens/athens-logo.svg',
+    wallpaper: {
+      src: '/img/buildstream/athens/athens-wallpaper.svg',
+      alt: 'Athens wallpaper with a Parthenon-inspired pediment and columns.',
+    },
+    buildstream: {
+      base: 'GNOME OS OCI runtime',
+      desktop: 'Pantheon',
+      target: 'oci/athens.bst',
+    },
+    stats: [
+      {label: 'Desktop', value: 'Pantheon'},
+      {label: 'Built with', value: 'BuildStream'},
+      {label: 'Base', value: 'GNOME OS OCI runtime'},
+      {label: 'Status', value: 'Experimental · local-only'},
+    ],
+    highlights: [
+      {title: 'Pantheon desktop', text: 'A TunaOS image recipe for the Pantheon desktop and its GNOME OS OCI base.'},
+      {title: 'Recipe attribution', text: 'The initial BuildStream recipe basis is <a href="https://github.com/jumpyvi/elementary-build-meta" target="_blank" rel="noreferrer">JumpyVi’s elementary-build-meta</a>.'},
+      {title: 'Experimental OCI target', text: 'The repository documents a local-only <code>oci/athens.bst</code> target. It is not published to a registry and has not been qualified for boot, installation, or updates.'},
+    ],
+    features: [
+      {emoji: '🧱', title: 'BuildStream recipe', text: 'BuildStream defines the Pantheon and GNOME OS OCI image graph; CI checks the graph, not a completed image build.'},
+      {emoji: '🔒', title: 'Local-only output', text: 'The OCI layout can be built and loaded locally. Registry publication, update feeds, and production signing are not configured.'},
+      {emoji: '🎨', title: 'Athens and Pantheon', text: 'The mark references the Parthenon in Athens. The wordmark names the Pantheon desktop. TunaOS created this artwork; it does not replace Elementary OS or Pantheon project marks.'},
+    ],
+  },
+  {
     id: 'tromso',
     icon: 'layers',
     emoji: '🌌',
     name: 'Tromsø',
     status: 'alpha',
-    tagline: 'Aurora on your desktop.',
+    tagline: 'KDE Plasma 6, built with BuildStream for TunaOS.',
     lede:
-      "A freedesktop.org and KDE Plasma image, designed from the ground up to bring Aurora's visual identity to KDE. Built from the best OS tech from the CNCF, Apache Foundation, and the freedesktop.org community — BuildStream pipelines, bootc delivery, and a fully Wayland Plasma 6 desktop. This is what KDE looks like when you build it from source.",
-    accent: '#0c0032',
-    accent2: '#6366f1',
-    heroEmojiLarge: true,
+      'Tromsø is an independent TunaOS KDE Plasma image built from source with BuildStream on freedesktop-sdk and delivered as a bootc OCI image. Its identity and artwork are original TunaOS work; it is not Aurora Linux branding.',
+    accent: '#89f0cf',
+    accent2: '#59a9c4',
     repo: 'https://github.com/tuna-os/tromso',
     docs: '/docs/tromso',
+    logo: '/img/buildstream/tromso/tromso-wordmark.svg',
+    logoLight: true,
+    mark: '/img/buildstream/tromso/tromso-logo.svg',
+    wallpaper: {
+      src: '/img/buildstream/tromso/tromso-wallpaper.svg',
+      alt: 'Tromsø wallpaper with Tromsø Bridge beneath an aurora.',
+    },
+    buildstream: {
+      base: 'freedesktop-sdk',
+      desktop: 'KDE Plasma 6',
+      image: 'ghcr.io/tuna-os/tromso:latest',
+    },
     highlights: [
-      {title: 'KDE Plasma 6', text: 'The latest stable release of Plasma, <a href="https://kde.org/plasma-desktop" target="_blank">built from source</a> — no distribution middleman, no lag.'},
-      {title: 'Freedesktop SDK', text: 'Same battle-tested libraries as <a href="https://flathub.org" target="_blank">Flathub</a>. Continuously upgraded, always up to date.'},
-      {title: 'Modern Userspace', text: '<a href="https://github.com/bootc-dev/bootc" target="_blank">bootc</a>, systemd-boot, container-first, and legacy-free. Wayland from the ground up.'},
-      {title: 'Designed for Contributors', text: 'Your path to contributing to <a href="https://kde.org" target="_blank">KDE</a>, <a href="https://gitlab.com/freedesktop-sdk/freedesktop-sdk" target="_blank">freedesktop-sdk</a>, and the <a href="https://buildstream.build" target="_blank">BuildStream</a> ecosystem. Start here, level up, become part of upstream.'},
-      {title: 'BuildStream & BuildGrid', text: 'Hermetic sandbox builds with <a href="https://buildstream.build" target="_blank">distributed execution</a>, reproducible and fully auditable.'},
+      {title: 'KDE Plasma 6', text: 'A Wayland Plasma desktop built from source with BuildStream.'},
+      {title: 'freedesktop-sdk base', text: 'The image uses freedesktop-sdk as its BuildStream foundation.'},
+      {title: 'Independent TunaOS image', text: 'Tromsø has its own BuildStream graph and bootc OCI output, separate from TunaOS’s distro × desktop builds.'},
     ],
     stats: [
       {label: 'Desktop', value: 'KDE Plasma 6'},
       {label: 'Built with', value: 'BuildStream'},
       {label: 'Base', value: 'freedesktop-sdk'},
-      {label: 'Modeled on', value: 'GNOME OS'},
+      {label: 'Output', value: 'bootc OCI'},
     ],
     features: [
-      {emoji: '🧱', title: 'Everything from source', text: 'Qt 6, KDE Frameworks, Plasma, and apps — ~170 BuildStream elements built on freedesktop-sdk, the same minimal Linux runtime that powers GNOME OS. No binary packages.'},
-      {emoji: '🔁', title: 'Reproducible by design', text: 'BuildStream caches every build artifact. Same inputs, same image — every time. No "works on my machine" drift between contributors.'},
-      {emoji: '🌌', title: 'Aurora-themed Plasma', text: "KDE Plasma 6 with Aurora's visual identity — not stock upstream, not a re-skin. A coherent desktop built to look like it belongs together."},
-      {emoji: '🐳', title: 'Native bootc image', text: 'The output is a standard bootc OCI image. Pull it, boot it, rebase onto it, or turn it into installable media with tacklebox.'},
-      {emoji: '🖥️', title: 'Shared family', text: 'Tromsø and XFCE Linux are siblings — same freedesktop-sdk base, same BuildStream pipeline, different desktop. Fix the base once, both benefit.'},
+      {emoji: '🧱', title: 'Built from source', text: 'BuildStream builds the KDE desktop stack on freedesktop-sdk.'},
+      {emoji: '🔁', title: 'BuildStream pipeline', text: 'The project maintains its own pinned build graph and CI checks.'},
+      {emoji: '🎨', title: 'Tromsø and KDE Plasma', text: 'The mark references Tromsø Bridge and the northern lights. The wordmark names KDE Plasma. This is original TunaOS artwork, not a KDE or Aurora Linux logo.'},
+      {emoji: '🐳', title: 'bootc OCI image', text: 'The project publishes a bootc OCI image at <code>ghcr.io/tuna-os/tromso</code>.'},
+      {emoji: '🖥️', title: 'BuildStream family', text: 'Tromsø, Brussels, and Athens are separately built TunaOS image projects with different desktops and runtimes.'},
     ],
     install: [
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/tromso.git\ncd tromso\njust build'},
@@ -635,28 +698,39 @@ export const PROJECTS: Project[] = [
     id: 'xfce-linux',
     icon: 'monitor',
     emoji: '🖥️',
-    name: 'XFCE Linux',
+    name: 'Brussels',
     status: 'alpha',
-    tagline: 'The lightweight one. XFCE Wayland on the same freedesktop-sdk base as Tromsø and GNOME OS.',
+    tagline: 'Xfce on Wayland, built with BuildStream for TunaOS.',
     lede:
-      "XFCE Linux shares its DNA with Tromsø — both are BuildStream images built on freedesktop-sdk, the same minimal Linux runtime that powers GNOME OS. The difference: where Tromsø layers KDE Plasma 6, XFCE Linux layers the XFCE desktop. Lightweight, fast, and fully Wayland.",
-    accent: '#1e3a5f',
-    accent2: '#0ea5e9',
+      'Brussels is an independent TunaOS bootc image with Xfce on Wayland. It shares a freedesktop-sdk base with Tromsø but has its own BuildStream project and build pipeline. The repository and registry retain the xfce-linux identifier.',
+    accent: '#efb36c',
+    accent2: '#d47755',
     repo: 'https://github.com/tuna-os/xfce-linux',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/5/5b/Xfce_logo.svg',
     docs: '/docs/xfce-linux',
+    logo: '/img/buildstream/brussels/xfce-linux-wordmark.svg',
+    logoLight: true,
+    mark: '/img/buildstream/brussels/brussels-logo.svg',
+    wallpaper: {
+      src: '/img/buildstream/brussels/brussels-wallpaper.svg',
+      alt: 'Brussels wallpaper with an original iris motif that references the Brussels region.',
+    },
+    buildstream: {
+      base: 'freedesktop-sdk',
+      desktop: 'Xfce Wayland',
+      image: 'ghcr.io/tuna-os/xfce-linux:latest',
+    },
     stats: [
-      {label: 'Desktop', value: 'XFCE (Wayland)'},
+      {label: 'Desktop', value: 'Xfce Wayland'},
       {label: 'Built with', value: 'BuildStream'},
       {label: 'Base', value: 'freedesktop-sdk'},
-      {label: 'Sibling', value: 'Tromsø (KDE)'},
+      {label: 'Namesake', value: 'Brussels, Belgium'},
     ],
     features: [
-      {emoji: '🪶', title: 'XFCE on Wayland', text: 'A modern Wayland session with the classic XFCE desktop. Fast, familiar, and resource-light — ideal for older hardware or minimal setups.'},
-      {emoji: '🧱', title: 'Built on freedesktop-sdk', text: 'The same <a href="https://gitlab.com/freedesktop-sdk/freedesktop-sdk" target="_blank">freedesktop-sdk</a> minimal Linux runtime used by <a href="https://os.gnome.org" target="_blank">GNOME OS</a> and <a href="/tromso">Tromsø</a>. A shared, battle-tested foundation — not a one-off base image.'},
-      {emoji: '🔁', title: 'Reproducible from source', text: '<a href="https://buildstream.build" target="_blank">BuildStream</a> pipelines give deterministic, cacheable builds. Every package, from the kernel to the panel plugins, is built from source with pinned revisions.'},
-      {emoji: '🐳', title: 'bootc OCI image', text: 'The output is a standard <a href="https://github.com/bootc-dev/bootc" target="_blank">bootc</a> image. Pull it, boot it, rebase onto it — same workflow as every other TunaOS image.'},
-      {emoji: '🌌', title: 'Shared family', text: '<a href="/tromso">Tromsø</a> and XFCE Linux are siblings — same build system, same base, different desktop. Fix the base once, both benefit.'},
+      {emoji: '🪶', title: 'Xfce on Wayland', text: 'A Wayland session with the Xfce desktop.'},
+      {emoji: '🧱', title: 'freedesktop-sdk base', text: 'The same SDK base family used by <a href="/tromso">Tromsø</a>, built in a separate BuildStream repository.'},
+      {emoji: '🔁', title: 'Pinned BuildStream graph', text: 'The project maintains its own source pins and build pipeline.'},
+      {emoji: '🐳', title: 'bootc OCI image', text: 'The project publishes a bootc OCI image at <code>ghcr.io/tuna-os/xfce-linux</code>.'},
+      {emoji: '🎨', title: 'Brussels and Xfce', text: 'The original iris motif references the Brussels region. The wordmark names Xfce. This is TunaOS artwork, not the official regional emblem or an Xfce project logo.'},
     ],
     install: [
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/xfce-linux.git\ncd xfce-linux\njust build'},
@@ -731,6 +805,10 @@ export const PROJECTS: Project[] = [
     ],
   },
 ];
+
+export const BUILDSTREAM_VARIANTS: BuildStreamProject[] = PROJECTS.filter(
+  (project): project is BuildStreamProject => project.buildstream !== undefined,
+);
 
 export function getProject(id: string): Project | undefined {
   return PROJECTS.find((p) => p.id === id);

@@ -1,7 +1,9 @@
 ---
-sidebar_position: 28
+sidebar_position: 32
 title: "phase2 attach postmortem"
 ---
+
+
 
 **Scope.** How wootc's Phase-2 boot went from "never attaches root.disk → emergency
 shell" to a working attach chain, told as the sequence of *distinct* root causes we
@@ -38,6 +40,7 @@ wired and ordered exactly right.
 ## The layers, in the order we peeled them
 
 ### 0. (Pre-session) initqueue hook → systemd service
+
 The attach logic began as a dracut **initqueue hook**. Proven dead: the Phase-2
 initramfs runs `dracut-initqueue` zero times. Replaced with a systemd oneshot
 (`wootc-attach.service`) ordered `Before=sysroot.mount`, wanted by
@@ -45,6 +48,7 @@ initramfs runs `dracut-initqueue` zero times. Replaced with a systemd oneshot
 *getting that service to actually exist, be wired, run, and succeed*.
 
 ### 1. Wiring written to `/etc`, verified in `/usr/lib` — regen aborted
+
 `module-setup.sh` wired the service with `systemctl add-wants --root`, which writes
 the wants symlink under **`/etc/systemd/system/…wants/`**, but the build-time check
 looked in **`/usr/lib/systemd/system/…`**. When `add-wants` *succeeded* (environment-
@@ -58,10 +62,13 @@ regen aborted**.
 **Real bug, but not why Phase 2 stayed broken.**
 
 ### 2. 🔥 Self-inflicted: `set -e` abort masked everything
+
 An observability commit (`f48fcdc`) added, inside the deploy-monitor loop:
+
 ```sh
 echo "$NEW_OUTPUT" | grep -aoE "guard: …" | while read gl; do info "PHASE-1 GUARD: $gl"; done
 ```
+
 The script runs under `set -euo pipefail`. On the common serial chunk with **no**
 guard-line match, `grep` exits 1, `pipefail` propagates it, and `set -e` **killed the
 deploy-monitor loop on the very first chunk** — surfacing as `Deploying (0m)` then
@@ -74,6 +81,7 @@ this commit.
 `grep`/pipeline that can legitimately match nothing must end in `|| true`.
 
 ### 3. 🎯 Dangling wants symlink — the actual reason Phase 2 never booted
+
 With #1 and #2 fixed, the service still never ran (`attach-loop entered = 0`, zero
 systemd trace). **Found by disk archaeology:** libguestfs read the *booted* Phase-2
 initramfs straight out of `data.qcow2`'s ESP (`/EFI/wootc/phase2-initramfs.img`) and
@@ -91,6 +99,7 @@ deploy guard now requires the unit *file*, not just the symlink.
 **Result: the service ran for the first time ever (`attach-loop entered = 2`).**
 
 ### 4. Service ran, gave up before udev created the host device
+
 The service ran, then bailed: `host NTFS … not present yet (initqueue will retry)`.
 But it's a **systemd oneshot** — nothing retries. It looked before udev had processed
 the Windows disk; `After=systemd-udev-trigger` only means the trigger *fired*, not
@@ -101,11 +110,13 @@ that processing finished.
 **Result: the host NTFS was found.**
 
 ### 5. No NTFS driver in the image at all
+
 Now it found the NTFS and tried to mount it — and failed:
 `cannot mount host NTFS rw (no ntfs3, no ntfs-3g) … ntfs3=0 ntfs-3g=no`.
 **Confirmed via podman:** yellowfin (EL10, kernel 6.12) has **zero NTFS support** —
 EL disables `CONFIG_NTFS3`, and `ntfs-3g` isn't installed. The deployer's runtime
 ntfs-3g injection is therefore load-bearing, but it failed for **two** reasons:
+
 - **5a.** It ran a plain `dnf install ntfs-3g`, which fails on EL because `ntfs-3g`
   lives in **EPEL**, not the base repos. **Fix (`91ff455`):** enable EPEL (+CRB)
   first. Verified against yellowfin (installs `ntfs-3g-2026.2.25.el10`).
@@ -122,6 +133,7 @@ The FUSE userspace driver mounts the NTFS; the whole fight was just getting that
 binary *into* the initramfs.
 
 ### 6. Partitions attached, but no `by-uuid` symlink → `sysroot.mount` timeout
+
 `sysroot.mount` then waited for `dev-disk-by-uuid-<ext4 root>.device` and timed out.
 The tell: the loop partition **nodes existed**, yet **not one ext4 UUID** appeared in
 `/dev/disk/by-uuid/` (only the Windows disk's vfat/NTFS ones). `losetup --partscan`
@@ -214,6 +226,7 @@ partitions and never makes the by-uuid symlinks.
 Once the attach chain was green (all of #1–#6), `systemd.log_level=debug` proved
 Phase 2 got all the way to the ostree pivot: `sysroot.mount status=0`,
 `ostree-prepare-root status=0` — then emergency, because:
+
 ```
 bootc-root-setup.service: ConditionKernelCommandLine=composefs failed.
 initrd-root-fs.target: held back, waiting for: bootc-root-setup.service
@@ -271,6 +284,7 @@ The layers above sit on top of a longer trail. These recur enough to be worth
 naming — most are the *same failure classes* seen again this session.
 
 ### The NTFS injection has bitten repeatedly (this session was the latest layer)
+
 - `46a767a` first identified the root cause via a **fast container repro, not a
   20-min deploy**: EL kernels ship no `ntfs3` and yellowfin ships no `ntfs-3g`, so
   the loop-attach hook can't mount the Windows volume. Introduced
@@ -286,6 +300,7 @@ naming — most are the *same failure classes* seen again this session.
   the capability check is not authoritative; the runtime fallback is the real guard.
 
 ### Status-from-a-proxy false positives (the dominant bug class)
+
 - `61e974d`: **"Phase 2 booted" fired from the initramfs** — the detector matched
   `ostree=` in the cmdline echoed by the initramfs, so a boot that then failed
   `sysroot.mount` was reported as a PASS; the *downstream* symptom (no Linux QGA)
@@ -298,6 +313,7 @@ naming — most are the *same failure classes* seen again this session.
   "quiet guest". Make it loud.
 
 ### The in-guest watchdog saga (`8187fa9` and its three predecessors)
+
 Four attempts. The bug was **structural, not a cancellation detail**: any background
 job in the deploy hook is a child of `dracut-initqueue`, and initqueue *waits for its
 children* — so a watchdog blocks the very thing it guards. `( sleep; reboot ) &` never
@@ -306,6 +322,7 @@ missed; `+ setsid` put the sleep beyond both pid- and process-group-kill. Final 
 **delete the in-guest watchdog**; the host covers all cases.
 
 ### Serial saturation (`18c8fd7`, reverting `93e87e1`)
+
 Adding a direct `/dev/console` write to `log()` meant every line went out **three
 times over a 115200 baud serial** (stdout + kmsg-forwarded + direct). During the
 verbose bootc install the link saturated and a blocking console write **stalled every
@@ -314,6 +331,7 @@ deploy at `phase: verification`**. `<27>` (KERN_ERR) already reaches the console
 `/dev/console`; the high-volume installer must not.
 
 ### Boot-chain handoff
+
 - `75f8be3`: **`bcdedit /set {fwbootmgr} bootsequence {GUID}` — PowerShell parsed the
   bare `{GUID}` as a script block**, bcdedit got garbage and silently failed, so the
   one-shot Phase-2 boot was *never set* and every "reboot into Phase 2" just went back
@@ -327,6 +345,7 @@ deploy at `phase: verification`**. `<27>` (KERN_ERR) already reaches the console
 - `d1dd5a9`: chain systemd-boot through the Debian shim.
 
 ### Timeouts / hangs
+
 - `c5de470`: an **unbounded `chroot dracut` regen can hang forever** and writes nothing
   to the journal — indistinguishable from a dead deployer (the 31-min silent hang).
   Bound every regen (`timeout 900`), announce it, treat a timeout as HARD failure.
@@ -335,6 +354,7 @@ deploy at `phase: verification`**. `<27>` (KERN_ERR) already reaches the console
 - `4ad34e2`: **a hung QGA `exec` froze runs indefinitely** — bound every QGA call.
 
 ### Data-safety near-misses (North Star)
+
 - `aded90f`: **the rung-3 graduate targeted "the first disk that isn't root's" — which
   in Phase 2 is the *Windows* disk** (root lives on the loopback). `bootc install
   --wipe` there destroys Windows. Fixed to pick a *blank* disk (emptiness, not
@@ -345,6 +365,7 @@ deploy at `phase: verification`**. `<27>` (KERN_ERR) already reaches the console
 - `4efb71c`: gate look/wifi/wsl on the chooser and make every gate **fail OPEN**.
 
 ### Harness self-harm
+
 - `709857a`: the harness was **filling its own runners' disks** with un-pruned
   artifacts. `43xxx`/`1c6d713`: the **pre-deployer snapshot was accidentally
   load-bearing** — disabling it exposed a race the 10-20 min freeze/copy had been

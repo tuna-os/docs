@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 7
 title: "architecture"
 ---
 
@@ -12,13 +12,22 @@ title: "architecture"
 cmd/              Cobra CLI (root, subcommands, TUI)
 ├── root.go       entrypoint, plugin dispatch, post-quit actions
 ├── commands.go   list, start, stop, ssh (TCP/vsock), viewer, logs, info, restart, pause, migrate, scale, adddisk, rmdisk, snapshot
-├── create.go     corral create (all flags, both backends, CLI catalog/import/bootc)
+├── create.go     corral create flags and CLI/TUI options adapter
 ├── clone.go      corral clone (kubevirt VM disk + config clone)
 ├── ct.go         corral ct (create/list/start/stop/delete/console — Containers, pkg/ct)
 ├── images.go     corral images (list catalog + imported datavolumes)
-├── config.go     corral config (show, set auth key)
+├── config.go     corral config (show, get/set default backend)
 ├── web.go        corral web (--addr, serve embedded SPA)
-├── tui.go        Bubble Tea TUI (VMs + Containers side by side; VM and CT action menus, clone input state)
+├── console.go    corral console (one VM's console page on a free local port, URL printed for scripts)
+├── tui.go        Bubble Tea TUI root model (state, Update loop, list/doctor/detail views, context filter)
+├── tui_items.go  TUI list items (VMs, CTs, actions) and which actions apply to each
+├── tui_actions.go TUI action dispatch (run selected action, SSH/viewer/export/clone)
+├── tui_delegates.go TUI list delegates (VM rows, action menu rows)
+├── tui_edit.go   TUI port-toggle edit model and port helpers
+├── tui_hwedit.go TUI hardware (CPU/RAM) edit model
+├── tui_modes.go  TUI screen modes and the legal transitions between them
+├── tui_screens.go TUI screens: one key handler and one view per mode
+├── tui_ops.go    TUI backend work run as tea.Cmds off the Update loop, and their result messages
 ├── tui_views.go  TUI views at parity with the web UI (snapshots via pkg/snapshot, events, template mark, CT scaling)
 ├── plugin.go     corral plugin (search, install, list, remove)
 ├── doctor.go     corral doctor (cluster diagnostics)
@@ -29,8 +38,10 @@ cmd/              Cobra CLI (root, subcommands, TUI)
 └── corral-bootc/   plugin binary (built with -tags bootc, separate from core)
 
 pkg/              Library code (importable)
+├── create/       request-based create orchestration, backend dispatch, bootc and post-create lifecycle
+├── lima/         Lima YAML parsing, source translation and provisioning cloud-init
 ├── catalog/      curated OS image catalog (containerdisks)
-├── config/       ~/.config/tailvm/config.yaml reader (Tailscale auth key)
+├── config/       ~/.config/corral/config.yaml reader
 ├── cronops/      shared CronJob/RBAC manifest builders for scheduled-op plugins (backup, snapsched, schedule)
 ├── backend/      the parity matrix + conformance tests; see docs/backend-parity.md
 ├── ct/           Containers (CT) — pet pods, not KubeVirt VMs; see docs/adr/0005
@@ -48,20 +59,46 @@ pkg/              Library code (importable)
 │   └── bootc.go           bootc implementation (//go:build bootc — Job + kernel-boot VM)
 ├── plugin/        extension system (krew-style, marketplace fetch, install/remove)
 ├── qemu/          QEMU backend (local VMs via systemd user service)
-├── registry/      ~/.local/share/tailvm/registry.json — VM name → backend/namespace/password
+├── registry/      ~/.local/share/corral/registry.json — VM name → backend/namespace/password
 ├── vdi/           desktop pools (RFC-0001 phase 1) — clone-based pool create, label-based assignment
 ├── types/         shared types (VM, CreateOpts, RegistryEntry)
 └── web/           Proxmox-style web UI
-    ├── server.go         HTTP server, mux, VM list/create/action/delete/info/export, nodes, tasks, WS bridges (VM VNC/serial + CT exec)
-    ├── server_test.go
+    ├── server.go         Serve: startup, embedded static assets, registry store
+    ├── routes.go         route table (routes/newMux), cluster-only guard, console websockets, themed index
+    ├── middleware.go     request pipeline (peer token → admin gate → activity → peer gate) and host allowlist
+    ├── respond.go        JSON response and error-status helpers
+    ├── tasks.go          async task tracker (asyncTask, taskTracker) behind GET /api/tasks/{id}
+    ├── tasklog.go        task log ring (GET /api/tasklog) and task status handler
+    ├── inventory.go      VM list across backends and peers, /api/v1/inventory, /api/v1/meta
+    ├── health.go         /healthz and /readyz probes
+    ├── create.go         POST /api/vms: dispatch to the bootc/Windows/generic/local/backend create strategies
+    ├── createtarget.go   create-target resolution over the configured contexts, /api/contexts
+    ├── vms.go            VM info, power actions, delete
+    ├── migrate.go        live migration as a tracked task
+    ├── export.go         disk export (raw.gz, qcow2)
+    ├── nodes.go          node list, with this host as a synthetic node
+    ├── console.go        VNC and TTY websocket bridges (VM VNC/serial + CT exec)
     ├── ct.go             CT list/create/start-stop/delete HTTP handlers
     ├── features.go       capabilities, scale, volumes, expand, snapshots, clone, guest-info, events, metrics, templates,
     │                     doctor, plugins, NADs, NICs, images, instancetypes, datavolumes, boot options, ISO upload
     └── static/
         ├── index.html    dark SPA shell, create dialog (6 source types), CT create dialog, build dialog
-        ├── app.js        API client, tree (Server/Namespace/Pool views, VMs+CTs merged), VM/CT detail panels
-        │                 (Summary/Hardware/Options/Snapshots/Events/Console/Terminal), create wizards,
-        │                 image library + import, bootc build streaming, mobile drawer
+        ├── app.js        entry module: boot and lifecycle wiring
+        ├── refresh.js    fleet loading, failure recovery and render coordination
+        ├── refresh-state.js shared render fingerprint and refresh status
+        ├── poll.js       single-flight schedule and DOM-free render policy
+        ├── router.js     selection, deep links and registered screen dispatch
+        ├── state.js      shared state store and event bus (select, inventory, tasks)
+        ├── api.js        fetch wrapper, VM/CT API URLs and selection keys
+        ├── tree.js       sidebar tree (Server/Namespace/Pool views, VMs+CTs merged), filter, multi-select
+        ├── menus.js      context menu items per inventory object
+        ├── tags.js       VM tag chips
+        ├── console.js    noVNC, serial terminal and IronRDP consoles, console tabs
+        ├── create.js     create VM/CT dialogs, OS wizard, bootc build streaming
+        ├── dock.js       task panel (Alpine.js island)
+        ├── content/      one module per screen: datacenter, node, namespace, vm, vm-table, ct,
+        │                 multiview, hostpower, doctor, extensions, settings
+        ├── ui/           primitives: dom.js (query, toast, escape), menu.js (context menu)
         ├── icons.js      inline Heroicon SVGs
         └── style.css     dark theme, responsive, dialog/modals, cards, tables
 
@@ -69,12 +106,23 @@ marketplace/      Plugin registry (hosted at tuna-os/corral)
 └── index.json    plugin entries (name, description, version, platform download URLs)
 
 deploy/           On-cluster manifests
-└── corral-web.yaml  Namespace, SA, ClusterRole, Deployment, Service, Tailscale Ingress
+├── corral-web.yaml             production namespace, RBAC, in-cluster kubeconfig, web Deployment, Service, Tailscale Ingress
+├── corral-web-tailscale-proxy.yaml  tailscale pod serving corral.<tailnet>.ts.net when the operator is absent
+├── corral-web-e2e.yaml         isolated web Deployment for live end-to-end tests
+├── corral-web-servicemonitor.yaml  optional Prometheus Operator scrape config
+├── corral-web-alerts.yaml      optional PrometheusRule alerts for collection health
+├── registry-cache.yaml         optional pull-through cache for bootc image pulls
+├── multus/                     pinned Multus DaemonSet and test NetworkAttachmentDefinition
+└── grafana/corral-dashboard.json  Grafana fleet-health dashboard
 
 docs/             Documentation
 ├── api.md           REST API reference
 ├── architecture.md  This file
-├── adr/             Architecture Decision Records (0001-0005)
+├── adr/             Architecture Decision Records (0001-0013)
+├── deployment-modes.md  web reachability, authentication, and supervision modes
+├── backend-*.md     backend support, parity, and setup guides
+├── testing.md, troubleshooting.md, user-guide.md
+├── rfc/, runbooks/, releases/, blog/, research/
 └── kubevirt-proxmox-setup.md  From-scratch cluster setup guide
 
 scripts/          CI and Docker helper scripts
@@ -102,15 +150,21 @@ unacceptable.
 3. **Web** — Embedded SPA served at `corral web --addr :8006`
 
 All three share the same `pkg/kubevirt` backend and
-`~/.local/share/tailvm/registry.json`. A VM created in the browser is
+`~/.local/share/corral/registry.json`. A VM created in the browser is
 immediately `corral ssh`-able and vice versa.
 
 ### Embedded SPA — no JS build step
 
-The web UI is vanilla JavaScript and CSS embedded via `//go:embed`. There is
-no Node, no bundler, no build step. The page loads xterm.js and noVNC from a
-CDN at runtime. Only the console pages need them, and they are too large to
-embed. Heroicons are inline SVGs.
+The web UI is native ES modules and CSS embedded via `//go:embed`. There is
+no Node, no bundler, no build step. Corral vendors the console libraries
+(xterm.js, noVNC, iron-remote-desktop, gridstack and uPlot) under
+`pkg/web/static/vendor` with their provenance. Corral does not fetch them from
+a CDN. Therefore a host with no outbound network still serves a console that
+works. Heroicons are inline SVGs.
+
+For a new screen, dock panel, widget, tree view or resizable edge, see
+[the extension points for the web UI](https://github.com/tuna-os/corral/blob/main/docs/web-ui-extension-points.md). That page also gives
+the rules for DOM that holds a live connection.
 
 ### Backend transparency
 
@@ -151,10 +205,9 @@ can't support, so the user does not see a failure at submit time.
 ### Secrets stay local
 
 - Corral generates a cloud-init password for each VM and stores it in
-  `~/.local/share/tailvm/registry.json` (mode 0600).
-- The Tailscale auth key comes from `~/.config/tailvm/config.yaml` or the
-  `TS_AUTHKEY` environment variable (seeded from Bitwarden by the dotfiles
-  Ansible role).
+  `~/.local/share/corral/registry.json` (mode 0600).
+- A guest never receives a Tailscale auth key. Cluster VMs join the tailnet through
+  the Tailscale operator's per-VM proxy, which holds its own credentials.
 - SSH public keys are read from `~/.ssh/id_ed25519.pub` (fallbacks:
   `id_rsa.pub`, `id_ecdsa.pub`).
 - **No secrets in git, no secrets in cluster state.** The on-cluster
@@ -162,11 +215,11 @@ can't support, so the user does not see a failure at submit time.
 
 ### Namespace conventions
 
-- Default namespace: `tailvm` (overridable with `--namespace` or
-  `-n`).
+- Default namespace: `corral-vms` (overridable with `--namespace`/`-n`
+  or the `CORRAL_NAMESPACE` environment variable).
 - VM names must match `[a-z0-9][a-z0-9-]*` (Kubernetes DNS label).
-- On-disk state uses `tailvm` prefix (`~/.local/share/tailvm/`,
-  `~/.config/tailvm/`) for backward compat with the legacy Python `tailvm`.
+- On-disk state lives in `~/.local/share/corral/` and `~/.config/corral/`.
+  Corral does not read the legacy Python `tailvm` directories.
 
 ## Data flow
 
@@ -177,7 +230,7 @@ corral create web --kubevirt --image fedora
   │
   ├─ catalog.Find("fedora")              → containerDisk URI
   ├─ kubevirt.NewClient(ns).CreateVM(opts) → kubectl apply VM manifest
-  │   ├─ cloud-init: SSH key + Tailscale auth key + password
+  │   ├─ cloud-init: SSH key + password
   │   └─ containerDisk registry URL
   └─ registry.Set("web", {backend, namespace, password})
 ```
@@ -189,6 +242,7 @@ corral bootc create dev --image quay.io/centos-bootc/...
   │
   ├─ kubevirt.BootcBuildDisk()           → block PVC + short-lived builder VM
   │   ├─ builder VM: bootc install to-disk (composefs/ostree auto-detected)
+  │   ├─ optional account provision script runs inside installed root
   │   └─ Progress streams to stderr / task log
   ├─ kubevirt.GenerateBootcVM()          → VM manifest (UEFI-boots the disk)
   ├─ kubevirt.Apply(vm)                  → kubectl apply
@@ -227,22 +281,23 @@ Browser: Console tab → VNC or Serial
 
 ## Build & CI
 
-```
-go build -o corral .          # core binary (no bootc)
-go build -tags bootc -o corral .  # with bootc pipeline
+[`CONTRIBUTING.md`](https://github.com/tuna-os/corral/blob/main/CONTRIBUTING.md) and [`Justfile`](https://github.com/tuna-os/corral/blob/main/Justfile) are
+authoritative for local validation. This gate checks format, vet, build, race
+tests, and lint for both plain and `bootc` tag sets. A separate target runs
+checks on browser modules. `Containerfile` packages the CLI with `kubectl` and
+`virtctl` for cluster deployment.
 
-# Container image (for on-cluster deployment)
-docker build -t ghcr.io/tuna-os/corral .
-# → Alpine + corral + kubectl + virtctl
-
-# CI (.github/workflows/ci.yml)
-# → go test ./..., go vet ./..., docker build, push to ghcr.io
-```
+For web reachability, authentication, probes, and operation modes, see
+[deployment modes](https://github.com/tuna-os/corral/blob/main/docs/deployment-modes.md).
+The deployment manifests listed above are the source of truth for the cluster
+shape.
 
 ## On-cluster deployment
 
 The `deploy/corral-web.yaml` manifest:
-1. Creates the `tailvm` namespace (privileged pod-security)
+
+1. Creates the `corral` namespace (privileged pod-security); VMs go to
+   `corral-vms` (`CORRAL_NAMESPACE`)
 2. ServiceAccount + scoped ClusterRole (VM lifecycle, subresources,
    snapshots, CDI, PVCs, nodes, events, metrics, instancetypes, etc.)
 3. Deployment (ghcr.io/tuna-os/corral:latest, port 8006)

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 21
+sidebar_position: 32
 title: "synapse migration drill"
 ---
 

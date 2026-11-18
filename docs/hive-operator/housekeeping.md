@@ -146,13 +146,18 @@ All commands use `export KUBECONFIG=~/.kube/config-aws-migration`.
 
 ### 0. Deploy (no behaviour change)
 
+The samples now hold the post-cutover state: `HiveHousekeeping/fleet` and
+`SharedAuth/fleet` are in Enforce (#50). To repeat this cutover, set
+`mode: Shadow` in both before applying them, or this step is not
+behaviour-neutral.
+
 ```bash
 kubectl apply -f config/crd          # new: hivehousekeepings; sharedauths gains fields
 kubectl apply -f config/rbac         # cronjobs: get/list/watch/create/update/patch/delete
 # bump config/manager/manager.yaml to this PR's sha image, then
 kubectl apply -f config/manager
-kubectl apply -f config/samples/housekeeping.yaml   # Shadow
-kubectl apply -f config/samples/fleet.yaml          # SharedAuth dirs = bash's three; still Shadow
+kubectl apply -f config/samples/housekeeping.yaml   # with mode: Shadow
+kubectl apply -f config/samples/fleet.yaml          # SharedAuth dirs = bash's three; with mode: Shadow
 ```
 
 ### 1. Shadow check

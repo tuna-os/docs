@@ -21,7 +21,8 @@ successful but visually useless.
 
 ## Current implementation
 
-- Blueprint and GtkBuilder import lives in `src/utils/blueprint.ts`.
+- Blueprint and GtkBuilder import lives in `src/utils/blueprintImport.ts`
+  (export back to Blueprint in `src/utils/blueprintExport.ts`).
 - Multi-file Blueprint template expansion is `blueprintBundleToDocument()`.
 - Unsupported `$Template instance { ... }` references become
   `Protota.CustomWidget` nodes, rendered as visibly striped, allocated
@@ -102,7 +103,7 @@ A boundary needs an allocated rectangle that follows GTK layout rules. Derive
 its width/height from the best available evidence, in priority order:
 
 1. explicit Blueprint/GtkBuilder size requests, margins, expand flags, and
-   grid attachment; 
+   grid attachment;
 2. properties/types visible in the code constructor or composite template;
 3. sibling allocation and parent layout constraints;
 4. native Broadway widget geometry, when a stable source-id-to-DOM mapping can
@@ -169,7 +170,7 @@ OFFICIAL_SOURCE_ROOT=~/work/gnome-source-fixtures/gnome-calculator/src/ui \
   -e OFFICIAL_SOURCE_ROOT=/fixtures \
   -v "$PWD":/work:Z \
   -v ~/work/gnome-source-fixtures/gnome-calculator/src/ui:/fixtures:ro,Z \
-  -w /work mcr.microsoft.com/playwright:v1.62.0-noble npm run test:unit
+  -w /work mcr.microsoft.com/playwright:v1.63.0-noble npm run test:unit
 ```
 
 Then inspect the expanded `math-window.blp` token stream and parser cursor

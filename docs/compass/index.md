@@ -30,6 +30,18 @@ UI have been rewritten in Rust, with an [Iced](https://iced.rs) interface in pla
 | ![Calculator](https://raw.githubusercontent.com/tuna-os/compass/main/packaging/screenshots/calculator.png) | ![Emoji picker](https://raw.githubusercontent.com/tuna-os/compass/main/packaging/screenshots/emoji.png) |
 | ![Settings](https://raw.githubusercontent.com/tuna-os/compass/main/packaging/screenshots/settings.png) | |
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## Why Compass over Vicinae
 
 **It starts sooner and uses less memory.** Both launchers were measured by the same script on the
@@ -182,14 +194,21 @@ Compass.
 
 ## Development
 
+For a complete setup guide including prerequisites, toolchain installation, and running tests, see
+[DEVELOPMENT.md](https://github.com/tuna-os/compass/blob/main/docs/DEVELOPMENT.md).
+
+Quick start:
+
 ```sh
+make dev                 # build and run the launcher
 make check-rust          # what Rust CI runs: fmt, clippy -D warnings, tests
 just bench-compare       # the Compass-versus-Vicinae benchmarks
 ```
 
-The workspace is split into `compass-*` crates: desktop entries, search, IPC, platform services,
+The workspace is split into `compass-*` crates for desktop entries, search, IPC, platform services,
 Wayland and portals, GNOME Shell, the UI, the extension host and the sandbox. The `compass` crate
 is the binary. Start with [CONTRIBUTING.md](https://github.com/tuna-os/compass/blob/main/CONTRIBUTING.md), the
+[crate architecture guide](https://github.com/tuna-os/compass/blob/main/docs/crates.md), the
 [architecture decisions](https://github.com/tuna-os/compass/blob/main/docs/rust-engine/adr/README.md) and the
 [render harnesses](https://github.com/tuna-os/compass/blob/main/docs/rust-engine/RENDER-HARNESSES.md).
 

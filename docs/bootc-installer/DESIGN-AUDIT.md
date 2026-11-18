@@ -25,10 +25,10 @@ Severity: **P1** users will notice or be misled; **P2** visibly not native;
 
 | Frontend | Native fit | Biggest gap |
 |---|---|---|
-| COSMIC | closest to native | placeholder icon on Welcome, window controls on a kiosk |
+| COSMIC | closest to native | window controls on a kiosk |
 | XFCE | close | Back button live during and after the install |
 | GNOME | mostly native widgets, un-native copy | Confirm page hides what will be erased behind a joke |
-| KDE | native widgets, empty pages | no progress bar, no reboot, no imagery |
+| KDE | native widgets | Back/Next are bare buttons, not a Kirigami page footer |
 | Niri | unthemed Qt Quick | DESIGN.md and code describe two different apps; controls are stock Basic style |
 
 Cross-frontend issues (step order, encryption choices, done-page actions,
@@ -56,6 +56,11 @@ Findings:
   "Everything on /dev/nvme0n1 will be erased", and an **Install** button
   with the `destructive-action` style class. Keep the Destiny lines for an
   about-dialog Easter egg if wanted.
+  *Status:* the copy now comes from the branding contract (neutral by
+  default). The summary is a "Summary" `AdwPreferencesGroup` that leads with
+  Target disk (model, path, size), Filesystem, Encryption, Hostname (still
+  editable) and Image. The `confirm_warning` line is in a warning row in its
+  own group above it. The button is still `suggested-action`.
 - **P1 Install Location (03).** Two competing primary actions: **Use Entire
   Disk** (suggested, centred) and **Next** (header, disabled). Initial Setup
   has one forward action per page. Make the row selection enable `Next`, or
@@ -77,6 +82,11 @@ Findings:
   `AdwStatusPage` with a spinner or the step name as title, the progress bar
   inside a clamp, and the log behind a toggle. "0:00 elapsed" in the fixture
   suggests the timer starts before the install starts; verify.
+  *Status:* the title, step, bar, elapsed time, percentage and the
+  `progress_note` line now sit in an `AdwClamp` centred in the page. The video
+  or log pane opens above them once the install starts. "0:00 elapsed" is the
+  label's default text: the timer starts in `BootcProgress.start()`, which the
+  capture never calls.
 - **P3 Welcome (01).** "Press Super+Alt+S to enable the screen reader" as a
   bare caption is fine, but Initial Setup exposes accessibility through the
   header menu; consider the same. "Credits" as a link label should be an
@@ -100,16 +110,28 @@ Findings:
   emits `[n/9]` so the value is known. Add the bar above the log and a
   "Step 6 of 9: Installing image" heading, and disable window close during
   the install.
-- **P1 Done (06).** Only **Close**. The other frontends reboot from here;
-  KDE users expect a `Kirigami.Action` **Restart now** as the main action
-  and **Close** as secondary. Also the header says "Finished" and the body
-  says "Installation complete": keep one heading (Kirigami pages already
-  have the title in the header) and add a `Kirigami.Icon`
-  (`dialog-ok`/`checkmark`) at `Kirigami.Units.iconSizes.enormous`.
-- **P2 Welcome (01).** The header title "Welcome" and the body heading
-  "Install TunaOS" both exist, and the page is otherwise empty. KISS and
-  Plasma Welcome use a hero image or the distro logo, a single heading and
-  the description. Drop one heading and add the logo.
+- ~~**P1 Done (06).**~~ Fixed. **Restart now** is the highlighted main
+  action with **Close** in the footer, the header no longer repeats
+  "Finished" over the body heading, and the page shows the branding artwork
+  (`assets.complete_image`, then `logo`) with `checkmark` as the fallback
+  at `Kirigami.Units.iconSizes.enormous`.
+- ~~**P2 Welcome (01).**~~ Fixed. The page shows the branding artwork
+  (`assets.welcome_image`, then `logo`) with `system-software-install` as
+  the themed fallback; the old `drive-harddisk-symbolic` came from a
+  32 px Breeze glyph and rendered as a grey blob. The header no longer
+  repeats a title over the hero heading.
+- ~~**P2 No step indicator.**~~ Fixed. The header carries "Step N of 6 ·
+  name" and a row of dots in `Kirigami.Theme.highlightColor`, the same
+  six-step contract COSMIC and Niri show.
+- ~~**P2 Done / recovery key (07).**~~ Fixed. One heading
+  ("&lt;product> is installed"); the key sits in a `FormCard` as a
+  monospace, read-only, selectable field with a copy button, then the
+  acknowledgement checkbox; Restart stays disabled until it is ticked
+  (asserted in `tests/capture.cpp`).
+- ~~**P3 Small text in captures.**~~ A harness issue, not the app: with no
+  platform theme offscreen Qt used its generic 9 pt font, and every
+  `Kirigami.Units` metric followed it. `tests/capture.cpp` now renders
+  at Plasma's default, Noto Sans 10 pt, and prints the font it used.
 - **P2 Encryption (03).** Only "No encryption" and "Passphrase". GNOME and
   Niri offer TPM and TPM+passphrase from the same fisherman recipe; the
   KDE page should offer the same set (FormRadioDelegate makes this two
@@ -142,9 +164,16 @@ the others should copy for structure.
 
 Findings:
 
-- **P2 Welcome (01).** The page icon is a placeholder glyph (a rounded
-  square with a circle, the look of a missing image). Use the distro logo
-  or `widget::icon::from_name("drive-harddisk-symbolic")` at 96 px.
+- ~~**P2 Welcome (01).**~~ Fixed. The placeholder was the fallback
+  `drive-harddisk-symbolic`, drawn because the capture runner lacked the
+  themed logo. The page shows the branding artwork
+  (`assets.welcome_image`, then `logo`) at 96 px, else
+  `computer-symbolic` in an accent-tinted disc. The capture stages the
+  repository's icons so the documented logo resolves.
+- ~~**P2 Options (03).**~~ Fixed. A passphrase choice now adds
+  "Passphrase" and "Confirm passphrase", as KDE and Niri do; a mismatch
+  shows under the field and holds Continue. The capture renders that
+  state and asserts both fields.
 - **P2 Window controls.** Minimise, maximise and close are shown. COSMIC
   Initial Setup runs as a fixed, non-minimisable window; hide the buttons
   through the window settings and make the header non-draggable while the
@@ -256,8 +285,9 @@ Findings:
 These are contract-level, so fix them in `shared/` once and let the parity
 report enforce them.
 
-1. **Step order and count.** GNOME 9 pages (welcome, phone, disk, slurp,
-   encryption, confirm, progress, recovery key, done), XFCE 8 (adds source,
+1. **Step order and count.** GNOME 8 pages (welcome, phone, disk,
+   encryption, confirm, progress, recovery key, done; Windows data migration
+   moved out to wootc), XFCE 8 (adds source,
    identity), KDE/COSMIC/Niri 6. Users moving between TunaOS spins meet
    three different wizards. Agree one canonical order (Welcome → Disk →
    Options/Encryption → Identity → Confirm → Progress → Done, optional
@@ -301,5 +331,5 @@ report enforce them.
    one PR touching all five with the parity report updated.
 3. Niri theming pass (components + padding + step bar): one PR, with a new
    capture to compare.
-4. KDE progress bar and done page; COSMIC icon and window controls; GNOME
+4. ~~KDE done page; COSMIC icon~~ (done); COSMIC window controls; GNOME
    progress page: polish PRs.

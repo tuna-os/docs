@@ -13,11 +13,23 @@ PaperWM is a [GNOME Shell](https://www.gnome.org/) extension which provides scro
 
 While technically an [extension](https://extensions.gnome.org/about/) it's to a large extent built on top of the Gnome desktop rather than merely extending it.
 
-PaperWM aims to continually support [current stable](https://release.gnome.org/calendar/#branches) GNOME Shell versions (currently GNOME 47-49).  Older versions of PaperWM can generally be installed on older GNOME Shell versions (see [Install via Source](#install-via-source) for more information on targeting an older/EOL Gnome version).
+PaperWM aims to continually support [current stable](https://release.gnome.org/calendar/#branches) GNOME Shell versions (currently GNOME 45-50).  Older versions of PaperWM can generally be installed on older GNOME Shell versions (see [Install via Source](#install-via-source) for more information on targeting an older/EOL Gnome version).
 
 New features and fixes aren't generally backported to older Gnome shell versions.  [Pull requests](https://github.com/paperwm/PaperWM/pulls) for fixes to older PaperWM versions (that run on previous Gnome versions) will be accepted if the submitter can help test and update related documentation.
 
 Have questions or comments?  Please ask on our [Github Discussions](https://github.com/paperwm/PaperWM/discussions) board.
+
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
 
 ## Installation
 
@@ -34,23 +46,26 @@ Clone the repo and check out the branch for the GNOME Shell version you're runni
 - 40-41 ([EOL](https://release.gnome.org/calendar/#releases)): https://github.com/paperwm/PaperWM/tree/gnome-40
 - 3.28-3.38 ([EOL](https://release.gnome.org/calendar/#releases)): https://github.com/paperwm/PaperWM/tree/gnome-3.38
 
-then run the [`make install`](https://github.com/paperwm/PaperWM/blob/release/install.sh) 
-from the repository. The installer will create a link to the repo in
-`~/.local/share/gnome-shell/extensions`. It will then ask if you want to enable PaperWM.
+then run `make install` from the repository (see the `install` target in the
+[`Makefile`](https://github.com/tuna-os/PaperWM/blob/release/Makefile)). It compiles the settings schema (this needs
+`glib-compile-schemas`, from your distribution's GLib tools) and creates a link
+to the repo in `~/.local/share/gnome-shell/extensions`. It does not enable
+PaperWM; see below.
+
 ```bash
-make install # install, load and enable paperwm
+make install # link the repo into ~/.local/share/gnome-shell/extensions
 ```
 
 Running the extension will automatically install a user config file as described in [User configuration & development](#user-configuration--development).
 
-> #### ➡️ You'll need to restart GNOME Shell after installing PaperWM, e.g. logout then login, or restart in place with an `alt-F2` and entering `r` (X11 only).
+> #### ➡️ You'll need to restart GNOME Shell after installing PaperWM, e.g. logout then login, or restart in place with an `alt-F2` and entering `r` (X11 only)
 >
 > After logging back in, you can then enable PaperWM via the `Extensions` application, or by running the following command from the command-line:
 >
 > `/usr/bin/gnome-extensions enable paperwm@paperwm.github.com`
 >
 
-> if you have run into issues, delete any older `paperwm@...` symlinks from `~/.local/share/gnome-shell/extensions` and re-run the `install.sh` script.
+> if you have run into issues, delete any older `paperwm@...` symlinks from `~/.local/share/gnome-shell/extensions` and re-run `make install`. It refuses to install while a non-symlinked copy of PaperWM (for example one installed from extensions.gnome.org) is present at `~/.local/share/gnome-shell/extensions/paperwm@paperwm.github.com`; remove that copy first.
 
 #### Uninstall PaperWM (if installed via source)
 
@@ -72,10 +87,11 @@ nixGLIntel nix run .\#vm -- -device virtio-gpu-gl -display gtk,gl=on
 ```
 
 ## Contributing
+
 Users are encouraged to submit [issues](https://github.com/paperwm/PaperWM/issues/new/choose) and [Pull Requests](https://github.com/paperwm/PaperWM/pulls)!
 
-> #### ➡️ Please ensure pull requests are based off, and submitted to, [develop](https://github.com/paperwm/PaperWM/tree/develop) branch.
-> 
+> #### ➡️ Please ensure pull requests are based off, and submitted to, [develop](https://github.com/paperwm/PaperWM/tree/develop) branch
+>
 > Pull requests submitted to the `release` branch will not be accepted (but don't worry, if you accidentally submit a PR to the `release` branch, the target branch will automatically be changed to `develop` branch).
 
 ## Usage ##
@@ -104,7 +120,7 @@ You can scroll the tiling by swiping the trackpad horizontally with three finger
 
 <kbd>Alt</kbd><kbd>Tab</kbd> is of course also available.
 
-| Default `window` Keybindings                                                                      | _Can be changed in PaperWM extension settings_ | 
+| Default `window` Keybindings                                                                      | _Can be changed in PaperWM extension settings_ |
 | ------                                                                                            | ------- |
 | <kbd>Super</kbd><kbd>Return</kbd> or <kbd>Super</kbd><kbd>N</kbd>                                 | Open a new windows (of the current application) |
 | <kbd>Super</kbd><kbd>Backspace</kbd>                                                              | Close the active window |
@@ -115,7 +131,7 @@ You can scroll the tiling by swiping the trackpad horizontally with three finger
 | _Not set by default (set in extension settings)_                                                  | Switch to the [second _to_ eleventh] window |
 | <kbd>Super</kbd><kbd>Tab</kbd> or <kbd>Alt</kbd><kbd>Tab</kbd>                                    | Cycle through previously active windows |
 | <kbd>Shift</kbd><kbd>Super</kbd><kbd>Tab</kbd> or <kbd>Shift</kbd><kbd>Alt</kbd><kbd>Tab</kbd>    | Cycle through previously active windows (backward order) |
-| <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Tab</kbd>                                                       | Cycle through previously active scratch windows | 
+| <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Tab</kbd>                                                       | Cycle through previously active scratch windows |
 | <kbd>Shift</kbd><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>Tab</kbd>                                       | Cycle through previously active scratch windows (backward order) |
 | <kbd>Shift</kbd><kbd>Super</kbd><kbd>C</kbd>                                                      | Switch between window focus modes |
 | <kbd>Shift</kbd><kbd>Super</kbd><kbd>W</kbd>                                                      | Switch between positions for creating/dropping new windows |
@@ -170,7 +186,7 @@ Swiping down on the trackpad vertically with three fingers will initiate the wor
 
 There's a single scrollable tiling per workspace. Adding another monitor simply makes it possible to have another workspace visible. The workspace stack is shared among all the monitors, windows being resized vertically as necessary when workspace is displayed on another monitor.
 
-| `workspace` keybindings                                                                           | _Can be changed in PaperWM extension settings_ | 
+| `workspace` keybindings                                                                           | _Can be changed in PaperWM extension settings_ |
 | ------                                                                                            | ------- |
 | <kbd>Super</kbd><kbd>\`</kbd>                                                                     | Switch to previously active workspace |
 | <kbd>Shift</kbd><kbd>Super</kbd><kbd>\`</kbd>                                                     | Switch to previously active workspace (backwards order) |
@@ -184,8 +200,7 @@ There's a single scrollable tiling per workspace. Adding another monitor simply 
 | _Not set by default (set in extension settings)_                                                  | Toggle show/hide (GNOME) TopBar |
 | _Not set by default (set in extension settings)_                                                  | Toggle show/hide Window Position Bar |
 
-
-| `monitor` keybindings                                                                             | _Can be changed in PaperWM extension settings_ | 
+| `monitor` keybindings                                                                             | _Can be changed in PaperWM extension settings_ |
 | ------                                                                                            | ------- |
 | <kbd>Super</kbd><kbd>Shift</kbd><kbd>Right</kbd>                                                  | Switch to the right monitor |
 | <kbd>Super</kbd><kbd>Shift</kbd><kbd>Left</kbd>                                                   | Switch to the left monitor |
@@ -217,17 +232,17 @@ When the tiling is active <kbd>Super</kbd><kbd>Shift</kbd><kbd>Tab</kbd> selects
 
 <kbd>Super</kbd><kbd>Ctrl</kbd><kbd>Escape</kbd> will move a tiled window into the scratch layer or alternatively tile an already floating window. This functionality can also be accessed through the window context menu (<kbd>Alt</kbd><kbd>Space</kbd>).
 
-| `scratch` keybindings                                                                             | _Can be changed in PaperWM extension settings_ | 
+| `scratch` keybindings                                                                             | _Can be changed in PaperWM extension settings_ |
 | ------                                                                                            | ------- |
 | <kbd>Shift</kbd><kbd>Super</kbd><kbd>Escape</kbd>                                                 | Toggles the floating scratch layer |
 | <kbd>Ctrl</kbd><kbd>Super</kbd><kbd>Escape</kbd>                                                  | Attach/detach active window into scratch layer |
 | <kbd>Super</kbd><kbd>Escape</kbd>                                                                 | Toggle the most recent scratch window |
 
-## Touchpad Gestures  ###
+## Touchpad Gestures ###
 
 PaperWM implements the following touchpad gestures by default:
 
-Gesture                       | Action              
+Gesture                       | Action
 ------------------------------|------------------------------------------------------
 three-finger swipe up         | Gnome Overview
 three-finger swipe down       | PaperWM workspace stack view (see [here](#the-workspace-stack--monitors))
@@ -302,7 +317,6 @@ You do this by using the special "match all" operator `*` as an input for `wm_cl
 
 This special operator is at a lower precedence, so more specific properties that match a window will always take precedence and be applied.
 
-
 ## Window insertion position for new windows (and dropped windows in `take` mode)
 
 By default PaperWM inserts new windows (and drops windows in `take` mode, see [Managing multiple windows at once](#managing-multiple-windows-at-once)) to the right of the currently active window.  This behaviour can be changed via PaperWM settings, or with the `Open Window Position` button/icon (which is to the right of the focus mode icon):
@@ -335,14 +349,16 @@ https://github.com/paperwm/PaperWM/assets/30424662/c7c50471-f352-4693-a936-2e711
 
 ## User configuration & development ##
 
-You can supply a custom `user.css` in `~/.config/paperwm/`. This user stylesheet can override the default styles of paperwm (e.g. from `~/.local/share/gnome-shell/extensions/paperwm@paperwm.github.com/user.css` or `/usr/share/gnome-shell/extensions/paperwm@paperwm.github.com/user.css`), gnome or even other extensions. The same rules as for CSS in the browser apply (i.e. CSS rules are additive). 
+You can supply a custom `user.css` in `~/.config/paperwm/`. This user stylesheet can override the default styles of paperwm (e.g. from `~/.local/share/gnome-shell/extensions/paperwm@paperwm.github.com/user.css` or `/usr/share/gnome-shell/extensions/paperwm@paperwm.github.com/user.css`), gnome or even other extensions. The same rules as for CSS in the browser apply (i.e. CSS rules are additive).
 
 You can reload the `user.css` by disabling (turning off) PaperWM and then re-enabling PaperWM (turning on), e.g via `Extensions` app, or by running `Main.loadTheme()` in looking glass (i.e. <kbd>Alt</kbd><kbd>F2</kbd> `lg` <kbd>Return</kbd>). Note that the latter approach will reload all other .css files (e.g. from other extensions) and `user.css` needs to already be loaded for this to work. So after initially creating the file you'll need to disable then enable PaperWM (or restart Gnome).
 
 ### Using PaperWM extension settings (UI) to modify settings
+
 PaperWM provides an extension settings UI to modify many of PaperWM's more prevalent settings.  This is available in the `gnome-extensions` application.
 
 ### Using dconf-editor to modify settings
+
 You can also use `dconf-editor` to view and modify all PaperWM user settings.  You can view all settings by executing the following command from a terminal:
 
 ```shell
@@ -359,7 +375,8 @@ Setting | Description | Input Type | Default value
 
 _Note: you can override this for individual workspaces in the settings UI._
 
-__Example:__
+**Example:**
+
 ```
 dconf write /org/gnome/shell/extensions/paperwm/default-background '"/home/user/Wallpaper/mars-sunset-2k.jpg"'
 ```
@@ -381,6 +398,7 @@ _Note: several PaperWM specific features are dependent on changing the Gnome Top
 ## Managed Gnome Shell Settings ##
 
 There's a few Gnome Shell settings that are incompatible with, or work poorly with, PaperWM. Namely
+
 - `workspaces-only-on-primary`: Multi monitor support require workspaces
   spanning all monitors
 - `edge-tiling`: We don't support the native half tiled windows

@@ -1,0 +1,735 @@
+{
+  "rust-atomicwrites": {
+    "revision": "7e18cf3045168c9e57368470d9d9dfb582d67d8a",
+    "lastSuccessfulFetch": "2026-11-17T19:12:41.513Z",
+    "status": "ok",
+    "pages": {
+      "rust-atomicwrites/index": "README.md"
+    }
+  },
+  "tunaOS": {
+    "revision": "3756407a3ba77c738df8c642a5585b6d469e7c84",
+    "lastSuccessfulFetch": "2026-11-17T19:12:14.468Z",
+    "status": "ok",
+    "pages": {
+      "tunaos/index": "README.md",
+      "tunaos/CONTRIBUTING": "CONTRIBUTING.md",
+      "tunaos/ROADMAP": "ROADMAP.md",
+      "tunaos/SECURITY": "SECURITY.md"
+    }
+  },
+  "bluefin-cli": {
+    "revision": "eb23f6b28a6a595e6e1e7dc8e6f2e48c10a7dcf4",
+    "lastSuccessfulFetch": "2026-11-17T19:12:15.143Z",
+    "status": "ok",
+    "pages": {
+      "bluefin-cli/index": "README.md",
+      "bluefin-cli/CONTRIBUTING": "CONTRIBUTING.md",
+      "bluefin-cli/ROADMAP": "ROADMAP.md",
+      "bluefin-cli/SECURITY": "SECURITY.md",
+      "bluefin-cli/ai": "docs/ai.md",
+      "bluefin-cli/brewfile-guide": "docs/brewfile-guide.md",
+      "bluefin-cli/cncf": "docs/cncf.md",
+      "bluefin-cli/configuration": "docs/configuration.md",
+      "bluefin-cli/getting-started": "docs/getting-started.md",
+      "bluefin-cli/gnome": "docs/gnome.md",
+      "bluefin-cli/menus": "docs/menus.md",
+      "bluefin-cli/profiles": "docs/profiles.md",
+      "bluefin-cli/release-publishing": "docs/release-publishing.md",
+      "bluefin-cli/setup-linux": "docs/setup-linux.md",
+      "bluefin-cli/setup-macos": "docs/setup-macos.md",
+      "bluefin-cli/setup-windows": "docs/setup-windows.md",
+      "bluefin-cli/testing": "docs/testing.md",
+      "bluefin-cli/tools": "docs/tools.md",
+      "bluefin-cli/troubleshooting": "docs/troubleshooting.md",
+      "bluefin-cli/vanilla-vs-extra": "docs/vanilla-vs-extra.md"
+    }
+  },
+  "tunaos-packages": {
+    "revision": "d75a51d242b43c56b074822c61a6b6623a54f948",
+    "lastSuccessfulFetch": "2026-11-17T19:12:16.089Z",
+    "status": "ok",
+    "pages": {
+      "tunaos-packages/index": "README.md",
+      "tunaos-packages/ARCHITECTURE": "ARCHITECTURE.md",
+      "tunaos-packages/CONTRIBUTING": "CONTRIBUTING.md",
+      "tunaos-packages/ROADMAP": "ROADMAP.md",
+      "tunaos-packages/SECURITY": "SECURITY.md",
+      "tunaos-packages/ALMA-PACKAGE-SUPPLY": "docs/ALMA-PACKAGE-SUPPLY.md",
+      "tunaos-packages/ALMA-RUST-BOOTSTRAP": "docs/ALMA-RUST-BOOTSTRAP.md",
+      "tunaos-packages/CAS-GARBAGE-COLLECTION": "docs/CAS-GARBAGE-COLLECTION.md",
+      "tunaos-packages/FACTORY-STATUS": "docs/FACTORY-STATUS.md",
+      "tunaos-packages/GNOME50-REPO-PUBLISH": "docs/GNOME50-REPO-PUBLISH.md",
+      "tunaos-packages/HUMMINGBIRD-TARGET": "docs/HUMMINGBIRD-TARGET.md",
+      "tunaos-packages/PACKAGE_FACTORY": "docs/PACKAGE_FACTORY.md",
+      "tunaos-packages/PATCH_POLICY": "docs/PATCH_POLICY.md",
+      "tunaos-packages/R2-GHCR-MIGRATION": "docs/R2-GHCR-MIGRATION.md",
+      "tunaos-packages/SANDOGASA-ADAPTATIONS": "docs/SANDOGASA-ADAPTATIONS.md",
+      "tunaos-packages/TIDEFORGE-ACTION-CACHE": "docs/TIDEFORGE-ACTION-CACHE.md",
+      "tunaos-packages/TIDEFORGE-READINESS": "docs/TIDEFORGE-READINESS.md",
+      "tunaos-packages/TUNA-DESKTOP-DEB-PUBLICATION-PROOF": "docs/TUNA-DESKTOP-DEB-PUBLICATION-PROOF.md",
+      "tunaos-packages/UPSTREAM_PARITY": "docs/UPSTREAM_PARITY.md",
+      "tunaos-packages/WARM-BUILDER": "docs/WARM-BUILDER.md",
+      "tunaos-packages/WITHDRAWN-PACKAGES": "docs/WITHDRAWN-PACKAGES.md",
+      "tunaos-packages/XFWL4-PORTING": "docs/XFWL4-PORTING.md",
+      "tunaos-packages/desktop-parity-audit": "docs/desktop-parity-audit.md",
+      "tunaos-packages/gnome-desktop-contract": "docs/gnome-desktop-contract.md",
+      "tunaos-packages/gnome-parity-gap": "docs/gnome-parity-gap.md",
+      "tunaos-packages/gnome-shell-common-2026-09-26": "docs/gnome-shell-common-2026-09-26.md",
+      "tunaos-packages/hummingbird-desktop-gap": "docs/hummingbird-desktop-gap.md",
+      "tunaos-packages/hummingbird-throughput": "docs/hummingbird-throughput.md",
+      "tunaos-packages/rfc011-conversions": "docs/rfc011-conversions.md",
+      "tunaos-packages/rfc011-phase3-gates": "docs/rfc011-phase3-gates.md",
+      "tunaos-packages/troubleshooting": "docs/troubleshooting.md"
+    }
+  },
+  "tromso": {
+    "revision": "6078752f25189519013a76b0d3e3194c9d800084",
+    "lastSuccessfulFetch": "2026-11-17T19:12:16.958Z",
+    "status": "ok",
+    "pages": {
+      "tromso/index": "README.md",
+      "tromso/CONTRIBUTING": "CONTRIBUTING.md",
+      "tromso/ROADMAP": "ROADMAP.md",
+      "tromso/SECURITY": "SECURITY.md",
+      "tromso/SPEC": "SPEC.md",
+      "tromso/ARCHITECTURE": "docs/ARCHITECTURE.md",
+      "tromso/OBSERVABILITY": "docs/OBSERVABILITY.md",
+      "tromso/branding-audit": "docs/branding-audit.md",
+      "tromso/ci-and-iso-pipeline": "docs/ci-and-iso-pipeline.md",
+      "tromso/kde-python-bindings-investigation": "docs/kde-python-bindings-investigation.md",
+      "tromso/triage-tromso-release-and-pipeline": "docs/triage-tromso-release-and-pipeline.md"
+    }
+  },
+  "brussels": {
+    "revision": "26a08ac7c342d249468d054eb7ed246a9a955911",
+    "lastSuccessfulFetch": "2026-11-17T19:12:17.523Z",
+    "status": "ok",
+    "pages": {
+      "brussels/index": "README.md",
+      "brussels/CONTRIBUTING": "CONTRIBUTING.md",
+      "brussels/ROADMAP": "ROADMAP.md",
+      "brussels/SECURITY": "SECURITY.md",
+      "brussels/docs-README": "docs/README.md",
+      "brussels/auto-qa-tuning": "docs/auto-qa-tuning.md",
+      "brussels/ci-and-iso-pipeline": "docs/ci-and-iso-pipeline.md",
+      "brussels/signing": "docs/signing.md"
+    }
+  },
+  "tacklebox": {
+    "revision": "bf3d813816671f5abd00c9962e2e07964b062615",
+    "lastSuccessfulFetch": "2026-11-17T19:12:18.360Z",
+    "status": "ok",
+    "pages": {
+      "tacklebox/index": "README.md",
+      "tacklebox/ARCHITECTURE": "ARCHITECTURE.md",
+      "tacklebox/CONTRIBUTING": "CONTRIBUTING.md",
+      "tacklebox/ROADMAP": "ROADMAP.md",
+      "tacklebox/SECURITY": "SECURITY.md",
+      "tacklebox/TODO": "TODO.md",
+      "tacklebox/CONTAINER-IMAGE": "docs/CONTAINER-IMAGE.md",
+      "tacklebox/ENVIRONMENT-VARIABLES": "docs/ENVIRONMENT-VARIABLES.md",
+      "tacklebox/RECIPE-GEN": "docs/RECIPE-GEN.md",
+      "tacklebox/USER-GUIDE": "docs/USER-GUIDE.md",
+      "tacklebox/dakota-reference-cell": "docs/dakota-reference-cell.md",
+      "tacklebox/ddi-smoke-ci": "docs/ddi-smoke-ci.md",
+      "tacklebox/github-iso-setup": "docs/github-iso-setup.md",
+      "tacklebox/observed-build-result-proposal": "docs/observed-build-result-proposal.md",
+      "tacklebox/offline-multi-image-handoff": "docs/offline-multi-image-handoff.md",
+      "tacklebox/opfs-streaming-handoff": "docs/opfs-streaming-handoff.md",
+      "tacklebox/x13s-initrd-fixture": "docs/x13s-initrd-fixture.md",
+      "tacklebox/x13s-live-loader-prototype": "docs/x13s-live-loader-prototype.md"
+    }
+  },
+  "Tavern": {
+    "revision": "52e4a8a13bda0e41ea2dc8af3ae64369a4e77087",
+    "lastSuccessfulFetch": "2026-11-17T19:12:19.161Z",
+    "status": "ok",
+    "pages": {
+      "tavern/index": "README.md",
+      "tavern/CONTRIBUTING": "CONTRIBUTING.md",
+      "tavern/ROADMAP": "ROADMAP.md",
+      "tavern/SECURITY": "SECURITY.md",
+      "tavern/ACCESSIBILITY": "docs/ACCESSIBILITY.md",
+      "tavern/ARCHITECTURE": "docs/ARCHITECTURE.md",
+      "tavern/BREW_DOCTOR_PROPOSAL": "docs/BREW_DOCTOR_PROPOSAL.md",
+      "tavern/CACHE": "docs/CACHE.md",
+      "tavern/CURATION": "docs/CURATION.md",
+      "tavern/DIAGNOSTICS": "docs/DIAGNOSTICS.md",
+      "tavern/HOMEBREW_FEATURES": "docs/HOMEBREW_FEATURES.md",
+      "tavern/RELEASING": "docs/RELEASING.md"
+    }
+  },
+  "corral": {
+    "revision": "109f764cfcc182fcfaaf2b936e6b7340c14278c0",
+    "lastSuccessfulFetch": "2026-11-17T19:12:20.332Z",
+    "status": "ok",
+    "pages": {
+      "corral/index": "README.md",
+      "corral/CONTRIBUTING": "CONTRIBUTING.md",
+      "corral/ROADMAP": "ROADMAP.md",
+      "corral/SECURITY": "SECURITY.md",
+      "corral/SPEC": "SPEC.md",
+      "corral/api": "docs/api.md",
+      "corral/architecture": "docs/architecture.md",
+      "corral/backend-parity": "docs/backend-parity.md",
+      "corral/backend-support": "docs/backend-support.md",
+      "corral/ci-boot-gate": "docs/ci-boot-gate.md",
+      "corral/deployment-modes": "docs/deployment-modes.md",
+      "corral/enterprise-readiness": "docs/enterprise-readiness.md",
+      "corral/first-party-plugins": "docs/first-party-plugins.md",
+      "corral/host-power": "docs/host-power.md",
+      "corral/incus-backend-setup": "docs/incus-backend-setup.md",
+      "corral/kubevirt-proxmox-setup": "docs/kubevirt-proxmox-setup.md",
+      "corral/libvirt-backend-setup": "docs/libvirt-backend-setup.md",
+      "corral/plugin-marketplace": "docs/plugin-marketplace.md",
+      "corral/proxmox-api": "docs/proxmox-api.md",
+      "corral/testing": "docs/testing.md",
+      "corral/troubleshooting": "docs/troubleshooting.md",
+      "corral/user-guide": "docs/user-guide.md",
+      "corral/vdi-ct-pools": "docs/vdi-ct-pools.md",
+      "corral/vdi-epic-status": "docs/vdi-epic-status.md",
+      "corral/vdi": "docs/vdi.md",
+      "corral/web-ui-extension-points": "docs/web-ui-extension-points.md",
+      "corral/web-ui-patterns-survey": "docs/web-ui-patterns-survey.md"
+    }
+  },
+  "bootc-migrate": {
+    "revision": "cb0b64aae4c5ce6bebce3c9bd6ad8fa461c2012e",
+    "lastSuccessfulFetch": "2026-11-17T19:12:21.158Z",
+    "status": "ok",
+    "pages": {
+      "bootc-migrate/index": "README.md",
+      "bootc-migrate/CONTRIBUTING": "CONTRIBUTING.md",
+      "bootc-migrate/ROADMAP": "ROADMAP.md",
+      "bootc-migrate/architecture": "docs/architecture.md",
+      "bootc-migrate/cfs-cli-generations": "docs/cfs-cli-generations.md",
+      "bootc-migrate/filesystem-support": "docs/filesystem-support.md",
+      "bootc-migrate/first-boot-repair": "docs/first-boot-repair.md",
+      "bootc-migrate/local-images": "docs/local-images.md",
+      "bootc-migrate/luks-testing": "docs/luks-testing.md",
+      "bootc-migrate/rebase-engine-design": "docs/rebase-engine-design.md",
+      "bootc-migrate/references": "docs/references.md",
+      "bootc-migrate/support-matrix": "docs/support-matrix.md",
+      "bootc-migrate/testing": "docs/testing.md"
+    }
+  },
+  "flatpak-index": {
+    "revision": "afc043748d826466dddec2915dec4fdfec02391f",
+    "lastSuccessfulFetch": "2026-11-17T19:12:21.633Z",
+    "status": "ok",
+    "pages": {
+      "flatpak-index/index": "README.md",
+      "flatpak-index/CONTRIBUTING": "CONTRIBUTING.md",
+      "flatpak-index/ROADMAP": "ROADMAP.md",
+      "flatpak-index/APP-LIFECYCLE": "docs/APP-LIFECYCLE.md",
+      "flatpak-index/METAINFO": "docs/METAINFO.md",
+      "flatpak-index/OBSERVABILITY": "docs/OBSERVABILITY.md",
+      "flatpak-index/OCI-REMOTE": "docs/OCI-REMOTE.md",
+      "flatpak-index/PROVENANCE-ADMISSION": "docs/PROVENANCE-ADMISSION.md",
+      "flatpak-index/SCREENSHOTS": "docs/SCREENSHOTS.md",
+      "flatpak-index/check-metadata-failure": "docs/check-metadata-failure.md"
+    }
+  },
+  "changelog-action": {
+    "revision": "68295f376aef8f3d789ff18da86463bbb937796b",
+    "lastSuccessfulFetch": "2026-11-17T19:12:22.058Z",
+    "status": "ok",
+    "pages": {
+      "changelog-action/index": "README.md",
+      "changelog-action/CONTRIBUTING": "CONTRIBUTING.md",
+      "changelog-action/ROADMAP": "ROADMAP.md"
+    }
+  },
+  "branding": {
+    "revision": "f85ffc6e4d161bc736c1af28f78edef37be91b56",
+    "lastSuccessfulFetch": "2026-11-17T19:12:22.519Z",
+    "status": "ok",
+    "pages": {
+      "branding/index": "README.md",
+      "branding/CONTRIBUTING": "CONTRIBUTING.md",
+      "branding/ROADMAP": "ROADMAP.md"
+    }
+  },
+  "wootc": {
+    "revision": "bbad75316efadf3514ba909eaa9c79a9d2fd1e08",
+    "lastSuccessfulFetch": "2026-11-17T19:12:23.702Z",
+    "status": "ok",
+    "pages": {
+      "wootc/index": "README.md",
+      "wootc/CONTRIBUTING": "CONTRIBUTING.md",
+      "wootc/ROADMAP": "ROADMAP.md",
+      "wootc/docs-README": "docs/README.md",
+      "wootc/RELEASING": "docs/RELEASING.md",
+      "wootc/SPEC": "docs/SPEC.md",
+      "wootc/agent-lessons": "docs/agent-lessons.md",
+      "wootc/alpha-adopter-program": "docs/alpha-adopter-program.md",
+      "wootc/architecture-boundary": "docs/architecture-boundary.md",
+      "wootc/artifact-authentication": "docs/artifact-authentication.md",
+      "wootc/backend-contract": "docs/backend-contract.md",
+      "wootc/borrowed-from-libertix": "docs/borrowed-from-libertix.md",
+      "wootc/branded-walkthroughs": "docs/branded-walkthroughs.md",
+      "wootc/branding-and-distribution": "docs/branding-and-distribution.md",
+      "wootc/branding": "docs/branding.md",
+      "wootc/dakota-return-boot-rca": "docs/dakota-return-boot-rca.md",
+      "wootc/deployer-experience": "docs/deployer-experience.md",
+      "wootc/destructive-paths": "docs/destructive-paths.md",
+      "wootc/distro-adoption": "docs/distro-adoption.md",
+      "wootc/docs-truth-pass": "docs/docs-truth-pass.md",
+      "wootc/e2e-architecture": "docs/e2e-architecture.md",
+      "wootc/finish-plan": "docs/finish-plan.md",
+      "wootc/firstboot-evidence": "docs/firstboot-evidence.md",
+      "wootc/getting-started": "docs/getting-started.md",
+      "wootc/gui-phase1-architecture": "docs/gui-phase1-architecture.md",
+      "wootc/gui-walkthrough": "docs/gui-walkthrough.md",
+      "wootc/managed-vm": "docs/managed-vm.md",
+      "wootc/manual-testing": "docs/manual-testing.md",
+      "wootc/milestones": "docs/milestones.md",
+      "wootc/non-bootc-adoption": "docs/non-bootc-adoption.md",
+      "wootc/ntfs-on-linux": "docs/ntfs-on-linux.md",
+      "wootc/phase2-attach-postmortem": "docs/phase2-attach-postmortem.md",
+      "wootc/phase2-debug-plan": "docs/phase2-debug-plan.md",
+      "wootc/philosophy": "docs/philosophy.md",
+      "wootc/plan": "docs/plan.md",
+      "wootc/plugin-architecture": "docs/plugin-architecture.md",
+      "wootc/prefilled-profile-testing": "docs/prefilled-profile-testing.md",
+      "wootc/project-review-2026-09-26": "docs/project-review-2026-09-26.md",
+      "wootc/release-notes-v0.3.0-beta": "docs/release-notes-v0.3.0-beta.md",
+      "wootc/release-notes-v1.0.0": "docs/release-notes-v1.0.0.md",
+      "wootc/session-migration": "docs/session-migration.md",
+      "wootc/soak": "docs/soak.md",
+      "wootc/status": "docs/status.md",
+      "wootc/systemd-boot": "docs/systemd-boot.md",
+      "wootc/upstream-blessings": "docs/upstream-blessings.md",
+      "wootc/user-guide": "docs/user-guide.md",
+      "wootc/vhdx-exploration": "docs/vhdx-exploration.md",
+      "wootc/windows-state-trust": "docs/windows-state-trust.md",
+      "wootc/winui-shell": "docs/winui-shell.md"
+    }
+  },
+  "bootc-installer": {
+    "revision": "6ec0fd9d2b0c29b4b1cc84db6a42cdac3ff2c59c",
+    "lastSuccessfulFetch": "2026-11-17T19:12:25.929Z",
+    "status": "ok",
+    "pages": {
+      "bootc-installer/index": "README.md",
+      "bootc-installer/CONTRIBUTING": "CONTRIBUTING.md",
+      "bootc-installer/ROADMAP": "ROADMAP.md",
+      "bootc-installer/DESIGN-AUDIT": "docs/DESIGN-AUDIT.md",
+      "bootc-installer/MIGRATION": "docs/MIGRATION.md",
+      "bootc-installer/PARITY": "docs/PARITY.md",
+      "bootc-installer/RELEASE": "docs/RELEASE.md",
+      "bootc-installer/gui-walkthrough": "docs/gui-walkthrough.md",
+      "bootc-installer/live-iso": "docs/live-iso.md"
+    }
+  },
+  "dualcut": {
+    "revision": "8f3def7ff88f2f1a67b6a9b1cf595c5585f99289",
+    "lastSuccessfulFetch": "2026-11-17T19:12:26.622Z",
+    "status": "ok",
+    "pages": {
+      "dualcut/index": "README.md",
+      "dualcut/CONTRIBUTING": "CONTRIBUTING.md",
+      "dualcut/ROADMAP": "ROADMAP.md",
+      "dualcut/USER_GUIDE": "docs/USER_GUIDE.md",
+      "dualcut/observability": "docs/observability.md"
+    }
+  },
+  "iso-builder": {
+    "revision": "ae49c0196d754125b6acf236d61ef9ee9b6e51b0",
+    "lastSuccessfulFetch": "2026-11-17T19:12:27.343Z",
+    "status": "ok",
+    "pages": {
+      "iso-builder/index": "README.md",
+      "iso-builder/CONTRIBUTING": "CONTRIBUTING.md",
+      "iso-builder/ROADMAP": "ROADMAP.md",
+      "iso-builder/BUILDER-CONFIG": "docs/BUILDER-CONFIG.md",
+      "iso-builder/MULTI-BOOT-DRIVE-MANAGEMENT": "docs/MULTI-BOOT-DRIVE-MANAGEMENT.md",
+      "iso-builder/QUALIFICATION": "docs/QUALIFICATION.md",
+      "iso-builder/browser-build-observations": "docs/browser-build-observations.md",
+      "iso-builder/browser-qualification-integration-plan": "docs/browser-qualification-integration-plan.md",
+      "iso-builder/browser-quickstart": "docs/browser-quickstart.md",
+      "iso-builder/candidate-retention": "docs/candidate-retention.md",
+      "iso-builder/iso-builder-3797-same-byte-handoff": "docs/iso-builder-3797-same-byte-handoff.md"
+    }
+  },
+  "homebrew-tap": {
+    "revision": "0ba2cbfa27b9574ba4eb5656e255b4def157e940",
+    "lastSuccessfulFetch": "2026-11-17T19:12:28.092Z",
+    "status": "ok",
+    "pages": {
+      "homebrew-tap/index": "README.md",
+      "homebrew-tap/CONTRIBUTING": "CONTRIBUTING.md",
+      "homebrew-tap/ROADMAP": "ROADMAP.md"
+    }
+  },
+  "scoop-bucket": {
+    "revision": "722e053e89fbe237ad4d53265056da73935f6028",
+    "lastSuccessfulFetch": "2026-11-17T19:12:28.497Z",
+    "status": "ok",
+    "pages": {
+      "scoop-bucket/index": "README.md",
+      "scoop-bucket/CONTRIBUTING": "CONTRIBUTING.md",
+      "scoop-bucket/ROADMAP": "ROADMAP.md"
+    }
+  },
+  "bootsahi": {
+    "revision": "072140c5ecba20f9da6b070a378644cd8c327246",
+    "lastSuccessfulFetch": "2026-11-17T19:12:29.123Z",
+    "status": "ok",
+    "pages": {
+      "bootsahi/index": "README.md",
+      "bootsahi/CONTRIBUTING": "CONTRIBUTING.md",
+      "bootsahi/ROADMAP": "ROADMAP.md",
+      "bootsahi/D2-JSON-MACHINE-MODE": "docs/D2-JSON-MACHINE-MODE.md",
+      "bootsahi/DESIGN": "docs/DESIGN.md",
+      "bootsahi/E2E-RUNNERS": "docs/E2E-RUNNERS.md",
+      "bootsahi/TESTING-CHECKLIST": "docs/TESTING-CHECKLIST.md",
+      "bootsahi/UNIFIED-INSTALL-CONTRACT": "docs/UNIFIED-INSTALL-CONTRACT.md",
+      "bootsahi/gui-walkthrough": "docs/gui-walkthrough.md"
+    }
+  },
+  "bst-ci": {
+    "revision": "bad002079d5fab339c43b774a51a7dd30a79b294",
+    "lastSuccessfulFetch": "2026-11-17T19:12:29.543Z",
+    "status": "ok",
+    "pages": {
+      "bst-ci/index": "README.md",
+      "bst-ci/CONTRIBUTING": "CONTRIBUTING.md",
+      "bst-ci/ROADMAP": "ROADMAP.md"
+    }
+  },
+  "protota": {
+    "revision": "5d0286a56081f36b9e0511ea045fe5a47298f4c6",
+    "lastSuccessfulFetch": "2026-11-17T19:12:30.782Z",
+    "status": "ok",
+    "pages": {
+      "protota/index": "README.md",
+      "protota/CONTRIBUTING": "CONTRIBUTING.md",
+      "protota/ROADMAP": "ROADMAP.md",
+      "protota/SECURITY": "SECURITY.md",
+      "protota/OBSERVABILITY_ASSESSMENT": "docs/OBSERVABILITY_ASSESSMENT.md",
+      "protota/components": "docs/components.md",
+      "protota/custom-widget-handoff": "docs/custom-widget-handoff.md",
+      "protota/designer-experience": "docs/designer-experience.md",
+      "protota/diagnostics-design": "docs/diagnostics-design.md",
+      "protota/gnome-app-conformance": "docs/gnome-app-conformance.md",
+      "protota/gnome-source-import": "docs/gnome-source-import.md",
+      "protota/penpot-study": "docs/penpot-study.md",
+      "protota/permanent-boundaries": "docs/permanent-boundaries.md",
+      "protota/preset-workflow": "docs/preset-workflow.md",
+      "protota/render-api": "docs/render-api.md",
+      "protota/round-trip-cli": "docs/round-trip-cli.md",
+      "protota/runtime-probe": "docs/runtime-probe.md",
+      "protota/source-widget-architecture": "docs/source-widget-architecture.md"
+    }
+  },
+  "hive": {
+    "revision": "e838cc613f21367df06a0f493d701eea5ee77432",
+    "lastSuccessfulFetch": "2026-11-17T19:12:33.014Z",
+    "status": "ok",
+    "pages": {
+      "hive/index": "README.md",
+      "hive/CONTRIBUTING": "CONTRIBUTING.md",
+      "hive/ROADMAP": "ROADMAP.md",
+      "hive/SECURITY": "SECURITY.md",
+      "hive/HUB_DISASTER_RECOVERY": "docs/HUB_DISASTER_RECOVERY.md",
+      "hive/LEGACY-v1-architecture": "docs/LEGACY-v1-architecture.md",
+      "hive/OBSERVABILITY": "docs/OBSERVABILITY.md",
+      "hive/advisory-staleness": "docs/advisory-staleness.md",
+      "hive/architecture": "docs/architecture.md",
+      "hive/backend-setup": "docs/backend-setup.md",
+      "hive/development": "docs/development.md",
+      "hive/federation-design": "docs/federation-design.md",
+      "hive/getting-started-contributing": "docs/getting-started-contributing.md",
+      "hive/inference-backends": "docs/inference-backends.md",
+      "hive/macos": "docs/macos.md",
+      "hive/migration-v1-v2": "docs/migration-v1-v2.md",
+      "hive/outreach-antispam": "docs/outreach-antispam.md",
+      "hive/rfc-4002-phased-roadmap": "docs/rfc-4002-phased-roadmap.md",
+      "hive/troubleshooting": "docs/troubleshooting.md",
+      "hive/tuna-os-agent-personas": "docs/tuna-os-agent-personas.md"
+    }
+  },
+  "spindle": {
+    "revision": "7f8b1809f156b5f799ad1717711b55bd3a965869",
+    "lastSuccessfulFetch": "2026-11-17T19:12:34.686Z",
+    "status": "ok",
+    "pages": {
+      "spindle/index": "README.md",
+      "spindle/CONTRIBUTING": "CONTRIBUTING.md",
+      "spindle/ROADMAP": "ROADMAP.md",
+      "spindle/SECURITY": "SECURITY.md",
+      "spindle/SPEC": "SPEC.md",
+      "spindle/benchmarks": "docs/benchmarks.md",
+      "spindle/conformance-testing": "docs/conformance-testing.md",
+      "spindle/dashboard": "docs/dashboard.md",
+      "spindle/delegated-auth": "docs/delegated-auth.md",
+      "spindle/deploy": "docs/deploy.md",
+      "spindle/developer-guide": "docs/developer-guide.md",
+      "spindle/divergence": "docs/divergence.md",
+      "spindle/ess-kubernetes-driver": "docs/ess-kubernetes-driver.md",
+      "spindle/lifecycle": "docs/lifecycle.md",
+      "spindle/maintenance": "docs/maintenance.md",
+      "spindle/matrix-rtc": "docs/matrix-rtc.md",
+      "spindle/media-moderation-tools": "docs/media-moderation-tools.md",
+      "spindle/mesh-federation": "docs/mesh-federation.md",
+      "spindle/metrics": "docs/metrics.md",
+      "spindle/migration-workspace": "docs/migration-workspace.md",
+      "spindle/mls": "docs/mls.md",
+      "spindle/mscs": "docs/mscs.md",
+      "spindle/operations": "docs/operations.md",
+      "spindle/operator": "docs/operator.md",
+      "spindle/p2p-calls": "docs/p2p-calls.md",
+      "spindle/policy-servers": "docs/policy-servers.md",
+      "spindle/rate-limits": "docs/rate-limits.md",
+      "spindle/releasing": "docs/releasing.md",
+      "spindle/spec-gaps": "docs/spec-gaps.md",
+      "spindle/state-migration-performance": "docs/state-migration-performance.md",
+      "spindle/synapse-kubernetes-cutover": "docs/synapse-kubernetes-cutover.md",
+      "spindle/synapse-migration-drill": "docs/synapse-migration-drill.md",
+      "spindle/telemetry-guidelines": "docs/telemetry-guidelines.md",
+      "spindle/troubleshooting": "docs/troubleshooting.md",
+      "spindle/v0.1.0-readiness": "docs/v0.1.0-readiness.md",
+      "spindle/venue-gateway": "docs/venue-gateway.md",
+      "spindle/venue-playbook": "docs/venue-playbook.md"
+    }
+  },
+  "gnome-hive-monitor": {
+    "revision": "32620db937c893565774da0846ce3919b227a4cf",
+    "lastSuccessfulFetch": "2026-11-17T19:12:35.196Z",
+    "status": "ok",
+    "pages": {
+      "gnome-hive-monitor/index": "README.md",
+      "gnome-hive-monitor/CONTRIBUTING": "CONTRIBUTING.md",
+      "gnome-hive-monitor/ROADMAP": "ROADMAP.md",
+      "gnome-hive-monitor/observability": "docs/observability.md"
+    }
+  },
+  "hive-operator": {
+    "revision": "f946dd27de41adc582b38917e5f364518ba78d93",
+    "lastSuccessfulFetch": "2026-11-17T19:12:35.826Z",
+    "status": "ok",
+    "pages": {
+      "hive-operator/index": "README.md",
+      "hive-operator/housekeeping": "docs/housekeeping.md",
+      "hive-operator/liveness-promotion": "docs/liveness-promotion.md",
+      "hive-operator/release": "docs/release.md",
+      "hive-operator/rotation-promotion": "docs/rotation-promotion.md",
+      "hive-operator/upstream-ccusage": "docs/upstream-ccusage.md"
+    }
+  },
+  "rdocx": {
+    "revision": "9e9cbd5e8447d7a7f50e19dd9193e8b3ac5960b5",
+    "lastSuccessfulFetch": "2026-11-17T19:12:37.675Z",
+    "status": "ok",
+    "pages": {
+      "rdocx/index": "README.md"
+    }
+  },
+  "compass": {
+    "revision": "d6b8d5496a101b17c4516287c20681b3bcd4848b",
+    "lastSuccessfulFetch": "2026-11-17T19:12:39.634Z",
+    "status": "ok",
+    "pages": {
+      "compass/index": "README.md",
+      "compass/CONTRIBUTING": "CONTRIBUTING.md",
+      "compass/ROADMAP": "ROADMAP.md",
+      "compass/SECURITY": "SECURITY.md",
+      "compass/DEVELOPMENT": "docs/DEVELOPMENT.md",
+      "compass/crates": "docs/crates.md",
+      "compass/extensions": "docs/extensions.md",
+      "compass/getting-started": "docs/getting-started.md"
+    }
+  },
+  "quickcast": {
+    "revision": "fa9ff3b6cfc1d97733ae2fadc3336c25e08a6519",
+    "lastSuccessfulFetch": "2026-11-17T19:12:40.361Z",
+    "status": "ok",
+    "pages": {
+      "quickcast/index": "README.md",
+      "quickcast/ROADMAP": "ROADMAP.md",
+      "quickcast/ARCHITECTURE": "docs/ARCHITECTURE.md"
+    }
+  },
+  "libcosmic": {
+    "revision": "ed6bffbd8cff8233f9dee5915a474b5599bd402c",
+    "lastSuccessfulFetch": "2026-11-17T19:12:41.106Z",
+    "status": "ok",
+    "pages": {
+      "libcosmic/index": "README.md"
+    }
+  },
+  "iced": {
+    "revision": "881f1004c84350fda3cd90d662e53e7e8fd67033",
+    "lastSuccessfulFetch": "2026-11-17T19:12:42.506Z",
+    "status": "ok",
+    "pages": {
+      "iced/index": "README.md",
+      "iced/CONTRIBUTING": "CONTRIBUTING.md",
+      "iced/ROADMAP": "ROADMAP.md"
+    }
+  },
+  "PaperWM": {
+    "revision": "b72c9beba8c6482d988383dd37ff85093c632b63",
+    "lastSuccessfulFetch": "2026-11-17T19:12:43.473Z",
+    "status": "ok",
+    "pages": {
+      "paperwm/index": "README.md",
+      "paperwm/CONTRIBUTING": "CONTRIBUTING.md"
+    }
+  },
+  "ccleft": {
+    "revision": "335a420fd194de7205db41233846fe670e49094d",
+    "lastSuccessfulFetch": "2026-11-17T19:12:44.013Z",
+    "status": "ok",
+    "pages": {
+      "ccleft/index": "README.md",
+      "ccleft/CONTRIBUTING": "CONTRIBUTING.md",
+      "ccleft/SECURITY": "SECURITY.md"
+    }
+  },
+  "tuna-desktop": {
+    "revision": "891d7c24b71c611d54aac88b919422f653d84215",
+    "lastSuccessfulFetch": "2026-11-17T19:12:49.611Z",
+    "status": "ok",
+    "pages": {
+      "tuna-desktop/index": "README.md",
+      "tuna-desktop/CONTRIBUTING": "CONTRIBUTING.md",
+      "tuna-desktop/ROADMAP": "ROADMAP.md",
+      "tuna-desktop/SECURITY": "SECURITY.md",
+      "tuna-desktop/accessibility-shell": "docs/accessibility-shell.md",
+      "tuna-desktop/api-stability": "docs/api-stability.md",
+      "tuna-desktop/architecture": "docs/architecture.md",
+      "tuna-desktop/brightness-contract": "docs/brightness-contract.md",
+      "tuna-desktop/capture-security": "docs/capture-security.md",
+      "tuna-desktop/ci-runners": "docs/ci-runners.md",
+      "tuna-desktop/corral-benchmark-disk": "docs/corral-benchmark-disk.md",
+      "tuna-desktop/corral-journey": "docs/corral-journey.md",
+      "tuna-desktop/datetime-proof": "docs/datetime-proof.md",
+      "tuna-desktop/development": "docs/development.md",
+      "tuna-desktop/environment": "docs/environment.md",
+      "tuna-desktop/extensions": "docs/extensions.md",
+      "tuna-desktop/frame-callback-clock": "docs/frame-callback-clock.md",
+      "tuna-desktop/gnome-parity": "docs/gnome-parity.md",
+      "tuna-desktop/gnome-settings-audit": "docs/gnome-settings-audit.md",
+      "tuna-desktop/input-capture": "docs/input-capture.md",
+      "tuna-desktop/install": "docs/install.md",
+      "tuna-desktop/keyboard-input-aids": "docs/keyboard-input-aids.md",
+      "tuna-desktop/keyboard-native-parity": "docs/keyboard-native-parity.md",
+      "tuna-desktop/keymap": "docs/keymap.md",
+      "tuna-desktop/legacy-upgrade": "docs/legacy-upgrade.md",
+      "tuna-desktop/marlin-tuna-nightly": "docs/marlin-tuna-nightly.md",
+      "tuna-desktop/modal-dim": "docs/modal-dim.md",
+      "tuna-desktop/nested-session": "docs/nested-session.md",
+      "tuna-desktop/network-agent": "docs/network-agent.md",
+      "tuna-desktop/niri-parity": "docs/niri-parity.md",
+      "tuna-desktop/parity-ledger": "docs/parity-ledger.md",
+      "tuna-desktop/performance-profiling": "docs/performance-profiling.md",
+      "tuna-desktop/portal-screenshot-consent": "docs/portal-screenshot-consent.md",
+      "tuna-desktop/portal-service-channel": "docs/portal-service-channel.md",
+      "tuna-desktop/portal-service-integration": "docs/portal-service-integration.md",
+      "tuna-desktop/privacy-enforcement": "docs/privacy-enforcement.md",
+      "tuna-desktop/protocols": "docs/protocols.md",
+      "tuna-desktop/reference-repos": "docs/reference-repos.md",
+      "tuna-desktop/release-rollback": "docs/release-rollback.md",
+      "tuna-desktop/release": "docs/release.md",
+      "tuna-desktop/remote-desktop": "docs/remote-desktop.md",
+      "tuna-desktop/requirements": "docs/requirements.md",
+      "tuna-desktop/docs-roadmap": "docs/roadmap.md",
+      "tuna-desktop/screenshot-flash": "docs/screenshot-flash.md",
+      "tuna-desktop/screenshot-keyboard": "docs/screenshot-keyboard.md",
+      "tuna-desktop/security-model": "docs/security-model.md",
+      "tuna-desktop/session-operations": "docs/session-operations.md",
+      "tuna-desktop/settings-desktop-inventory": "docs/settings-desktop-inventory.md",
+      "tuna-desktop/settings-map": "docs/settings-map.md",
+      "tuna-desktop/soak": "docs/soak.md",
+      "tuna-desktop/test-strategy": "docs/test-strategy.md",
+      "tuna-desktop/testing": "docs/testing.md",
+      "tuna-desktop/troubleshooting": "docs/troubleshooting.md",
+      "tuna-desktop/upgrade-recovery": "docs/upgrade-recovery.md",
+      "tuna-desktop/v1-variant-qualification": "docs/v1-variant-qualification.md",
+      "tuna-desktop/v1": "docs/v1.md",
+      "tuna-desktop/visual-capture-corral-request": "docs/visual-capture-corral-request.md",
+      "tuna-desktop/visual-capture-matrix": "docs/visual-capture-matrix.md",
+      "tuna-desktop/visual-capture-refresh": "docs/visual-capture-refresh.md",
+      "tuna-desktop/vm-lifecycle": "docs/vm-lifecycle.md",
+      "tuna-desktop/walkthrough-template": "docs/walkthrough-template.md",
+      "tuna-desktop/walkthrough": "docs/walkthrough.md",
+      "tuna-desktop/wellbeing-consumer-proposal": "docs/wellbeing-consumer-proposal.md",
+      "tuna-desktop/wellbeing-effect-protocol": "docs/wellbeing-effect-protocol.md",
+      "tuna-desktop/window-lifecycle": "docs/window-lifecycle.md",
+      "tuna-desktop/window-minimize-qualification": "docs/window-minimize-qualification.md",
+      "tuna-desktop/xwayland-on-demand": "docs/xwayland-on-demand.md"
+    }
+  },
+  "athens": {
+    "revision": "39013ae72b045a2102f3e09dccdb5386bc905e88",
+    "lastSuccessfulFetch": "2026-11-17T19:12:50.269Z",
+    "status": "ok",
+    "pages": {
+      "athens/index": "README.md"
+    }
+  },
+  "lifafa": {
+    "revision": "5d4c5c6f0c9a4bc25629e7eb7c242646864f0fdc",
+    "lastSuccessfulFetch": "2026-11-17T19:12:52.065Z",
+    "status": "ok",
+    "pages": {
+      "lifafa/index": "README.md",
+      "lifafa/BUILDING": "docs/BUILDING.md",
+      "lifafa/CONTRIBUTING": "docs/CONTRIBUTING.md",
+      "lifafa/CREDITS": "docs/CREDITS.md",
+      "lifafa/DOCUMENTATION": "docs/DOCUMENTATION.md",
+      "lifafa/FEATURES": "docs/FEATURES.md",
+      "lifafa/INSTALLING": "docs/INSTALLING.md",
+      "lifafa/KEYBOARD_SHORTCUTS": "docs/KEYBOARD_SHORTCUTS.md",
+      "lifafa/LICENSE": "docs/LICENSE.md",
+      "lifafa/MANIFESTO": "docs/MANIFESTO.md",
+      "lifafa/docs-README": "docs/README.md",
+      "lifafa/RELEASE_NOTES": "docs/RELEASE_NOTES.md",
+      "lifafa/RELEASING": "docs/RELEASING.md",
+      "lifafa/SECURITY": "docs/SECURITY.md"
+    }
+  },
+  "tuta-unofficial-sdk": {
+    "revision": "c931582f0477697cbd4cc0adba1b4d8270106b73",
+    "lastSuccessfulFetch": "2026-11-17T19:12:53.668Z",
+    "status": "ok",
+    "pages": {
+      "tuta-unofficial-sdk/index": "README.md"
+    }
+  },
+  "flatpark": {
+    "revision": "97dda79a7ab404ca885d761e7f3051a98a7c99f9",
+    "lastSuccessfulFetch": "2026-11-17T19:12:54.824Z",
+    "status": "ok",
+    "pages": {
+      "flatpark/index": "README.md",
+      "flatpark/CONTRIBUTING": "CONTRIBUTING.md",
+      "flatpark/SECURITY": "SECURITY.md",
+      "flatpark/docs-README": "docs/README.md"
+    }
+  },
+  "tuna-mail": {
+    "revision": "4fcd73498dee93a9e1140838991e720ae622c8df",
+    "lastSuccessfulFetch": "2026-11-17T19:12:57.623Z",
+    "status": "ok",
+    "pages": {
+      "tuna-mail/index": "README.md",
+      "tuna-mail/SECURITY": "SECURITY.md",
+      "tuna-mail/CONTRIBUTING": "docs/CONTRIBUTING.md",
+      "tuna-mail/HOW-TO-DOCUMENT": "docs/HOW-TO-DOCUMENT.md",
+      "tuna-mail/docs-README": "docs/README.md",
+      "tuna-mail/about": "docs/about.md"
+    }
+  },
+  "proton-unofficial-sdk": {
+    "revision": "3761b30ab43014ac9e995dad62a2733b58121771",
+    "lastSuccessfulFetch": "2026-11-17T19:12:59.038Z",
+    "status": "ok",
+    "pages": {
+      "proton-unofficial-sdk/index": "README.md"
+    }
+  }
+}

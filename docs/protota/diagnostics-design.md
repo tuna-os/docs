@@ -25,7 +25,7 @@ build:
 | Store wiring | `src/store/mockupStore.ts` | `lintEnabled`, `violations`, `toggleLint()`; `pushSnapshot()` re-lints on every mutation while enabled |
 | Toggle UI | `src/components/TopBar.tsx` | "HIG Lint" toolbar button + Edit-menu item (Ctrl+.) |
 | Report UI | `src/components/AuditPanel.tsx` | bottom strip, max 5 items per severity, click-to-select |
-| Import diagnostics | `src/types/mockup.ts`, `src/utils/blueprint.ts` | `ImportDiagnostic` (`template-not-in-bundle`, `renderer-does-not-support-class`, `static-source-expansion`) recorded on `MockupDocument.importDiagnostics` during Blueprint/GtkBuilder import — currently **not shown anywhere** |
+| Import diagnostics | `src/types/mockup.ts`, `src/utils/blueprintImport.ts` | `ImportDiagnostic` (`template-not-in-bundle`, `renderer-does-not-support-class`, `static-source-expansion`) recorded on `MockupDocument.importDiagnostics` during Blueprint/GtkBuilder import — currently **not shown anywhere** |
 | Structural legality | `src/types/mockup.ts` | `LEGAL_CHILDREN` / `LEGAL_SLOTS` hard-block illegal nesting at edit time; the comment there explicitly says "HIG guidance belongs in the linter" |
 | HIG corpus | `docs/spec/reference/hig/*.md`, `docs/spec/tokens/*.md`, `docs/spec/reference/anti-patterns.md` | mirrored HIG pages + tokens extracted from audited GNOME apps (`docs/spec/audits/`) — the grounding source for every rule |
 
@@ -136,9 +136,11 @@ hatch is per-screen memoization keyed on the screen's `rootNode` identity
 
 "Blueprint LSP" needs unpacking. `blueprint-compiler` (and its LSP mode) is
 a Python program; Protota is a static browser app with **no backend and no
-Python**. Protota instead ships its own Blueprint/GtkBuilder reader-writer in
-`src/utils/blueprint.ts` (`blueprintImport`, `blueprintToDocument`,
-`mockupToBlueprint`). Three honest integration levels, in order:
+Python**. Protota instead ships its own Blueprint/GtkBuilder reader-writer:
+the reader (`blueprintImport`, `blueprintToDocument`) lives in
+`src/utils/blueprintImport.ts`, the writer (`mockupToBlueprint`) in
+`src/utils/blueprintExport.ts` (`src/utils/blueprint.ts` re-exports both
+for compatibility). Three honest integration levels, in order:
 
 1. **Now — surface what the importer already records.** Every
    `ImportDiagnostic` on `doc.importDiagnostics` becomes a
@@ -251,7 +253,7 @@ Method, so the catalog stays grounded and maintainable:
    by expected frequency of use") stays out of the engine; at most it
    becomes a Suggestion with a deliberately soft message.
 3. **Tier from the HIG's own language** (§2.1): "always/never" → Error,
-   "should/do not" and numeric ranges → Warning, style and phrasing → 
+   "should/do not" and numeric ranges → Warning, style and phrasing →
    Suggestion.
 4. **Prefer precision over recall.** A linter that cries wolf gets turned
    off. When a predicate cannot avoid false positives (e.g. Header
@@ -430,6 +432,7 @@ without a quick-fix — the card's prose `fix` guidance remains.
 ## 7. User flows
 
 **Flow A — edit, report, fix.**
+
 1. User toggles **Diagnostics** in the top bar (or Ctrl+.). Engine runs on
    the current document; right drawer opens on the Diagnostics tab; badge
    shows counts; offending nodes gain tier outlines.
@@ -442,6 +445,7 @@ without a quick-fix — the card's prose `fix` guidance remains.
    restore 13.
 
 **Flow B — investigate without fixing.**
+
 1. Badge shows `1` error. User clicks the badge → panel opens filtered as
    last used.
 2. Card: *HIG-E002 — Icon-only button missing label/tooltip*. Click →
@@ -453,6 +457,7 @@ without a quick-fix — the card's prose `fix` guidance remains.
    the id to `ignoredRules` for all documents.
 
 **Flow C — import a real app's Blueprint.**
+
 1. User imports a `.blp` bundle. `blueprintToDocument` records
    `ImportDiagnostic`s as it always has.
 2. The panel's Source group lists them: e.g. `BLP-S001 —
@@ -463,6 +468,7 @@ without a quick-fix — the card's prose `fix` guidance remains.
    source" apart.
 
 **Flow D — export confidence.**
+
 1. User triggers Blueprint export. The round-trip check (§2.3.2) runs; if
    `mockupToBlueprint` output fails to re-import cleanly, export proceeds
    but a `BLP-E001` error card explains exactly which construct is lossy.
@@ -472,6 +478,7 @@ without a quick-fix — the card's prose `fix` guidance remains.
 ## 8. Incremental plan
 
 **Phase 1 — engine + panel + 5 rules** (the walking skeleton):
+
 - `src/diagnostics/` module: `types.ts`, `engine.ts`, `rules/` with the
   declarative `HigRule` interface; port 5 existing rules (E001, E002, W001,
   W002, S002) into it with real citations.
@@ -483,6 +490,7 @@ without a quick-fix — the card's prose `fix` guidance remains.
 - Playwright coverage: toggle → card → select → fix-free flow.
 
 **Phase 2 — catalog + actions:**
+
 - Port the remaining existing rules; implement the rest of §4 (target: the
   full 22 HIG rules), each landing with its citation excerpt and unit test
   fixtures (good tree / bad tree per rule under `src/__tests__/`).
@@ -491,10 +499,12 @@ without a quick-fix — the card's prose `fix` guidance remains.
   persisted); canvas tier outlines with capture-mode exclusion.
 
 **Phase 3 — Blueprint source:**
+
 - Map `importDiagnostics` into the panel (BLP-W001/S001/S002).
 - Export round-trip check (BLP-E001) wired into the export path.
 
 **Phase 4 — depth (each item independently optional):**
+
 - Generated rule index page (like `docs/components.md`) from the rule
   metadata, fulfilling the issue's "regularly updated list" deliverable.
 - HIG mirror refresh procedure + citation re-validation (§3.5).

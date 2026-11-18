@@ -24,7 +24,11 @@ function ProjectCard({project}: {project: Project}) {
     <div className={`${styles.card} ${borderClass}`}>
       <div className={styles.cardTop}>
         <span className={styles.icon}>
-          <Icon name={project.icon} size={20} />
+          {project.mark ? (
+            <img src={project.mark} alt="" width={32} height={32} loading="lazy" />
+          ) : (
+            <Icon name={project.icon} size={20} />
+          )}
         </span>
         <h3 className={styles.name}>
           <Link to={`/${project.id}`}>{project.name}</Link>

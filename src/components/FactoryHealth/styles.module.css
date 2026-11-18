@@ -1,0 +1,38 @@
+.health {
+  margin-bottom: 2.5rem;
+  padding: 1.25rem 1.5rem;
+  border-left: 2px solid var(--tu-accent);
+  border-radius: 6px;
+  background: var(--tu-panel);
+}
+
+.heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.heading h2 {
+  margin: 0;
+  color: var(--tu-ink);
+  font-size: 1.25rem;
+}
+
+.heading a {
+  color: var(--tu-accent-soft);
+  font-size: 0.85rem;
+}
+
+.health > p,
+.summary p {
+  margin: 0.5rem 0 0;
+  color: var(--tu-dim);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.summary strong {
+  color: var(--tu-ink);
+}

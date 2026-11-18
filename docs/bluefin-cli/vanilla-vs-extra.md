@@ -1,5 +1,5 @@
 ---
-sidebar_position: 10
+sidebar_position: 20
 title: "vanilla vs extra"
 ---
 
@@ -8,13 +8,15 @@ This document outlines the split between standard core features and automated en
 ## 📦 Binary Versions
 
 You can build two versions of the CLI:
-1.  **`bluefin-cli` (Standard)**: The standard tool for management.
-2.  **`bluefin-cli-plus` (Plus)**: The enhanced version with deep automation.
+
+1. **`bluefin-cli` (Standard)**: The standard tool for management.
+2. **`bluefin-cli-plus` (Plus)**: The enhanced version with deep automation.
 
 ---
 
 ## 🍦 Standard Features
-These features are included in **both** binaries. They focus on providing tools and resources while leaving final configuration to the user.
+
+Both binaries include these features. They provide tools and resources; the user sets the final configuration.
 
 | Feature | Command | Description |
 |---------|---------|-------------|
@@ -30,6 +32,7 @@ These features are included in **both** binaries. They focus on providing tools 
 ---
 
 ## ✨ Plus Enhancements
+
 These features are **only** included in the `bluefin-cli-plus` binary (compiled with `-tags extra`). They provide deep system integration and automation.
 
 | Feature | Command | Description |
@@ -43,9 +46,11 @@ These features are **only** included in the `bluefin-cli-plus` binary (compiled 
 ## 🏗️ Technical Implementation
 
 ### Build Tags
-We use Go **build tags** to gate "Extra" logic. 
-- Files marked with `//go:build extra` are excluded from the standard standard build.
-- This ensures the standard binary remains lean and focused on core tasks.
+
+We use Go **build tags** to gate "Extra" logic.
+The standard build omits files marked with `//go:build extra`.
+This keeps the standard binary lean and focused on core tasks.
 
 ### Dynamic UI
-The interactive `bluefin-cli menu` automatically detects which features are compiled in and adjusts its options accordingly, hiding headers and commands that aren't available in the current binary.
+
+The interactive menu detects the features in each binary and adjusts its options. It hides headers and commands that the binary does not provide.

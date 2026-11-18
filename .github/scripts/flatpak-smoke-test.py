@@ -76,10 +76,9 @@ def install(app_id):
 
 def launch(app_id, display="x11"):
     # exit 124 (timeout hit == still running at the deadline) and 0 (a
-    # CLI-flavored app that exits cleanly on its own, e.g. finupdate
-    # --dry-run) both count as "launched fine". Anything else is a crash.
-    extra = ["--dev-mode", "--dry-run"] if app_id == "org.tunaos.finupdate" else []
-    command = ["timeout", str(LAUNCH_TIMEOUT), "flatpak", "run", app_id, *extra]
+    # CLI-flavored app that exits cleanly on its own) both count as
+    # "launched fine". Anything else is a crash.
+    command = ["timeout", str(LAUNCH_TIMEOUT), "flatpak", "run", app_id]
     if display == "wayland":
         return launch_on_wayland(command)
     r = run(["xvfb-run", "-a", *command], timeout=LAUNCH_TIMEOUT + 15)
@@ -209,7 +208,10 @@ def close_if_recovered(repo, app_id, token):
 
 
 def main():
-    token = os.environ.get("ISSUE_TOKEN")
+    # Take the token out of the environment before anything is started. Every
+    # child process inherits os.environ, and `flatpak run` starts the sandbox
+    # from it, so a launched application would otherwise read the token.
+    token = os.environ.pop("ISSUE_TOKEN", None)
     run_url = os.environ.get("RUN_URL", "(no run URL provided)")
     file_issues = os.environ.get("FILE_ISSUES") == "true"
 

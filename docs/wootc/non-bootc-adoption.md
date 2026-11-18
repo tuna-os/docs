@@ -1,5 +1,5 @@
 ---
-sidebar_position: 26
+sidebar_position: 30
 title: "non bootc adoption"
 ---
 
@@ -45,12 +45,14 @@ A provisioner turns an **attached empty block device + a recipe** into a
 **bootable Linux root**. That is the whole interface.
 
 **Input**
+
 - an attached block device (loop or NBD), empty, ready to partition;
 - a recipe: `{ source, hostname, filesystem, user{name,password_hash},
   flatpaks?, luks? }` — `source` is opaque (an OCI ref, an ISO path, a
   tarball URL, a debootstrap suite… whatever your provisioner understands).
 
 **Output obligations**
+
 1. A bootable root filesystem on the device (you own partitioning).
 2. Kernel + initramfs at a discoverable path, for the ESP sync.
 3. The kernel cmdline the installed system needs.
