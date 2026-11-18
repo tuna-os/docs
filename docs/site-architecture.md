@@ -5,7 +5,7 @@ description: "How tunaos.org is built, served, and deployed."
 
 # Site architecture and deployment
 
-This page explains how the TunaOS website at <https://tunaos.org> is built,
+This page explains how the TunaOS website at [tunaos.org](https://tunaos.org) is built,
 served, and deployed. For the OS image pipeline, see [Architecture](architecture.md).
 
 ## Parts
