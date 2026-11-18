@@ -39,7 +39,7 @@ The table below summarizes the key attributes for each TunaOS variant:
 | **[Bonito](/bonito)** | Fedora 44 | Bleeding edge | Latest mainline kernel, Mesa, and toolchains | `amd64`, `arm64` |
 | **[Bonito Rawhide](/bonito-rawhide)** | Fedora Rawhide | Rawhide development | Fedora upstream development and testing | `amd64`, `arm64` |
 | **[Hummingbird](/hummingbird)** | Fedora Hummingbird | Experimental | Hardened container-native base testing | `amd64`, `arm64` |
-| **[Grouper](/grouper)** | Ubuntu 26.04 | Experimental | Ubuntu bootc proving ground on composefs | `amd64` |
+| **[Grouper](/grouper)** | Ubuntu 26.04 | Beta | Ubuntu bootc on composefs, published for testing | `amd64` |
 | **[Gurnard](/gurnard)** | Ubuntu 24.04 LTS | Stable LTS | elementary OS Pantheon desktop experience | `amd64`, `arm64` |
 | **[Marlin](/marlin)** | Arch Linux | Rolling release | Absolute newest packages on Arch rolling | `amd64` |
 | **[Flounder](/flounder)** | Debian 13 Trixie | Debian stable | Stable Debian base with containerized delivery | `amd64` |
