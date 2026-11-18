@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-17T15:42:27.742Z",
+  "generatedAt": "2026-11-18T15:20:12.544Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 374,
+  "count": 376,
   "categories": [
     {
       "id": "live-isos",
@@ -733,6 +733,46 @@
         },
         {
           "category": "live-isos",
+          "name": "gurnard-pantheon-24.04-aarch64",
+          "path": "live-isos/gurnard-pantheon-24.04-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-24.04-aarch64.iso",
+          "size": 4302176256,
+          "modified": "2026-11-18T14:05:21.362651991Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "gurnard-pantheon-latest-arm64",
+          "path": "live-isos/gurnard-pantheon-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-latest-arm64.iso",
+          "size": 4302176256,
+          "modified": "2026-11-18T14:05:21.362651991Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-kde-10.3-aarch64",
+          "path": "live-isos/albacore-kde-10.3-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-kde-10.3-aarch64.iso",
+          "size": 8485273600,
+          "modified": "2026-11-18T13:31:31.506952798Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "albacore-kde-latest-arm64",
+          "path": "live-isos/albacore-kde-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/albacore-kde-latest-arm64.iso",
+          "size": 8485273600,
+          "modified": "2026-11-18T13:31:31.506952798Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
           "name": "bonito-kde-44-aarch64",
           "path": "live-isos/bonito-kde-44-aarch64.iso",
           "url": "https://download.tunaos.org/live-isos/bonito-kde-44-aarch64.iso",
@@ -1193,16 +1233,6 @@
         },
         {
           "category": "live-isos",
-          "name": "albacore-kde-latest-arm64",
-          "path": "live-isos/albacore-kde-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/albacore-kde-latest-arm64.iso",
-          "size": 9042132992,
-          "modified": "2026-11-11T10:46:49.153823710Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
           "name": "albacore-kde-10.2-x86_64",
           "path": "live-isos/albacore-kde-10.2-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/albacore-kde-10.2-x86_64.iso",
@@ -1649,26 +1679,6 @@
           "size": 4361748480,
           "modified": "2026-11-06T13:36:21.963869485Z",
           "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "gurnard-pantheon-24.04-aarch64",
-          "path": "live-isos/gurnard-pantheon-24.04-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-24.04-aarch64.iso",
-          "size": 4241227776,
-          "modified": "2026-11-06T13:35:39.447229218Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "gurnard-pantheon-latest-arm64",
-          "path": "live-isos/gurnard-pantheon-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-latest-arm64.iso",
-          "size": 4241227776,
-          "modified": "2026-11-06T13:35:39.447229218Z",
-          "arch": "aarch64",
           "latest": false
         },
         {
@@ -2809,8 +2819,18 @@
       "blurb": "",
       "icon": "📀",
       "order": 99,
-      "checksums": "https://download.tunaos.org/tacklebox/SHA256SUMS-20261116-96b1f4e",
+      "checksums": "https://download.tunaos.org/tacklebox/bazzite-kde-SHA256SUMS-20261118-bf3d813",
       "isos": [
+        {
+          "category": "tacklebox",
+          "name": "bazzite-kde-latest",
+          "path": "tacklebox/bazzite-kde-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-kde-latest.iso",
+          "size": 9190768640,
+          "modified": "2026-11-18T13:47:28.067313656Z",
+          "arch": "",
+          "latest": true
+        },
         {
           "category": "tacklebox",
           "name": "tacklebox-poc-dedup-latest",
@@ -2843,16 +2863,6 @@
         },
         {
           "category": "tacklebox",
-          "name": "bazzite-kde-latest",
-          "path": "tacklebox/bazzite-kde-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/bazzite-kde-latest.iso",
-          "size": 10195173376,
-          "modified": "2026-10-28T11:21:08.090174950Z",
-          "arch": "",
-          "latest": true
-        },
-        {
-          "category": "tacklebox",
           "name": "bazzite-aio-latest",
           "path": "tacklebox/bazzite-aio-latest.iso",
           "url": "https://download.tunaos.org/tacklebox/bazzite-aio-latest.iso",
@@ -2870,6 +2880,16 @@
           "modified": "2026-07-31T12:34:11.169892931Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-kde-20261118-bf3d813",
+          "path": "tacklebox/bazzite-kde-20261118-bf3d813.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-kde-20261118-bf3d813.iso",
+          "size": 9190768640,
+          "modified": "2026-11-18T13:47:28.067313656Z",
+          "arch": "",
+          "latest": false
         },
         {
           "category": "tacklebox",
