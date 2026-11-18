@@ -37,6 +37,8 @@ desktop listed as a related product is not automatically a TunaOS variant.
 
 ## Related guides
 
+- [Desktop accessibility](./accessibility.md)
+
 - [System requirements](./system-requirements.md)
 - [Installation guide](./installation.md)
 - [Manage images with bootc](./tunaos/bootc-usage.md)

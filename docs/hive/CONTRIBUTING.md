@@ -7,6 +7,18 @@ Thank you for helping improve KubeStellar Hive. This guide is for contributing c
 
 **New here?** Start with the [getting-started guide for first-time contributors](https://github.com/tuna-os/hive/blob/v4/docs/getting-started-contributing.md) — it walks the end-to-end journey (finding an issue, local setup, testing without a cluster, key concepts, and what the review/CI process looks like) and links back into this guide for the mechanics.
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## Where to work
 
 - Open issues and pull requests in this repository. Use the issue templates when they are available, and link related issues from the PR body.
@@ -140,7 +152,7 @@ The sign-off adds a `Signed-off-by:` trailer certifying that you have the right 
 
 ## Changelog fragments
 
-One file per PR, named `changelog.d/<category>-<pr-or-slug>.md` where the category (`added`, `changed`, `deprecated`, `fixed`, `security`) picks the CHANGELOG subsection — and, through it, the semver bump of the next release. The file's content is exactly your entry: a single `- ` bullet in the same narrative style as existing `CHANGELOG.md` entries, no headings. The complete workflow:
+One file per PR, named `changelog.d/<category>-<pr-or-slug>.md` where the category (`added`, `changed`, `deprecated`, `fixed`, `security`) picks the CHANGELOG subsection — and, through it, the semver bump of the next release. The file's content is exactly your entry: a single `-` bullet in the same narrative style as existing `CHANGELOG.md` entries, no headings. The complete workflow:
 
 ```bash
 echo '- The relay no longer drops long tasks ([#1234](https://github.com/hivecommons/hive/issues/1234)).' > changelog.d/fixed-1234-relay-drop.md

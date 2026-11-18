@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 title: "api"
 ---
 
@@ -19,6 +19,18 @@ Every error response has shape `{"error": "<message>"}` with a 4xx or 5xx
 status code. `5xx` means the server couldn't reach the cluster (kubectl failed);
 `4xx` means invalid input.
 
+## Request IDs
+
+Each response has an `X-Request-ID` header. When the request has an
+`X-Request-ID` header of 1 to 64 characters from `A-Z`, `a-z`, `0-9`, `.`,
+`_` and `-`, Corral uses that value. If not, Corral makes a new ID.
+
+Corral writes the ID in each log record of the request. These records
+include the backend commands, the Proxmox API calls, the requests to peers,
+and the tasks that the request starts. Corral also sends the ID to its
+peers. Give the ID in a bug report. See
+[Collect evidence](https://github.com/tuna-os/corral/blob/main/docs/troubleshooting.md#collect-evidence).
+
 ---
 
 ## VM lifecycle
@@ -34,7 +46,7 @@ VMs that run.
 [
   {
     "name": "web",
-    "namespace": "tailvm",
+    "namespace": "corral-vms",
     "status": "Running",
     "ready": true,
     "running": true,
@@ -56,7 +68,7 @@ Create a VM.
 | Field | Type | Required | Notes |
 |---|---|---|---|
 | `name` | string | yes | `[a-z0-9][a-z0-9-]*` |
-| `namespace` | string | no | defaults to `tailvm` |
+| `namespace` | string | no | defaults to `corral-vms` (`CORRAL_NAMESPACE`) |
 | `cpu` | int | no | default 2 |
 | `mem` | string | no | e.g. `4G`, default `4G` |
 | `disk` | string | no | e.g. `20G`, default `20G` |
@@ -77,7 +89,7 @@ Exactly one *source* field must be set.
 **Response** (201 Created):
 
 ```json
-{"name": "web", "namespace": "tailvm"}
+{"name": "web", "namespace": "corral-vms"}
 ```
 
 **Bootc response** (202 Accepted, build is async):
@@ -147,6 +159,7 @@ Proxmox-style pet pods — plain Kubernetes pods, not KubeVirt VMs. See
 List all Containers across every namespace.
 
 **Response**: `200`
+
 ```json
 [{"name": "devbox", "namespace": "corral-vms", "node": "karnataka",
   "phase": "Running", "ready": true, "image": "debian:bookworm",
@@ -162,6 +175,7 @@ when stopped/unscheduled.
 Create a Container.
 
 **Body**:
+
 ```json
 {"name": "devbox", "namespace": "corral-vms", "image": "docker.io/library/debian:bookworm",
  "cpu": 2, "mem": "2Gi", "disk": "10Gi", "storageClass": "", "privileged": true}
@@ -328,7 +342,7 @@ imported from URLs.
 Start a CDI import. Body:
 
 ```json
-{"name": "jammy", "namespace": "tailvm", "url": "https://.../jammy.qcow2", "size": "10Gi"}
+{"name": "jammy", "namespace": "corral-vms", "url": "https://.../jammy.qcow2", "size": "10Gi"}
 ```
 
 **Response**: `{"name": "jammy"}`
@@ -354,6 +368,59 @@ Poll a bootc build task. Returns live build log.
 ```
 
 Statuses: `"running"` → `"done"` (success) or `"error"` (failure).
+
+---
+
+## VDI self-service
+
+These routes exist only when `CORRAL_VDI_BROKER=1`; otherwise they answer
+404. Any authenticated user may call them, also a user outside
+`CORRAL_ADMINS`. The broker checks that the caller holds the desktop, and it
+takes the caller only from the identity headers. See
+[docs/vdi.md](https://github.com/tuna-os/corral/blob/main/docs/vdi.md#self-service-broker) and
+[ADR-0013](https://github.com/tuna-os/corral/blob/main/docs/adr/0013-vdi-broker-placement.md).
+
+| Route | Result |
+|---|---|
+| `GET /api/vdi/pools` | Served pools: `id`, `kind`, `namespace`, `name`, `mode`, `members`, `claimed`, `free`. |
+| `POST /api/vdi/pools/{kind}/{ns}/{pool}/claim` | The caller's desktop (below). 409 when no member is free. |
+| `GET /api/vdi/desktops[?all=1]` | The caller's desktops; `all=1` lists every user's (admin only). |
+| `GET /api/vdi/desktops/{kind}/{ns}/{member}` | One desktop (holder or admin). |
+| `POST /api/vdi/desktops/{kind}/{ns}/{member}/start` | Starts it (holder or admin). |
+| `POST /api/vdi/desktops/{kind}/{ns}/{member}/release` | 202 `{"task": "...", "desktop": "..."}`; poll `GET /api/tasks/{id}`. |
+| `GET /api/vdi/desktops/{kind}/{ns}/{member}/connect` | The console to open (holder or admin), below. 409 for a stopped desktop or an expired claim. |
+
+A desktop:
+
+```json
+{"id": "vm/corral-vms/devpool-1", "sessionId": "5f0c2a9e41b7d388",
+ "poolId": "vm/corral-vms/devpool", "kind": "vm", "namespace": "corral-vms",
+ "pool": "devpool", "member": "devpool-1", "owner": "alice@example.com",
+ "claimedAt": "2026-10-15T09:00:00Z", "phase": "Running", "running": true}
+```
+
+`startError` is set when the claim succeeded and the start failed.
+`claimExpired` is set when the Lease expired. The session fields come from
+the reclaim policy (#228): `connected` (the user has a console open), `disconnectedAt`,
+and `reclaimAt` with `reclaimReason` (`disconnect-grace` or `max-duration`). Status codes: 401 without an
+identity, 403 for another user's desktop or a peer service identity, 404 for
+an unknown or unclaimed desktop.
+
+A connect target names the protocol (`rdp`, `vnc`, or `terminal`) and the
+console route to open. `direct` is the guest address that answered the RDP
+probe. `fallbacks` are the other protocols in order, and `skipped` says why a
+protocol is missing:
+
+```json
+{"protocol": "rdp", "path": "/api/rdp/corral-vms/devpool-1?rdcleanpath=1",
+ "direct": "10.244.1.17:3389",
+ "fallbacks": [{"protocol": "vnc", "path": "/api/vnc/corral-vms/devpool-1"},
+               {"protocol": "terminal", "path": "/api/tty/corral-vms/devpool-1"}],
+ "desktop": {"id": "vm/corral-vms/devpool-1", "owner": "alice@example.com", "...": "..."}}
+```
+
+When the broker is on, the console websockets (`/api/vnc`, `/api/tty`,
+`/api/rdp`) of a claimed desktop accept only its holder and admins.
 
 ---
 
@@ -504,6 +571,34 @@ Remove an installed plugin.
 
 **Response**: `{"status": "removed"}`
 
+### `GET /api/plugins/ui`
+
+The widgets and screens that installed plugins add to the web UI. The response
+does not include commands. `errors` names each plugin with a declaration that
+corral refused.
+
+**Response**:
+
+```json
+{"plugins": [{"name": "aws-cost",
+  "widgets": [{"id": "spend", "title": "AWS spend", "refresh_ms": 60000}],
+  "sections": [{"id": "hosts", "title": "AWS hosts", "icon": "server"}]}],
+ "errors": {"broken": "ui widget id \"Bad\" must be lower case letters, digits and dashes"}}
+```
+
+### `GET /api/plugins/{plugin}/ui/{id}`
+
+Runs the item's command and returns the checked document. All callers share
+the document for 15 seconds.
+
+**Response**: `{"document": {"kind": "rows", "rows": [...]}}`
+
+**Errors**:
+
+- `404`: no plugin declares the item.
+- `502`: the plugin failed, or its document breaks the contract.
+- `504`: the plugin did not answer within 10 seconds.
+
 ---
 
 ## Console & export (WebSocket)
@@ -517,6 +612,27 @@ the browser.
 
 Upgrade to WebSocket → bridges `virtctl console`. Use with xterm.js in the
 browser.
+
+### `GET /console/{ns}/{name}`
+
+An HTML page that shows only the VNC console of one VM. Scripts and browser automation use it. The page connects through `/api/vnc/{ns}/{name}`, so the same origin, identity, and VDI checks apply.
+
+| Query | Effect |
+|---|---|
+| *(default)* | Shows the screen at 1:1 scale. |
+| `?scale=fit` | Scales the screen to the window. |
+| `?context=<name>` | Sends the backend context to the websocket. |
+
+The page sets these hooks:
+
+- `<body data-connected>` has the value `true` while the console has a connection, and `false` at other times. `#vnc-screen` has the same attribute.
+- `<body>` has `data-vm`, `data-namespace`, and `data-scale`.
+- `#vnc-canvas` is the noVNC canvas. It gets keyboard focus at each connect.
+
+After a disconnect, the page connects again. The wait starts at 1 second and increases to 5 seconds.
+
+- `400`: the `scale` value is not `one` or `fit`.
+- `404`: the namespace or the name is not 1–253 letters, digits, `.`, `_`, or `-` that start with a letter or a digit.
 
 ### `GET /api/vms/{ns}/{name}/export`
 
@@ -595,6 +711,12 @@ Without `--metrics` the endpoint still answers 200 with
 `corral_collection_success 0`. A scraper that receives a 503 records nothing,
 and "up but no collection" is the state that deserves an alert.
 
+The endpoint always includes `corral_last_activity_timestamp_seconds`. This
+gauge is the Unix time of the last request from a user or a peer Corral. Use it
+to find an idle host and stop it. Probes, `/healthz`, `/readyz`, `/metrics`, and
+the timed polls of a peer's `--metrics` collector do not count. Requests that the
+auth gate rejects do not count. At process start, the gauge shows the start time.
+
 ---
 
 ## Static assets
@@ -605,7 +727,9 @@ The server serves the embedded SPA at the root:
 |---|---|
 | `/` | `index.html` |
 | `/style.css` | `style.css` |
-| `/app.js` | `app.js` |
+| `/app.js` | `app.js` (the entry module) |
+| `/<module>.js` | the other ES modules, such as `state.js`, `api.js` and `tree.js` |
+| `/content/*.js`, `/ui/*.js` | the screen modules and the UI primitives |
 | `/icons.js` | `icons.js` |
 
 All other paths fall through to the Go 1.22 `http.ServeMux` 404.

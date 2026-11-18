@@ -1,5 +1,5 @@
 ---
-sidebar_position: 33
+sidebar_position: 37
 title: "prefilled profile testing"
 ---
 
@@ -26,23 +26,28 @@ A realistic Windows user environment contains much more than a flat `Documents` 
 ## Test Implementation & Execution
 
 ### 1. Fast Unit Tier (Sub-Second)
+
 - `tests/unit/test_prefilled_profile.py`: Python standalone unit test verifying the prefilled profile data structure, app detection mapping, browser format parsing, office dictionary extraction, and manifest discovery.
 - `tests/unit/prefilled-profile.bats`: Bats unit test verifying migration scripts against a pre-filled profile fixture.
 
 Run via:
+
 ```bash
 tests/run.sh fast
 ```
 
 ### 2. Slow Integration Tier (Containerized)
+
 - `tests/migration/test-bridge.sh`: Containerized integration test running in a Fedora container. Tests `wootc-detect-apps`, `wootc-import-browser`, `wootc-office-bridge`, `wootc-steam-bridge`, `wootc-wsl-bridge`, `wootc-manifest`, and `wootc-mount-user-dirs` against realistic multi-app profile fixtures.
 
 Run via:
+
 ```bash
 tests/run.sh slow
 ```
 
 ### 3. End-to-End VM Tier
+
 - `tests/e2e/seed-profile.ps1`: Automated PowerShell profile generator run inside Windows VMs before deployer reboot.
 - `tests/e2e/run-e2e.sh`: Stages `seed-profile.ps1` into `C:\OEM` and executes it in `seed_user_data()` during the Windows phase, then verifies file visibility and app detection in Phase 2.
 - `tests/e2e/phase1/assert-phase1.ps1`: Asserts Phase-1 state including `programs.json` registry extraction and profile preconditions.

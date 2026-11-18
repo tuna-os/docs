@@ -1,5 +1,5 @@
 ---
-sidebar_position: 17
+sidebar_position: 24
 title: "vdi epic status"
 ---
 
@@ -26,10 +26,25 @@ The VDI epic waits on hardware and media prerequisites (`#129` and `#132`). The 
 ## Landed Primitives & Adapters
 
 - **Phase 1 VDI Plugin (`pkg/vdi`, `cmd/corral-vdi`)**: Static pools, golden VM clones via `kubevirt.Client.Clone`, label-based assignment (`corral.dev/vdi-pool`, `corral.dev/vdi-assigned-to`), and CLI lifecycle (`pool create/list/delete`, `assign`, `unassign`, `connect`).
+- **Atomic claims (`#226`)**: One `coordination.k8s.io` Lease for each pool member. The first writer wins, and Corral takes over an expired claim with a `resourceVersion` compare-and-swap. A release deletes the Lease only with a `resourceVersion` precondition (fixed in #530).
+- **CT-backed ephemeral pools (`#230`)**: `corral vdi ct-pool` and `pkg/vdi/ctpool.go`. A ConfigMap holds the pool definition and the recorded status. A reconciler creates, starts, replaces, and scales down CT members, and never destroys a claimed member. Claims use the `#226` Lease. A release destroys the member and creates it again from the image. A pool in persistent mode gives an explicit error. Guide: [docs/vdi-ct-pools.md](https://github.com/tuna-os/corral/blob/main/docs/vdi-ct-pools.md).
+- **Self-service broker (`#227`)**: Opt-in `/api/vdi/` routes in `corral web` ([ADR-0013](https://github.com/tuna-os/corral/blob/main/docs/adr/0013-vdi-broker-placement.md)). An authenticated user claims, starts, inspects, and releases their own desktop from a VM or CT pool. The caller comes from the trusted identity headers, and the holder of the member's Lease is the owner. Admins in `CORRAL_ADMINS` may act on any desktop. Guide: [docs/vdi.md](https://github.com/tuna-os/corral/blob/main/docs/vdi.md#self-service-broker).
+- **Session records and reclaim (`#228`)**: The broker counts the open consoles of each desktop and records them on its Lease. It reclaims after an explicit release or at an optional maximum duration. It also reclaims at the end of a disconnect grace period, which a reconnect cancels. Persistent VM members stop. The broker creates ephemeral VM members (`pool create --ephemeral`) and CT members again. A restart keeps the recorded times. The broker does not detect idle input.
+- **One-click connect (`#229`)**: The broker resolves a desktop to RDP in the browser, VNC, or the terminal. It also gives the fallbacks and why it skipped a protocol. The web Desktops screen and `corral vdi connect` use the same answer. Only the holder and the admins can open the consoles of a claimed desktop.
 - **In-Browser RDP Proxy**: RDCleanPath proxy that supports IronRDP (ADR-0002 Phase 2).
 - **Disk Snapshot Adapters (`#134`)**: Multi-backend snapshot/restore/retention in `pkg/snapshot`.
 - **Export Adapters (`#131`)**: Per-backend export of disk images in `pkg/export`.
 - **Peer Diagnostics (`#135`)**: Diagnostics for multi-site reachability and console routes in `pkg/doctor`.
+
+## Phase 2 Children
+
+| Issue | Scope | State |
+|---|---|---|
+| `#226` | Atomic claim and release | Done |
+| `#227` | Authenticated self-service broker API | Done; [ADR-0013](https://github.com/tuna-os/corral/blob/main/docs/adr/0013-vdi-broker-placement.md) |
+| `#228` | Session tracking and reclaim | Done; [docs/vdi.md](https://github.com/tuna-os/corral/blob/main/docs/vdi.md#sessions-and-reclaim) |
+| `#229` | Protocol-aware one-click connect | Done; [docs/vdi.md](https://github.com/tuna-os/corral/blob/main/docs/vdi.md#connect) |
+| `#230` | CT-backed ephemeral pools | Done (#520, #528, #530, #544, #557) |
 
 ## Roadmap Recommendation
 

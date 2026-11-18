@@ -7,6 +7,18 @@ status: unknown
 
 A platform toolkit based on iced for creating applets and applications for the COSMIC™ desktop.
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## Documentation
 
 - [API Documentation](https://pop-os.github.io/libcosmic/cosmic/): Automatically generated from this repository via `cargo doc`
@@ -71,16 +83,16 @@ Available cargo features to choose from:
 - `animated-image`: Enables animated images from the image crate.
 - `debug`: Enables addtional debugging features.
 - `smol`: Uses smol as the preferred async runtime.
-    - Conflicts with `tokio`
+  - Conflicts with `tokio`
 - `tokio`: Uses tokio as the preferred async runtime.
-    - If unset, the default executor defined by iced will be used.
-    - Conflicts with `smol`
+  - If unset, the default executor defined by iced will be used.
+  - Conflicts with `smol`
 - `wayland`: Wayland-compatible client windows.
-    - Conflicts with `winit`
+  - Conflicts with `winit`
 - `winit`: Cross-platform and X11 client window support
-    - Conflicts with `wayland`
+  - Conflicts with `wayland`
 - `wgpu`: GPU accelerated rendering with WGPU.
-    - By default, softbuffer is used for software rendering.
+  - By default, softbuffer is used for software rendering.
 - `xdg-portal`: Enables XDG portal dialog integrations.
 
 ### Project Showcase

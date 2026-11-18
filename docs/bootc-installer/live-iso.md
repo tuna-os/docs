@@ -49,7 +49,6 @@ the user is not asked questions the ISO already knows the answers to.
 ```json
 {
   "default_image": "ghcr.io/your-org/your-image:latest",
-  "fallback_flatpaks": [],
   "images": [
     {
       "name": "My OS",
@@ -87,7 +86,6 @@ sent to fisherman.
 
 ```json
 {
-  "log_file": "/var/log/bootc-installer.log",
   "distro_name": "My OS",
   "distro_logo": "resource:///org/bootcinstaller/Installer/images/my-os.png",
   "imgref": "ghcr.io/my-org/my-os:latest",
@@ -123,7 +121,6 @@ sent to fisherman.
   "steps": {
     "welcome":    { "template": "welcome",    "protected": true },
     "disk":       { "template": "disk" },
-    "slurp":      { "template": "slurp" },
     "encryption": { "template": "encryption" },
     "user":       { "template": "user" }
   },
@@ -138,7 +135,6 @@ sent to fisherman.
 
 | Field | Required | Description |
 |---|---|---|
-| `log_file` | ✅ | Path where the installer writes its log |
 | `distro_name` | ✅ | Display name shown throughout the UI |
 | `distro_logo` | ✅ | GResource path or icon name for the distro logo |
 | `steps` | ✅ | Ordered wizard steps (see templates below) |
@@ -158,7 +154,6 @@ sent to fisherman.
 | `welcome` | Welcome / launch screen |
 | `image` | Image selection (omit on live ISOs — removed automatically) |
 | `disk` | Disk selection |
-| `slurp` | Windows data migration wizard |
 | `encryption` | Encryption setup |
 | `user` | User account creation |
 

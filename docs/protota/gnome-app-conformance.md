@@ -5,9 +5,9 @@ title: "gnome app conformance"
 
 The machine-readable source of truth is
 [`tests/fixtures/gnome-app-catalog.json`](https://github.com/tuna-os/protota/blob/main/tests/fixtures/gnome-app-catalog.json).
-An app is **passed** only after its isolated native Broadway image, isolated
-Protota image, and generated diff have all been visually inspected. A passing
-test alone is not enough.
+An app is **passed** only after a person looks at three images. These are the
+isolated native image from Broadway, the isolated Protota image, and the diff
+between them. A test that passes is not enough.
 
 | State | Apps |
 | --- | --- |
@@ -17,17 +17,16 @@ test alone is not enough.
 | Next native capture | Authenticator (GNOME Circle) — Broadway image built on the build host; preset still to be created. |
 
 Clocks revalidation (2026-08-02, exact Fedora 43 Clocks 49.0 source/runtime):
-World 97.25%, Alarms 97.78%, Stopwatch 98.67%, and Timer 98.25%; all four
-have zero unresolved coverage. New Alarm remains under tuning, so Clocks is
-not yet promoted to passed as a five-screen preset.
-
+World 97.25%, Alarms 97.78%, Stopwatch 98.67%, and Timer 98.25%. All four
+have zero unresolved coverage. New Alarm still needs tuning. Thus Clocks does
+not yet have the passed state as a five-screen preset.
 
 ## Fleet state (2026-07-31, Wave 3)
 
-Generated presets, their screen counts, and how many nodes remain explicit
-custom-widget boundaries. A boundary is an honest result -- an
-application-defined composite the importer will not invent -- so the number
-to drive down is the app-defined count, not boundaries in general.
+This table shows the generated presets, their screen counts, and the number of
+nodes that stay as explicit custom-widget boundaries. A boundary is an honest
+result -- an application-defined composite the importer will not invent. Thus
+the number to decrease is the app-defined count, not all boundaries.
 
 | App | Screens | Nodes | Boundaries | Unresolved classes |
 | --- | ---: | ---: | ---: | --- |
@@ -44,29 +43,38 @@ to drive down is the app-defined count, not boundaries in general.
 | settings | 1 | 17 | 0 | -- |
 | weather | 1 | 15 | 0 | -- |
 
-Four apps import with no unresolved widgets at all. The two stock-widget
-renderer gaps this table originally recorded are closed: GtkLevelBar's meter
-renders generically, and AdwTabBar was promoted to a registry widget (#59
-Wave 1, 2026-07-31) — its tab strip derives from the linked AdwTabView's
-declared pages, with runtime-populated views honestly empty until the #58
-probe. The second Wave 1 PR extended the C adapter generically (base-class
-projection resolved the eleven `EditorPreferences*` rows,
-`NautilusLocationEntry`, `NautilusPathBar` chrome and `NautilusSidebar`
-chrome); the Wave 2 pass added Software with its committed probe dump
-(38 → 36 boundary nodes, star/review drawing confirmed
-`snapshot()`-permanent). The Wave 3 close-out (2026-07-31) finished the
-sweep: a generic Python (PyGObject) language adapter feeds the same
-enrichment engine, resolving ten of Ear Tag's twelve boundaries (7
-`EartagTagEntryRow` → entry rows, 2 `EartagTagEditableLabel` → their
-inherited overlay of entry/label/icon through transitive base-chain
-resolution, `EartagFileInfoLabel` → label), and the engine gained a
-snapshot guard: a class that installs its own `snapshot()` vfunc is never
-dissolved into base-class chrome (which keeps `GcalWeekHourBar` an honest
-boundary). Fleet: 70 → 60 boundary nodes, every one evidence-classified in
-`docs/permanent-boundaries.md` — the classification is closed, and new
-regressions are caught by per-app gates (`maxUnresolvedCoverage`,
-`minSimilarity`) carried in the catalog and enforced by
-`tests/broadway-reference.spec.ts` on every capture.
+Four apps import with no unresolved widgets at all. This table first recorded
+two gaps for stock widgets in the renderer. Both gaps are now closed:
+
+- The meter of GtkLevelBar renders generically.
+- AdwTabBar is now a registry widget (#59 Wave 1, 2026-07-31). Its tab strip
+  comes from the declared pages of the linked AdwTabView. Views that fill at
+  runtime stay honestly empty until the #58 probe.
+
+The second Wave 1 PR made the C adapter more generic. Base-class projection
+resolved the eleven `EditorPreferences*` rows, `NautilusLocationEntry`, and
+the chrome of `NautilusPathBar` and `NautilusSidebar`.
+
+The Wave 2 pass added Software with its committed probe dump. It decreased
+the boundary nodes from 38 to 36, and it confirmed that the star and review
+primitives are `snapshot()`-permanent.
+
+The Wave 3 close-out (2026-07-31) finished the sweep with two changes:
+
+- A generic Python (PyGObject) language adapter feeds the same enrichment
+  engine. It resolves ten of the twelve boundaries in Ear Tag. Now
+  7 `EartagTagEntryRow` are entry rows, and `EartagFileInfoLabel` is a label.
+  2 `EartagTagEditableLabel` are their inherited overlay of entry/label/icon,
+  which comes from the transitive base chain.
+- The engine has a snapshot guard. The engine never dissolves a class that
+  installs its own `snapshot()` vfunc into base-class chrome. Thus
+  `GcalWeekHourBar` stays an honest boundary.
+
+Fleet: 70 → 60 boundary nodes. `docs/permanent-boundaries.md` gives the
+evidence class of each one, and that classification is complete. Per-app gates
+(`maxUnresolvedCoverage`, `minSimilarity`) in the catalog catch new
+regressions. `tests/broadway-reference.spec.ts` applies these gates on each
+capture.
 
 ## Required sequence
 
@@ -74,5 +82,5 @@ regressions are caught by per-app gates (`maxUnresolvedCoverage`,
 2. Capture the real GTK app with Broadway on the build host.
 3. Add a generic-widget-only preset.
 4. Run the paired capture, inspect native, Protota, and diff images.
-5. Set `visualStatus` to `passed` only when the inspection is acceptable and a
-   calibrated difference threshold can be enforced.
+5. Set `visualStatus` to `passed` only when the inspection is acceptable and
+   CI can apply a calibrated difference threshold.

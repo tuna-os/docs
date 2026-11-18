@@ -24,34 +24,36 @@ Instead, report them privately via GitHub Security Advisories:
 3. Provide a detailed description of the issue, including steps to reproduce
 
 You can expect:
+
 - **Acknowledgment** within 48 hours
 - **Status update** within 5 business days
 - **Resolution timeline** based on severity
 
 ## RPM Supply Chain Security
 
-This repository provides RPM spec files and patches for building GNOME desktop
+This repository provides RPM spec files and patches to build GNOME desktop
 packages on Enterprise Linux 10 via COPR. Security considerations include:
 
-- **Spec provenance**: Specs track Fedora Rawhide / F43 dist-git. Modifications
-  are carried as local patches and documented in `SRPM-CHANGES.md`.
-- **Source integrity**: Source tarballs are downloaded at build time via
-  `spectool` from upstream URLs (`Source:` tags in specs). SHA512 hashes are
-  recorded in per-package `sources` files for verification.
+- **Spec provenance**: The specs track dist-git from Fedora Rawhide or F43. We keep
+  modifications as local patches and document them in `SRPM-CHANGES.md`.
+- **Source integrity**: `spectool` downloads source tarballs at build time from
+  upstream URLs (`Source:` tags in specs). A `sources` file in each package records
+  the SHA512 hashes for verification.
 - **Build isolation**: COPR build chroots are ephemeral. For self-hosted GHA
   builds, mock runs inside a podman container with no network access during
   `%build`/`%install`.
-- **No secrets in repo**: Build secrets (GPG key, R2 credentials) are stored in
-  GitHub Actions encrypted secrets, never committed.
-- **Pinned actions**: Third-party GitHub Actions are pinned to commit SHAs.
-- **GPG signing**: Self-hosted pipeline RPMs are GPG-signed before upload.
+- **No secrets in repo**: Encrypted secrets in GitHub Actions store build secrets
+  (GPG key, R2 credentials); we never commit secrets.
+- **Pinned actions**: We pin actions in GitHub Actions to commit SHAs.
+- **GPG signatures**: The pipeline signs RPMs with GPG before upload.
 
 ## Disclosure Policy
 
 We follow coordinated disclosure:
-1. Reporter submits vulnerability privately
+
+1. The reporter submits a vulnerability privately
 2. We investigate and develop a fix
-3. Fix is deployed to new COPR builds
-4. Advisory is published after deployment
+3. We deploy the fix to new COPR builds
+4. We publish the advisory after deployment
 
 See [AGENTS.md](https://github.com/tuna-os/tunaos-packages/blob/main/AGENTS.md) and [COPR-REPORT.md](https://github.com/tuna-os/tunaos-packages/blob/main/COPR-REPORT.md) for build architecture details.

@@ -1,14 +1,10 @@
 import {useState} from 'react';
 import type {ReactNode} from 'react';
 import type {Desktop} from '@site/src/data/variants';
+import ShotImg from '@site/src/components/ShotImg';
+import {desktopShotPath} from '@site/src/components/ShotImg/screenshot-urls';
 
 import styles from './styles.module.css';
-
-const SHOT_BASE = 'https://download.tunaos.org/screenshots';
-
-function shotUrl(variant: string, tag: string): string {
-  return `${SHOT_BASE}/${variant}-${tag}-latest.png`;
-}
 
 export default function DesktopScreenshotCarousel({
   variant,
@@ -24,9 +20,9 @@ export default function DesktopScreenshotCarousel({
     return (
       <div className={styles.probe} aria-hidden>
         {desktops.map((d) => (
-          <img
+          <ShotImg
             key={d.tag}
-            src={shotUrl(variant, d.tag)}
+            path={desktopShotPath(variant, d.tag)}
             alt=""
             onError={() => setFailed((f) => ({...f, [d.tag]: true}))}
             onLoad={() => setFailed((f) => (f[d.tag] ? {...f, [d.tag]: false} : f))}
@@ -40,8 +36,8 @@ export default function DesktopScreenshotCarousel({
     <div className={styles.track}>
       {visible.map((d) => (
         <figure key={d.tag} className={styles.slide}>
-          <img
-            src={shotUrl(variant, d.tag)}
+          <ShotImg
+            path={desktopShotPath(variant, d.tag)}
             alt={`${d.name} desktop on ${variant}`}
             loading="lazy"
             onError={() => setFailed((f) => ({...f, [d.tag]: true}))}

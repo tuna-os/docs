@@ -1,48 +1,105 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 title: "OBSERVABILITY"
 ---
 
-This document defines the observability architecture, logging conventions, and telemetry stack guidelines for `flatpak-index`.
+This document defines the observability contract for the index maintenance
+scripts and their workflows. It is an operator guide, not a promise of a
+telemetry service.
 
-## Executive Summary
+## Current state
 
-`flatpak-index` is the canonical index management and AppStream metadata validation repository for Tuna OS Flatpak artifacts (`tuna-os/*`). It provides self-contained Python utilities (`scripts/update-index.py`, `scripts/enrich-index.py`, `scripts/oci.py`) used in automated CI/CD workflows and release publishing pipelines.
+This repository has no telemetry SDK, collector, metrics endpoint, trace
+exporter, or external observability backend. Python scripts report through
+standard output, standard error, and process exit status. GitHub Actions may
+retain that output as a workflow log under the repository's normal retention
+settings; the scripts do not send a second copy elsewhere.
 
----
+`scripts/enrich-index.py` and `scripts/oci.py` read OCI manifests and labels
+from the registry named by the input index. The scheduled metadata workflow
+also downloads the public served index. Those requests are required index
+operations, not telemetry. They must remain limited to endpoints selected by
+the caller, input index, or workflow.
 
-## Telemetry Stack Audit & Status
+**Policy:** diagnostics must not create off-box telemetry traffic. You must
+complete the review below before you add an exporter, collector, analytics
+call, or error report service. `index/static` and OCI labels are product data, not an
+observability store.
 
-### Backend Configuration
-- **Status**: No external telemetry backend is configured (Operator Targets: open-source=none, kube-native=none, commercial=none).
-- **Data Flow Policy**: Strict compliance with zero off-box data export policy. No telemetry exporter, OTLP endpoint, or external agent communication is active or allowed without explicit operator configuration.
+## Diagnostic contract
 
-### Current Logging Architecture
-- **Script Output**: Diagnostic outputs, layout warnings, and missing AppStream label notifications are currently emitted via `print()` statements to `stdout` and `stderr` (`sys.stderr`).
-- **Data Integrity**: Image entries and manifests in `index/static` carry OCI digests, architecture mappings, and AppStream label metadata (`org.freedesktop.appstream.*`).
+Command output is human-readable. It is not a stable machine API. Automation
+must use exit status and the index file. Automation must not parse prose.
 
----
+| Source | Normal signal | Warning or failure signal |
+|---|---|---|
+| `scripts/update-index.py` | Writes an `Updated ...` summary to stdout after the index file is committed. | Missing optional AppStream metadata writes `WARNING:` to stderr. Missing required labels, invalid JSON, or invalid OCI layout fails non-zero. `--require-appstream` promotes missing AppStream metadata to a failure. |
+| `scripts/enrich-index.py` | Writes registry-read progress and a final count/status to stdout. In `--check` mode, exit `0` means no repair or hard metadata problem was found. | `~` lines on stderr are presentation warnings, such as missing screenshots. `!` lines are metadata or registry problems. In `--check` mode, needed repairs or hard problems return `1`; execution errors also return non-zero. |
+| `scripts/oci.py` | Emits no routine output; it returns data to its caller. | Exhausted registry requests raise `RegistryError`; the CLI caller decides how to display the failure and exits non-zero. |
 
-## Observability Guidelines & Standards
+New diagnostics must follow these conventions:
 
-### Structured Logging Recommendations
-1. **Standardized Log Levels**: Transition script diagnostics from raw `print` statements to Python's standard `logging` library using structured log levels:
-   - `INFO`: Index updates, manifest parsing progress, tag merging.
-   - `WARNING`: Non-fatal missing AppStream metadata (`org.freedesktop.appstream.appdata`).
-   - `ERROR`: Invalid OCI layouts, missing `index.json`, missing required Flatpak labels (`org.flatpak.ref`, `org.flatpak.metadata`).
-2. **Contextual Metadata**: Format log entries to include repository name (`--repo-name`), OCI digest, target architecture, and operation status.
+- Send progress and successful summaries to stdout. Send warnings and errors to
+  stderr. Return a non-zero status when an operation is incomplete, validation
+  fails, or a check finds a required change.
+- State the operation, affected repository or relative file, and corrective
+  action. Include architecture, bounded counts, and OCI digest when they help
+  identify an index entry.
+- Keep one problem per line where practical so CI logs remain searchable.
+- Do not dump whole manifests, label maps, AppStream XML, or HTTP bodies.
+- Python's standard `logging` module may replace `print()` when levels or output
+  destinations are useful, but default output must remain dependency-free and
+  human-readable. Do not install network logging handlers.
 
-### Tracing & Metrics Readiness (Future Roadmap)
-- **OpenTelemetry Wiring**: When an OpenTelemetry backend is provisioned by operators, instrument index build and enrichment pipelines with bounded spans tracking:
-  - `oci.layout.read`: OCI directory layout parsing and blob resolution.
-  - `index.merge`: Index entry insertion and deduplication.
-  - `appstream.validate`: Metainfo and label completeness verification.
-- **Metrics**: Instrument pipeline duration and validation error counters (`flatpak_index_build_duration_seconds`, `flatpak_index_validation_errors_total`).
+## Privacy and data handling
 
----
+Safe diagnostic fields are public repository names, architectures, OCI
+digests, bounded aggregate counts, operation names, and repository-relative
+paths. Even when source data is public, log only fields needed to diagnose the
+operation.
 
-## Governance & Compliance
+Never emit registry tokens, authorization or cookie headers, credentials, URLs
+or query strings that contain secrets, or full environment dumps.
+Never send complete HTTP responses, private label values, or unredacted AppStream payloads.
+Prefer a registry host over a full URL and a relative path over an absolute
+workspace path. Redact sensitive values before you construct a message. A CI
+log masker is not enough.
 
-- **Credentials & Privacy**: Absolute prohibition against logging credentials, access tokens, API keys, or full environment dumps.
-- **Label Cardinality**: Attribute values and tags must remain strictly bounded to prevent metric cardinality explosion.
-- **Hold-Gated Mode**: All observability PRs in this repository are submitted in hold-gated mode requiring human review prior to merge.
+Diagnostics stay in the caller's terminal or the CI system that runs the
+command. Scripts must not transmit diagnostics, identifiers, or usage data to
+any additional endpoint. A telemetry failure must never block index generation
+because, under the current policy, no telemetry call should exist.
+
+## Operator-facing signals
+
+| Signal | Meaning | Operator action |
+|---|---|---|
+| `Tests` workflow failure | Script tests, lint, or screenshot-action checks failed. | Inspect the failing job and reproduce only the named check. |
+| Scheduled `Check remote metadata` failure | Served index differs from registry labels, required metadata is missing, or registry access failed. | Read `~` and `!` lines, distinguish presentation warnings from hard problems, then repair the publishing source or reviewed index. |
+| `Deploy Pages` failure | Repository Pages deployment failed. | Inspect checkout, artifact upload, and deployment steps; this does not imply an index-validation failure. |
+| `update-index.py` non-zero exit | Candidate index was not safely updated. | Correct the reported layout, JSON, or label problem before publishing. |
+
+The scheduled check is the repository's production-facing health signal. There
+is no separate dashboard or alert transport; GitHub workflow status and logs
+are the source of diagnostic evidence.
+
+## Review path for metrics or tracing
+
+Future metrics, traces, or error reports must arrive as an explicit pull
+request. CODEOWNERS for the repository must review it. Before you add any
+dependency or network destination, the proposal must document:
+
+1. operator question and why existing exit codes and workflow logs cannot
+   answer it;
+2. exact fields and data classification, destination and protocol, retention,
+   access controls, and deletion path;
+3. credential source and least-privilege permissions;
+4. bounded metric labels or span attributes, sample rate, expected volume, and
+   cost;
+5. timeout and failure behavior that cannot delay or fail index publication;
+6. an operator-controlled enablement and rollback plan.
+
+Repository names, digests, refs, paths, and free-form error text must not become
+unbounded metric labels. Spans must not contain manifests, labels, AppStream
+XML, tokens, or HTTP bodies. Until maintainers approve such a proposal, the
+configuration must not let telemetry export go off-box.

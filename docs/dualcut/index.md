@@ -16,7 +16,7 @@ HTTP API for agents) — every surface stays in sync while the app runs.
 
 ![dualcut editor](https://raw.githubusercontent.com/tuna-os/dualcut/main/docs/screenshot.png)
 
-**[📘 User Guide](https://github.com/tuna-os/dualcut/blob/main/docs/USER_GUIDE.md)** — screenshots regenerated automatically on every release.
+**[📘 User Guide](https://github.com/tuna-os/dualcut/blob/main/docs/USER_GUIDE.md)** — screenshots captured from the real app.
 
 **Install (Flatpak, via the TunaOS remote):**
 
@@ -40,6 +40,18 @@ curl -LO https://github.com/tuna-os/dualcut/releases/latest/download/dualcut-aar
 ```
 
 </details>
+
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
 
 ## How it works
 
@@ -92,10 +104,3 @@ open work: [issues](https://github.com/tuna-os/dualcut/issues)
 ## License
 
 GPL-3.0-only — see [LICENSE](https://github.com/tuna-os/dualcut/blob/main/LICENSE).
-
-
-## Contribute compute — no code needed
-
-No time to write code? You can still push this project's backlog forward. A TunaOS AI-agent hive works on this repository. Lend the hive your AI subscription or API tokens, and your machine runs contributor tasks from this project's backlog.
-
-- 🪸 [Contribute compute to the reef hive](https://reef.tunaos.org/contribute)

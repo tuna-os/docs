@@ -1,5 +1,5 @@
 ---
-sidebar_position: 11
+sidebar_position: 12
 title: "borrowed from libertix"
 ---
 
@@ -85,6 +85,7 @@ ISO ships Debian's shim 16.1, which is dual-signed.
    2023-only cell must show the refusal text and never reach the reboot.
 
 ### Tasks
+
 - [x] build-time signer extraction → `shim-authorities.json`, fail on 2011-only
       (`packaging/shim-authorities.py`, `--require 2023` in `release.yml`)
 - [x] bump the shim source to a dual-signed `shim-x64`, pin the NVR
@@ -92,8 +93,11 @@ ISO ships Debian's shim 16.1, which is dual-signed.
 - [x] `SystemInfo.TrustedUefiAuthorities` + the `db` parser
       (`app/secureboot.go`, `app/secureboot_windows.go`)
 - [x] gate + user text (`gateScenario`, launchpad warning banner)
-- [ ] harness `db` axis, three cells (2011-only, 2023-only, both) — the OVMF
-      vars work is the remaining piece
+- [x] harness `db` axis (`tests/e2e/firmware-db.py`, `firmware_db=` cells in
+      `tests/e2e/matrix.tsv`). The cells are 2011, 2023, both and none. The
+      shim is dual-signed, so the first three must boot. The none cell has
+      no third-party CA, so the app must refuse and write nothing. The cells
+      still need a hosted run.
 - [x] `docs/user-guide.md` requirements, `SPEC.md` Secure Boot section
 
 **One deviation from the design above.** This section originally said an
@@ -144,6 +148,12 @@ time. Then it registers `wootc-recovery` (`-AtStartup`, SYSTEM, highest) and
 `wootc.exe recover --startup|--prompt` from a copy of the exe under
 `install\`, hash-checked against `armed.json` before it runs anything.
 
+**Boot-chain transaction (#286).** `configureBCD` creates the entry but does
+not arm it. The install arms the one-shot in its last step, after all other
+steps. `install\boot-txn.json` records each step. Before the decision table,
+`recover --startup` rolls back each journal without a commit. Then it reads
+the store again. A journal in `arming` stays when the deployer started.
+
 **Marker protocol** (all on the storage drive under `wootc\install\`, written
 by the deployer while NTFS is mounted, `sync`ed):
 
@@ -187,6 +197,7 @@ removed by `healthy`, by uninstall, and by a successful `Try again` that
 re-registers them fresh.
 
 ### Tasks
+
 - [ ] deployer writes `deployer-started.json` and honours the `state.json` contract (`deploying`/`deployed`/`failed`) — prerequisite for everything below
 - [ ] `armed.json` + task registration in `configureBCD`, removal in `uninstallWith`
 - [ ] `wootc.exe recover --startup` with the decision table, atomic verdict file
@@ -241,11 +252,38 @@ The harness asserts the file on the Phase-2 boot, replacing one of its own
 proxies with the product's evidence.
 
 ### Tasks
-- [ ] `wootc-firstboot-evidence` script + unit, installed by `deploy.sh` beside the bridge units
-- [ ] `BootCurrent` decode (Python, no new dependency; `efibootmgr -v` as the fallback source)
+
+- [x] `wootc-firstboot-evidence` script + unit, installed by `deploy.sh` beside the bridge units
+- [x] `BootCurrent` decode (Python, no new dependency; `efibootmgr -v` as the fallback source)
 - [ ] `deployHasCompleted` requires the evidence; `UninstallInfo` exposes it
 - [ ] control panel shows kernel/image/bridge from the evidence
-- [ ] harness asserts the evidence after Phase-2 boot; bats pins the unit ordering
+- [x] harness asserts the evidence after Phase-2 boot; bats pins the unit ordering
+
+### What #332 built
+
+The collector is `payload/migration/lib/wootc_firstboot_evidence.py`. It
+measures the boot. If a measurement fails, the unit writes nothing and runs
+again on the next boot. The unit never replaces an existing file. The record
+holds the kernel boot ID and a sequence number.
+
+Windows reads the file in `app/firstboot_evidence.go`. The limit is 16 KiB.
+The decoder refuses unknown, repeated and null fields. Windows then compares
+the record with its own install record:
+
+- The image must be the image in the install journal. A derived image is
+  correct when its recorded source is that image.
+- When the booted image is the image that Windows downloaded, the digests
+  must be equal.
+- The host UUID must be the serial number of the volume that holds
+  `root.disk`.
+
+`wootc status`, the install recovery screen and the startup guard report
+`healthy` only for a record that agrees. Before the record exists, they
+report `deployed`: the system is installed, and its first boot did not
+occur yet.
+
+Windows does not compare `bootCurrent` with the ESP that it staged. The
+control panel does not show the summary yet. These two items stay open.
 
 ## 4. Signed-chain refresh: keep the ESP bootable through updates
 
@@ -291,6 +329,7 @@ Extend `wootc-esp-sync`:
    is picked up before the next reboot rather than one late.
 
 ### Tasks
+
 - [x] ownership without a new manifest: refresh only a vendor directory whose
       `grub.cfg` carries the `# wootc` marker — the same rule the installer's
       D1 guard already applies, re-checked on every boot because a second OS
@@ -322,7 +361,7 @@ compatible when presentation labels change.
 
 `just steps` regenerates checked-in Go constants and immutable lookups, product
 frontend ID constants, shell vocabulary and GUI fixture definitions.
-`just steps-check` rejects stale files. The Lint workflow runs the same check.
+`just steps-check` rejects stale files. The `lint` job in `ci.yml` runs the same check.
 Neither writes files. The generator validates IDs, owners and labels. It rejects
 duplicate IDs, invalid owners and missing labels.
 
@@ -394,6 +433,7 @@ mode and it shows a permanent warning.
    today it is part of the signed exe.
 
 ### Tasks
+
 - [x] embed the release tag; pin `deployerBaseURL`; harness override unchanged
       (`app/deployer_url.go`, `-X main.releaseTag=` in `release.yml`)
 - [ ] minisign the manifest in `release.yml`; verify in `fetchChecksums`; test key for the harness and the offline bundle

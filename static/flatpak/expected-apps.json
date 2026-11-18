@@ -7,7 +7,6 @@
     {"name": "tuna-os/mariner", "id": "org.tunaos.mariner", "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/mandelbrot", "id": "org.tunaos.mandelbrot", "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/dualcut", "id": "org.tunaos.dualcut", "archs": ["amd64", "arm64"]},
-    {"name": "tuna-os/finupdate", "id": "org.tunaos.finupdate", "archs": ["amd64", "arm64"]},
     {"name": "tuna-os/tavern", "id": "org.tunaos.tavern", "archs": ["amd64"]},
     {"name": "tuna-os/compass", "id": "org.tunaos.compass", "archs": ["amd64"], "display": "wayland"},
     {"name": "tuna-os/blueshell", "id": "org.tunaos.blueshell", "archs": ["amd64", "arm64"]},

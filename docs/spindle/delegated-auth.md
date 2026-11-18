@@ -29,16 +29,25 @@ With `[auth.delegated]` configured:
   (MSC2965) — this is how Element Web/X find the provider's login page.
 - Every bearer token that is not a local session or an appservice
   `as_token` is resolved by **token introspection** against the
-  provider, with the verdict cached for 120 seconds. The account and
+  provider, with the verdict cached for 120 seconds by default. The account and
   device are provisioned on first sight, bound to what the provider's
   scopes say (MSC2967), never to anything the client claims.
 - Tokens with `urn:synapse:admin:*` can use the admin API without a
   device scope. Element Admin needs this access. This permission
   stays on the token and does not set the account's permanent `admin`
   flag. A token without a device cannot use device-dependent client
-  endpoints. Spindle accepts stable `urn:matrix:client:*` scopes and
-  scope names from MSC2967. The `urn:mas:admin` scope alone does not
-  grant access to Spindle's admin API.
+  endpoints. It can still call `/whoami`, read profiles, and read
+  media, which is what Element Admin needs to show users and avatars.
+  Spindle accepts stable `urn:matrix:client:*` scopes and scope names
+  from MSC2967. The `urn:mas:admin` scope alone does not grant access
+  to Spindle's admin API.
+- Element Admin 0.1.12 sends these requests to the homeserver: the
+  room list, room details, members, room deletion (v2) with its
+  `scheduled_tasks` status, federation destinations, and the server
+  version. It sends all user, session, email, and registration-token
+  requests to MAS. `crates/spindle-server/tests/element_admin.rs`
+  replays the homeserver requests and checks each response against
+  the schema that the console uses.
 - The `/_synapse/mas/*` provisioning surface opens (only with
   `homeserver_secret` set, and only to its holder): MAS uses it to
   create users, manage devices, set display names, and deactivate
@@ -49,12 +58,21 @@ With `[auth.delegated]` configured:
   registration (`m.login.application_service`): ghosts are the
   bridge's to mint, delegation or not.
 
-Two consequences worth knowing before you flip it on:
+Three consequences worth knowing before you flip it on:
 
-- **Revocation lags by at most 120 seconds.** A token the provider
-  revokes keeps working here until its cached introspection verdict
-  expires. That window is the price of not putting the provider in
-  every request's latency; Synapse ships the same order of magnitude.
+- **Revocation is immediate when Spindle knows of it.** A logout that
+  Spindle serves ends the token at once. So does an admin or client
+  call that ends the device or the account. So do the MAS calls
+  `delete_device`, `sync_devices` and `delete_user`. Spindle keeps a
+  record of a device that it ends. Thus a later introspection does not
+  make the device again, until MAS provisions it with `upsert_device`.
+- **Other revocations lag by at most 120 seconds.** MAS can revoke a
+  token and not tell Spindle. Then the token works until the cached
+  result of its introspection expires. Set the window with
+  `introspection_cache_ttl_secs`; 0 asks MAS on each request. Spindle
+  never trusts a result after the `expires_in` time that MAS gives
+  the token. Synapse has the same behavior, with a fixed window of two
+  minutes.
 - **Deactivation reserves the name forever.** `delete_user` kills every
   session and device but keeps the account row, because a released
   localpart would hand the old user's identity to whoever registers it
@@ -77,6 +95,9 @@ client_secret = "<introspection-secret>"
 # MAS cannot register users or manage devices here, so in practice
 # a MAS deployment always sets it.
 homeserver_secret = "<matrix-secret>"
+# Optional: how long a cached introspection result counts, in seconds.
+# This bounds only a revocation that MAS does not tell Spindle about.
+# introspection_cache_ttl_secs = 120
 ```
 
 ## MAS's side
@@ -170,7 +191,28 @@ public_base_url = "https://matrix.example.org"
 
 [auth]
 builtin_oidc = true
+# Optional (#609): an issuer on a host of its own, or under a path.
+# Omitted, the issuer is the client base URL above.
+# oidc_issuer = "https://auth.example.org/"
 ```
+
+`oidc_issuer` lets Spindle replace a MAS in place. Clients remember the
+issuer they logged in against, and MAS lives on its own host.
+
+Set
+`oidc_issuer` to the origin of that host, and point the reverse proxy of
+that host at Spindle. Then each advertised URL stays on the issuer that
+the clients already know. This covers the discovery document,
+`/_matrix/client/v1/auth_metadata` and its MSC2965 unstable alias, the
+`/.well-known/matrix/client` authentication block, and each endpoint.
+
+The value can have a path, for example `https://example.org/auth/`. Use
+this when a reverse proxy publishes the provider under that path. The
+proxy can keep the path or remove it: Spindle answers on both. The links,
+forms and redirects of the pages keep the path. The first segment of the
+path cannot be a route of the server (`account`, `oauth2`, `upstream`,
+or a segment that starts with `_` or `.`). A query, a fragment or
+credentials stop the server at startup.
 
 With that, Spindle itself serves the small provider surface those
 clients need — discovery (`/.well-known/openid-configuration`, relayed
@@ -188,10 +230,282 @@ machinery, no signing keys to rotate, and nothing new to back up.
 Password login and registration stay on: the provider is a second door
 into the same accounts, not a second set of accounts.
 
-It is the floor, not a MAS replacement: no upstream identity providers,
-no SSO, no email flows, no account-management UI. When you need those,
-deploy MAS — `builtin_oidc` and `[auth.delegated]` refuse to be
-configured together, because one identity authority is the point.
+### Account management (#607)
+
+An OIDC-native client has no account settings of its own, so the provider
+serves them, as MAS does. They are server-rendered pages (plain HTML
+forms, no script) at `{issuer}/account/`. The discovery document and
+`auth_metadata` advertise them as MSC4191's `account_management_uri`. They also
+appear as `account` in the `/.well-known/matrix/client` authentication block.
+
+| Page | Deep link (`?action=`) | What it does |
+|---|---|---|
+| Profile | `org.matrix.profile` (and any unknown action) | Display name and avatar (`mxc://`), propagated into every joined room's member event, as `PUT /profile` does. |
+| Password | `password` | Change it: current password required; by default also signs out every device and every other browser. |
+| Devices | `org.matrix.sessions_list` / `org.matrix.devices_list` | List devices; `org.matrix.session_view` / `org.matrix.device_view` and `org.matrix.session_end` / `org.matrix.device_delete` with `device_id=` show one, with a sign-out button. Signing out removes the device, its tokens and E2EE material and announces the device-list change, as `DELETE /devices/{id}` does. |
+| Deactivate | `org.matrix.account_deactivate` | Password plus an explicit confirmation; optionally erases the profile. Leaves every room, then the same deactivation the admin API performs. |
+| Cross-signing reset | `org.matrix.cross_signing_reset` | Spindle demands no approval for replacing cross-signing keys, and the page says so rather than inventing a step. |
+| Email | `emails` | With `[email]`: confirmed addresses, add (password required, confirmed by a mailed link) and remove. |
+
+The pages sit behind a **browser session**. A sign-in on the
+authorization page or at `/account/login` sets an `HttpOnly`,
+`SameSite=Lax` cookie that lasts a week (`Secure` when the issuer is
+https). The server keeps only its BLAKE3 digest. With it, a second client's
+authorization shows "Continue as @you" instead of the password form;
+`prompt=login` forces the password.
+
+Security properties, all tested in `tests/account_management.rs`:
+
+- each POST carries a CSRF token, compared in constant time. After
+  sign-in it is the session's own secret; before, a double-submit cookie;
+- a password change, a new address and a deactivation each check the
+  current password again. Each password check, on each page, spends the
+  budget of the client API's `/login`. That is 5/min per account and
+  30/min per source. A guesser gets nothing from a change of door;
+- pages send `Content-Security-Policy` with `frame-ancestors 'none'`,
+  `X-Frame-Options: DENY`, `Cache-Control: no-store` and
+  `Referrer-Policy: no-referrer`;
+- the redirect after sign-in (`next`) is always a `/account` path on
+  this server. The OAuth redirect is always a URI that the client
+  registered, as before.
+
+### Email and password reset (#608)
+
+Configure an SMTP relay with `[email]` (see `spindle.example.toml`:
+`from`, `smtp_host`, `tls` = `starttls`|`tls`|`none`, `smtp_port`,
+`username`, `password` or `password_file`). Then:
+
+- **Addresses.** On the Email page a user adds an address (with their
+  password). The server mails a link to it. The address binds only when
+  the user pushes the confirmation button of the link. A visit to the link
+  (as mail scanners do) binds nothing. An address belongs to one account
+  at most. A claim on a taken address looks the same as a claim on a free
+  one, and mails nobody. Deactivation releases the account's addresses.
+- **Forgotten password.** The sign-in pages link to
+  `/account/password/forgot`. Its answer is the same page, status and
+  work for each input. The lookup, the token and the mail happen after
+  the response, in their own task. Thus the page and its timing do not
+  show if an address has an account. The link works once, for an hour.
+  Only the newest link works. A user who follows it and sets a new
+  password signs out each device and browser.
+- Links carry 256 random bits; the server keeps only their digests. The
+  server limits requests per source (5 per 15 min). It also limits them
+  per address (3 per hour), for an address with no account too. It limits confirmation
+  mails per account (5 per hour).
+- `GET /_matrix/client/v3/account/3pid` lists the confirmed addresses.
+  Under `[auth.delegated]` the endpoint stays absent, as before.
+- **The client API flows.** Clients that log in with a password use the
+  spec calls, and these work too:
+  - `POST /account/password/email/requestToken`, then
+    `POST /account/password` with the `m.login.email.identity` stage.
+    The client does not need an access token. This is "Forgot password?"
+    in Element. All devices and browsers sign out.
+  - `POST /account/3pid/email/requestToken`, then `POST /account/3pid/add`
+    (with the password). `POST /account/3pid/delete` removes an address.
+  - `POST /register/email/requestToken`, then `POST /register` with the
+    `m.login.email.identity` stage. Registration shows this stage beside
+    `m.login.dummy`, so an address is optional. With
+    `require_token`, the server does not show it and refuses the request.
+
+  Each mail has a link to `/account/3pid/validate`, which opens a
+  confirmation button. The client continues after the user pushes it.
+  A `requestToken` gives a `sid` for each address, but an unknown address
+  or an address of another account gets no mail. The limits of the
+  forgotten-password page apply. The validation sessions are in memory
+  and work once.
+- Nothing logs an address, a token or a link. The log records a delivery
+  failure only by class (permanent, transient, connection).
+
+[metrics.md](https://github.com/tuna-os/spindle/blob/main/docs/metrics.md) has the metrics for all of this. They count
+sign-ins by door and result, token grants, resets requested and completed,
+mail sent and failed, and account actions.
+
+### Password recovery without email
+
+`[email]` is optional, and a server without it is not stuck when a user
+forgets their password. Two ways back need no mail at all:
+
+- **Recovery codes.** The account pages' *Recovery codes* section
+  (`?action=recovery`) makes a set of ten codes, behind the current
+  password. Each code works one time. The page shows them once; a new set
+  retires the old one. The sign-in pages link to *Use a recovery code*
+  (`/account/recover`): username, one code and a new password. This uses up
+  the code. The password changes, and each device and browser signs out.
+  Each code is 80 random bits. The server keeps a per-code salt and
+  `BLAKE3(salt ‖ code)`, not Argon2. A slow hash is for secrets that a
+  person can guess. With any hash, a person cannot guess 80 random bits.
+  And ten Argon2 runs per try would let anyone who can post the form burn
+  CPU and memory. Tries spend the same per-account and per-source budget
+  as a password (5 and 30 a minute). An unknown user and a wrong code get
+  the same answer.
+- **An administrator's reset link.** Two commands return a URL on the
+  issuer, once. `spindle issue-reset-link <config> <localpart> [--ttl 24h]`
+  works offline, like `set-password-hash`. For a live server, use
+  `POST /_spindle/admin/v1/users/{user_id}/reset_link` with an optional
+  `{"ttl": "2h"}`. Give the URL to the user by a channel you trust. It is the same link
+  that a mailed reset sends. It works one time, for a day by default and
+  a week at most. The server keeps only its digest, and a newer link
+  replaces it. It opens the same *choose a new password* page, which signs
+  each device out. The
+  admin API records the issuance and its lifetime in the audit log, never
+  the token.
+
+Without `[email]` the sign-in pages show only *Use a recovery code*, and
+there is no Email page or forgotten-password form; with it, both ways
+appear. Metrics: `spindle_password_recoveries_total{method,result}` and
+`spindle_reset_links_issued_total` ([metrics.md](https://github.com/tuna-os/spindle/blob/main/docs/metrics.md)).
+
+### Moving from MAS to the built-in provider (#797)
+
+Spindle can replace MAS. The accounts are already in Spindle, because
+MAS provisions them. The command `spindle import-mas` copies the rest
+from the MAS database:
+
+| From MAS | Into Spindle |
+|---|---|
+| `users` | An account for each user that Spindle does not have. |
+| `user_passwords`, the newest row of each user | The password hash, with the MAS scheme that made it. |
+| `user_emails` | The addresses, as confirmed addresses. |
+| `upstream_oauth_links` | The account links of `[[auth.upstream_oidc]]`. |
+| `can_request_admin` | The `admin` flag. |
+| `locked_at` | The `locked` flag. |
+| `deactivated_at` | A new account that is deactivated. |
+
+Sessions do not move. The access and refresh tokens of MAS stay in MAS.
+
+#### Password schemes
+
+MAS hashes a password with a scheme from `passwords.schemes` in its
+`config.yaml`. Give that file to the importer with `--mas-config`. Then
+each password works in Spindle as it did in MAS:
+
+- Argon2id hashes, the MAS default.
+- bcrypt hashes. MAS keeps them for the users that syn2mas moved from
+  Synapse.
+- A scheme with a `secret` (pepper). The importer reads the secret from
+  `secret` or `secret_file`. Spindle keeps a copy with each account, because
+  the hash cannot verify without it. The copy stays until the user sets a new
+  password.
+- A scheme with `unicode_normalization`. Spindle normalizes the password
+  (NFKC) before it checks it.
+
+Without `--mas-config`, the importer uses the default of MAS: version 1,
+Argon2id, no secret. It refuses a hash of a version that it does not know.
+It also refuses PBKDF2 hashes. Give those users a reset link.
+
+#### The cutover
+
+1. Stop Spindle. The importer opens the store, and the store has a lock.
+2. Write the new configuration. Remove `[auth.delegated]`. Set
+   `builtin_oidc = true`. Set `oidc_issuer` to the public origin of MAS,
+   and point the reverse proxy of that host at Spindle. Then each client
+   finds its issuer and its endpoints at the same URLs. Add each MAS
+   upstream provider as `[[auth.upstream_oidc]]` (below). Use the ULID of
+   the provider in MAS as `id`. Then the callback URL at the provider and
+   the links stay the same.
+3. Do a dry run. It reads everything and writes nothing:
+
+   ```console
+   $ SPINDLE_MAS_DB_PASSWORD=… spindle import-mas spindle.toml \
+       --mas-database "host=mas-db user=mas dbname=mas" \
+       --mas-config mas-config.yaml --dry-run
+   ```
+
+   The report is JSON on stdout. It has counts for users, passwords,
+   addresses and links. `refused` lists what the import cannot take,
+   with the reason. `kept` lists each account that keeps its state in
+   Spindle.
+4. Run the same command without `--dry-run`. Then start Spindle.
+5. Clients sign in again, one time. After that, the browser session
+   signs in the next clients.
+
+You can run the import again. It changes only what changed in MAS. It
+does not replace a password that the user changed in Spindle after the
+last import. It does not unlock or reactivate an account, and it does not
+remove an admin flag.
+
+The command exits non-zero when `refused` is not empty. These are the
+usual reasons:
+
+- The username is not a valid localpart in Spindle.
+- An address or an upstream identity belongs to another account in
+  Spindle.
+- No `[[auth.upstream_oidc]]` has the ULID of the provider.
+- MAS deactivated a user that is active in Spindle. The importer locks
+  the account. When Spindle runs again, deactivate the account with
+  `POST /_spindle/admin/v1/users/{user_id}/deactivate`. Only the server
+  can do a full deactivation: it removes the devices and tells other
+  servers.
+
+**Rollback.** The import does not change MAS. To go back, put back the
+old configuration with `[auth.delegated]` and start Spindle. MAS then
+signs users in as before. The accounts, addresses and links that the
+import wrote stay in the store, and delegation does not use them.
+
+The release binaries and the release image
+`ghcr.io/tuna-os/spindle:<tag>` (amd64 and arm64) have the importer.
+Use the same tag as the server, because the importer opens the store of
+that server. In a container, stop the server and run the command in the
+same image, with the same volume and configuration:
+
+```console
+$ docker run --rm -e SPINDLE_MAS_DB_PASSWORD \
+    -v spindle-data:/var/lib/spindle \
+    -v ./spindle.toml:/etc/spindle/spindle.toml:ro \
+    -v ./mas-config.yaml:/etc/mas/config.yaml:ro \
+    ghcr.io/tuna-os/spindle:<tag> import-mas /etc/spindle/spindle.toml \
+    --mas-database "host=mas-db user=mas dbname=mas" \
+    --mas-config /etc/mas/config.yaml --dry-run
+```
+
+A build from source needs the `mas-import` feature:
+`cargo build --features mas-import`. The `Dockerfile` sets it by
+default. The importer connects to PostgreSQL without TLS. Use a private
+network or a port forward.
+
+For one account, `spindle set-password-hash` and
+`POST /_spindle/admin/v1/users/{user_id}/password_hash` store a hash
+without a scheme (see [lifecycle.md](https://github.com/tuna-os/spindle/blob/main/docs/lifecycle.md)).
+
+### Upstream identity providers (#610)
+
+Sign-in can go to another OIDC provider (Authelia, Keycloak, Kanidm).
+The issuer that clients know stays the issuer of Spindle.
+`spindle.example.toml` shows each key of `[[auth.upstream_oidc]]`.
+Register `{issuer}/upstream/callback/{id}` as the redirect URI at the
+provider. The server does not start if `[auth.delegated]` is also set.
+The issuer must use https, but Spindle accepts plain http on loopback, or
+with `insecure_http = true` for a test rig.
+
+- The sign-in pages show a "Sign in with …" button for each provider.
+  `GET /login` shows `m.login.sso` with the providers, and
+  `/login/sso/redirect` and `/login/sso/redirect/{idpId}` start the flow.
+- The flow is the authorization code flow with PKCE `S256`, a `state`
+  and a `nonce`. The server keeps no flow. It seals each flow into the
+  cookie that binds it to the browser (ChaCha20-Poly1305, with a key per
+  process). Thus open flows use no memory on the server. A flow works
+  once and stops after ten minutes.
+- A failed callback spends the login budget of its source (30 a minute).
+  A successful callback resets it.
+- Spindle reads the discovery document and the JWKS at first use and
+  keeps them for an hour. Spindle checks the signature of the ID token
+  (RS256, PS256, ES256, ES384 or EdDSA). It also checks the issuer, the
+  audience, the expiry time and the nonce of the flow.
+- The link table (keyspace `0x49`) maps the provider `id` and the `sub`
+  to an account. A second sign-in uses the link, not the name.
+- A first sign-in makes an account from `localpart_claim`. It sets the
+  display name. It also binds the `email` claim if `email_verified` is
+  true, because that flag applies to that claim only. Spindle refuses
+  addresses with characters that are not ASCII: in Unicode, two different
+  addresses can become equal in lowercase. If an account has that
+  name, the sign-in fails: Spindle does not give an existing account to a
+  new identity. With `link_existing_by_email`, a verified address that an
+  account here holds links to that account. This is off by default.
+- For the client API, the callback shows a page with a link back to the
+  client. The link has a single-use login token for `m.login.token`.
+
+The metric `spindle_auth_logins_total{method="upstream"}` counts each
+callback by result.
 
 The proof it works — Element Web completing the whole OIDC-native flow
 against a lone Spindle process, with nothing else running — is

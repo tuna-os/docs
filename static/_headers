@@ -1,4 +1,14 @@
 # Cloudflare Workers static-asset headers (copied into build/ by Docusaurus).
+#
+# Baseline for every static response:
+# - nosniff: a browser uses a response only as the type it declares.
+# - base-uri and object-src: a page cannot move its relative URLs to another
+#   origin or load a plugin document, whatever markup reaches it.
+# scripts/__tests__/site-headers.test.mjs keeps this block in place.
+/*
+  X-Content-Type-Options: nosniff
+  Content-Security-Policy: base-uri 'self'; object-src 'none'
+
 # /switch-to-bazzite is an unlisted preview pending Universal Blue's approval
 # of the Bazzite mark: keep it and its images out of search engines.
 # See src/components/SwitchToBazzite/README.md.

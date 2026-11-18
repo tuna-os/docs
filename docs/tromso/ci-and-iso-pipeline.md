@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 9
 title: "ci and iso pipeline"
 ---
 
@@ -7,16 +7,28 @@ How Tromsø gets from `.bst` elements to a bootable, installable live ISO —
 and how to debug it when it breaks. (Same architecture as tuna-os/xfce-linux;
 patterns originate in projectbluefin/dakota and dakota-iso.)
 
+## Secure Boot key guard
+
+OCI builds for both architectures and ISO builds check signature inputs before
+the build and publication. They use `files/boot-keys/check-release-keys.py --release`.
+Public snakeoil modes/identities and malformed certificates fail the job.
+Never trust these development keys.
+
+The pipeline signs artifacts with cosign keyless, not the legacy Secure Boot Makefile. Read
+[the key policy](https://github.com/tuna-os/tromso/blob/main/files/boot-keys/README.md) before you enable Secure Boot.
+This guard prevents the regression in #219 that accepted public keys as
+signature inputs. It does not audit signatures inside existing artifacts.
+
 ## Build chain
 
 ```
 elements/**  ──►  Build Tromso (Multi-Runner)  ──►  ghcr.io/tuna-os/tromso:latest
                         │ (workflow_run)
                         ▼
-              Build and Publish Tromsø Live ISO  ──►  R2: tromso/tromso-live-*.iso
+              Build local ISO → sign → UEFI boot gate → R2 dated objects → latest aliases
                         │
                         ▼ (boot gate: TROMSO_LIVE_READY on serial + screenshot)
-              LUKS Install End-to-End Test (PR / weekly / dispatch)
+              LUKS Install End-to-End Test (PR round-robin / weekly / dispatch)
 ```
 
 ### Multi-runner build (`build-tromso-multirunner.yml`)
@@ -24,9 +36,13 @@ elements/**  ──►  Build Tromso (Multi-Runner)  ──►  ghcr.io/tuna-os/
 The plan, core, and parallel dependency chunks (steps 1-3) use the shared
 [tuna-os/bst-ci](https://github.com/tuna-os/bst-ci) reusable workflow. Each
 BuildStream desktop repository uses this workflow, with different image names,
-targets, and chunk counts. The local `build_final` job (step 4) uses cosign
-without a key. This process puts the identity of this workflow in the Fulcio
-certificate. The verification instructions in README.md use that identity.
+targets, and chunk counts. Step 4 uses the `build-final.yml` workflow of this
+repository. Both architectures use this one copy of the steps (#314).
+
+The `sign_final` jobs of `build-tromso-multirunner.yml` sign the pushed
+digest. They use cosign without a key. The Fulcio certificate thus keeps the
+identity of `build-tromso-multirunner.yml`. The verification instructions in
+README.md use that identity. `build-final.yml` has no `id-token` permission.
 
 Free GitHub runners can't hold the whole KDE build, so it's split:
 
@@ -43,6 +59,11 @@ Free GitHub runners can't hold the whole KDE build, so it's split:
 4. **build_final** — merges all chunk CAS tarballs, builds the final target,
    `just export` (squash + OCI labels + chunkify), `just lint`
    (`bootc container lint`), pushes `latest` + date + sha tags (main only).
+   `scripts/resolve-image-tags.sh` sets the tags. Only x86_64 gets the
+   `latest`, `nightly` and `stable` tags without a suffix. Other
+   architectures must use a suffix, for example `latest-aarch64`. The
+   aarch64 path is manual only. It does not use remote execution. It does
+   not run the x86_64 checks for kwin capabilities and overlay whiteouts.
 
 BuildStream settings CI uses live in the checked-in `buildstream-ci.conf`.
 
@@ -76,11 +97,13 @@ Two rules protect the change:
   banner. A green cache hit does not prove that BuildStream loaded the
   executor. A quiet fall back to local builds looks like a slow success.
 
-Two steps remain. First, get the certificate. Second, move the junction pins.
-Cache keys are a function of the ref, the patch queue, the options and the
-overrides. A shared cache therefore stays cold while this repository sits on
-freedesktop-sdk 25.08.9 and the others sit on 25.08.16. Delete the chunk
-machinery from the caller only after a remote build passes.
+Two steps remain. First, get the certificate. Second, keep the junction pins
+near the pins of the other repositories. Cache keys are a function of the ref,
+the patch queue, the options and the overrides. This repository pins
+freedesktop-sdk 25.08.17, the same ref as razorfin. Dakota and zirconium use
+26.08, so a move to 26.08 is a separate decision.
+
+Delete the chunk machinery from the caller only after a remote build passes.
 
 **Cache-key invalidation warning:** a change to the cache key of every element
 causes a full world rebuild. A change to `name:` in `project.conf` is one example.
@@ -95,9 +118,12 @@ recover after they refresh the GHCR caches.
    ghcr payload (kernel modules) → Debian stage builds a dmsquash-live
    initramfs (incl. the `95tromso-isofile` Ventoy dracut module) → final
    stage installs flatpaks (`src/install-flatpaks.sh`) and configures the
-   live env (`src/configure-live.sh`).
-2. The recipe squashes the payload image and imports it into VFS container
-   storage inside the squashfs. This process enables the offline installation.
+   live env (`src/configure-live.sh`). `iso-sd-boot` gives this recipe the
+   `tromso/payload_ref` image. Thus the live kernel and the install payload
+   come from one image.
+2. The recipe squashes the payload image and puts it in the squashfs as an
+   OCI layout. `/etc/bootc-installer/media-input.json` binds fisherman to
+   this layout for the offline installation.
 3. `tromso/src/build-iso.sh` assembles a systemd-boot UEFI ISO.
 
 The live session automatically logs in to Plasma as `liveuser`. It starts
@@ -105,6 +131,22 @@ The live session automatically logs in to Plasma as `liveuser`. It starts
 link at `/usr/local/bin/fisherman` points to fisherman. It uses the shared
 `org.tunaos.Installer.install` polkit action. See INSTALLER-FRONTENDS.md in the
 organization workspace.
+
+Publication fails closed: the local candidate must pass the UEFI ready-token
+assertion before any R2 upload. A separate `publish` job signs the ISO and
+uploads it. It starts only after the build job boots the ISO. It has no
+checkout, so it runs no repository code. Only this job has OIDC and the R2
+secrets.
+
+All four dated objects (ISO, checksum, signature,
+certificate) must upload before the workflow updates latest aliases.
+Dated names include the checked-out source SHA, the workflow run ID, and its execution number;
+`rclone --immutable` rejects replacement. Checkout uses an immutable action pin and does not
+persist credentials. The signer identity and R2 secret names remain unchanged.
+
+The workflow also publishes the latest checksum and updates the ISO alias last.
+R2 has no transaction across these aliases: a failed promotion can leave mixed sidecars,
+but fails the workflow. Dated objects remain the consistent download set.
 
 ### LUKS end-to-end test (`test-luks-install.yml`)
 
@@ -117,9 +159,9 @@ just luks-test-qemu tromso          # boot → fisherman LUKS install → reboot
 
 `tromso/src/luks-unlock.py` drives the QEMU monitor. It checks screen dumps
 until Plymouth appears, types the passphrase with `sendkey`, and verifies the
-installed system boot. The workflow publishes screenshots to the
-`ci-screenshots` branch and PR comments. They show the live desktop, Plymouth
-prompt, and installed desktop.
+installed system boot. Screenshots and serial logs remain in Actions artifacts.
+The install jobs use read-only tokens and do not write screenshot branches
+or PR comments.
 
 ## Source updates
 
@@ -137,6 +179,15 @@ prompt, and installed desktop.
 
 | Date | Symptom | Root cause | Fix |
 |---|---|---|---|
+| 2026-11-13 | `Sign ISO` stops with exit code 137 after `Using payload from` (run 43385946786) | cosign 3 reads the whole ISO into memory. The 9 GB Tromsø ISO peaks above the 16 GB of runner RAM, so the kernel stops the job | Add a 16 GB swap file before signing; `test_iso_signing_has_swap_for_whole_iso_reads` |
+| 2026-11-13 | ISO signing fails on every run: `must specify --bundle with --new-bundle-format` (run 43353984640) | cosign-installer v4.1.3 installs cosign 3, which writes bundles by default and rejects the detached `--output-signature`/`--output-certificate` flags | Select cosign's legacy detached mode (`--use-signing-config=false --new-bundle-format=false`), require nonempty `.sig`/`.cert`, and run the README `cosign verify-blob` command before any upload; `test_iso_signing_preserves_detached_outputs_with_cosign3` |
+| 2026-11-03 | Python Tests fails with `No module named 'yaml'` (#449) | The workflow guard test imports PyYAML, but CI installs only pytest | Install PyYAML in the Python Tests job; `test_python_ci_installs_workflow_parser` checks this dependency |
+| 2026-11-03 | Public development signing keys could be selected for release inputs (#219) | Legacy key helper had no release policy or complete-import check | Reject public modes and snakeoil certificate identities before build/publish; workflow coverage in `test_release_workflows_enforce_guard` |
+| 2026-11-02 | STE fails with 493 findings against a zero budget (#428) | Seven existing documents contain long sentences, passive voice, gerunds, and noun clusters | Rewrite the flagged prose; preserve code examples and the zero budget |
+| 2026-10-24 | Unverified ISO could replace public latest (#334) | Upload preceded boot verification and ignored R2 failures | Boot gate precedes publication; immutable dated set completes before latest aliases; upload failures fail the job |
+| 2026-10-24 | CI executes Actions and reusable workflows through mutable tags/branches (#375) | Moving references can change executable code without a repository review | Pin remote `uses:` to full commit SHAs and Docker Actions to SHA-256 digests; `test_github_actions_use_immutable_references` prevents regressions |
+| 2026-10-24 | Build workflows store GITHUB_TOKEN in plaintext `.git/config` during build jobs (#382) | `actions/checkout` defaults to `persist-credentials: true`, writing tokens readable by subsequent steps and containers | Add `persist-credentials: false` to all `actions/checkout` steps in `build-iso.yml` and `build-tromso-multirunner.yml`; enforced by `test_iso_invariants.py` |
+| 2026-10-24 | Four workflows inherited repository token defaults (#321) | Job-level permissions did not constrain other jobs | Add top-level `contents: read`; retain job overrides and require explicit workflow permissions in the invariant tests |
 | 2026-07-19 | Every `just` call in CI fails: "multiple candidate justfiles" | `justfile` + `Justfile` both at root; just ≥1.30 hard-errors | ISO recipes moved to `iso.justfile`, imported from `Justfile` |
 | 2026-07-19 | `just iso-sd-boot tromso` in build-iso.yml never worked | recipe + `tromso/Containerfile` + dracut module never existed in this repo | ported from xfce-linux/dakota-iso (PR #74) |
 | 2026-07-19 | `tromso/Containerfile` missing from git after commit | `.gitignore` had unanchored `Containerfile` rule | anchored to `/Containerfile` |
@@ -162,14 +213,61 @@ skill. The `docs/ci-troubleshooting.md` file in tuna-os/tunaos shows the format.
   publishes `:latest`, `:nightly`, `:nightly-YYYYMMDD`, `:<sha>`; the ISO
   lands at R2 `tromso/`.
 - **stable** is a release bookmark branch. A weekly schedule or manual dispatch
-  starts `promote-stable.yml`; set `force=true` for an override. The workflow
-  verifies the newest nightly build and ISO. It force-pushes that commit to
-  `stable` and starts the stable build. The build creates the `:stable` and
-  `:stable-YYYYMMDD` tags, plus an ISO under R2 `tromso/stable/`. The stable ISO
-  embeds the `:stable` payload. The build-iso.yml workflow changes `payload_ref`
-  for each channel.
+  starts `promote-stable.yml`. It selects one candidate from main.
+  The candidate has an immutable digest. See the next section. The `:stable`
+  tag gets the digest of that candidate, and the stable ISO under R2
+  `tromso/stable/` embeds that digest.
 - Update PRs from source trackers or Renovate target only main. Stable moves
   only through promotion.
+
+## Candidate-bound promotion (tromso#309)
+
+Each x86_64 build that pushes and signs an image also uploads a
+`release-candidate` artifact. This artifact is `release-candidate.json` with
+the commit SHA and the pushed digest. It stays for 30 days.
+
+`promote-stable.yml` has these jobs:
+
+1. `candidate` selects the newest successful main run of
+   `build-tromso-multirunner.yml` and downloads its `release-candidate`
+   artifact. The SHA must be the head SHA of the run. The digest must be
+   `sha256:` with 64 hex characters. If the artifact is missing, expired, or
+   not correct, the promotion stops. Start a new main build to get a new
+   candidate.
+2. `iso`, `plain`, and `luks` call `build-iso.yml`, `test-plain-install.yml`,
+   and `test-luks-install.yml` with `candidate_sha` and `candidate_digest`.
+   Each checks out the candidate SHA. `scripts/pin-candidate-payload.sh`
+   writes `ghcr.io/tuna-os/tromso@sha256:...` to `tromso/payload_ref`. The
+   script stops if the checkout is not the candidate or the digest is not
+   correct. The `iso` call sets `skip_upload`, so it does not sign or publish.
+3. `promote` runs only if the other four jobs succeed. It checks that the
+   candidate is on main and that `stable` can fast-forward to it. Then it
+   copies the digest to `:stable` with `skopeo copy --preserve-digests`. Then
+   it moves `stable` through the GitHub API with `force=false`. There is no
+   force input.
+4. `publish-stable-iso` calls `build-iso.yml` again with `release_channel:
+   stable`. It builds and boots the ISO from the same candidate. Then the
+   `publish` job of `build-iso.yml` signs it and puts it under R2
+   `tromso/stable/`.
+
+Only `promote` has write permission. It has no checkout. The jobs that run
+candidate code have read-only tokens and get no secrets. The `iso` caller
+gives `id-token: write` only because GitHub needs it for the `publish` job of
+`build-iso.yml`. That job does not run when `skip_upload` is true.
+
+When the payload ref names a digest, `scripts/embed-oci-payload.sh` writes
+that ref as `image` in `media-input.json`. It also writes it to both installer
+catalogs and to `recipe.json`, because fisherman uses the media only when the
+recipe asks for that image. `targetImgref` keeps the ref from the shipped
+recipe for updates after installation.
+
+The registry copy and the branch update are two steps. If the branch update
+fails, `:stable` already has the new digest. Run the promotion again, or use
+`rollback-stable.yml`. The aarch64 images are not part of this gate.
+
+`tests/pytest/test_release_candidate.py` runs the selection and promotion
+shell with fake `gh` and `skopeo` commands. `tests/pytest/test_media_input.py`
+runs the embed script on a real OCI archive. It needs `skopeo` and `jq`.
 
 ## Release-linked sources
 
@@ -194,7 +292,7 @@ design gives one shared CAS and one final signer.
 
 Post-merge: salvage-enabled nightly world build → ISO boot gate
 (ready-marker + screenshot artifact) → weekly LUKS install e2e
-(screenshots on the `ci-screenshots` branch + PR comments). A cloud
+(screenshots and serial logs in Actions artifacts). A cloud
 routine ("tromso + xfce-linux CI babysitter", every 3 h) diagnoses
 completed failures from logs and pushes fixes.
 
@@ -203,6 +301,40 @@ with required checks. If a required check does not report, automerge cannot
 continue. If you rename a required job, update the branch-protection contexts
 in the same PR. Do not wrap a gate in `|| echo`; this error hid failures in
 bst-validate and pytest for months.
+
+### Pull request CI (`test.yml`)
+
+All pre-merge checks are in one workflow, `test.yml`. Its `changes` job lists
+the changed files and starts only the jobs that those files can affect. A
+skipped job reports success, so each required check always reports. If the
+`changes` job fails, all checks run. A change to `test.yml` runs all checks.
+
+| Job | Runs when the change touches |
+|-----|------------------------------|
+| shellcheck | `*.sh`, `*.bash` |
+| yamllint | `*.yml`, `*.yaml` |
+| actionlint | `.github/workflows/`, `.github/actions/` |
+| Renovate Config Validate | `renovate.json` |
+| lint .bst files | `*.bst` |
+| BuildStream Validate | a file outside docs, tests, scripts, `tromso/`, `.github/` and the justfiles |
+| BATS Unit Tests | `tests/bats/`, `tromso/src/` |
+| Python Tests | a file that is not `*.md` or `LICENSE*` |
+| Just Parse | `Justfile`, `iso.justfile`, `just/` |
+
+The plain and LUKS install tests build the same ISO and use different install
+paths. A change to their shared inputs (`tromso/`, the justfiles,
+`scripts/lib-install-qemu.sh`, `scripts/fisherman-install.sh`) runs one of
+the two tests. The run number selects the test. Set the repository variable
+`E2E_ROUND_ROBIN_SIZE` to 2 to run both. A change to the install script or
+workflow of one test always runs that test. The two tests run fully on their
+weekly schedules and on manual dispatch.
+
+Both install tests run PR-supplied recipes with read-only repository tokens
+(tromso#270). Checkout does not persist credentials. They do not log
+in to GHCR: the payload image is public. Screenshots, serial logs, and job
+summaries remain available in Actions. No privileged job reports results,
+and no write boundary connects the untrusted artifacts to the repository.
+Any future change to reports needs its own review and behavioral security tests.
 
 ## Rollback
 

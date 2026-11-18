@@ -1,5 +1,5 @@
 ---
-sidebar_position: 10
+sidebar_position: 12
 title: "divergence"
 ---
 
@@ -23,8 +23,8 @@ milestone.
 [tuwunel]: https://github.com/matrix-construct/tuwunel
 [continuwuity]: https://forgejo.ellis.link/continuwuation/continuwuity
 [Complement]: https://github.com/matrix-org/complement
-[ADR 0001]: architecture-decisions/0001-linear-storage-dag-overlay.md
-[ADR 0002]: architecture-decisions/0002-ruma-dependency-policy.md
+[ADR 0001]: https://github.com/tuna-os/spindle/blob/main/docs/architecture-decisions/0001-linear-storage-dag-overlay.md
+[ADR 0002]: https://github.com/tuna-os/spindle/blob/main/docs/architecture-decisions/0002-ruma-dependency-policy.md
 
 ## 1. The one-line answer
 
@@ -69,7 +69,8 @@ Reading top to bottom: the further down, the more of it is ours.
 | **Where the state fed to `auth_check` comes from** | — | **Yes** |
 | **Event ordering and pagination** | — | **Yes** — the linear index |
 | **State representation** | — | **Yes** — content-addressed HAMT |
-| **Federation-fork handling** | ruma-state-res as fallback only | **Yes** — the bounded window |
+| Federation-fork state resolution | ruma-state-res (v2, v2.1); `state_res_v1` for room v1 — the algorithm the siblings and Synapse run | No (ADR 0005) |
+| **Inputs to that resolution** | — | **Yes** — materialized states, a ranked auth DAG, a root-keyed cache |
 | **On-disk format** | — | **Yes** — `spindle-store` |
 | **Integrity/audit construction** | — | **Yes** — the log chain |
 
@@ -130,30 +131,39 @@ persistence and corruption detection possible — not by speed. A divergence
 that survives on architectural grounds after losing on its original grounds is
 one to keep honest, not one to quietly restate.
 
-### 4.3 The bounded fork window (`core/src/log.rs`, SPEC §9)
+### 4.3 Fork resolution (`server/src/state_res.rs`, SPEC §9, ADR 0005)
 
-Full state resolution v2 is O(conflicted state × auth chain) and the siblings
-invoke it whenever an incoming event's state differs
-(`event_handler/resolve_state.rs`, `state_at_incoming.rs` in continuwuity).
-We reverse-BFS the ancestry to the nearest common ancestor with a hard cap on
-*work done*, not merely on the answer returned (#33), and take the cheapest of
-three cases; only a genuine same-slot conflict reaches `ruma-state-res`.
+This row used to be a divergence of algorithm: SPEC §9.2 merged a fork itself
+when the branches moved different state slots, and only a same-slot conflict
+was to reach `ruma-state-res`. That merge is not state resolution. A ban on one
+branch voids the other branch's write under state resolution and not under the
+merge, and a branch whose server's clock runs behind loses a slot under state
+resolution and keeps it under the merge
+(`core/tests/state_res_equivalence.rs`). Either leaves Spindle and every
+Synapse in the room on different state forever. The same-slot case was never
+resolved at all; the contesting tip was set aside (#225).
 
-This is the divergence with the most correctness risk attached, which is why
-§9.3's equivalence claim is tested differentially against the reference
-resolver rather than argued (#34, SPEC §19.2).
+So the algorithm is no longer ours. Whenever an event's parents, or the room's
+forward extremities, hold different states, Spindle runs the room version's
+algorithm, as the siblings do (`event_handler/resolve_state.rs`,
+`state_at_incoming.rs` in continuwuity). The receipt checks — auth events,
+state before, current state; reject or soft-fail — are the spec's, in the
+spec's order.
 
-Case 3 is found today but not yet resolved (#16). What happens instead is a
-deferral, and it is worth stating because the alternative was worse: when a
-local event finds the tips it would name contesting a key, the core sets the
-contesting tip aside (`RoomLog::set_aside_contested`). The room keeps taking
-local writes on its linear head; the tip stays a forward extremity with its
-state pinned, where the resolver will look for it; the case-3 counter moves
-once per tip; and the server logs the anomaly SPEC §9.1 asks for. A peer's
-event naming both tips is still refused, so the two servers' views of that
-key stay apart until the resolver lands. What #225 removed is the room
-becoming unwritable for its own users in the meantime — a refused merge that
-every later local append repeated, forever.
+What stays ours is the cost of the inputs:
+
+- the states are snapshots every entry already has (§4.2), so "the state at
+  this event" is not a computation;
+- parents with identical state roots skip resolution, which is the one case
+  the old merge provably shared with every version's algorithm;
+- the auth difference is Synapse's walk over a per-room auth DAG ranked once
+  and kept, not full chains handed to ruma;
+- resolutions are cached by their inputs' content addresses.
+
+The oracle is ruma's own resolver, run the slow way with full chains, on
+generated contested forks in every room-version family
+(`server/src/state_res_tests.rs`). The corpus harness also compares live state
+with the state groups from Synapse. Issue #563 tracks the complete rehearsal.
 
 ### 4.4 The log chain (`core/src/log.rs`, SPEC §5.3)
 
@@ -214,6 +224,54 @@ polling in lockstep while someone types. A restart forgets it, correctly.
 numbers, because workers must share it. We have one process; the divergence
 is having less machinery, and it holds only until scale-out (#24) reopens it.
 
+### 4.9 Partial-state joins filled in place (`server/src/rooms/partial.rs`, SPEC §11.5)
+
+A remote join asks `send_join` for `omit_members` (MSC3706, spec v1.6).
+The resident can leave the roster out. Then the snapshots of the new room
+lack most member events.
+
+A background resync gets the state at the join. It fills each member slot
+that a snapshot from the join on does not hold. It changes only the state
+root of each entry (`RoomLog::fill_partial_state`). No event moves, and the
+chain stays the same. The fill never replaces a slot that an event at or
+after the join wrote.
+
+**Siblings:** Synapse is the model. It differs in three places:
+
+- A partial room in Synapse resolves the claimed auth events of an event
+  against its partial state. Spindle takes from the claimed auth events
+  only the member slots that the partial state lacks. Thus a ban or a
+  leave that Spindle holds always wins.
+- Synapse keeps a partial room out of a `/sync` without lazy members until
+  the resync ends. Spindle sends the room with the state that it has. After
+  the resync, the next incremental sync sends the room again, with the full
+  roster.
+- Synapse checks the auth of each event again after the resync, and it can
+  reject an event after the fact. Spindle does not do this. The log gave
+  that event to clients already, and it cannot take the event back.
+  Synapse also gave its clients those events before it checked them again.
+
+conduwuit-lineage servers do not ask for partial joins.
+
+### 4.10 Sliding-sync connections written behind (`server/src/sliding.rs`)
+
+The server keeps each MSC4186 connection in memory, and a copy of it in
+the store (#897). A request reads and writes only the memory. Every 15
+seconds, one batch writes the connections that changed. A graceful stop
+writes the remaining changes. A `pos` that the memory does not hold comes
+from the store.
+
+Thus a client keeps its connection across a restart, and its room list does
+not reload. A connection stays for seven days without a request, and stays
+in memory for one hour of them.
+
+**Siblings:** Synapse writes each connection to its database in the
+request that changes it, and keeps it for seven days. Spindle does not
+write in the request, because the room record is large and a long-poll
+answers every few seconds. The cost is a crash: a client that holds a
+`pos` from the last 15 seconds before the crash gets `M_UNKNOWN_POS`, and
+starts its connection again. Before #897, every restart had that cost.
+
 ## 5. What we take from the siblings without taking their code
 
 Tuwunel and continuwuity have run real Matrix traffic; we have not. Their
@@ -248,8 +306,8 @@ optimization would break compatibility:
   invent one to make our life easier. Spindle serves versions 1 to 12. Each
   room uses the rules of its own version. Ruma has no state resolution for
   version 1, so `server/src/state_res_v1.rs` follows the spec and Synapse.
-  It agrees with Synapse on every fork of a real v1 room. Case 3 of §4.3
-  is still deferred for every version, version 1 included.
+  It agrees with Synapse on every fork of a real v1 room, and since ADR 0005
+  it is what a v1 room's forks are resolved with on the live path.
   (The v11-vs-v12 default is still open —
   SPEC §11.6 — but that is a choice *between* real versions.)
 - **CS/SS endpoint semantics.** Sync tokens are opaque to clients, which is
@@ -262,10 +320,14 @@ optimization would break compatibility:
 
 Worth being blunt, because the project's name invites the opposite assumption:
 
-**There is no MSC3995 protocol code in this repository.** What is implemented
-is linear *storage*, which peers cannot observe — Spindle emits ordinary room
+**A default build has no MSC3995 protocol code.** What it has is
+linear *storage*, which peers cannot observe — Spindle emits ordinary room
 v11 PDUs and federates as a normal homeserver. Linearized Matrix hub mode is
-#22, milestone M6, behind a feature flag, and it is deliberately last.
+# 22, milestone M6. It is behind the `hub-mode` Cargo feature,
+which is off by default and off in production. It works only between
+Spindle servers that turn it on, and a server without it sees an ordinary
+room. SPEC §12.6 has the design, and `hub_mode_disabled.rs` is the test that
+a default build serves none of it.
 
 The performance claims come from the implementation, not the protocol. That
 ordering is the plan, not an accident of what got built first: the storage
@@ -293,5 +355,6 @@ Before writing something the upstreams already do:
 
 And the inverse: before inheriting something, check it is not one of the four
 rows in §3 that we exist to do differently. Reaching for `state_res::resolve`
-on an ingest path is the specific mistake to watch for — it is the correct call
-in both sibling projects and the wrong one here, everywhere except §9's case 3.
+on an ingest path is no longer a mistake: since ADR 0005 it is the call
+whenever an event's parents hold different states, as in both sibling
+projects. What remains ours is never calling it when they do not.

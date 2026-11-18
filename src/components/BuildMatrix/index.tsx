@@ -4,7 +4,7 @@ import Link from '@docusaurus/Link';
 import {MATRIX_DESKTOPS, MATRIX_VARIANTS, buildStatus} from '@site/src/data/matrix';
 import type {BuildStatus} from '@site/src/data/matrix';
 import type {Variant} from '@site/src/data/variants';
-import {desktopLogo, markFor} from '@site/src/data/marks';
+import {desktopLogo, emojiMarkFor} from '@site/src/data/identity';
 import {elapsed} from '@site/src/components/BuildPulse';
 import type {IsoIndex} from '@site/src/hooks/useIsoIndex';
 
@@ -89,13 +89,15 @@ function Cell({variant, desktop, status, now, onPeek}: CellProps): ReactNode {
       : status.localOnly
         ? 'local'
         : 'image';
+  const visibleName = [state, age, status.nvidia ? 'N' : null, status.hwe ? 'H' : null]
+    .filter(Boolean).join(' ');
   const body = (
     <>
-      <span className={styles.cellState}>{state}</span>
+      <span className={styles.cellState}>{state}</span>{' '}
       {age && <span className={styles.cellAge}>{age}</span>}
       {(status.nvidia || status.hwe) && (
         <span className={styles.cellEditions} aria-hidden>
-          {status.nvidia && <span className={styles.edition}>N</span>}
+          {' '}{status.nvidia && <span className={styles.edition}>N</span>}{' '}
           {status.hwe && <span className={styles.edition}>H</span>}
         </span>
       )}
@@ -105,7 +107,7 @@ function Cell({variant, desktop, status, now, onPeek}: CellProps): ReactNode {
   const shared = {
     className: status.iso ? styles.cellIso : styles.cellImage,
     'data-fresh': status.iso ? String(level) : undefined,
-    'aria-label': label,
+    'aria-label': `${visibleName} — ${label}`,
     onMouseEnter: (e: React.MouseEvent<HTMLElement>) => onPeek(label, e.currentTarget),
     onFocus: (e: React.FocusEvent<HTMLElement>) => onPeek(label, e.currentTarget),
     onMouseLeave: () => onPeek('', null),
@@ -210,7 +212,7 @@ export default function BuildMatrix({index}: {index: IsoIndex | null}): ReactNod
                   <span className={styles.variantInner}>
                     <img
                       className={styles.variantMark}
-                      src={markFor(variant.id)}
+                      src={emojiMarkFor(variant.id)}
                       alt=""
                       width={24}
                       height={24}
@@ -255,7 +257,7 @@ export default function BuildMatrix({index}: {index: IsoIndex | null}): ReactNod
               <header className={styles.cardHead}>
                 <img
                   className={styles.variantMark}
-                  src={markFor(variant.id)}
+                  src={emojiMarkFor(variant.id)}
                   alt=""
                   width={26}
                   height={26}

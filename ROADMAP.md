@@ -37,7 +37,7 @@ starts here.
 | P0 | Make sync-org-docs resilient to GitHub API rate limits | #242, #260 | ✅ Done |
 | P1 | Historical banners & lifecycle tagging for archived repos | #270, #406 | 🟡 In progress |
 | P1 | Versioned docs for screenshots/walkthroughs (docs-artifacts pattern) | #308 | ⬜ Not started |
-| P2 | Variant pages track ROADMAP status (tunaos.org/wiki ↔ tunaos ROADMAP) | #417 | ⬜ Unowned (see #417) |
+| P2 | Variant pages track ROADMAP status (tunaos.org/wiki ↔ TunaOS ROADMAP) | #417 | ⬜ Unowned (see #417) |
 
 ---
 
@@ -82,10 +82,10 @@ walkthrough and maintainers record whether to extend, revise, or stop the patter
 | Goal | Owner | Tracking | Status |
 |------|-------|----------|--------|
 | Historical banners and lifecycle status markers on archived repo pages | guide | #270, #406 | 🟡 In progress |
-| Migration/content review cadence aligned with variant lifecycle policy | guide | tunaos `VARIANT-LIFECYCLE.md` | ✅ Done (tunaos#1175 confirmed no residual gap) |
-| Download/usage data on the site (adoption metrics surface) | guide | #429, #430 | ✅ Done — `/metrics` dashboard with a same-origin `/api/adoption` proxy to the tunaos countme collector (RFC 012) |
+| Migration/content review cadence aligned with variant lifecycle policy | guide | TunaOS `VARIANT-LIFECYCLE.md` | ✅ Done ([tuna-os#1175](https://github.com/tuna-os/tunaOS/issues/1175) confirmed no residual gap) |
+| Download/usage data on the site (adoption metrics surface) | guide | #429, #430 | ✅ Done — `/metrics` dashboard with a same-origin `/api/adoption` proxy to the TunaOS countme collector (RFC 012) |
 | Versioned installer walkthrough pilot | guide | #308 | ⬜ Not started |
-| ~~Variant pages track ROADMAP status (tunaos.org/wiki ↔ tunaos ROADMAP)~~ | — | #417 | ❌ Dropped — the org-wide sync already publishes tunaos `ROADMAP.md` at `/docs/tunaos/ROADMAP`; per-variant status mirroring has no owner (tunaos#1295 closed it as out of scope) and is not planned |
+| ~~Variant pages track ROADMAP status (tunaos.org/wiki ↔ TunaOS ROADMAP)~~ | — | #417 | ❌ Dropped — the org-wide sync already publishes TunaOS `ROADMAP.md` at `/docs/tunaos/ROADMAP`; per-variant status mirroring has no owner ([tuna-os#1295](https://github.com/tuna-os/tunaOS/issues/1295) closed it as out of scope) and is not planned |
 
 ---
 

@@ -1,6 +1,7 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import {readdirSync} from 'node:fs';
 import {MAIN_VARIANTS} from './src/data/variants';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
@@ -11,10 +12,19 @@ import {MAIN_VARIANTS} from './src/data/variants';
 // /switch-to-bazzite waits for Universal Blue's approval of the Bazzite mark.
 const UNLISTED_ROUTES = ['/switch-to-bazzite'];
 
+// One search index per top-level docs section. A single index for the whole
+// site outgrew the 25 MiB Cloudflare Workers asset limit (search-index.json
+// reached 25.5 MiB), so each docs/<section> gets its own search context and
+// file. Pages outside every section (home, landing pages) keep the ROOT index.
+const SEARCH_CONTEXTS = readdirSync('docs', {withFileTypes: true})
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => `docs/${entry.name}`)
+  .sort();
+
 const config: Config = {
   title: 'TunaOS',
   tagline: 'A Collection of Cloud-Native Enterprise Linux OS Images',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/identity/emoji/tunaos.svg',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -27,7 +37,6 @@ const config: Config = {
   baseUrl: '/',
   trailingSlash: false,
   onBrokenLinks: "warn",
-  onBrokenMarkdownLinks: 'warn',
 
   markdown: {
     // Every page is parsed as MDX, where `<!-- ... -->` is a syntax error.
@@ -39,6 +48,10 @@ const config: Config = {
     // MDX comment survives createExcerpt(), so a leading pragma becomes the
     // page's meta description.
     mdx1Compat: {comments: true},
+    hooks: {
+      // Moved from the top-level `onBrokenMarkdownLinks` option, deprecated for removal in Docusaurus v4.
+      onBrokenMarkdownLinks: 'warn',
+    },
   },
 
   // Even if you don't use internationalization, you can use this field to set
@@ -80,6 +93,7 @@ const config: Config = {
         indexDocs: true,
         indexPages: true,
         docsRouteBasePath: '/docs',
+        searchContextByPaths: SEARCH_CONTEXTS,
         // Unlisted previews stay out of the search index too.
         ignoreFiles: UNLISTED_ROUTES.map((r) => new RegExp(`^${r.slice(1)}(/|$)`)),
       },
@@ -95,10 +109,13 @@ const config: Config = {
       disableSwitch: false,
     },
     navbar: {
-      title: 'TunaOS',
       logo: {
-        alt: 'TunaOS Logo',
-        src: 'img/logo.png',
+        alt: 'TunaOS',
+        // The header stays dark in both themes. The unsuffixed source has light ink.
+        src: 'img/identity/wordmarks/tunaos.svg',
+        className: 'tunaos-wordmark',
+        width: 125,
+        height: 32,
       },
       items: [
         {

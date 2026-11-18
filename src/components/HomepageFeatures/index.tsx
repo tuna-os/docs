@@ -15,8 +15,8 @@ const FeatureList: FeatureItem[] = [
     title: 'BuildStream desktops',
     description: (
       <>
-        Tromsø, XFCE Linux and Dakota are built from source on freedesktop-sdk{' '}
-        with BuildStream, rather than assembled from prebuilt packages.
+        Athens, Tromsø, Brussels and Dakota use BuildStream for their desktop
+        image recipes.
       </>
     ),
   },

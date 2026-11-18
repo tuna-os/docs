@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 7
 title: "agent lessons"
 ---
 
@@ -139,6 +139,7 @@ Check a current observation at the barrier; another sleep cannot prove the event
 
 **dracut/printk logging.** Neither `info()` nor `warn()` is reliable in an
 initramfs:
+
 - `info()` writes `<30>` (KERN_INFO) and only echoes to stderr when
   `DRACUT_QUIET != yes` — which `check_quiet()` defaults to `yes`.
 - `warn()` writes `<28>` (level 4), but `quiet` sets `console_loglevel=4` and
@@ -162,6 +163,7 @@ no `qemu-nbd`, so the deployer stages its own — but the deployer is Fedora-bas
 and the initramfs is assembled from the *target's* libraries. Measured skew:
 `libfuse3.so.4` vs `.so.3` (a soname **major** bump). The binary lands and dies
 at runtime, failing exactly like a missing one.
+
 - Ship the **full closure**: binary + every `NEEDED` lib + the loader, invoked as
   `ld.so --library-path <dir> <binary>`.
 - **Never** symlink `.so.4` onto `.so.3` — a soname major bump is an ABI break,
@@ -227,7 +229,7 @@ The first half of this document was written mid-session. What follows is what
 the rest of the day taught, including six regressions I introduced myself.
 Read §12 first; it is the one that would have saved the most time.
 
-## 12. Get inside a live box. Do not wait for the run to finish.
+## 12. Get inside a live box. Do not wait for the run to finish
 
 The single highest-value technique of the entire session, and it came from the
 user telling me to stop waiting.
@@ -263,7 +265,7 @@ evidence disappears when the run cleans up.
 The deployer initramfs ships `qemu-ga`, so this works during Phase 1 too, not
 just once Windows is back.
 
-## 13. Phase 2 was never *failing*. It was never *reachable*.
+## 13. Phase 2 was never *failing*. It was never *reachable*
 
 Worth internalising as a class of mistake, not just a fact.
 
@@ -345,6 +347,7 @@ feedback loop could validate it.** Every one of these looked correct when
 written and was wrong in an interaction I could not test locally.
 
 Mitigations that actually work, in order of value:
+
 1. **Reproduce in a container first.** The qemu-nbd closure was diagnosed AND
    its fix verified in a container in minutes.
 2. **One deployer change per run.** Repeatedly violated under pressure to show
@@ -467,6 +470,7 @@ extension had already silently skipped for the same reason, reporting only
 `size='0'` at INFO level.
 
 Two habits fall out of this:
+
 - When the guest-side script computes a location (`$storageRoot`), the
   host-side must **ask for it**, not re-derive it. `guest_wootc_root()` queries
   the guest and caches only a positive answer.
@@ -495,6 +499,7 @@ rejects (`crun: unknown version specified`). Note the *good* error text exists �
 it appears verbatim in `podman run`, and it was `podman build` that buried it.
 
 Three habits:
+
 - **Check the blast radius before diagnosing.** The same push turned the
   container test suite red, and *that* log printed the unswallowed
   `crun: unknown version specified`. A failure appearing in two unrelated
@@ -513,7 +518,7 @@ Three habits:
   real `podman run`*, not gated on a version comparison. Version strings are a
   proxy; a container that starts is the fact.
 
-## 27. Rebooting is not releasing. Phase 2 owed Windows a clean unmount.
+## 27. Rebooting is not releasing. Phase 2 owed Windows a clean unmount
 
 Both `fedora-gnome` cells of run 30704513401 failed identically — so, not a
 flake — with `[FAIL] QGA did not become available for Windows return after
@@ -753,6 +758,22 @@ copy loop saw an unattributable vendor binary and refused, correctly.
 - The harness now drops the task once the app is up and then *counts*
   `wootc.exe` before writing the directive — no instance can install until the
   directive exists, so an extra killed at that point provably never installed.
+- **The drop was a silent no-op for a month (2026-10).** It was written
+  `cmd.exe /d /c "schtasks.exe /Delete /TN \"wootc-gui-e2e\" /F >NUL 2>&1"`.
+  PowerShell has no backslash escape, so `\"` *ended* the string; cmd.exe got
+  two arguments, schtasks tried to delete a task named `"`, and `>NUL` hid the
+  error. The count still caught the extra while launch confirmation was slower
+  than the trigger's minute. When the ready marker (#364) made confirmation
+  fast, the count ran first, the trigger fired after it, and the second app's
+  pipeline died on the first one's file: `Making room for Linux: root.disk
+  already exists` on every image (runs 36450824541, 38735109866). The ESP at
+  failure time held a complete deployer chain from the other pipeline — the
+  failing one had stopped before it ever wrote there. The delete is now
+  verified from a successful task listing, and the directive is refused
+  without both "task absent" and "one wootc.exe"
+  (`tests/unit/test_gui_launch_task.py`, which also parses the line with
+  `pwsh` when present). A fix that hides its own failure behind `>NUL` is a
+  proxy for itself (§1).
 
 ## 33. A deaf channel has no opinion about the product
 

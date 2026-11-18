@@ -73,8 +73,11 @@ state, not a public repository.
 
 `scripts/build-chain.sh` orchestrates curated RPM families. A family manifest
 defines tiers, and packages within a tier may build concurrently. The script
-supports isolated Mock/Podman execution and a native RPM backend; backend
-implementation is being moved behind `scripts/lib/build-chain/` interfaces.
+supports isolated Mock/Podman execution and a native RPM backend. Backend
+implementations (`podman.sh`, `mock.sh`, `native.sh`), the local repository
+service (`repo.sh`) and spec/source staging (`sources.sh`) live behind
+`scripts/lib/build-chain/` interfaces; `build-chain.sh` keeps argument
+parsing, filters, and tier/stream scheduling.
 Family publishers consume the resulting RPM artifacts and write only their
 declared prefix.
 

@@ -5,6 +5,18 @@ title: "Contributing"
 
 Thanks for your interest in a contribution! This project is part of the [TunaOS](https://tunaos.org) ecosystem.
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## Getting Started
 
 1. Fork the repo and clone it locally.
@@ -24,7 +36,7 @@ just ci
 ```
 
 This runs, in order: `gofmt` (fmt-check), `go vet` (both tag sets),
-`go build` (both tag sets), and `go test -race` (both tag sets). You can
+`go build` (both tag sets), `go test -race` (both tag sets), and `golangci-lint`. You can
 also run the steps individually:
 
 ```bash
@@ -32,10 +44,15 @@ just fmt     # gofmt -w
 just vet     # go vet, both tag sets
 just build   # go build, both tag sets
 just test    # go test -race, both tag sets
+just lint    # golangci-lint (repo-wide except errcheck, errcheck on diff)
+just cover   # go test -coverprofile, fails if below .coverage-budget floor
+just test-js # node --test, the web client's ES module unit tests
 ```
 
 Some tests use real tools (qemu-img, rclone conversions). If you touch that
 code path, install them locally, or rely on CI to run them.
+
+For bootc image verification, run `just vmtest-layer` to test the generated layer or `just vmtest-e2e` for complete VM boot tests.
 
 ## Pull Requests
 
@@ -44,15 +61,23 @@ code path, install them locally, or rely on CI to run them.
 - Update `docs/` if your change affects usage, backend parity, or architecture.
 - Include the validation commands you ran in the PR description.
 
+### Reviewing generated screenshots
+
+The **Screenshots** workflow captures the demo fleet and keeps the
+`screenshots` artifact. On non-PR runs, changes to Corral images also produce
+`corral-screenshot-patch`. The job summary gives the exact download and apply
+commands. A successful handoff means the artifact is ready; it does not mean
+that a PR exists or images are public.
+
+A maintainer applies the patch on a branch from current `main` and inspects
+every changed image. They commit only `docs/screenshots/generated/*.png` and
+open a normal PR for review. If the patch is stale, run capture again; do not
+force the patch. Human review and required checks remain mandatory.
+
+GitHub Actions self-approval stays disabled. This needs no extra token or
+policy change. The optional PR into the site repository stays unchanged.
+
 ## Questions?
 
 - [TunaOS Documentation](https://tunaos.org)
 - [GitHub Issues](https://github.com/tuna-os/corral/issues)
-
-
-## Contribute compute — no code needed
-
-No time to write code? You can still push this project's backlog forward. TunaOS AI-agent hives work on this repository. Lend a hive your AI subscription or API tokens, and your machine runs contributor tasks from this project's backlog.
-
-- 🪸 [Contribute compute to the reef hive](https://reef.tunaos.org/contribute)
-- 🏫 [Contribute compute to the school hive](https://school.tunaos.org/contribute)
