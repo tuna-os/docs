@@ -68,7 +68,10 @@ attacker with a kernel exploit can still escape it.
   keys).
 - **Syscalls**: a seccomp denylist refuses interfaces no extension needs, such as `ptrace` and
   module loading. It is a denylist because the worker is Node, whose syscall use changes between
-  releases.
+  releases. It also refuses Unix-domain sockets (`socketpair` stays allowed for a child's pipes),
+  so a worker cannot reach the session bus, the engine's IPC socket or any other local service,
+  and the worker is started with a short allowlist of the engine's environment, without the bus,
+  display or agent addresses.
 - **Memory**: each worker is capped at 256 MiB by `MemoryMax` in its own systemd scope, with
   each JavaScript heap capped at 160 MiB below that. Where no systemd is reachable (inside the
   Flatpak) `RLIMIT_DATA` holds it at 512 MiB of committed memory. The caps are not configurable
