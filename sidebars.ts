@@ -13,6 +13,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Guides',
       collapsed: false,
+      link: {type: 'doc', id: 'guides/index'},
       items: [
         'accessibility-features-guide',
         {type: 'category', label: 'Development', collapsed: true, items: ['guides/AI-DEVELOPMENT-QUICKSTART', 'guides/GAMEDEV-QUICKSTART', 'guides/KERNEL-DEVELOPER-QUICKSTART', 'guides/linux-audio-creative-bootc', 'guides/linux-gaming-bootc']},
