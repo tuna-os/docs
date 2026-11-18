@@ -372,3 +372,6 @@ niri msg workspaces
 - [Bonito Variant Guide](/docs/bonito) — Fedora 44 base variant documentation
 - [Desktop Environment Comparison](/docs/desktop-comparison) — Comparison of desktop workflows on TunaOS
 - [Manage images with bootc](/docs/tunaos/bootc-usage) — Full guide to bootc on TunaOS
+
+For checks across desktops, hardware, and updates, see the
+[system diagnosis guide](troubleshooting.md).
