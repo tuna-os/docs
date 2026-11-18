@@ -13,11 +13,12 @@ This page is the start point for the Gurnard docs. Read the full guide first,
 then the shortcuts if you are new to the desktop.
 
 - **[Pantheon on Gurnard](../gurnard-pantheon.md)** — the full variant guide:
-  what Pantheon is, first steps, installing apps, and bug reports.
+  what Pantheon is, first steps, app installs, and bug reports.
 - **[Pantheon keyboard shortcuts](pantheon-shortcuts.md)** — the default
   keybindings and where to change them.
 
-## Choosing this variant
+## Is this the right variant?
 
-Gurnard is one of several TunaOS images. Pick the desktop and base that match
-your hardware and taste at **[Choosing a variant](../choosing-a-variant.md)**.
+Gurnard is one of several TunaOS images. To find the desktop and base that
+match your hardware and taste, compare the variants in the
+**[variant guide](../choosing-a-variant.md)**.
