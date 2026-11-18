@@ -50,6 +50,22 @@ If `gofmt -l .` prints any file paths, run `gofmt -w .` before committing.
 
 For `Dockerfile` changes, also run `docker build -t ccleft:local .`.
 
+CI also runs `govulncheck` (`.github/workflows/govulncheck.yml`) on every pull
+request, on pushes to `main`, and weekly. Run it locally with:
+
+```
+go install golang.org/x/vuln/cmd/govulncheck@v1.9.0
+govulncheck ./...
+```
+
+Standard-library findings depend on the Go toolchain that runs the scan. CI
+scans with the toolchain of the `golang` build image pinned in the
+`Dockerfile`, so a local Go older than that pin can report findings CI does
+not; the workflow file has the exact `docker run` command CI uses. A new Go
+security release or advisory can fail this check on a pull request that
+changed nothing related. The fix is then a `Dockerfile` digest or dependency
+bump.
+
 Provider behavior is tested with `httptest` servers and recorded payloads under
 [`testdata/`](https://github.com/tuna-os/ccleft/blob/main/testdata/README.md). Tests must not contact live provider APIs or
 require credentials. `live_test.go` means its fixtures originated from

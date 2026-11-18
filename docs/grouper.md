@@ -12,6 +12,18 @@ Prefer a visual tour? See the **[Grouper overview →](/grouper)** start page.
 
 Grouper brings the bootc model to the most familiar base in Linux: Ubuntu. Atomic image updates, composefs, and the same desktops as every other TunaOS variant — experimental today, parity-bound tomorrow.
 
+## Who it's for
+
+Grouper is for Ubuntu users who want the bootc model. It is a good pick for people who test new Ubuntu work. Start here if you like the Ubuntu base but want atomic image updates.
+
+## Why choose this variant
+
+- Brings the bootc model to Ubuntu.
+- Uses composefs for fast, safe image updates.
+- Choose this over other variants when you want Ubuntu on bootc.
+
+To see every variant side by side, read [Choose a variant](./choosing-a-variant).
+
 ## Features
 
 - **Experimental by design**: Where we prove the Ubuntu bootc work. It has a
