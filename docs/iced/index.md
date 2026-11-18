@@ -31,6 +31,18 @@ Inspired by [Elm].
 
 </div>
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## Features
 
 * Simple, easy-to-use, batteries-included API
@@ -48,20 +60,20 @@ Inspired by [Elm].
     * [`iced_tiny_skia`] offering a software alternative as a fallback
   * A [windowing shell]
 
-__Iced is currently experimental software.__ [Take a look at the roadmap] and
+**Iced is currently experimental software.** [Take a look at the roadmap] and
 [check out the issues].
 
 [Cross-platform support]: https://raw.githubusercontent.com/iced-rs/iced/master/docs/images/todos_desktop.jpg
 [text inputs]: https://iced.rs/examples/text_input.mp4
 [scrollables]: https://iced.rs/examples/scrollable.mp4
 [Debug tooling with performance metrics and time traveling]: https://github.com/user-attachments/assets/2e49695c-0261-4b43-ac2e-8d7da5454c4b
-[renderer-agnostic native runtime]: runtime/
+[renderer-agnostic native runtime]: https://github.com/tuna-os/iced/tree/master/runtime
 [`wgpu`]: https://github.com/gfx-rs/wgpu
 [`tiny-skia`]: https://github.com/RazrFalcon/tiny-skia
-[`iced_wgpu`]: wgpu/
-[`iced_tiny_skia`]: tiny_skia/
-[windowing shell]: winit/
-[Take a look at the roadmap]: ROADMAP.md
+[`iced_wgpu`]: https://github.com/tuna-os/iced/tree/master/wgpu
+[`iced_tiny_skia`]: https://github.com/tuna-os/iced/tree/master/tiny_skia
+[windowing shell]: https://github.com/tuna-os/iced/tree/master/winit
+[Take a look at the roadmap]: https://github.com/tuna-os/iced/blob/master/ROADMAP.md
 [check out the issues]: https://github.com/iced-rs/iced/issues
 
 ## Overview
@@ -69,18 +81,18 @@ __Iced is currently experimental software.__ [Take a look at the roadmap] and
 Inspired by [The Elm Architecture], Iced expects you to split user interfaces
 into four different concepts:
 
-* __State__ — the state of your application
-* __Messages__ — user interactions or meaningful events that you care
+* **State** — the state of your application
+* **Messages** — user interactions or meaningful events that you care
   about
-* __View logic__ — a way to display your __state__ as widgets that
-  may produce __messages__ on user interaction
-* __Update logic__ — a way to react to __messages__ and update your
-  __state__
+* **View logic** — a way to display your **state** as widgets that
+  may produce **messages** on user interaction
+* **Update logic** — a way to react to **messages** and update your
+  **state**
 
 We can build something to see how this works! Let's say we want a simple counter
 that can be incremented and decremented using two buttons.
 
-We start by modelling the __state__ of our application:
+We start by modelling the **state** of our application:
 
 ```rust
 #[derive(Default)]
@@ -90,7 +102,7 @@ struct Counter {
 ```
 
 Next, we need to define the possible user interactions of our counter:
-the button presses. These interactions are our __messages__:
+the button presses. These interactions are our **messages**:
 
 ```rust
 #[derive(Debug, Clone, Copy)]
@@ -101,7 +113,7 @@ pub enum Message {
 ```
 
 Now, let's show the actual counter by putting it all together in our
-__view logic__:
+**view logic**:
 
 ```rust
 use iced::widget::{button, column, text, Column};
@@ -125,8 +137,8 @@ impl Counter {
 }
 ```
 
-Finally, we need to be able to react to any produced __messages__ and change our
-__state__ accordingly in our __update logic__:
+Finally, we need to be able to react to any produced **messages** and change our
+**state** accordingly in our **update logic**:
 
 ```rust
 impl Counter {
@@ -155,9 +167,9 @@ fn main() -> iced::Result {
 
 Iced will automatically:
 
-  1. Take the result of our __view logic__ and layout its widgets.
-  1. Process events from our system and produce __messages__ for our
-     __update logic__.
+  1. Take the result of our **view logic** and layout its widgets.
+  1. Process events from our system and produce **messages** for our
+     **update logic**.
   1. Draw the resulting user interface.
 
 Read the [book], the [documentation], and the [examples] to learn more!
@@ -178,7 +190,7 @@ end-user-oriented GUI library, while keeping the ecosystem modular.
 [this pull request]: https://github.com/hecrj/coffee/pull/35
 [The first alpha version]: https://github.com/iced-rs/iced/tree/0.1.0-alpha
 [a renderer-agnostic GUI library]: https://www.reddit.com/r/rust/comments/czzjnv/iced_a_rendereragnostic_gui_library_focused_on/
-[tour example]: examples/README.md#tour
+[tour example]: https://github.com/tuna-os/iced/blob/master/examples/README.md#tour
 [`ggez`]: https://github.com/ggez/ggez
 
 ## Contributing / Feedback
@@ -198,7 +210,6 @@ The development of Iced is sponsored by the [Cryptowatch] team at [Kraken.com]
 [Coffee]: https://github.com/hecrj/coffee
 [Elm]: https://elm-lang.org/
 [The Elm Architecture]: https://guide.elm-lang.org/architecture/
-[the current issues]: https://github.com/iced-rs/iced/issues
 [contributing guidelines]: https://github.com/iced-rs/iced/blob/master/CONTRIBUTING.md
 [our Discourse forum]: https://discourse.iced.rs/
 [our Discord server]: https://discord.gg/3xZJ65GAhd

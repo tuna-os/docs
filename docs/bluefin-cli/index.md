@@ -10,6 +10,18 @@ status: stable
 A strong, modern CLI tool that manages your shell configuration and the look of
 your development environment. Its TUIs use the [Charm](https://charm.sh/) libraries.
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## ✨ Features
 
 - **🎨 Interactive Menu**: Default TUI experience for easy navigation
@@ -22,27 +34,31 @@ your development environment. Its TUIs use the [Charm](https://charm.sh/) librar
 - **🩺 Doctor**: `bluefin-cli doctor` diagnoses setup problems with fix hints
 - **🎨 Theme Flavors**: `bluefin-cli theme <flavor>` pins a Catppuccin flavor (latte, frappe, macchiato, mocha) or follows your terminal with `auto`
 - **⬆ Self-Update**: `bluefin-cli update` for script installs — sha256-verified against the release checksums. For a package-manager install, it tells you the correct upgrade command
-- **🏠 My Brewfile**: one file describes your machine's packages — `brew`/`cask` lines plus `winget`/`scoop`/`choco` on Windows. `bluefin-cli brewfile dump` records the installed packages. `add`/`remove` edit that file, and `install` applies all of it. The TUI does the same from Install Apps → My Brewfile, one package at a time. Extra recipes in `~/.config/bluefin-cli/bundles/*.Brewfile` appear alongside the curated bundles
+- **🏠 My Brewfile**: one file describes your machine's packages — `brew`/`cask` lines plus `winget`/`scoop`/`choco` on Windows. `bluefin-cli brewfile dump` records the installed packages. `add`/`remove` edit that file, and `install` applies all of it. The TUI does the same from Install Apps → My Brewfile, one package at a time. For syntax and examples, refer to the [Brewfile guide](https://github.com/tuna-os/bluefin-cli/blob/main/docs/brewfile-guide.md). Extra recipes in `~/.config/bluefin-cli/bundles/*.Brewfile` appear alongside the curated bundles
 - **📦 Profiles**: `bluefin-cli profile export > setup.json` on one machine, `profile import setup.json` on another — shells, tools, and theme replayed exactly
-- **🦕 A fully native TUI**: a persistent shell with breadcrumbs, a fuzzy filter (`/`), a `ctrl+p` command palette, and a dot-matrix dino in the header. It also hides a surprise.
+- **🦕 A fully native TUI**: a persistent shell with breadcrumbs and a fuzzy filter (`/`). It also has a `ctrl+p` command palette and a dot-matrix dino in the header. It hides a surprise.
 
 ## 🚀 Installation
 
-> **Status (2026-08-14):** each release ships prebuilt binary assets. Since
-> v0.10.6 that includes tarballs for Linux, macOS and Windows, plus native deb
-> and rpm packages, so the one-liner scripts below work. A note marks each
-> package-manager path that is not ready yet.
+> **Status (2026-10-07):** each release ships prebuilt binary assets:
+> tarballs for Linux, macOS and Windows, plus native deb and rpm packages.
+> The one-liner scripts and direct downloads below work today. A note
+> marks each package-manager path that does not work yet.
 
 ### One-liner (Linux / macOS)
+
+For more Linux and macOS steps, see the [Linux Setup Guide](https://github.com/tuna-os/bluefin-cli/blob/main/docs/setup-linux.md) and [macOS Setup Guide](https://github.com/tuna-os/bluefin-cli/blob/main/docs/setup-macos.md).
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/tuna-os/bluefin-cli/main/install.sh | sh
 ```
 
-> **Status (2026-08-14):** the script downloads the binary from GitHub release
-> assets, which are published since v0.10.6 ([#141](https://github.com/tuna-os/bluefin-cli/issues/141), closed).
+> **Status (2026-10-07):** the script downloads the binary from GitHub release
+> assets, published on every release since v0.10.6.
 
 ### One-liner (Windows PowerShell)
+
+For more Windows steps, see the [Windows Setup Guide](https://github.com/tuna-os/bluefin-cli/blob/main/docs/setup-windows.md).
 
 ```powershell
 irm https://raw.githubusercontent.com/tuna-os/bluefin-cli/main/install.ps1 | iex
@@ -54,33 +70,30 @@ Then enable shell integration:
 bluefin-cli shell powershell on
 ```
 
-> **Status (2026-08-14):** same as the Linux/macOS one-liner — the script
-> downloads from GitHub release assets, which are published since v0.10.6
-> ([#141](https://github.com/tuna-os/bluefin-cli/issues/141), closed).
+> **Status (2026-10-07):** same as the Linux/macOS one-liner — the script
+> downloads from GitHub release assets, published on every release since
+> v0.10.6.
 
 ### Homebrew (Linux / macOS)
 
-The formula is published automatically by GoReleaser to the
-[`tuna-os/homebrew-tap`](https://github.com/tuna-os/homebrew-tap) tap on every
-release ([#15](https://github.com/tuna-os/bluefin-cli/issues/15)):
-
-```bash
-brew tap tuna-os/tap
-brew install bluefin-cli
-```
-
-> **Status (2026-08-14):** the `bluefin-cli` formula has not been published by
-> the release pipeline yet — only `corral-vm.rb` ships in the tuna-os tap
-> (see [#141](https://github.com/tuna-os/bluefin-cli/issues/141)). Until it
-> appears, use `ublue-os/homebrew-experimental-tap` below.
-
-It is also available from `ublue-os/homebrew-experimental-tap`, synced from the
-source-build formula in [`contrib/homebrew/bluefin-cli.rb`](https://github.com/tuna-os/bluefin-cli/blob/main/contrib/homebrew/bluefin-cli.rb):
+The preview formula is available from `ublue-os/homebrew-experimental-tap`,
+synced from the source-build formula in
+[`contrib/homebrew/bluefin-cli.rb`](https://github.com/tuna-os/bluefin-cli/blob/main/contrib/homebrew/bluefin-cli.rb):
 
 ```bash
 brew tap ublue-os/homebrew-experimental-tap
 brew install bluefin-cli
 ```
+
+> **Status (2026-10-17):** use `ublue-os/homebrew-experimental-tap` above.
+> The primary tap [`tuna-os/homebrew-tap`](https://github.com/tuna-os/homebrew-tap)
+> is not available yet. The GoReleaser configuration includes the Homebrew
+> publisher. It pushes to the tap with the `HOMEBREW_TAP_SSH_KEY` deploy key,
+> but the team has not verified a publication yet
+> ([#295](https://github.com/tuna-os/bluefin-cli/issues/295)). For maintainer
+> key and setup details, see
+> [`docs/release-publishing.md`](https://github.com/tuna-os/bluefin-cli/blob/main/docs/release-publishing.md). Once published,
+> `brew tap tuna-os/tap && brew install bluefin-cli` will be the primary path.
 
 ### Winget (Windows)
 
@@ -88,11 +101,11 @@ brew install bluefin-cli
 winget install --id Hanthor.BluefinCLI --exact
 ```
 
-> **Status (2026-08-14):** `Hanthor.BluefinCLI` **v0.8.1 is published** in the
-> winget repository (microsoft/winget-pkgs#407090, merged 08-14) but predates
-> the current v0.10.6 release line — **installable, though not yet current**
-> ([#141](https://github.com/tuna-os/bluefin-cli/issues/141), closed — release
-> publishing works; a newer manifest submission is pending).
+> **Status (2026-10-07):** the winget repository has `Hanthor.BluefinCLI`
+> **v0.8.1** (microsoft/winget-pkgs#407090). That version predates the
+> current v0.11.x release line — **installable, though not current**. A
+> newer manifest awaits review; `.github/workflows/winget.yml` is the manual
+> fallback to resubmit one.
 
 ### Chocolatey (Windows)
 
@@ -100,10 +113,8 @@ winget install --id Hanthor.BluefinCLI --exact
 choco install bluefin-cli
 ```
 
-> **Status (2026-08-14):** no `bluefin-cli` package has been published to the
-> Chocolatey community repository yet — **not available**
-> ([#141](https://github.com/tuna-os/bluefin-cli/issues/141), closed — release
-> publishing now works, the Choco manifest is still pending).
+> **Status (2026-10-07):** the Chocolatey community repository has no
+> `bluefin-cli` package yet — **not available**.
 
 ### Scoop (Windows)
 
@@ -112,10 +123,11 @@ scoop bucket add tuna-os https://github.com/tuna-os/scoop-bucket
 scoop install bluefin-cli
 ```
 
-> **Status (2026-08-14):** `tuna-os/scoop-bucket` has no manifests yet — the
-> manifest is published by the release pipeline and is currently pending
-> ([#141](https://github.com/tuna-os/bluefin-cli/issues/141), closed — release
-> publishing now works, the Scoop manifest is still pending).
+> **Status (2026-10-07):** still not published — `tuna-os/scoop-bucket`
+> ships no manifests at all. Like the Homebrew tap above, GoReleaser skips
+> the Scoop publisher because no one has set the `SCOOP_BUCKET_TOKEN`
+> repository secret; see
+> [`docs/release-publishing.md`](https://github.com/tuna-os/bluefin-cli/blob/main/docs/release-publishing.md).
 
 ### deb / rpm (Debian, Ubuntu, Fedora, openSUSE…)
 
@@ -135,8 +147,8 @@ sudo rpm -i bluefin-cli_<version>_linux_amd64.rpm
 yay -S bluefin-cli-bin
 ```
 
-> **Status (2026-08-14):** no `bluefin-cli-bin` package exists in the AUR yet —
-> **not available** ([#141](https://github.com/tuna-os/bluefin-cli/issues/141), closed).
+> **Status (2026-10-07):** no `bluefin-cli-bin` package exists in the AUR yet
+> — **not available**.
 
 ### Go Install
 
@@ -147,7 +159,8 @@ go install github.com/tuna-os/bluefin-cli@latest
 ### Build from Source (Any OS)
 
 **Prerequisites:**
-- Go 1.26.0 or later
+
+- Go 1.26.7 or later
 
 ```bash
 git clone https://github.com/tuna-os/bluefin-cli.git
@@ -162,19 +175,26 @@ Maintainers: semantic-release gives a version to each qualified merge to
 channels. `.github/workflows/winget.yml` is a manual fallback, to submit a
 Winget version again.
 
-A Scoop release needs the `SCOOP_BUCKET_TOKEN` repository secret (a fine-grained PAT with write access to `tuna-os/scoop-bucket`), without which the Scoop manifest upload step is safely skipped during release workflows. See [docs/release-publishing.md](https://github.com/tuna-os/bluefin-cli/blob/main/docs/release-publishing.md) for details.
+A Scoop release needs the `SCOOP_BUCKET_TOKEN` repository secret. GoReleaser
+uses it to upload the Scoop manifest to the bucket. Without it, GoReleaser
+skips that upload. See [release details](https://github.com/tuna-os/bluefin-cli/blob/main/docs/release-publishing.md).
 
-A Homebrew tap release needs the `HOMEBREW_TAP_TOKEN` repository secret (a fine-grained PAT with write access to `tuna-os/homebrew-tap`), without which the formula upload step is safely skipped during release workflows. See [docs/release-publishing.md](https://github.com/tuna-os/bluefin-cli/blob/main/docs/release-publishing.md) for details.
+A Homebrew tap release needs the `HOMEBREW_TAP_SSH_KEY` repository secret.
+GoReleaser uses it to push the formula to the tap. Without it, GoReleaser
+skips that upload. See [release details](https://github.com/tuna-os/bluefin-cli/blob/main/docs/release-publishing.md).
 
-Homebrew release process: when semantic-release determines that a merge to
-`main` warrants a release, it invokes GoReleaser, which publishes the binary
-formula to `tuna-os/homebrew-tap` (requires the `HOMEBREW_TAP_TOKEN` secret).
-External taps that build from source, such as
-`ublue-os/homebrew-experimental-tap`, must be synced manually — bump `url` and
+Homebrew release process: when semantic-release finds that a merge to
+`main` warrants a release, it invokes GoReleaser. GoReleaser then sends the
+binary formula to `tuna-os/homebrew-tap` when `HOMEBREW_TAP_SSH_KEY` is set.
+For external taps that build from source, such as
+`ublue-os/homebrew-experimental-tap`, sync the tap by hand. Bump `url` and
 `sha256` in [`contrib/homebrew/bluefin-cli.rb`](https://github.com/tuna-os/bluefin-cli/blob/main/contrib/homebrew/bluefin-cli.rb)
 and open a PR in that tap.
 
 ## 📖 Usage
+
+New here? Follow the [quick-start guide](https://github.com/tuna-os/bluefin-cli/blob/main/docs/getting-started.md) to set up your
+shell, install tools, and save a profile.
 
 ### Interactive Menu (Default)
 
@@ -242,6 +262,7 @@ Two shells need a word of explanation:
   configuration, to make a new copy of that script.
 
 Features:
+
 - **eza**: Modern replacement for `ls`
 - **bat**: Syntax color for `cat`
 - **ugrep**: Faster grep
@@ -308,21 +329,13 @@ bluefin-cli install wallpapers
 
 bluefin-cli install wallpapers bluefin-wallpapers aurora-wallpapers bazzite-wallpapers
 
-# Non-interactive test run: apply theme + enable all automation
+# Skip the post-install prompt
+
+bluefin-cli install wallpapers bluefin-wallpapers --non-interactive
+
+# Run sunset setup right after the install, without the prompt
 
 bluefin-cli install wallpapers bluefin-wallpapers --yes
-
-# Non-interactive with explicit controls
-
-bluefin-cli install wallpapers bluefin-wallpapers --non-interactive --apply-theme --theme Bluefin --enable-mode-sync --enable-auto-dark-light --trigger-source polling
-
-# Use startup-only mode sync (no minute polling task)
-
-bluefin-cli install wallpapers bluefin-wallpapers --non-interactive --enable-mode-sync --trigger-source startup
-
-# Auto Dark Mode integration mode (startup sync + external mode-change utility)
-
-bluefin-cli install wallpapers bluefin-wallpapers --non-interactive --enable-mode-sync --trigger-source autodarkmode
 
 # Cleanup Windows sync artifacts/state/tasks generated by wallpaper integration
 
@@ -336,17 +349,12 @@ bluefin-cli install wallpapers cleanup --all
 
 Non-interactive wallpaper flags:
 
-- `--non-interactive`: Skip prompts and use provided flags.
-- `--yes`: Shortcut for `--non-interactive --apply-theme --enable-mode-sync --enable-auto-dark-light`.
-- `--apply-theme`: Apply a Windows theme after registration (WSL only).
-- `--theme <name>`: Theme to apply in non-interactive mode (`Bluefin`, `Aurora`, `Bazzite`).
-- `--enable-mode-sync`: Enable day/night wallpaper sync task.
-- `--enable-auto-dark-light`: Turn on the 6 AM and 6 PM light/dark tasks (needs `--enable-mode-sync`).
-- `--trigger-source <source>`: Mode-sync trigger source (`polling`, `startup`, `autodarkmode`).
+- `--non-interactive`: Skip the post-install prompt.
+- `--yes`: Skip the prompt and run `bluefin-cli sunset setup` after the install.
 
-`autodarkmode` notes:
-- Bluefin CLI ensures `%LOCALAPPDATA%\\BluefinCLI\\set-light-mode.ps1` and `%LOCALAPPDATA%\\BluefinCLI\\set-dark-mode.ps1` exist.
-- In Auto Dark Mode, point light/dark custom script hooks to those two scripts.
+Both flags apply on WSL and Windows only. There, an install that names casks
+offers to set up theme and wallpaper changes that follow the sun. `bluefin-cli sunset setup` runs the
+same setup at any time; see the [`sunset` reference](https://github.com/tuna-os/bluefin-cli/blob/main/docs/commands/bluefin-cli_sunset.md).
 
 #### Starship Themes
 
@@ -362,7 +370,6 @@ Install Starship if not already present:
 ```bash
 bluefin-cli starship install
 ```
-
 
 ## 🔧 What Gets Configured
 
@@ -390,6 +397,9 @@ grep    # ugrep (if installed)
 
 ## 📚 Documentation
 
+- [Quick start](https://github.com/tuna-os/bluefin-cli/blob/main/docs/getting-started.md): First steps after installation, menu
+  navigation, shell setup, bundles, and profiles.
+
 - [Command reference](https://github.com/tuna-os/bluefin-cli/blob/main/docs/commands/bluefin-cli.md): Generated documentation for
   every command and flag.
 - [Interactive menu structure](https://github.com/tuna-os/bluefin-cli/blob/main/docs/menus.md): Menu hierarchy, navigation, and
@@ -400,11 +410,25 @@ grep    # ugrep (if installed)
 - [GNOME integration](https://github.com/tuna-os/bluefin-cli/blob/main/docs/gnome.md): GNOME-specific setup and behavior.
 - [AI tools](https://github.com/tuna-os/bluefin-cli/blob/main/docs/ai.md) and [CNCF tools](https://github.com/tuna-os/bluefin-cli/blob/main/docs/cncf.md): Details for the curated
   bundle categories.
+- [Configuration](https://github.com/tuna-os/bluefin-cli/blob/main/docs/configuration.md): Config file location and schema,
+  environment variables, and user-defined bundles.
+- [Profile workflows](https://github.com/tuna-os/bluefin-cli/blob/main/docs/profiles.md): Export, import, diff, and gist sync
+  for portable shell, tool, and theme setups.
+- [Linux Setup Guide](https://github.com/tuna-os/bluefin-cli/blob/main/docs/setup-linux.md): install, Alpine and musl, files,
+  shell, and wallpaper.
+- [macOS Setup Guide](https://github.com/tuna-os/bluefin-cli/blob/main/docs/setup-macos.md): install, Homebrew, terminal,
+  wallpaper, and shell.
+- [Windows Setup Guide](https://github.com/tuna-os/bluefin-cli/blob/main/docs/setup-windows.md): install, PowerShell, WSL, theme,
+  and wallpaper.
+- [`docs/troubleshooting.md`](https://github.com/tuna-os/bluefin-cli/blob/main/docs/troubleshooting.md): how to read `doctor`
+  output, and fixes for common setup problems.
+- [`docs/testing.md`](https://github.com/tuna-os/bluefin-cli/blob/main/docs/testing.md): how to run the TUI tests, the test
+  layers, and how to add a test.
 
-Maintainers can find package-channel credentials and release verification in
-[Release publishing](https://github.com/tuna-os/bluefin-cli/blob/main/docs/release-publishing.md). The
-[Winget workflow](https://github.com/tuna-os/bluefin-cli/blob/main/.github/workflows/winget.yml) is the manual fallback for
-re-submitting the Windows package; GoReleaser handles the normal release path.
+Maintainers can find package-channel credentials and release checks in
+[release details](https://github.com/tuna-os/bluefin-cli/blob/main/docs/release-publishing.md). The
+[Winget workflow](https://github.com/tuna-os/bluefin-cli/blob/main/.github/workflows/winget.yml) lets maintainers submit the
+Windows package again; GoReleaser handles the normal release path.
 
 ## 🏗️ Project Structure
 
@@ -436,9 +460,9 @@ This project consolidates and modernizes functionality from:
 
 ### Prerequisites
 
-- Go 1.26.0 or later, matching the `go` directive in `go.mod` (the CI jobs validate with Go 1.27)
-- Podman (for containerized testing)
-- just (for running recipes)
+- Go 1.26.7 or later, matching the `go` directive in `go.mod` (the CI jobs validate with Go 1.27)
+- Podman (for container tests)
+- `just` (to run recipes)
 
 ### Building
 
@@ -449,8 +473,8 @@ just build
 `just build` creates both variants:
 
 - `bluefin-cli`: the standard CLI
-- `bluefin-cli-plus`: the standard CLI plus features selected by the `extra`
-  build tag, including wallpapers, fonts, and sunset automation
+- `bluefin-cli-plus`: the standard CLI plus the features that the build tag selects:
+  wallpapers, fonts, and sunset automation
 
 ### Testing
 
@@ -482,9 +506,9 @@ just fish   # Test in fish
 
 This project uses:
 
-- [Cobra](https://github.com/spf13/cobra) - CLI framework
+- [Cobra](https://github.com/spf13/cobra): framework for CLI commands
 - [Huh](https://charm.land/huh/v2) - Forms and prompts
-- [Lipgloss](https://charm.land/lipgloss/v2) - Style definitions
+- [Lipgloss](https://charm.land/lipgloss/v2): styles for terminal output
 
 ## 🤝 Contributing
 
@@ -498,24 +522,23 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
-This project is licensed under the Apache License 2.0 - see the LICENSE file for details.
+The Apache License 2.0 covers this project. See the LICENSE file for details.
 
 ## 🙏 Acknowledgments
 
 - [Universal Blue](https://universal-blue.org/) - For the original bluefin-cli and ublue-bling
-- [Charm](https://charm.sh/) - For the amazing TUI libraries
+- [Charm](https://charm.sh/) - For the TUI libraries
 - The Homebrew community
 
 ## 🔗 Related Projects
 
-- [ublue-os/packages](https://github.com/ublue-os/packages) - Original package implementations
-- [Starship](https://starship.rs/) - Cross-shell prompt
-- [Homebrew](https://brew.sh/) - Package manager for macOS and Linux
+- [ublue-os/packages](https://github.com/ublue-os/packages) - Original implementations of the packages
+- [Starship](https://starship.rs/) - Prompt for many shells
+- [Homebrew](https://brew.sh/) - A package manager for macOS and Linux
 
 ---
 
-Part of the [TunaOS](https://tunaos.org) ecosystem. [Docs](https://tunaos.org) · [Contributing](https://github.com/tuna-os/bluefin-cli/blob/main/CONTRIBUTING.md)
-
+Part of the [TunaOS](https://tunaos.org) ecosystem. [Docs](https://tunaos.org) · [Contributor guide](https://github.com/tuna-os/bluefin-cli/blob/main/CONTRIBUTING.md)
 
 ## Contribute compute — no code needed
 

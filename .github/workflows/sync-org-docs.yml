@@ -20,13 +20,13 @@ jobs:
     runs-on: ubuntu-26.04
     if: ${{ github.repository == 'tuna-os/docs' }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1 # zizmor: ignore[artipacked] create-pull-request pushes the branch from this checkout
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@v7.1.0
         with:
-          node-version: 24
+          node-version: 26
           cache: npm
 
       - name: Install dependencies
@@ -37,6 +37,19 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/sync-org-docs.mjs
 
+      # Upstream READMEs arrive with markdownlint findings that the required
+      # Markdown Lint job counts against .markdownlint-budget, so a sync could
+      # push the total over budget (#754: 1836 > 1500). Apply markdownlint's
+      # safe auto-fixes to the synced files only, with the release lint.yml pins.
+      - name: Auto-fix markdownlint findings in synced files
+        run: | # zizmor: ignore[adhoc-packages] pinned to the markdownlint-cli release lint.yml uses
+          mapfile -t synced < <( { git diff --name-only -- 'docs/**/*.md'; git ls-files --others --exclude-standard -- 'docs/**/*.md'; } | sort -u)
+          if [ "${#synced[@]}" -gt 0 ]; then
+            # MD034's fix wraps bare URLs in <...>, which MDX parses as JSX and
+            # fails to compile, so it is left out of the auto-fix.
+            npx --yes markdownlint-cli@0.49.1 --fix "${synced[@]}" --disable MD034 || true
+          fi
+
       # Compile the generated pages before opening a PR. This keeps an
       # MDX-incompatible upstream document from blocking the next sync PR's
       # bootstrap checks with errors discovered only after creation.
@@ -44,7 +57,7 @@ jobs:
         run: npm run build
 
       - name: Create PR if changed
-        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
+        uses: peter-evans/create-pull-request@v8.1.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: 'chore: sync org-wide project docs'

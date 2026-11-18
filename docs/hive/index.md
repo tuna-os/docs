@@ -19,6 +19,18 @@ AI agent orchestration for open source projects. A single Go binary enumerates G
 
 Hive separates decisions into two layers: a **deterministic pipeline** of shell scripts handles filtering, classification, merge-gating, and enforcement before any LLM sees the work. Agents only handle judgment calls — reading code, reasoning about fixes, writing PRs.
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## Quick Start
 
 Two supported standalone runtimes. **Docker Compose is the default** and is what
@@ -509,7 +521,7 @@ Hive uses an **AI-native Capability Maturity Model** (ACMM) with six levels that
 
 Each level defines per-agent **policy modes**: advisory (observe only), measured (file issues), holdgated (PRs with hold label), or full (auto-merge). See `src/docs/acmm-policy-matrix.md` for the full matrix. Browse the [documentation index](https://github.com/tuna-os/hive/blob/v4/src/docs/README.md) for operations, contributor relay, snapshots, health checks, and design guides.
 
-Operational references from the repository root include [hub disaster recovery](https://github.com/tuna-os/hive/blob/v4/docs/HUB_DISASTER_RECOVERY.md), [federation design](https://github.com/tuna-os/hive/blob/v4/docs/federation-design.md), [outreach antispam policy](https://github.com/tuna-os/hive/blob/v4/docs/outreach-antispam.md), [macOS deployment notes](https://github.com/tuna-os/hive/blob/v4/docs/macos.md), and [backend setup](https://github.com/tuna-os/hive/blob/v4/docs/backend-setup.md). Worked examples live under [examples/](https://github.com/tuna-os/hive/blob/v4/examples/README.md), including [KubeStellar skill and campaign configs](https://github.com/tuna-os/hive/blob/v4/examples/kubestellar/README.md), [SQLite state backend notes](https://github.com/tuna-os/hive/blob/v4/examples/sqlite-state.md), and [ACMM runtime fragments](https://github.com/tuna-os/hive/blob/v4/examples/acmm/README.md).
+Operational references from the repository root include [hub disaster recovery](https://github.com/tuna-os/hive/blob/v4/docs/HUB_DISASTER_RECOVERY.md), [federation design](https://github.com/tuna-os/hive/blob/v4/docs/federation-design.md), [outreach antispam policy](https://github.com/tuna-os/hive/blob/v4/docs/outreach-antispam.md), [macOS deployment notes](https://github.com/tuna-os/hive/blob/v4/docs/macos.md), [backend setup](https://github.com/tuna-os/hive/blob/v4/docs/backend-setup.md), and [observability guidelines](https://github.com/tuna-os/hive/blob/v4/docs/OBSERVABILITY.md). Worked examples live under [examples/](https://github.com/tuna-os/hive/blob/v4/examples/README.md), including [KubeStellar skill and campaign configs](https://github.com/tuna-os/hive/blob/v4/examples/kubestellar/README.md), [SQLite state backend notes](https://github.com/tuna-os/hive/blob/v4/examples/sqlite-state.md), and [ACMM runtime fragments](https://github.com/tuna-os/hive/blob/v4/examples/acmm/README.md).
 
 ## Architecture
 
@@ -556,18 +568,17 @@ for keybindings, pane cadence, and v1 boundaries, and
 
 ## Tuna OS deployment
 
-Tuna OS runs this fork as a fleet of hives behind one hub. Each host below
-answered `curl` on 2026-09-10:
+TunaOS runs this fork on a Kubernetes cluster in AWS with Talos Linux nodes.
+The hub lists two official hives and their public contribution guide.
 
-| Host | Role | Check |
-| --- | --- | --- |
-| [hub.tunaos.org](https://hub.tunaos.org) | Hub. Its index page lists the hives. | `GET /` returns `200` |
-| [reef.tunaos.org](https://reef.tunaos.org) | Hive | `GET /api/health` returns `{"status":"ok"}` |
-| [school.tunaos.org](https://school.tunaos.org) | Hive | `GET /api/health` returns `{"status":"ok"}` |
-| [hive.tunaos.org](https://hive.tunaos.org) | Hive; the hub index does not list it | `GET /api/health` returns `{"status":"ok"}` |
+| Host | Role |
+| --- | --- |
+| [hub.tunaos.org](https://hub.tunaos.org) | Hub and [AI CLI donation guide](https://hub.tunaos.org/#contribute) |
+| [school.tunaos.org](https://school.tunaos.org) | School — OS, image builds, and installers |
+| [reef.tunaos.org](https://reef.tunaos.org) | Reef — applications and distribution |
 
-A hive answers `401` on `/` until you supply the dashboard token from the Quick
-Start, so use `/api/health` to see whether a hive is up.
+`hive.tunaos.org` is an alias for School, not a third hive.
+Hive dashboards need authentication; the contribution guide is public.
 
 - Website: [tunaos.org](https://tunaos.org)
 - Organization: [github.com/tuna-os](https://github.com/tuna-os)
@@ -575,28 +586,24 @@ Start, so use `/api/health` to see whether a hive is up.
 
 ## Contribute to a Hive
 
-Community members can contribute compute to any hive through **ClankeR**, the
-contributor relay — it hands tasks from a hive's backlog to the CLI agent
-running on your own machine:
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+Use the hub's existing online round-robin setup. Keep its terminal open;
+press Ctrl+C to stop.
 
-```bash
-brew install just gh
-git clone https://github.com/hivecommons/hive && cd hive
-just contribute-setup claude
-just contribute-hive
-```
+**ClankeR** is the contributor relay. It runs an AI coding CLI on your machine
+for tasks from a hive's backlog. Your provider's subscription quota or API
+charges apply. Read the hub guide's credential and container limits before
+you start; never post account secrets or API keys in an issue or pull request.
 
-Supported CLIs: Claude Code, GitHub Copilot, Pi, Goose, Bob. Contributors start as newcomer (rate-limited) and auto-promote based on completed tasks. Your credentials never leave your machine.
-
-A relay can subscribe to multiple hives with comma-separated `HIVE_HUB` and matching `HIVE_REGISTRATION_TOKEN` values, and operators can delegate selected spoke roles through **Acting as** / `HIVE_AGENT_ROLE`. See [src/docs/contributor-relay.md](https://github.com/tuna-os/hive/blob/v4/src/docs/contributor-relay.md) and [src/docs/contributor-trust-and-roles.md](https://github.com/tuna-os/hive/blob/v4/src/docs/contributor-trust-and-roles.md).
-
-See the [Hive Hub contribute page](https://hive.hivecommons.dev) for details.
+For other Hive deployments, relay configuration, and operator-delegated
+roles, see [the contributor relay guide](https://github.com/tuna-os/hive/blob/v4/src/docs/contributor-relay.md) and
+[contributor trust and roles](https://github.com/tuna-os/hive/blob/v4/src/docs/contributor-trust-and-roles.md).
 
 ## Contributing
 
-See the [Hive Hub](https://hive.hivecommons.dev) to browse registered hives, view leaderboards, and find hives accepting contributions.
-
-To contribute to Hive itself, see [CONTRIBUTING.md](https://github.com/tuna-os/hive/blob/v4/CONTRIBUTING.md) and open issues or PRs on this repository.
+To contribute code or documentation to Hive itself, see
+[CONTRIBUTING.md](https://github.com/tuna-os/hive/blob/v4/CONTRIBUTING.md) and open an issue or pull request.
+The [upstream Hive Hub](https://hive.hivecommons.dev) lists other deployments.
 
 Recent user-visible changes are recorded in [CHANGELOG.md](https://github.com/tuna-os/hive/blob/v4/CHANGELOG.md).
 

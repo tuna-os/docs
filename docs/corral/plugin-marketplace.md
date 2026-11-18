@@ -1,5 +1,5 @@
 ---
-sidebar_position: 13
+sidebar_position: 18
 title: "plugin marketplace"
 ---
 
@@ -55,6 +55,55 @@ Test the binary directly, test the metadata handshake, then test dispatch with
 `CORRAL_PLUGIN_DIR=/path/to/bin corral hello`. Plugins should not import
 `cmd`; reusable behavior for a backend belongs in a `pkg/` package.
 
+## Adding a screen or a widget
+
+A plugin can add widgets to the Datacenter dashboard and screens of its own.
+It does not send markup or script. It sends data, and corral draws it. The
+design is in [RFC-0002](https://github.com/tuna-os/corral/blob/main/docs/rfc/0002-plugin-ui-contributions.md).
+
+Add a `ui` section to the metadata:
+
+```go
+sdk.Metadata{
+    Name: "aws-cost", Version: "1.0.0",
+    SupportedBackends: []string{"all"},
+    UI: &sdk.UI{
+        Widgets:  []sdk.UIItem{{ID: "spend", Title: "AWS spend", Command: "ui spend", Refresh: "60s"}},
+        Sections: []sdk.UIItem{{ID: "hosts", Title: "AWS hosts", Icon: "server", Command: "ui hosts"}},
+    },
+}
+```
+
+For each item, corral runs the plugin with the item's `command` as arguments,
+with no shell. The plugin then writes one document to stdout:
+
+```json
+{ "kind": "rows", "rows": [ { "label": "This month", "value": "$41.20", "state": "ok" } ] }
+{ "kind": "table", "columns": ["Host", "State"], "rows": [["i-0abc", "stopped"]] }
+{ "kind": "message", "text": "No instances carry the corral tag." }
+```
+
+Rules:
+
+- `state` is `ok`, `warn`, `bad` or `muted`, or empty.
+- Corral refuses an unknown kind, an unknown field and output over the limits
+  in `sdk` (`MaxDocumentBytes`, `MaxDocumentRows`, `MaxDocumentCols`,
+  `MaxDocumentString`, `MaxDocumentText`). Test your output with
+  `sdk.ParseDocument`.
+- Corral shows every string as text. Markup in a value appears as written.
+- A call stops after 10 seconds. A failure shows your stderr to the operator,
+  so write a useful line there.
+- Corral asks for a document at most every `sdk.MinUIRefresh` (15 seconds),
+  whatever `refresh` says. All viewers share one answer.
+- A document is read-only. A plugin cannot add a button that acts on the fleet.
+
+Widgets wait in "Add widget" on the Datacenter dashboard. Sections open from
+the Extensions screen and the command palette, not from the sidebar tree.
+
+Put the same `ui` section in the marketplace entry. The Extensions screen then
+shows what the plugin adds before the operator installs it. A plugin whose only
+purpose is a screen is a valid entry: declare `"supportedBackends": ["all"]`.
+
 ## External marketplace
 
 1. Build immutable binaries for each advertised platform.
@@ -86,6 +135,80 @@ Build from a version tag, run the plugin's tests, generate checksums, validate
 the index, and publish both artifacts and index in one immutable release. The
 repository's `scripts/generate-marketplace.sh` and `publish-plugins` workflow
 are a reference that works.
+
+## Signed plugins and SBOMs
+
+CI signs each first-party plugin binary with Sigstore. It uses the GitHub
+OIDC token of the `publish-plugins` job, so it stores no private key. CI also
+makes an SPDX SBOM and a signed attestation that binds the SBOM to the binary.
+The immutable `plugins-<commit>` release holds these files next to each
+binary:
+
+| File | Content |
+|---|---|
+| `corral-NAME-linux-ARCH.sigstore.json` | Signature bundle for the binary |
+| `corral-NAME-linux-ARCH.spdx.json` | SPDX JSON SBOM |
+| `corral-NAME-linux-ARCH.sbom.sigstore.json` | Signed attestation of the SBOM |
+
+### What Corral checks at install time
+
+Corral has the first-party signer identity in its code. When you install a
+plugin from the built-in marketplace, Corral does these checks after the
+SHA-256 check:
+
+1. It verifies the `.sigstore.json` bundle. The certificate must have the
+   exact identity and issuer. The bundle must agree with the digest of the
+   downloaded binary.
+2. It verifies the `.sbom.sigstore.json` attestation. The signer must be the
+   same. The attestation must name the digest of the binary, and its
+   predicate must be an SPDX document.
+
+If a check fails, or if a bundle is missing, Corral does not install the
+plugin. If the checks pass, Corral writes the signer and the SBOM digest to
+the install record. It keeps the SBOM at
+`<plugin dir>/.installed/NAME.spdx.json`. `corral plugin info NAME` shows
+the signer.
+
+Corral gets the Sigstore trusted root through TUF, and it keeps a cache in
+the user cache directory. A host without access to the internet can use a
+local copy: set `CORRAL_SIGSTORE_TRUSTED_ROOT` to the path of a
+`trusted_root.json` file.
+
+### Signatures from your own marketplace
+
+To make Corral need signatures from a different marketplace, give the
+identity of the signer when you add the source:
+
+```sh
+corral marketplace add acme https://plugins.example.com/index.json \
+  --signer-identity https://github.com/acme/plugins/.github/workflows/release.yml@refs/heads/main \
+  --signer-issuer https://token.actions.githubusercontent.com
+```
+
+Publish the two bundles next to each artifact URL, with the suffixes in the
+table above. The `publish-plugins` job in `.github/workflows/ci.yml` shows
+the `cosign` commands. `corral marketplace list` shows a source with a
+signer as `signed`. The identity in the index has no effect. Only the
+operator and the code of Corral can set the signer.
+
+### Verify by hand
+
+To verify a binary without Corral, download it and its bundles. Then run
+these commands with [Cosign](https://docs.sigstore.dev/cosign/) 3.0 or later:
+
+```sh
+f=corral-bootc-linux-amd64
+id=https://github.com/tuna-os/corral/.github/workflows/ci.yml@refs/heads/main
+iss=https://token.actions.githubusercontent.com
+cosign verify-blob --bundle "$f.sigstore.json" \
+  --certificate-identity "$id" --certificate-oidc-issuer "$iss" "$f"
+cosign verify-blob-attestation --bundle "$f.sbom.sigstore.json" --type spdxjson \
+  --certificate-identity "$id" --certificate-oidc-issuer "$iss" "$f"
+```
+
+Use the exact identity. Do not use `--certificate-identity-regexp`, because
+a workflow in a fork can match a loose expression.
+[enterprise-readiness.md](https://github.com/tuna-os/corral/blob/main/docs/enterprise-readiness.md) gives the full policy.
 
 ## First-party plugins
 

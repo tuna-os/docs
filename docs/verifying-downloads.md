@@ -81,7 +81,7 @@ When valid, `cosign` prints the certificate claims, issuer URL, and confirmation
 
 ### Verify with the Public Key
 
-TunaOS also provides a `cosign.pub` public key in the root of the [tunaOS repository](https://github.com/tuna-os/tunaOS).
+TunaOS also provides a `cosign.pub` public key in the root of the [TunaOS repository](https://github.com/tuna-os/tunaOS).
 
 To verify with `cosign.pub`:
 

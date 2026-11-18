@@ -5,11 +5,23 @@ sidebar_label: "protota"
 status: unknown
 ---
 
-GNOME HIG-compliant mockup tool for Adwaita app UIs.
+A mockup tool for Adwaita app UIs that obeys the GNOME HIG.
 
 Uses real [`@gjsify/adwaita-web`](https://github.com/gjsify/gjsify/tree/main/packages/web/adwaita-web) web components so mockups look **and behave** like real Adwaita — not pixel replicas.
 
 **Live:** https://tuna-os.github.io/protota/
+
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
 
 ## Development
 
@@ -28,32 +40,37 @@ npm test           # Playwright tests
 ## Rendering and conformance
 
 Protota renders GTK4/Libadwaita from a typed widget tree. The renderer is
-generic: presets must not add app-specific rendering branches. Blueprint and
-GtkBuilder imports preserve supported tree structure and properties; unknown
-visual widgets are reported so support can be added deliberately.
+generic: presets must not add branches for one app. An import of Blueprint or
+GtkBuilder keeps the tree structure and the properties that Protota supports.
+The import reports unknown visual widgets, so that a contributor can add
+support for them on purpose.
 
 ### Editing an app UI file
 
 Import a work-in-progress `.blp` (Blueprint) or `.ui` (GtkBuilder) file using
-**File → Import**. Protota turns it into an editable `MockupDocument`; after
-editing, use **File → Export Blueprint** and replace the corresponding UI
-file in your checkout before rebuilding the app. The browser deliberately
-downloads the result rather than writing into a local source tree. Unsupported
-GTK/Libadwaita widgets fail import explicitly, so the generated UI is never a
-plausible-but-wrong substitute.
+**File → Import**. Protota turns it into an editable `MockupDocument`. When you
+finish your changes, use **File → Export Blueprint**. Then replace the related
+UI file in your checkout and build the app again. The browser downloads the
+result on purpose; it does not write into a local source tree. An import of an
+unsupported GTK/Libadwaita widget fails with an error, so the output UI is
+never a plausible-but-wrong substitute.
 
 ### Building presets and flows
 
 **[docs/components.md](https://github.com/tuna-os/protota/blob/main/docs/components.md)** lists every component Protota can
 build with — the GTK class it exports as, its named slots, editable properties,
-and legal children. It is generated from the code, so it cannot drift.
+and legal children. A script makes it from the code, so it cannot drift.
+To regenerate it after you change component definitions, run
+`npx tsx scripts/generate-component-reference.mjs`. The script imports `.ts`
+sources, so plain `node` fails with `ERR_MODULE_NOT_FOUND`; `npx tsx` is required.
 
-Presets are generated from official app source and hand-finished with
-reviewable override files — see **[docs/preset-workflow.md](https://github.com/tuna-os/protota/blob/main/docs/preset-workflow.md)**
+A script makes each preset from the official app source. A person then
+completes it with override files that others can review. See
+**[docs/preset-workflow.md](https://github.com/tuna-os/protota/blob/main/docs/preset-workflow.md)**
 for the full toolchain (`scripts/import-gnome-app.mjs`,
 `scripts/capture-preset.mjs`, `presets-src/*.finishing.json`) and for the
 `MockupBuilder` agent API that exposes the same capabilities (source import,
-multi-screen flows, finishing overrides) programmatically.
+multi-screen flows, override files) programmatically.
 
 The `tests/fixtures/gnome-app-catalog.json` catalog connects a GNOME app,
 its source (repository + pinned tag), its preset, and a canonical viewport. The manual **Broadway
@@ -61,19 +78,19 @@ Reference Capture** GitHub workflow runs the native app under GTK Broadway
 and uploads its capture alongside the matching Protota preset. This provides
 an external visual oracle while the structural tests keep the renderer honest.
 Each run also creates a pixel-diff image and JSON metric. It reports the
-metric during baseline tuning; supplying a maximum difference ratio makes the
-same comparison a CI gate for a calibrated preset.
+metric when you tune a baseline. If you supply a maximum difference ratio, the
+same comparison becomes a CI gate for a calibrated preset.
 
-List the currently runnable suite locally with `node scripts/broadway-app.mjs
---list`. Adding an app means adding its catalogue entry and preset together;
-the conformance test rejects either an untracked preset or an incomplete
-native-reference target. Core and Circle use the same catalogue fields and
+To list the suite that you can run now on your computer, use
+`node scripts/broadway-app.mjs --list`. To add an app, add its catalogue entry
+and its preset together. The conformance test rejects an untracked preset. It
+also rejects an incomplete native-reference target. Core and Circle use the same catalogue fields and
 renderer path.
 
-See [GNOME app visual conformance](https://github.com/tuna-os/protota/blob/main/docs/gnome-app-conformance.md) for the
-current validation state. "Passed" always means the paired screenshots and
-their diff were visually reviewed, not merely that a capture command exited.
-See [GNOME Core source-import loop](https://github.com/tuna-os/protota/blob/main/docs/gnome-source-import.md) for the
+See [visual conformance of GNOME apps](https://github.com/tuna-os/protota/blob/main/docs/gnome-app-conformance.md) for the
+current validation state. "Passed" always means that a person looked at the
+paired screenshots and their diff, not only that a capture command exited.
+See [the source-import loop for GNOME Core](https://github.com/tuna-os/protota/blob/main/docs/gnome-source-import.md) for the
 official-source UI inputs and explicit custom-widget boundaries.
 See [GNOME GUI Specification & Audits](https://github.com/tuna-os/protota/blob/main/docs/spec/README.md) for UI layout
 patterns, intent mappings, and per-app source audits — a vendored read-only
@@ -82,18 +99,11 @@ build input.
 
 ## Pull requests
 
-Required checks should be allowed to complete normally. If the repository has
-no merge queue and a maintainer explicitly authorizes a protected-branch
-merge, use the approved maintainer merge path. See [AGENTS.md](https://github.com/tuna-os/protota/blob/main/AGENTS.md) for
+Do not stop a required check; let it complete. If the repository has no merge
+queue and a maintainer explicitly authorizes a protected-branch merge, use the
+merge path that maintainers approve. See [AGENTS.md](https://github.com/tuna-os/protota/blob/main/AGENTS.md) for
 the exact procedure and resource-use guidance.
 
 ## License
 
 Apache-2.0 — see [LICENSE](https://github.com/tuna-os/protota/blob/main/LICENSE).
-
-
-## Contribute compute — no code needed
-
-No time to write code? You can still push this project's backlog forward. A TunaOS AI-agent hive works on this repository. Lend the hive your AI subscription or API tokens, and your machine runs contributor tasks from this project's backlog.
-
-- 🪸 [Contribute compute to the reef hive](https://reef.tunaos.org/contribute)

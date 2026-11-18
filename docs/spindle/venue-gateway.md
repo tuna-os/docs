@@ -1,5 +1,5 @@
 ---
-sidebar_position: 23
+sidebar_position: 36
 title: "venue gateway"
 ---
 
@@ -14,6 +14,14 @@ same room version (docs/mesh-federation.md).
 This page is the operator's: what to run, on what, with which flags, and
 how to know it is working. The design is in docs/mesh-federation.md and
 the test ladder in docs/venue-playbook.md.
+
+## External dependencies
+
+The Neutrino repositories in this guide (`hanthor/neutrino` and
+`hanthor/neutrino-iroh`) are external upstream forks. They are not maintained
+by `tuna-os`; the gateway patch in this repository is a local integration
+overlay. Keep clone revisions pinned, and review fork changes with their
+maintainers before deploying an update.
 
 ## What it is for
 

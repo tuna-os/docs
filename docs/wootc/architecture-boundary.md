@@ -1,5 +1,5 @@
 ---
-sidebar_position: 8
+sidebar_position: 9
 title: "architecture boundary"
 ---
 
@@ -44,6 +44,7 @@ Contract, as deploy.sh already implicitly defines it:
 `{image/source, hostname, filesystem, user{name, password_hash}, flatpaks?, luks?}`.
 
 **Output obligations:**
+
 1. A bootable root filesystem on the device (partitioning included).
 2. Kernel + initramfs files at a discoverable location, for the ESP sync.
 3. The kernel cmdline the installed system needs (today: read from BLS

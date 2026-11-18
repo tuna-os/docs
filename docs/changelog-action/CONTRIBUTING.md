@@ -5,6 +5,18 @@ title: "Contributing"
 
 Thank you for contributing to `changelog-action`! This document outlines guidelines and workflows for testing and contributing to this GitHub Action.
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## Local Development & Testing Workflow
 
 The action core (`changelog.py`) is written in Python 3. Unit tests are located in `test_changelog.py` and cover SBOM package parsing, package diffing, commit extraction, tag discovery, and markdown/JSON rendering.
@@ -44,8 +56,10 @@ python3 changelog.py --verbose --help
 ## Pull Request Guidelines
 
 1. Ensure all unit tests pass prior to submitting your PR:
+
    ```bash
    .venv/bin/python -m pytest
    ```
+
 2. Follow Conventional Commits format for commit messages (e.g. `docs: ...`, `fix: ...`, `feat: ...`).
 3. Always sign your commits using DCO (`git commit -s`).

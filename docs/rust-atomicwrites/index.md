@@ -5,12 +5,12 @@ sidebar_label: "rust-atomicwrites"
 status: unknown
 ---
 
-[![Build Status](https://github.com/untitaker/rust-atomicwrites/actions/workflows/msrv.yml/badge.svg)](https://github.com/untitaker/rust-atomicwrites/actions)
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/h6642x2d54xl0sev?svg=true)](https://ci.appveyor.com/project/untitaker/rust-atomicwrites)
+[![Build Status](https://github.com/tuna-os/rust-atomicwrites/actions/workflows/msrv.yml/badge.svg)](https://github.com/tuna-os/rust-atomicwrites/actions)
 
 - [Documentation](https://docs.rs/crate/atomicwrites)
-- [Repository](https://github.com/untitaker/rust-atomicwrites)
+- [Repository](https://github.com/tuna-os/rust-atomicwrites)
 - [crates.io](https://crates.io/crates/atomicwrites)
+- [Upstream](https://github.com/untitaker/rust-atomicwrites) (original project by Markus Unterwaditzer)
 
 Atomic file-writes. Works on both POSIX and Windows.
 
@@ -22,6 +22,19 @@ exists.
 
 This is mostly a port of the same-named
 [Python package](https://github.com/untitaker/python-atomicwrites).
+
+
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
 
 ## Example
 

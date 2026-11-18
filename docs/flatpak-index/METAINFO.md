@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 title: "METAINFO"
 ---
 
@@ -8,8 +8,8 @@ KDE Discover — render an app page from **AppStream** metadata. When that
 metadata is missing the page falls back to the raw application ID, an
 "Unknown" licence and an empty screenshot frame.
 
-For an OCI remote like ours the metadata travels as image labels. This document
-covers how it gets there and what to put in it.
+In our OCI remote, metadata travels as image labels. This document covers
+how it gets there and what to put in it.
 
 ## How the metadata reaches the remote
 
@@ -41,7 +41,8 @@ is blank — and the failure is silent at every step.
 Check an app end to end with:
 
 ```bash
-./scripts/enrich-index.py index/static --check
+curl -sSfL -o served-index.json https://tunaos.org/flatpak/index/static
+./scripts/enrich-index.py served-index.json --check
 ```
 
 It reports which published images carry no AppStream metadata.
@@ -68,10 +69,10 @@ It reports which published images carry no AppStream metadata.
 
 Start from [`templates/org.tunaos.example.metainfo.xml`](https://github.com/tuna-os/flatpak-index/blob/main/templates/org.tunaos.example.metainfo.xml).
 It follows [Flathub's quality guidelines](https://docs.flathub.org/docs/for-app-authors/metainfo-guidelines/quality-guidelines),
-which is the same bar Bazaar renders against, and every field is annotated
+which is the same bar Bazaar renders against. The template annotates every field
 inline.
 
-The constraints worth repeating:
+Important constraints:
 
 - **`<name>`** — 15 characters or fewer reads best, 20 maximum. No version, no
   tagline.
@@ -80,17 +81,17 @@ The constraints worth repeating:
 - **`<description>`** — 3–10 lines. Must not restate the summary.
 - **`<screenshots>`** — at least one, 3–6 for a typical app. Window only, no
   desktop background, default theme, 1000×700 maximum (2000×1400 HiDPI). Do not
-  take these by hand: generate them in CI from the real app and commit them, so
-  they cannot go stale as the UI changes. See [SCREENSHOTS.md](https://github.com/tuna-os/flatpak-index/blob/main/docs/SCREENSHOTS.md)
-  for the shared capture action and the wiring.
+  take screenshots by hand. Generate them in CI from the real app and commit
+  them so they stay current. See [SCREENSHOTS.md](https://github.com/tuna-os/flatpak-index/blob/main/docs/SCREENSHOTS.md) for the shared
+  capture action and the wiring.
 - **`<releases>`** — real notes per release, not "bug fixes and improvements".
 - **`<content_rating type="oars-1.1" />`** — an empty element is correct for
   most apps and is what turns the "?" age-rating tile into a real value.
 
 ## Making sure the icon is picked up
 
-`appstreamcli compose` builds the `icon-64` / `icon-128` labels by scaling the
-app's hicolor icon. The build must install one at:
+`appstreamcli compose` scales the app's hicolor icon to build the `icon-64` /
+`icon-128` labels. The build must install one at:
 
 ```
 /app/share/icons/hicolor/scalable/apps/<app-id>.svg
@@ -120,13 +121,13 @@ for k in sorted(labels):
 ```
 
 If that prints nothing, the metainfo file was not installed into the build —
-check that the build system actually installs it to `/app/share/metainfo/`.
+check that the build system installs it to `/app/share/metainfo/`.
 
 ## Publishing
 
 App repositories vendor [`scripts/update-index.py`](https://github.com/tuna-os/flatpak-index/blob/main/scripts/update-index.py)
-at `.github/scripts/update-index.py`. Pass `--require-appstream` to make the
-publish job fail rather than silently ship an app with no metadata:
+at `.github/scripts/update-index.py`. Pass `--require-appstream` so the publish
+job fails when an app has no metadata:
 
 ```bash
 python3 .github/scripts/update-index.py \

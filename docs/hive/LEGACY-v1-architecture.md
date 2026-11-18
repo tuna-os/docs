@@ -28,15 +28,16 @@ The agent starts, reads its policy, then **waits at the prompt** for the supervi
 > **Gotcha — session restore bakes in old crons.** Claude Code restores its previous conversation context on respawn. If the agent ever registered a `/loop` cron before, that cron comes back in the restored context even if the new `AGENT_LOOP_PROMPT` says not to. The preferred fix is to enforce EXECUTOR MODE via policy files the agent re-reads on every firing — not by having the supervisor send a cron-nuke message. Supervisor should never inspect or delete crontabs; policy is the enforcement mechanism.
 
 > **Gotcha — tmux `-l` makes Enter literal.** When dispatching work orders, always split text and Enter into **two separate** `tmux send-keys` calls:
+>
 > ```sh
 > tmux send-keys -t session -l "do the thing"
 > sleep 1
 > tmux send-keys -t session Enter
 > ```
+>
 > Combining them as `tmux send-keys -t session -l "do the thing" Enter` sends the word "Enter" as part of the literal text, leaving the agent stuck with text in its input box.
 
 ---
-
 
 ## v2 runtime and control plane
 
@@ -45,6 +46,7 @@ v2 runs the dashboard/API service, agent manager, governor, policy resolver, and
 Agent behavior is controlled by layered config and policy templates: see [`src/docs/agent-configuration.md`](https://github.com/tuna-os/hive/blob/v4/src/docs/agent-configuration.md), [`src/policies/README.md`](https://github.com/tuna-os/hive/blob/v4/src/policies/README.md), and [`docs/backend-setup.md`](https://github.com/tuna-os/hive/blob/v4/docs/backend-setup.md).
 
 ---
+
 ## Four components, four failure modes
 
 | # | Unit | Trigger | Catches |
@@ -53,6 +55,7 @@ Agent behavior is controlled by layered config and policy templates: see [`src/d
 | 2 | `hive-renew.timer` | Every 6 days + 5 min after boot | Claude Code `/loop` cron auto-expires at 7 days — kills the session so the supervisor re-registers a fresh one. **Disable this in EXECUTOR MODE** — there is no cron to renew. |
 | 3 | `hive-healthcheck.timer` | Every 20 min + 5 min after boot | Agent is "alive" but not making progress (auth loop, stuck prompt, model stuck thinking) — watches heartbeat-file mtime |
 | 4 | ntfy push inside the healthcheck | On stall, on recovery, on escalation | Operator not watching the box — phone push |
+| 5 | `ttyd-hive.service` | Always running | Optional web terminal (`:7681`) onto the agent's tmux session — loopback-bound and unauthenticated by default (`-W -a`); front it with an authenticated proxy or add a `-c user:pass` drop-in before exposing it beyond localhost |
 
 ## Reactions to each failure mode
 
@@ -157,6 +160,7 @@ When running several agents on the same machine, the EXECUTOR pattern lets a sin
 ```
 
 Each agent:
+
 - Has its own tmux session and systemd service
 - Reads its own policy file from the shared memory directory
 - Writes to a shared work ledger (`bd` / beads) using `--actor <name>` to claim work

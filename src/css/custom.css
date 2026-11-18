@@ -197,6 +197,19 @@ samp {
   gap: 0.5rem;
 }
 
+/* Keep the canonical wordmark inside the former icon-and-title space. */
+.navbar__logo {
+  width: 125px;
+  height: 32px;
+  margin-right: 0;
+}
+
+.navbar__logo .tunaos-wordmark {
+  width: 125px;
+  height: 32px;
+  object-fit: contain;
+}
+
 .navbar__brand:hover {
   opacity: 0.85;
 }

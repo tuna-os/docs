@@ -1,5 +1,5 @@
 ---
-sidebar_position: 22
+sidebar_position: 33
 title: "telemetry guidelines"
 ---
 
@@ -21,7 +21,8 @@ title: "telemetry guidelines"
 
 2. **Structured Logging Posture:**
    - Utilizes `tracing` and `tracing-subscriber` with `env-filter` support.
-   - Verbosity controlled at runtime via `RUST_LOG` environment variables (e.g., `spindle=debug,warn`).
+   - The `[logging] filter` setting sets the verbosity, for example `spindle=debug,warn`.
+   - The default filter is `info,ruma_state_res=warn`. The state resolution library logs two `INFO` lines for each event that it authorizes. The default filter does not show these lines. To show them, add `ruma_state_res=info` to the filter.
 
 3. **Validation & CI Automation:**
    - `scripts/check-observability-pack.py` verifies metric registration against Prometheus alert definitions (`deploy/prometheus/spindle-alerts.yaml`) and Grafana dashboard schema (`deploy/grafana/spindle.json`).
