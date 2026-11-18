@@ -32,6 +32,18 @@ It is a Go **library first** (`github.com/tuna-os/ccleft`) with a small CLI and
 a Prometheus exporter on top. Seeded from the probers in
 [Hive](https://github.com/hivecommons/hive) so Hive can adopt it directly.
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## Providers
 
 | provider | source ccleft reads | credential (all paths under the source home) | windows | states it can report |
@@ -82,7 +94,7 @@ Implementation / test / live status:
 
 State rules: **limited** = a binding window that resets on its own is used up;
 **exhausted** = a non-resetting pool (prepaid balance) is used up;
-**rate_limited** = the *quota endpoint* throttled us (says nothing about quota).
+**rate_limited** = the _quota endpoint_ throttled us (says nothing about quota).
 Model-scoped windows and paid overflow (credits, extra usage, overage) never
 decide the state on their own — an Opus cap is not an account cap. An
 unrecognized payload is an `error`/`schema`, never a healthy reading.
@@ -111,13 +123,48 @@ _ = ccleft.WritePrometheus(os.Stdout, readings)
 the library never reads the process `$HOME` or environment. `Credentials`
 overrides discovery with a token/key. `Prober` fields override endpoints,
 timeouts, the clock, the agy binary and the exec function (for tests).
+For provider extensions, create a `ProviderImplementation`, register it on a
+`Prober`, and keep the provider-specific credential and response handling in
+that implementation:
+
+```go
+import (
+ "context"
+ "github.com/tuna-os/ccleft"
+)
+
+type provider struct{}
+
+func (provider) Name() ccleft.Provider { return "example" }
+func (provider) Identify(*ccleft.Prober, ccleft.Source) (ccleft.ProviderIdentity, *ccleft.Reading) {
+ return ccleft.ProviderIdentity{Account: "stable-account"}, nil
+}
+func (provider) Probe(context.Context, *ccleft.Prober, ccleft.Source, ccleft.ProviderIdentity) ccleft.Reading {
+ return ccleft.Reading{/* normalized quota windows */}
+}
+
+p := &ccleft.Prober{}
+if err := p.Register("example", provider{}); err != nil {
+ panic(err)
+}
+reading := p.Probe(ctx, ccleft.Source{Provider: "example"})
+```
+
+`Register` copies the built-in providers on first use and replaces an existing
+name in that `Prober` only. Use `NewProviderRegistry` and `Prober.Registry` when
+the complete provider set should be supplied explicitly.
 
 `Client` behaviour:
 
 - **Per-account keying + dedupe** — the account fingerprint is resolved from
-  local files *before* any network call, so N homes sharing one account make
+  local files _before_ any network call, so N homes sharing one account make
   one upstream call; `GetAll` merges them into one reading with all `homes`.
 - **Single-flight** — concurrent `Get`s for one account share one request.
+- **Auth failures stay with the credential** — homes of one account can hold
+  different tokens. When the provider refuses one (`auth_required`), that
+  answer is cached for that token only: a home with another token is still
+  measured, and `GetAll` keeps the measurement over the failure. An account
+  reads `auth_required` only when no home of it can be measured.
 - **Per-account rate limit** — at most one upstream call per `MinInterval`
   (claude 3 m, agy 2 m, others 1 m by default); callers in between get the cache.
   The gate opens 5% (≤ 30 s) early, so a caller that polls at exactly
@@ -134,7 +181,7 @@ timeouts, the clock, the agy binary and the exec function (for tests).
 
 ```
 ccleft probe [--json] [--home DIR ...] [--provider p,...] [--config FILE] [--no-env]
-ccleft serve [--addr :9464] [--refresh 5m] [--home DIR ...] [--config FILE]
+ccleft serve [--addr 127.0.0.1:9464] [--refresh 5m] [--home DIR ...] [--config FILE]
 ```
 
 - No `--home`: probes `$HOME` (CLI convenience only).
@@ -146,6 +193,9 @@ ccleft serve [--addr :9464] [--refresh 5m] [--home DIR ...] [--config FILE]
 - `--endpoint provider=URL` points a provider at a mock or regional endpoint.
 - `serve` exposes `GET /readings` (JSON, `?provider=` filter), `GET /metrics`
   and `GET /healthz`, re-detecting sources every refresh.
+- `serve` listens on `127.0.0.1:9464` by default. These endpoints have no
+  auth, so other hosts can not reach them unless you set `--addr :9464` (or
+  `addr` in the config file). The container image sets `--addr :9464`.
 
 Config file: see [`ccleft.example.yaml`](https://github.com/tuna-os/ccleft/blob/main/ccleft.example.yaml). Secrets are
 referenced by env var name (`credentials_env`) or file (`credentials_file`),
@@ -177,8 +227,8 @@ read-only:
 
 ```yaml
 - name: ccleft
-  image: ghcr.io/tuna-os/ccleft:latest
-  args: [serve, --config, /etc/ccleft/ccleft.yaml]
+  image: ghcr.io/tuna-os/ccleft:main
+  args: [serve, --addr, ":9464", --config, /etc/ccleft/ccleft.yaml]
   ports: [{containerPort: 9464, name: metrics}]
   volumeMounts:
     - {name: data, mountPath: /data/home, readOnly: true}
@@ -188,13 +238,17 @@ read-only:
       valueFrom: {secretKeyRef: {name: kiro, key: api-key}}
 ```
 
+Images are published as `main` and `sha-<short>` on every push to `main`;
+`latest` and version tags exist only once a `v*` release is tagged. For a
+deployment, pin the digest printed in the `publish` job summary.
+
 Because accounts are deduped and rate-limited inside one process, prefer
 **one** ccleft per account pool over one per agent: the Claude endpoint 429s
 when many hosts poll the same account.
 
 **agy**: the default image is distroless-static and has no `agy` CLI, so agy
 sources report `cause: not_installed`. Either build a derived image that adds
-the agy binary (and its runtime) and set `agy_path`, or run ccleft *inside*
+the agy binary (and its runtime) and set `agy_path`, or run ccleft _inside_
 the agent container/sidecar that already ships agy, pointing `--home` at the
 agent home. Each agy probe boots the CLI (seconds, up to the 90 s deadline),
 which is why agy's default min interval is 2 minutes.
@@ -214,7 +268,7 @@ no copy step):
 containers:
   - name: ccleft
     image: <agent image that has agy>
-    command: [/opt/ccleft/usr/local/bin/ccleft, serve, --config, /etc/ccleft/ccleft.yaml]
+    command: [/opt/ccleft/usr/local/bin/ccleft, serve, --addr, ":9464", --config, /etc/ccleft/ccleft.yaml]
     volumeMounts: [{name: ccleft-bin, mountPath: /opt/ccleft}]
 volumes:
   - name: ccleft-bin
@@ -248,10 +302,26 @@ volumes:
   explicit env. A test snapshots the home tree before/after probing.
 - Expired tokens are reported (`token_expired`, transient) instead of being
   refreshed, so ccleft cannot race a running agent's own refresh.
+- Which account a home belongs to is read from that home's own files and is
+  not confirmed by the provider. A home that names another account without a
+  working token cannot change that account's reading. A home that names
+  another account and holds a working token for a different one can: its
+  quota is then reported under the name it gave. Use one ccleft per group of
+  homes that trust each other where that matters.
 - Tokens are sent only to their own provider's endpoint. Outputs contain a
   truncated, domain-separated SHA-256 fingerprint, never a token; upstream
   error snippets are masked for bearer/`ksk_`/`sk-`/`gh*_` strings.
 - Config files reference secrets by env var or path, never inline.
+- Files in an agent home are untrusted input: the agent writes them. ccleft
+  reads only regular files of at most 1 MiB there (32 MiB for `.claude.json`,
+  which also holds per-project state). A FIFO, a device or a larger file is
+  reported as `no_credentials` for that home, and the other homes are still
+  probed.
+
+## Development
+
+See [CONTRIBUTING.md](https://github.com/tuna-os/ccleft/blob/main/CONTRIBUTING.md) for local build/test/lint commands and
+the fixture-based test setup.
 
 ## Phase 2
 

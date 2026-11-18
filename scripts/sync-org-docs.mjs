@@ -1,16 +1,21 @@
 #!/usr/bin/env node
 // Aggregates READMEs and docs from every active project in the tuna-os
-// GitHub org into the Docusaurus site. Reads no project-specific config
-// here — new repos with a README are automatically picked up.
+// GitHub org into the Docusaurus site.
+//
+// Protection rules (which docs/<slug>/ trees the sync must never overwrite,
+// and which root docs each repo contributes) live in scripts/sync-org-docs.config.json
+// so documentation maintainers can change them without a code PR. This script
+// only holds the sync engine.
 //
 // Usage:
 //   node scripts/sync-org-docs.mjs
 
 import {execSync} from 'node:child_process';
 import {existsSync, readFileSync, readdirSync, writeFileSync, mkdirSync, rmSync} from 'node:fs';
-import {join} from 'node:path';
-import {pathToFileURL} from 'node:url';
+import {dirname, join} from 'node:path';
+import {fileURLToPath, pathToFileURL} from 'node:url';
 import {
+  HTML_ELEMENTS,
   sanitizeHtml,
   fixRelativeLinks,
   onProse,
@@ -18,6 +23,7 @@ import {
   subFrontmatter,
   isSyncedIndex,
   getStatusBanner,
+  readmeIndex,
 } from './lib/org-doc-transform.mjs';
 
 // Projects that get their own doc section. Add a slug → label entry to
@@ -47,40 +53,50 @@ const SKIP = new Set([
   'tables', 'letters', 'decks',  // archived Python apps, superseded by gtk-office-suite
 ]);
 
-// Per-repo filter: only sync these root doc files (case-insensitive match).
-// Empty array = sync all root .md files.
-const ROOT_DOC_FILTER = {
-  tunaOS: ['README.md', 'ROADMAP.md', 'SECURITY.md', 'CONTRIBUTING.md'],
-};
+// The sync config. Loaded once at startup from scripts/sync-org-docs.config.json, next
+// to this script. Keeping it in a file (not a code comment) is the whole point
+// of this change: documentation maintainers edit protection rules there without
+// a code PR, and the file is auditable — every protected repo lists its slug,
+// why it is protected, and the date it was protected.
+const SYNC_CONFIG_PATH = join(
+  dirname(fileURLToPath(import.meta.url)),
+  'sync-org-docs.config.json',
+);
 
-// docs/<slug>/ trees that are written by hand here and must never be
-// overwritten from an upstream README, even though a repo of the same name
-// exists in the org.
-//
-// These survived only by accident: each maps to a repo that fell past the
-// first page of the unpaginated repo listing, so the sync never reached it
-// (#103). Paginating the listing reaches them all, and the write path is
-// unconditional — writeFileSync, no comparison, no prompt — so without this
-// set the first paginated run would replace every page below with its
-// upstream README and drop the site-specific content.
-//
-// What makes each one hand-authored, so a future reader can re-check rather
-// than trust the list:
-//   mariner          — :::tip pointing at the /mariner showcase page (#61)
-//   gtk-office-suite — landing page for three apps, one repo
-//   mandelbrot       — site-specific prose, no upstream equivalent
-//   remora           — site-specific prose, no upstream equivalent
-//   dakota           — :::tip plus an external-project banner (repo is also
-//                      in SKIP; listed here so the protection does not rest
-//                      on a SKIP entry that exists for a different reason)
-//   blueshell        — :::tip pointing at the /blueshell showcase page, plus
-//                      site-specific install and upstream-tracking prose; the
-//                      upstream README is written for contributors, not for
-//                      this site
-//   ghostty          — not a tuna-os repo at all: the page documents what the
-//                      TunaOS remote republishes. Listed so it stays safe if a
-//                      repo of that name ever appears in the org
-const HAND_AUTHORED = new Set([
+function loadSyncConfig() {
+  let raw;
+  try {
+    raw = readFileSync(SYNC_CONFIG_PATH, 'utf8');
+  } catch (e) {
+    throw new Error(
+      `sync-org-docs: could not read ${SYNC_CONFIG_PATH}: ${e.message}. ` +
+        'Refusing to sync — hand-authored protection is empty.',
+    );
+  }
+  try {
+    return JSON.parse(raw);
+  } catch (e) {
+    throw new Error(
+      `sync-org-docs: ${SYNC_CONFIG_PATH} is not valid JSON: ${e.message}. ` +
+        'Refusing to sync — hand-authored protection is empty.',
+    );
+  }
+}
+
+const SYNC_CONFIG = loadSyncConfig();
+
+// Per-repo filter, keyed by repo name: only sync these root doc files.
+// A repo with no entry syncs the default ROOT_DOC_NAMES. Kept in the sync
+// config next to the other sync rules.
+const ROOT_DOC_FILTER = SYNC_CONFIG.sync_filters || {};
+
+// The slugs the sync MUST protect. This is the fail-closed guard: the write path
+// is unconditional (writeFileSync, no comparison, no prompt) and paginating the
+// org listing reaches every repo, so the first paginated run would replace every
+// protected page with its upstream README and drop the site-specific content.
+// If the config is missing, empty, or drops a slug, the sync throws and aborts
+// rather than silently overwriting a page that used to be protected.
+const HAND_AUTHORED_EXPECTED = new Set([
   'mariner',
   'gtk-office-suite',
   'mandelbrot',
@@ -89,6 +105,29 @@ const HAND_AUTHORED = new Set([
   'blueshell',
   'ghostty',
 ]);
+
+function loadProtectedRepos(config = SYNC_CONFIG) {
+  const protectedRepos = Array.isArray(config.protected_repos)
+    ? config.protected_repos
+    : [];
+  if (protectedRepos.length === 0) {
+    throw new Error(
+      'sync-org-docs: scripts/sync-org-docs.config.json has no protected_repos. ' +
+        'Refusing to sync — hand-authored protection is empty.',
+    );
+  }
+  const slugs = new Set(protectedRepos.map((entry) => entry.slug));
+  const missing = [...HAND_AUTHORED_EXPECTED].filter((slug) => !slugs.has(slug));
+  if (missing.length) {
+    throw new Error(
+      `sync-org-docs: protected_repos is missing ${missing.join(', ')}. ` +
+        'Refusing to sync — protection set is incomplete.',
+    );
+  }
+  return new Set(slugs);
+}
+
+const HAND_AUTHORED = loadProtectedRepos();
 
 // Repos whose docs/ folder should NOT be synced (too noisy / internal).
 const SKIP_DOCS_DIR = new Set([
@@ -114,7 +153,7 @@ const PER_PAGE = 100;
 const DEFAULT_PAGE_SIZE = 30;
 const RETRY_DELAY_MS = 5000;
 
-// Returns {dir, branch}. `git clone` with no --branch checks out the repo's
+// Returns {dir, branch, revision}. `git clone` with no --branch checks out the repo's
 // actual default branch (dev/master, not always main — see tuna-os/docs#263,
 // bootc-installer/changelog-action/kde-build-meta/mariner all use something
 // other than main), so read it back from the clone itself instead of
@@ -129,7 +168,8 @@ function cloneRepo(repo) {
     cwd: tmp,
     encoding: 'utf8',
   }).trim();
-  return {dir: tmp, branch};
+  const revision = execSync('git rev-parse HEAD', {cwd: tmp, encoding: 'utf8'}).trim();
+  return {dir: tmp, branch, revision};
 }
 
 function slugify(name) {
@@ -406,9 +446,39 @@ function findCaseCollisions(rootDir) {
   return [...byLower.values()].filter((paths) => paths.length > 1);
 }
 
-function main() {
+// Root docs keep their public routes. Flattened docs/ pages receive a prefix
+// only when their name would overwrite another import, including index.md.
+// Reserve natural names first so a generated prefix cannot steal a later page.
+function docOutputNames(rootFiles, docFiles) {
+  // Docusaurus maps README.md and index.md to the same directory route.
+  const routeKey = name => name.toLowerCase().replace(/^readme\.md$/, 'index.md');
+  const used = new Set(['index.md', ...rootFiles].map(routeKey));
+  const reserved = new Set([...used, ...docFiles.map(routeKey)]);
+  const outputs = new Map();
+  for (const file of [...docFiles].sort()) {
+    let output = file;
+    if (used.has(routeKey(output))) {
+      output = `docs-${file}`;
+      while (reserved.has(routeKey(output))) output = `docs-${output}`;
+    }
+    used.add(routeKey(output));
+    reserved.add(routeKey(output));
+    outputs.set(file, output);
+  }
+  return outputs;
+}
+
+async function main({
+  discover = discoverRepos, clone = cloneRepo,
+  docsDir: destination = DOCS_DIR, provenancePath = 'src/data/synced-docs.json',
+  now = () => new Date().toISOString(),
+} = {}) {
+  const provenance = existsSync(provenancePath)
+    ? JSON.parse(readFileSync(provenancePath, 'utf8')) : {};
+  // Only the sync writes this snapshot; site builds consume it unchanged.
+  const saveProvenance = () => writeFileSync(provenancePath, JSON.stringify(provenance, null, 2) + '\n');
   // Discover repos from the org.
-  const {listed, publicRepos, fatal, warnings, attempts} = discoverRepos();
+  const {listed, publicRepos, fatal, warnings, attempts} = discover();
 
   console.log(
     `🔎 ${listed.length} repos listed in ${ORG}` +
@@ -424,7 +494,7 @@ function main() {
   // A slug in HAND_AUTHORED that matches nothing on disk protects nothing, and
   // does it quietly — the same shape of bug as the truncation above.
   for (const slug of HAND_AUTHORED) {
-    if (!existsSync(join(DOCS_DIR, slug))) {
+    if (!existsSync(join(destination, slug))) {
       console.warn(`⚠️  HAND_AUTHORED lists '${slug}', but docs/${slug}/ does not exist`);
     }
   }
@@ -454,9 +524,14 @@ function main() {
 
     let dir;
     let branch;
+    let revision;
+    let fetchedAt;
     try {
-      ({dir, branch} = cloneRepo(repo));
-      const targetDir = join(DOCS_DIR, slug);
+      ({dir, branch, revision} = clone(repo));
+      if (!/^[a-f0-9]{40}$/.test(revision)) throw new Error('Source revision is missing or invalid');
+      fetchedAt = now();
+      const pages = {};
+      const targetDir = join(destination, slug);
       mkdirSync(targetDir, {recursive: true});
 
       // Snapshot what's already there before writing anything, so removal
@@ -474,20 +549,14 @@ function main() {
       // ── README.md → index page ──
       const readmePath = join(dir, 'README.md');
       if (existsSync(readmePath)) {
-        let content = readFileSync(readmePath, 'utf8');
-        content = sanitizeHtml(content);
-        content = fixRelativeLinks(content, repo, '', branch);
-        // Remove the leading # Title (Docusaurus uses frontmatter for title)
-        content = content.replace(/^# .*\n\n?/, '');
-        const statusBanner = getStatusBanner(meta.status || 'unknown');
-        let fm = frontmatter(meta.label, localPos++, slug, meta.status || 'unknown');
-        if (statusBanner) {
-          fm += statusBanner + '\n\n';
-        }
-        content = fm + content;
+        const content = await readmeIndex(readFileSync(readmePath, 'utf8'), {
+          repo, branch, label: meta.label, position: localPos++, slug,
+          status: meta.status || 'unknown',
+        });
         writeFileSync(join(targetDir, 'index.md'), content);
         WRITTEN.push(join(targetDir, 'index.md'));
         writtenFiles.push('index.md');
+        pages[`${slug}/index`] = 'README.md';
         console.log(`  ✓ README.md → index.md`);
       }
 
@@ -512,6 +581,7 @@ function main() {
         writeFileSync(join(targetDir, file), content);
         WRITTEN.push(join(targetDir, file));
         writtenFiles.push(file);
+        pages[`${slug}/${file.replace(/\.(md|rst)$/, '')}`] = file;
         console.log(`  ✓ ${file}`);
       }
 
@@ -519,20 +589,23 @@ function main() {
       const docsSubdir = DOCS_SUBDIR[repo] || 'docs';
       const docsDir = join(dir, docsSubdir);
       if (!SKIP_DOCS_DIR.has(repo) && existsSync(docsDir) && readdirSync(docsDir).length > 0) {
-        for (const file of readdirSync(docsDir).sort()) {
-          // Skip mdBook metadata files
-          if (file === 'SUMMARY.md') continue;
-          if (!file.endsWith('.md') && !file.endsWith('.rst')) continue;
+        const docFiles = readdirSync(docsDir, {withFileTypes: true})
+          .filter(entry => entry.isFile() && entry.name !== 'SUMMARY.md' && /\.(md|rst)$/.test(entry.name))
+          .map(entry => entry.name);
+        const outputs = docOutputNames(writtenFiles, docFiles);
+        for (const file of docFiles.sort()) {
+          const output = outputs.get(file);
           let content = readFileSync(join(docsDir, file), 'utf8');
           content = sanitizeHtml(content);
           content = fixRelativeLinks(content, repo, docsSubdir, branch);
           content = content.replace(/^# .*\n\n?/, '');
           const title = file.replace(/\.(md|rst)$/, '').replace(/[-_]/g, ' ');
           content = subFrontmatter(title, localPos++) + content;
-          writeFileSync(join(targetDir, file), content);
-        WRITTEN.push(join(targetDir, file));
-          writtenFiles.push(file);
-          console.log(`  ✓ docs/${file}`);
+          writeFileSync(join(targetDir, output), content);
+          WRITTEN.push(join(targetDir, output));
+          writtenFiles.push(output);
+          pages[`${slug}/${output.replace(/\.(md|rst)$/, '')}`] = `${docsSubdir}/${file}`;
+          console.log(`  ✓ ${docsSubdir}/${file} → ${output}`);
         }
       }
 
@@ -559,13 +632,21 @@ function main() {
         refusedRemovals++;
         console.warn(
           `  ⚠️  ${file} looks hand-written and is no longer upstream — ` +
-          'left in place. Add its slug to HAND_AUTHORED if it should stay ' +
+          'left in place. Add its slug to protected_repos in ' +
+          'scripts/sync-org-docs.config.json if it should stay ' +
           'permanently, or delete it by hand if it should go.',
         );
       }
 
+      provenance[repo] = {revision, lastSuccessfulFetch: fetchedAt, status: 'ok', pages};
+      saveProvenance();
       synced++;
     } catch (e) {
+      if (provenance[repo]) {
+        provenance[repo].status = 'stale';
+        provenance[repo].error = 'Source refresh failed';
+        saveProvenance();
+      }
       failures.push(`${repo}: ${e.message}`);
       console.error(`  ✗ Failed: ${e.message}`);
     } finally {
@@ -592,13 +673,13 @@ function main() {
       'Exiting non-zero: ' +
       'a run that covered part of the org must not report success.',
     );
-    process.exit(1);
+    throw new Error('Documentation sync failed');
   }
 
   // Case-collision guard (#154): run after every write, not just the ones
   // this invocation made, so a collision introduced by a hand edit sitting
   // next to synced content is still caught the next time sync runs.
-  const collisions = findCaseCollisions(DOCS_DIR);
+  const collisions = findCaseCollisions(destination);
   if (collisions.length) {
     console.error(`\n✗ ${collisions.length} case-insensitive path collision(s) under ${DOCS_DIR}/:`);
     for (const group of collisions) console.error(`  ✗ ${group.join('  ==  ')}`);
@@ -614,6 +695,24 @@ function main() {
 // Every page this run wrote, for markUnparseable.
 const WRITTEN = [];
 
+// unwrapMdxCodeBlocks strips the ```mdx-code-block fence wrapper, leaving its
+// contents inline — exactly what Docusaurus's own MDX preprocessor does before
+// compiling any page (see @docusaurus/mdx-loader preprocessor.js, which calls
+// @docusaurus/utils unwrapMdxCodeBlocks). Copied verbatim from
+// @docusaurus/utils 3.10.2 lib/markdownUtils.js so the guard below compiles the
+// same text the site build will. Only the `mdx-code-block` info-string is
+// touched; an ordinary ``` code fence is left intact.
+function unwrapMdxCodeBlocks(content) {
+  // We only support 3/4 backticks on purpose, should be good enough
+  const regexp3 = /(?<begin>^|\r?\n)(?<indentStart>\x20*)```(?<spaces>\x20*)mdx-code-block\r?\n(?<children>.*?)\r?\n(?<indentEnd>\x20*)```(?<end>\r?\n|$)/gs;
+  const regexp4 = /(?<begin>^|\r?\n)(?<indentStart>\x20*)````(?<spaces>\x20*)mdx-code-block\r?\n(?<children>.*?)\r?\n(?<indentEnd>\x20*)````(?<end>\r?\n|$)/gs;
+  const replacer = (substring, ...args) => {
+    const groups = args.at(-1);
+    return `${groups.begin}${groups.children}${groups.end}`;
+  };
+  return content.replaceAll(regexp3, replacer).replaceAll(regexp4, replacer);
+}
+
 // markUnparseable compiles each synced page as MDX, the way the site build
 // will, and marks one that does not compile `mdx: {format: md}` (Docusaurus's
 // per-page front matter, `frontMatter.mdx.format`) so Docusaurus reads
@@ -623,27 +722,70 @@ const WRITTEN = [];
 // upstream README is free to contain anything GitHub renders, and one page MDX
 // cannot parse fails the whole site build: every synced update then waits
 // until someone teaches the sanitizer the new shape. As CommonMark the page
-// builds, and only its raw HTML is lost (it shows as text). The warning names
-// the page so the sanitizer can learn the shape later.
+// builds. Raw HTML is live in that format, so the page is compiled once more
+// as CommonMark with the element allowlist, and one that fails has every `<`
+// escaped. The warning names the page so the sanitizer can learn the shape
+// later.
+//
+// The body is run through unwrapMdxCodeBlocks first, because Docusaurus does
+// the same before it compiles. Without that, a ```mdx-code-block fence hid its
+// contents from this guard — rejectExpressions saw only a fenced code span and
+// passed — while the build unwrapped the fence and compiled (and prerendered)
+// the JavaScript expression or `import`/`export` inside it. The guard must see
+// what the build sees, or an upstream README smuggles executable MDX past it.
 async function markUnparseable(paths, compile = null) {
   const mdxCompile = compile ?? (await import('@mdx-js/mdx')).compile;
-  const remarkGfm = compile ? null : (await import('remark-gfm')).default;
+  const options = compile
+    ? {}
+    : {remarkPlugins: [...(await buildSyntax()), rejectExpressions, rejectUnlistedElements]};
   let marked = 0;
   for (const path of paths) {
     const content = readFileSync(path, 'utf8');
     const fm = content.match(/^---\n[\s\S]*?\n---\n/);
     if (!fm || /\nmdx:\n  format: md\n/.test(fm[0])) continue;
+    const body = unwrapMdxCodeBlocks(content.slice(fm[0].length));
+    let reason;
     try {
-      // HTML comments as the site's markdown.mdx1Compat.comments reads them.
-      const body = content.slice(fm[0].length).replace(/<!--[\s\S]*?-->/g, '');
-      await mdxCompile(body, remarkGfm ? {remarkPlugins: [remarkGfm, rejectExpressions]} : {});
+      await mdxCompile(body, options);
+      continue;
     } catch (e) {
-      writeFileSync(path, withFormatMd(content));
-      marked++;
-      console.warn(`  ⚠️  ${path} is not valid MDX (${String(e.message).split('\n')[0]}); built as CommonMark`);
+      reason = String(e.message).split('\n')[0];
     }
+    // CommonMark renders raw HTML as it is written, so a page that leaves MDX
+    // needs the element check again in the format it will be built in. A page
+    // that fails it keeps its text and loses every tag.
+    let page = content;
+    try {
+      await mdxCompile(body, {...options, format: 'md'});
+    } catch (e) {
+      page = fm[0] + content.slice(fm[0].length).replace(/</g, '&lt;');
+      reason += `; ${String(e.message).split('\n')[0]}, so every \`<\` is escaped`;
+    }
+    writeFileSync(path, withFormatMd(page));
+    marked++;
+    console.warn(`  ⚠️  ${path} is not valid MDX (${reason}); built as CommonMark`);
   }
   return marked;
+}
+
+// buildSyntax returns the syntax extensions the site build parses a page with.
+//
+// The guard is only as good as its agreement with the build about what is
+// code, what is a comment and what is markup. A regular expression that removed
+// `<!-- … -->` from the page first did not agree: a comment marker inside a
+// code span is code to the parser, so the text between two such spans was
+// hidden from the guard and still compiled by the build. Parse with the build's
+// own extensions instead, loaded from the loader that builds the site, in the
+// order that loader applies them.
+async function buildSyntax() {
+  const {createRequire} = await import('node:module');
+  const loader = createRequire(createRequire(import.meta.url).resolve('@docusaurus/mdx-loader'));
+  const plugin = async (name) => (await import(pathToFileURL(loader.resolve(name)).href)).default;
+  return [
+    await plugin('remark-directive'),
+    await plugin('remark-gfm'),
+    await plugin('@slorber/remark-comment'),
+  ];
 }
 
 // rejectExpressions fails the compile on a JavaScript expression or import.
@@ -667,9 +809,46 @@ function findExpression(node) {
   if ((node.type === 'mdxFlowExpression' || node.type === 'mdxTextExpression') && node.value.trim()) {
     return `{${node.value.trim()}}`;
   }
-  for (const attr of node.attributes ?? []) {
+  // A directive node (`:name[label]{key=value}`) keeps its attributes in an
+  // object. Only a JSX element has the list this loop reads.
+  for (const attr of Array.isArray(node.attributes) ? node.attributes : []) {
     if (attr.type === 'mdxJsxExpressionAttribute') return `{${attr.value}}`;
     if (attr.value?.type === 'mdxJsxAttributeValueExpression') return `{${attr.value.value}}`;
+  }
+  return null;
+}
+
+// rejectUnlistedElements fails a page whose parsed tree holds an HTML element
+// outside the allowlist.
+//
+// sanitizeHtml escapes those elements in the text, but it finds code blocks
+// and code spans with regular expressions, and the parser does not always
+// agree with it: a fence closed by a line with trailing spaces is closed for
+// the parser and still open for the regular expression. Markup after such a
+// line reached the build as written. The tree is what the build renders, so
+// the allowlist is checked there too.
+function rejectUnlistedElements() {
+  return (tree) => {
+    const walk = (node) => {
+      const found = findUnlistedElement(node);
+      if (found) throw new Error(`Element \`<${found}>\` is outside the allowlist`);
+      node.children?.forEach(walk);
+    };
+    walk(tree);
+  };
+}
+
+function findUnlistedElement(node) {
+  // MDX: a tag is a JSX element. JSX names are case-sensitive, and a name that
+  // is not a listed HTML element is a component the site does not define.
+  if (node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement') {
+    return node.name === null || HTML_ELEMENTS.has(node.name) ? null : node.name;
+  }
+  // CommonMark: raw HTML is one opaque node that the build parses as HTML.
+  if (node.type === 'html') {
+    for (const [, name] of node.value.matchAll(/<\/?([a-zA-Z][^\s/>]*)/g)) {
+      if (!HTML_ELEMENTS.has(name.toLowerCase())) return name;
+    }
   }
   return null;
 }
@@ -680,6 +859,9 @@ function withFormatMd(content) {
 }
 
 export {
+  loadProtectedRepos,
+  main,
+  cloneRepo,
   sanitizeHtml,
   fixRelativeLinks,
   onProse,
@@ -687,10 +869,13 @@ export {
   subFrontmatter,
   isSyncedIndex,
   getStatusBanner,
+  readmeIndex,
   filesToRemove,
   isRootDoc,
   markUnparseable,
+  unwrapMdxCodeBlocks,
   rejectExpressions,
+  rejectUnlistedElements,
   withFormatMd,
   slugify,
   listOrgRepos,
@@ -698,7 +883,9 @@ export {
   checkListing,
   discoverRepos,
   findCaseCollisions,
+  docOutputNames,
   HAND_AUTHORED,
+  ROOT_DOC_FILTER,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
   RETRY_DELAY_MS,
@@ -707,6 +894,6 @@ export {
 // The command module is imported by tests for orchestration and reconciliation
 // helpers; its guarded main() call keeps those imports network-free.
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  main();
+  await main();
   await markUnparseable(WRITTEN);
 }

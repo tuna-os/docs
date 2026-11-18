@@ -26,18 +26,22 @@ import {
   subFrontmatter,
   isSyncedIndex,
   getStatusBanner,
+  readmeIndex,
 } from '../lib/org-doc-transform.mjs';
 import {
   filesToRemove,
   isRootDoc,
   markUnparseable,
+  unwrapMdxCodeBlocks,
   rejectExpressions,
+  rejectUnlistedElements,
   withFormatMd,
   slugify,
   listOrgRepos,
   checkListing,
   discoverRepos,
   findCaseCollisions,
+  docOutputNames,
   PER_PAGE,
   DEFAULT_PAGE_SIZE,
   RETRY_DELAY_MS,
@@ -85,6 +89,52 @@ console.log('\n📋 sync-org-docs tests\n');
 
 console.log('onProse');
 
+test('flattened imports preserve both root ROADMAP and docs roadmap', () => {
+  const outputs = docOutputNames(['index.md', 'ROADMAP.md'], ['roadmap.md', 'install.md']);
+  assert.equal(outputs.get('roadmap.md'), 'docs-roadmap.md');
+  assert.equal(outputs.get('install.md'), 'install.md');
+});
+
+test('flattened imports reserve index and natural prefixed filenames', () => {
+  const files = ['index.md', 'roadmap.md', 'docs-roadmap.md', 'ROADMAP.md'];
+  const outputs = docOutputNames(['ROADMAP.md'], files);
+  assert.equal(outputs.get('index.md'), 'docs-index.md');
+  assert.equal(outputs.get('docs-roadmap.md'), 'docs-roadmap.md');
+  assert.equal(new Set([...outputs.values(), 'index.md', 'ROADMAP.md'].map(s => s.toLowerCase())).size, 6);
+  assert.deepEqual(docOutputNames(['ROADMAP.md'], [...files].reverse()), outputs);
+});
+
+test('README imports have distinct routes from the generated index and natural prefixed pages', () => {
+  const outputs = docOutputNames(['index.md'], ['README.md', 'index.md', 'docs-README.md']);
+  assert.equal(outputs.get('README.md'), 'docs-docs-README.md');
+  assert.equal(outputs.get('index.md'), 'docs-index.md');
+  assert.equal(outputs.get('docs-README.md'), 'docs-README.md');
+  assert.equal(docOutputNames([], ['readme.md']).get('readme.md'), 'docs-readme.md');
+});
+
+asyncTest('README index retargets links to the removed H1 to the page top', async () => {
+  const source = '# TunaOS Flatpak Index\n\n[Top](#tunaos-flatpak-index)\n';
+  const out = await readmeIndex(source, {
+    repo: 'flatpak-index', branch: 'main', label: 'flatpak-index',
+    position: 1, slug: 'flatpak-index',
+  });
+  assert.ok(isSyncedIndex(out));
+  assert.ok(out.endsWith('[Top](#)\n'));
+  assert.doesNotMatch(out, /^# TunaOS Flatpak Index$/m);
+});
+
+asyncTest('README title link rewrites preserve other anchors and code examples', async () => {
+  const source = '# Title\n\n[Top](#title "Start") and [Other](#other)\n' +
+    '[top]: #title\n\n`[Top](#title)`\n\n```md\n[Top](#title)\n```\n';
+  const out = await readmeIndex(source, {
+    repo: 'example', branch: 'main', label: 'Example', position: 1, slug: 'example',
+  });
+  assert.ok(out.includes('[Top](# "Start") and [Other](#other)'));
+  assert.ok(out.includes('[top]: #\n'));
+  assert.ok(out.includes('`[Top](#title)`'));
+  assert.ok(out.includes('```md\n[Top](#title)\n```'));
+});
+
 test('leaves fenced blocks untouched', () => {
   const src = 'prose\n\n```bash\ngit log --since=<30d>\n```\n\nmore prose\n';
   const out = onProse(src, (s) => s.replace(/</g, '&lt;'));
@@ -118,6 +168,25 @@ test('escapes a placeholder that is not an HTML element (hive backend-setup, a t
 test('escapes a placeholder inside emphasis', () => {
   const out = sanitizeHtml('*Talks to the <frontend> over a socket*\n');
   assert.equal(out, '*Talks to the &lt;frontend> over a socket*\n');
+});
+
+test('escapes the placeholders that broke ten consecutive sync runs (#359)', () => {
+  // tunaos-packages TIDEFORGE-ACTION-CACHE.md and wootc manual-testing.md:
+  // prose on GitHub, an unclosed JSX tag to MDX, and the daily sync red from
+  // 08-22 to 08-31 until both shapes are escaped here.
+  assert.match(sanitizeHtml('restore key is <artifact-digest>\n'), /&lt;artifact-digest>/);
+  assert.match(sanitizeHtml('run it on <your> machine\n'), /&lt;your>/);
+});
+
+test('turns a link with a placeholder host into text plus code (corral deployment-modes, #742)', () => {
+  // Docusaurus fails the build on "Can't parse URL https://corral.<tailnet>.ts.net",
+  // which kept the daily sync red from 2026-11-08.
+  assert.equal(
+    sanitizeHtml('Open [the MagicDNS address](https://corral.<tailnet>.ts.net) now.\n'),
+    'Open the MagicDNS address (`https://corral.<tailnet>.ts.net`) now.\n',
+  );
+  const real = 'See [docs](https://example.com/a?b=1) and `[x](https://a.<b>.c)`.\n';
+  assert.equal(sanitizeHtml(real), real);
 });
 
 test('escapes a < that cannot start a tag (paperwm: <<, <-)', () => {
@@ -210,7 +279,7 @@ test('leaves an already self-closed void tag alone', () => {
 });
 
 test('self-closes every void element', () => {
-  for (const tag of ['br', 'hr', 'input', 'meta', 'link', 'source']) {
+  for (const tag of ['br', 'hr', 'input', 'source']) {
     assert.match(sanitizeHtml(`<${tag}>\n`), new RegExp(`<${tag} />`), `${tag} not closed`);
   }
 });
@@ -224,6 +293,24 @@ test('does not treat a shell placeholder as a tag', () => {
   // `corral ct create <name> --image <img>` lives in a fenced block.
   const src = '```\ncorral ct create <name> --image <img>\n```\n';
   assert.equal(sanitizeHtml(src), src);
+});
+
+test('escapes an element that acts on the page instead of marking up text', () => {
+  // Each of these is live in a built page: a framed document with the site's
+  // origin, a new base for every relative URL, a redirect, a foreign
+  // stylesheet, a plugin document.
+  const sources = [
+    '<iframe srcdoc="x"></iframe>\n',
+    '<base href="https://example.com/">\n',
+    '<meta http-equiv="refresh" content="0;url=https://example.com/">\n',
+    '<link rel="stylesheet" href="https://example.com/x.css">\n',
+    '<embed src="https://example.com/x.html" type="text/html">\n',
+  ];
+  for (const src of sources) {
+    const out = sanitizeHtml(src);
+    assert.ok(!out.includes('<'), out);
+    assert.equal(out, src.replace(/</g, '&lt;'));
+  }
 });
 
 // ── fixRelativeLinks ──────────────────────────────────────────────────────────
@@ -418,6 +505,29 @@ test('sends a bare non-markdown file link to the blob URL', () => {
     out.trim(),
     '[formula](https://github.com/tuna-os/bluefin-cli/blob/main/contrib/homebrew/bluefin-cli.rb)',
   );
+});
+
+test('rewrites a reference-style definition pointing at a directory to the tree URL', () => {
+  const out = fixRelativeLinks('[runtime]: runtime/\n', 'iced', '', 'master');
+  assert.match(out, /github\.com\/tuna-os\/iced\/tree\/master\/runtime/);
+});
+
+test('rewrites a reference-style definition from docs/ against the repo root', () => {
+  const out = fixRelativeLinks(
+    '[ADR 0001]: architecture-decisions/0001-linear-storage-dag-overlay.md\n',
+    'spindle', 'docs',
+  );
+  assert.match(out, /github\.com\/tuna-os\/spindle\/blob\/main\/docs\/architecture-decisions\/0001-linear-storage-dag-overlay\.md/);
+});
+
+test('keeps the anchor on a reference-style definition', () => {
+  const out = fixRelativeLinks('[tour example]: examples/README.md#tour\n', 'iced', '', 'master');
+  assert.match(out, /blob\/master\/examples\/README\.md#tour/);
+});
+
+test('leaves absolute and footnote definitions alone', () => {
+  const src = '[ruma]: https://github.com/ruma/ruma\n[^1]: See the matrix spec\n';
+  assert.equal(fixRelativeLinks(src, 'spindle', 'docs'), src);
 });
 
 // ── frontmatter ───────────────────────────────────────────────────────────────
@@ -632,6 +742,121 @@ asyncTest('rejectExpressions fails a page whose prose MDX would read as JavaScri
   assert.ok(await rejects('<img src={logo} />\n'));
   assert.ok(await rejects('import x from "y"\n\nText\n'));
   assert.ok(!(await rejects('Plain text, `{code}` and <img src="a.png" />.\n\n```\n{fenced}\n```\n')));
+});
+
+asyncTest('markUnparseable marks a page that hides MDX in an mdx-code-block fence', async () => {
+  // Docusaurus unwraps a ```mdx-code-block fence before compiling, so a
+  // JavaScript expression or import inside one reaches the build even though it
+  // looks like fenced code in the synced file. markUnparseable must see the
+  // same unwrapped body the build does and downgrade the page to CommonMark,
+  // or the upstream README's code runs at build time. An ordinary code fence
+  // carrying the same braces must stay untouched.
+  const dir = mkdtempSync(join(tmpdir(), 'mdx-fence-'));
+  const smuggled = join(dir, 'smuggled.md');
+  const ordinary = join(dir, 'ordinary.md');
+  writeFileSync(
+    smuggled,
+    subFrontmatter('Smuggled', 1) +
+      'Intro.\n\n```mdx-code-block\n{process.env}\n```\n\nOutro.\n',
+  );
+  writeFileSync(
+    ordinary,
+    subFrontmatter('Ordinary', 2) + 'A sample:\n\n```\n{process.env}\n```\n',
+  );
+  const marked = await markUnparseable([smuggled, ordinary]);
+  assert.equal(marked, 1, 'only the mdx-code-block page should be downgraded');
+  assert.ok(readFileSync(smuggled, 'utf8').includes('mdx:\n  format: md\n'));
+  assert.ok(!readFileSync(ordinary, 'utf8').includes('format: md'));
+});
+
+// Writes a page the way the sync does (sanitizeHtml, then front matter), runs
+// markUnparseable on it and returns what is on disk afterwards.
+async function syncedPage(source) {
+  const dir = mkdtempSync(join(tmpdir(), 'mdx-guard-'));
+  const path = join(dir, 'page.md');
+  writeFileSync(path, subFrontmatter('Page', 1) + sanitizeHtml(source));
+  const marked = await markUnparseable([path]);
+  return {marked, page: readFileSync(path, 'utf8')};
+}
+
+asyncTest('markUnparseable marks an expression between two code spans that hold comment markers', async () => {
+  // `<!--` and `-->` inside code spans are code to the parser, so the text
+  // between them is prose and the expression in it compiles. A guard that
+  // removes `<!-- … -->` from the text first never sees that expression.
+  const inline = await syncedPage('Write `<!--` to open. {process.env} Close with `-->`.\n');
+  assert.equal(inline.marked, 1);
+  assert.ok(inline.page.includes('mdx:\n  format: md\n'), inline.page);
+  const fenced = await syncedPage('```html\n<!--\n```\n\n{process.env}\n\n```html\n-->\n```\n');
+  assert.equal(fenced.marked, 1);
+  assert.ok(fenced.page.includes('mdx:\n  format: md\n'), fenced.page);
+});
+
+asyncTest('markUnparseable leaves no tag in a page whose markup sanitizeHtml read as code', async () => {
+  // Each source closes or opens code in a way CommonMark accepts and the
+  // sanitizer's patterns do not, so sanitizeHtml escapes nothing after it. The
+  // parser reads the markup as markup; the page must not keep it.
+  const script = '<script>document.title = 1</script>';
+  const sources = {
+    'closing fence with trailing spaces': '```\ncode\n```  \n\n' + script + '\n\n```\n',
+    'indented closing fence': '```\ncode\n   ```\n\n' + script + '\n\n```\n',
+    'tilde fence closed by a longer run': '~~~\ncode\n~~~~\n\n' + script + '\n\n~~~\n',
+    'four-backtick fence around a three-backtick line': '````\n```\n````\n\n' + script + '\n\n```\nx\n```\n',
+    'backtick in the info string': 'text\n\n``` a`b\n' + script + '\n\n```\nend\n',
+    'double-backtick code span': 'a `` x ` y `` ' + script + ' ` z\n',
+    'escaped backticks': 'a \\` ' + script + ' \\` b\n',
+  };
+  for (const [name, source] of Object.entries(sources)) {
+    const {marked, page} = await syncedPage(source);
+    assert.equal(marked, 1, name);
+    assert.ok(page.includes('mdx:\n  format: md\n'), name);
+    assert.ok(!page.slice(page.indexOf('\n---\n')).includes('<'), `${name}: ${page}`);
+    assert.ok(page.includes('&lt;script>'), name);
+  }
+});
+
+asyncTest('markUnparseable keeps a page that uses only listed elements and real code', async () => {
+  const {marked, page} = await syncedPage(
+    '<details>\n<summary>More</summary>\n\nText with <kbd>Ctrl</kbd> and <img src="https://example.com/a.png">.\n\n</details>\n\n' +
+      '<!-- a comment -->\n\n```html\n<script>alert(1)</script>\n<!-- {process.env} -->\n```\n\nUse `<script>` and `{braces}` in code.\n',
+  );
+  assert.equal(marked, 0, page);
+  assert.ok(page.includes('<details>') && page.includes('<script>alert(1)</script>'), page);
+});
+
+asyncTest('markUnparseable reads a directive the way the build does and keeps the page', async () => {
+  // The build parses `:name` as a directive. Its attributes are not a JSX
+  // attribute list, and `{key=value}` after it is not an expression.
+  const {marked, page} = await syncedPage('Ratio 3:x, done :tada: and :kbd[Ctrl]{key=value}.\n\n:::note\n\nBody\n\n:::\n');
+  assert.equal(marked, 0, page);
+});
+
+asyncTest('rejectUnlistedElements reads the element name from the tree in both formats', async () => {
+  const {compile} = await import('@mdx-js/mdx');
+  const rejects = async (body, format) => {
+    try {
+      await compile(body, {format, remarkPlugins: [rejectUnlistedElements]});
+      return false;
+    } catch {
+      return true;
+    }
+  };
+  assert.ok(await rejects('<script>x</script>\n', 'mdx'));
+  assert.ok(await rejects('Text <iframe></iframe> text\n', 'mdx'));
+  // A JSX name is case-sensitive: `IMG` is a component, not the `img` element.
+  assert.ok(await rejects('<IMG />\n', 'mdx'));
+  assert.ok(!(await rejects('<details>\n<summary>x</summary>\n\nBody\n\n</details>\n', 'mdx')));
+  assert.ok(await rejects('<ScRiPt>x</ScRiPt>\n', 'md'));
+  assert.ok(await rejects('Text <base href="https://example.com/"> text\n', 'md'));
+  assert.ok(!(await rejects('<div>\n<img src="a.png">\n</div>\n\n`<script>`\n', 'md')));
+});
+
+asyncTest('unwrapMdxCodeBlocks strips only the mdx-code-block fence', () => {
+  const unwrapped = unwrapMdxCodeBlocks('a\n\n```mdx-code-block\n{x}\n```\n\nb\n');
+  assert.ok(!unwrapped.includes('mdx-code-block'));
+  assert.ok(/^\{x\}$/m.test(unwrapped));
+  // An ordinary fence is left exactly as it was.
+  const plain = 'a\n\n```\n{x}\n```\n';
+  assert.equal(unwrapMdxCodeBlocks(plain), plain);
 });
 
 // ── getStatusBanner ───────────────────────────────────────────────────────────
@@ -992,6 +1217,29 @@ test('gives up after a second attempt that is still short', () => {
   assert.equal(result.attempts, 2);
   assert.equal(result.fatal.length, 1);
   assert.match(result.fatal[0], /truncated/);
+});
+
+// ── sync config: scripts/sync-org-docs.config.json ───────────────────────────
+
+console.log('\nsync config');
+
+test("loadProtectedRepos loads all expected slugs and fails closed on empty or missing entries", async () => {
+  const { HAND_AUTHORED, loadProtectedRepos } = await import("../sync-org-docs.mjs");
+  assert.equal(HAND_AUTHORED.size, 7);
+  for (const slug of ["mariner", "gtk-office-suite", "mandelbrot", "remora", "dakota", "blueshell", "ghostty"]) {
+    assert.equal(HAND_AUTHORED.has(slug), true);
+  }
+  assert.throws(() => loadProtectedRepos({ protected_repos: [] }), /hand-authored protection is empty/);
+  assert.throws(() => loadProtectedRepos({ protected_repos: [{ slug: "mariner" }] }), /missing/);
+});
+
+test('ROOT_DOC_FILTER stays keyed by repo, so tunaOS keeps its root-doc allowlist', async () => {
+  // The consumer reads ROOT_DOC_FILTER[repo]; a bare array here would drop
+  // the tunaOS filter and sync every root doc instead.
+  const { ROOT_DOC_FILTER } = await import('../sync-org-docs.mjs');
+  assert.equal(Array.isArray(ROOT_DOC_FILTER), false);
+  assert.deepEqual(ROOT_DOC_FILTER.tunaOS, ['README.md', 'ROADMAP.md', 'SECURITY.md', 'CONTRIBUTING.md']);
+  assert.equal(ROOT_DOC_FILTER.wootc, undefined);
 });
 
 // ── summary ───────────────────────────────────────────────────────────────────

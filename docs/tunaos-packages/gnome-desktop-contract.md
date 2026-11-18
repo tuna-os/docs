@@ -1,16 +1,16 @@
 ---
-sidebar_position: 18
+sidebar_position: 24
 title: "gnome desktop contract"
 ---
 
 `gnome-shell` plus a session file is not a complete desktop. In particular,
 the session can start while file dialogs, screenshots, removable media,
-portals, and keyring-backed credentials remain unusable.
+portals, and credentials backed by `gnome-keyring` remain unusable.
 
 The package repository now provides
 [`verify-gnome-desktop-experience.py`](https://github.com/tuna-os/tunaos-packages/blob/main/scripts/verify-gnome-desktop-experience.py),
-a package-manager-neutral hard-fail check. It requires the core session,
-file-manager, portal, and keyring packages:
+a package-manager-neutral hard-fail check. It needs packages for the core session,
+file manager, portal, and `gnome-keyring`:
 
 ```text
 gdm
@@ -23,7 +23,7 @@ nautilus
 xdg-desktop-portal-gnome
 ```
 
-Run it after the base-specific package installation, before publishing the
+Run it after the package installation for the base, before you publish the
 image. Examples:
 
 ```bash
@@ -34,9 +34,9 @@ dpkg-query -W -f '${binary:Package}\\n' | \
   python3 scripts/verify-gnome-desktop-experience.py /dev/stdin
 ```
 
-The check deliberately validates names rather than image size or package
-count. Metapackages can expand to very different numbers of packages across
-openSUSE, Debian, and Ubuntu; a size threshold would miss a missing component
-or reject a valid but compact dependency closure. Base-specific translations
-should use the package names actually emitted by that package manager, and any
-name that cannot be resolved should fail the build rather than be ignored.
+The test validates names of packages instead of image size or package
+count. Metapackages expand to different numbers of packages across
+openSUSE, Debian, and Ubuntu. A size threshold could miss an absent component
+or reject a valid dependency closure. Translations for each base must use the
+exact package names from that package manager. Any name that does not resolve
+must fail the build.

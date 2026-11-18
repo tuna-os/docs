@@ -1,5 +1,5 @@
 ---
-sidebar_position: 19
+sidebar_position: 21
 title: "e2e architecture"
 ---
 
@@ -106,7 +106,7 @@ flowchart TD
     wd["watchdog: sleep 2700 → force_reboot"]
     scan["scan for /wootc/disks/root.disk<br/>retry 24×5s + udevadm settle<br/>(ntfs3 ro probe of every partition)"]
     mnt["mount NTFS rw<br/>(dirty volume → clear error + fail)"]
-    scratch["ext4 scratch loop on NTFS<br/>C:\\wootc\\cache\\deployer-scratch.img (30G)<br/>mounted at /var/fisherman-tmp<br/>binds: /var/lib/containers, /var/tmp"]
+    scratch["ext4 scratch loop on NTFS<br/>C:\\wootc\\cache\\deployer-scratch.img (20G floor, grown to fit the image)<br/>mounted at /var/fisherman-tmp<br/>binds: /var/lib/containers, /var/tmp"]
     preflight["registry pre-flight<br/>skopeo inspect docker://image<br/>(prints real DNS/TLS errors)"]
     loop["losetup root.disk → /dev/loopN"]
     fish["fisherman recipe.json<br/>partition → mkfs → podman pull →<br/>podman run bootc install to-filesystem"]
@@ -206,6 +206,21 @@ Design notes:
   It could read the kernel inside root.disk after MOK enrollment.
   That design would need separate proof and a one-time MokManager enrollment.
   It aims to restore the no-sync property in SPEC §1.2.
+
+## Phase-3 native post-boot health gate
+
+The runner records a Phase-2 baseline. It then boots the native system on the
+blank disk and runs `tests/e2e/phase3-health.sh` through QGA. The probe checks:
+
+- systemd state and failed units;
+- the system bus and logind;
+- the display manager;
+- users and groups from `sysusers.d`;
+- SELinux denials and new labels under `/etc` and `/var/home`.
+
+The runner writes all output to `phase3-health.log`. A `FAIL:` line fails the
+product check. A QGA error without a `FAIL:` line is an infrastructure error.
+The `native-health` result is required. Other evidence cannot replace it.
 
 ## Result boundary (#383)
 

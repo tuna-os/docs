@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 10
 title: "kde python bindings investigation"
 ---
 
@@ -44,16 +44,13 @@ I could not find a Shiboken6 or PySide6 element anywhere in that ref:
   no element with `shiboken`, `pyside`, `qt6`, `qt5`, or `python` in its name,
   apart from the existing `python3*` dependencies.
 
-
 This matches the "Packages Not Yet in Aurora" table in `SPEC.md`: *"Python
 bindings (Shiboken6/PySide6) — Requires packaging from scratch."*
-
 
 I could not list all of the 1000 or more elements in freedesktop-sdk. However,
 each check gave the same result. This result also matches the scope of
 freedesktop-sdk, which does not build Qt or the Python bindings for Qt. It is
 consistent with section 3:
-
 
 ### 3. This repo already builds its own Qt6 from source — Shiboken6/PySide6 would follow the same pattern
 
@@ -147,4 +144,3 @@ base build isn't currently green to build on top of.
 4. This work does not depend on a successful base image build. However, wait
    for that result before you change the flag. Otherwise, you cannot separate
    a failure from this change from an existing failure in the base build.
-

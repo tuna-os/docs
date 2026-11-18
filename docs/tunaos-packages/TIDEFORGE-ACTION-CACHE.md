@@ -1,19 +1,20 @@
 ---
-sidebar_position: 12
+sidebar_position: 16
 title: "TIDEFORGE ACTION CACHE"
 ---
 
-Tideforge identifies a package build by canonical declared inputs rather than a
-workflow run. The key covers the complete recipe directory, selected target and
-architecture, the selected target's contract and dependency-capability slice,
-the immutable OCI build-image digest, the package-format renderer set, dependency
-action keys, and the reproducibility contract including SOURCE_DATE_EPOCH.
+Tideforge identifies a package build by declared inputs, not by workflow runs.
+The action key covers the recipe directory, target, and architecture. It also
+includes the target contract, dependency slice, and the digest of the OCI
+build image. Finally, it covers the renderers, dependency keys, and the
+reproducibility contract with `SOURCE_DATE_EPOCH`.
 
-Only renderer inputs used by a target are hashed: a Debian assembler change does
-not invalidate RPM, Arch, or openSUSE actions. Every build image is resolved to
-an image@sha256 digest before key generation.
+The engine hashes only renderer inputs that a target uses. A change to the
+Debian assembler does not invalidate RPM, Arch, or openSUSE actions. The engine
+resolves every build image to an `image@sha256` digest before it generates the
+key.
 
-An ActionResult records the exact action key plus every artifact's safe basename,
+An ActionResult records the action key and each artifact's safe basename,
 byte size, and SHA-256. Restore verifies the requested key, schema, unique safe
 filenames, sizes, and hashes before a result may skip compilation. Lint,
 clean-install, and smoke validation still run on hits.
@@ -23,7 +24,7 @@ compilation and save only after all validation; the cache action never saves
 implicitly. R2 uses `actions/sha256/<action-key>.json` as the authoritative
 result index and `blobs/sha256/<artifact-digest>` for immutable content. A
 lease for an action key is at `leases/sha256/<action-key>.json`. Only jobs
-on the protected main branch can publish trusted R2 results. They write
+on the protected `main` branch can publish trusted results to R2. They write
 the blobs first and the ActionResult last.
 
 ## Authoritative CAS promotion and lease contract
@@ -35,7 +36,7 @@ the blobs first and the ActionResult last.
 
 2. **Leases**:
    - A worker gets a lease of 30 to 45 minutes before it builds or promotes (`scripts/tideforge-action-cache.py acquire-lease`).
-   - A worker without a valid lease cannot promote to the CAS.
+   - A worker needs a valid lease to promote to the CAS.
    - When a lease expires, other workers look for a valid ActionResult.
 
 3. **Order of the commit**:
@@ -45,4 +46,27 @@ the blobs first and the ActionResult last.
 
 4. **Promotion behind the factory boundary**:
    - Publication reads the ActionResults, verifies the digests and copies the bytes into the repository indexes.
-   - Builds on the protected main branch publish ActionResults and blobs to R2.
+   - Builds on the protected `main` branch publish the ActionResults and blobs to R2.
+
+## CAS garbage collection
+
+CAS reachability and garbage collection operates as a report-only mark-and-sweep
+subsystem (`scripts/cas_gc.py`, #430 step 5). It marks reachable blobs from retained ActionResults and active repository
+metadata. It applies an age grace period (default 7 days). It records
+tombstones for sweep candidates without deletion of live content. See [CAS-GARBAGE-COLLECTION.md](https://github.com/tuna-os/tunaos-packages/blob/main/docs/CAS-GARBAGE-COLLECTION.md)
+for the full specification and tombstone format.
+
+## Reproducibility verification and quarantine
+
+The reproducibility verifier monitors the cache-reuse contract: identical
+inputs must return a verified result and skip compilation. For each sampled
+cell, the job builds twice from canonical inputs and compares the artifact
+digests. The verifier skips cells from the build chain: a chain can take the full
+six-hour limit, so two builds cannot finish in one job.
+
+The report job adds each divergent cell to `manifests/reproducibility-quarantine.yaml`.
+On a cache hit, `package-factory-cell.yml` runs
+`tideforge-action-cache.py quarantine-check`. A quarantined cell discards the
+cached result and builds again. The report records aggregate rates (% reproducible per engine and
+format) in `docs/reproducibility-status.json`. `scripts/factory-status.py`
+shows them in `docs/FACTORY-STATUS.md`.

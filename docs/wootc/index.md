@@ -29,31 +29,52 @@ status: unknown
 ---
 
 wootc installs a real Linux desktop from a [bootc](https://github.com/containers/bootc)
-image into `root.disk`, a file beside your Windows files. The native path adds a boot entry.
-Current releases do not yet provide the complete Linux-inside-Windows journey.
-The [verification status](https://github.com/tuna-os/wootc/blob/main/docs/status.md) describes the evidence and limits.
-The [roadmap](https://github.com/tuna-os/wootc/blob/main/ROADMAP.md) keeps VM-first use and complete restoration as release requirements.
+image into `root.disk`, a file beside your Windows files. The native WinUI shell is the primary Windows release surface.
+[Verification status](https://github.com/tuna-os/wootc/blob/main/docs/status.md) describes the evidence and limits.
 
 The setup form asks for **a password**. The app suggests your username and
 computer name from your PC. It sizes the disk from available space and selects TPM encryption by default.
 Advanced lets you change those choices. Supported migration helpers can carry files,
 Wi-Fi networks, wallpaper, and taskbar choices. Results depend on the image and helper.
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## Get it
 
+> **No published release has the native setup yet.** The files below come with
+> the first release after the native shell cutover (#661). The latest release,
+> `v0.1.0-alpha.1` (2026-08-22), is older. It has `wootc.exe`, the branded
+> `*-Installer.exe` files and `SHA256SUMS`.
+
 **[⬇ Download the latest release](https://github.com/tuna-os/wootc/releases/latest)**
-— run the exe as Administrator. It fetches boot artifacts, checks hashes, and verifies a signed manifest.
-The current Wails interface needs the WebView2 runtime. Windows may prompt you to install it.
+— run `wootc-Installer-Setup.exe` as Administrator. The Inno setup installs
+the native WinUI shell and protected engine, fetches boot artifacts, checks hashes, and verifies a signed manifest.
+The native shell does not require WebView2.
+
+This release keeps the Wails compatibility build as `wootc-legacy.exe`.
+Use it only when you need the legacy Wails UI.
 
 ```
 winget install TunaOS.wootc
 ```
-*(winget availability lands with the first accepted submission.)*
 
-Every release also ships **branded installers** — `Bazzite-Installer.exe`,
-`Bluefin-Installer.exe`, `Aurora-Installer.exe`, `TunaOS-Installer.exe` — the
-same engine with each distribution's identity and preselected images.
-They can pre-download the OS on Windows for deployment without a network after reboot.
+*(winget follows the generic setup for the native app.)*
+
+Every release also ships **branded installers** —
+`Bazzite-Installer-Setup.exe`, `Bluefin-Installer-Setup.exe`,
+`Aurora-Installer-Setup.exe`, `TunaOS-Installer-Setup.exe` — the same engine
+with each distribution's identity and preselected images. They can
+pre-download the OS on Windows for deployment without a network after reboot.
 
 > The binaries are not yet code-signed. Windows may show SmartScreen or an
 > "unknown publisher" prompt. Policy can prevent continuation.
@@ -65,7 +86,7 @@ They can pre-download the OS on Windows for deployment without a network after r
 ## How it works
 
 ```
-Windows 11  →  wootc.exe (arms the system)  →  reboot
+Windows 11  →  wootc-Installer-Setup.exe → native WinUI shell → reboot
             →  signed shim → GRUB → deployer initramfs
             →  fisherman: bootc install into root.disk
             →  reboot → Windows → Manage: choose Linux boot
@@ -116,7 +137,7 @@ Nightly green runs can cut automatic pre-releases from their tested commit.
 Required checks must pass before a normal release.
 
 The matrix in **[docs/status.md](https://github.com/tuna-os/wootc/blob/main/docs/status.md)** records image families, Windows editions, filesystems, and encryption modes.
-Historical beta releases do not prove the current VM-first or native-shell journey.
+Earlier releases (`v0.1.0-alpha.1` and the automatic pre-releases) do not prove the current VM-first or native-shell journey.
 See the **[ROADMAP](https://github.com/tuna-os/wootc/blob/main/ROADMAP.md)** for the version ladder and evidence gates.
 **[docs/philosophy.md](https://github.com/tuna-os/wootc/blob/main/docs/philosophy.md)** explains the product goals.
 
@@ -124,6 +145,7 @@ See the **[ROADMAP](https://github.com/tuna-os/wootc/blob/main/ROADMAP.md)** for
 
 | | |
 |---|---|
+| [Documentation index](https://github.com/tuna-os/wootc/blob/main/docs/README.md) | all current guides, engineering references, and historical collections |
 | [Getting started](https://github.com/tuna-os/wootc/blob/main/docs/getting-started.md) | download → first boot, screen by screen |
 | [User guide](https://github.com/tuna-os/wootc/blob/main/docs/user-guide.md) | living in the migrated system, and the way back |
 | [Philosophy](https://github.com/tuna-os/wootc/blob/main/docs/philosophy.md) | the North Star, the Wubi heritage, why a file |
@@ -157,6 +179,7 @@ on the [task boards](https://github.com/tuna-os/wootc/issues/210).
 Installer components for Windows derive from
 [WubiUEFI](https://github.com/hakuna-m/wubiuefi) and use **GPL-2.0**
 ([LICENSE-GPL-2.0](https://github.com/tuna-os/wootc/blob/main/LICENSE-GPL-2.0)); the deployer initramfs and GRUB
-configuration are **MIT** ([LICENSE-MIT](https://github.com/tuna-os/wootc/blob/main/LICENSE-MIT)). fisherman, bootc,
+configuration are **MIT** ([LICENSE-MIT](https://github.com/tuna-os/wootc/blob/main/LICENSE-MIT)). The `slurp` Go
+module is also MIT ([slurp/LICENSE](https://github.com/tuna-os/wootc/blob/main/slurp/LICENSE)). fisherman, bootc,
 bootupd, podman, and skopeo are separate binaries under their own
 (Apache-2.0) licenses, invoked over a process boundary.

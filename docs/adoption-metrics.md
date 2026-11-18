@@ -53,24 +53,26 @@ shares based on rounded counts, with tables for each available category.
 ## Website deployment
 
 The website Worker serves `/api/adoption` before static assets. It fetches
-`https://countme.tunaos.org/v1/metrics`. For staging, set the Worker variable
-`ADOPTION_METRICS_URL` to a trusted HTTPS collector endpoint. Do not put
-credentials, query strings, or visitor-controlled values in that variable.
+`https://countme.tunaos.org/v1/metrics`. To use a test collector, set the
+Worker variable `ADOPTION_METRICS_URL` to the HTTPS endpoint of a collector
+that you trust. Do not put credentials, query strings, or visitor-controlled
+values in that variable.
 
 The proxy validates the public schema and closed weeks before it returns
 JSON. The proxy copies no visitor cookies or headers. Cloudflare may add
 transport headers; the collector does not read or store them. See
 [Cloudflare’s header reference](https://developers.cloudflare.com/fundamentals/reference/http-headers/#cf-connecting-ip-in-worker-subrequests).
-The proxy sends no visitor query strings upstream.
+The proxy does not send the query strings of visitors to the collector.
+
 Valid feeds cache for five minutes in browsers and fifteen minutes at the
 edge. Invalid or unreachable feeds return HTTP 503 with no cache; the
 interface shows that metrics are unavailable. It does not insert sample data.
 
-The collector must be deployed separately with its database migrations and
-publication schedule before the dashboard can show data. See the
+You must deploy the collector separately from the website, with its database
+migrations and publication schedule, before the dashboard can show data. See the
 [source and deployment guide](https://github.com/tuna-os/tunaos/tree/main/services/countme).
 
-The public category allowlist in `src/data/adoption-categories.json` is derived
+The public category allowlist in `src/data/adoption-categories.json` comes
 from `services/countme/src/allowlist.json` in tuna-os/tunaos. When supported
 images change, regenerate it with `node scripts/sync-adoption-categories.mjs`
 and the path to that file. The proxy rejects new categories until you update the website allowlist.

@@ -8,6 +8,9 @@ Human docs: [`README.md`](README.md) (deployment),
 [`CONTRIBUTING.md`](CONTRIBUTING.md) (`just preflight` and the validation
 list), [`ROADMAP.md`](ROADMAP.md).
 
+Follow the [naming conventions](CONTRIBUTING.md#naming-conventions): use
+TunaOS in prose and preserve literal repository and infrastructure identifiers.
+
 ## Most of `docs/` is generated — fix it upstream
 
 `sync-org-docs.yml` runs daily (`0 6 * * *`) and pulls READMEs and docs from
@@ -19,6 +22,9 @@ So editing a page under a repo-slug directory is undone by the next sync. The
 fix belongs in the source repository. The STE budget skips those trees for the
 same reason, and decides which they are from the sync's own index-page
 template rather than guessing from a file's links (#102).
+
+The STE job has no site dependencies. Keep the sync's ownership exports
+importable without `node_modules`; load rendering packages only when needed.
 
 Hand-written pages live at the top level of `docs/` (`architecture.md`,
 `choosing-a-variant.md`, …) and in `blog/`.
@@ -38,24 +44,27 @@ script; the two have drifted before and nothing checks that they agree.
 ## What the lint gates actually enforce
 
 ```bash
-just preflight     # typecheck + lint + tests + check-install-commands
+just preflight     # typecheck + lint + tests + checks + test-python + check-install-commands
 just build         # run this whenever a change can affect the generated site
 ```
 
-`lint.yml` has four jobs, and it is worth knowing which ones bite:
+`lint.yml` has seven jobs, and it is worth knowing which ones bite:
 
 | Job | Enforces |
 | --- | --- |
-| `js-syntax` | Yes — `node --check` on every script, plus every `*.test.mjs`, plus `check-install-commands` |
+| `changes` | Nothing by itself — it reads the diff and decides which jobs below run. A job that its `if:` skips reports success |
+| `js-syntax` | Yes — `node --check` on every script, runs `scripts/__tests__/*.test.mjs`, `scripts/checks/*.mjs` and the Vitest data tests (`npm run test:unit`), plus `check-install-commands` |
+| `python-tests` | Yes — the Flatpak Python unit tests under `.github/scripts/tests/` (`just test-python`) |
 | `ste` | Yes — Simplified Technical English, against the number in `.ste-budget`. The linter itself lives in [tuna-os/.github](https://github.com/tuna-os/.github/tree/main/.github/actions/ste-lint); this repo keeps only the budget. Run it locally with `just ste`. |
-| `markdown-lint` | Against `.markdownlint-budget` |
+| `markdown-lint` | Against `.markdownlint-budget`, with `markdownlint-cli` pinned in the workflow. `just lint` prints the same findings but does not compare them to the budget |
 | `link-check` | Yes — broken internal `.md` links fail the job |
+| `pinned-source` | The build-health source pin and the schemas copied from tuna-os/tunaOS. Runs only when those inputs change, and is not a required check |
 
 Both budgets are ratchets: a gate that fails on day one gets disabled on day
 two, so the number only ever goes down. Lower it when a batch of cleanup
 lands; never raise it to make a PR pass.
 
-`.ste-budget` and `.markdownlint-budget` are in the workflow's path filters on
+`.ste-budget` and `.markdownlint-budget` are in the `changes` job's path list on
 purpose — a change to the number a job is measured against must trigger that
 job. `blog/**` is there for the same reason: STE counts blog posts, so without
 it a blog-only PR could push the total over and only be caught by the next PR

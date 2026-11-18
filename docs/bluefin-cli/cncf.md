@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 7
 title: "cncf"
 ---
 
@@ -9,6 +9,7 @@ title: "cncf"
 *A comprehensive collection of Cloud Native tools.*
 
 **Core & Management**
+
 - [argo](https://argoproj.io): Get stuff done with container-native workflows for Kubernetes
 - [cilium-cli](https://cilium.io): CLI to install, manage & troubleshoot Kubernetes clusters running Cilium
 - [coredns](https://coredns.io/): DNS server that chains plugins
@@ -33,6 +34,7 @@ title: "cncf"
 - [etcd](https://github.com/etcd-io/etcd): Key value store for shared configuration and service discovery
 
 **Additional Tools**
+
 - [ah](https://github.com/artifacthub/hub): Artifact Hub command line tool
 - [pack](https://github.com/buildpacks/pack): A CLI for building apps using Cloud Native Buildpacks
 - [c7n](https://github.com/cloud-custodian/cloud-custodian): Rules engine for cloud security, cost optimization, and governance
@@ -56,9 +58,11 @@ title: "cncf"
 - `cdk8s`
 
 **Carvel Toolkit**
+
 - `kwt`, `kctrl`, `ytt`, `kapp`, `kbld`, `imgpkg`, `vendir`
 
 **Modern Ops**
+
 - `kubectl-cnpg`
 - `devspace`
 - `k8sgpt`
@@ -78,6 +82,7 @@ title: "cncf"
 - `kpt`
 
 **Flatpaks (GUI)**
+
 - `Headlamp`
 - `OpenLens`
 - `Podman Desktop`

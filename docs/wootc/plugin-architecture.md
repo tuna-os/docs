@@ -1,5 +1,5 @@
 ---
-sidebar_position: 32
+sidebar_position: 36
 title: "plugin architecture"
 ---
 
@@ -23,6 +23,7 @@ wootc migrates user data, applications, and settings from Windows to a container
 To make wootc extensible for community contributors and enterprise deployments (who need proprietary or customized migration paths for internal line-of-business software), migration integrations must decouple into modular **Program Migrator Plugins**.
 
 This document defines the architectural contract for program migrator plugins:
+
 1. **Plugin Unit**: Directory bundle with a declarative JSON manifest and lifecycle scripts (`detect`, `export`, `import`).
 2. **Discovery & Staging**: Well-known directories on Windows and Linux targets with clear precedence.
 3. **Trust & Execution Model**: Least-privilege phase separation, sanitization, sandboxing, and execution guardrails.
@@ -67,6 +68,7 @@ A Program Migrator Plugin is a self-contained bundle packaged as a directory (or
 ```
 
 ### 3.1 Plugin Identifier
+
 - Unique lower-kebab-case identifier matching `^[a-z0-9][a-z0-9-]{2,62}[a-z0-9]$` (e.g., `steam`, `libreoffice`, `corp-vpn-bridge`).
 - Reverse domain notation recommended for third-party / enterprise plugins (e.g., `com.acme.custom-erp`).
 
@@ -107,12 +109,14 @@ A Program Migrator Plugin is a self-contained bundle packaged as a directory (or
 All lifecycle scripts communicate through standard POSIX exit codes, standard environment variables, and structured JSON stdout/stderr.
 
 #### A. `detect` (Discovery Phase)
+
 - **When & Where**: Executed during scan phase (`wootc-manifest scan`).
 - **Environment**:
   - `WOOTC_HOST`: Path to mounted Windows root (e.g., `/run/wootc/host` or `C:\`).
   - `WOOTC_WIN_USER`: Target Windows username being inspected.
   - `WOOTC_WIN_USER_DIR`: Absolute path to `$WOOTC_HOST/Users/$WOOTC_WIN_USER`.
 - **Output (stdout JSON)**:
+
   ```json
   {
     "detected": true,
@@ -127,12 +131,14 @@ All lifecycle scripts communicate through standard POSIX exit codes, standard en
     "summary": "1 library, 12 games"
   }
   ```
+
 - **Exit Codes**:
   - `0`: Success (valid JSON on stdout).
   - `1`: Non-fatal failure or unsupported target.
   - Other: Error logged, plugin treated as `detected: false`.
 
 #### B. `export` (Windows Staging Phase)
+
 - **When & Where**: Executed on the live Windows host if pre-flight staging or credential extraction (DPAPI) is required.
 - **Environment**:
   - `WOOTC_STAGE_DIR`: Destination staging folder (e.g., `C:\wootc\install\stage\<plugin-id>\`).
@@ -141,6 +147,7 @@ All lifecycle scripts communicate through standard POSIX exit codes, standard en
 - **Exit Codes**: `0` on success.
 
 #### C. `import` (Target Linux First-Login Phase)
+
 - **When & Where**: Executed on Linux during user session initialization or first boot (`wootc-apply-look` / dashboard post-install runner).
 - **Environment**:
   - `WOOTC_HOST`: Path to mounted Windows volume (`/run/wootc/host`).
@@ -149,6 +156,7 @@ All lifecycle scripts communicate through standard POSIX exit codes, standard en
   - `WOOTC_LINUX_HOME`: Current user `$HOME`.
   - `WOOTC_STATE_DIR`: Plugin state output (`$HOME/.config/wootc/plugins/<plugin-id>`).
 - **Output (JSON written to `$WOOTC_STATE_DIR/status.json`)**:
+
   ```json
   {
     "status": "success|partial|failed",
@@ -180,6 +188,7 @@ If a plugin identifier is duplicated across layers, the higher precedence layer 
 Program migrators execute code that inspects Windows file systems and configures target Linux user environments. This presents a critical security surface.
 
 ### 5.1 Security Principles
+
 1. **No Arbitrary Code Execution as Root**: Plugin `import` scripts must run with the privileges of the target Linux user (`$WOOTC_LINUX_USER`), *never* as root. If system-level changes are required (such as installing a system font or udev rule), they must be gated behind polkit actions or pre-vetted system helpers (`org.tunaos.wootc.policy`).
 2. **Deterministic Timeouts & Process Limits**:
    - `detect` scripts must terminate within 10 seconds.
@@ -189,6 +198,7 @@ Program migrators execute code that inspects Windows file systems and configures
 4. **Credential Isolation**: Any session credential migrations (e.g., Chromium cookie vaults or DPAPI tokens) must go through the core vault subsystem and explicit per-app UI consent gates. Plugins are not granted unconstrained access to `vault.json`.
 
 ### 5.2 Verification and Signing (Post-1.0)
+
 - **First-Party Plugins**: Shipped in the read-only composefs/ostree image under `/usr/lib/wootc/plugins.d/`, protected by system image immutability.
 - **Third-Party / Enterprise Plugins**: Must carry a cryptographic signature (`plugin.json.sig`) validated against keys in `/etc/wootc/trusted-keys.d/` before execution is permitted, unless explicitly bypassed via enterprise policy flag (`AllowUnsignedPlugins=true`).
 
@@ -226,12 +236,14 @@ graph LR
 - Manifest schema uses semantic versioning (`schemaVersion: 1`).
 - Future additions to `plugin.json` must be additive and backward-compatible.
 - Plugins declare minimum wootc API compatibility:
+
   ```json
   "compatibility": {
     "minWootcVersion": "0.9.0",
     "maxSchemaVersion": 1
   }
   ```
+
 - If an unsupported schema version is encountered, wootc gracefully skips the plugin and logs a diagnostic warning rather than failing the migration run.
 
 ---
@@ -241,6 +253,7 @@ graph LR
 To maintain high confidence for the **v1.0.0** stable release while enabling future extensibility:
 
 ### Scope for 1.0 (Milestone M4 / v0.9.0-rc)
+
 - **Internal Interface Refactor Only**:
   - Restructure first-party migration tools (`wootc-detect-apps`, `wootc-steam-bridge`, `wootc-office-bridge`, `wootc-import-browser`, `wootc-wifi-bridge`) into the internal plugin directory structure and manifest format.
   - Implement plugin discovery in `wootc-manifest` to dynamically discover `/usr/lib/wootc/plugins.d/`.
@@ -250,6 +263,7 @@ To maintain high confidence for the **v1.0.0** stable release while enabling fut
   - Keep plugin discovery restricted to built-in system paths.
 
 ### Scope for Post-1.0 (Future Milestones)
+
 - **Third-Party / Enterprise Drop-In Directory**:
   - Support `C:\wootc\plugins.d\` and `/etc/wootc/plugins.d/`.
 - **Plugin Signature Verification**:
@@ -264,6 +278,7 @@ To maintain high confidence for the **v1.0.0** stable release while enabling fut
 ## 9. Next Steps and Tracking
 
 Following the merge of this architectural decision:
+
 - Track follow-up implementation under **#203 (Program Migrator plugins)**.
 - Stage the directory refactoring in `payload/migration/plugins.d/` as part of M4 polish.
 - Add unit tests verifying plugin manifest parsing and timeout enforcement in `tests/migration/`.

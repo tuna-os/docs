@@ -3,7 +3,7 @@ sidebar_position: 3
 title: "Roadmap"
 ---
 
-**Last updated**: 2026-09-17
+**Last updated**: 2026-10-17
 
 Part of the [TunaOS](https://tunaos.org) ecosystem.
 
@@ -24,11 +24,15 @@ Part of the [TunaOS](https://tunaos.org) ecosystem.
 - ✅ Complete Brewfile source preservation and confirmed tasks; no automatic tap changes on open (#113)
 - ✅ Explicit historical formula installs through `brew version-install`
 - ✅ Released version `v0.1.64` with Homebrew 7 maintenance and repair cache freshness (#178)
+- ✅ Prioritize system bins over Homebrew in PATH (Bluefin parity) (#281)
+- ✅ Missing Homebrew detection, interactive terminal install offer, and live detection retry (#281)
+- ✅ Released version `v0.1.65` with system-first PATH ordering and missing-brew onboard dialog
+- ✅ Brew Doctor two-column layout and queued fixes for single `brew` commands (#241, #319)
 
 ## Release health
 
 Tavern's distribution channels are active and aligning under a unified release contract.
-Repository tags reached `v0.1.64` in September 2026 with release preparation and tag tagging (#178).
+Repository tags reached `v0.1.65` in October 2026 with release preparation and tag tagging.
 
 Before calling a new version stable across all channels, complete the release-parity gate tracked
 in [#104](https://github.com/tuna-os/Tavern/issues/104):
@@ -47,7 +51,7 @@ new tags alone are not evidence of a stable release.
 ## Planned
 
 - **Release parity** — finish the artifact and install checks in #104.
-- **Brew Doctor** — assess explicit fix actions and report export per the [implementation proposal](https://github.com/tuna-os/Tavern/blob/main/docs/BREW_DOCTOR_PROPOSAL.md) (#170).
+- **Brew Doctor** — report export (save the raw output to a file) per the [implementation proposal](https://github.com/tuna-os/Tavern/blob/main/docs/BREW_DOCTOR_PROPOSAL.md).
 - **Backend contracts** — add focused state tests (#153), then separate state
   ownership (#172). Tap parsing and Brewfile execution now have separate boundaries.
 - **Performance** — measure the proposals in #171 before changing search,

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 8
 title: "backend parity"
 ---
 
@@ -10,6 +10,9 @@ The rule now: **if a backend can do something Corral ships, Corral should suppor
 it there**. Not every feature every backend has — parity across backends for the
 features Corral has. Where a backend genuinely cannot do a thing, the matrix
 records that with a reason instead of silence.
+
+For the decision not to add an nspawn or NSL backend yet, see the
+[nspawn / NSL evaluation](https://github.com/tuna-os/corral/blob/main/docs/research/nspawn-nsl-backend.md).
 
 ## How this document is kept honest
 
@@ -30,33 +33,33 @@ to the matrix.
 Legend: ✅ shipped · 🔨 the backend can do this and Corral does not yet · — the
 backend cannot, or it is meaningless there.
 
-| Operation | kubevirt | qemu | incus | libvirt | proxmox |
-|---|---|---|---|---|---|
-| List / inventory | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Create | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Start | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Stop | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Restart | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Pause / resume | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Delete | ✅ | ✅ | ✅ | ✅ | ✅ |
-| SSH | ✅ | ✅ | ✅ | 🔨 | ✅ |
-| Serial / shell console | ✅ | 🔨 | ✅ | 🔨 | 🔨 |
-| Graphical console (VNC) | ✅ | ✅ | 🔨 | ✅ | 🔨 |
-| RDP | ✅ | 🔨 | 🔨 | 🔨 | 🔨 |
-| Live CPU / memory | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Snapshot / restore | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Migrate | ✅ | — | 🔨 | 🔨 | ✅ |
-| Clone | ✅ | 🔨 | 🔨 | 🔨 | ✅ |
-| Template mark | ✅ | 🔨 | 🔨 | 🔨 | ✅ |
-| CPU / memory edit | ✅ | 🔨 | 🔨 | 🔨 | ✅ |
-| Add / remove disks | ✅ | 🔨 | 🔨 | 🔨 | ✅ |
-| Expand disk | ✅ | 🔨 | 🔨 | 🔨 | ✅ |
-| GPU passthrough | ✅ | 🔨 | 🔨 | 🔨 | ✅ |
-| Export / backup disk | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Events | ✅ | ✅ | — | — | ✅ |
-| Tags | ✅ | 🔨 | 🔨 | 🔨 | ✅ |
-| Published ports | ✅ | ✅ | 🔨 | — | — |
-| Containers (CT) | ✅ | — | ✅ | — | 🔨 |
+| Operation | kubevirt | qemu | incus | libvirt | proxmox | virtualbox | vsphere | xen | nutanix |
+|---|---|---|---|---|---|---|---|---|---|
+| List / inventory | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Create | ✅ | ✅ | ✅ | ✅ | ✅ | 🔨 | 🔨 | 🔨 | 🔨 |
+| Start | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Stop | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Restart | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Pause / resume | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — |
+| Delete | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| SSH | ✅ | ✅ | ✅ | 🔨 | ✅ | ✅ | 🔨 | 🔨 | 🔨 |
+| Serial / shell console | ✅ | 🔨 | ✅ | 🔨 | 🔨 | 🔨 | 🔨 | 🔨 | 🔨 |
+| Graphical console (VNC) | ✅ | ✅ | 🔨 | ✅ | 🔨 | 🔨 | 🔨 | 🔨 | 🔨 |
+| RDP | ✅ | 🔨 | 🔨 | 🔨 | 🔨 | 🔨 | 🔨 | 🔨 | — |
+| Live CPU / memory | ✅ | ✅ | ✅ | ✅ | ✅ | 🔨 | 🔨 | 🔨 | 🔨 |
+| Snapshot / restore | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Migrate | ✅ | — | 🔨 | 🔨 | ✅ | — | ✅ | ✅ | ✅ |
+| Clone | ✅ | 🔨 | 🔨 | 🔨 | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Template mark | ✅ | 🔨 | 🔨 | 🔨 | ✅ | 🔨 | ✅ | 🔨 | — |
+| CPU / memory edit | ✅ | 🔨 | 🔨 | 🔨 | ✅ | ✅ | ✅ | 🔨 | 🔨 |
+| Add / remove disks | ✅ | 🔨 | 🔨 | 🔨 | ✅ | 🔨 | 🔨 | 🔨 | 🔨 |
+| Expand disk | ✅ | 🔨 | 🔨 | 🔨 | ✅ | 🔨 | 🔨 | 🔨 | 🔨 |
+| GPU passthrough | ✅ | 🔨 | 🔨 | 🔨 | ✅ | 🔨 | 🔨 | 🔨 | — |
+| Export / backup disk | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Events | ✅ | ✅ | — | — | ✅ | — | 🔨 | 🔨 | 🔨 |
+| Tags | ✅ | 🔨 | 🔨 | 🔨 | ✅ | 🔨 | 🔨 | 🔨 | ✅ |
+| Published ports | ✅ | ✅ | 🔨 | — | — | 🔨 | — | — | — |
+| Containers (CT) | ✅ | — | ✅ | — | 🔨 | — | — | — | — |
 
 ## What the audit found
 
@@ -110,7 +113,9 @@ stays covered.
 **2. Generalise the adapter contract.** *Done:* `pkg/backend/ops.go` defines a
 small interface per operation family — `Power`, `Restarter`, `Suspender`,
 `Sizer`, `Storer`, `Mover`, `Cloner`, `Templater`, `Tagger`, `Observer`,
-`Exporter`, plus `Addresser`. `pkg/backend/adapters.go` holds one adapter per
+`Exporter`, plus `Addresser` and `Purger`. `Purger` is the full form of
+`Power.Delete`: it names each object that a delete removes, for
+`corral delete --json` and `--wait`. `pkg/backend/adapters.go` holds one adapter per
 backend. It is the only place where code translates a backend's own signature. A surface
 calls `backend.For(ref)` and asserts the family it needs; it never switches on a
 backend name again.
@@ -197,6 +202,112 @@ websocket bridge is not. So the capability flags say no, and the matrix says why
 - **rdp** — same, via the guest address
 - **containers** — pkg/proxmoxbe.Containers lists them and Create makes them; pkg/ct does not yet surface a non-Kubernetes CT
 
+### virtualbox — 11 gaps
+
+- **create** — createvm plus storagectl/storageattach/modifyvm exist natively; Corral has no creator wiring them yet
+- **tty** — the UART is redirectable to a host pipe via modifyvm --uartmode1; Corral has no console bridge for it
+- **vnc** — VRDE serves the guest display natively; Corral wires no viewer or bridge to it
+- **rdp** — VRDE is an RDP server already; Corral has no probe or bridge for it
+- **metrics** — VBoxManage reports host CPU and memory counters through its metrics query. Corral has no sampler for them yet.
+- **template** — no native mark; the local registry mark, the same mechanism qemu would use
+- **volumes** — storageattach/storagectl plus closemedium; nothing drives them yet
+- **expand** — modifymedium --resize while stopped
+- **gpu** — PCI passthrough via modifyvm --pciattach on Linux hosts; experimental and host-limited
+- **tags** — setextradata keys or the registry mark; nothing reads them back yet
+- **ports** — NAT port-forward rules via modifyvm --natpf1. Corral does not manage them yet.
+
+### vsphere — 11 gaps
+
+- **create** — CloneVM works natively, and OVF deploy works too. Corral has no creator for them yet.
+- **ssh** — Corral has no address discovery yet. Use the Tools-reported guest address, then plain ssh.
+- **tty** — the serial port is redirectable to host or network; Corral has no console bridge for it
+- **vnc** — MKS/webmks tickets exist (AcquireTicket); Corral wires no viewer or bridge to them
+- **rdp** — same probe and bridge via the guest address
+- **metrics** — vCenter reports CPU and memory counters through performance manager. Corral has no sampler for them yet.
+- **volumes** — reconfig device attach and detach; nothing drives them yet
+- **expand** — virtual disk extend via reconfig; nothing drives it yet
+- **gpu** — PCI passthrough via reconfig device attach; experimental and host-limited
+- **events** — The event manager keeps per-VM history. Corral wires no reader for it yet.
+- **tags** — vSphere has native tags. Nothing drives them yet.
+
+### xen — 13 gaps
+
+- **create** — VM.create works natively. Corral has no creator for it yet.
+- **ssh** — Corral has no address discovery yet. Use the guest-metrics address, then plain ssh.
+- **tty** — Guests expose a vt100 console. Corral wires no bridge to it.
+- **vnc** — Guests expose an RFB display. Corral wires no viewer to it.
+- **rdp** — same probe and bridge via the guest address
+- **metrics** — VM_metrics and host_metrics carry live counters. Corral has no sampler for them yet.
+- **template** — VM.set_is_a_template marks natively. Corral has no templater wiring it yet.
+- **scale** — VCPU and memory set calls exist natively. Nothing drives them yet.
+- **volumes** — VBD plug and VDI create exist natively. Nothing drives them yet.
+- **expand** — VDI.resize grows a disk natively. Nothing drives it yet.
+- **gpu** — Hosts can assign PCI devices to guests. That path stays experimental and host-limited.
+- **events** — The pool logs its own activity. Corral wires no reader for that log yet.
+- **tags** — The VM record carries tags natively. Corral has no tagger to set them yet.
+
+### nutanix — 9 gaps
+
+- **create** — VM create exists natively. Corral has no creator for it yet.
+- **ssh** — Corral has no address discovery yet. Use the NIC address, then plain ssh.
+- **tty** — Tokens for consoles exist natively. Corral wires no bridge for them yet.
+- **vnc** — Tokens for consoles exist natively. Corral wires no viewer for them yet.
+- **metrics** — v4 stats and v1 counters carry live data. Corral has no sampler for them yet.
+- **scale** — PUT updates cores and memory natively. Nothing drives it yet.
+- **volumes** — Disk endpoints exist in vmm. Nothing drives them yet.
+- **expand** — Disk update exists in vmm. Nothing drives it yet.
+- **events** — The task list logs the activity of the pool. Corral wires no per-VM reader yet.
+
+## Remaining backend-name branches
+
+Issue #214 moved the CLI, TUI, plugin, setup, and fleet dispatch onto
+`pkg/backend`. The ratchet `TestKubeVirtBranchesRatchet` in
+`pkg/backend/matrix_test.go` counts each `== "kubevirt"` or `case "kubevirt"`
+outside `pkg/backend` and `pkg/kubevirt`. It fails when the count goes up. The
+branches below remain on purpose. Each entry gives the reason.
+
+**Per-feature adapter registries.** These packages are the adapter layer for
+one feature. A `switch` on the backend selects that feature's adapter, the same
+pattern as `backend.For`:
+
+- `pkg/snapshot` (`For`, `Supported`)
+- `pkg/export` (`For`, `Supported`)
+- `pkg/device` (`For`, `Supported`)
+- `pkg/windows` (`For`)
+- `pkg/bootc` (target selection)
+- `pkg/setup` (`Apply`, and the KubeVirt probe's context lookup)
+- `pkg/doctor` (per-backend checks)
+- `types.CapabilitiesForBackend`, which the conformance tests check against the
+  matrix
+
+**Lists of valid backend names.** These validate input. They do not dispatch:
+
+- `pkg/config` (`AddContext`, `SetDefaultBackend`, and the legacy KubeVirt
+  context)
+- `pkg/plugin` (the `supportedBackends` values in the marketplace)
+
+**Display only.** These change text or colour, not behaviour:
+
+- `pkg/move` (`droppedConfig` names the settings that a move loses)
+- `cmd/tui_theme.go` (backend colours)
+- `cmd/list.go` (the KubeVirt port-proxy column)
+
+**KubeVirt-only features.** The operation exists only on KubeVirt:
+
+- `cmd/create.go` and `cmd/tui_create.go` pass KubeVirt create flags that
+  `types.CreateOpts` does not describe. The `backend.Creator` comment records
+  this.
+- `cmd/corral-vdi` uses USB redirection through the KubeVirt API.
+- `pkg/web/server.go` (`clusterContext`) selects the KubeVirt context for a
+  create from a container disk, a PVC, or a bootc image.
+- `cmd/corral-windows` creates a KubeVirt Windows VM with
+  `kubevirt.CreateWindowsVM`. `pkg/kubevirt` imports `pkg/windows`, so a
+  KubeVirt `windows.Adapter` would cause an import cycle.
+
+Most direct imports of `pkg/kubevirt` from `cmd/` and `pkg/web` remain. Each
+one becomes a capability interface in `pkg/backend/ops.go` when a second
+backend can do the operation.
+
 ## Testing parity
 
 Three layers, and each one catches what the others cannot:
@@ -207,7 +318,7 @@ Three layers, and each one catches what the others cannot:
   native command with the right arguments for each operation. "Does Incus LXC
   work at all" gets its answer here: the tests assert the commands, not the
   daemon's behaviour.
-- **Real-backend e2e** — `.github/workflows/e2e.yml` runs kind with emulated
+- **Real-backend e2e** — the `e2e-kind` job of `.github/workflows/ci.yml` runs kind with emulated
   KubeVirt. `.github/workflows/e2e-incus.yml` runs a real Incus daemon, a real
   libvirt, and local QEMU on one runner. It checks a triple-backend aggregate
   inventory and the snapshot/export/device adapters against the real tools. It

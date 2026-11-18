@@ -1,11 +1,11 @@
 ---
-sidebar_position: 20
+sidebar_position: 29
 title: "spec gaps"
 ---
 
 
 
-Read against [matrix-spec](https://github.com/matrix-org/matrix-spec) at `0dfc6917367e`, the pin
+Read against [matrix-spec](https://github.com/matrix-org/matrix-spec) at `c6a54df51148`, the pin
 `scripts/openapi-check.py` validates responses against. An operation is
 *served* when the router registers its method and path; the placeholders
 are compared by position, not by name. Bumping the pin rewrites this file,
@@ -13,29 +13,23 @@ and the diff is the work the release brought.
 
 ## Client-Server API
 
-134 of 166 operations served.
+145 of 166 operations served.
 
 ### Not served, in the spec since before v1.1
 
-8 of these are deprecated upstream and can stay unserved.
+5 of these are deprecated upstream and can stay unserved.
 
-- `GET /_matrix/client/v3/account/3pid` — `administrative_contact.yaml`
 - `POST /_matrix/client/v3/account/3pid` *(deprecated)* — `administrative_contact.yaml`
-- `POST /_matrix/client/v3/account/3pid/add` — `administrative_contact.yaml`
 - `POST /_matrix/client/v3/account/3pid/bind` — `administrative_contact.yaml`
-- `POST /_matrix/client/v3/account/3pid/delete` — `administrative_contact.yaml`
-- `POST /_matrix/client/v3/account/3pid/email/requestToken` — `administrative_contact.yaml`
 - `POST /_matrix/client/v3/account/3pid/msisdn/requestToken` — `administrative_contact.yaml`
 - `POST /_matrix/client/v3/account/3pid/unbind` — `administrative_contact.yaml`
-- `POST /_matrix/client/v3/account/password/email/requestToken` — `password_management.yaml`
 - `POST /_matrix/client/v3/account/password/msisdn/requestToken` — `password_management.yaml`
 - `PUT /_matrix/client/v3/directory/list/appservice/{networkId}/{roomId}` — `appservice_room_directory.yaml`
 - `GET /_matrix/client/v3/events` *(deprecated)* — `old_sync.yaml`
-- `GET /_matrix/client/v3/events ` — `peeking_events.yaml`
+- `GET /_matrix/client/v3/events` — `peeking_events.yaml`
 - `GET /_matrix/client/v3/events/{eventId}` *(deprecated)* — `old_sync.yaml`
 - `GET /_matrix/client/v3/initialSync` *(deprecated)* — `old_sync.yaml`
 - `GET /_matrix/client/v3/pushrules/global/` — `pushrules.yaml`
-- `POST /_matrix/client/v3/register/email/requestToken` — `registration.yaml`
 - `POST /_matrix/client/v3/register/msisdn/requestToken` — `registration.yaml`
 - `GET /_matrix/client/v3/rooms/{roomId}/initialSync` — `room_initial_sync.yaml`
 - `GET /_matrix/client/v3/thirdparty/location` — `third_party_lookup.yaml`
@@ -44,15 +38,7 @@ and the diff is the work the release brought.
 - `GET /_matrix/client/v3/thirdparty/protocols` — `third_party_lookup.yaml`
 - `GET /_matrix/client/v3/thirdparty/user` — `third_party_lookup.yaml`
 - `GET /_matrix/client/v3/thirdparty/user/{protocol}` — `third_party_lookup.yaml`
-- `GET /_matrix/media/v3/download/{serverName}/{mediaId}` *(deprecated)* — `content-repo.yaml`
-- `GET /_matrix/media/v3/download/{serverName}/{mediaId}/{fileName}` *(deprecated)* — `content-repo.yaml`
 - `GET /_matrix/media/v3/preview_url` *(deprecated)* — `content-repo.yaml`
-- `GET /_matrix/media/v3/thumbnail/{serverName}/{mediaId}` *(deprecated)* — `content-repo.yaml`
-
-### Not served, added in v1.1
-
-- `GET /_matrix/client/v3/login/sso/redirect` — `sso_login_redirect.yaml`
-- `GET /_matrix/client/v3/login/sso/redirect/{idpId}` — `sso_login_redirect.yaml`
 
 ### Not served, added in v1.18
 
@@ -61,6 +47,9 @@ and the diff is the work the release brought.
 ### Served, but deprecated upstream
 
 - `GET /_matrix/media/v3/config` — `content-repo.yaml`
+- `GET /_matrix/media/v3/download/{serverName}/{mediaId}` — `content-repo.yaml`
+- `GET /_matrix/media/v3/download/{serverName}/{mediaId}/{fileName}` — `content-repo.yaml`
+- `GET /_matrix/media/v3/thumbnail/{serverName}/{mediaId}` — `content-repo.yaml`
 
 ## Server-Server API
 
@@ -75,83 +64,158 @@ and the diff is the work the release brought.
 
 ## Served beyond the spec at this pin
 
-91 routes the pinned spec does not define: MSC surfaces under
+183 routes the pinned spec does not define: MSC surfaces under
 `unstable/`, the admin and MAS-compatibility APIs, and stable spellings
 newer than the pin. Each MSC route must be accounted for in
 `contrib/msc/ledger.toml`; `scripts/msc-ledger.py --check` enforces that.
 
 - `/.well-known/openid-configuration`
 - `/_matrix/client/unstable/im.nheko.summary/rooms/{}/summary`
+- `/_matrix/client/unstable/io.element.msc4195/rtc/livekit/delegate_delayed_leave`
+- `/_matrix/client/unstable/io.element.msc4195/rtc/livekit/get_token`
+- `/_matrix/client/unstable/io.element.msc4502/rooms/{}/is_joined`
+- `/_matrix/client/unstable/io.element.msc4512/appservice/fed_proxy`
 - `/_matrix/client/unstable/org.matrix.msc2965/auth_metadata`
 - `/_matrix/client/unstable/org.matrix.msc3814.v1/dehydrated_device`
 - `/_matrix/client/unstable/org.matrix.msc3814.v1/dehydrated_device/{}/events`
+- `/_matrix/client/unstable/org.matrix.msc3916/media/config`
+- `/_matrix/client/unstable/org.matrix.msc3916/media/download/{}/{}`
+- `/_matrix/client/unstable/org.matrix.msc3916/media/download/{}/{}/{}`
+- `/_matrix/client/unstable/org.matrix.msc3916/media/preview_url`
+- `/_matrix/client/unstable/org.matrix.msc3916/media/thumbnail/{}/{}`
 - `/_matrix/client/unstable/org.matrix.msc4108/rendezvous`
 - `/_matrix/client/unstable/org.matrix.msc4140/delayed_events`
 - `/_matrix/client/unstable/org.matrix.msc4140/delayed_events/{}`
 - `/_matrix/client/unstable/org.matrix.msc4140/delayed_events/{}/{}`
+- `/_matrix/client/unstable/org.matrix.msc4140/rooms/{}/delayed_event/{}/{}`
 - `/_matrix/client/unstable/org.matrix.msc4143/rtc/transports`
 - `/_matrix/client/unstable/org.matrix.simplified_msc3575/sync`
+- `/_matrix/client/v1/appservice/fed_proxy`
+- `/_matrix/client/v1/delayed_events/{}`
+- `/_matrix/client/v1/delayed_events/{}/{}`
 - `/_matrix/client/v1/rtc/transports`
+- `/_matrix/client/v3/rooms/{}/delayed_event/{}/{}`
+- `/_matrix/client/v3/rooms/{}/is_joined`
 - `/_matrix/client/v3/rooms/{}/state/{}`
+- `/_matrix/client/v3/rtc/livekit/delegate_delayed_leave`
+- `/_matrix/client/v3/rtc/livekit/get_token`
+- `/_matrix/federation/unstable/io.element.msc4195/rtc/livekit/get_token`
+- `/_matrix/federation/v1/rtc/livekit/get_token`
 - `/_matrix/federation/v1/send_join/{}/{}`
 - `/_matrix/federation/v1/send_leave/{}/{}`
+- `/_spindle/admin/ui`
+- `/_spindle/admin/ui/app.js`
+- `/_spindle/admin/ui/styles.css`
 - `/_spindle/admin/v1/audit`
+- `/_spindle/admin/v1/backup`
+- `/_spindle/admin/v1/backup/stream`
 - `/_spindle/admin/v1/event_reports`
 - `/_spindle/admin/v1/event_reports/{}`
+- `/_spindle/admin/v1/federation/destinations`
+- `/_spindle/admin/v1/federation/destinations/{}`
+- `/_spindle/admin/v1/federation/destinations/{}/reset_connection`
+- `/_spindle/admin/v1/federation/destinations/{}/rooms`
+- `/_spindle/admin/v1/media/protect/{}`
+- `/_spindle/admin/v1/media/protect/{}/{}`
+- `/_spindle/admin/v1/media/quarantine/{}/{}`
+- `/_spindle/admin/v1/media/unprotect/{}`
+- `/_spindle/admin/v1/media/unprotect/{}/{}`
+- `/_spindle/admin/v1/media/unquarantine/{}/{}`
+- `/_spindle/admin/v1/media/{}/{}`
+- `/_spindle/admin/v1/purge_media_cache`
 - `/_spindle/admin/v1/registration_tokens`
 - `/_spindle/admin/v1/registration_tokens/new`
 - `/_spindle/admin/v1/registration_tokens/{}`
+- `/_spindle/admin/v1/room/{}/media/quarantine`
 - `/_spindle/admin/v1/rooms`
 - `/_spindle/admin/v1/rooms/{}`
+- `/_spindle/admin/v1/rooms/{}/block`
 - `/_spindle/admin/v1/rooms/{}/make_room_admin`
 - `/_spindle/admin/v1/rooms/{}/members`
 - `/_spindle/admin/v1/rooms/{}/purge_history`
 - `/_spindle/admin/v1/rooms/{}/state`
 - `/_spindle/admin/v1/rooms/{}/state_at`
 - `/_spindle/admin/v1/rooms/{}/timeline`
+- `/_spindle/admin/v1/rtc/sfu`
+- `/_spindle/admin/v1/scheduled_tasks`
 - `/_spindle/admin/v1/send_server_notice`
 - `/_spindle/admin/v1/server_version`
+- `/_spindle/admin/v1/user/{}/media/quarantine`
+- `/_spindle/admin/v1/username_available`
 - `/_spindle/admin/v1/users`
 - `/_spindle/admin/v1/users/{}`
+- `/_spindle/admin/v1/users/{}/admin`
 - `/_spindle/admin/v1/users/{}/deactivate`
 - `/_spindle/admin/v1/users/{}/devices`
 - `/_spindle/admin/v1/users/{}/devices/{}`
 - `/_spindle/admin/v1/users/{}/joined_rooms`
+- `/_spindle/admin/v1/users/{}/media`
+- `/_spindle/admin/v1/users/{}/password_hash`
+- `/_spindle/admin/v1/users/{}/reset_link`
 - `/_spindle/admin/v1/users/{}/reset_password`
 - `/_spindle/admin/v1/whois/{}`
+- `/_spindle/rtc/livekit/get_token`
 - `/_spindle/rtc/livekit/sfu/get`
+- `/_spindle/rtc/livekit/sfu/webhook`
 - `/_synapse/admin/v1/audit`
+- `/_synapse/admin/v1/backup`
 - `/_synapse/admin/v1/deactivate/{}`
 - `/_synapse/admin/v1/event_reports`
 - `/_synapse/admin/v1/event_reports/{}`
+- `/_synapse/admin/v1/federation/destinations`
+- `/_synapse/admin/v1/federation/destinations/{}`
+- `/_synapse/admin/v1/federation/destinations/{}/reset_connection`
+- `/_synapse/admin/v1/federation/destinations/{}/rooms`
+- `/_synapse/admin/v1/media/protect/{}`
+- `/_synapse/admin/v1/media/protect/{}/{}`
+- `/_synapse/admin/v1/media/quarantine/{}/{}`
+- `/_synapse/admin/v1/media/unprotect/{}`
+- `/_synapse/admin/v1/media/unprotect/{}/{}`
+- `/_synapse/admin/v1/media/unquarantine/{}/{}`
+- `/_synapse/admin/v1/media/{}/{}`
 - `/_synapse/admin/v1/purge_history/{}`
+- `/_synapse/admin/v1/purge_media_cache`
 - `/_synapse/admin/v1/register`
 - `/_synapse/admin/v1/registration_tokens`
 - `/_synapse/admin/v1/registration_tokens/new`
 - `/_synapse/admin/v1/registration_tokens/{}`
 - `/_synapse/admin/v1/reset_password/{}`
+- `/_synapse/admin/v1/room/{}/media/quarantine`
 - `/_synapse/admin/v1/rooms`
 - `/_synapse/admin/v1/rooms/{}`
+- `/_synapse/admin/v1/rooms/{}/block`
 - `/_synapse/admin/v1/rooms/{}/make_room_admin`
 - `/_synapse/admin/v1/rooms/{}/members`
 - `/_synapse/admin/v1/rooms/{}/purge_history`
 - `/_synapse/admin/v1/rooms/{}/state`
 - `/_synapse/admin/v1/rooms/{}/state_at`
 - `/_synapse/admin/v1/rooms/{}/timeline`
+- `/_synapse/admin/v1/rtc/sfu`
+- `/_synapse/admin/v1/scheduled_tasks`
 - `/_synapse/admin/v1/send_server_notice`
 - `/_synapse/admin/v1/server_version`
+- `/_synapse/admin/v1/user/{}/media/quarantine`
+- `/_synapse/admin/v1/username_available`
 - `/_synapse/admin/v1/users`
 - `/_synapse/admin/v1/users/{}`
+- `/_synapse/admin/v1/users/{}/admin`
 - `/_synapse/admin/v1/users/{}/deactivate`
 - `/_synapse/admin/v1/users/{}/devices`
 - `/_synapse/admin/v1/users/{}/devices/{}`
 - `/_synapse/admin/v1/users/{}/joined_rooms`
+- `/_synapse/admin/v1/users/{}/media`
+- `/_synapse/admin/v1/users/{}/password_hash`
+- `/_synapse/admin/v1/users/{}/reset_link`
 - `/_synapse/admin/v1/users/{}/reset_password`
 - `/_synapse/admin/v1/whois/{}`
+- `/_synapse/admin/v2/rooms/delete_status/{}`
+- `/_synapse/admin/v2/rooms/{}`
+- `/_synapse/admin/v2/rooms/{}/delete_status`
 - `/_synapse/admin/v2/users`
 - `/_synapse/admin/v2/users/{}`
 - `/_synapse/admin/v2/users/{}/delete_devices`
 - `/_synapse/admin/v2/users/{}/devices`
+- `/_synapse/admin/v2/users/{}/devices/{}`
 - `/_synapse/client/rendezvous/{}`
 - `/_synapse/mas/allow_cross_signing_reset`
 - `/_synapse/mas/delete_device`
@@ -165,9 +229,26 @@ newer than the pin. Each MSC route must be accounted for in
 - `/_synapse/mas/unset_displayname`
 - `/_synapse/mas/update_device_display_name`
 - `/_synapse/mas/upsert_device`
+- `/account`
+- `/account/3pid/validate`
+- `/account/deactivate`
+- `/account/emails/add`
+- `/account/emails/remove`
+- `/account/emails/verify`
+- `/account/login`
+- `/account/logout`
+- `/account/password`
+- `/account/password/forgot`
+- `/account/password/reset`
+- `/account/profile`
+- `/account/recover`
+- `/account/recovery/generate`
+- `/account/sessions/end`
 - `/health`
 - `/oauth2/authorize`
 - `/oauth2/registration`
 - `/oauth2/revoke`
 - `/oauth2/token`
 - `/ready`
+- `/upstream/authorize/{}`
+- `/upstream/callback/{}`

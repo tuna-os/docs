@@ -6,24 +6,35 @@ status: unknown
 ---
 
 `tunaos-packages` is TunaOS's source-controlled package repository. It owns
-the native packaging, patches, build ordering, validation, signing, and
-publication work needed to ship curated desktop stacks independently of
-third-party repositories.
+native packages, patches, build order, validation, signatures, and publication.
+This lets TunaOS ship its desktop stacks independently of third-party repositories.
+
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
 
 ## Current state
 
 The active production implementation is the native EL10 RPM build chain for
 GNOME and XFWL4. Package specifications and EL10 compatibility fixes live in
-`src/`; build order is declared in `build-order*.yml`; GitHub Actions invokes
+`src/`; `build-order*.yml` declares the build order; GitHub Actions invokes
 `scripts/build-chain.sh` in isolated Mock environments.
 
-The project is migrating publication to GitHub Actions and Cloudflare R2. Any
+The project will move publication to GitHub Actions and Cloudflare R2. Any
 remaining COPR projects are compatibility/bootstrap infrastructure, not a
 desired end state. They will remain available until their GitHub/R2 replacement
 has passed build, staged-install, and desktop runtime gates. Do not remove or
-rewrite the native GNOME EL10 specs while that migration is incomplete.
+rewrite the native specs for GNOME on EL10 while that migration is incomplete.
 
-See [ARCHITECTURE.md](https://github.com/tuna-os/tunaos-packages/blob/main/ARCHITECTURE.md) for the currently deployed RPM/R2
+See [ARCHITECTURE.md](https://github.com/tuna-os/tunaos-packages/blob/main/ARCHITECTURE.md) for the deployed RPM/R2
 pipeline and [COPR-AUDIT.md](https://github.com/tuna-os/tunaos-packages/blob/main/COPR-AUDIT.md) for the historical package-source
 inventory.
 
@@ -41,18 +52,19 @@ repository install and desktop/runtime validation
 sign and publish to the TunaOS repository
 ```
 
-The build chain is deliberately native for the difficult EL10 GNOME bootstrap:
-it supports RPM scriptlets, file triggers, SELinux policy, bootstrap variants,
-and dependency workarounds that a generic recipe format does not yet model.
+The build chain uses native RPM tools for the GNOME bootstrap on EL10.
+It supports RPM scriptlets, file triggers, SELinux policy and bootstrap variants.
+It also supports dependency workarounds that a generic recipe format does not yet model.
 
 ## Repository layout
 
 | Path | Purpose |
 | --- | --- |
-| `src/gnome-50/`, `src/deps/` | Native EL10 GNOME RPM specs, patches, and source metadata |
+| `src/gnome-49/`, `src/gnome-50/`, `src/gnome-51/`, `src/deps/` | Native EL10 GNOME RPM specs, patches, and source metadata |
 | `src/xfce-wayland/` | Native XFCE/XFWL4 RPM packaging |
 | `build-order.yml` | GNOME 50 bootstrap/build dependency order |
-| `build-order-xfce*.yml` | XFCE/XFWL4 build order for EL10 and Fedora |
+| `build-order-gnome51.yml` | GNOME 51 build dependency order |
+| `build-order-xfce*.yml` | XFCE/XFWL4 build order for EL10, Fedora, and Fedora ELN |
 | `scripts/build-chain.sh` | Shared local/CI RPM build engine |
 | `.github/workflows/` | Per-package, distributed, validation, signing, and publication workflows |
 | `manifests/hummingbird-desktops.yaml` | Fedora Hummingbird desktop RPM catalog |
@@ -66,37 +78,31 @@ and dependency workarounds that a generic recipe format does not yet model.
    dependencies.
 4. Build it in the declared Mock target and install it from the staged
    repository.
-5. Add a focused runtime/desktop gate before promoting it to users.
+5. Add a focused runtime/desktop gate before promotion to users.
 
 Useful local commands:
 
 ```bash
 just --list
 python3 scripts/parse-build-order.py build-order.yml --validate
+pytest tests/
 ./scripts/build-chain.sh --help
 ```
 
 ## Tideforge and cross-distro packaging
 
 Tideforge is a single-recipe abstraction for straightforward packages across
-RPM, DEB, and Pacman targets. Supported targets, the upstream-source policy,
-and the migration away from COPRs and PPAs are defined in
-[the package-factory contract](https://github.com/tuna-os/tunaos-packages/blob/main/docs/PACKAGE_FACTORY.md).
+RPM, DEB, and Pacman targets. The [contract for the package factory](https://github.com/tuna-os/tunaos-packages/blob/main/docs/PACKAGE_FACTORY.md)
+defines the supported targets, the upstream-source policy, and the migration away
+from COPRs and PPAs.
 
 It must prove source, build, install, and runtime parity before it replaces any
-native EL10 GNOME packaging. Native specs remain the authoritative production
+native packages for GNOME on EL10. Native specs remain the authoritative production
 path for EL10-specific compatibility work until then.
 
 ## Release policy
 
-Packages are promoted only after their source and packaging are reviewed, the
-target build succeeds, the staged repository installs cleanly, and the relevant
-desktop/session validation passes. Automated source updates should open review
-PRs; they must never publish directly.
-
-
-## Contribute compute — no code needed
-
-No time to write code? You can still push this project's backlog forward. A TunaOS AI-agent hive works on this repository. Lend the hive your AI subscription or API tokens, and your machine runs tasks from this project's backlog.
-
-- 🏫 [Contribute compute to the school hive](https://school.tunaos.org/contribute)
+Before promotion, maintainers must review the source and package definitions.
+The target build must succeed. Packages from the staged repository must install
+cleanly, and the relevant desktop/session validation must pass. Automated source
+updates should open review PRs; they must never publish directly.

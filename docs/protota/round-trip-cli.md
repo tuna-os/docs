@@ -43,7 +43,13 @@ to stdout or `--out`.
 | `--out <file>` | write the bundle here instead of stdout |
 | `--with-code` | include `.vala`/`.c` sources for Phase 4 enrichment |
 | `--bpc <command>` | blueprint-compiler command; `{file}`, `{dir}`, `{name}` placeholders are substituted |
+| `--pinned-bpc` | validate with the checkout's own `subprojects/blueprint-compiler/blueprint-compiler.py` |
 | `--no-validate` | skip compiler validation explicitly |
+
+Validation uses the `--bpc` command, else `blueprint-compiler` on `PATH`.
+`--pinned-bpc` runs a program from the checkout, so the import uses that copy
+only on request. When the import finds a copy and does not use it, it tells
+you. Pass the switch only for a checkout you trust.
 
 Exit codes: `0` ok · `1` usage / nothing found / entry unresolvable ·
 `2` blueprint-compiler rejected a discovered file · `3` no
@@ -101,6 +107,12 @@ Validating without a host blueprint-compiler, via a container:
 npx tsx scripts/protota-writeback.mjs ~/src/app edited.mockup.json \
   --bpc 'podman run --rm -v {dir}:/blp:z localhost/bpc sh -c "blueprint-compiler compile /blp/{name}"'
 ```
+
+The file path reaches a `--bpc` command as text. Without placeholders the CLI
+appends it as one quoted word. With `{file}`, `{dir}` or `{name}`, the CLI
+refuses a path that a shell can interpret. Such a path has a space, a quote,
+`$`, `;` or a similar character. The CLI then reports that file as not
+compiled, and it runs no command.
 
 ## Browser paths — "Export → Patch into Checkout…"
 

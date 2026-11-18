@@ -4,9 +4,9 @@ title: "gnome source import"
 ---
 
 Conformance input is the official application's UI source, not a hand-authored
-mockup. A source-derived document can only be marked ready when its declared
-templates resolve and every visual widget is either generically supported or
-explicitly reported as a custom-widget boundary.
+mockup. A source-derived document is ready only when two conditions are true.
+First, its declared templates resolve. Second, each visual widget has generic
+support, or the import reports it explicitly as a custom-widget boundary.
 
 | App | Official entry UI | First generic support needed | Source-only boundary |
 | --- | --- | --- | --- |
@@ -25,19 +25,19 @@ explicitly reported as a custom-widget boundary.
 
 1. Fetch the official source at its revision used for validation.
 2. Resolve its declared `.blp`/`.ui` template bundle into a typed document.
-3. Render only the supported declared structure; list unresolved custom widgets
-   in the artifact metadata.
-4. Compare the source-derived render with native Broadway output and record
-   raw pixel delta plus foreground IoU.
+3. Render only the supported declared structure. Put each unresolved custom
+   widget in the list in the artifact metadata.
+4. Compare the source-derived render with native Broadway output. Record the
+   raw pixel delta and the foreground IoU.
 5. Add a generic widget, slot, or layout rule only when the source input
-   identifies it; rerun the same app and record the percentage change.
+   identifies it. Then run the same app again and record the percentage change.
 
 ## Success criteria
 
 Each source-derived capture records `unresolvedWidgetCoverage` and
 `rawSimilarityCeiling = 1 - unresolvedWidgetCoverage`. The latter is the
 fraction of the native surface for which the generic renderer has source
-evidence; a custom-widget placeholder is never counted as a claimed native
+evidence. A custom-widget placeholder never counts as a claimed native
 implementation.
 
 After an app's first source-derived capture, set its CI gate from that

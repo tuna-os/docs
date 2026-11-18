@@ -46,6 +46,18 @@ function sanitizeHtml(content) {
   c = c.replace(/<picture>[\s\S]*?<img\s[^>]*alt="([^"]*)"[^>]*>[\s\S]*?<\/picture>/gi, '![]');
   // Remove align attributes on divs that confuse MDX
   c = c.replace(/<div\s+align="[^"]*">/gi, '<div>');
+  // A link whose destination holds a `<placeholder>` host, such as
+  // `[the address](https://corral.<tailnet>.ts.net)`, is correct GFM and a
+  // dead link on GitHub too. The escape below turns `<tailnet>` into an entity
+  // that Markdown decodes straight back into the URL, and Docusaurus then fails
+  // the whole build with "Can't parse URL". There is no real target to link,
+  // so keep the text and show the destination as code, which MDX leaves alone.
+  c = onProse(c, (s) =>
+    s.replace(
+      /\[([^\]\n]*)\]\(((?:https?|ftp):\/\/[^()\s<>]*<[^<>\s]+>[^()\s]*)\)/g,
+      '$1 (`$2`)',
+    ),
+  );
   // Remove HTML comments that contain markdown (breaks MDX)
   c = onProse(c, (s) => s.replace(/<!--[\s\S]*?-->/g, ''));
 
@@ -70,7 +82,7 @@ function sanitizeHtml(content) {
     // against whatever closes next — the error names </details>, several
     // lines away from the actual cause.
     s = s.replace(
-      /<(img|br|hr|input|meta|link|source|col|area|base|embed|track|wbr)\b([^>]*?)\s*\/?>/gi,
+      /<(img|br|hr|input|source|col|area|track|wbr)\b([^>]*?)\s*\/?>/gi,
       (_, tag, attrs) => `<${tag}${attrs.trimEnd()} />`,
     );
     // Anything else after `<` is text. A synced README never means JSX, so
@@ -87,11 +99,18 @@ function sanitizeHtml(content) {
 }
 
 // The HTML elements a synced README may use and MDX renders as HTML.
+//
+// An element is here because it marks up text or shows media. One that acts on
+// the page is not: `iframe` (its `srcdoc` document has the site's origin),
+// `base` (moves every relative URL, script chunks included, to another origin),
+// `meta` (`http-equiv="refresh"`), `link` (a foreign stylesheet) and `embed`.
+// A README that names one of those gets the text of the tag, like any other
+// tag outside this list.
 const HTML_ELEMENTS = new Set([
-  'a', 'abbr', 'area', 'audio', 'b', 'base', 'embed', 'link', 'meta', 'track', 'blockquote', 'br', 'caption', 'center', 'cite',
+  'a', 'abbr', 'area', 'audio', 'b', 'track', 'blockquote', 'br', 'caption', 'center', 'cite',
   'code', 'col', 'colgroup', 'dd', 'del', 'details', 'dfn', 'div', 'dl', 'dt',
   'em', 'figcaption', 'figure', 'font', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-  'hr', 'i', 'iframe', 'img', 'input', 'ins', 'kbd', 'li', 'mark', 'ol', 'p',
+  'hr', 'i', 'img', 'input', 'ins', 'kbd', 'li', 'mark', 'ol', 'p',
   'picture', 'pre', 'q', 's', 'samp', 'small', 'source', 'span', 'strong',
   'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead',
   'tr', 'u', 'ul', 'var', 'video', 'wbr',
@@ -189,6 +208,38 @@ function fixRelativeLinks(content, repo, srcDir = '', branch = 'main') {
       return `](${base}/${cleaned}${anchor})`;
     },
   );
+  // Reference-style link definitions: `[label]: target`.
+  //
+  // The rules above only see inline `](target)` links. A definition has no
+  // `](…)`, so a relative definition survived untouched and stayed
+  // site-relative: Docusaurus resolved it against the docs tree and 404'd
+  // (#410 — iced's README definitions for runtime/, wgpu/, … and spindle's
+  // ADR references are all this shape). Upstream these resolve on GitHub;
+  // rewrite them by the same rules as inline links, with two differences:
+  //   * directory targets (trailing '/', or no file extension) go to the
+  //     tree URL — blob/ names a file;
+  //   * image definitions go to the raw URL, like inline images.
+  // A definition is only rewritten when its target is path-like (contains
+  // '/' or '.'): footnote definitions (`[^1]: See …`) carry prose, not a
+  // path, and are left alone.
+  const tree = `https://github.com/${ORG}/${repo}/tree/${branch}`;
+  c = c.replace(
+    /^(\[[^\]\n]+\]:[ \t]*)(?:<([^>\n]+)>|(\S+))([ \t]+(?:"[^"\n]*"|'[^'\n]*'|\([^)\n]*\)))?[ \t]*$/gm,
+    (m, def, angleTarget, bareTarget, title = '') => {
+      const target = angleTarget ?? bareTarget;
+      const hash = target.indexOf('#');
+      const path = hash === -1 ? target : target.slice(0, hash);
+      const anchor = hash === -1 ? '' : target.slice(hash);
+      if (path === '' || /^(?:[a-z][a-z0-9+.-]*:|\/)/i.test(path)) return m;
+      if (!/[./]/.test(path)) return m;
+      const cleaned = clean(path);
+      if (cleaned === '') return m;
+      if (cleaned === 'releases') return `${def}${github}/releases${anchor}${title}`;
+      if (IMAGE.test(path)) return `${def}${raw}/${cleaned}${anchor}${title}`;
+      const isDir = path.endsWith('/') || !/[^/]+\.[^/]+$/.test(cleaned);
+      return `${def}${isDir ? tree : base}/${cleaned}${anchor}${title}`;
+    },
+  );
   return c;
 }
 
@@ -250,7 +301,31 @@ function getStatusBanner(status) {
   return banners[status] || null;
 }
 
+// Docusaurus omits IDs on H1 headings. Retarget local links to the removed
+// README title to the page top instead of leaving a fragment with no target.
+async function readmeIndex(content, {repo, branch, label, position, slug, status = 'unknown'}) {
+  let body = fixRelativeLinks(sanitizeHtml(content), repo, '', branch);
+  const title = body.match(/^# (.*)\n\n?/);
+  if (title) {
+    // Classification also imports this module in clean lint checkouts. Load
+    // the renderer's package only when a README title needs an anchor.
+    const {slug: githubSlug} = await import('github-slugger');
+    body = body.slice(title[0].length);
+    const anchor = githubSlug(title[1]);
+    body = onProse(body, prose => prose
+      .replace(/(\]\(\s*)#([^\s)]+)(?=[\s)])/g,
+        (match, prefix, id) => id === anchor ? `${prefix}#` : match)
+      .replace(/^( {0,3}\[[^\]\n]+\]:\s*)#(\S+)/gm,
+        (match, prefix, id) => id === anchor ? `${prefix}#` : match));
+  }
+  const banner = getStatusBanner(status);
+  return frontmatter(label, position, slug, status) +
+    (banner ? banner + '\n\n' : '') + body;
+}
+
 export {
+  HTML_ELEMENTS,
+  readmeIndex,
   sanitizeHtml,
   fixRelativeLinks,
   onProse,

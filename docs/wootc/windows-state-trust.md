@@ -1,5 +1,5 @@
 ---
-sidebar_position: 43
+sidebar_position: 48
 title: "windows state trust"
 ---
 
@@ -55,7 +55,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File tests/e2e/test-state-tru
 ```
 
 Use the narrow Go selector. Other existing `TestState` tests write the Windows
-path for state. Tests on Linux cannot check ACLs on Windows.
+path for state. A test on Linux cannot check the ACLs on Windows.
 
 ## Corral evidence — 2026-09-26
 

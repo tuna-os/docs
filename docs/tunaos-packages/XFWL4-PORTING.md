@@ -1,5 +1,5 @@
 ---
-sidebar_position: 16
+sidebar_position: 22
 title: "XFWL4 PORTING"
 ---
 
@@ -64,6 +64,7 @@ Measured from the base images in `.github/build-config.yml` (tunaOS repo).
 | Ubuntu resolute | 4.20.2 | ❌ | needs 4.21 core libs + xfwl4 |
 | Arch / openSUSE | 4.20.x | ❌ | needs 4.21 core libs + xfwl4 |
 | EL10 | (ours) | ✅ | already builds the whole stack |
+| Fedora ELN | (ours) | ✅ | composes no XFCE; builds whole stack (build-order-xfce.yml) |
 
 Fedora is measured from a real build; Debian/Ubuntu from `apt-cache policy
 libxfce4ui-2-dev`; Gentoo from packages.gentoo.org.

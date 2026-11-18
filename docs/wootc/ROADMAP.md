@@ -3,7 +3,7 @@ sidebar_position: 3
 title: "Roadmap"
 ---
 
-**Last updated**: 2026-09-27 | **Maintainer**: tuna-os (hanthor)
+**Last updated**: 2026-10-15 | **Maintainer**: tuna-os (hanthor)
 
 ---
 
@@ -18,7 +18,7 @@ Ask of every decision: *can a person understand this on Windows and keep their w
 This is the product goal. Current releases do not yet provide the complete VM-first journey;
 [verification status](https://github.com/tuna-os/wootc/blob/main/docs/status.md) records what the evidence proves.
 
-wootc is the org's **conversion front door**. It complements bootc-installer / tuna-installer on Windows and uses [fisherman](https://github.com/projectbluefin/fisherman). One engine ships as five installers: generic **wootc**, **TunaOS**, **Bluefin**, **Aurora**, and **Bazzite** (`docs/branding-and-distribution.md`).
+wootc is the org's **conversion front door**. It complements bootc-installer / tuna-installer on Windows and uses [fisherman](https://github.com/tuna-os/fisherman). One engine ships as five installers: generic **wootc**, **TunaOS**, **Bluefin**, **Aurora**, and **Bazzite** (`docs/branding-and-distribution.md`).
 
 ## What 1.0 means
 
@@ -41,17 +41,20 @@ for current verification and [the VM experiments](https://github.com/tuna-os/woo
 for the work to restore the intended first experience.
 
 **Landed on `main`:**
-- **v0.3.0-beta milestone shipped**: Earlier work enabled the BitLocker policy and captured numerical keys for recovery. It resolved UAC identity to the interactive user and checked ownership of `wootc-data`. It added migrator plugins, JSON manifest schemas, and a runbook to take back a bad release (#211, #358, #354, #362).
-- **Dependencies and tools after v0.3.0-beta**: Wails reached v2.16.0 (#384), and Vite reached v8.3.0 (#382). `golang.org/x/crypto` reached v0.57.0 (#381), and `golang.org/x/sys` reached v0.48.0 (#379). Direct tests cover the DTO generator (#378). The repository adopted the shared English check and Renovate preset (#374, #375).
+
+- **v0.3.0-beta milestone work (not released)**: The milestone issue #211 closed on 2026-09-02, but no `v0.3.0-beta` tag or release exists. Earlier work enabled the BitLocker policy and captured numerical keys for recovery. It resolved UAC identity to the interactive user and checked ownership of `wootc-data`. It added migrator plugins, JSON manifest schemas, and a runbook to take back a bad release (#211, #358, #354, #362).
+- **Later dependencies and tools**: Wails reached v2.16.0 (#384), and Vite reached v8.3.0 (#382). `golang.org/x/crypto` reached v0.57.0 (#381), and `golang.org/x/sys` reached v0.48.0 (#379). Direct tests cover the DTO generator (#378). The repository adopted the shared English check and Renovate preset (#374, #375).
 - Historical runs used the GUI and passed native deployment, Linux boot, and graduation on `bluefin:lts`. Those runs did not launch Linux inside Windows.
-- **Release automation, three channels**: Tagged releases need an E2E gate. Dispatch inputs can select a tag without tag-push rights. Every green nightly can produce an automatic pre-release. Manual pre-releases also exist. Every release ships all five brand exes, deployer boot artifacts, and `SHA256SUMS`.
+- **Release automation, three channels**: Tagged releases need an E2E gate. Dispatch inputs can select a tag without tag-push rights. Every green nightly can produce an automatic pre-release. Manual pre-releases also exist. Every release ships setup assets for the five eligible brands and deployer boot artifacts. The cut-over release also ships one Wails fallback, `wootc-legacy.exe`. It includes signed `SHA256SUMS`.
 - **First tagged release shipped**: [`v0.1.0-alpha.1`](https://github.com/tuna-os/wootc/releases/tag/v0.1.0-alpha.1) passed its E2E gate. The release workflow published it on 2026-08-22.
 - **Brand assets**: Marks, typefaces, and themes come from each project's published assets. Automatic screenshots show each brand (`docs/branded-walkthroughs.md`). `just` brand arguments support local and manual tests.
 - **Offline-first core**: Windows can pre-download OCI data and verify its digest. The deployer ingests that bundle. Its settled hook starts with a bounded wait for the network. Branded builds / `WOOTC_PRELOAD=1` support installation without a network during deployment on Wi-Fi-only laptops.
 - **Earlier user experience**: Windows appears on the boot menu, and users can re-arm a one-shot boot. Product boots have calm text. First login offers a welcome and a bookmark to the Windows drive. Add/Remove has an entry. Uninstall tries cleanup; complete restoration still needs proof. Guides exist in `docs/getting-started.md` and `docs/manual-testing.md`.
 - The winget package (`TunaOS.wootc`) supports automatic submission on full releases. It still needs the one-time `WINGET_TOKEN` secret.
 
-**In flight**: RC validation and the pipeline for signed releases remain incomplete. Phase A of the WinUI 3 migration (#340) has merged: the Go engine supports `wootc.exe serve` JSON-RPC. Phase B (#343) has a draft native preview and hosted component proof. Phase C (#344) still needs the complete native consumer and VM journey. Phases D (#345) and E (#346) need those gates before the default changes or legacy code goes away.
+**In flight**: RC validation and the pipeline for signed releases remain incomplete. Phase A of the WinUI 3 migration (#340) has merged: the Go engine supports `wootc.exe serve` JSON-RPC. Phase B (#343) delivered the native preview and hosted component proof. Phase C (#344) delivered the native consumer and VM journey.
+
+Phase D (#345) switches release artifacts to branded Inno setup packages. It keeps one Wails release as `wootc-legacy.exe` and moves winget to `InstallerType: inno`. Phase E (#346) still covers the clean native release and legacy removal.
 
 **Open defects and verification**: dakota hangs during its first Phase-2 boot (#209). Session token rewrap still needs verification after beta (#1). Console flash repair (#179) is historical; maintainers closed the issue.
 
@@ -62,10 +65,13 @@ for the work to restore the intended first experience.
 Each milestone has an issue with its current task list. A milestone ships when its checklist is empty and its gate evidence exists. Dates are forecasts; gates are requirements.
 
 ### v0.1.0-alpha — "It exists" *(shipped 2026-08-22)*
+
 The first complete release passed the E2E gate. It shipped installers for five brands, boot artifacts, and SHA256SUMS. `releases/latest` resolves so plain online installs work. Automatic nightly pre-releases keep it fresh.
 
 ### v0.2.0-alpha — "Proven on real hardware" *(tracking: milestone issue M2)*
+
 The VM has been the world so far; this milestone makes real laptops the evidence source.
+
 - Maintainer + early-tester manual runs per `docs/manual-testing.md`, with a field-report issue template; every report triaged to green/fixed/filed.
 - Offline proof: `offline=on` matrix axis (`-nic none`), then `preloadImage` default-on for the generic build.
 - Find the cause of the dakota hang in Phase 2 (#209). Demote catalog status when evidence does not support it.
@@ -73,8 +79,10 @@ The VM has been the world so far; this milestone makes real laptops the evidence
 - Harness reliability: QGA-channel loss classified and retried, WU neutralization proven across editions.
 - Upstream must accept the first winget submission.
 
-### v0.3.0-beta — "The whole matrix, honestly" *(shipped 2026-09-03: milestone issue #211 / docs/release-notes-v0.3.0-beta.md)*
+### v0.3.0-beta — "The whole matrix, honestly" *(planned: milestone issue #211 closed 2026-09-02; no tag or release yet; release notes drafted in docs/release-notes-v0.3.0-beta.md)*
+
 Beta means the support policy stops saying "alpha" because the evidence exists.
+
 - **Full-tier matrix green (#222)**: every green-status catalog image × win10/11 Pro (+ Enterprise/LTSC cells where media allows) proven in `tests/e2e/matrix.tsv` and `app/data/images.json`.
 - **BitLocker path (#34, #223) green**: Enable `BitLockerSupported: true` on beta with numerical keys for recovery and dedicated storage volumes.
 - **Profile edge cases (#197)**: Non-Latin usernames need the `winuserN` fallback; never silently drop them (#224). Exclude built-in accounts with localized names (#224). Resolve UAC identity to the interactive human, including elevation through another admin (#225). Verify ownership of the `wootc-data` volume label before `RemovePartition` (#225).
@@ -84,7 +92,8 @@ Beta means the support policy stops saying "alpha" because the evidence exists.
 - **Support-policy audit**: every `GetSupportPolicy` flag traceable to a green matrix row with comprehensive test coverage.
 
 ### v0.9.0-rc — "Ship-shaped" *(tracking: milestone issue M4)*
-- **Signed binaries**: Choose an EV cert or `Azure Trusted Signing` (#229). The maintainer must decide on the spend. Verify publisher identity and fresh-machine SmartScreen behavior (#230). A valid signature alone does not guarantee that SmartScreen lets a launch proceed without a prompt.
+
+- **Signed binaries**: The maintainer chose `Azure Trusted Signing` (#229). The release workflow can sign with it after the Azure setup in `docs/RELEASING.md`. Verify publisher identity and fresh-machine SmartScreen behavior (#230). A valid signature alone does not guarantee that SmartScreen lets a launch proceed without a prompt.
 - **WinUI 3 shell replaces Wails (#340)**: phases B–D must pass their native gates before the RC default changes. Phase E follows a clean native release. The [sequence for the native shell](#native-shell-sequence-and-evidence-357) defines which earlier evidence can carry forward.
 - **VM-first (#178)**: Required first experience. Prepare and run the persistent Linux image inside Windows before native boot. [ADR 0004](https://github.com/tuna-os/wootc/blob/main/docs/adr/0004-restore-vm-first-product.md) replaces the #318 deferral; current releases do not yet meet this gate.
 - **Migration adapters (#203)**: Discovery and manifests exist. The [extension plan](https://github.com/tuna-os/wootc/blob/main/docs/specs/migration-extensions.md) adds truthful results, transactions, compatibility, and scoped execution before broad support.
@@ -95,8 +104,8 @@ Beta means the support policy stops saying "alpha" because the evidence exists.
 ### Native shell sequence and evidence (#357)
 
 The WinUI cutover is inside the road to 1.0. Earlier Wails releases can ship
-before phase D. They do not start the 1.0 soak. The existing beta release is
-history, not proof of the future native product.
+before phase D. They do not start the 1.0 soak. A beta release, when one is
+cut, is not proof of the future native product.
 
 | Phase | Place on the ladder | Gate |
 |---|---|---|
@@ -136,6 +145,7 @@ The actual install still required the native deployer, so that did not meet ADR 
 The WinUI rewrite must carry this journey. Do not remove the VM surface at cutover.
 
 ### v1.0.0 — "The North Star, checkable" *(tracking: milestone issue M5)*
+
 Verify all four criteria at the top of this file. All 30 days of nightlies must pass. Reports from real hardware must show no data loss. Verify signed binaries, a stable winget package, and approved brands. Cut from the final green SHA of the soak.
 
 ---

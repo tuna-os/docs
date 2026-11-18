@@ -11,12 +11,24 @@ PaperWM was originally written by [@hedning] and [@olejorgenb]. However, they be
 
 [@thesola10] joined PaperWM development in early 2023. Like Jay, he was quickly enamored by the scrollable tiling paradigm. He started contributing features related to touch screens and multiple displays, as this matches his current workflow. Karim is a PaperWM maintainer, focused on keeping PaperWM up to date, and handling pull requests.
 
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
+
 ## Community Transition
 
 ### Concerns
 
 - **Focus** — without one person to enforce the vision of what the software should be, it's easy for it to try and be many different things. End result: software that is inconsistent and difficult to use.
-    - Same thing for the code base. End result: difficult to maintain.
+  - Same thing for the code base. End result: difficult to maintain.
 - **Trust** — obviously we only want to give permissions to people who we trust not to push malicious (or otherwise bad) code. However, it's difficult for someone to prove they are trustworthy without trusting them first.
 - **Momentum** — trying to avoid pitfalls in the first two areas can lead to no actual development progress. For example, long deliberation trying to reach consensus, or a cumbersome contribution process that drives away potential maintainers.
 
@@ -27,8 +39,8 @@ To balance those issues, the plan is something like this (details may change):
 - Give out write access to the repo fairly easily. If someone makes a number of small contributions, or 1-2 large contributions, invite them as a Collaborator.
 - Require all contributions to be via PR. That way it's difficult for anyone to sneak changes in without others noticing.
 - Protect branches\*. Require 2 Collaborators to approve a PR before it's merged (so one person can't unilaterally push changes).
-    - \*[`develop`](https://github.com/paperwm/PaperWM/tree/develop), [`release`](https://github.com/paperwm/PaperWM/tree/release), and any branch referenced in the README. Also all tags.
-    - If there are not enough active maintainers, maybe relax the 2-person requirement.
+  - \*[`develop`](https://github.com/paperwm/PaperWM/tree/develop), [`release`](https://github.com/paperwm/PaperWM/tree/release), and any branch referenced in the README. Also all tags.
+  - If there are not enough active maintainers, maybe relax the 2-person requirement.
 
 ### Governance
 
@@ -39,3 +51,11 @@ If it's not clear who will make a decision, it's the current maintainer's decisi
 [@smichel17]: https://github.com/smichel17
 [@jtaala]: https://github.com/jtaala
 [@thesola10]: https://github.com/thesola10
+
+## Checks
+
+Run `make check` before sending a PR. It validates `metadata.json`, compiles the
+GSettings schema, builds the release archive with `make release`, and fails if the
+archive lacks a runtime file, carries a development-only file, or the run leaves
+the working tree changed. It needs Node.js, `glib-compile-schemas`, `zip` and
+`unzip`, and no graphical session. Unit tests run with `node --test tests/`.

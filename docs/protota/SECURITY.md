@@ -5,10 +5,10 @@ title: "Security"
 
 ## Supported Versions
 
-Protota is a pure browser webapp deployed as static content
-(https://tuna-os.github.io/protota/). Only the latest published build is
-actively supported; fixes land on `main` and are deployed with the next
-GitHub Pages release.
+Protota is a webapp that runs only in the browser. GitHub Pages serves it as
+static content (https://tuna-os.github.io/protota/). We support only the
+latest published build. Fixes land on `main`, and they go live with the next
+release to GitHub Pages.
 
 ## Security model
 
@@ -17,12 +17,12 @@ persistent storage. A project document is a file the user opens locally;
 import/export of Blueprint (`.blp`) and GtkBuilder (`.ui`) files happens in
 the browser. Security-relevant areas are:
 
-- **Untrusted document parsing** — importing a malicious `.blp`/`.ui` file
-  must never execute code, exfiltrate data, or escape the browser sandbox.
-- **Rendered preview isolation** — mockups render with real Adwaita web
-  components; their content must not reach outside the page origin.
-- **Dependency supply chain** — the build pulls from the npm registry; lock
-  files are committed and renovate tracks updates.
+- **Parser for untrusted documents** — a malicious `.blp`/`.ui` file must
+  never execute code, exfiltrate data, or escape the browser sandbox.
+- **Rendered preview isolation** — mockups use the real web components of
+  Adwaita. Their content must not reach outside the page origin.
+- **Dependency supply chain** — the build pulls from the npm registry. The
+  lock files are in git, and renovate tracks updates.
 
 ## Reporting a Vulnerability
 
@@ -36,5 +36,6 @@ Instead, report them privately via GitHub Security Advisories:
    (a sample `.blp`/`.ui` file is ideal)
 
 You can expect:
+
 - **Acknowledgment** within 48 hours
 - **Status update** within 5 business days

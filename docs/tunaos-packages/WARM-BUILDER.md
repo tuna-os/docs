@@ -1,13 +1,13 @@
 ---
-sidebar_position: 15
+sidebar_position: 20
 title: "WARM BUILDER"
 ---
 
-Bringing a desktop up on a new target is a loop of *build, hit a wall, fix one
-spec, build again*. On CI that loop costs a wave: every leg runs on an
-ephemeral runner, so the second attempt re-pays for every package the first one
-built. The warm builder is the same chain on a host where three things survive
-between attempts.
+To bring a desktop up on a new target follows a loop: *build, hit a wall, fix
+one spec, build again*. On CI that loop costs a wave. Every leg runs on an
+ephemeral runner, so the second try pays again for every package the first one
+built. The warm builder is the same chain on a host where three items survive
+between tries.
 
 ```
 just warm-status hummingbird-x86_64      # what this host has banked
@@ -30,10 +30,8 @@ warm builder points both at a volume that outlives the run.
 
 ## Provisioning a host
 
-Anything that can run rootless podman with ~200 GB of disk. The pool in
-`.github/runs-on.yml` is already sized for exactly this workload (16 vCPU →
-`JOBS = nproc/2` → 8 parallel mock roots, 64 GB-class memory, 200 GB gp3), so
-an equivalent VM is a reasonable target.
+Anything that can run rootless podman with ~200 GB of disk. The pool in `.github/runs-on.yml` fits this workload (16 vCPU, 8 parallel mock
+roots, 64 GB memory, 200 GB gp3). An equivalent VM is a reasonable target.
 
 ```bash
 # Fedora / EL host
@@ -50,8 +48,7 @@ export TUNAOS_WARM_STATE=/var/lib/tunaos-warm     # a persistent volume
 just warm-status hummingbird-x86_64
 ```
 
-Put `TUNAOS_WARM_STATE` on the largest persistent disk you have. A full
-hummingbird chain banks several GB of RPMs plus the root cache.
+Put `TUNAOS_WARM_STATE` on the largest persistent disk you have. A full chain for hummingbird banks several GB of RPMs plus the root cache.
 
 ## The loop
 
@@ -66,10 +63,9 @@ just warm hummingbird-x86_64                       # rebuilds only those two + d
 
 `--forget` drops everything a *source package* produced — `gtk4`,
 `gtk4-devel`, `gtk4-devel-docs` — and nothing that merely shares a prefix, so
-`gtk4-layer-shell` survives. Getting either half wrong is silent: leaving
-`gtk4-devel` behind means every dependent compiles against headers from the
-build that failed, and taking `gtk4-layer-shell` turns a one-package retry back
-into a chain.
+`gtk4-layer-shell` survives. Mistakes in either direction are silent. If you leave `gtk4-devel` behind,
+dependents compile against headers from the failed build. If you remove
+`gtk4-layer-shell`, a single package retry turns into a chain.
 
 Anything `build-chain.sh` understands rides through unchanged:
 
@@ -83,26 +79,24 @@ just warm hummingbird-x86_64 --dry-run
 ## What it is not
 
 **It is not a publisher.** It never touches R2, never signs anything, and its
-`local-repo/` is not a repository anyone consumes. Promotion stays with the
-gated publishers, for the reasons `INCIDENT-repo-wipe-gnome.md` records — and
-the point of the warm host is to get a chain green *fast*, then let CI build
-and publish it from a clean runner, where the result is reproducible rather
-than merely present.
+`local-repo/` is not a repository anyone consumes. Promotion stays with the gated publishers, for the reasons
+`INCIDENT-repo-wipe-gnome.md` records. The warm host gets a chain green fast.
+Then CI builds and publishes it from a clean runner, where the result is
+reproducible.
 
 **It is not a second definition of a cell.** The manifest, mock config, image
 and served index all come from `manifests/package-builds.yaml` and
-`manifests/package-factory.yaml`, never from flags. A warm builder with its own
-idea of what a cell is would drift from the one CI uses, and the failure mode
-of that drift is a green local build of something CI cannot reproduce.
+`manifests/package-factory.yaml`, never from flags. A warm builder with its own definition of a cell would drift from CI. The
+failure mode of that drift is a green local build that CI cannot reproduce.
 
 ## Using it as a self-hosted runner instead
 
 The same state directories work if you register the host as a GitHub
 self-hosted runner and set `MOCK_CACHE_DIR` and `--local-repo` to paths outside
-the workspace. That gets the warm start on CI's side too, at the cost of a
-long-lived machine holding repository credentials — a real trade, and one to
-make deliberately rather than by drifting into it. The ephemeral RunsOn pool in
-`.github/runs-on.yml` is the alternative: cold, but disposable.
+the workspace. That gets the warm start on CI's side too. However, a long-lived machine
+holds credentials for the repository. Make this trade deliberately without accidental
+drift. The ephemeral RunsOn pool in `.github/runs-on.yml` is the alternative:
+cold, but disposable.
 
 See `docs/rfc/rfc012-request-driven-convergence.md` for how this fits the
 request → converge → blocker loop.

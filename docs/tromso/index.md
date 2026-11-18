@@ -13,13 +13,28 @@ status: alpha
 [`projectbluefin/dakota`](https://github.com/projectbluefin/dakota). It builds KDE Plasma 6 on top
 of freedesktop-sdk and publishes a bootable OCI image to `ghcr.io/tuna-os/tromso`.
 
-**Status: Builds successfully and boots to a functional KDE Plasma 6 Wayland desktop.**
+**Status: Alpha — maintainers have not yet verified release readiness.** See the
+[roadmap release gates](https://github.com/tuna-os/tromso/blob/main/ROADMAP.md#alpha--beta) and
+[Release readiness](https://github.com/tuna-os/tromso/blob/main/ROADMAP.md#release-readiness) for dated CI evidence and
+remaining blockers.
 
 > **Attribution.** Tromso reuses configuration and helper scripts derived from
 > [`ublue-os/aurora`](https://github.com/ublue-os/aurora) and the former
 > `get-aurora-dev` org, under their original licenses. Tromso is **not affiliated
 > with Aurora**, and Aurora does not endorse it. The image ships none of Aurora's
 > artwork, logos, wallpapers or trademarks. The desktop uses stock KDE Breeze.
+
+## Contribute compute — no code needed
+
+**[Donate time with your AI CLI](https://hub.tunaos.org/#contribute).**
+
+Your machine runs one task at a time using your signed-in AI coding CLI.
+The relay alternates between eligible **School** (OS) and **Reef** (apps)
+hives after each task. If one hive has no work, the other can continue.
+
+The guide covers prerequisites, verified `just` setup, credentials, provider
+costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
+Never post account credentials or API keys in issues or pull requests.
 
 ## Architecture
 
@@ -41,6 +56,9 @@ tuna-os/tromso
 │   └── oci/tromso.bst        top-level build target → ghcr.io/tuna-os/tromso
 └── Justfile
 ```
+
+For detailed technical documentation on the BuildStream build graph, sandbox policies,
+and OCI image composition, see [Tromso Architecture](https://github.com/tuna-os/tromso/blob/main/docs/ARCHITECTURE.md).
 
 ## Quick Start
 
@@ -103,8 +121,9 @@ ghcr.io/tuna-os/tromso:<git-sha>
 
 **How it works:** the plan, core, and dependency chunks run through the shared
 `tuna-os/bst-ci` reusable workflow. The `build_final` job merges the chunk CAS
-archives, exports the OCI image, adds a signature, and publishes the nightly or
-stable tags. Scheduled and manual triggers start this workflow. It is the only
+archives, exports the OCI image, and publishes the nightly or stable tags. The
+`sign_final` job of this workflow then adds a signature to the pushed digest.
+Scheduled and manual triggers start this workflow. It is the only
 BuildStream publication path, so each successful image uses the same convergent
 cache and signer identity.
 
@@ -141,6 +160,22 @@ cosign verify-blob tromso-live-<date>-<sha>.iso \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
 ```
 
+## Community outreach
+
+The [KDE announcement kit](https://github.com/tuna-os/tromso/blob/main/docs/outreach/kde-community-announcement.md)
+contains reviewable announcement drafts, source evidence, and the publication
+checklist. Track external publication in [#365](https://github.com/tuna-os/tromso/issues/365).
+
+The [KDE partnership kit](https://github.com/tuna-os/tromso/blob/main/docs/outreach/kde-community-partnership.md)
+contains reviewable outreach proposals, drafts of joint articles, Akademy and
+FOSDEM conference abstracts, and a framework for collaboration with KDE VDG. Track external
+outreach and partnership execution in [#372](https://github.com/tuna-os/tromso/issues/372).
+
+The [case study kit for BuildStream](https://github.com/tuna-os/tromso/blob/main/docs/outreach/buildstream-community-reference.md)
+contains drafts of technical case studies, architecture documentation, freedesktop-sdk
+alignment notes, and upstream coordination checklists. Track upstream visibility and
+coordination in [#374](https://github.com/tuna-os/tromso/issues/374).
+
 ## References
 
 - **[KDE Linux](https://invent.kde.org/kde-linux/kde-linux)** — the official project for KDE Linux uses mkosi and Arch, not BuildStream. Tromso uses its package selection as a reference, but does not use its build tools.
@@ -169,10 +204,3 @@ release, follow
 ---
 
 Part of the [TunaOS](https://tunaos.org) ecosystem. [Docs](https://tunaos.org) · [Contribution guide](https://github.com/tuna-os/tromso/blob/main/CONTRIBUTING.md)
-
-
-## Contribute compute — no code needed
-
-No time to write code? You can still push this project's backlog forward. A TunaOS AI-agent hive works on this repository. Lend the hive your AI subscription or API tokens, and your machine runs tasks from this project's backlog.
-
-- 🏫 [Contribute compute to the school hive](https://school.tunaos.org/contribute)
