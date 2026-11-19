@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-18T15:20:12.544Z",
+  "generatedAt": "2026-11-19T00:29:23.471Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 376,
+  "count": 378,
   "categories": [
     {
       "id": "live-isos",
@@ -2546,10 +2546,20 @@
           "name": "xfce-linux-live-latest",
           "path": "xfce-linux/xfce-linux-live-latest.iso",
           "url": "https://download.tunaos.org/xfce-linux/xfce-linux-live-latest.iso",
-          "size": 6561439744,
-          "modified": "2026-11-13T07:43:17.920894196Z",
+          "size": 6629199872,
+          "modified": "2026-11-18T18:55:04.357527293Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "xfce-linux",
+          "name": "xfce-linux-live-20261118-e106a41",
+          "path": "xfce-linux/xfce-linux-live-20261118-e106a41.iso",
+          "url": "https://download.tunaos.org/xfce-linux/xfce-linux-live-20261118-e106a41.iso",
+          "size": 6629199872,
+          "modified": "2026-11-18T18:55:04.357527293Z",
+          "arch": "",
+          "latest": false
         },
         {
           "category": "xfce-linux",
@@ -2880,6 +2890,16 @@
           "modified": "2026-07-31T12:34:11.169892931Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-gnome-20261118-bf3d813",
+          "path": "tacklebox/bazzite-gnome-20261118-bf3d813.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-gnome-20261118-bf3d813.iso",
+          "size": 8450211840,
+          "modified": "2026-11-18T16:23:49.089336154Z",
+          "arch": "",
+          "latest": false
         },
         {
           "category": "tacklebox",
