@@ -8,7 +8,7 @@ A bootc rollback restores the system image. It does not restore your files. This
 
 ## What bootc protects
 
-Updates and rollbacks change the image. See [Rollback & Update Troubleshooting](bootc-rollback.md). Your data lives outside the image.
+Updates and rollbacks change the image. See [Rollback and update problems](bootc-rollback.md). Your data lives outside the image.
 
 | Location | Kept across updates | Back up |
 | --- | --- | --- |
@@ -59,7 +59,7 @@ The repository does not ship or test a backup tool. These tools are common on Li
 
 - `rsync` for simple copies.
 - `restic` or `borg` for encrypted, deduplicated snapshots with retention rules.
-- A desktop backup app from Flathub, such as Pika Backup. Availability is unverified here.
+- A desktop backup app from Flathub, such as Pika Backup. We have not verified its availability.
 
 ## Automatic backups
 
