@@ -53,10 +53,10 @@ your old one and the install will say nothing matches. Fix it with
 
 ## Reporting issues
 
-Please report issues with core messaging that also reproduce in Fractal to the
-[Fractal issue tracker](https://gitlab.gnome.org/World/fractal/-/issues), and
-Mandelbrot-specific issues (calls, sliding sync, QR login…) to the
-[Mandelbrot repo](https://github.com/tuna-os/mandelbrot/issues).
+If a chat problem also occurs in Fractal, report it to the
+[Fractal issue tracker](https://gitlab.gnome.org/World/fractal/-/issues).
+Report problems that occur only in Mandelbrot, such as calls, sync and QR
+login, to the [Mandelbrot repo](https://github.com/tuna-os/mandelbrot/issues).
 
 ## Source
 

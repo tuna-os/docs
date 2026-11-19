@@ -5,7 +5,7 @@ description: "How tunaos.org is built, served, and deployed."
 
 # Site architecture and deployment
 
-This page explains how the TunaOS website at <https://tunaos.org> is built,
+This page explains how the TunaOS website at [tunaos.org](https://tunaos.org) is built,
 served, and deployed. For the OS image pipeline, see [Architecture](architecture.md).
 
 ## Parts
@@ -27,16 +27,16 @@ The `tunaos-org` Cloudflare Worker serves the site. `wrangler.jsonc` sets
 Only `/api/adoption` and `/api/build-health` run the Worker code first. The
 Worker sends every other request to the static assets.
 
-The adoption proxy fetches metrics through the `COUNTME` service binding to
-the `tunaos-countme` Worker. It checks the response and caches it. If the
-upstream fails, it returns HTTP 503. For log fields and privacy rules, see
+To get metrics, the proxy for adoption data calls the `tunaos-countme`
+Worker through the `COUNTME` service binding. It checks the response and
+caches it. If the upstream fails, it returns HTTP 503. For log fields and privacy rules, see
 `TELEMETRY.md` in the repository root.
 
 ## Content ownership
 
-Most pages in `docs/<repository-name>/` are generated. The daily
-`sync-org-docs` workflow copies them from other repositories in the org and
-opens a pull request when they change. Do not edit them here. Edit the source
+Most pages in `docs/<repository-name>/` come from other repositories in the
+org. Each day, the `sync-org-docs` workflow copies them here. When they
+change, it opens a pull request. Do not edit them here. Edit the source
 repository instead.
 
 Hand-written pages are at the top level of `docs/` and in `blog/`. Add each
