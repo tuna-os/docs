@@ -65,8 +65,10 @@ test-python:
 lint:
     #!/usr/bin/env bash
     set -euo pipefail
-    markdownlint 'docs/**/*.md' '*.md' \
-        --ignore docs/docs/tacklebox \
+    # Synced docs/<slug>/ trees are skipped, as in lint.yml.
+    ignores=(--ignore docs/docs/tacklebox)
+    while IFS= read -r tree; do ignores+=(--ignore "$tree"); done < <(node scripts/synced-trees.mjs)
+    markdownlint 'docs/**/*.md' '*.md' "${ignores[@]}" \
         --disable MD013 MD033 MD041 || \
         echo "NOTE: markdownlint found issues — review and fix"
     FAILED=0

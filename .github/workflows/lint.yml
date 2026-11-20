@@ -145,8 +145,15 @@ jobs:
           # Disabled rules live in .markdownlint.yaml, not here -- a new
           # markdownlint release adding a rule is what put this job over
           # budget, and a config file is where the next one gets pinned.
-          markdownlint 'docs/**/*.md' '*.md' \
-            --ignore docs/docs/tacklebox > markdownlint.out 2>&1 || true
+          #
+          # Synced docs/<slug>/ trees are skipped, as the STE job skips them:
+          # their prose is authored in other repos and reverted here by the
+          # next sync, so their findings are not this repo's to fix.
+          # scripts/synced-trees.mjs lists them by the same rule STE uses.
+          ignores=(--ignore docs/docs/tacklebox)
+          while IFS= read -r tree; do ignores+=(--ignore "$tree"); done < <(node scripts/synced-trees.mjs)
+          echo "skipping ${#ignores[@]} paths (synced trees + tacklebox): ${ignores[*]}"
+          markdownlint 'docs/**/*.md' '*.md' "${ignores[@]}" > markdownlint.out 2>&1 || true
           found=$(grep -c ' error ' markdownlint.out || true)
           budget=$(cat .markdownlint-budget)
           echo "markdownlint findings: ${found} (budget ${budget})"

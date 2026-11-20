@@ -56,7 +56,7 @@ just build         # run this whenever a change can affect the generated site
 | `js-syntax` | Yes — `node --check` on every script, runs `scripts/__tests__/*.test.mjs`, `scripts/checks/*.mjs` and the Vitest data tests (`npm run test:unit`), plus `check-install-commands` |
 | `python-tests` | Yes — the Flatpak Python unit tests under `.github/scripts/tests/` (`just test-python`) |
 | `ste` | Yes — Simplified Technical English, against the number in `.ste-budget`. The linter itself lives in [tuna-os/.github](https://github.com/tuna-os/.github/tree/main/.github/actions/ste-lint); this repo keeps only the budget. Run it locally with `just ste`. |
-| `markdown-lint` | Against `.markdownlint-budget`, with `markdownlint-cli` pinned in the workflow. `just lint` prints the same findings but does not compare them to the budget |
+| `markdown-lint` | Against `.markdownlint-budget`, with `markdownlint-cli` pinned in the workflow. Synced `docs/<slug>/` trees (`scripts/synced-trees.mjs`) are not counted, as for STE. `just lint` prints the same findings but does not compare them to the budget |
 | `link-check` | Yes — broken internal `.md` links fail the job |
 | `pinned-source` | The build-health source pin and the schemas copied from tuna-os/tunaOS. Runs only when those inputs change, and is not a required check |
 

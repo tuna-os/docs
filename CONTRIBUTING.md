@@ -129,6 +129,11 @@ CI compares the number of findings with `.markdownlint-budget`. A different
 release can add rules and change that number. `just lint` shows the findings
 but does not fail on them, so compare the count with the budget yourself.
 
+The count does not include the `docs/<slug>/` trees that the org sync writes.
+Their text comes from other repositories, and the next sync replaces a fix
+that you make here. `scripts/synced-trees.mjs` lists these trees. The STE
+check skips the same trees.
+
 Run all local pre-submission checks:
 
 ```bash
