@@ -29,8 +29,10 @@
   border-left-color: var(--tu-accent);
 }
 
+/* The Windows card for visitors on other systems. Grey it out with a filter,
+   not opacity: opacity also fades the text below the WCAG contrast minimum. */
 .optionMuted {
-  opacity: 0.6;
+  filter: grayscale(1);
 }
 
 .optionHead {
@@ -110,6 +112,8 @@
 .notice a,
 .meta a {
   color: var(--tu-accent-soft);
+  /* The link colour alone is too close to the text colour (WCAG 1.4.1). */
+  text-decoration: underline;
 }
 
 .text {
