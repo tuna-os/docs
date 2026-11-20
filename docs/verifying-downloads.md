@@ -157,7 +157,7 @@ To check Secure Boot status and enroll MOK keys on installed systems, see the [S
 
 ## Related Documentation
 
-- [Installation Guide](./installation.md)
+- [Download and install](/download)
 - [Secure Boot & UEFI Guide](./secure-boot.md)
 - [Manage images with bootc](./tunaos/bootc-usage.md)
 - [TunaOS Security Policy](./tunaos/SECURITY.md)

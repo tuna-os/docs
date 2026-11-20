@@ -147,6 +147,12 @@
   margin-top: 2rem;
 }
 
+.ctaNote {
+  margin: 0.85rem auto 0;
+  font-size: 0.85rem;
+  color: var(--tu-dim);
+}
+
 .btnPrimary {
   background: #5dabf0;
   color: #1d1f21 !important;

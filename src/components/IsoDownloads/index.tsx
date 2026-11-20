@@ -3,7 +3,13 @@ import {useEffect, useState} from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import {defaultPlatform} from '@site/src/components/ImagePicker/selection';
 import {getBuilderPresetUrl, isCutOver} from '@site/src/data/delivery-policy.mjs';
+import {getVariant} from '@site/src/data/variants';
 import styles from './styles.module.css';
+
+// The image /download recommends to someone who is not sure; the same default
+// as iso.tunaos.org and the docs ("Not sure? Start with Yellowfin GNOME").
+const RECOMMENDED_ISO = 'yellowfin-gnome-latest';
+
 // Shape of static/iso-index.json (produced by scripts/build-iso-index.mjs
 // from a live `rclone lsjson` of the R2 bucket).
 type Iso = {
@@ -144,7 +150,8 @@ function groupByVariant(isos: Iso[]): Record<string, Iso[]> {
 
 function VariantSection({name, isos}: {name: string; isos: Iso[]}) {
   const [open, setOpen] = useState(true);
-  const label = name.charAt(0).toUpperCase() + name.slice(1);
+  const base = getVariant(name)?.base;
+  const label = `${name.charAt(0).toUpperCase() + name.slice(1)}${base ? ` (${base})` : ''}`;
   return (
     <div className={styles.variantSection}>
       <button
@@ -287,6 +294,9 @@ export default function IsoDownloads(): ReactNode {
   }
 
   const q = query.trim().toLowerCase();
+  const recommended = index.categories
+    .flatMap((cat) => cat.isos)
+    .find((iso) => iso.name === RECOMMENDED_ISO);
   const latestIsos = index.categories
     .flatMap((cat) => cat.isos.filter((i) => i.latest))
     .sort((a, b) => a.name.localeCompare(b.name));
@@ -302,42 +312,51 @@ export default function IsoDownloads(): ReactNode {
 
   return (
     <div>
-      <div className={styles.searchWrap}>
-        <input
-          className={styles.searchInput}
-          type="search"
-          placeholder="Search ISOs by variant, desktop, or arch…"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-      </div>
-
-      {q && (
-        <p className={styles.resultCount}>
-          {filtered.length} result{filtered.length === 1 ? '' : 's'} for “{query}”
-        </p>
+      {recommended && (
+        <div className={styles.recommended}>
+          <span className={styles.recommendedLabel}>Recommended</span>
+          <IsoRow iso={recommended} />
+        </div>
       )}
+      <details className={styles.allImages}>
+        <summary>All images ({latestIsos.length})</summary>
+        <div className={styles.searchWrap}>
+          <input
+            className={styles.searchInput}
+            type="search"
+            placeholder="Search ISOs by variant, desktop, or arch…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
 
-      <div className={styles.grid}>
-        {index.categories
-          .filter((cat) => {
-            if (!query) return cat.isos.some((i) => i.latest);
-            return cat.isos.some((iso) => {
-              const text = `${iso.name} ${iso.category} ${iso.arch} ${prettyName(iso)}`.toLowerCase();
-              return text.includes(q);
-            });
-          })
-          .map((cat) => (
-          <CategoryCard key={cat.id} cat={cat} query={q} />
-        ))}
-      </div>
+        {q && (
+          <p className={styles.resultCount}>
+            {filtered.length} result{filtered.length === 1 ? '' : 's'} for “{query}”
+          </p>
+        )}
 
-      {!q && (
-        <p className={styles.generated}>
-          {latestIsos.length} latest images · refreshed {formatDate(index.generatedAt)} from{' '}
-          <a href={index.baseUrl}>download.tunaos.org</a>
-        </p>
-      )}
+        <div className={styles.grid}>
+          {index.categories
+            .filter((cat) => {
+              if (!query) return cat.isos.some((i) => i.latest);
+              return cat.isos.some((iso) => {
+                const text = `${iso.name} ${iso.category} ${iso.arch} ${prettyName(iso)}`.toLowerCase();
+                return text.includes(q);
+              });
+            })
+            .map((cat) => (
+              <CategoryCard key={cat.id} cat={cat} query={q} />
+            ))}
+        </div>
+
+        {!q && (
+          <p className={styles.generated}>
+            {latestIsos.length} latest images · refreshed {formatDate(index.generatedAt)} from{' '}
+            <a href={index.baseUrl}>download.tunaos.org</a>
+          </p>
+        )}
+      </details>
     </div>
   );
 }

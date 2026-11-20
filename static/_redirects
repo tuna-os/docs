@@ -1,0 +1,7 @@
+# Workers Static Assets redirects (https://developers.cloudflare.com/workers/static-assets/redirects/).
+# Old URLs of pages that were merged or removed, so links elsewhere still land
+# somewhere sensible. Keep one line per old URL; the rules run before assets.
+
+# The install guide was merged into the single install flow (/download).
+/docs/installation /download 301
+/docs/installation/ /download 301

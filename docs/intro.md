@@ -62,8 +62,7 @@ To start:
 
 1.  **[Pick Your Variant](choosing-a-variant)** - Choose the right base and desktop for your needs.
 2.  **[System Requirements](system-requirements)** - Make sure the system supports your hardware.
-3.  **[Installation Guide](installation)** - Read how to install TunaOS.
-4.  **[Download ISOs](/download)** - Get a pre-built image.
+3.  **[Download and install](/download)** - Make a USB installer, or try TunaOS from Windows.
 
 ## Beyond the OS
 

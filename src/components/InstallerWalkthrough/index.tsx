@@ -20,12 +20,12 @@ export type WalkthroughStep = {
 };
 
 export const DEFAULT_STEPS: WalkthroughStep[] = [
-  {file: '01_welcome', title: 'Welcome', blurb: 'Your variant greets you — install, or keep exploring the live desktop.'},
-  {file: '02_disk_select', title: 'Pick a disk', blurb: 'Choose the target drive and partitioning options.'},
-  {file: '03_confirm', title: 'Confirm', blurb: 'One last look before anything touches the disk.'},
-  {file: '04_installing', title: 'Installing', blurb: 'The bootc image is written to disk — no package roulette.'},
-  {file: '05_installing_progress', title: 'Almost there', blurb: 'Bootloader and first-boot setup land in place.'},
-  {file: '06_done', title: 'Done', blurb: 'Reboot into your new system. Updates arrive as complete images.'},
+  {file: '01_welcome', title: 'Welcome', blurb: 'Install now, or try TunaOS from the USB stick first.'},
+  {file: '02_disk_select', title: 'Pick a drive', blurb: 'Choose the drive for TunaOS. Everything on it is erased.'},
+  {file: '03_confirm', title: 'Confirm', blurb: 'One last look before the installer erases the drive.'},
+  {file: '04_installing', title: 'Installing', blurb: 'TunaOS is copied to the drive. Stay connected to the internet.'},
+  {file: '05_installing_progress', title: 'Almost there', blurb: 'The installer finishes the start-up files.'},
+  {file: '06_done', title: 'Done', blurb: 'Restart and remove the USB stick.'},
 ];
 
 // installer-smoke.yml captures these for kde/cosmic/niri/xfce: an automated

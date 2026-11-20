@@ -42,10 +42,14 @@ requirements.
 - Performance is a little lower
 
 ### ARM64
-- Apple Silicon Macs (M1, M2, M3, etc.)
 - Raspberry Pi 4 and newer
 - Other ARM64 single-board computers
 - Modern ARM-based laptops and desktops
+
+### Apple Silicon Macs
+TunaOS is **not available yet** for Macs with an Apple chip (M1 and newer).
+An installer for M1 and M2 Macs is in development. See
+[Apple Silicon Macs](apple-silicon.md).
 
 ## Storage Considerations
 
@@ -77,7 +81,6 @@ requirements.
 ### Integrated Graphics
 - Intel HD Graphics 4000 or newer
 - AMD Radeon R5/R7 series or newer
-- Apple integrated graphics (M-series)
 
 ### Discrete Graphics
 
@@ -108,8 +111,8 @@ requirements.
 ## UEFI/BIOS Requirements
 
 ### Supported Boot Methods
-- **UEFI** (recommended)
-- **Legacy BIOS** (limited support)
+- **UEFI**: required. The USB installer starts in UEFI mode only.
+- **Legacy BIOS** (or "CSM"): not supported
 
 ### Security Features
 - **Secure Boot**: Supported — see [Secure Boot & UEFI Guide](secure-boot.md)
@@ -120,7 +123,9 @@ requirements.
 
 ### Supported Hardware
 - Most standard PC hardware from 2013 onwards
-- Apple Silicon Macs (ARM64 variant)
+- Macs with an Intel processor. See
+  [Start your computer from the USB stick](start-from-usb.md) for the
+  Mac steps and the limits on T2 Macs.
 - Many ARM single-board computers
 
 ### Known Limitations
@@ -141,18 +146,17 @@ walkthrough.
 
 ### Checklist
 - [ ] Verify hardware compatibility
-- [ ] Backup important data
+- [ ] Back up important data. The installer erases the full drive.
 - [ ] Check internet connection
-- [ ] Download the correct ISO variant
-- [ ] Prepare installation media (USB drive)
-- [ ] Review installation method
+- [ ] Get a USB stick with 16 GB or more. The writer app erases everything on it.
+- [ ] Make the USB installer: see [Download and install](/download)
 
 ### Choosing Your Variant
+- **Yellowfin**: AlmaLinux Kitten 10. The recommended image.
 - **Albacore**: Enterprise stability (AlmaLinux 10)
-- **Yellowfin**: Upstream compatibility (AlmaLinux Kitten 10)
 - **Bonito**: The newest software, from Fedora 44 - *Development*
 - **Skipjack**: CentOS base - *Development*
 
-Do you need help with the choice? Read the
-[installation guide](installation), or ask in the
+Do you need help with the choice? Read
+[the variant guide](choosing-a-variant.md), or ask in the
 [Matrix chat](https://matrix.to/#/%23tunaos:reilly.asia).

@@ -266,3 +266,30 @@
     transform: rotate(360deg);
   }
 }
+
+/* The recommended ISO, shown above the folded full list. */
+.recommended {
+  margin: 1rem 0;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--tu-line-strong);
+  background: var(--tu-bg-2);
+}
+
+.recommendedLabel {
+  display: block;
+  margin: 0 0 0.4rem 0.25rem;
+  font-family: var(--tu-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tu-accent-soft);
+}
+
+.allImages > summary {
+  margin-bottom: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--tu-accent-soft);
+}

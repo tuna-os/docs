@@ -184,6 +184,6 @@ journalctl -b -p err
 
 - [Manage TunaOS with Bootc](tunaos/bootc-usage.md) — the full guide for bootc management
 - [Bootc Resources](bootc-resources.md) — curated links and references
-- [Installation Guide](installation.md) — fresh install instructions
+- [Download and install](/download) — fresh install instructions
 - [FAQ](faq.md) — quick answers to common questions
 - [bootc-dev/bootc](https://github.com/bootc-dev/bootc) — official bootc project

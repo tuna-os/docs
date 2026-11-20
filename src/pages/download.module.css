@@ -1,71 +1,7 @@
-/* Download page — the hero, sections and buttons come from
-   src/css/page.module.css; what remains here is the picker disclosure and
-   the USB-writing note. */
+/* Download page — the hero comes from src/css/page.module.css and the three
+   install options from src/components/InstallChooser. */
 
 .main {
   padding-top: 2.5rem;
   padding-bottom: 3rem;
-}
-
-.chooser {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 2.5rem;
-  padding: 1.25rem 1.5rem;
-  border: none;
-  border-left: 2px solid var(--tu-accent);
-  border-radius: 6px;
-  background: var(--tu-panel);
-}
-
-.chooserTitle {
-  display: block;
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--tu-ink);
-}
-
-.chooserText {
-  max-width: 60ch;
-  margin: 0.3rem 0 0;
-  font-size: 0.88rem;
-  line-height: 1.6;
-  color: var(--tu-dim);
-}
-
-.help {
-  margin-top: 3.5rem;
-  padding: 1.75rem;
-  border-radius: 6px;
-  background: var(--tu-panel);
-  border: none;
-}
-
-.help h2 {
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--tu-ink);
-}
-
-.help p {
-  font-size: 0.92rem;
-  line-height: 1.7;
-  color: var(--tu-dim);
-}
-
-.help a {
-  color: var(--tu-accent-soft);
-}
-
-.help pre {
-  margin: 0.75rem 0;
-  border-radius: 6px;
-  background: var(--tu-bg-2);
-  color: var(--tu-ink);
-  font-size: 0.85rem;
 }

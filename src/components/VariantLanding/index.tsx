@@ -250,14 +250,14 @@ function Cta({variant}: {variant: Variant}): ReactNode {
         <Wordmark className={styles.ctaMark} variantId={variant.id} height={56} />
         <Heading as="h2" className={styles.ctaTitle}>Dive into {variant.name}</Heading>
         <p className={styles.ctaText}>
-          Grab a live ISO, or rebase an existing bootc system in one command.
+          Make a USB installer, try it from Windows, or switch from another Linux system.
         </p>
         <div className={styles.heroButtons}>
           <Link className={clsx('button button--lg', styles.btnPrimary)} to="/download">
-            Download
+            Install
           </Link>
-          <Link className={clsx('button button--lg', styles.btnGhost)} to="/docs/installation">
-            Install guide
+          <Link className={clsx('button button--lg', styles.btnGhost)} to="/docs/start-from-usb">
+            Start from a USB stick
           </Link>
         </div>
       </div>
