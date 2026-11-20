@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "lifafa"
+title: "lifafa"
+hide_title: true
 
 status: unknown
 ---

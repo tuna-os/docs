@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "tuta-unofficial-sdk"
+title: "tuta-unofficial-sdk"
+hide_title: true
 
 status: unknown
 ---

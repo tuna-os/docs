@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "Tromsø"
+title: "Tromsø"
+hide_title: true
 
 status: alpha
 ---

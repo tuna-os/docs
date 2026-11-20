@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "dakota-iso"
+title: "dakota-iso"
+hide_title: true
 
 status: archived
 ---

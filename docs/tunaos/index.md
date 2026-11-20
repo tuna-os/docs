@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "TunaOS"
+title: "TunaOS"
+hide_title: true
 
 status: stable
 ---

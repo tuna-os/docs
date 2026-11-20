@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "tunaos-packages"
+title: "tunaos-packages"
+hide_title: true
 
 status: unknown
 ---

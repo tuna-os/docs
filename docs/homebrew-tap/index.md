@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "homebrew-tap"
+title: "homebrew-tap"
+hide_title: true
 
 status: unknown
 ---

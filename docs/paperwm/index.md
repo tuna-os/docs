@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "PaperWM"
+title: "PaperWM"
+hide_title: true
 
 status: unknown
 mdx:

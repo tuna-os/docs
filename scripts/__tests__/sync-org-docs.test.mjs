@@ -534,10 +534,12 @@ test('leaves absolute and footnote definitions alone', () => {
 
 console.log('\nfrontmatter');
 
-test('emits position, label and status', () => {
+test('emits position, label, title and status', () => {
   const fm = frontmatter('Corral', 101, 'corral', 'stable');
   assert.match(fm, /sidebar_position: 101/);
   assert.match(fm, /sidebar_label: "Corral"/);
+  // Without a title the page is named after its file id: "index".
+  assert.match(fm, /\ntitle: "Corral"\nhide_title: true\n/);
   assert.match(fm, /status: stable/);
 });
 

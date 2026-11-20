@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "protota"
+title: "protota"
+hide_title: true
 
 status: unknown
 ---

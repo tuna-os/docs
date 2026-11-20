@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "dakota-x13s"
+title: "dakota-x13s"
+hide_title: true
 
 status: archived
 ---

@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "flatpak-index"
+title: "flatpak-index"
+hide_title: true
 
 status: unknown
 ---

@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "suite-common-rust"
+title: "suite-common-rust"
+hide_title: true
 
 status: unknown
 ---

@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "corral"
+title: "corral"
+hide_title: true
 
 status: unknown
 ---

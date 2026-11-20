@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "ubuntu"
+title: "ubuntu"
+hide_title: true
 
 status: archived
 ---
