@@ -33,18 +33,22 @@ The examples on this page use the `compass` command. From the Flatpak, run it as
 
 ## Start Compass when you log in
 
-Opening Compass from the application grid starts it for the rest of the session. To start it at
-every login, turn on **Start at login**, in the first-run setup's "Make it your own" step or in
-Settings, General. It is off until you turn it on. Compass asks your desktop's Background portal,
-which shows you what it allows, to run `compass start --hidden` when you log in. Where there is no
+You do not need a service or a login-start entry to use Compass. Pressing the launcher shortcut
+starts the engine and window on demand, and they keep running for the rest of the session.
+
+Opening Compass from the application grid also starts it for the rest of the session. To have it
+waiting from the moment you log in, turn on **Start at login**, in the first-run setup's "Make it
+your own" step or in Settings, General. It is off until you turn it on. Compass asks your desktop's
+Background portal, which shows you what it allows, to run `compass start --hidden` when you log in. Where there is no
 Background portal (some wlroots sessions) and Compass is not in the Flatpak, it writes
 `~/.config/autostart/compass.desktop` itself, and turning the switch off removes only that file.
 If your desktop declines, the switch stays off and says so. From a terminal, `compass login-start
 status` shows the same state, and `compass login-start enable` and `compass login-start disable`
 change it as the switch does.
 
-Packages also install a systemd user unit, which Compass never turns on or off. Settings says when
-it is installed and whether it is enabled. To use the unit instead of the switch:
+Packages may also install a systemd user unit as an optional fallback. Compass never turns it on
+or off, and nothing needs it for the launcher to work; Settings only reports when it is installed
+and whether it is enabled. To use the unit as well:
 
 ```sh
 systemctl --user enable --now compass
@@ -77,9 +81,10 @@ compositor's autostart instead, for example `exec compass start --hidden` in Swa
 
 ## Set a keyboard shortcut
 
-The launcher opens with `compass toggle`, which shows it or hides it. Compass has to be running
-for this to work: open it once from the application grid, or run `compass start --hidden` when you
-log in.
+The launcher opens with `compass toggle`, which shows it or hides it. If Compass is not running,
+this command starts it for you, so the shortcut works from the first press without a service or a
+login-start entry. `compass query` likewise starts the engine it needs; headless, it starts only
+the engine and no window.
 
 Compass asks for <kbd>Super</kbd>+<kbd>Space</kbd> by default. To change it, run **Open Settings**
 and set **Launcher hotkey** under General, or set `launcher.hotkey` in the configuration file.

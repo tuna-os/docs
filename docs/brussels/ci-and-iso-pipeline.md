@@ -173,7 +173,7 @@ months.
 
 ### Pull request CI (`test.yml`)
 
-All pre-merge checks are in one workflow, `test.yml`. Its `changes` job lists
+All required pre-merge checks are in one workflow, `test.yml`. Its `changes` job lists
 the changed files and starts only the jobs that those files can affect. A
 skipped job reports success, so each required check always reports. If the
 `changes` job fails, all checks run. A change to `test.yml` runs all checks.
@@ -188,6 +188,18 @@ skipped job reports success, so each required check always reports. If the
 | BuildStream Graph | a file outside docs, tests, scripts, tools, `xfce-linux/`, `.github/` and the justfiles |
 | Unit Tests | a file that is not `*.md` or `LICENSE*` |
 | Just Parse | `Justfile`, `iso.justfile`, `just/` |
+
+Other workflows also run on pull requests. They are not required checks, but a
+failure shows as a red check on the pull request:
+
+| Workflow | Jobs | Runs when the change touches |
+|----------|------|------------------------------|
+| `actions-security.yml` | `lockfile` (`gh actions-lock --verify` against `.github/workflows/actions.lock`), `zizmor` | any file |
+| `ste.yml` (Prose) | Simplified Technical English lint, budget in `.ste-budget` | `*.md`, `*.mdx`, `.ste-budget` |
+| `codeql.yml` | CodeQL `analyze` | `scripts/**.py`, `tests/pytest/**.py` |
+| `pr-build-changed.yml` | `build-changed` | `elements/**.bst` |
+
+A change to one of these workflow files also runs that workflow.
 
 The plain and LUKS install tests build the same ISO and use different install
 paths. A change to their shared inputs (`xfce-linux/`, the justfiles,

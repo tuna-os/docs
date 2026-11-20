@@ -5,9 +5,8 @@ title: "FACTORY STATUS"
 
 
 
-# Factory status — built vs needed, per target
 
-Measured 2026-10-16T10:19:18+00:00 from the live published indexes;
+Measured 2026-11-19T14:35:11+00:00 from the live published indexes;
 provenance (repomd revision, primary.xml sha256) is in
 `docs/factory-status.json`, which also carries the full built and
 needed lists this page truncates.
@@ -19,35 +18,50 @@ needs catalog version pins, which most entries do not carry yet.
 
 ## Progress since the last measurement
 
-Compared against 2026-10-15T10:09:50+00:00, the last measurement
+Compared against 2026-11-18T14:24:09+00:00, the last measurement
 that actually MERGED — so a large gap here means the daily
 refresh is not landing, which is its own defect:
 
 | target/arch | built Δ | needed Δ | no movement for | newly built |
 |---|---|---|---|---|
-| debian/amd64 | +1 | +0 | — | tuna-desktop |
-| debian/arm64 | +1 | +0 | — | tuna-desktop |
-| el10/aarch64 | +2 | -1 | — | gtk4-layer-shell, tuna-desktop |
-| el10/x86_64 | +2 | -1 | — | gtk4-layer-shell, tuna-desktop |
-| fedora/x86_64 | +1 | +0 | — | tuna-desktop |
-| hummingbird/aarch64 | -5 | +19 | — | — |
-| hummingbird/x86_64 | -4 | +18 | — | libao |
-| opensuse-tumbleweed/aarch64 | +1 | +0 | — | tuna-desktop |
-| opensuse-tumbleweed/x86_64 | +1 | +0 | — | tuna-desktop |
-| ubuntu/amd64 | +1 | +0 | — | tuna-desktop |
-| ubuntu/arm64 | +1 | +0 | — | tuna-desktop |
+| debian/amd64 | +0 | +0 | 34 days | — |
+| debian/arm64 | +0 | +0 | 34 days | — |
+| el10/aarch64 | +0 | +0 | 34 days | — |
+| el10/x86_64 | +0 | +0 | 1 days | — |
+| eln/aarch64 | +0 | +0 | 1 days | — |
+| eln/x86_64 | +0 | +0 | 1 days | — |
+| fedora/x86_64 | +0 | +0 | 34 days | — |
+| gentoo/amd64 | +0 | +0 | 1 days | — |
+| hummingbird/aarch64 | +0 | +0 | 1 days | — |
+| hummingbird/x86_64 | +0 | +0 | 1 days | — |
+| noble/amd64 | +0 | +0 | 1 days | — |
+| noble/arm64 | +0 | +0 | 1 days | — |
+| opensuse-tumbleweed/aarch64 | +0 | +0 | 34 days | — |
+| opensuse-tumbleweed/x86_64 | +0 | +0 | 34 days | — |
+| rawhide/aarch64 | +0 | +0 | 1 days | — |
+| rawhide/x86_64 | +0 | +0 | 1 days | — |
+| trixie/amd64 | +0 | +0 | 1 days | — |
+| trixie/arm64 | +0 | +0 | 1 days | — |
+| ubuntu/amd64 | +0 | +0 | 34 days | — |
+| ubuntu/arm64 | +0 | +0 | 34 days | — |
 
-**Retired — built by the previous measurement, no longer in the catalog.** The target adopted them, so the factory stopped owing them; this is work REMOVED (RFC 011 criterion 2), and it is why `built` can fall without anything being lost:
+## Reproducibility verification
 
-- hummingbird/aarch64: NetworkManager-vpnc, libuser, python-six, usermode, vpnc
-- hummingbird/x86_64: NetworkManager-vpnc, libuser, python-six, usermode, vpnc
+Sampled rebuilds against recorded ActionResults to monitor determinism
+and cache-reuse guarantees (#486):
+
+Overall: **100.0%** reproducible (1/1 sampled rebuilds verified; 0 quarantined).
+
+| Engine | Format | Sampled | Reproducible | Divergent | Rate |
+|---|---|---|---|---|---|
+| tideforge (arm64) | deb | 1 | 1 | 0 | 100.0% |
 
 ## debian
 
 | arch | catalog entries | built | needed | index packages |
 |---|---|---|---|---|
-| amd64 | 57 | 6 | 51 | 20 |
-| arm64 | 57 | 6 | 51 | 20 |
+| amd64 | 57 | 6 | 51 | 30 |
+| arm64 | 57 | 6 | 51 | 30 |
 
 Needed on amd64 (51; first 40, full list in the JSON):
 
@@ -143,16 +157,17 @@ libxfce4ui
 
 | arch | catalog entries | built | needed | index packages |
 |---|---|---|---|---|
-| aarch64 | 145 | 44 | 101 | 64 |
-| x86_64 | 145 | 115 | 30 | 439 |
+| aarch64 | 144 | 44 | 100 | 64 |
+| x86_64 | 144 | 117 | 27 | 439 |
 
-Needed on aarch64 (101; first 40, full list in the JSON):
+Needed on aarch64 (100; first 40, full list in the JSON):
 
 ```
 autoconf
 avahi
 cairo
 cli11-devel
+colord-gtk
 dms
 dms-cli
 dms-greeter
@@ -174,12 +189,11 @@ gnome-settings-daemon
 gnome-shell
 gnome50-el10-compat
 gobject-introspection
-graphviz
 gsettings-desktop-schemas
+gsound
 gtk4
 gtkgreet
 harfbuzz
-highway
 iio-niri
 input-remapper
 krunner-bazaar
@@ -188,10 +202,10 @@ libadwaita
 libei
 libfprint
 libgda
-libgee
+libgexiv2
 ```
 
-Needed on x86_64 (30):
+Needed on x86_64 (27):
 
 ```
 cli11-devel
@@ -202,16 +216,13 @@ fprintd
 gdk-pixbuf2
 gnome-desktop3
 gnome-initial-setup
-graphviz
 harfbuzz
-highway
 iio-niri
 input-remapper
 krunner-bazaar
 labwc
 libfprint
 libgda
-libgee
 libglib-testing
 libsoup
 libzip
@@ -220,10 +231,99 @@ ptyxis
 quickshell
 simdutf
 sqlcipher
-vala
 vte291
 xdg-desktop-portal
 xdg-desktop-portal-gnome
+yq
+```
+
+## eln
+
+| arch | catalog entries | built | needed | index packages |
+|---|---|---|---|---|
+| aarch64 | 38 | 2 | 36 | 4 |
+| x86_64 | 38 | 2 | 36 | 4 |
+
+Needed on aarch64 (36):
+
+```
+exo
+garcon
+gtk-layer-shell
+libxfce4ui
+libxfce4util
+libxfce4windowing
+mousepad
+ristretto
+thunar
+tumbler
+uupd
+wayland-protocols
+wlr-protocols
+xfce4-appfinder
+xfce4-clipman-plugin
+xfce4-cpugraph-plugin
+xfce4-datetime-plugin
+xfce4-dev-tools
+xfce4-genmon-plugin
+xfce4-netload-plugin
+xfce4-notifyd
+xfce4-panel
+xfce4-power-manager
+xfce4-pulseaudio-plugin
+xfce4-screenshooter
+xfce4-sensors-plugin
+xfce4-session
+xfce4-settings
+xfce4-taskmanager
+xfce4-terminal
+xfce4-wayland
+xfce4-weather-plugin
+xfce4-whiskermenu-plugin
+xfconf
+xfdesktop
+xfwl4
+```
+
+Needed on x86_64 (36):
+
+```
+exo
+garcon
+gtk-layer-shell
+libxfce4ui
+libxfce4util
+libxfce4windowing
+mousepad
+ristretto
+thunar
+tumbler
+uupd
+wayland-protocols
+wlr-protocols
+xfce4-appfinder
+xfce4-clipman-plugin
+xfce4-cpugraph-plugin
+xfce4-datetime-plugin
+xfce4-dev-tools
+xfce4-genmon-plugin
+xfce4-netload-plugin
+xfce4-notifyd
+xfce4-panel
+xfce4-power-manager
+xfce4-pulseaudio-plugin
+xfce4-screenshooter
+xfce4-sensors-plugin
+xfce4-session
+xfce4-settings
+xfce4-taskmanager
+xfce4-terminal
+xfce4-wayland
+xfce4-weather-plugin
+xfce4-whiskermenu-plugin
+xfconf
+xfdesktop
+xfwl4
 ```
 
 ## fedora
@@ -232,14 +332,20 @@ xdg-desktop-portal-gnome
 |---|---|---|---|---|
 | x86_64 | 4 | 4 | 0 | 11 |
 
+## gentoo
+
+| arch | catalog entries | built | needed | index packages |
+|---|---|---|---|---|
+| amd64 | 1 | 1 | 0 | 1 |
+
 ## hummingbird
 
 | arch | catalog entries | built | needed | index packages |
 |---|---|---|---|---|
-| aarch64 | 679 | 620 | 59 | 3915 |
-| x86_64 | 679 | 640 | 39 | 8821 |
+| aarch64 | 677 | 617 | 60 | 3916 |
+| x86_64 | 677 | 639 | 38 | 8791 |
 
-Needed on aarch64 (59; first 40, full list in the JSON):
+Needed on aarch64 (60; first 40, full list in the JSON):
 
 ```
 brltty
@@ -253,6 +359,7 @@ evolution-ews
 firefox
 fprintd
 fwupd
+ghc-pandoc
 glycin
 gnome-initial-setup
 gnome-user-share
@@ -272,7 +379,6 @@ kf6-kxmlgui
 libao
 libayatana-ido
 libcanberra
-liberation-fonts
 liblouis
 libphonenumber
 librist
@@ -284,7 +390,7 @@ libxml2_2.13
 nautilus
 ```
 
-Needed on x86_64 (39):
+Needed on x86_64 (38):
 
 ```
 brltty
@@ -303,7 +409,6 @@ grub2
 gstreamer1-plugins-bad-free
 iw
 libcanberra
-liberation-fonts
 liblouis
 libphonenumber
 librist
@@ -317,16 +422,23 @@ plasma-union
 plymouth
 pyatspi
 qt6-qtwebengine
+rpm-ostree
 rust-pathrs
 samba
 speech-dispatcher
 stoken
-tuna-desktop
 vdirsyncer
 webkitgtk
 xfce4-settings
 xfdesktop
 ```
+
+## noble
+
+| arch | catalog entries | built | needed | index packages |
+|---|---|---|---|---|
+| amd64 | 2 | 2 | 0 | 6 |
+| arm64 | 2 | 2 | 0 | 6 |
 
 ## opensuse-tumbleweed
 
@@ -363,14 +475,28 @@ uupd
 wayland-protocols
 ```
 
+## rawhide
+
+| arch | catalog entries | built | needed | index packages |
+|---|---|---|---|---|
+| aarch64 | 1 | 1 | 0 | 1 |
+| x86_64 | 1 | 1 | 0 | 1 |
+
+## trixie
+
+| arch | catalog entries | built | needed | index packages |
+|---|---|---|---|---|
+| amd64 | 1 | 1 | 0 | 14 |
+| arm64 | 1 | 1 | 0 | 14 |
+
 ## ubuntu
 
 | arch | catalog entries | built | needed | index packages |
 |---|---|---|---|---|
-| amd64 | 56 | 6 | 50 | 12 |
-| arm64 | 56 | 6 | 50 | 12 |
+| amd64 | 57 | 6 | 51 | 17 |
+| arm64 | 57 | 6 | 51 | 17 |
 
-Needed on amd64 (50; first 40, full list in the JSON):
+Needed on amd64 (51; first 40, full list in the JSON):
 
 ```
 bazaar
@@ -415,7 +541,7 @@ libunwind-devel
 mutter
 ```
 
-Needed on arm64 (50; first 40, full list in the JSON):
+Needed on arm64 (51; first 40, full list in the JSON):
 
 ```
 bazaar
@@ -483,7 +609,7 @@ desktops tunaOS can wire (tunaOS#1755).
 | gnome | 1/10 | gdm, gnome-control-center, gnome-initial-setup, gnome-session, gnome-settings-daemon, gnome-shell, … (9 total) |
 | kde | 3/5 | plasma-desktop, plasma-workspace |
 | niri | 3/6 | dms, dms-cli, dms-greeter |
-| tuna | 0/1 | tuna-desktop |
+| tuna | 1/3 | libcanberra, rpm-ostree |
 | xfce | 5/6 | xfwl4 |
 
 ## hummingbird desktop coverage (x86_64)
@@ -494,12 +620,12 @@ desktops tunaOS can wire (tunaOS#1755).
 
 | desktop | roots present | missing |
 |---|---|---|
-| bluefin | 59/77 | anaconda-live, bootc, bootupd, dracut-live, evolution-ews-core, firefox, … (18 total) |
+| bluefin | 58/77 | anaconda-live, bootc, bootupd, dracut-live, evolution-ews-core, firefox, … (19 total) |
 | cosmic | 5/5 | — |
 | gnome | 10/10 | — |
 | kde | 5/5 | — |
 | niri | 3/6 | dms, dms-cli, dms-greeter |
-| tuna | 0/1 | tuna-desktop |
+| tuna | 1/3 | libcanberra, rpm-ostree |
 | xfce | 5/6 | xfwl4 |
 
 ## Not yet measured
@@ -509,7 +635,7 @@ absence of a gap:
 
 | target | format | catalog entries | why |
 |---|---|---|---|
-| arch | pkg.tar.zst | 28 | no published_index declared in package-factory.yaml |
-| eln | rpm | 4 | no published_index declared in package-factory.yaml |
-| rawhide | rpm | 1 | no published_index declared in package-factory.yaml |
-| trixie | deb | 1 | no published_index declared in package-factory.yaml |
+| alma10 | rpm | 142 | no published_index declared in package-factory.yaml |
+| alma10-kitten | rpm | 142 | no published_index declared in package-factory.yaml |
+| arch | pkg.tar.zst | 30 | no published_index declared in package-factory.yaml |
+| ubuntu-rolling | deb | 1 | no published_index declared in package-factory.yaml |

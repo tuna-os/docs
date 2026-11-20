@@ -65,10 +65,13 @@ ownership and freshness are tracked in
 - [ ] Once that credential exists, authorize Tavern's `Update Homebrew Tap`
   for the current published release, then confirm the cask and
   install/parity evidence.
-- [ ] Decide corral-vm's publisher: add a GoReleaser Homebrew block in corral,
-  or keep manual bumps with a named owner. v0.7.0
-  ([corral#339](https://github.com/tuna-os/corral/issues/339)) is the next
-  release that will need one.
+- [ ] Let corral-vm's publisher open its own pull request. corral publishes
+  through its `release-brew.yml` (see AGENTS.md), not GoReleaser. For v0.7.0
+  it pushed the bump branch, but its `COMMITTER_TOKEN` got HTTP 403 when it
+  tried to open the pull request, so a person opened
+  [#80](https://github.com/tuna-os/homebrew-tap/pull/80). v0.7.1 arrived as a
+  Renovate pull request
+  ([#91](https://github.com/tuna-os/homebrew-tap/pull/91)).
 - [ ] Set a release-currency objective: update a supported formula or cask, or
   publish a visible exception, within 48 hours of an eligible upstream release.
 

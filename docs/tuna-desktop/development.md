@@ -77,7 +77,7 @@ spektacular version check
 
 ## Project Structure
 
-The project is a Cargo workspace with eight crates. The crate manifests and
+The project is a Cargo workspace with nine crates. The crate manifests and
 existing crate `README.md` files describe their purpose and dependencies.
 
 ```
@@ -85,6 +85,7 @@ tuna-desktop/
 ├── crates/
 │   ├── backlight/            # tuna-backlight: bounded backlight/owned-connector reads
 │   ├── compositor/           # tuna-compositor and tuna-session binaries (Smithay)
+│   ├── output/               # tuna-output: compositor-owned native DRM output identity
 │   ├── shell-control-schema/ # tuna-shell-control: compositor/shell IPC protocol
 │   ├── shell-host/           # tuna-shell-host: original shell binary and shared shell logic
 │   ├── shell-gtk/            # tuna-shell-gtk: GTK4/libadwaita shell (ADR 0006)

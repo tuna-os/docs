@@ -7,8 +7,10 @@ hide_title: true
 status: unknown
 ---
 
-Scoop bucket for TunaOS tooling. The release pipelines of the upstream
-repositories (for example, GoReleaser) publish the manifests.
+Scoop bucket for TunaOS tooling. This repository makes its manifests from the
+releases of the upstream repositories. For example,
+`scripts/update_manifest.py` makes `bucket/bluefin-cli.json` from the latest
+stable `bluefin-cli` release.
 
 ## Contribute compute — no code needed
 
@@ -31,7 +33,8 @@ published a manifest to it.
 
 - `bluefin-cli` (from [tuna-os/bluefin-cli](https://github.com/tuna-os/bluefin-cli))
   has no manifest here yet. Its releases ship binary assets since v0.10.6.
-  The GoReleaser Scoop publisher has not made a manifest for it yet.
+  The script that makes its manifest is in `scripts/`. No pull request has
+  added a manifest from that script to `bucket/` yet.
 
 ## Contributing manifests
 

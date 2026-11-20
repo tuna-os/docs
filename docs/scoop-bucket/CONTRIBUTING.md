@@ -23,9 +23,12 @@ This bucket publishes the Scoop manifests for the command-line tools of the
 [`tuna-os`](https://github.com/tuna-os) organization. Add each manifest as a
 JSON file under `bucket/`, named after the Scoop package.
 
-To change a manifest that the release automation of a tool makes, change the
-upstream release configuration of that tool. Do not edit generated manifests
-by hand here, because the next release can overwrite those changes.
+A script in this repository makes the `bluefin-cli` manifest:
+`scripts/update_manifest.py` makes `bucket/bluefin-cli.json` from the latest
+stable `bluefin-cli` release. It gets the SHA-256 digests from the
+`checksums.txt` file of that release. To change that manifest, change the
+script or the upstream release. Do not edit a generated manifest by hand,
+because the next run of the script replaces your changes.
 
 ## Manifest expectations
 
@@ -65,6 +68,31 @@ If you change a `uses:` line in a workflow, update `actions.lock` in the same
 pull request. The `Prose` workflow checks `README.md` and `CONTRIBUTING.md`
 against Simplified Technical English. The budget in `.ste-budget` is `0`, so
 one new STE problem in these files makes the check fail.
+
+## Make the bluefin-cli manifest
+
+From the repository root, run the script:
+
+```console
+python3 scripts/update_manifest.py
+```
+
+The script uses only the Python standard library. It reads the GitHub API, so
+it needs network access, but it needs no token. If `GITHUB_TOKEN` is set, the
+script sends it to get a higher rate limit from the API. The script validates
+the manifest that it writes. If the release has no Windows archive or no digest
+for an archive, the script stops with an error.
+
+To check the manifest on your branch against the latest release, run this
+command:
+
+```console
+python3 scripts/update_manifest.py --check-freshness
+```
+
+This command writes nothing. It fails when the manifest version is not the
+latest release version and that release is more than 24 hours old. Use
+`--max-lag-hours` to change the 24-hour limit.
 
 ## Pull requests
 

@@ -116,7 +116,7 @@ validation named in that issue's own scope never shipped.
 | Cross-base remap + `/etc` conflict policy | implemented in `OstreeDeploy` | #191 covers the gate; same-family E2E remains; #259 covers the cross-family path | #67, #187, #259 |
 | DE stash/restore (`--de-migrate`) | implemented, detection table-tested | the non-gating Bluefin→Aurora cell passes `--de-migrate` and asserts the stash; evidence depends on the exploratory cell and target registry scan succeeding | #68, #188 |
 | Identity-DB merge across families | implemented in `cross_family` for conversion, `OstreeDeploy` and `ImageSwap` | composefs and OstreeDeploy cells cover identity preservation; the same-family/native gap remains | #80, #256, #259 |
-| composefs → ostree (`ostree_install`, `Strategy::OstreeInstall`) | implemented: alongside install through the target's bootc, ESP snapshot/restore, `/etc` merge, `/var` copy, NVRAM order; the argv builder, ESP path classifier, deployment picker, karg carry-over and the snapshot/restore round trip are table-tested | two non-gating cells (dakota composefs-native → fedora-bootc 44, and → utah testing, #302) assert the route, the fixtures, GRUB first in BootOrder and the preserved rollback entry; never executed on a real host before that cell | #260 |
+| composefs → ostree (`ostree_install`, `Strategy::OstreeInstall`) | implemented: alongside install through the target's bootc, atomically journaled boot transaction, hash-verified ESP snapshot/restore, `/etc` merge, `/var` copy, rollback-first `BootOrder`, one-shot target `BootNext`, and target promotion only after an observed boot; the classifier and snapshot/journal round trip are table-tested | two route cells plus two non-gating fault cells assert resume before arming and rollback after the destructive ESP wipe; real-hardware validation remains advisable | #260, #387 |
 | Package-host rollback artifacts (`package_rollback`, `bootc-rebase undo`) | implemented as a reusable snapshot/stage/undo core; rollback wiring into `Strategy::PackageInstall` remains separate | no E2E cell exercises package-host installation, reboot into `Previous system`, or retention after `bootc upgrade`; wire through #373 and cover in the package-based matrix #380 | #374, #373, #380 |
 | package → ostree (`Strategy::PackageInstall`) | implemented on the shared alongside-install engine: `/` is bound at `/target` with `rslave`, root-mount kargs are retained, and the old kernel/initramfs/BLS/GRUB paths are snapshotted before bootc empties `/boot`; argv, karg and snapshot selection are table-tested | package-host E2E cells are tracked by #380; the old-system boot entry, package-aware `/etc`, selective data carry and commit remain separate #374–#378 slices | #373, #380 |
 | composefs → ostree with `/boot` on an encrypted root (`ostree_install::esp_resident`) | implemented: the route detects `/boot` without its own partition on a dm-crypt or `rd.luks.` root, copies the new kernel and initrd to the ESP with a BLS entry that keeps the `ostree=` argument, makes that entry the systemd-boot default and puts systemd-boot first in `BootOrder`; detection, entry parsing, the ESP plan and the staging are table-tested | no E2E cell installs a composefs host with `/boot` on LUKS; the hand-made equivalent was staged on a real host, but its boot is not yet recorded; after `bootc upgrade`, the ESP copy does not follow the new kernel | #305 |
@@ -127,6 +127,7 @@ validation named in that issue's own scope never shipped.
 | `NativeStore` (`composefs-native`) | behind a feature flag, off by default | default path still pins a legacy-CLI builder | #13 |
 | TUI composefs-host route step (#312) | implemented: background scan, dual-capable route choice, honest notes, bootc-rebase execution | covered by state-machine tests only; tui-migrate cell runs on an ostree host and does not exercise the composefs-host screens or launch bootc-rebase | #312 |
 | Package-managed source → OSTree (`Strategy::PackageInstall`) | harness support is implemented: checksum-pinned Fedora Cloud, synthesized Workstation, and Ubuntu Cloud disks, cloud-init SSH, package fixtures and Previous system assertions | the three #380 cells are exploratory until the package route and its readiness/report/bootloader pieces (#373–#379) land; the Fedora Cloud cell must be promoted to gating after its first green run on `main` | #373–#380 |
+| postmarketOS-family ARM64 laptops (apk, LUKS root, ESP at /boot, devicetree) | implemented: apk host detection, LUKS root preflight, whole-ESP snapshot and restore, bind plan for ESP at /boot, devicetree & arm64 kargs policy, per-board DTB match against the host's `compatible`, and a Previous system rollback entry that also restores the pre-install `BootOrder` | no arm64 E2E cell exists, and none can run in the lanes this repo has: the whole matrix needs `/dev/kvm`, GitHub's arm64 hosted fleet does not surface nested virtualization ([actions/runner-images#14062](https://github.com/actions/runner-images/issues/14062)), and `.github/runs-on.yml` defines x86_64 families only. The cell (LUKS2 argon2id ext4, ESP at /boot, systemd-boot with a `devicetree` entry) therefore needs an arm64 KVM host — a self-hosted arm64 runner or an EC2 Graviton bare-metal RunsOn profile — before it can be written; X13s hardware qualification remains open behind it | #461 |
 
 Everything not in this table — the OSTree→ComposeFS migrator itself, including
 rollback and commit — is covered by the seven-cell E2E matrix.
@@ -384,18 +385,21 @@ RFC](https://github.com/tuna-os/bootc-migrate/issues/30) but never
 got a milestone or an issue. Recorded here so they aren't lost, not because
 either is imminent:
 
-- **`composefs→ostree` (reverse backend switch)** — now implemented as
+- **`composefs→ostree` (reverse backend switch)** — implemented as
   `Strategy::OstreeInstall` (#260, `crates/bootc-migrate-core/src/ostree_install.rs`):
   the target image's own `bootc install to-existing-root` runs in a
   privileged container against the physical root (`/sysroot`), building an
-  OSTree deployment beside the composefs one with nothing to restore from;
-  the composefs ESP artifacts are snapshotted before bootc's alongside mode
-  empties the ESP and restored beside the new shim/GRUB, `/etc` is 3-way
-  merged (cross-family policy included) and `/var` copied into the
-  stateroot, and the GRUB firmware entry goes first with "Linux Boot
-  Manager" kept as rollback. `undo` remains the narrow path for a migration
-  this tool itself performed. Exploratory: one non-gating cell (dakota →
-  bluefin) and no rollback subcommand for this direction yet.
+  OSTree deployment beside the composefs one. The composefs ESP artifacts
+  are hash-snapshotted before bootc's alongside mode empties the ESP, then
+  restored and verified immediately after that destructive operation;
+  `/etc` is 3-way merged (cross-family policy included) and `/var` copied
+  into the stateroot. The cutover is an atomic journaled transaction (#387):
+  "Linux Boot Manager" remains first as rollback, the target is armed once
+  with `BootNext`, restart classifies observed ESP/NVRAM state and either
+  resumes or repairs, and `commit --apply` makes the observed-good target
+  persistent. Non-gating route and fault-injection cells exercise both
+  interruption boundaries. `undo` remains the narrow path for a migration
+  this tool itself performed.
 - **Cross-family re-base (Fedora ↔ Ubuntu ↔ Arch) via `bootc switch`** —
   `cross_family.rs` covers conversion and both switch routes. Target defaults
   win; source vendor-only files drop; machine state, user files and identity

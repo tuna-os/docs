@@ -7,7 +7,7 @@ hide_title: true
 status: unknown
 ---
 
-Formerly **Roost**. Binaries, packages, crates and environment variables were renamed in [#505](https://github.com/tuna-os/tuna-desktop/issues/505); the old `roost-*` names keep working for one release (see [packaging/README.md](https://github.com/tuna-os/tuna-desktop/blob/main/packaging/README.md)).  
+Formerly **Roost**. Binaries, packages, crates and environment variables were renamed in [#505](https://github.com/tuna-os/tuna-desktop/issues/505); the one-release compatibility layer (`roost-*` binary symlinks and `ROOST_*` environment variables) was removed in [#775](https://github.com/tuna-os/tuna-desktop/pull/775). [packaging/README.md](https://github.com/tuna-os/tuna-desktop/blob/main/packaging/README.md#upgrading-from-the-former-name) covers upgrading from the old package.  
 
 A new, independent Wayland desktop session with a GNOME-inspired everyday workflow. This project is not a GNOME Shell rewrite and does not promise compatibility with GNOME Shell extensions or private Mutter APIs.
 

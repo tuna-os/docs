@@ -21,7 +21,7 @@ has the full rules.
 
 | Crate | What it is |
 |---|---|
-| `compass` | The `compass` command: the CLI, the engine (`compass serve`, the IPC server and the services it runs), and the wiring of every other crate. Linux-bound. |
+| `compass` | The `compass` command: the CLI, the engine (`compass serve`, the IPC server and the services it runs), on-demand startup from `toggle`/`show`/`query`, and the wiring of every other crate. Linux-bound. |
 | `compass-ui` | The Iced launcher window: every view, the settings, the onboarding flow. |
 
 ## Application logic

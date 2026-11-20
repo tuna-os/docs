@@ -61,8 +61,10 @@ for the full specification and tombstone format.
 The reproducibility verifier monitors the cache-reuse contract: identical
 inputs must return a verified result and skip compilation. For each sampled
 cell, the job builds twice from canonical inputs and compares the artifact
-digests. The verifier skips cells from the build chain: a chain can take the full
-six-hour limit, so two builds cannot finish in one job.
+digests. The comparison of the two builds skips `artifacts/buildroots/`: it holds
+build-environment evidence (dnf history, repository list, build log) with
+timestamps, not the product. The verifier skips cells from the build chain: a
+chain can take the full six-hour limit, so two builds cannot finish in one job.
 
 The report job adds each divergent cell to `manifests/reproducibility-quarantine.yaml`.
 On a cache hit, `package-factory-cell.yml` runs

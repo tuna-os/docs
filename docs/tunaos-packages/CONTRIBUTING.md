@@ -107,6 +107,24 @@ manifest, and the Bats suite. If your change touches shell workflows, install Ba
 the relevant file under `tests/bats/`; see
 [`tests/bats/README.md`](https://github.com/tuna-os/tunaos-packages/blob/main/tests/bats/README.md) for setup and examples.
 
+Two other CI checks can fail a pull request:
+
+- The `actions-security` workflow verifies `.github/workflows/actions.lock`
+  and scans the workflows with zizmor. If you change a `uses:` line in a
+  workflow, update `actions.lock` in the same pull request.
+- The `Prose` workflow (`ste.yml`) checks `README.md`, `CONTRIBUTING.md`,
+  `SECURITY.md` and the files in `docs/` against Simplified Technical English.
+  `.ste-budget` holds the current number of problems. One new STE problem in
+  these files makes the check fail. To run the same linter, you
+  need Node.js and a clone of [tuna-os/.github](https://github.com/tuna-os/.github).
+  From the root of this repository, run:
+
+  ```bash
+  node ../.github/.github/actions/ste-lint/ste-lint.mjs --max "$(cat .ste-budget)"
+  ```
+
+  Change `../.github` if you cloned tuna-os/.github to a different directory.
+
 For a local RPM build, use the target declared by the owning pipeline:
 
 ```bash

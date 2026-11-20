@@ -38,7 +38,7 @@ schedule, dispatch or a pull request whose head repository is
 
 | Runner | Lanes |
 | --- | --- |
-| `tuna-ci-24.04` | select-lanes, check, fprint-phase-proof, app-content, scroll-proof, grid-cancel-comparison, gtk-shell, native-reference-context, parity-ledger, docs-shots, ci-gate |
+| `tuna-ci-24.04` | select-lanes, check, app-content, scroll-proof, grid-cancel-comparison, gtk-shell, native-reference-context, parity-ledger, docs-shots, ci-gate |
 | `tuna-ci-26.04` | journey, orca-speech, portal-security, remote-security, niri-parity |
 | GitHub-hosted, always | arch-package, drm-smoke, marlin-vm (pull requests: the primary lifecycle leg only; push, schedule and dispatch add the Orca 51 leg and both paired reference members), marlin-image (push, schedule and dispatch only), gdm51-native-package |
 
@@ -120,7 +120,7 @@ but the explicit older head checkout lacked it, so `check` stopped with
 `[Errno 2] No such file or directory`. Checking out the merge ref preserves
 the real predicate suite instead of adding a placeholder or making it
 optional. The check job exports its actual checked commit as `tested_sha`;
-the authentication, fingerprint and grid comparison proofs check out that
+the authentication and grid comparison proofs check out that
 exact output. Their admission receipts bind it to the checkout and commit
 tree separately from the API's triggering `head_sha` (the PR head, not its
 merge tree). Lane selection remains head-only because it computes the PR

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 13
+sidebar_position: 14
 title: "release publishing"
 ---
 
@@ -37,6 +37,11 @@ GitHub Releases is the source distribution channel. A complete release contains:
 - `bluefin-cli` and `bluefin-cli-plus` archives for Linux, macOS, and Windows
   on amd64 and arm64;
 - deb and rpm packages for the standard Linux build on amd64 and arm64;
+- `bluefin-cli-<version>-vendor.tar.gz`, the `vendor/` tree of every module
+  `go.sum` pins, written reproducibly by `scripts/vendor-archive.sh`. Unpack it
+  in the tag's source tree (GitHub's `archive/v<version>` tarball) to build
+  without network access. Distribution packagers (the projectbluefin/utah-packages
+  RPM) lock and build from the pair;
 - `checksums.txt` with a SHA-256 digest for every published artifact;
 - release notes from commits that meet release rules.
 
@@ -63,14 +68,14 @@ Channel states mean:
 - **Unavailable**: not an advertised installation path, even when publisher
   configuration exists in the repository.
 
-Status as of 2026-10-17:
+Status as of 2026-10-17. The rows for the two Homebrew taps show the status on 2026-11-19:
 
 | Channel | State | Contract |
 |---|---|---|
 | GitHub archives and one-line installers | Supported | Every stable release; archives are covered by `checksums.txt`. |
 | GitHub deb and rpm assets | Supported | Every stable release; direct packages only, not a distro repository. |
-| `ublue-os/homebrew-experimental-tap` | Preview | Source formula is synchronized manually and may lag. |
-| `tuna-os/homebrew-tap` | Unavailable | Publisher is configured with the `HOMEBREW_TAP_SSH_KEY` deploy key; publication is not verified yet. |
+| `ublue-os/homebrew-experimental-tap` | Unavailable | The tap removed its `bluefin-cli` formula on 2026-11-19. Use `tuna-os/homebrew-tap`. |
+| `tuna-os/homebrew-tap` | Preview | GoReleaser publishes the binary formula with the `HOMEBREW_TAP_SSH_KEY` deploy key on each release (each release since v0.11.17); no install check is recorded yet. |
 | Winget (`Hanthor.BluefinCLI`) | Preview | Installable v0.8.1 is stale; normal publication is disabled pending token repair, with a manual resubmission workflow available. |
 | `tuna-os/scoop-bucket` | Unavailable | Publisher is configured but skipped until `SCOOP_BUCKET_TOKEN` is installed and publication is verified. |
 | Chocolatey | Unavailable | No package is published; the release invocation explicitly skips this publisher. |

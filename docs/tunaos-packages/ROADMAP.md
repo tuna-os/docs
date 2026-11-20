@@ -83,7 +83,7 @@ transition; #488 carries the reasoning behind each row.
 | 3 | Native queue packages → first-class per-package recipe actions | 🟡 In progress — ledger row 1 done, row 2 still needs version-aware satisfaction, rows 3–5 unstarted | #418, #426 |
 | 4 | Workflow consolidation — fold publishers, parameterize gap-drift, retire dormant builders | ✅ Done — closed 09-02; `upstream-drift.yml` is the parameterized matrix, and `build.yml`/`build-distributed.yml` stay break-glass until 2026-12-31 (PR #624) | #487 |
 | 5 | Report-only CAS reachability / GC | ✅ Done — report-only mark-and-sweep, age grace, and tombstones landed; deletion remains intentionally out of scope (PR #770) | #485 |
-| 6 | Sampled reproducibility rebuilds + policy reporting | 🟡 Operational follow-up — verifier workflow, quarantine, and policy reporting landed; no sampled run is recorded yet and build-chain cells remain unsampled because of the job ceiling (PR #769) | #486 |
+| 6 | Sampled reproducibility rebuilds + policy reporting | 🟡 Operational follow-up — verifier workflow, quarantine, and policy reporting landed; the first sampled run (2026-11-18) is recorded in `docs/reproducibility-status.json`, scheduled runs still report divergent cells, and build-chain cells remain unsampled because of the job ceiling (PR #769) | #486 |
 
 ### Priorities
 

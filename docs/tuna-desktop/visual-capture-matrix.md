@@ -142,6 +142,7 @@ state records its state observation next to its stills and clips.
 | P-ST-10 | Service-backed Settings panels on image | `unsupported-in-nested` | No adequate capture | network/BT/accounts/printers/sharing/users/region/updates need installed-image Corral item-by-item |
 | P-ST-11 | Legacy/app-owned settings classified | `nonvisual` | No adequate capture | inventory disposition, checked by scripts/tuna-settings-inventory-check |
 | P-LK-02 | Fingerprint, smartcard, multi-step login | `missing-product` | No adequate capture | one password entry only; distinct challenges need product work plus Corral hardware |
+| P-LK-03 | Tuna Desktop's own greeter on GDM's daemon | `missing-product` | No adequate capture | the greeter is not shipped yet ([#1164](https://github.com/tuna-os/tuna-desktop/issues/1164)); its screens need product work plus a Corral boot to GDM |
 | P-AN-01 | Motion preferences | stage:transitions `partial` | Transition clip required | full-speed clips captured; animations-off/reduced-motion/slowdown variants unproven |
 | P-AN-02 | Window open/close animations | stage:transitions `partial` | Transition clip required | overview/size clips captured; map/destroy/dialog intermediate frames unproven |
 | P-AN-03 | Minimize toward dash icon | `missing-product` | Transition clip required | hide/restore is instant; no transition exists to film |
@@ -235,6 +236,7 @@ their ledger rows above:
 - netloc: P-ST-10 (`unsupported-in-nested`, network locations and
   sharing panels on image).
 - fprint: P-LK-02 (`missing-product`).
+- greeter: P-LK-03 (`missing-product`, #1164).
 
 ## Walkthrough freshness
 

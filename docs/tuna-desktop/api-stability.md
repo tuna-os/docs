@@ -33,7 +33,8 @@ release.
 
 | Crate | Kind | In-repo dependents | Tier |
 |---|---|---|---|
-| `tuna-shell-control` (`crates/shell-control-schema`) | library | compositor, shell-host, shell-gtk, backlight | internal; its wire format is a cross-process contract |
+| `tuna-shell-control` (`crates/shell-control-schema`) | library | compositor, shell-host, shell-gtk, wallpaper | internal; its wire format is a cross-process contract |
+| `tuna-output` (`crates/output`) | library | shell-control, backlight, compositor, shell-host, shell-gtk | internal; its field order is part of the shell-control wire format |
 | `tuna-wallpaper` | library | compositor | internal |
 | `tuna-backlight` | library | shell-gtk | internal |
 | `tuna-magnifier` | library | compositor, shell-gtk | internal; its session JSON file is a cross-process contract |

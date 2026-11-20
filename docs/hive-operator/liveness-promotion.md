@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 title: "liveness promotion"
 ---
 
@@ -21,7 +21,7 @@ the nudge backstop (`hive-nudge.sh nudge`: the `hive-nudge` CronJob, :13 and
   - `.watchdogPlan` — the actions (`restart`, `rotate-off`, `repair`,
     `effort`, `hygiene`, `wake`, `needs-human`) with reasons;
   - `.nudgePlanText` / `.nudgePlan` — this spoke's share of the nudge output
-    (check-mode suffix ` — would nudge`), capped at 4 as an apply would be;
+    (check-mode suffix `— would nudge`), capped at 4 as an apply would be;
   - `.journal` — heal backoff per agent, stall clocks, pending provider
     resets, last hygiene. Kept **as if every action succeeded**, so the
     backoff ladder is warm and comparable with bash's at promotion.

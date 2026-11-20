@@ -68,6 +68,12 @@ and `Casks/`. It also makes sure that each download URL is under
 `sha256` digest. It does not download artifacts or compare a digest with the
 downloaded file.
 
+The script also checks each formula that GoReleaser generates. The header of
+such a file says `DO NOT EDIT`. Renovate must not change such a formula, so
+`renovate.json` must have a `packageRules` entry for the file, with
+`"enabled": false`. If you add a generated formula, add this entry in the
+same pull request.
+
 CI (`.github/workflows/ci.yml`) runs the regression suite and the validation
 script. It also runs `brew audit` and installs `corral-vm` and the `tavern`
 cask on Linux. CI does not install `bluefin-cli`, and it does not install on

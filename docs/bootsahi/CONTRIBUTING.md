@@ -3,7 +3,7 @@ sidebar_position: 2
 title: "Contributing"
 ---
 
-This repo (`tuna-os/bootc-installer-asahi`) is the Apple Silicon (Asahi Linux)
+This repo (`tuna-os/bootsahi`) is the Apple Silicon (Asahi Linux)
 install path for TunaOS-family bootc images: a macOS app (Bootsahi) plus a
 bootstrap image whose first boot runs
 [fisherman](https://github.com/tuna-os/fisherman) to `bootc install`
@@ -59,6 +59,9 @@ sudo ./scripts/selftest.sh
 # asahi-bootbin-sync: boot.bin staleness/backup/restore logic (hermetic, no root)
 ./components/asahi-bootbin-sync/test-asahi-bootbin-sync.sh
 
+# R2 publish: immutable releases, pointer moves last, nothing deleted (needs rclone)
+./scripts/test-publish-payload.sh
+
 # Disk resolution + real fisherman `validate` (needs root, gdisk, a built fisherman)
 sudo ./components/bootsahi-agent/test-agent-disk.sh
 ```
@@ -78,9 +81,12 @@ Other PR checks:
 - `actions-security.yml` (every PR): `gh actions-lock --verify` checks
   `.github/workflows/actions.lock`, and zizmor lints the workflows.
 - `actionlint.yml` (PRs that change `.github/workflows/**`): actionlint.
-- `ste.yml` (PRs that change Markdown or `.ste-budget`): a check of the
-  Markdown against Simplified Technical English. The number of findings must
-  not go above the number in `.ste-budget`.
+- `ste.yml` (PRs that change Markdown, `.ste-budget` or `ste.yml`): a check
+  of the Markdown against Simplified Technical English. The budget is a
+  ratchet. The number of findings must be equal to the number in
+  `.ste-budget`. If your PR removes findings, the check fails and gives the
+  new number. Write that number into `.ste-budget` in the same PR. A PR that
+  raises `.ste-budget` needs the `ratchet-raise` label.
 
 ## Code style
 
@@ -96,5 +102,5 @@ number in the PR description when one exists.
 
 ## Reporting issues
 
-Use [GitHub Issues](https://github.com/tuna-os/bootc-installer-asahi/issues)
+Use [GitHub Issues](https://github.com/tuna-os/bootsahi/issues)
 on this repository.

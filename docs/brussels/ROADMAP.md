@@ -19,9 +19,10 @@ As of 2026-11-13, the repository has no GitHub Release or Git tag. Since the
 with cosign 3 (#252), media-input binding for the embedded ISO payload (#274),
 and E2E fixes for the plain and LUKS install checks (#248, #275, #280). Earlier
 changes: the runner disk exhaustion fix (#161),
-key-based Cosign image signing (#164), single-layer OCI composition without the
-GNOME stack (#168), XFCE built from upstream release tags (#167), and
-publication, signing, and scanning on scheduled builds (#241). The scheduled
+key-based Cosign image signing (#164), and publication, signing, and scanning
+on scheduled builds (#241). The source build of XFCE (#167) and the
+single-layer composition (#168) were merged into the `v4` branch, not `main`;
+the #167 source build is ported to `main` for #294. The scheduled
 multi-runner build last succeeded on 2026-11-02 and has failed or been
 cancelled on every scheduled run since (latest: 2026-11-13, chunk build and
 cache-restore failures). The live-ISO workflow's `Sign ISO` failure is fixed:

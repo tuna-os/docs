@@ -96,6 +96,56 @@ Retirement therefore needs a coordinated, reviewed production change.
 4. Run the served-index audit and verify the retired app is absent from the
    served index. Keep the retirement decision and date in the change record.
 
+## Respond to a bad publication
+
+A publication is bad when the served remote no longer matches the registry or
+the documented catalog. Find it three ways: a drift check fails,
+`enrich-index.py --check` reports missing or wrong metadata, or a user reports
+`Nothing matches` for an app the remote should serve. Roll back to the last
+known-good served index.
+
+The `tunaos-org` Cloudflare Worker serves the production remote from `tuna-os/docs`, so a
+rollback is a change to that repository, not this one. This checkout holds no
+local `index/static`, so the recovery source is the prior commit to
+`tuna-os/docs/static/flatpak/index/static`.
+
+1. Confirm the publication is bad against the registry, not only against the
+   docs:
+
+   ```sh
+   curl -sSfL -o served-index.json \
+     https://tunaos.org/flatpak/index/static
+   ./scripts/enrich-index.py served-index.json --check
+   ```
+
+   A `--check` result that prints "missing labels present in the registry"
+   shows the registry has labels the served index lacks. That is a bad
+   index. Roll back the served index.
+
+   A result that prints "could not read labels" or "image has no AppStream
+   metadata" is a registry fault. A rollback changes only the served index, so
+   it cannot fix data in the registry. A result that flags only documentation
+   is a drift check, not a rollback.
+
+2. Find the last good publication as the prior commit to
+   `tuna-os/docs/static/flatpak/index/static`.
+
+3. Restore it in `tuna-os/docs` — revert the bad commit, or re-publish the
+   previous good index. The Worker re-serves the static asset on push. Keep
+   `FLATPAK_INDEX_TOKEN` scoped to `tuna-os/docs`; never put its value in a
+   command, commit, or this document.
+
+4. Re-verify from the served URL (step 1) and confirm the catalog, digest,
+   architecture, and AppStream labels now match the registry.
+
+5. Record the incident in the change record: the bad commit SHA, what you
+   restored, the date, and the owner.
+
+The incident owner is the production-source owner named by the governance
+decision in ROADMAP.md. Until then, any `tuna-os/docs` maintainer with
+`FLATPAK_INDEX_TOKEN` may do the rollback. Run this procedure as a live
+exercise at least once. A rollback nobody has exercised is not one.
+
 ## Checks
 
 From this repository, run the test suite, which uses the standard library,

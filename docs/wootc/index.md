@@ -31,13 +31,57 @@ status: unknown
 ---
 
 wootc installs a real Linux desktop from a [bootc](https://github.com/containers/bootc)
-image into `root.disk`, a file beside your Windows files. The native WinUI shell is the primary Windows release surface.
-[Verification status](https://github.com/tuna-os/wootc/blob/main/docs/status.md) describes the evidence and limits.
+image into `root.disk`, a file beside your Windows files. The latest full release,
+`v0.1.0-alpha.1`, uses Wails. Native WinUI packaging is implemented on `main`,
+but a released native setup and its acceptance evidence remain outstanding.
+[Verification status](https://github.com/tuna-os/wootc/blob/main/docs/status.md) distinguishes these builds and their limits.
 
 The setup form asks for **a password**. The app suggests your username and
 computer name from your PC. It sizes the disk from available space and selects TPM encryption by default.
 Advanced lets you change those choices. Supported migration helpers can carry files,
 Wi-Fi networks, wallpaper, and taskbar choices. Results depend on the image and helper.
+
+## Get it
+
+**[⬇ Download TunaOS-Installer.exe](https://github.com/tuna-os/wootc/releases/latest/download/TunaOS-Installer.exe)**
+(12 MB) from the latest release, `v0.1.0-alpha.1`. The installer downloads its
+boot files during the install, so this one file is enough. This release uses
+the Wails UI and needs WebView2. Windows 11 includes WebView2.
+
+Before you start:
+
+- You need a PC with Windows 10 or 11, and an administrator account.
+- **BitLocker:** this alpha stops if drive C: is encrypted with BitLocker.
+  Many Windows 11 laptops turn BitLocker on. To check, search the Start menu
+  for "Manage BitLocker". If it is on, use a
+  [USB installer](https://tunaos.org/download) instead.
+- Back up your files. wootc is an alpha.
+
+Steps:
+
+1. Open `TunaOS-Installer.exe`. It is not code-signed yet. If Windows shows
+   "Windows protected your PC", select **More info**, then **Run anyway**.
+2. Select **Yes** when Windows asks to allow changes. The installer needs
+   administrator rights.
+3. Choose an image, type a password, and restart when the installer asks.
+
+To remove it, uninstall wootc in Windows **Settings › Apps**. The alpha's
+uninstaller can leave files or a start-up entry behind; see the
+[uninstall limits](https://github.com/tuna-os/wootc/blob/main/docs/user-guide.md#9-uninstall--put-everything-back).
+[First steps](https://github.com/tuna-os/wootc/blob/main/docs/getting-started.md) shows each Windows prompt. For a
+hardware trial, read the [manual test guide](https://github.com/tuna-os/wootc/blob/main/docs/manual-testing.md) first.
+
+The same release has `wootc.exe` and the branded `Bazzite-Installer.exe`,
+`Bluefin-Installer.exe` and `Aurora-Installer.exe` on the
+[release page](https://github.com/tuna-os/wootc/releases/latest). A branded
+build is not evidence of upstream endorsement; see
+[the approval record](https://github.com/tuna-os/wootc/blob/main/docs/upstream-blessings.md).
+
+> **No published release has the native setup yet.** The code on `main`
+> prepares the native WinUI shell as `wootc-Installer-Setup.exe` and branded
+> `*-Installer-Setup.exe` assets. They come with the first release after the
+> native shell cutover (#661). There is no winget package yet
+> ([#221](https://github.com/tuna-os/wootc/issues/221)).
 
 ## Contribute compute — no code needed
 
@@ -51,44 +95,10 @@ The guide covers prerequisites, verified `just` setup, credentials, provider
 costs, and how to stop with Ctrl+C. Your subscription quota or API charges apply.
 Never post account credentials or API keys in issues or pull requests.
 
-## Get it
-
-> **No published release has the native setup yet.** The files below come with
-> the first release after the native shell cutover (#661). The latest release,
-> `v0.1.0-alpha.1` (2026-08-22), is older. It has `wootc.exe`, the branded
-> `*-Installer.exe` files and `SHA256SUMS`.
-
-**[⬇ Download the latest release](https://github.com/tuna-os/wootc/releases/latest)**
-— run `wootc-Installer-Setup.exe` as Administrator. The Inno setup installs
-the native WinUI shell and protected engine, fetches boot artifacts, checks hashes, and verifies a signed manifest.
-The native shell does not require WebView2.
-
-This release keeps the Wails compatibility build as `wootc-legacy.exe`.
-Use it only when you need the legacy Wails UI.
-
-```
-winget install TunaOS.wootc
-```
-
-*(winget follows the generic setup for the native app.)*
-
-Every release also ships **branded installers** —
-`Bazzite-Installer-Setup.exe`, `Bluefin-Installer-Setup.exe`,
-`Aurora-Installer-Setup.exe`, `TunaOS-Installer-Setup.exe` — the same engine
-with each distribution's identity and preselected images. They can
-pre-download the OS on Windows for deployment without a network after reboot.
-
-> The binaries are not yet code-signed. Windows may show SmartScreen or an
-> "unknown publisher" prompt. Policy can prevent continuation.
-> **[First steps](https://github.com/tuna-os/wootc/blob/main/docs/getting-started.md)** explains those prompts;
-> the **[user guide](https://github.com/tuna-os/wootc/blob/main/docs/user-guide.md)** describes later steps and
-> [uninstall limits](https://github.com/tuna-os/wootc/blob/main/docs/user-guide.md#9-uninstall--put-everything-back).
-> For a hardware trial, read the **[manual test guide](https://github.com/tuna-os/wootc/blob/main/docs/manual-testing.md)** first.
-
 ## How it works
 
 ```
-Windows 11  →  wootc-Installer-Setup.exe → native WinUI shell → reboot
+Windows 11  →  installer GUI → reboot
             →  signed shim → GRUB → deployer initramfs
             →  fisherman: bootc install into root.disk
             →  reboot → Windows → Manage: choose Linux boot

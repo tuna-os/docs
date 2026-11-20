@@ -115,3 +115,34 @@ bundles extend the curated set — they do not shadow or replace any of it.
 
 For Brewfile syntax, Windows entries, and examples, refer to the
 [Brewfile guide](https://github.com/tuna-os/bluefin-cli/blob/main/docs/brewfile-guide.md).
+
+## MOTD template and tips
+
+Where [uwelcome](https://github.com/projectbluefin/uwelcome) is installed
+(Bluefin and other Universal Blue images), it is the welcome message.
+`motd show` runs it, `motd toggle` switches it with `uwelcome enable|disable`, and its
+own config (`/etc/uwelcome/config.toml`) sets what it says. The templates
+below are for systems without it.
+
+`bluefin-cli motd show` renders Markdown (through `glow` when it is
+installed). The first source that exists wins:
+
+| Template | Tips (one tip per `*.md` file) | Set by |
+|---|---|---|
+| `template-file` in `motd.json` | `tips-directory` in `motd.json` | you |
+| `/etc/bluefin-cli/motd.md` | `/etc/bluefin-cli/tips/` | the machine's administrator |
+| `/usr/share/bluefin-cli/motd.md` | `/usr/share/bluefin-cli/tips/` | the distribution |
+| built in | built in | bluefin-cli |
+
+Templates use Go [text/template](https://pkg.go.dev/text/template) syntax with
+three fields: `{{.ImageName}}`, `{{.ImageTag}}` and `{{.Tip}}`. On Linux the
+image name and tag come from `/usr/share/ublue-os/image-info.json` when it
+exists, otherwise from `NAME` and `VERSION_ID` in `/etc/os-release`. A template
+that fails to render prints an error on stderr, and Bluefin CLI skips it.
+
+The shell experience shows the MOTD once per terminal: it exports
+`BLUEFIN_MOTD_SHOWN=1`, and a shell that inherits it stays quiet. A
+distribution can greet every terminal from a login hook (for example
+`/etc/profile.d`). The hook runs `bluefin-cli motd show --if-enabled` and
+exports the same variable. The hook then honors `bluefin-cli motd toggle all off` and the
+shell experience does not greet a second time.
