@@ -94,4 +94,4 @@ just build-iso albacore
 
 - **TunaOS**: [Matrix Chat](https://matrix.to/#/%23tunaos:reilly.asia)
 - **AlmaLinux**: [AlmaLinux Atomic SIG](https://chat.almalinux.org/almalinux/channels/sigatomic)
-- **Universal Blue**: [Discord Community](https://discord.gg/WEu6BdFEtp)
+- **Bazzite (Universal Blue)**: [Bazzite Discord](https://discord.gg/WEu6BdFEtp)

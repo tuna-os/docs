@@ -49,11 +49,9 @@ export default function IsoBuilderPage(): ReactNode {
             Pick an image, then take it or build it
           </Heading>
           <p className={styles.heroLede}>
-            Four questions land you on one image. From there you can download its live
-            ISO, copy the one-line rebase command, or hand it to the in-browser builder
-            for an ISO with your own flatpak set. Flavors that have qualified for
-            browser generation link here with a preset — variant, flavor, and
-            platform already filled in.
+            A few questions land you on one image. From there you can download its ISO,
+            copy the command that switches an existing system to it, or build an ISO with
+            your own apps in your browser.
           </p>
         </div>
       </header>
@@ -105,16 +103,13 @@ export default function IsoBuilderPage(): ReactNode {
             <div className={clsx(styles.btnRow, styles.btnRowLeft)}>
               <Link
                 className={clsx('button', styles.btnPrimary)}
-                href={`${APP_URL}/?image=tuna-os/guppy:base`}>
+                href={`${APP_URL}/?image=tuna-os/yellowfin:gnome`}>
                 Open the builder
               </Link>
-              <Link className={clsx('button', styles.btnGhost)} to="/docs/iso-builder">
-                Read the guide
+              <Link className={clsx('button', styles.btnGhost)} to="/docs/start-from-usb">
+                After the download: start from USB
               </Link>
             </div>
-            <p className={styles.note}>
-              Experimental preview — currently hosted at a test URL.
-            </p>
           </div>
         </section>
 

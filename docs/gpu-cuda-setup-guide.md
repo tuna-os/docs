@@ -21,7 +21,7 @@ Example image names:
 - `ghcr.io/tuna-os/albacore:gnome-nvidia`
 - `ghcr.io/tuna-os/yellowfin:gnome-nvidia-hwe`
 
-Not every variant publishes an `-nvidia` flavor. Check the page of your variant, such as [Albacore](/albacore), before you switch. See [Variant guide](/choosing-a-variant) for the full list.
+Not every variant publishes an `-nvidia` flavor. Check the page of your variant, such as [Albacore](/albacore), before you switch. See [Variant guide](./choosing-a-variant.md) for the full list.
 
 Other variants use open-source drivers. This guide does not cover them.
 
@@ -34,9 +34,9 @@ sudo bootc switch ghcr.io/tuna-os/albacore:gnome-nvidia
 systemctl reboot
 ```
 
-If the new image causes a problem, run `sudo bootc rollback` and reboot. See [Rollback](/bootc-rollback).
+If the new image causes a problem, run `sudo bootc rollback` and reboot. See [Rollback](./bootc-rollback.md).
 
-The image sets kernel arguments to block `nouveau` and to enable `nvidia-drm.modeset=1`. See [Layers](/layering) for how these arguments work.
+The image sets kernel arguments to block `nouveau` and to enable `nvidia-drm.modeset=1`. See [Layers](./layering.md) for how these arguments work.
 
 ## Check the driver
 
@@ -67,7 +67,7 @@ podman run --rm --device nvidia.com/gpu=all \
 
 Pick a CUDA image tag that matches the CUDA version in the `nvidia-smi` output or older.
 
-For a long-lived setup, use a toolbox or Distrobox container. See the [AI development quickstart](/guides/AI-DEVELOPMENT-QUICKSTART) for more.
+For a long-lived setup, use a toolbox or Distrobox container. See the [AI development quickstart](./guides/AI-DEVELOPMENT-QUICKSTART.md) for more.
 
 :::note
 The CDI spec file must exist for `--device nvidia.com/gpu=all` to work. This guide does not confirm where TunaOS creates it. If the command fails with an unknown device error, see the section on problems.
@@ -75,9 +75,9 @@ The CDI spec file must exist for `--device nvidia.com/gpu=all` to work. This gui
 
 ## Hardware notes
 
-- [System requirements](/system-requirements) lists a GTX 1060 or newer, with 8 GB or more of VRAM for AI work.
+- [System requirements](./system-requirements.md) lists a GTX 1060 or newer, with 8 GB or more of VRAM for AI work.
 - This guide does not document which GPU generations the driver supports. Check the release notes of the NVIDIA driver.
-- This guide does not document Secure Boot with the NVIDIA modules. See [Secure Boot](/secure-boot).
+- This guide does not document Secure Boot with the NVIDIA modules. See [Secure Boot](./secure-boot.md).
 
 ## Troubleshooting
 

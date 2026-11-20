@@ -118,18 +118,7 @@ const config: Config = {
         height: 32,
       },
       items: [
-        {
-          type: 'dropdown',
-          label: 'AI',
-          position: 'left',
-          items: [
-            {type: 'html', value: '<div style="padding:0.5rem 1rem;max-width:280px;font-size:0.875rem;line-height:1.5;color:var(--ifm-dropdown-link-color)">All the projects here are made primarily with LLMs. They span the range of slop to not. Some are very useful and usable while others are definitely not.</div>'},
-            {type: 'html', value: '<hr style="margin:0.3rem 0;opacity:0.3">'},
-            {href: 'https://hub.tunaos.org/#contribute', label: 'Donate AI CLI time'},
-          ],
-        },
         {to: '/download', label: 'Download', position: 'left'},
-        {to: '/wootc', label: 'From Windows', position: 'left'},
         {to: '/flatpak', label: 'Flatpaks', position: 'left'},
         {to: '/projects', label: 'Projects', position: 'left'},
         {to: '/metrics', label: 'Metrics', position: 'left'},
@@ -190,11 +179,7 @@ const config: Config = {
               href: 'https://matrix.to/#/%23tunaos:reilly.asia',
             },
             {
-              label: 'Discord',
-              href: 'https://discord.gg/MXSTqB8Nv',
-            },
-            {
-              label: 'Universal Blue Discord',
+              label: 'Bazzite Discord',
               href: 'https://discord.gg/WEu6BdFEtp',
             },
             {

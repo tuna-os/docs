@@ -20,9 +20,9 @@ If you are not sure where to start, follow these recommended paths:
 - **Newest Fedora:** Choose **[Bonito](/bonito)** (Fedora 44). For users who want the latest mainline kernel, Mesa drivers, and desktop toolchains on an immutable base.
 - **elementary OS Desktop:** Choose **[Gurnard](/gurnard)** (Ubuntu 24.04 LTS with Pantheon). It gives you the elementary OS desktop on an LTS base.
 - **Arch Linux:** Choose **[Marlin](/marlin)** (Arch Linux). Newest packages on a composefs-native bootc base with continuous updates.
-- **Apple Silicon (ARM64):** Choose **Asahi images** available across supported multi-arch bases (Albacore, Yellowfin, Bonito, Gurnard).
+- **Apple Silicon Macs:** TunaOS is not available yet. See [Apple Silicon Macs](apple-silicon.md).
 
-> **Not sure?** Start with **[Albacore](/albacore)** — the flagship variant designed as a rock-solid daily driver for most users.
+> **Not sure?** Start with **[Yellowfin](/yellowfin)** (AlmaLinux Kitten 10) with GNOME. The download page recommends it.
 
 ---
 
@@ -64,6 +64,5 @@ Each variant offers desktop flavors tailored to different workflows:
 
 ## Ready to Install?
 
-- Head to the **[Download Page](/download)** to select your image and desktop flavor.
 - Check the **[System Requirements](/docs/system-requirements)** to verify hardware compatibility.
-- Read the **[Installation Guide](/docs/installation)** for step-by-step setup instructions.
+- Go to **[Download and install](/download)** to make a USB installer or to try TunaOS from Windows.

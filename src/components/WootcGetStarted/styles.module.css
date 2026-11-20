@@ -1,0 +1,67 @@
+/* "Get started" on /wootc. Buttons come from src/css/page.module.css. */
+
+.section {
+  padding: 3.5rem 1rem;
+  background: var(--tu-bg);
+  border-top: 1px solid var(--tu-line);
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--tu-ink);
+}
+
+.notice {
+  max-width: 70ch;
+  padding: 0.85rem 1.1rem;
+  border-radius: 6px;
+  border-left: 2px solid #f0b45d;
+  background: rgba(240, 180, 93, 0.1);
+  color: var(--tu-dim);
+}
+
+.notice strong {
+  color: var(--tu-ink);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem 2.5rem;
+  margin-top: 1rem;
+}
+
+.subTitle {
+  margin: 0 0 0.6rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--tu-ink);
+}
+
+.list,
+.text {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--tu-dim);
+}
+
+.list {
+  padding-left: 1.2rem;
+}
+
+.list li {
+  margin-bottom: 0.45rem;
+}
+
+.list strong,
+.text strong {
+  color: var(--tu-ink);
+}
+
+.notice a,
+.list a,
+.text a {
+  color: var(--tu-accent-soft);
+}

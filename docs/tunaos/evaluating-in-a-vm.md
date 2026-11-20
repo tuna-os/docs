@@ -21,29 +21,22 @@ that entirely:
 - **Disposable.** Deleting the VM removes every trace.
 
 If you decide to install on real hardware afterwards, see
-[Installation](../installation.md).
+[Download and install](/download).
 
 ## 1. Pick and download an ISO
 
-TunaOS publishes GNOME and GNOME-HWE ISOs every two weeks to
-[download.tunaos.org](https://download.tunaos.org/live-isos/):
+Open [Download and install](/download), then **I already run Linux**. The
+recommended ISO is **Yellowfin (AlmaLinux Kitten 10) with GNOME**:
+[yellowfin-gnome-latest.iso](https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso).
+**All images** lists the ISOs for every image and desktop (GNOME, KDE, COSMIC,
+Niri, XFCE, NVIDIA), for x86_64 and arm64. New ISOs come out every week.
 
-| Variant | GNOME | GNOME (HWE) |
-| --- | --- | --- |
-| **Albacore** (AlmaLinux 10) | [albacore-gnome-latest.iso](https://download.tunaos.org/live-isos/albacore-gnome-latest.iso) | [albacore-gnome-hwe-latest.iso](https://download.tunaos.org/live-isos/albacore-gnome-hwe-latest.iso) |
-| **Yellowfin** (AlmaLinux Kitten 10) | [yellowfin-gnome-latest.iso](https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso) | [yellowfin-gnome-hwe-latest.iso](https://download.tunaos.org/live-isos/yellowfin-gnome-hwe-latest.iso) |
+If you are unsure which variant to evaluate, start with **Yellowfin** with
+GNOME — see [Choosing Your TunaOS Variant](../choosing-a-variant.md).
 
-If you are unsure which variant to evaluate, start with **Albacore** — see
-[Choosing Your TunaOS Variant](../choosing-a-variant.md).
-
-Pick the plain **GNOME** image for a VM. HWE exists for newer physical hardware;
-inside a hypervisor the virtual devices are the same either way, so it buys you
-nothing here.
-
-Other flavors (KDE, COSMIC, Niri, XFCE, NVIDIA) ship as container images rather
-than ISOs. To evaluate one of those in a VM, install a published ISO first and
-then rebase to the flavor you want with `bootc switch` — see
-[bootc usage](./bootc-usage.md).
+To try a different desktop after the install, switch to it with
+[bootc-migrate](/docs/bootc-migrate), for example
+`sudo bootc-migrate --target-image ghcr.io/tuna-os/yellowfin:kde`.
 
 ## 2. VM specifications
 
@@ -165,7 +158,7 @@ With a snapshot in hand, the interesting parts are cheap to explore:
 
 All three are covered in [bootc usage](./bootc-usage.md).
 
-If TunaOS suits you, [Installation](../installation.md) covers real hardware,
+If TunaOS suits you, [Download and install](/download) covers real hardware,
 and [System Requirements](../system-requirements.md) has the full compatibility
 detail.
 

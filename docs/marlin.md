@@ -85,9 +85,9 @@ TunaOS publishes a `gnome-asahi` image, but it is **not** a supported way to
 run Marlin on Apple Silicon. The upstream `asahi-alarm` kernel package gives
 only 5 device trees and no GPU driver module. So the image does not boot on
 Apple Silicon
-([tuna-os#911](https://github.com/tuna-os/tunaOS/issues/911)). For
-Apple Silicon, use [bootc-installer-asahi](https://github.com/tuna-os/bootc-installer-asahi)
-with a supported variant instead.
+([tuna-os#911](https://github.com/tuna-os/tunaOS/issues/911)). TunaOS is
+not available for Apple Silicon Macs yet: see
+[Apple Silicon Macs](apple-silicon.md).
 :::
 
 ## Installation
@@ -113,12 +113,11 @@ just build-iso marlin
   Arch's `pacman` has no `tpm2-tools` or `tpm2-tss` package, so the dracut
   TPM2 probe finds nothing. See
   [tuna-os#714](https://github.com/tuna-os/tunaOS/issues/714).
-- **Apple Silicon (`gnome-asahi`)**: see the note above; use
-  [bootc-installer-asahi](https://github.com/tuna-os/bootc-installer-asahi)
-  instead.
+- **Apple Silicon (`gnome-asahi`)**: see the note above and
+  [Apple Silicon Macs](apple-silicon.md).
 
 ## Community Support
 
 - **TunaOS**: [Matrix Chat](https://matrix.to/#/%23tunaos:reilly.asia)
 - **Arch Linux**: [Arch Linux Forums](https://bbs.archlinux.org/)
-- **Universal Blue**: [Discord Community](https://discord.gg/WEu6BdFEtp)
+- **Bazzite (Universal Blue)**: [Bazzite Discord](https://discord.gg/WEu6BdFEtp)

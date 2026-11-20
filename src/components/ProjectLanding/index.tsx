@@ -74,6 +74,7 @@ function Hero({project}: {project: Project}): ReactNode {
             </a>
           )}
         </div>
+        {project.ctaNote && <p className={styles.ctaNote}>{project.ctaNote}</p>}
       </div>
     </header>
   );
@@ -286,7 +287,9 @@ function MoreProjects({project}: {project: Project}): ReactNode {
   );
 }
 
-export default function ProjectLanding({project}: {project: Project}): ReactNode {
+// `children` renders right under the hero: a project-specific "get started"
+// section that needs more than the generic install commands.
+export default function ProjectLanding({project, children}: {project: Project; children?: ReactNode}): ReactNode {
   return (
     <Layout title={project.name} description={project.tagline}>
       <Head>
@@ -302,6 +305,7 @@ export default function ProjectLanding({project}: {project: Project}): ReactNode
       </Head>
       <Hero project={project} />
       <main className={project.id === 'tromso' ? 'aurora-page' : undefined}>
+        {children}
         <Highlights project={project} />
         <Screenshots project={project} />
         <BrandArtwork project={project} />

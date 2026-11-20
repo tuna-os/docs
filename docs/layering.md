@@ -178,6 +178,6 @@ sudo systemctl reboot
 
 - [Manage images with bootc](./tunaos/bootc-usage.md)
 - [Rollback and update guide](./bootc-rollback.md)
-- [Installation guide](./installation.md)
+- [Download and install](/download)
 - [Frequently asked questions](./faq.md)
 - [Verify downloads and images](./verifying-downloads.md)

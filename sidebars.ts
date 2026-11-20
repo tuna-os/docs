@@ -5,9 +5,28 @@ const sidebars: SidebarsConfig = {
   tutorialSidebar: [
     {
       type: 'category',
-      label: 'Getting Started',
+      label: 'Get started',
       collapsed: false,
-      items: ['intro', 'choosing-a-variant', 'architecture', 'site-architecture', 'installation', 'verifying-downloads', 'installer', 'system-requirements', 'desktop-comparison', 'accessibility', 'plasma-shortcuts', 'layering', 'smart-card-login', 'bootc-rollback', 'user-data-backup-strategy', 'bootc-resources', 'faq', 'ublue-ecosystem'],
+      // The install flow, in order. Every install instruction lives on
+      // /download or on these pages; nothing else repeats them.
+      items: [
+        'intro',
+        {type: 'link', label: 'Download and install', href: '/download'},
+        'start-from-usb',
+        'installer',
+        'choosing-a-variant',
+        'system-requirements',
+        'secure-boot',
+        'tunaos/evaluating-in-a-vm',
+        'faq',
+        'apple-silicon',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Use TunaOS',
+      collapsed: false,
+      items: ['desktop-comparison', 'accessibility', 'plasma-shortcuts', 'layering', 'smart-card-login', 'bootc-rollback', 'user-data-backup-strategy', 'verifying-downloads', 'ublue-ecosystem', 'bootc-resources'],
     },
     {
       type: 'category',
@@ -53,7 +72,7 @@ const sidebars: SidebarsConfig = {
           label: 'Developer Guide',
           collapsible: true,
           collapsed: true,
-          items: ['secure-boot', 'tunaos/introduction', 'tunaos/evaluating-in-a-vm', 'tunaos/building', 'tunaos/ai-ml-development', 'tunaos/bootc-usage', 'tunaos/cosmic-desktop', 'tunaos/homebrew', 'tunaos/platform-engineering', 'tunaos/live-iso-generation', 'tunaos/installer-walkthrough/index', 'tunaos/ci-cd', 'tunaos/troubleshooting'],
+          items: ['architecture', 'site-architecture', 'tunaos/introduction', 'tunaos/building', 'tunaos/ai-ml-development', 'tunaos/bootc-usage', 'tunaos/cosmic-desktop', 'tunaos/homebrew', 'tunaos/platform-engineering', 'tunaos/live-iso-generation', 'tunaos/installer-walkthrough/index', 'tunaos/ci-cd', 'tunaos/troubleshooting'],
         },
       ],
     },

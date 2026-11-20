@@ -7,6 +7,11 @@ sidebar_label: "Community"
 
 Welcome to the TunaOS community! Whether you are a user, contributor, or curious, here is how to participate.
 
+## How these projects are made
+
+All the projects here are made primarily with LLMs. They span the range of
+slop to not. Some are useful and usable while others are definitely not.
+
 ## Donate AI CLI time
 
 **[Lend your AI CLI through Hive](https://hub.tunaos.org/#contribute)** — no code needed.
@@ -20,10 +25,9 @@ You use a local, signed-in AI CLI and a container. Your provider's subscription 
 | Platform | Purpose | Link |
 |---|---|---|
 | **Matrix** | Primary chat — ask questions, share setups | [#tunaos:reilly.asia](https://matrix.to/#/%23tunaos:reilly.asia) |
-| **Discord** | TunaOS's own Discord server | [Join Discord](https://discord.gg/MXSTqB8Nv) |
 | **GitHub Discussions** | Ideas, Q&A, feature requests | [Start a discussion](https://github.com/tuna-os/tunaOS/discussions) |
 | **GitHub Issues** | Bug reports, feature tracking | [Open an issue](https://github.com/tuna-os/tunaOS/issues) |
-| **Universal Blue Discord** | Larger bootc/atomic desktop community | [Join Discord](https://discord.gg/WEu6BdFEtp) |
+| **Bazzite Discord** | Larger bootc/atomic desktop community (Universal Blue) | [Join Discord](https://discord.gg/WEu6BdFEtp) |
 | **AlmaLinux Atomic SIG** | Enterprise Linux bootc discussions | [#sigatomic](https://chat.almalinux.org/almalinux/channels/sigatomic) |
 
 ## How to Contribute
