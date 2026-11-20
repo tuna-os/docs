@@ -10,7 +10,7 @@ This guide shows how to install and set up `bluefin-cli` on macOS.
 - Homebrew:
 
   ```bash
-  brew tap ublue-os/homebrew-experimental-tap
+  brew tap tuna-os/tap
   brew install bluefin-cli
   ```
 
