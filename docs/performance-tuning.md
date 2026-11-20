@@ -3,8 +3,6 @@ title: Performance Tuning for Low-Resource Hardware
 description: Tune TunaOS on older computers with little memory, a slow CPU, or a hard disk drive.
 ---
 
-# Performance Tuning for Low-Resource Hardware
-
 This guide helps you make TunaOS faster on older computers. It is for systems with 4 to 6 GB of memory, an older CPU, or a hard disk drive (HDD). For power profiles and temperature checks, see [Performance Tuning and Power Management](./performance-tuning-power-management.md).
 
 :::note
