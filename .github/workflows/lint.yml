@@ -28,7 +28,11 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  # A label change does not change the code, so it must not cancel a run
+  # that is checking the code. Hive stage labels change many times an hour;
+  # when each change cancelled the run, no run finished and the PR never got
+  # a result. The label run waits in the group and runs after.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' && github.event.action != 'labeled' && github.event.action != 'unlabeled' }}
 
 jobs:
   # lint: the inputs of the jobs below (the old `paths:` list).
