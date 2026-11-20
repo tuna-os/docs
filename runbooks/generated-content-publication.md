@@ -1,7 +1,7 @@
 # Generated content publication
 
 `scripts/publish-generated.py` provides a shared publication interface for
-ISO indexes, installer walkthroughs, and Flatpak catalogs. It creates or updates
+ISO indexes and Flatpak catalogs. It creates or updates
 a ready pull request on `generated/<producer>`, targeting `main`. It never
 pushes to the production branch or merges the pull request.
 
@@ -14,7 +14,6 @@ in a separate directory, with paths relative to the repository root:
 | Producer | Allowed output |
 | --- | --- |
 | `iso-index` | `static/iso-index.json` |
-| `installer-walkthrough` | `docs/tunaos/installer-walkthrough/` |
 | `flatpak` | `static/flatpak/index/static` |
 
 The publisher rejects empty trees, unexpected files, and symlinks. It replaces

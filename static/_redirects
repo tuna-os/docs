@@ -5,3 +5,7 @@
 # The install guide was merged into the single install flow (/download).
 /docs/installation /download 301
 /docs/installation/ /download 301
+
+# The old Niri-only installer walkthrough was a stale copy of /docs/installer.
+/docs/tunaos/installer-walkthrough /docs/installer 301
+/docs/tunaos/installer-walkthrough/ /docs/installer 301
