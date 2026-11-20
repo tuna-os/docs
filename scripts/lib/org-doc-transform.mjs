@@ -171,6 +171,18 @@ function fixRelativeLinks(content, repo, srcDir = '', branch = 'main') {
     /(<img\b[^>]*?\bsrc=")(?!https?:|\/|data:)([^"]+)(")/gi,
     (_, pre, p, post) => `${pre}${raw}/${clean(p)}${post}`,
   );
+  // Raw HTML <a href="…">, for the same reason: READMEs put centred badge and
+  // link rows in HTML (compass's `href="LICENSE"`, bootsahi's
+  // `href="docs/gui-walkthrough.md"`), and on this site a relative href
+  // resolves against the docs tree and 404s. Anchors, schemes and
+  // site-absolute paths are left alone.
+  c = c.replace(
+    /(<a\b[^>]*?\bhref=")(?![a-z][a-z0-9+.-]*:|\/|#)([^"#]+)(#[^"]*)?(")/gi,
+    (m, pre, p, anchor = '', post) => {
+      const cleaned = clean(p);
+      return cleaned === '' ? m : `${pre}${base}/${cleaned}${anchor}${post}`;
+    },
+  );
   // Rewrite repo-relative markdown links to absolute URLs.
   //
   // A repo-relative link can point at a markdown file, a plain file
@@ -243,10 +255,17 @@ function fixRelativeLinks(content, repo, srcDir = '', branch = 'main') {
   return c;
 }
 
+// `title` names the page in the browser tab, search results and pagination.
+// Without it Docusaurus falls back to the file id, so every synced project page
+// was titled "index". `hide_title` keeps the page body as the README wrote it:
+// a README that opens with a logo or badges, not a heading, gets no extra
+// heading on top.
 function frontmatter(title, position, slug, status) {
   return `---
 sidebar_position: ${position}
 sidebar_label: "${title}"
+title: "${title}"
+hide_title: true
 
 status: ${status || 'unknown'}
 ---
@@ -261,7 +280,7 @@ status: ${status || 'unknown'}
 // front matter is built here rather than copied from the source repo. The blank
 // line before `status:` is part of the template above and is what separates it
 // from front matter a person typed — see docs/mariner/index.md, which has the
-// same three keys with no blank line.
+// same keys with no blank line.
 //
 // Anything that reads this as "the tree is generated" is reading a fact about
 // how the file was produced. That is deliberately not the same question as
@@ -275,7 +294,7 @@ status: ${status || 'unknown'}
 // that test fails.
 // `mdx: {format: md}` is added after the fact by markUnparseable (below), so an
 // index it marked is still one this script wrote.
-const SYNCED_INDEX = /^---\nsidebar_position: \d+\nsidebar_label: "[^"]*"\n\nstatus: \S+\n(?:mdx:\n  format: md\n)?---\n/;
+const SYNCED_INDEX = /^---\nsidebar_position: \d+\nsidebar_label: "[^"]*"\ntitle: "[^"]*"\nhide_title: true\n\nstatus: \S+\n(?:mdx:\n  format: md\n)?---\n/;
 
 // isSyncedIndex reports whether a document's front matter was written by this
 // script's frontmatter() rather than by a person.

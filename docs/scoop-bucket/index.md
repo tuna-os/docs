@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "scoop-bucket"
+title: "scoop-bucket"
+hide_title: true
 
 status: unknown
 ---

@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "changelog-action"
+title: "changelog-action"
+hide_title: true
 
 status: unknown
 ---

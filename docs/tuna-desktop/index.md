@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "tuna-desktop"
+title: "tuna-desktop"
+hide_title: true
 
 status: unknown
 ---

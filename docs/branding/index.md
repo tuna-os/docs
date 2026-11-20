@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "branding"
+title: "branding"
+hide_title: true
 
 status: unknown
 ---

@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 sidebar_label: "Ghostty"
+title: "Ghostty"
 status: stable
 ---
 

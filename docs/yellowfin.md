@@ -8,7 +8,7 @@ sidebar_position: 3
 Prefer a visual tour? See the **[Yellowfin overview →](/yellowfin)** start page.
 :::
 
-**Based on:** [AlmaLinux Kitten 10](https://almalinux.org/blog/2024-11-20-introducing-almalinux-kitten-10/)
+**Based on:** [AlmaLinux Kitten 10](https://wiki.almalinux.org/development/almalinux-os-kitten-10.html)
 
 Yellowfin is the "developer's daily drive" variant of TunaOS. It tracks AlmaLinux Kitten, the more experimental branch of AlmaLinux that follows upstream more closely. This variant is closest to the experience of upstream Bluefin LTS.
 
@@ -31,55 +31,35 @@ To see every variant side by side, read [Choose a variant](./choosing-a-variant)
 - **Kitten Base**: Enjoy newer packages and features before they land in stable EL.
 - **Lead Developer's Choice**: The variant used for daily development of TunaOS.
 
-## Downloads
+## Images
 
-TunaOS publishes its pre-built ISOs for the GNOME flavors every two weeks. Other flavors are available as container images only.
+Each desktop is a separate image tag:
 
-### GNOME (Standard)
-**Image:** `ghcr.io/tuna-os/yellowfin:gnome`
+| Desktop | Image |
+| --- | --- |
+| GNOME | `ghcr.io/tuna-os/yellowfin:gnome` |
+| GNOME with the HWE (hardware enablement) kernel | `ghcr.io/tuna-os/yellowfin:gnome-hwe` |
+| KDE Plasma | `ghcr.io/tuna-os/yellowfin:kde` |
+| COSMIC | `ghcr.io/tuna-os/yellowfin:cosmic` |
+| Niri | `ghcr.io/tuna-os/yellowfin:niri` |
+| GNOME with NVIDIA drivers and CUDA | `ghcr.io/tuna-os/yellowfin:gnome-nvidia` |
 
-**ISOs:** [yellowfin-gnome-latest.iso](https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso)
+## Install
 
-<a id="gnome-hwe"></a>
-### GNOME (HWE — Hardware Enablement)
-**Image:** `ghcr.io/tuna-os/yellowfin:gnome-hwe`
+To install Yellowfin on a PC, go to [Download TunaOS](/download). That page
+gives you the installer and the steps for your computer.
 
-**ISOs:** [yellowfin-gnome-hwe-latest.iso](https://download.tunaos.org/live-isos/yellowfin-gnome-hwe-latest.iso)
+## Switch from another bootc system
 
-<a id="kde"></a>
-### KDE Plasma
-**Image:** `ghcr.io/tuna-os/yellowfin:kde`
+If your computer runs a bootc system now, for example Bluefin or a different
+TunaOS variant, use [bootc-migrate](/docs/bootc-migrate):
 
-<a id="cosmic"></a>
-### COSMIC
-**Image:** `ghcr.io/tuna-os/yellowfin:cosmic`
-
-<a id="niri"></a>
-### Niri
-**Image:** `ghcr.io/tuna-os/yellowfin:niri`
-
-<a id="gnome-nvidia"></a>
-### NVIDIA (NVIDIA drivers + CUDA)
-Adds NVIDIA drivers and CUDA for AI, graphics, and VFX workloads. (Formerly "GDX".)
-
-**Image:** `ghcr.io/tuna-os/yellowfin:gnome-nvidia`
-
-## Installation
-
-### Using Container Image
 ```bash
-podman pull ghcr.io/tuna-os/yellowfin:latest
+sudo bootc-migrate --target-image ghcr.io/tuna-os/yellowfin:gnome
 ```
 
-### Building ISO with Just
-```bash
-# Clone the repo
-git clone https://github.com/tuna-os/tunaOS.git
-cd tunaOS
-
-# Build Yellowfin ISO
-just build-iso yellowfin
-```
+Then restart the computer. For a different desktop, change the tag, for
+example to `:kde`. Do not use the `:latest` tag.
 
 ## Community Support
 

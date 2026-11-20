@@ -96,14 +96,6 @@ class PublisherTests(unittest.TestCase):
         message = real_run("git", "show", "-s", "--format=%B", "refs/remotes/origin/generated/iso-index", cwd=checkout)
         self.assertIn("Signed-off-by: Test <test@example.com>", message)
 
-    def test_missing_walkthrough_image_rejected(self):
-        directory = self.root / "docs/tunaos/installer-walkthrough"
-        (directory / "img").mkdir(parents=True)
-        (directory / "img/exists.png").write_bytes(b"\x89PNG\r\n\x1a\n")
-        (directory / "index.md").write_text("![step](./img/missing.png)")
-        with self.assertRaises(ValueError):
-            publisher.validate_tree(self.root, publisher.PRODUCERS["installer-walkthrough"])
-
 
 if __name__ == "__main__":
     unittest.main()

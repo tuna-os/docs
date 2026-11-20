@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "kde-build-meta"
+title: "kde-build-meta"
+hide_title: true
 
 status: unknown
 ---

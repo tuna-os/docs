@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "ubuntu-26.04-iso"
+title: "ubuntu-26.04-iso"
+hide_title: true
 
 status: archived
 ---

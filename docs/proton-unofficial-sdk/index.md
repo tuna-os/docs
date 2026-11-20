@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "proton-unofficial-sdk"
+title: "proton-unofficial-sdk"
+hide_title: true
 
 status: unknown
 ---

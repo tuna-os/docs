@@ -58,7 +58,7 @@ const SPONSOR_SECTIONS = [
         name: 'XFCE',
         desktop: 'Desktop',
         links: [
-          { label: 'Donate to XFCE', href: 'https://xfce.org/donate' },
+          { label: 'Donate to XFCE', href: 'https://opencollective.com/xfce/donate' },
         ],
       },
       {

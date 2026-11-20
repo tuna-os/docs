@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "bootc-installer-asahi"
+title: "bootc-installer-asahi"
+hide_title: true
 
 status: unknown
 ---
@@ -17,7 +19,7 @@ for M1/M2 Macs.
 
 <p align="center">
   <em>Every frame is rendered in CI from the real SwiftUI views — see the
-  <a href="docs/gui-walkthrough.md">step-by-step walkthrough</a>.</em>
+  <a href="https://github.com/tuna-os/bootc-installer-asahi/blob/main/docs/gui-walkthrough.md">step-by-step walkthrough</a>.</em>
 </p>
 
 **Architecture** (see [docs/DESIGN.md](https://github.com/tuna-os/bootc-installer-asahi/blob/main/docs/DESIGN.md)): instead of one

@@ -1,6 +1,8 @@
 ---
 sidebar_position: 2
 sidebar_label: "Native App"
+title: "Native App"
+hide_title: true
 
 status: alpha
 ---

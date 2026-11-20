@@ -106,7 +106,7 @@ To create a custom command shortcut (for example, to launch a custom script or c
 
 ## Sources & Upstream Documentation
 
-- [KDE UserBase Plasma 6 Shortcuts](https://userbase.kde.org/Plasma/Shortcuts) — Canonical upstream reference
-- [KWin manual](https://docs.kde.org/stable5/en/kwin/user-guide/index.html) — the window manager and its tile zones
+- [KDE UserBase: Shortcuts settings](https://userbase.kde.org/System_Settings/Shortcuts) — Canonical upstream reference
+- [KWin documentation](https://docs.kde.org/?application=kwin) — the window manager and its tile zones
 - [Tromsø quick start](./tromso/index.md) — how to install and build Tromsø
 - [Desktop environment comparison](./desktop-comparison.md) — how the TunaOS desktops compare

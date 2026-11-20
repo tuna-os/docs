@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "hive-operator"
+title: "hive-operator"
+hide_title: true
 
 status: unknown
 ---

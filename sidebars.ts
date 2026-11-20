@@ -62,27 +62,15 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'TunaOS',
       link: {type: 'doc', id: 'tunaos/index'},
-      items: [
-        'tunaos/ROADMAP',
-        'tunaos/CONTRIBUTING',
-        'tunaos/SECURITY',
-        'tunaos/hacktoberfest-2026',
-        {
-          type: 'category',
-          label: 'Developer Guide',
-          collapsible: true,
-          collapsed: true,
-          items: ['architecture', 'site-architecture', 'tunaos/introduction', 'tunaos/building', 'tunaos/ai-ml-development', 'tunaos/bootc-usage', 'tunaos/cosmic-desktop', 'tunaos/homebrew', 'tunaos/platform-engineering', 'tunaos/live-iso-generation', 'tunaos/installer-walkthrough/index', 'tunaos/ci-cd', 'tunaos/troubleshooting'],
-        },
-      ],
+      items: ['tunaos/introduction', 'tunaos/bootc-usage', 'tunaos/homebrew', 'tunaos/cosmic-desktop', 'tunaos/ai-ml-development', 'tunaos/troubleshooting'],
     },
     {
       type: 'category',
       label: 'BuildStream Desktops',
       collapsed: false,
       items: [
-        {type: 'category', label: 'Tromsø', link: {type: 'doc', id: 'tromso/index'}, items: ['tromso/SPEC', 'tromso/ROADMAP', 'tromso/SECURITY', 'tromso/CONTRIBUTING', 'tromso/ci-and-iso-pipeline']},
-        {type: 'category', label: 'XFCE Linux', className: 'sidebar-alpha', link: {type: 'doc', id: 'xfce-linux/index'}, items: ['xfce-linux/docs-README', 'xfce-linux/PROJECT_STATUS', 'xfce-linux/CONTRIBUTING', 'xfce-linux/ROADMAP', 'xfce-linux/SECURITY', 'xfce-linux/ci-and-iso-pipeline']},
+        {type: 'category', label: 'Tromsø', link: {type: 'doc', id: 'tromso/index'}, items: []},
+        {type: 'category', label: 'XFCE Linux', className: 'sidebar-alpha', link: {type: 'doc', id: 'xfce-linux/index'}, items: []},
       ],
     },
     {
@@ -90,89 +78,46 @@ const sidebars: SidebarsConfig = {
       label: 'Tools',
       collapsed: false,
       items: [
-        {type: 'category', label: 'wootc', link: {type: 'doc', id: 'wootc/index'}, items: ['wootc/getting-started', 'wootc/user-guide', 'wootc/philosophy', 'wootc/status', 'wootc/ROADMAP', 'wootc/CONTRIBUTING']},
-        {type: 'category', label: 'Tacklebox', link: {type: 'doc', id: 'tacklebox/index'}, items: ['tacklebox/USER-GUIDE', 'tacklebox/ARCHITECTURE', 'tacklebox/github-iso-setup', 'tacklebox/TODO', 'tacklebox/ROADMAP', 'tacklebox/SECURITY', 'tacklebox/CONTRIBUTING', 'tacklebox/opfs-streaming-handoff']},
+        {type: 'category', label: 'wootc', link: {type: 'doc', id: 'wootc/index'}, items: ['wootc/getting-started', 'wootc/user-guide', 'wootc/philosophy', 'wootc/status']},
+        {type: 'category', label: 'Tacklebox', link: {type: 'doc', id: 'tacklebox/index'}, items: ['tacklebox/USER-GUIDE']},
         {type: 'category', label: 'ISO Builder', link: {type: 'doc', id: 'iso-builder/index'}, items: [{type: 'category', label: 'Native App', link: {type: 'doc', id: 'iso-builder/native/index'}, items: ['iso-builder/native/user-guide']}]},
         {type: 'category', label: 'remora', link: {type: 'doc', id: 'remora/index'}, items: []},
-        {
-          type: 'category',
-          label: 'Corral',
-          link: {type: 'doc', id: 'corral/index'},
-          items: ['corral/user-guide', 'corral/vdi', 'corral/host-power', 'corral/ROADMAP', 'corral/SPEC', 'corral/architecture', 'corral/api', 'corral/backend-support', 'corral/backend-parity', 'corral/ci-boot-gate', 'corral/first-party-plugins', 'corral/kubevirt-proxmox-setup', 'corral/plugin-marketplace', 'corral/proxmox-api', 'corral/testing'],
-        },
+        {type: 'category', label: 'Corral', link: {type: 'doc', id: 'corral/index'}, items: ['corral/user-guide', 'corral/vdi', 'corral/host-power']},
         {
           type: 'category',
           label: 'bluefin-cli',
           link: {type: 'doc', id: 'bluefin-cli/index'},
-          items: ['bluefin-cli/ai', 'bluefin-cli/cncf', 'bluefin-cli/gnome', 'bluefin-cli/menus', 'bluefin-cli/tools', 'bluefin-cli/vanilla-vs-extra', 'bluefin-cli/ROADMAP', 'bluefin-cli/CONTRIBUTING'],
+          items: ['bluefin-cli/ai', 'bluefin-cli/cncf', 'bluefin-cli/gnome', 'bluefin-cli/menus', 'bluefin-cli/tools', 'bluefin-cli/vanilla-vs-extra'],
         },
-        {
-          type: 'category',
-          label: 'bootc-migrate',
-          link: {type: 'doc', id: 'bootc-migrate/index'},
-          items: ['bootc-migrate/architecture', 'bootc-migrate/filesystem-support', 'bootc-migrate/luks-testing', 'bootc-migrate/testing', 'bootc-migrate/references', 'bootc-migrate/ROADMAP', 'bootc-migrate/CONTRIBUTING', 'bootc-migrate/cfs-cli-generations'],
-        },
-        {type: 'category', label: 'Flatpak', link: {type: 'doc', id: 'flatpak/index'}, items: ['flatpak/guide', 'flatpak-remote-operations', 'flatpak-index/index', 'flatpak-index/METAINFO', 'flatpak-index/SCREENSHOTS', 'flatpak-index/OBSERVABILITY', 'flatpak-index/CONTRIBUTING', 'flatpak-index/ROADMAP']},
-        {type: 'category', label: 'tunaos-packages', link: {type: 'doc', id: 'tunaos-packages/index'}, items: ['tunaos-packages/ARCHITECTURE', 'tunaos-packages/PACKAGE_FACTORY', 'tunaos-packages/PATCH_POLICY', 'tunaos-packages/ROADMAP', 'tunaos-packages/SECURITY', 'tunaos-packages/TIDEFORGE-READINESS', 'tunaos-packages/UPSTREAM_PARITY', 'tunaos-packages/XFWL4-PORTING', 'tunaos-packages/hummingbird-desktop-gap', 'tunaos-packages/CONTRIBUTING']},
-        {type: 'category', label: 'Ubuntu', link: {type: 'doc', id: 'ubuntu/index'}, items: ['ubuntu/CONTRIBUTING', 'ubuntu/SECURITY']},
-        {type: 'category', label: 'bootc-installer-tui', link: {type: 'doc', id: 'bootc-installer-tui/index'}, items: ['bootc-installer-tui/CONTRIBUTING']},
-        {type: 'category', label: 'chunkah', link: {type: 'doc', id: 'chunkah/index'}, items: ['chunkah/CONTRIBUTING']},
+        {type: 'category', label: 'bootc-migrate', link: {type: 'doc', id: 'bootc-migrate/index'}, items: ['bootc-migrate/filesystem-support']},
+        {type: 'category', label: 'Flatpak', link: {type: 'doc', id: 'flatpak/index'}, items: ['flatpak/guide']},
       ],
     },
     {
       type: 'category', label: 'Services', collapsed: true,
       items: [
         {type: 'category', label: 'Spindle', link: {type: 'doc', id: 'spindle/index'}, items: [
-          'spindle/SPEC', 'spindle/lifecycle', 'spindle/maintenance',
+          'spindle/lifecycle', 'spindle/maintenance',
           'spindle/matrix-rtc', 'spindle/mesh-federation', 'spindle/delegated-auth',
-          'spindle/benchmarks', 'spindle/conformance-testing', 'spindle/metrics',
-          'spindle/releasing', 'spindle/synapse-migration-drill',
-          'spindle/CONTRIBUTING', 'spindle/ROADMAP', 'spindle/SECURITY']},
+          'spindle/benchmarks', 'spindle/metrics', 'spindle/synapse-migration-drill']},
         {type: 'category', label: 'Hive', link: {type: 'doc', id: 'hive/index'}, items: [
-          'hive/architecture', 'hive/federation-design', 'hive/backend-setup',
-          'hive/inference-backends', 'hive/OBSERVABILITY', 'hive/HUB_DISASTER_RECOVERY',
-          'hive/troubleshooting', 'hive/migration-v1-v2', 'hive/development',
-          'hive/CONTRIBUTING', 'hive/ROADMAP', 'hive/SECURITY',
+          'hive/backend-setup', 'hive/inference-backends', 'hive/OBSERVABILITY', 'hive/HUB_DISASTER_RECOVERY',
+          'hive/troubleshooting', 'hive/migration-v1-v2',
           {type: 'category', label: 'Hive Operator', link: {type: 'doc', id: 'hive-operator/index'}, items: [
             'hive-operator/release', 'hive-operator/rotation-promotion',
             'hive-operator/liveness-promotion', 'hive-operator/housekeeping',
             'hive-operator/upstream-ccusage']}]},
         {type: 'category', label: 'Protota', link: {type: 'doc', id: 'protota/index'}, items: [
-          'protota/components', 'protota/diagnostics-design', 'protota/designer-experience',
-          'protota/render-api', 'protota/runtime-probe', 'protota/source-widget-architecture',
-          'protota/OBSERVABILITY_ASSESSMENT',
-          'protota/CONTRIBUTING', 'protota/ROADMAP', 'protota/SECURITY']},
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Images & ISOs',
-      collapsed: false,
-      items: [
-        {type: 'doc', id: 'tromso-iso/index', label: 'Tromsø ISO'},
-        {type: 'doc', id: 'dakota-iso/index', label: 'Dakota ISO'},
-        {type: 'doc', id: 'xfce-linux-iso/index', label: 'XFCE Linux ISO'},
-        {type: 'doc', id: 'ubuntu-26-04-iso/index', label: 'Ubuntu 26.04 ISO'},
-        {type: 'doc', id: 'bonito-x13s/index', label: 'Bonito X13s'},
-        {type: 'doc', id: 'dakota-x13s/index', label: 'Dakota X13s'},
+          'protota/components', 'protota/designer-experience']},
       ],
     },
     {
       type: 'category', label: 'Installers', collapsed: true,
       items: [
         {type: 'category', label: 'bootc-installer', link: {type: 'doc', id: 'bootc-installer/index'}, items: [
-          'bootc-installer/gui-walkthrough', 'bootc-installer/MIGRATION', 'bootc-installer/PARITY',
-          'bootc-installer/RELEASE', 'bootc-installer/live-iso', 'bootc-installer/DESIGN-AUDIT',
-          'bootc-installer/CONTRIBUTING', 'bootc-installer/ROADMAP']},
+          'bootc-installer/gui-walkthrough', 'bootc-installer/live-iso']},
         {type: 'category', label: 'bootc-installer-asahi', link: {type: 'doc', id: 'bootc-installer-asahi/index'}, items: [
-          'bootc-installer-asahi/gui-walkthrough', 'bootc-installer-asahi/UNIFIED-INSTALL-CONTRACT',
-          'bootc-installer-asahi/TESTING-CHECKLIST', 'bootc-installer-asahi/DESIGN',
-          'bootc-installer-asahi/CONTRIBUTING', 'bootc-installer-asahi/ROADMAP']},
-        {type: 'category', label: 'Desktop variants', items: [
-          {type: 'doc', id: 'tuna-installer-cosmic/gui-walkthrough', label: 'COSMIC walkthrough'},
-          {type: 'doc', id: 'tuna-installer-kde/gui-walkthrough', label: 'KDE walkthrough'},
-          {type: 'doc', id: 'tuna-installer-niri/gui-walkthrough', label: 'Niri walkthrough'},
-          {type: 'doc', id: 'tuna-installer-xfce/gui-walkthrough', label: 'XFCE walkthrough'}]},
+          'bootc-installer-asahi/gui-walkthrough']},
       ],
     },
     {
@@ -180,8 +125,8 @@ const sidebars: SidebarsConfig = {
       label: 'Apps',
       collapsed: false,
       items: [
-        {type: 'category', label: 'Tavern', link: {type: 'doc', id: 'tavern/index'}, items: ['tavern/ROADMAP', 'tavern/CONTRIBUTING']},
-        {type: 'category', label: 'Compass', link: {type: 'doc', id: 'compass/index'}, items: ['compass/getting-started', 'compass/CONTRIBUTING']},
+        {type: 'category', label: 'Tavern', link: {type: 'doc', id: 'tavern/index'}, items: []},
+        {type: 'category', label: 'Compass', link: {type: 'doc', id: 'compass/index'}, items: ['compass/getting-started']},
         {
           type: 'category',
           label: 'Office Suite',
@@ -192,15 +137,82 @@ const sidebars: SidebarsConfig = {
         {type: 'category', label: 'Mandelbrot', link: {type: 'doc', id: 'mandelbrot/index'}, items: ['mandelbrot/features']},
         {type: 'category', label: 'Blueshell', link: {type: 'doc', id: 'blueshell/index'}, items: []},
         {type: 'category', label: 'Ghostty', className: 'sidebar-external', link: {type: 'doc', id: 'ghostty/index'}, items: []},
-        {type: 'category', label: 'GNOME Hive Monitor', link: {type: 'doc', id: 'gnome-hive-monitor/index'}, items: [
-          'gnome-hive-monitor/observability',
-          'gnome-hive-monitor/CONTRIBUTING', 'gnome-hive-monitor/ROADMAP']},
+        {type: 'category', label: 'GNOME Hive Monitor', link: {type: 'doc', id: 'gnome-hive-monitor/index'}, items: ['gnome-hive-monitor/observability']},
         {type: 'category', label: 'Quickcast', link: {type: 'doc', id: 'quickcast/index'}, items: []},
+      ],
+    },
+    {
+      type: 'category',
+      label: 'For developers',
+      collapsed: true,
+      // Roadmaps, contributor guides, specs, architecture and test notes.
+      // Readers who only want to install and use TunaOS never need these, so
+      // they stay out of the sections above.
+      items: [
+        {type: 'category', label: 'TunaOS', items: [
+          'tunaos/ROADMAP', 'tunaos/CONTRIBUTING', 'tunaos/SECURITY', 'tunaos/hacktoberfest-2026',
+          'architecture', 'site-architecture', 'tunaos/building', 'tunaos/platform-engineering',
+          'tunaos/live-iso-generation', 'tunaos/ci-cd', 'sync-org-docs-guide']},
+        {type: 'category', label: 'Tromsø', items: ['tromso/SPEC', 'tromso/ROADMAP', 'tromso/SECURITY', 'tromso/CONTRIBUTING', 'tromso/ci-and-iso-pipeline']},
+        {type: 'category', label: 'XFCE Linux', items: ['xfce-linux/docs-README', 'xfce-linux/PROJECT_STATUS', 'xfce-linux/CONTRIBUTING', 'xfce-linux/ROADMAP', 'xfce-linux/SECURITY', 'xfce-linux/ci-and-iso-pipeline']},
+        {type: 'category', label: 'wootc', items: ['wootc/ROADMAP', 'wootc/CONTRIBUTING']},
+        {type: 'category', label: 'Tacklebox', items: ['tacklebox/ARCHITECTURE', 'tacklebox/github-iso-setup', 'tacklebox/TODO', 'tacklebox/ROADMAP', 'tacklebox/SECURITY', 'tacklebox/CONTRIBUTING', 'tacklebox/opfs-streaming-handoff']},
+        {type: 'category', label: 'Corral', items: [
+          'corral/ROADMAP', 'corral/SPEC', 'corral/architecture', 'corral/api', 'corral/backend-support', 'corral/backend-parity',
+          'corral/ci-boot-gate', 'corral/first-party-plugins', 'corral/kubevirt-proxmox-setup', 'corral/plugin-marketplace',
+          'corral/proxmox-api', 'corral/testing']},
+        {type: 'category', label: 'bluefin-cli', items: ['bluefin-cli/ROADMAP', 'bluefin-cli/CONTRIBUTING']},
+        {type: 'category', label: 'bootc-migrate', items: [
+          'bootc-migrate/architecture', 'bootc-migrate/luks-testing', 'bootc-migrate/testing', 'bootc-migrate/references',
+          'bootc-migrate/ROADMAP', 'bootc-migrate/CONTRIBUTING', 'bootc-migrate/cfs-cli-generations']},
+        {type: 'category', label: 'Flatpak', items: [
+          'flatpak-remote-operations', 'flatpak-index/index', 'flatpak-index/METAINFO', 'flatpak-index/SCREENSHOTS',
+          'flatpak-index/OBSERVABILITY', 'flatpak-index/CONTRIBUTING', 'flatpak-index/ROADMAP']},
+        {type: 'category', label: 'tunaos-packages', link: {type: 'doc', id: 'tunaos-packages/index'}, items: [
+          'tunaos-packages/ARCHITECTURE', 'tunaos-packages/PACKAGE_FACTORY', 'tunaos-packages/PATCH_POLICY', 'tunaos-packages/ROADMAP',
+          'tunaos-packages/SECURITY', 'tunaos-packages/TIDEFORGE-READINESS', 'tunaos-packages/UPSTREAM_PARITY', 'tunaos-packages/XFWL4-PORTING',
+          'tunaos-packages/hummingbird-desktop-gap', 'tunaos-packages/CONTRIBUTING']},
+        {type: 'category', label: 'Spindle', items: [
+          'spindle/SPEC', 'spindle/conformance-testing', 'spindle/releasing', 'spindle/CONTRIBUTING', 'spindle/ROADMAP', 'spindle/SECURITY']},
+        {type: 'category', label: 'Hive', items: [
+          'hive/architecture', 'hive/federation-design', 'hive/development', 'hive/CONTRIBUTING', 'hive/ROADMAP', 'hive/SECURITY']},
+        {type: 'category', label: 'Protota', items: [
+          'protota/diagnostics-design', 'protota/render-api', 'protota/runtime-probe', 'protota/source-widget-architecture',
+          'protota/OBSERVABILITY_ASSESSMENT', 'protota/CONTRIBUTING', 'protota/ROADMAP', 'protota/SECURITY']},
+        {type: 'category', label: 'bootc-installer', items: [
+          'bootc-installer/MIGRATION', 'bootc-installer/PARITY', 'bootc-installer/RELEASE', 'bootc-installer/DESIGN-AUDIT',
+          'bootc-installer/CONTRIBUTING', 'bootc-installer/ROADMAP']},
+        {type: 'category', label: 'bootc-installer-asahi', items: [
+          'bootc-installer-asahi/UNIFIED-INSTALL-CONTRACT', 'bootc-installer-asahi/TESTING-CHECKLIST', 'bootc-installer-asahi/DESIGN',
+          'bootc-installer-asahi/CONTRIBUTING', 'bootc-installer-asahi/ROADMAP']},
+        {type: 'category', label: 'Apps', items: [
+          'tavern/ROADMAP', 'tavern/CONTRIBUTING', 'compass/CONTRIBUTING',
+          'gnome-hive-monitor/CONTRIBUTING', 'gnome-hive-monitor/ROADMAP']},
+        {
+          type: 'category',
+          label: 'Archived',
+          // Retired repositories and images. The pages stay published so old
+          // links still land somewhere, but nothing here is installable today.
+          items: [
+            {type: 'doc', id: 'tromso-iso/index', label: 'Tromsø ISO'},
+            {type: 'doc', id: 'dakota-iso/index', label: 'Dakota ISO'},
+            {type: 'doc', id: 'xfce-linux-iso/index', label: 'XFCE Linux ISO'},
+            {type: 'doc', id: 'ubuntu-26-04-iso/index', label: 'Ubuntu 26.04 ISO'},
+            {type: 'doc', id: 'bonito-x13s/index', label: 'Bonito X13s'},
+            {type: 'doc', id: 'dakota-x13s/index', label: 'Dakota X13s'},
+            {type: 'doc', id: 'ubuntu/index', label: 'Ubuntu'},
+            {type: 'doc', id: 'bootc-installer-tui/index', label: 'bootc-installer-tui'},
+            {type: 'doc', id: 'chunkah/index', label: 'chunkah'},
+            {type: 'doc', id: 'tuna-installer-cosmic/gui-walkthrough', label: 'COSMIC installer walkthrough'},
+            {type: 'doc', id: 'tuna-installer-kde/gui-walkthrough', label: 'KDE installer walkthrough'},
+            {type: 'doc', id: 'tuna-installer-niri/gui-walkthrough', label: 'Niri installer walkthrough'},
+            {type: 'doc', id: 'tuna-installer-xfce/gui-walkthrough', label: 'XFCE installer walkthrough'},
+          ],
+        },
       ],
     },
     {type: 'html', value: '<div class="sidebar-section-label">Community</div>', defaultStyle: true},
     'community',
-    'sync-org-docs-guide',
     {type: 'category', label: 'Dakota (Bluefin)', className: 'sidebar-external', link: {type: 'doc', id: 'dakota/index'}, items: ['dakota/migration']},
   ],
 };

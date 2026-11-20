@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "tuna-installer-xfce"
+title: "tuna-installer-xfce"
+hide_title: true
 
 status: unknown
 ---

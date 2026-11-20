@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 sidebar_label: "Mariner"
+title: "Mariner"
 status: alpha
 ---
 

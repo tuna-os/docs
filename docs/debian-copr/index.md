@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "debian-copr"
+title: "debian-copr"
+hide_title: true
 
 status: unknown
 ---

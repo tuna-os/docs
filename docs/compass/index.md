@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "compass"
+title: "compass"
+hide_title: true
 
 status: unknown
 ---
@@ -12,7 +14,7 @@ status: unknown
   <p>
     <a href="https://github.com/tuna-os/compass/actions/workflows/rust.yaml"><img src="https://github.com/tuna-os/compass/actions/workflows/rust.yaml/badge.svg" alt="Rust CI" /></a>
     <a href="https://github.com/tuna-os/compass/actions/workflows/flatpak.yaml"><img src="https://github.com/tuna-os/compass/actions/workflows/flatpak.yaml/badge.svg" alt="Flatpak CI" /></a>
-    <a href="LICENSE"><img src="https://img.shields.io/github/license/tuna-os/compass" alt="GPL-3.0 license" /></a>
+    <a href="https://github.com/tuna-os/compass/blob/main/LICENSE"><img src="https://img.shields.io/github/license/tuna-os/compass" alt="GPL-3.0 license" /></a>
   </p>
   <p><a href="https://tunaos.org/compass">tunaos.org/compass</a></p>
 </div>

@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "bst-ci"
+title: "bst-ci"
+hide_title: true
 
 status: unknown
 ---

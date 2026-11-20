@@ -37,29 +37,36 @@ the most recent available.
 
 Bonito is **Experimental** now. We do not recommend it for production. It is good if you want to test the future of the Linux desktop.
 
-## Downloads
+## Images
 
-**Image:** `ghcr.io/tuna-os/bonito:latest`
+Each desktop is a separate image tag:
 
-**ISOs:**
-- [Experimental Builds](https://download.tunaos.org/experimental/)
+| Desktop | Image |
+| --- | --- |
+| GNOME | `ghcr.io/tuna-os/bonito:gnome` |
+| GNOME with the HWE (hardware enablement) kernel | `ghcr.io/tuna-os/bonito:gnome-hwe` |
+| KDE Plasma | `ghcr.io/tuna-os/bonito:kde` |
+| COSMIC | `ghcr.io/tuna-os/bonito:cosmic` |
+| Niri | `ghcr.io/tuna-os/bonito:niri` |
+| GNOME with NVIDIA drivers and CUDA | `ghcr.io/tuna-os/bonito:gnome-nvidia` |
 
-## Installation
+## Install
 
-### Using Container Image
+To install Bonito on a PC, go to [Download TunaOS](/download). That page
+gives you the installer and the steps for your computer. For an Apple Silicon
+Mac, read [Apple Silicon Macs](apple-silicon.md) first.
+
+## Switch from another bootc system
+
+If your computer runs a bootc system now, for example Bluefin or a different
+TunaOS variant, use [bootc-migrate](/docs/bootc-migrate):
+
 ```bash
-podman pull ghcr.io/tuna-os/bonito:latest
+sudo bootc-migrate --target-image ghcr.io/tuna-os/bonito:gnome
 ```
 
-### Building ISO with Just
-```bash
-# Clone the repo
-git clone https://github.com/tuna-os/tunaOS.git
-cd tunaOS
-
-# Build Bonito ISO
-just build-iso bonito
-```
+Then restart the computer. For a different desktop, change the tag, for
+example to `:kde`. Do not use the `:latest` tag.
 
 ## Community Support
 

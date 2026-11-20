@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "wootc"
+title: "wootc"
+hide_title: true
 
 status: unknown
 ---

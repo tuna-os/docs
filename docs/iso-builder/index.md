@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "iso-builder"
+title: "iso-builder"
+hide_title: true
 
 status: unknown
 ---

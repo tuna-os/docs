@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "bootc-installer-tui"
+title: "bootc-installer-tui"
+hide_title: true
 
 status: archived
 ---

@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "bonito-x13s"
+title: "bonito-x13s"
+hide_title: true
 
 status: archived
 ---
