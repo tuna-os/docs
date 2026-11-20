@@ -122,7 +122,7 @@ just qcow2 yellowfin gnome
 
 ## Building for RHEL (Redfin)
 
-Redfin requires a Red Hat subscription. See [Redfin Setup](https://github.com/tuna-os/tunaOS/blob/main/../rhel-setup.md) for prerequisites. Then:
+Redfin requires a Red Hat subscription. See [Redfin Setup](https://github.com/tuna-os/tunaOS/blob/main/docs/rhel-setup.md) for prerequisites. Then:
 
 ```bash
 just build redfin base
@@ -149,11 +149,11 @@ just clean-cache
 
 ## Switching an Existing System
 
-If you're running a bootc-based OS:
+If you're running a bootc-based OS, use [bootc-migrate](/docs/bootc-migrate):
 
 ```bash
 # Switch to TunaOS
-sudo bootc switch ghcr.io/tuna-os/yellowfin:gnome
+sudo bootc-migrate --target-image ghcr.io/tuna-os/yellowfin:gnome
 ```
 
 ## Verification

@@ -37,7 +37,7 @@ See the full [Contributor Guide](https://github.com/tuna-os/tunaOS/blob/main/CON
 | Level | What you do | How to start |
 |---|---|---|
 | **Tester** | Run images, report bugs | Install any variant, open issues |
-| **Contributor** | Fix bugs, improve docs | Pick a [starter issue](https://github.com/issues?q=org%3Atuna-os+is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22), open PRs |
+| **Contributor** | Fix bugs, improve docs | Pick a [starter issue](https://github.com/search?q=org%3Atuna-os+is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22&type=issues), open PRs |
 | **Maintainer** | Own a desktop flavor or variant | Build regularly, review PRs, earn trust |
 
 All contributors must follow our [Code of Conduct](https://github.com/tuna-os/tunaOS/blob/main/CODE_OF_CONDUCT.md).
@@ -55,7 +55,6 @@ If your organization uses TunaOS, we'd love to know!
 | Resource | Description |
 |---|---|
 | [Roadmap](https://github.com/tuna-os/tunaOS/blob/main/ROADMAP.md) | Project direction and feature status |
-| [COMMUNITY.md](https://github.com/tuna-os/tunaOS/blob/main/COMMUNITY.md) | Contribution ladder and governance |
 | [MAINTAINERS.md](https://github.com/tuna-os/tunaOS/blob/main/MAINTAINERS.md) | Maintainer playbook |
 | [Migration Guide](https://github.com/tuna-os/tunaOS/blob/main/MIGRATION.md) | Switch from Fedora Atomic / other distros |
 | [Security Policy](https://github.com/tuna-os/tunaOS/blob/main/SECURITY.md) | Vulnerability reporting |

@@ -40,45 +40,21 @@ To see every variant side by side, read [Choose a variant](./choosing-a-variant)
 - **NVIDIA support**: `-nvidia` flavors add `nvidia-open-dkms` via pacman +
   dkms (Arch has no akmods/RPM equivalent).
 
-## Downloads
+## Images
 
-TunaOS publishes its pre-built ISOs for the GNOME and KDE flavors. Other
-flavors are available as container images only.
+Each desktop is a separate image tag:
 
-### GNOME (Standard)
-**Image:** `ghcr.io/tuna-os/marlin:gnome`
+| Desktop | Image |
+| --- | --- |
+| GNOME | `ghcr.io/tuna-os/marlin:gnome` |
+| KDE Plasma | `ghcr.io/tuna-os/marlin:kde` |
+| COSMIC | `ghcr.io/tuna-os/marlin:cosmic` |
+| Niri | `ghcr.io/tuna-os/marlin:niri` |
+| XFCE | `ghcr.io/tuna-os/marlin:xfce` |
 
-**ISOs:** [marlin-gnome-latest.iso](https://download.tunaos.org/live-isos/marlin-gnome-latest.iso)
-
-<a id="kde"></a>
-### KDE Plasma
-**Image:** `ghcr.io/tuna-os/marlin:kde`
-
-**ISOs:** [marlin-kde-latest.iso](https://download.tunaos.org/live-isos/marlin-kde-latest.iso)
-
-<a id="cosmic"></a>
-### COSMIC
-**Image:** `ghcr.io/tuna-os/marlin:cosmic`
-
-<a id="niri"></a>
-### Niri
-**Image:** `ghcr.io/tuna-os/marlin:niri`
-
-<a id="xfce"></a>
-### XFCE
-**Image:** `ghcr.io/tuna-os/marlin:xfce`
-
-<a id="cachyos"></a>
-### CachyOS kernel overlay
-Adds the CachyOS performance-tuned kernel on top of any desktop flavor above.
-
-**Images:** `ghcr.io/tuna-os/marlin:gnome-cachyos`, `:kde-cachyos`, `:cosmic-cachyos`, `:niri-cachyos`, `:xfce-cachyos`
-
-<a id="nvidia"></a>
-### NVIDIA (NVIDIA drivers + CUDA)
-Adds `nvidia-open-dkms` and CUDA for AI, graphics, and VFX workloads, via pacman + dkms.
-
-**Images:** `ghcr.io/tuna-os/marlin:gnome-nvidia`, `:kde-nvidia`, `:cosmic-nvidia`, `:niri-nvidia`, `:xfce-nvidia`
+Add `-cachyos` to a desktop tag for the CachyOS kernel, for example
+`:gnome-cachyos`. Add `-nvidia` for the NVIDIA drivers and CUDA, for example
+`:gnome-nvidia`.
 
 :::note[Apple Silicon]
 TunaOS publishes a `gnome-asahi` image, but it is **not** a supported way to
@@ -90,22 +66,22 @@ not available for Apple Silicon Macs yet: see
 [Apple Silicon Macs](apple-silicon.md).
 :::
 
-## Installation
+## Install
 
-### Using Container Image
+To install Marlin on a PC, go to [Download TunaOS](/download). That page
+gives you the installer and the steps for your computer.
+
+## Switch from another bootc system
+
+If your computer runs a bootc system now, for example Bluefin or a different
+TunaOS variant, use [bootc-migrate](/docs/bootc-migrate):
+
 ```bash
-podman pull ghcr.io/tuna-os/marlin:latest
+sudo bootc-migrate --target-image ghcr.io/tuna-os/marlin:gnome
 ```
 
-### Building ISO with Just
-```bash
-# Clone the repo
-git clone https://github.com/tuna-os/tunaOS.git
-cd tunaOS
-
-# Build Marlin ISO
-just build-iso marlin
-```
+Then restart the computer. For a different desktop, change the tag, for
+example to `:kde`. Do not use the `:latest` tag.
 
 ## Known limitations
 

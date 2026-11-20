@@ -72,7 +72,7 @@ install them, and distribute them:
 - **[Tacklebox](/docs/tacklebox)** — makes multi-boot USB drives, disk images,
   and deduplicated ISOs from OCI images.
 - **[Tromsø](/docs/tromso)** (KDE), **[XFCE Linux](/docs/xfce-linux)**, and
-  **[Dakota](https://github.com/tuna-os/tunaos)** (GNOME) — "distroless"
+  **[Dakota](/dakota)** (GNOME) — "distroless"
   desktops. A declarative BuildStream pipeline makes them on top of the
   [Freedesktop SDK](https://freedesktop-sdk.io/).
 - **[tunaos-packages](/docs/tunaos-packages)** — the RPM build system. It

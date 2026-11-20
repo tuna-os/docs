@@ -121,6 +121,6 @@ This design provides:
 
 ## Getting Started
 
-1. **[Install from ISO](#)** — download a pre-built ISO and install
-2. **[Build your own](https://github.com/tuna-os/tunaOS/blob/main/building.md)** — build images locally with `just` and `podman`
-3. **[Switch an existing system](building.md#switching-an-existing-system)** — `bootc switch` from another bootc-based OS
+1. **[Install TunaOS](/download)** — make a USB installer and install
+2. **[Build your own](building.md)** — build images locally with `just` and `podman`
+3. **[Switch an existing system](building.md#switching-an-existing-system)** — `bootc-migrate` from another bootc-based OS

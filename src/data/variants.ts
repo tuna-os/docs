@@ -140,7 +140,7 @@ const VARIANT_METADATA: Omit<Variant, 'platforms'>[] = [
     emoji: '🐠',
     name: 'Yellowfin',
     base: 'AlmaLinux Kitten 10',
-    baseUrl: 'https://almalinux.org/blog/2024-11-20-introducing-almalinux-kitten-10/',
+    baseUrl: 'https://wiki.almalinux.org/development/almalinux-os-kitten-10.html',
     blurb: 'Newer packages on a near-enterprise base. The developer pick.',
     lede:
       "Yellowfin tracks AlmaLinux Kitten — the upstream-tracking branch of AlmaLinux. Newer packages and features land here first, on a base that's still almost enterprise-stable. The lead developer's daily driver.",
@@ -174,7 +174,7 @@ const VARIANT_METADATA: Omit<Variant, 'platforms'>[] = [
     emoji: '🍣',
     name: 'Skipjack',
     base: 'CentOS Stream 10',
-    baseUrl: 'https://www.centos.org/stream/',
+    baseUrl: 'https://www.centos.org/centos-stream/',
     blurb: 'Upstream-tracking — a preview of where Enterprise Linux is headed.',
     lede:
       'Skipjack rides CentOS Stream 10, the rolling preview of the next RHEL. It’s where you see what’s coming to Enterprise Linux next — ideal for testing and contributing upstream.',
