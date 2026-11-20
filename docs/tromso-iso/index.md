@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "tromso-iso"
+title: "tromso-iso"
+hide_title: true
 
 status: archived
 ---

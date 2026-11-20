@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "gnome-hive-monitor"
+title: "gnome-hive-monitor"
+hide_title: true
 
 status: unknown
 ---

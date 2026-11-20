@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "bootc-migrate"
+title: "bootc-migrate"
+hide_title: true
 
 status: unknown
 ---

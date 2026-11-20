@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "compass"
+title: "compass"
+hide_title: true
 
 status: unknown
 ---

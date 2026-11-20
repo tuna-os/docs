@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "iced"
+title: "iced"
+hide_title: true
 
 status: unknown
 ---

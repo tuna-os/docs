@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "xfce-linux-iso"
+title: "xfce-linux-iso"
+hide_title: true
 
 status: archived
 ---

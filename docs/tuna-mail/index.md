@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "tuna-mail"
+title: "tuna-mail"
+hide_title: true
 
 status: unknown
 ---

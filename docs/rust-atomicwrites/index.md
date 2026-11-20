@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "rust-atomicwrites"
+title: "rust-atomicwrites"
+hide_title: true
 
 status: unknown
 ---

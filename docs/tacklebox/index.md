@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "Tacklebox"
+title: "Tacklebox"
+hide_title: true
 
 status: stable
 ---

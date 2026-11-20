@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "Tavern"
+title: "Tavern"
+hide_title: true
 
 status: stable
 ---

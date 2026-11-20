@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 sidebar_label: "bluefin-cli"
+title: "bluefin-cli"
+hide_title: true
 
 status: stable
 ---
