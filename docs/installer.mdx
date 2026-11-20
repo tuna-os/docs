@@ -1,31 +1,173 @@
 ---
 sidebar_position: 7
+title: Install TunaOS
+sidebar_label: Install TunaOS
+description: The installer screens, one by one, and the first setup after the install.
 ---
 
-# Installer
+# Install TunaOS
 
 import InstallerWalkthrough, {numberedSteps} from '@site/src/components/InstallerWalkthrough';
 
-<InstallerWalkthrough
-  title="See it before you run it"
-  subtitle="These are real captures. Each week a workflow boots a new live ISO in QEMU, moves through the installer, and publishes each step."
-/>
+The computer started from the USB stick, and TunaOS shows its desktop. The
+installer opens automatically. (Did the computer start Windows or macOS
+again? Read [Start your computer from the USB stick](start-from-usb.md).)
+
+:::warning The installer erases the drive
+The installer erases all data on the drive that you select, with Windows or
+macOS and all files on it. Back up your files first. To keep Windows, use
+[wootc](https://tunaos.org/wootc) instead.
+:::
 
 <InstallerWalkthrough
-  title="COSMIC flow"
-  subtitle="The same journey on the COSMIC desktop variant."
+  title="See it before you run it"
+  subtitle="These are real captures of the installer on the COSMIC desktop. The installer on other desktops has the same steps."
   prefix="cosmic_"
 />
 
-There are four independent frontends: KDE, COSMIC, Niri and XFCE. A smoke
-test captures each one every week. The test boots the frontend, then moves
-through it. It makes a screenshot at each step and reads the screen with OCR
-to make sure the step is correct.
+## Part 1: Install to the drive
+
+### Step 1 — Welcome
+
+The welcome screen shows the name of your image and gives you three options:
+
+- **Install**: start the installation.
+- **Try**: close the installer and use TunaOS from the USB stick first. To
+  install later, open the installer from the desktop.
+- **Accessibility**: open the accessibility settings.
+
+### Step 2 — Select the drive
+
+Select the drive for TunaOS. The installer uses the full drive. It does not
+keep other systems or partitions on it.
+
+#### Encryption
+
+Set **Encrypt this disk** to on to protect your files with a passphrase.
+The installer asks for the passphrase two times.
+
+If your computer has a TPM 2.0 chip, you can also set **TPM unlock** to on.
+The computer then unlocks the drive automatically at each start, and you do
+not type the passphrase each time. TPM unlock needs encryption.
+
+#### File system
+
+The installer selects a file system for you. Keep the default if you are
+not sure.
+
+| Image | File systems | Default |
+|---|---|---|
+| Albacore, Skipjack | XFS, ext4 | XFS |
+| Yellowfin, Bonito | XFS, Btrfs, Btrfs (subvolumes), ext4 | Btrfs (subvolumes) |
+
+### Step 3 — Confirm
+
+Examine the drive and the options, then confirm. This is the last step
+where you can go back. After this step, the installer erases the drive.
+
+### Step 4 — Wait for the installation
+
+The screen shows the progress. The installation usually takes 5 to 15
+minutes. The computer must stay on the internet during this step.
+
+### Step 5 — Done
+
+The installer asks you to restart. Remove the USB stick when the screen
+goes dark.
+
+## Part 2: First setup
+
+TunaOS starts from the drive. First Setup opens one time and asks for:
+
+1. **Language**.
+2. **Keyboard layout**.
+3. **Time zone**.
+4. **Computer name**, the name of the computer on your network, for example
+   `james-laptop`.
+5. **User account**: your full name, a user name and a password.
+6. **Theme**: light or dark.
+7. **Applications**: more applications from Flathub, if you want them.
+
+First Setup then installs the applications that you selected. This can
+take some minutes. Then your desktop opens.
+
+## Recovery key
+
+If you set encryption to on, the installer shows a **recovery key** after
+the installation. Keep the key in a safe place. The key unlocks your drive
+if you forget the passphrase, or if TPM unlock does not work.
+
+## After the installation
+
+- Get more applications from the **Software** application (Flathub).
+- TunaOS gets each update as a full new system. The computer keeps the
+  previous version too. If an update causes a problem, see
+  [Rollback and updates](bootc-rollback.md).
+- To change the desktop or the image later, see the [FAQ](faq.md).
+
+## Problems
+
+### The installer does not open
+
+Make sure that the computer started from the **UEFI** entry of the USB
+stick. TunaOS does not start in the old "Legacy" or "CSM" mode. See
+[Start your computer from the USB stick](start-from-usb.md).
+
+### The installer shows no drives
+
+The installer shows full drives only, not partitions. In a virtual machine,
+add a virtual disk first.
+
+### The installation stops or fails
+
+- Make sure that the internet connection works. The installer downloads
+  part of TunaOS during the installation.
+- Make sure that the drive has 20 GB or more.
+- Look for your problem in
+  [GitHub Issues](https://github.com/tuna-os/tunaOS/issues), or ask in the
+  [Matrix chat](https://matrix.to/#/%23tunaos:reilly.asia).
+
+### TPM unlock stops after a Secure Boot change
+
+TPM unlock uses the Secure Boot settings from the time of the installation.
+If you change the Secure Boot settings, enroll the TPM again:
+
+```bash
+sudo systemd-cryptenroll --tpm2-device=auto --wipe-slot=tpm2 /dev/your-disk
+```
+
+## For developers
+
+TunaOS installs with **bootc-installer**. There is one installer frontend
+for each desktop, in the toolkit of that desktop. GNOME uses GTK4 and
+Libadwaita, KDE uses Qt Widgets, COSMIC uses Iced, Niri uses a TUI and XFCE
+uses GTK3.
+All frontends use the same `fisherman` backend, which runs
+`bootc install to-disk`. The live session sets the `tunaos.live=1` kernel
+argument, and the installer starts when it finds that argument.
+
+Each week, a smoke test starts each frontend in QEMU and moves through it.
+It makes a screenshot at each step and reads the screen with OCR to make
+sure the step is correct. These are the captures:
+
+<InstallerWalkthrough
+  title="GNOME frontend"
+  subtitle="Automated launch-and-navigate capture on the GNOME variant."
+  prefix="smoke-gnome_"
+  steps={numberedSteps(9)}
+/>
 
 <InstallerWalkthrough
   title="KDE frontend"
   subtitle="Automated launch-and-navigate capture on the KDE variant."
   prefix="smoke-kde_"
+  steps={numberedSteps(9)}
+/>
+
+<InstallerWalkthrough
+  title="COSMIC frontend"
+  subtitle="Automated launch-and-navigate capture on the COSMIC variant."
+  prefix="smoke-cosmic_"
   steps={numberedSteps(9)}
 />
 
@@ -43,177 +185,10 @@ to make sure the step is correct.
   steps={numberedSteps(9)}
 />
 
-TunaOS installs with **bootc-installer**. This is no longer one GTK4 and
-Libadwaita application. There is now one frontend for each desktop: KDE,
-COSMIC, Niri and XFCE.
+The source of each frontend:
 
-Each frontend uses the toolkit of its desktop. KDE uses Qt Widgets, COSMIC
-uses Iced, Niri uses a TUI, and XFCE uses GTK3. Thus the installer agrees
-with the session that it runs in. Before, each desktop received the same
-application, in the GNOME style. All frontends use the same `fisherman` bootc install
-backend.
-
-> The steps that follow are the same for each frontend. But the position of
-> the controls is different in each one. The captures above show you the
-> appearance of each frontend.
-
----
-
-## Part 1: Installing to Disk
-
-When you boot from a live ISO, the installer starts automatically. It finds
-the live environment with the `tunaos.live=1` kernel parameter.
-
-### Step 1 — Welcome
-
-The welcome screen shows your variant's name and emoji and gives you three options:
-
-- **Install** — begin the installation wizard
-- **Try** — close the installer and examine the live desktop first
-- **Accessibility** — open GNOME accessibility settings
-
-### Step 2 — Disk Selection
-
-Choose the disk for the installation, then set the partition options.
-
-#### Filesystem
-
-| Variant | Available filesystems | Default |
-|---|---|---|
-| Albacore, Skipjack | XFS, ext4 | XFS |
-| Yellowfin, Bonito | XFS, Btrfs, Btrfs (subvolumes), ext4 | Btrfs (subvolumes) |
-
-> Btrfs is not available on the EL-based variants, Albacore and Skipjack.
-> Their kernel gives only limited support for it.
-
-#### Full Disk Encryption (FDE)
-
-Set **Encrypt this disk** to on. This starts LUKS encryption of the full
-disk. The installer then asks you for a passphrase two times.
-
-#### TPM Unlock
-
-If your system has a TPM 2.0 chip, you can set **TPM unlock** to on. The
-system then decrypts the disk automatically at each boot, and you do not
-give the passphrase each time. This option needs FDE.
-
-> ⚠️ The installer erases all data on the target disk. Make a backup first.
-
-### Step 3 — Confirm
-
-Examine your choices of disk, filesystem and encryption, then confirm. This
-is the last point where you can go back. After this, the installer writes to
-the disk.
-
-### Step 4 — Installation
-
-The installer runs `bootc install to-disk`. Experimental unified storage is
-on. The screen shows the progress. This usually needs 5 to 15 minutes. The
-speed of your hardware and your network changes this time.
-
-### Step 5 — Done
-
-When the installation is complete, the installer asks you to reboot. Remove
-the USB drive before the system starts again.
-
----
-
-## Part 2: First Boot Setup
-
-Boot your new installation. First Setup then runs one time and configures
-your system.
-
-### Language
-
-Select the language that you want. This sets the system locale.
-
-### Keyboard Layout
-
-Choose your keyboard layout.
-
-### Timezone & Location
-
-Set your timezone. The system clock uses it.
-
-### Hostname
-
-Set a name for your machine on the network (e.g. `james-laptop`).
-
-### User Account
-
-Create your primary user account:
-- Full name
-- Username
-- Password
-
-### Theme
-
-Choose between light and dark mode for the GNOME desktop.
-
-### Applications
-
-Select more Flatpak applications from Flathub. The image already contains
-the core applications.
-
-### Setup Progress
-
-First Setup installs the applications that you selected and applies the
-system configuration. This can need some minutes.
-
-### Done
-
-Your system is ready. First Setup does not run again at the next boots.
-
----
-
-## Recovery Key
-
-If you set Full Disk Encryption to on, the installer makes a **recovery
-key**. It shows the key after the installation. Keep the key in a safe
-place. The key unlocks your disk if you forget the passphrase, or if TPM
-unlock does not operate.
-
----
-
-## Troubleshooting
-
-### Installer doesn't launch on boot
-
-Make sure that you boot from the ISO in UEFI mode. The live environment
-needs UEFI. It does not support a legacy BIOS boot.
-
-### No disks shown in disk selection
-
-The installer shows only full block devices. In a VM, attach a virtual
-disk first. The installer does not show the partitions of a
-disk one by one. It selects the full disk and makes new partitions on it.
-
-### Installation fails or stalls
-
-- Make sure that your network connection operates. The installer gets the
-  container image during the installation
-- Make sure that the target disk has 20 GB or more of free space
-- Examine [GitHub Issues](https://github.com/tuna-os/tunaOS/issues) for
-  known problems
-
-### TPM unlock not working after install
-
-TPM unlock uses the secure boot state at the time of the installation. If
-you change the secure boot settings later, enroll again:
-
-```bash
-sudo systemd-cryptenroll --tpm2-device=auto --wipe-slot=tpm2 /dev/your-disk
-```
-
----
-
-## Source
-
-Each frontend has its own repository. All of them use the same `fisherman`
-bootc install backend:
-
-- [tuna-os/bootc-installer](https://github.com/tuna-os/bootc-installer) — GNOME/Libadwaita, the default flow captured above
-- [tuna-os/tuna-installer-kde](https://github.com/tuna-os/tuna-installer-kde) — Qt6 Widgets
-- [tuna-os/tuna-installer-cosmic](https://github.com/tuna-os/tuna-installer-cosmic) — Iced/Rust
-- [tuna-os/tuna-installer-niri](https://github.com/tuna-os/tuna-installer-niri) — TUI
-- [tuna-os/tuna-installer-xfce](https://github.com/tuna-os/tuna-installer-xfce) — GTK3
+- [tuna-os/bootc-installer](https://github.com/tuna-os/bootc-installer): GNOME and Libadwaita
+- [tuna-os/tuna-installer-kde](https://github.com/tuna-os/tuna-installer-kde): Qt6 Widgets
+- [tuna-os/tuna-installer-cosmic](https://github.com/tuna-os/tuna-installer-cosmic): Iced and Rust
+- [tuna-os/tuna-installer-niri](https://github.com/tuna-os/tuna-installer-niri): TUI
+- [tuna-os/tuna-installer-xfce](https://github.com/tuna-os/tuna-installer-xfce): GTK3

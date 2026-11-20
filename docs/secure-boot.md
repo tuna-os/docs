@@ -101,7 +101,7 @@ To enroll the TunaOS MOK key into your system's MOK database:
 
 After enrollment, the NVIDIA kernel modules (`nvidia.ko`, `nvidia-drm.ko`, etc.) load cleanly with Secure Boot enabled.
 
-For variant-specific driver details, see the [Installation Guide](installation.md#nvidia-formerly-gdx).
+For the NVIDIA images, see [the variant guide](choosing-a-variant.md).
 
 ---
 
@@ -125,6 +125,6 @@ For variant-specific driver details, see the [Installation Guide](installation.m
 ## Related Documentation
 
 - [System Requirements](system-requirements.md)
-- [Installation Guide](installation.md)
+- [Start your computer from the USB stick](start-from-usb.md)
 - [LUKS & TPM 2.0 Reference](bootc-migrate/luks-testing.md)
 - [Runtime issues](tunaos/troubleshooting.md)

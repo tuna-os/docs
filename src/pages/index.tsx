@@ -91,7 +91,7 @@ function Hero(): ReactNode {
         <div className={styles.heroGrid}>
           <div className={styles.heroText}>
             <Heading as="h1" className={styles.heroTitle}>
-              <span className={styles.grad}>Enterprise Linux</span> desktop images, built with bootc.
+              <span className={styles.grad}>Enterprise Linux</span> desktops, ready to install.
             </Heading>
             <div className={styles.badgeRow}>
               <span className={styles.badge}>GNOME 50</span>
@@ -100,9 +100,9 @@ function Hero(): ReactNode {
               <span className={styles.badge}>Fedora 44</span>
             </div>
             <p className={styles.heroLede}>
-              TunaOS builds desktop images on AlmaLinux, CentOS Stream, Fedora and other
-              bases, with GNOME, KDE, COSMIC, Niri or XFCE. Every image is a bootc OCI
-              image: pull it, boot it, or rebase onto it.
+              TunaOS is a Linux desktop built on AlmaLinux, CentOS Stream, Fedora and other
+              systems, with GNOME, KDE, COSMIC, Niri or XFCE. Each update installs as one piece,
+              and you can go back to the previous version if something breaks.
               <br /><br />
               The org also maintains the tools that build and boot-test those images, a
               set of GTK4 applications published as Flatpaks, and RPM and DEB repositories for
@@ -110,10 +110,7 @@ function Hero(): ReactNode {
             </p>
             <div className={styles.btnGroup}>
               <Link className={clsx('button', styles.btnPrimary)} to="/download">
-                Download an ISO
-              </Link>
-              <Link className={clsx('button', styles.btnGhost)} to="/wootc">
-                Try it from Windows
+                Install TunaOS
               </Link>
               <Link className={clsx('button', styles.btnGhost)} to="/variants">
                 Compare images
@@ -159,33 +156,26 @@ function InstallPathsBand(): ReactNode {
     code?: string;
   }> = [
     {
-      icon: 'shield',
-      name: 'From Windows, reversibly',
-      desc: 'wootc installs a real Linux desktop into a single file beside your Windows files and adds a boot entry for it. No repartitioning, and uninstalling is deleting a folder.',
-      cta: 'How wootc works',
-      to: '/wootc',
+      icon: 'disc',
+      name: 'Make a USB installer',
+      desc: 'Recommended. TunaOS Media Writer puts TunaOS on a USB stick (16 GB or larger). Start the computer from it and install. This replaces the system on the computer.',
+      cta: 'Get Media Writer',
+      to: '/download#usb',
     },
     {
-      icon: 'disc',
-      name: 'From a USB stick',
-      desc: 'Write a live ISO, boot it, and install. Every main image publishes one, for x86_64 and arm64.',
-      cta: 'Download an ISO',
-      to: '/download',
+      icon: 'shield',
+      name: 'Try it from Windows, keep Windows',
+      desc: 'wootc installs TunaOS next to Windows, with no USB stick and no change to your Windows partitions. You choose TunaOS or Windows at each start.',
+      cta: 'Get wootc',
+      to: '/download#windows',
     },
     {
       icon: 'layers',
-      name: 'Rebase what you run',
-      desc: 'Already on bootc — Bluefin, Aurora, Fedora Atomic? bootc-migrate moves you to a TunaOS image, keeps /home, /var and /etc, and leaves the old deployment bootable until you commit.',
-      cta: 'bootc-migrate docs',
-      to: '/docs/bootc-migrate',
-      code: 'sudo bootc-migrate --target-image ghcr.io/tuna-os/albacore:gnome',
-    },
-    {
-      icon: 'wrench',
-      name: 'Build your own',
-      desc: 'Pick an image and your flatpak set, and the browser builds the ISO locally. The same engine CI uses for release media.',
-      cta: 'Open the builder',
-      to: '/iso-builder',
+      name: 'I already run Linux',
+      desc: 'On Bluefin, Aurora, Fedora Atomic or another bootc system, switch to TunaOS and keep your files. ISO files and the in-browser ISO builder are here too.',
+      cta: 'Switch, or get an ISO',
+      to: '/download#linux',
+      code: 'sudo bootc-migrate --target-image ghcr.io/tuna-os/yellowfin:gnome',
     },
   ];
 
@@ -195,7 +185,7 @@ function InstallPathsBand(): ReactNode {
         <SectionHead
           eyebrow="Install"
           title="Ways to install"
-          sub="Four routes onto a TunaOS image. All of them end on the same bootc system, and all of them are reversible."
+          sub="Three ways onto TunaOS. The download page walks you through each one."
         />
         <div className={styles.pathGrid}>
           {paths.map((p, i) => (
@@ -417,14 +407,14 @@ function FinalCta(): ReactNode {
           Install TunaOS
         </Heading>
         <p className={styles.ctaText}>
-          Download a live ISO, or rebase an existing bootc system onto a TunaOS image.
+          Make a USB installer, try it from Windows, or switch from another Linux system.
         </p>
         <div className={styles.btnGroup}>
           <Link className={clsx('button', styles.btnPrimary)} to="/download">
-            Browse all ISOs
+            Install TunaOS
           </Link>
-          <Link className={clsx('button', styles.btnGhost)} to="/docs/installation">
-            Install Guide
+          <Link className={clsx('button', styles.btnGhost)} to="/docs/start-from-usb">
+            Start from a USB stick
           </Link>
         </div>
       </div>

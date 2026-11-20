@@ -133,4 +133,4 @@ Toggle between modes from the panel or with `Super+Y`.
 - [System76 COSMIC Website](https://system76.com/cosmic) — official project page
 - [COSMIC GitHub](https://github.com/pop-os/cosmic-epoch) — source code
 - [Managing with Bootc](bootc-usage.md) — switching variants and updates
-- [GNOME Desktop](../installation.md) — TunaOS GNOME variant guide
+- [COSMIC quick start](../cosmic-quickstart.md) — the COSMIC desktop on TunaOS
