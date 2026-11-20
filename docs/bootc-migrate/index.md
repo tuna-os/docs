@@ -155,9 +155,11 @@ tool does not support a return from ComposeFS to OSTree.
 
 The wizard starts in dry-run mode. Press Enter to accept each screen, use ↑/↓
 to choose an image, and press Space on the options page to change a setting.
-For a live run, turn off dry-run there. The final review needs `CONFIRM` and
-Enter before anything changes. You need root for a migration, but you can
-browse the catalog without it.
+For a live run, turn off dry-run there, or press Enter after a successful
+dry-run to review and apply in the same session. The wizard then clears the
+old confirmation and does the readiness checks again. The final review needs
+`CONFIRM` and Enter before anything changes. You need root for a migration,
+but you can browse the catalog without it.
 
 ## Coming from a regular (non-bootc) install
 
@@ -306,6 +308,30 @@ ghcr.io/projectbluefin/dakota:stable     # default target
 
 For other OSTree systems (Aurora, Silverblue), set `--target-image` to the
 composefs equivalent.
+
+**Utah on OSTree → Utah on composefs.** Utah ships systemd-boot and the
+composefs initramfs module of bootc. Thus a Utah install that boots OSTree can
+change to the composefs backend with the image that it runs now. The OS stays the
+same; only the backend and the bootloader (GRUB → systemd-boot) change:
+
+```bash
+sudo bootc-migrate --target-image ghcr.io/projectbluefin/utah:testing --dry-run
+sudo bootc-migrate --target-image ghcr.io/projectbluefin/utah:testing
+```
+
+On such a host, `sudo bootc-migrate tui` offers this conversion as the
+first choice. Utah is pre-alpha, and its `utah -> utah` cell (btrfs on
+LUKS) is non-gating.
+
+> ⚠️ **Not on btrfs until the target's kernel has the btrfs fs-verity fix.**
+>
+> On btrfs, kernels from 7.2 on can reject data that is correct
+> (`fs-verity ... FILE CORRUPTED!` in `dmesg`). The composefs
+> store is fs-verity data. The first local run of the cell stopped at the integrity
+> check before it staged anything. A host that gets past the check can still
+> read `EIO` from its root later. The fix is linux-next `dcf8811f63af`; Utah
+> plans to ship Fedora's kernel rebuilt with it. Details and measurements are
+> in [docs/support-matrix.md](https://github.com/tuna-os/bootc-migrate/blob/main/docs/support-matrix.md#utah-ostree--utah-composefs).
 
 The target must share a base lineage with the source: its `ID_LIKE` must
 overlap yours, or both images must ship the same package manager. Bluefin,
@@ -652,8 +678,9 @@ Overridable via env: `BASE_IMAGE`, `TARGET_IMAGE`, `DISK_SIZE`,
 `E2E_PACKAGE_CROSS_FAMILY`.
 
 The full matrix is authoritative in `.github/e2e-scenarios.yml`. The nightly
-schedule runs it. Each PR and push to `main` runs a round-robin slice of the
-gating cells (see the [test guide](https://github.com/tuna-os/bootc-migrate/blob/main/docs/testing.md)):
+schedule runs alternate cells, so each cell runs every other night. Each PR
+and push to `main` runs a round-robin slice of the gating cells (see the
+[test guide](https://github.com/tuna-os/bootc-migrate/blob/main/docs/testing.md)):
 
 | Cell | Base → target | Filesystem | Disk |
 |---|---|---|---|
@@ -671,8 +698,11 @@ gating cells (see the [test guide](https://github.com/tuna-os/bootc-migrate/blob
 | cross-family migration (non-gating) | bluefin:stable → bootcrew/ubuntu-bootc:latest | btrfs | 60G |
 | cross-family migration (non-gating) | bluefin:stable → bootcrew/arch-bootc:latest | btrfs | 60G |
 | composefs → ostree (non-gating) | dakota:stable → fedora-bootc:44 | btrfs | 40G |
+| composefs → ostree, fault after ESP wipe (non-gating) | dakota:stable → fedora-bootc:44 | btrfs | 40G |
+| composefs → ostree, fault before BootNext (non-gating) | dakota:stable → fedora-bootc:44 | btrfs | 40G |
 | composefs → ostree, Dakota → Utah (non-gating) | dakota:stable → utah:testing | btrfs | 80G |
 | composefs image swap (non-gating) | dakota:stable → utah:testing | btrfs | 40G |
+| ostree → composefs, Utah → Utah (non-gating) | utah:testing → utah:testing | btrfs on LUKS | 60G |
 | cross-family image swap (non-gating) | tunaOS marlin:gnome → utah:testing | btrfs | 60G |
 | composefs → ostree, Marlin → Utah (non-gating) | tunaOS marlin:gnome → utah:testing | btrfs | 80G |
 | tunaOS desktop ring, ostree re-base with `--de-migrate` (4 cells, non-gating) | albacore gnome → niri → cosmic → xfce → gnome | btrfs | 40G |
@@ -714,12 +744,12 @@ cargo build --release -p bootc-rebase
 
 | Subcommand | What it does | Status |
 |---|---|---|
-| `scan <image>` | Registry-streamed capability probe of a target image — composefs/ostree readiness, fs-verity requirement, transient root/etc, bootloader payload, desktops, base OS identity, sysusers, initramfs flavor, filesystem expectation, and a `Compatible: YES/NO` verdict with reasons. On a package host it also compares installed software with the target image. `--json` includes the software report for machine consumers. | Done |
-| `rebase --target-image <image>` | Re-base the running system, routing on `--source-backend`/`--target-backend` through the strategy table below. `--plan` prints the route, selected phases, and bootloader policy, then exits without touching the system. | Implemented for ostree→composefs (the MVP pipeline), composefs→composefs (image swap), ostree→ostree (native `bootc switch`, with cross-base UID/GID remap when host and target disagree on distro family — pass `--accept-cross-base` to proceed past the report), and composefs→ostree (`OstreeInstall`, #260: the target's own `bootc install to-existing-root` builds an OSTree deployment beside the composefs root; `/etc` merged, `/var` copied, composefs ESP artifacts restored and its firmware entry kept as rollback; exploratory, one non-gating cell). `--accept-cross-base` also accepts a cross-family target on all three migration routes and selects the cross-family `/etc` policy (#256/#259) |
+| `scan <image>` | Registry-streamed capability probe of a target image — composefs/ostree readiness, fs-verity requirement, transient root/etc, bootloader payload, desktops, base OS identity, sysusers, initramfs flavor, filesystem expectation, and a `Compatible: YES/NO` verdict with reasons. On a package host it also prints a host overview (distribution and family, package manager and count, filesystem layout, boot mode, Secure Boot and SELinux — #371) and compares installed software with the target image. `--json` includes the host overview and software report for machine consumers. | Done |
+| `rebase --target-image <image>` | Re-base the running system, routing on `--source-backend`/`--target-backend` through the strategy table below. `--plan` prints the route, selected phases, and bootloader policy, then exits without touching the system. | Implemented for ostree→composefs (the MVP pipeline), composefs→composefs (image swap), ostree→ostree (native `bootc switch`, with cross-base UID/GID remap when host and target disagree on distro family — pass `--accept-cross-base` to proceed past the report), and composefs→ostree (`OstreeInstall`, #260: the target's own `bootc install to-existing-root` builds an OSTree deployment beside the composefs root; `/etc` merged, `/var` copied, composefs ESP artifacts restored and its firmware entry kept first as rollback; a durable transaction journal verifies ESP/NVRAM state and uses one-shot `BootNext` for the target until commit; exploratory, non-gating cells). `--accept-cross-base` also accepts a cross-family target on all three migration routes and selects the cross-family `/etc` policy (#256/#259) |
 | `rollback [--reboot]` | Re-order UEFI `BootOrder` back to the previous deployment. | Done |
 | `undo [--reboot]` | Make the staged package-host `Previous system` entry the bootloader default without removing the new bootc deployment. `--dry-run` prints the exact action. | Core rollback support is implemented for the snapshot produced by PackageInstall; engine wiring is tracked separately in #373 |
 | `boot-entries [--json] [--interactive] [--rename-branding] [--apply] [--undo]` | Enumerate and classify UEFI boot entries: dead (loader path missing), generic-label, duplicate, firmware-managed, plus which are protected and why. **Dry-run by default** — a bare invocation is the read-only audit. `--interactive` opens a checklist (protected entries are unselectable), `--rename-branding` proposes renaming the booted entry to `PRETTY_NAME`, `--apply` writes the result to NVRAM after a typed confirmation and a restorable snapshot, and `--undo` replays that snapshot. | Audit and the cleanup **planner** are unit-tested (protections, the last-bootable-entry guard, and the "every entry looks dead ⇒ the ESP is wrong" refusal). The gating OSTree re-base E2E cell also renames a live OVMF NVRAM entry, applies the plan, undoes it, and asserts byte-identical `efibootmgr -v` output. This covers the executor and snapshot restore; it does **not** cover the separate, unimplemented GRUB2→systemd-boot flip ([#31](https://github.com/tuna-os/bootc-migrate/issues/31), [#189](https://github.com/tuna-os/bootc-migrate/issues/189)) |
-| `commit [--apply] [--yes] [--force]` | After a composefs → ostree re-base has booted, remove the composefs state it kept as rollback (#315). **Dry run by default**: checks that the system booted the OSTree deployment the install report names, that the ESP snapshot and a shim/GRUB firmware entry exist, and that every path of the old `/var` is present in the live `/var`. It then lists every path it would delete, with sizes. `--apply` deletes after a typed confirmation. First it copies the install report and ESP snapshot into the live `/var/lib/bootc-rebase`. Then it removes the old `/var`, the composefs store and the composefs deployments. It never touches the OSTree repo, `/boot`, the ESP or NVRAM. `--force` accepts failed checks. It never accepts a composefs boot or a filesystem mounted inside a path to delete. | Unit-tested against a fixture physical root. The non-gating composefs → ostree cell runs the dry run, then `--apply`, then reboots and checks system health |
+| `commit [--apply] [--yes] [--force]` | After a composefs → ostree re-base has booted, remove the composefs state it kept as rollback (#315). **Dry run by default**: checks that the system booted the OSTree deployment the install report names, that the ESP snapshot and a shim/GRUB firmware entry exist, and that every path of the old `/var` is present in the live `/var`. It then lists every path it would delete, with sizes. `--apply` deletes after a typed confirmation. It first requires the boot transaction to classify as complete, promotes the observed-good target entry in UEFI `BootOrder`, and records that promotion. Then it copies the install report and ESP snapshot into the live `/var/lib/bootc-rebase` and removes the old `/var`, the composefs store and the composefs deployments. It never modifies the OSTree repo, `/boot` or the ESP. `--force` accepts failed cleanup checks, but never an unobserved boot transaction, a composefs boot, or a filesystem mounted inside a path to delete. | Unit-tested against a fixture physical root. The non-gating composefs → ostree cell runs the dry run, then `--apply`, observes target-first `BootOrder`, then reboots and checks system health |
 | `de-migrate stash\|restore` | Move a user's desktop-environment config (GNOME dconf/gnome-shell, KDE kdeglobals/plasma, COSMIC, niri, XFCE) into or out of a stash directory around a cross-DE re-base — union of paths per issue [#68](https://github.com/tuna-os/bootc-migrate/issues/68), never deletes. `--run-hooks` executes `pre-switch.d`/`post-switch.d` scripts with `REBASE_FROM_DE`/`REBASE_TO_DE`/`REBASE_STASH_DIR`/`REBASE_HOME` set. `--dry-run` previews without touching anything. | Done. Also runs automatically inside `rebase --de-migrate`; this subcommand remains the manual escape hatch for images shipping several desktops (which detection refuses to guess between) |
 | `rebase --de-migrate` | Detects the desktop environment the target image ships (registry-streamed session files, session binaries, and display-manager default session — no `podman pull`) and the one this host runs. When they differ, stashes every human account's outgoing DE config before staging and re-exposes any stash a previous re-base in the other direction left behind, running the `pre-switch.d`/`post-switch.d` hooks around each. | Done, unit-tested; **off by default** — a re-base never touches per-user desktop state unless asked to. The non-gating Bluefin→Aurora E2E cell passes `--de-migrate`, seeds GNOME config, and asserts that the cross-DE plan and stash are created. Because target desktop detection uses the registry scan, this evidence depends on that exploratory cell completing successfully ([#68](https://github.com/tuna-os/bootc-migrate/issues/68), [#188](https://github.com/tuna-os/bootc-migrate/issues/188)) |
 | `migrate-bootloader --to systemd-boot [--promote\|--undo] [--from-image <image>]` | GRUB2 → systemd-boot conversion, standalone of a backend re-base. | **Implemented** — stages every existing deployment on the ESP, installs systemd-boot, creates a one-boot `BootNext` trial without changing `BootOrder`, and installs a `kernel-install` resync hook. If the host does not ship `systemd-bootx64.efi`, `--from-image <image>` supplies a registry-reachable image to extract it from. `--promote` requires that the running system booted from the trial before making it persistent; `--undo` restores the prior firmware order and removes only the migration-owned files. The `bootloader-trial` QEMU cell covers the OVMF BootOrder swap, reboot, resync, promotion, and undo path. |
@@ -781,6 +811,13 @@ distrobox, or a derived image.
 The report shows third-party package repositories and enabled services that the
 target lacks. If the registry pass is incomplete, the report does not make
 absence claims. It does not treat missing evidence as an empty image.
+
+On a package host, `scan` also prints a host overview (#371). The overview
+shows the facts that the migration sees on this machine, apart from the
+target image. These facts are the distribution, the package manager, and
+the package count. They also include the layout of `/`, `/home`, `/boot`
+and `/var` with LUKS/LVM, the boot mode, Secure Boot, and SELinux.
+`--json` puts the overview under `host`.
 
 A non-dry package-host invocation writes the machine-readable report and its
 Markdown twin to `/var/lib/bootc-rebase/software-report.json` and

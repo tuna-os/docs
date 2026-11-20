@@ -1,5 +1,5 @@
 ---
-sidebar_position: 15
+sidebar_position: 16
 title: "setup macos"
 ---
 
@@ -11,7 +11,7 @@ This guide shows how to install and set up `bluefin-cli` on macOS.
 
   ```bash
   brew tap tuna-os/tap
-  brew install bluefin-cli
+  brew install tuna-os/tap/bluefin-cli
   ```
 
 - Install script:

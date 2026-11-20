@@ -211,6 +211,8 @@ kubectl apply -f config/samples/housekeeping.yaml   # HiveHousekeeping, Enforce 
 kubectl apply -f config/usage/usagepools.yaml
 ```
 
+`--watch-namespaces=hive,hive-reef` limits the manager's cache to the listed namespaces. It covers the namespaced kinds only: Pods, ConfigMaps, Deployments and CronJobs. The default is every namespace, and that is why `config/rbac/binding.yaml` still binds the role cluster-wide. The flag is what lets the namespaced rules be bound per namespace instead (#110). A namespace that is listed but has no binding stops the manager soon after it starts, because its cache never syncs.
+
 The usage sidecar (`cmd/hive-usage`, image `ghcr.io/tuna-os/hive-operator/hive-usage`, built from `Dockerfile.usage`) goes into each spoke's hive Deployment via `config/usage/hive-usage-patch.yaml`. To try it on copied logs:
 
 ```bash

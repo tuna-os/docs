@@ -3,11 +3,12 @@ sidebar_position: 4
 title: "README"
 ---
 
-This directory contains current user guidance, engineering references, release
-material, and historical investigations. Start with the first section, then
-use topic sections for deeper detail. Documents marked **historical** record a
-completed investigation or an earlier plan; they are not current operating
-instructions.
+The [repository README](https://github.com/tuna-os/wootc/blob/main/README.md) explains the product and where to get it;
+this index helps you find operating instructions, contracts, acceptance
+evidence, and design history. A design or release-note filename is not proof
+that its behavior ships. Use [verification status](https://github.com/tuna-os/wootc/blob/main/docs/status.md) and
+[release instructions](https://github.com/tuna-os/wootc/blob/main/docs/RELEASING.md) for current decisions; dated experiments
+and plans are context, not current operating instructions.
 
 ## Start here
 
@@ -16,6 +17,16 @@ instructions.
 - [Manual tests](https://github.com/tuna-os/wootc/blob/main/docs/manual-testing.md) — pre-flight checks for real hardware.
 - [Verification status](https://github.com/tuna-os/wootc/blob/main/docs/status.md) — proven matrix cells and their evidence.
 - [Philosophy](https://github.com/tuna-os/wootc/blob/main/docs/philosophy.md) — product goals and decision rules.
+
+### Choose an entry point
+
+| Reader | Read first | Then |
+|---|---|---|
+| End user | [Getting started](https://github.com/tuna-os/wootc/blob/main/docs/getting-started.md) | [User guide](https://github.com/tuna-os/wootc/blob/main/docs/user-guide.md), or [Coming from WSL](https://github.com/tuna-os/wootc/blob/main/docs/wsl-migration.md) |
+| Contributor | [Contributing](https://github.com/tuna-os/wootc/blob/main/CONTRIBUTING.md), then [AGENTS.md](https://github.com/tuna-os/wootc/blob/main/AGENTS.md) | [Agent lessons](https://github.com/tuna-os/wootc/blob/main/docs/agent-lessons.md) before harness/deployer changes; [native shell contract](https://github.com/tuna-os/wootc/blob/main/docs/winui-shell.md#current-stdio-protocol-reference) for Go/WinUI integration |
+| Maintainer/reviewer | [Verification status](https://github.com/tuna-os/wootc/blob/main/docs/status.md) | [Release instructions](https://github.com/tuna-os/wootc/blob/main/docs/RELEASING.md), [truth-pass record](https://github.com/tuna-os/wootc/blob/main/docs/docs-truth-pass.md), [roadmap](https://github.com/tuna-os/wootc/blob/main/ROADMAP.md) |
+| Distro packager | [Distro adoption](https://github.com/tuna-os/wootc/blob/main/docs/distro-adoption.md) | [Brand distribution](https://github.com/tuna-os/wootc/blob/main/docs/branding-and-distribution.md), [upstream blessings](https://github.com/tuna-os/wootc/blob/main/docs/upstream-blessings.md), [backend contract](https://github.com/tuna-os/wootc/blob/main/docs/backend-contract.md) |
+| IT evaluator | [IT-admin quick start](https://github.com/tuna-os/wootc/blob/main/docs/it-admin-quick-start.md) | [Manual testing](https://github.com/tuna-os/wootc/blob/main/docs/manual-testing.md), [destructive paths](https://github.com/tuna-os/wootc/blob/main/docs/destructive-paths.md); this is not a fleet-management product |
 
 ## Product and architecture
 
@@ -53,6 +64,10 @@ instructions.
 - [Release instructions](https://github.com/tuna-os/wootc/blob/main/docs/RELEASING.md) — green-gated release process.
 - [Alpha adopter program](https://github.com/tuna-os/wootc/blob/main/docs/alpha-adopter-program.md) — structured early-adopter tests.
 - [Pre-filled profiles](https://github.com/tuna-os/wootc/blob/main/docs/prefilled-profile-testing.md) — migration tests with an existing Windows profile.
+- [First-boot evidence](https://github.com/tuna-os/wootc/blob/main/docs/firstboot-evidence.md) — observed guest identity and completion records.
+- [WSL migration](https://github.com/tuna-os/wootc/blob/main/docs/wsl-migration.md) — manual transfer boundaries; no automatic WSL distro or account import.
+- [IT-admin quick start](https://github.com/tuna-os/wootc/blob/main/docs/it-admin-quick-start.md) — bounded single-machine evaluation, not fleet rollout.
+- [Adoption outreach](https://github.com/tuna-os/wootc/blob/main/docs/adoption-outreach.md) — approval-gated invitations and scenario briefs, not claimed success stories.
 - [Native GUI soak](https://github.com/tuna-os/wootc/blob/main/docs/soak.md) — shell stability ledger for long runs.
 - [Agent lessons](https://github.com/tuna-os/wootc/blob/main/docs/agent-lessons.md) — operational traps from E2E work.
 - [Docs truth pass](https://github.com/tuna-os/wootc/blob/main/docs/docs-truth-pass.md) — dated documentation-versus-build checks.
@@ -65,16 +80,23 @@ instructions.
 - [dakota return-boot RCA](https://github.com/tuna-os/wootc/blob/main/docs/dakota-return-boot-rca.md) — **historical** Phase-2 hang investigation.
 - [Phase-2 attach postmortem](https://github.com/tuna-os/wootc/blob/main/docs/phase2-attach-postmortem.md) — **historical** debugging record.
 - [Phase-2 debug plan](https://github.com/tuna-os/wootc/blob/main/docs/phase2-debug-plan.md) — **historical** hypotheses and resolution path.
-- [v0.3.0-beta release notes](https://github.com/tuna-os/wootc/blob/main/docs/release-notes-v0.3.0-beta.md) — release record and evidence status.
-- [v1.0.0 release notes](https://github.com/tuna-os/wootc/blob/main/docs/release-notes-v1.0.0.md) — release goals and evidence checklist.
+- [v0.3.0-beta release notes](https://github.com/tuna-os/wootc/blob/main/docs/release-notes-v0.3.0-beta.md) — draft release material; consult tags and release evidence before you call it shipped.
+- [v1.0.0 release notes](https://github.com/tuna-os/wootc/blob/main/docs/release-notes-v1.0.0.md) — release goals and evidence checklist, not a shipped-version claim.
 
 ## Document collections
 
 - [`adr/`](https://github.com/tuna-os/wootc/blob/main/docs/adr) — architecture decision records.
+  Includes [phase-1 architecture](https://github.com/tuna-os/wootc/blob/main/docs/adr/0001-phase1-first-architecture.md),
+  [hardware matching](https://github.com/tuna-os/wootc/blob/main/docs/adr/0002-hardware-preflight-bootc-matching.md),
+  [OneDrive placeholders](https://github.com/tuna-os/wootc/blob/main/docs/adr/0003-onedrive-files-on-demand-migration.md),
+  [composefs/kernel matching](https://github.com/tuna-os/wootc/blob/main/docs/adr/0004-composefs-kernel-module-matching.md),
+  the [VM-first correction](https://github.com/tuna-os/wootc/blob/main/docs/adr/0004-restore-vm-first-product.md), and
+  [session-envelope unlock](https://github.com/tuna-os/wootc/blob/main/docs/adr/0005-session-envelope-unlock.md) (approval pending).
 - [`specs/`](https://github.com/tuna-os/wootc/blob/main/docs/specs) — detailed migration proposals.
+  Read [enterprise migration](https://github.com/tuna-os/wootc/blob/main/docs/specs/enterprise-migration.md) and
+  [migration extensions](https://github.com/tuna-os/wootc/blob/main/docs/specs/migration-extensions.md) as proposals unless an
+  implementation and its acceptance evidence are explicitly named.
 - [`experiments/`](https://github.com/tuna-os/wootc/blob/main/docs/experiments) — dated research notes and implementation experiments.
 - [`evidence/`](https://github.com/tuna-os/wootc/blob/main/docs/evidence) — checked-in evidence summaries.
 - [`experiments/evidence/`](https://github.com/tuna-os/wootc/blob/main/docs/experiments/evidence) — experiment artifacts and provenance.
 - [`screenshots/`](https://github.com/tuna-os/wootc/blob/main/docs/screenshots) — UI walkthrough images.
-
-- Use [status.md](https://github.com/tuna-os/wootc/blob/main/docs/status.md) and [release instructions](https://github.com/tuna-os/wootc/blob/main/docs/RELEASING.md) for current verification and release decisions. Use dated plans and investigations for context, not as substitutes for those sources.

@@ -229,7 +229,9 @@ The session locks after five minutes without input, on Super+L, on
 password with the PAM service `tuna-lock`, installed as `/etc/pam.d/tuna-lock`
 (`share/pam.d/tuna-lock`), which includes your distribution's `login` stack.
 Fingerprint unlock goes through fprintd when a reader and an enrolled finger
-are present.
+are present, with its own PAM service `tuna-lock-fingerprint`, installed as
+`/etc/pam.d/tuna-lock-fingerprint`: `pam_fprintd` plus the `login` account
+stack, like GDM's `gdm-fingerprint`.
 
 ### When the password is not accepted
 
@@ -245,13 +247,22 @@ are present.
 2. The lock screen authenticates `$LOGNAME` (else `$USER`) from the
    compositor's environment (`crates/compositor/src/unlock.rs:70-77`).
 3. Each attempt has 10 seconds; a PAM stack that hangs longer is treated as a
-   failure (`crates/compositor/src/pam.rs:24-25`).
+   failure (`crates/compositor/src/pam.rs:31-32`).
 4. For more detail, reproduce with `TUNA_LOCK_TRACE=1` in the compositor's
    environment. It logs each authentication attempt's lifecycle, never the
    password.
 
 To test a different PAM stack without touching `tuna-lock`, set
 `TUNA_PAM_SERVICE` to another service name.
+
+### When the fingerprint is not accepted
+
+Check `/etc/pam.d/tuna-lock-fingerprint` exists (a source install copies it
+from `share/pam.d/tuna-lock-fingerprint`) and that `pam_fprintd.so` is
+installed (`libpam-fprintd` on Debian and Ubuntu, `fprintd` on Arch). Without
+either, the finger is refused and the password still unlocks.
+`TUNA_PAM_FINGERPRINT_SERVICE` names a different service for fingerprint
+unlock.
 
 ### Getting out of a stuck lock screen
 

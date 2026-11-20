@@ -27,7 +27,7 @@ Never post account credentials or API keys in issues or pull requests.
 ## ✨ Features
 
 - **🎨 Interactive Menu**: Default TUI experience for easy navigation
-- **✨ Shell Experience**: Turn on modern tools for your shell (eza, bat, ugrep, zoxide, atuin, starship)
+- **✨ Shell Experience**: Turn on modern tools for your shell (eza, bat, ugrep, zoxide, starship, direnv, mise)
 - **📰 MOTD**: Beautiful Message of the Day with system info and random tips
 - **📦 Bundle Installer**: Install curated tool bundles (ai, cli, fonts, k8s) from Universal Blue
 - **🖼️ Wallpapers**: Install desktop wallpaper collections from ublue-os/tap
@@ -42,10 +42,14 @@ Never post account credentials or API keys in issues or pull requests.
 
 ## 🚀 Installation
 
-> **Status (2026-10-07):** each release ships prebuilt binary assets:
-> tarballs for Linux, macOS and Windows, plus native deb and rpm packages.
-> The one-liner scripts and direct downloads below work today. A note
-> marks each package-manager path that does not work yet.
+> **Status (2026-11-19):** each release ships prebuilt binary assets:
+> archives for Linux, macOS and Windows, plus native deb and rpm packages
+> (see `.goreleaser.yaml`). The latest tag in the repository is v0.11.23; the
+> [releases page](https://github.com/tuna-os/bluefin-cli/releases/latest) is
+> authoritative for the current version. Package-manager channels depend on
+> external registries that this repository cannot check. Their states come
+> from [`docs/release-publishing.md`](https://github.com/tuna-os/bluefin-cli/blob/main/docs/release-publishing.md), last
+> recorded 2026-10-17, and a note marks each path that is not available.
 
 ### One-liner (Linux / macOS)
 
@@ -55,8 +59,8 @@ For more Linux and macOS steps, see the [Linux Setup Guide](https://github.com/t
 curl -fsSL https://raw.githubusercontent.com/tuna-os/bluefin-cli/main/install.sh | sh
 ```
 
-> **Status (2026-10-07):** the script downloads the binary from GitHub release
-> assets, published on every release since v0.10.6.
+> **Status (2026-11-19):** the script downloads the binary from GitHub release
+> assets. Releases have published these assets since v0.10.6.
 
 ### One-liner (Windows PowerShell)
 
@@ -72,18 +76,31 @@ Then enable shell integration:
 bluefin-cli shell powershell on
 ```
 
-> **Status (2026-10-07):** same as the Linux/macOS one-liner — the script
-> downloads from GitHub release assets, published on every release since
-> v0.10.6.
+> **Status (2026-11-19):** same as the Linux/macOS one-liner — the script
+> downloads from GitHub release assets. Releases have published these assets
+> since v0.10.6.
 
 ### Homebrew (Linux / macOS)
 
-The formula is published in [`tuna-os/homebrew-tap`](https://github.com/tuna-os/homebrew-tap),
-built from the GoReleaser configuration on each release:
-
 ```bash
 brew tap tuna-os/tap
-brew install bluefin-cli
+brew install tuna-os/tap/bluefin-cli
+```
+
+> **Status (2026-11-19):** GoReleaser publishes the binary formula to
+> [`tuna-os/homebrew-tap`](https://github.com/tuna-os/homebrew-tap) on each
+> release, with the `HOMEBREW_TAP_SSH_KEY` deploy key. The tap has received
+> each release since v0.11.17, and its `Formula/bluefin-cli.rb` is at v0.11.23.
+> The [release policy](https://github.com/tuna-os/bluefin-cli/blob/main/docs/release-publishing.md) keeps this channel at
+> **preview** until a maintainer records a `brew install` check.
+
+`ublue-os/homebrew-experimental-tap` removed its `bluefin-cli` formula on
+2026-11-19. If you installed `bluefin-cli` from that tap, change to
+`tuna-os/tap`:
+
+```bash
+brew uninstall bluefin-cli
+brew install tuna-os/tap/bluefin-cli
 ```
 
 ### Winget (Windows)
@@ -92,11 +109,13 @@ brew install bluefin-cli
 winget install --id Hanthor.BluefinCLI --exact
 ```
 
-> **Status (2026-10-07):** the winget repository has `Hanthor.BluefinCLI`
-> **v0.8.1** (microsoft/winget-pkgs#407090). That version predates the
-> current v0.11.x release line — **installable, though not current**. A
-> newer manifest awaits review; `.github/workflows/winget.yml` is the manual
-> fallback to resubmit one.
+> **Status (last recorded 2026-10-17; not re-verified):** the winget
+> repository had `Hanthor.BluefinCLI` **v0.8.1** (microsoft/winget-pkgs#407090).
+> That version predates the current v0.11.x release line — **installable,
+> though not current**. Check the
+> [winget-pkgs listing](https://github.com/microsoft/winget-pkgs/tree/master/manifests/h/Hanthor/BluefinCLI)
+> for the live version. `.github/workflows/winget.yml` is the manual fallback
+> to resubmit one.
 
 ### Chocolatey (Windows)
 
@@ -104,8 +123,9 @@ winget install --id Hanthor.BluefinCLI --exact
 choco install bluefin-cli
 ```
 
-> **Status (2026-10-07):** the Chocolatey community repository has no
-> `bluefin-cli` package yet — **not available**.
+> **Status (last recorded 2026-10-17; not re-verified):** no `bluefin-cli`
+> package was in the Chocolatey community repository — **not available**.
+> The release invocation skips this publisher.
 
 ### Scoop (Windows)
 
@@ -114,7 +134,7 @@ scoop bucket add tuna-os https://github.com/tuna-os/scoop-bucket
 scoop install bluefin-cli
 ```
 
-> **Status (2026-10-07):** still not published — `tuna-os/scoop-bucket`
+> **Status (last recorded 2026-10-17; not re-verified):** not published — `tuna-os/scoop-bucket`
 > ships no manifests at all. Like the Homebrew tap above, GoReleaser skips
 > the Scoop publisher because no one has set the `SCOOP_BUCKET_TOKEN`
 > repository secret; see
@@ -138,8 +158,8 @@ sudo rpm -i bluefin-cli_<version>_linux_amd64.rpm
 yay -S bluefin-cli-bin
 ```
 
-> **Status (2026-10-07):** no `bluefin-cli-bin` package exists in the AUR yet
-> — **not available**.
+> **Status (last recorded 2026-10-17; not re-verified):** no
+> `bluefin-cli-bin` package existed in the AUR — **not available**.
 
 ### Go Install
 
@@ -177,10 +197,10 @@ skips that upload. See [release details](https://github.com/tuna-os/bluefin-cli/
 Homebrew release process: when semantic-release finds that a merge to
 `main` warrants a release, it invokes GoReleaser. GoReleaser then sends the
 binary formula to `tuna-os/homebrew-tap` when `HOMEBREW_TAP_SSH_KEY` is set.
-For external taps that build from source, such as
-`ublue-os/homebrew-experimental-tap`, sync the tap by hand. Bump `url` and
-`sha256` in [`contrib/homebrew/bluefin-cli.rb`](https://github.com/tuna-os/bluefin-cli/blob/main/contrib/homebrew/bluefin-cli.rb)
-and open a PR in that tap.
+No external tap builds `bluefin-cli` from source now.
+[`contrib/homebrew/bluefin-cli.rb`](https://github.com/tuna-os/bluefin-cli/blob/main/contrib/homebrew/bluefin-cli.rb) is a
+source formula for a tap that builds from source. Bump its `url` and `sha256`
+before you copy it into such a tap.
 
 ## 📖 Usage
 
@@ -256,11 +276,12 @@ Features:
 
 - **eza**: Modern replacement for `ls`
 - **bat**: Syntax color for `cat`
-- **ugrep**: Faster grep
+- **ugrep**: Faster grep, aliased when installed
 - **zoxide**: Smarter `cd`
-- **atuin**: Shell history sync
+- **atuin**: Shell history (opt-in: `bluefin-cli shell config`)
 - **starship**: Cross-shell prompt
 - **uutils**: Rust rewrite of coreutils
+- **direnv** and **mise**: hooked when installed (bash, zsh, fish)
 
 #### MOTD - Message of the Day
 
@@ -285,6 +306,12 @@ bluefin-cli motd toggle zsh on
 
 bluefin-cli motd toggle all off
 ```
+
+On Bluefin and other systems with
+[uwelcome](https://github.com/projectbluefin/uwelcome), uwelcome stays the
+terminal welcome. `motd show` shows it, `motd toggle` turns it on or off for
+every shell (`~/.config/uwelcome/disabled`), and the shell experience never
+greets a second time. bluefin-cli's own MOTD is used where uwelcome is absent.
 
 #### Install Tool Bundles
 
@@ -393,6 +420,8 @@ grep    # ugrep (if installed)
 
 - [Command reference](https://github.com/tuna-os/bluefin-cli/blob/main/docs/commands/bluefin-cli.md): Generated documentation for
   every command and flag.
+- [Shell experience guide](https://github.com/tuna-os/bluefin-cli/blob/main/docs/shell-experience.md): Per-shell setup, managed
+  tools, verification, and fixes for common problems.
 - [Interactive menu structure](https://github.com/tuna-os/bluefin-cli/blob/main/docs/menus.md): Menu hierarchy, navigation, and
   available actions.
 - [Standard and plus builds](https://github.com/tuna-os/bluefin-cli/blob/main/docs/vanilla-vs-extra.md): Feature differences
@@ -415,6 +444,8 @@ grep    # ugrep (if installed)
   output, and fixes for common setup problems.
 - [`docs/testing.md`](https://github.com/tuna-os/bluefin-cli/blob/main/docs/testing.md): how to run the TUI tests, the test
   layers, and how to add a test.
+- [`docs/development.md`](https://github.com/tuna-os/bluefin-cli/blob/main/docs/development.md): where each part of the code
+  lives and where to start a change.
 
 Maintainers can find package-channel credentials and release checks in
 [release details](https://github.com/tuna-os/bluefin-cli/blob/main/docs/release-publishing.md). The

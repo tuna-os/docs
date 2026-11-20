@@ -1,15 +1,15 @@
 {
   "rust-atomicwrites": {
     "revision": "7e18cf3045168c9e57368470d9d9dfb582d67d8a",
-    "lastSuccessfulFetch": "2026-11-18T14:42:20.564Z",
+    "lastSuccessfulFetch": "2026-11-20T09:18:42.447Z",
     "status": "ok",
     "pages": {
       "rust-atomicwrites/index": "README.md"
     }
   },
   "tunaOS": {
-    "revision": "aaf0926717058e6be1d69825116455be00a6a095",
-    "lastSuccessfulFetch": "2026-11-18T14:41:56.888Z",
+    "revision": "d54be5f2f2f243eb285ed52e8105896ef3ddef32",
+    "lastSuccessfulFetch": "2026-11-20T09:18:27.450Z",
     "status": "ok",
     "pages": {
       "tunaos/index": "README.md",
@@ -19,8 +19,8 @@
     }
   },
   "bluefin-cli": {
-    "revision": "21835a4374e6f137f4b6a1ba9736340e1f0ac568",
-    "lastSuccessfulFetch": "2026-11-18T14:41:57.919Z",
+    "revision": "5c68295ebc1d35c43eb7aae518267fa70ffedbd5",
+    "lastSuccessfulFetch": "2026-11-20T09:18:27.702Z",
     "status": "ok",
     "pages": {
       "bluefin-cli/index": "README.md",
@@ -31,6 +31,7 @@
       "bluefin-cli/brewfile-guide": "docs/brewfile-guide.md",
       "bluefin-cli/cncf": "docs/cncf.md",
       "bluefin-cli/configuration": "docs/configuration.md",
+      "bluefin-cli/development": "docs/development.md",
       "bluefin-cli/getting-started": "docs/getting-started.md",
       "bluefin-cli/gnome": "docs/gnome.md",
       "bluefin-cli/menus": "docs/menus.md",
@@ -39,6 +40,7 @@
       "bluefin-cli/setup-linux": "docs/setup-linux.md",
       "bluefin-cli/setup-macos": "docs/setup-macos.md",
       "bluefin-cli/setup-windows": "docs/setup-windows.md",
+      "bluefin-cli/shell-experience": "docs/shell-experience.md",
       "bluefin-cli/testing": "docs/testing.md",
       "bluefin-cli/tools": "docs/tools.md",
       "bluefin-cli/troubleshooting": "docs/troubleshooting.md",
@@ -46,8 +48,8 @@
     }
   },
   "tunaos-packages": {
-    "revision": "d75a51d242b43c56b074822c61a6b6623a54f948",
-    "lastSuccessfulFetch": "2026-11-18T14:41:59.099Z",
+    "revision": "688b37edb2710c9ffe3a2124bf201adf1f79ee36",
+    "lastSuccessfulFetch": "2026-11-20T09:18:28.235Z",
     "status": "ok",
     "pages": {
       "tunaos-packages/index": "README.md",
@@ -84,8 +86,8 @@
     }
   },
   "tromso": {
-    "revision": "c0871d3da40cb8f7509e92a9d6f09e9c7fe15c16",
-    "lastSuccessfulFetch": "2026-11-18T14:42:00.663Z",
+    "revision": "45f735fc3e8f7a3c8bfa82c07ff7e632df4822a0",
+    "lastSuccessfulFetch": "2026-11-20T09:18:28.589Z",
     "status": "ok",
     "pages": {
       "tromso/index": "README.md",
@@ -102,8 +104,8 @@
     }
   },
   "brussels": {
-    "revision": "26a08ac7c342d249468d054eb7ed246a9a955911",
-    "lastSuccessfulFetch": "2026-11-18T14:42:01.221Z",
+    "revision": "28d375ac5fcbf0edd68a0c377eb6a812cb21d8fc",
+    "lastSuccessfulFetch": "2026-11-20T09:18:28.845Z",
     "status": "ok",
     "pages": {
       "brussels/index": "README.md",
@@ -113,12 +115,15 @@
       "brussels/docs-README": "docs/README.md",
       "brussels/auto-qa-tuning": "docs/auto-qa-tuning.md",
       "brussels/ci-and-iso-pipeline": "docs/ci-and-iso-pipeline.md",
-      "brussels/signing": "docs/signing.md"
+      "brussels/session-and-locking": "docs/session-and-locking.md",
+      "brussels/signing": "docs/signing.md",
+      "brussels/winblues": "docs/winblues.md",
+      "brussels/xfce-component-set": "docs/xfce-component-set.md"
     }
   },
   "tacklebox": {
-    "revision": "bf3d813816671f5abd00c9962e2e07964b062615",
-    "lastSuccessfulFetch": "2026-11-18T14:42:01.814Z",
+    "revision": "a64cbd3088292aee09d45039537e80e3f74a7d00",
+    "lastSuccessfulFetch": "2026-11-20T09:18:29.107Z",
     "status": "ok",
     "pages": {
       "tacklebox/index": "README.md",
@@ -142,8 +147,8 @@
     }
   },
   "Tavern": {
-    "revision": "52e4a8a13bda0e41ea2dc8af3ae64369a4e77087",
-    "lastSuccessfulFetch": "2026-11-18T14:42:02.467Z",
+    "revision": "5e77e0c40239d6bcb3be8b3d1167658390835a05",
+    "lastSuccessfulFetch": "2026-11-20T09:18:29.756Z",
     "status": "ok",
     "pages": {
       "tavern/index": "README.md",
@@ -161,8 +166,8 @@
     }
   },
   "corral": {
-    "revision": "e3688e0938f4f68a8fe0a94993838f3388139366",
-    "lastSuccessfulFetch": "2026-11-18T14:42:03.342Z",
+    "revision": "37662fe0bc8c6842bd38f5dceb584d7752e54c44",
+    "lastSuccessfulFetch": "2026-11-20T09:18:30.546Z",
     "status": "ok",
     "pages": {
       "corral/index": "README.md",
@@ -195,8 +200,8 @@
     }
   },
   "bootc-migrate": {
-    "revision": "cb0b64aae4c5ce6bebce3c9bd6ad8fa461c2012e",
-    "lastSuccessfulFetch": "2026-11-18T14:42:03.987Z",
+    "revision": "8c9b551b135ca784a180a08e2624e472ce815891",
+    "lastSuccessfulFetch": "2026-11-20T09:18:30.974Z",
     "status": "ok",
     "pages": {
       "bootc-migrate/index": "README.md",
@@ -215,8 +220,8 @@
     }
   },
   "flatpak-index": {
-    "revision": "afc043748d826466dddec2915dec4fdfec02391f",
-    "lastSuccessfulFetch": "2026-11-18T14:42:04.350Z",
+    "revision": "56f5cfd316f9832d389dcc0343bf8298b7031b87",
+    "lastSuccessfulFetch": "2026-11-20T09:18:31.231Z",
     "status": "ok",
     "pages": {
       "flatpak-index/index": "README.md",
@@ -233,7 +238,7 @@
   },
   "changelog-action": {
     "revision": "68295f376aef8f3d789ff18da86463bbb937796b",
-    "lastSuccessfulFetch": "2026-11-18T14:42:04.645Z",
+    "lastSuccessfulFetch": "2026-11-20T09:18:31.432Z",
     "status": "ok",
     "pages": {
       "changelog-action/index": "README.md",
@@ -242,8 +247,8 @@
     }
   },
   "branding": {
-    "revision": "5153d171a2066fea91a3f3454327b96a9cb0ff52",
-    "lastSuccessfulFetch": "2026-11-18T14:42:05.033Z",
+    "revision": "f8d35fe10bc5edba41f55e44142ae1f6bc7dccf7",
+    "lastSuccessfulFetch": "2026-11-20T09:18:31.634Z",
     "status": "ok",
     "pages": {
       "branding/index": "README.md",
@@ -252,8 +257,8 @@
     }
   },
   "wootc": {
-    "revision": "2f720b317fece702b8b65bee6d28c090ceabfa1f",
-    "lastSuccessfulFetch": "2026-11-18T14:42:06.004Z",
+    "revision": "dfd5da290c60ae07c1b9e2bddada055c3608aec8",
+    "lastSuccessfulFetch": "2026-11-20T09:18:32.474Z",
     "status": "ok",
     "pages": {
       "wootc/index": "README.md",
@@ -262,6 +267,7 @@
       "wootc/docs-README": "docs/README.md",
       "wootc/RELEASING": "docs/RELEASING.md",
       "wootc/SPEC": "docs/SPEC.md",
+      "wootc/adoption-outreach": "docs/adoption-outreach.md",
       "wootc/agent-lessons": "docs/agent-lessons.md",
       "wootc/alpha-adopter-program": "docs/alpha-adopter-program.md",
       "wootc/architecture-boundary": "docs/architecture-boundary.md",
@@ -282,6 +288,7 @@
       "wootc/getting-started": "docs/getting-started.md",
       "wootc/gui-phase1-architecture": "docs/gui-phase1-architecture.md",
       "wootc/gui-walkthrough": "docs/gui-walkthrough.md",
+      "wootc/it-admin-quick-start": "docs/it-admin-quick-start.md",
       "wootc/managed-vm": "docs/managed-vm.md",
       "wootc/manual-testing": "docs/manual-testing.md",
       "wootc/milestones": "docs/milestones.md",
@@ -304,12 +311,13 @@
       "wootc/user-guide": "docs/user-guide.md",
       "wootc/vhdx-exploration": "docs/vhdx-exploration.md",
       "wootc/windows-state-trust": "docs/windows-state-trust.md",
-      "wootc/winui-shell": "docs/winui-shell.md"
+      "wootc/winui-shell": "docs/winui-shell.md",
+      "wootc/wsl-migration": "docs/wsl-migration.md"
     }
   },
   "bootc-installer": {
-    "revision": "6ec0fd9d2b0c29b4b1cc84db6a42cdac3ff2c59c",
-    "lastSuccessfulFetch": "2026-11-18T14:42:07.629Z",
+    "revision": "bf92bfe8eeff29d7386826739b138b1a7b086443",
+    "lastSuccessfulFetch": "2026-11-20T09:18:33.603Z",
     "status": "ok",
     "pages": {
       "bootc-installer/index": "README.md",
@@ -324,20 +332,22 @@
     }
   },
   "dualcut": {
-    "revision": "8f3def7ff88f2f1a67b6a9b1cf595c5585f99289",
-    "lastSuccessfulFetch": "2026-11-18T14:42:08.117Z",
+    "revision": "404a5c9d4c0bcf978766d28bb716432d7516fc93",
+    "lastSuccessfulFetch": "2026-11-20T09:18:33.855Z",
     "status": "ok",
     "pages": {
       "dualcut/index": "README.md",
       "dualcut/CONTRIBUTING": "CONTRIBUTING.md",
       "dualcut/ROADMAP": "ROADMAP.md",
+      "dualcut/TESTING": "docs/TESTING.md",
+      "dualcut/TROUBLESHOOTING": "docs/TROUBLESHOOTING.md",
       "dualcut/USER_GUIDE": "docs/USER_GUIDE.md",
       "dualcut/observability": "docs/observability.md"
     }
   },
   "iso-builder": {
-    "revision": "70d17f2d9b5da9c0f1038857e601a5d97aafce03",
-    "lastSuccessfulFetch": "2026-11-18T14:42:08.719Z",
+    "revision": "a36466ea5323e7eff7dc4964c37a614d0ecf3d5d",
+    "lastSuccessfulFetch": "2026-11-20T09:18:34.181Z",
     "status": "ok",
     "pages": {
       "iso-builder/index": "README.md",
@@ -354,8 +364,8 @@
     }
   },
   "homebrew-tap": {
-    "revision": "0ba2cbfa27b9574ba4eb5656e255b4def157e940",
-    "lastSuccessfulFetch": "2026-11-18T14:42:09.030Z",
+    "revision": "5c12770b578a20e804d37cfbcfbc52b0a302d55d",
+    "lastSuccessfulFetch": "2026-11-20T09:18:34.321Z",
     "status": "ok",
     "pages": {
       "homebrew-tap/index": "README.md",
@@ -364,8 +374,8 @@
     }
   },
   "scoop-bucket": {
-    "revision": "389dbe5082d48b380293eb0ebed54e65fbb9aaa8",
-    "lastSuccessfulFetch": "2026-11-18T14:42:09.347Z",
+    "revision": "0478bc9006649f80562b4c52559482e1a1f1c4a3",
+    "lastSuccessfulFetch": "2026-11-20T09:18:34.475Z",
     "status": "ok",
     "pages": {
       "scoop-bucket/index": "README.md",
@@ -374,8 +384,8 @@
     }
   },
   "bootsahi": {
-    "revision": "072140c5ecba20f9da6b070a378644cd8c327246",
-    "lastSuccessfulFetch": "2026-11-18T14:42:09.753Z",
+    "revision": "0dd71cda178ec9e890898ca8ce9aade61084d935",
+    "lastSuccessfulFetch": "2026-11-20T09:18:34.687Z",
     "status": "ok",
     "pages": {
       "bootsahi/index": "README.md",
@@ -390,8 +400,8 @@
     }
   },
   "bst-ci": {
-    "revision": "bad002079d5fab339c43b774a51a7dd30a79b294",
-    "lastSuccessfulFetch": "2026-11-18T14:42:10.128Z",
+    "revision": "a3d350fe74bb053eb9b09de76232fa644ce513a7",
+    "lastSuccessfulFetch": "2026-11-20T09:18:34.838Z",
     "status": "ok",
     "pages": {
       "bst-ci/index": "README.md",
@@ -400,8 +410,8 @@
     }
   },
   "protota": {
-    "revision": "aa615b113efc587ef8ff99fc5a36d0e2e888b2e7",
-    "lastSuccessfulFetch": "2026-11-18T14:42:11.141Z",
+    "revision": "adbe603ad7da152dba6cd2a7bd571813ad5a8255",
+    "lastSuccessfulFetch": "2026-11-20T09:18:35.771Z",
     "status": "ok",
     "pages": {
       "protota/index": "README.md",
@@ -425,8 +435,8 @@
     }
   },
   "hive": {
-    "revision": "e838cc613f21367df06a0f493d701eea5ee77432",
-    "lastSuccessfulFetch": "2026-11-18T14:42:13.305Z",
+    "revision": "f8d87a95ae611af1a00c1e5461a9eec138afd2cb",
+    "lastSuccessfulFetch": "2026-11-20T09:18:37.559Z",
     "status": "ok",
     "pages": {
       "hive/index": "README.md",
@@ -452,8 +462,8 @@
     }
   },
   "spindle": {
-    "revision": "34f53d9d68da3c8decfc551878463fae514ba77a",
-    "lastSuccessfulFetch": "2026-11-18T14:42:14.897Z",
+    "revision": "98cf50efa729f474c729bf63d0eca1e90afa3a1c",
+    "lastSuccessfulFetch": "2026-11-20T09:18:38.699Z",
     "status": "ok",
     "pages": {
       "spindle/index": "README.md",
@@ -496,8 +506,8 @@
     }
   },
   "gnome-hive-monitor": {
-    "revision": "32620db937c893565774da0846ce3919b227a4cf",
-    "lastSuccessfulFetch": "2026-11-18T14:42:15.345Z",
+    "revision": "a658a259fe711ede2c9f62396367042c49743a4b",
+    "lastSuccessfulFetch": "2026-11-20T09:18:38.881Z",
     "status": "ok",
     "pages": {
       "gnome-hive-monitor/index": "README.md",
@@ -507,11 +517,12 @@
     }
   },
   "hive-operator": {
-    "revision": "5c4a7262827b98a7b4a2e3541dd5a613d4b91e5d",
-    "lastSuccessfulFetch": "2026-11-18T14:42:15.870Z",
+    "revision": "198fa964d768c7ecdd1c8c5412a9656942771f5c",
+    "lastSuccessfulFetch": "2026-11-20T09:18:39.068Z",
     "status": "ok",
     "pages": {
       "hive-operator/index": "README.md",
+      "hive-operator/CONTRIBUTING": "CONTRIBUTING.md",
       "hive-operator/housekeeping": "docs/housekeeping.md",
       "hive-operator/liveness-promotion": "docs/liveness-promotion.md",
       "hive-operator/release": "docs/release.md",
@@ -521,15 +532,15 @@
   },
   "rdocx": {
     "revision": "9e9cbd5e8447d7a7f50e19dd9193e8b3ac5960b5",
-    "lastSuccessfulFetch": "2026-11-18T14:42:17.533Z",
+    "lastSuccessfulFetch": "2026-11-20T09:18:40.488Z",
     "status": "ok",
     "pages": {
       "rdocx/index": "README.md"
     }
   },
   "compass": {
-    "revision": "6ad02542991a465bb1df161258ced5c51a7b4bbd",
-    "lastSuccessfulFetch": "2026-11-18T14:42:19.123Z",
+    "revision": "d5bcdebc5e209f258c2a7c8ea2cea7298be222ef",
+    "lastSuccessfulFetch": "2026-11-20T09:18:41.641Z",
     "status": "ok",
     "pages": {
       "compass/index": "README.md",
@@ -543,8 +554,8 @@
     }
   },
   "quickcast": {
-    "revision": "12227fbf2eb6573328dea66a68d7fbbb8ebfee65",
-    "lastSuccessfulFetch": "2026-11-18T14:42:19.660Z",
+    "revision": "7a2255478ac32b9c930b7ac44c2032d40ba9a722",
+    "lastSuccessfulFetch": "2026-11-20T09:18:41.974Z",
     "status": "ok",
     "pages": {
       "quickcast/index": "README.md",
@@ -556,15 +567,15 @@
   },
   "libcosmic": {
     "revision": "ed6bffbd8cff8233f9dee5915a474b5599bd402c",
-    "lastSuccessfulFetch": "2026-11-18T14:42:20.261Z",
+    "lastSuccessfulFetch": "2026-11-20T09:18:42.290Z",
     "status": "ok",
     "pages": {
       "libcosmic/index": "README.md"
     }
   },
   "iced": {
-    "revision": "881f1004c84350fda3cd90d662e53e7e8fd67033",
-    "lastSuccessfulFetch": "2026-11-18T14:42:21.428Z",
+    "revision": "a34895c8bc57810c30beceac2ecda08be1c20846",
+    "lastSuccessfulFetch": "2026-11-20T09:18:42.938Z",
     "status": "ok",
     "pages": {
       "iced/index": "README.md",
@@ -574,7 +585,7 @@
   },
   "PaperWM": {
     "revision": "b72c9beba8c6482d988383dd37ff85093c632b63",
-    "lastSuccessfulFetch": "2026-11-18T14:42:21.904Z",
+    "lastSuccessfulFetch": "2026-11-20T09:18:43.182Z",
     "status": "ok",
     "pages": {
       "paperwm/index": "README.md",
@@ -582,8 +593,8 @@
     }
   },
   "ccleft": {
-    "revision": "d108f9158538e9ff5095f53d95411805a3a39e88",
-    "lastSuccessfulFetch": "2026-11-18T14:42:22.241Z",
+    "revision": "989a7e822a2f996aacac0d555d428ea337252b5b",
+    "lastSuccessfulFetch": "2026-11-20T09:18:43.342Z",
     "status": "ok",
     "pages": {
       "ccleft/index": "README.md",
@@ -592,8 +603,8 @@
     }
   },
   "tuna-desktop": {
-    "revision": "aa414f39195a225037f2cfa8e1f83e6adfe67348",
-    "lastSuccessfulFetch": "2026-11-18T14:42:27.751Z",
+    "revision": "7b48e425d50dc9eb6b706b52bcbd271d51fe33ab",
+    "lastSuccessfulFetch": "2026-11-20T09:18:46.825Z",
     "status": "ok",
     "pages": {
       "tuna-desktop/index": "README.md",
@@ -666,16 +677,16 @@
     }
   },
   "athens": {
-    "revision": "39013ae72b045a2102f3e09dccdb5386bc905e88",
-    "lastSuccessfulFetch": "2026-11-18T14:42:28.279Z",
+    "revision": "bcf2c5afed681c6d552b3d44770bad4e00983e3a",
+    "lastSuccessfulFetch": "2026-11-20T09:18:47.106Z",
     "status": "ok",
     "pages": {
       "athens/index": "README.md"
     }
   },
   "lifafa": {
-    "revision": "5d4c5c6f0c9a4bc25629e7eb7c242646864f0fdc",
-    "lastSuccessfulFetch": "2026-11-18T14:42:29.838Z",
+    "revision": "8e0fb0dfd7aa3c8d4c503fff2ae197ba3caec89c",
+    "lastSuccessfulFetch": "2026-11-20T09:18:48.300Z",
     "status": "ok",
     "pages": {
       "lifafa/index": "README.md",
@@ -695,8 +706,8 @@
     }
   },
   "tuta-unofficial-sdk": {
-    "revision": "e7c70b0f838976ba62d805d54da31b4c59118a23",
-    "lastSuccessfulFetch": "2026-11-18T14:42:30.577Z",
+    "revision": "62a4cca48d1d48b5155ba3c1c4f2f4cdb3b8d859",
+    "lastSuccessfulFetch": "2026-11-20T09:18:48.575Z",
     "status": "ok",
     "pages": {
       "tuta-unofficial-sdk/index": "README.md"
@@ -704,7 +715,7 @@
   },
   "flatpark": {
     "revision": "97dda79a7ab404ca885d761e7f3051a98a7c99f9",
-    "lastSuccessfulFetch": "2026-11-18T14:42:31.480Z",
+    "lastSuccessfulFetch": "2026-11-20T09:18:49.037Z",
     "status": "ok",
     "pages": {
       "flatpark/index": "README.md",
@@ -714,21 +725,22 @@
     }
   },
   "tuna-mail": {
-    "revision": "4fcd73498dee93a9e1140838991e720ae622c8df",
-    "lastSuccessfulFetch": "2026-11-18T14:42:34.868Z",
+    "revision": "28e9804a58534f144442be7b04845df028b48457",
+    "lastSuccessfulFetch": "2026-11-20T09:18:51.537Z",
     "status": "ok",
     "pages": {
       "tuna-mail/index": "README.md",
+      "tuna-mail/CONTRIBUTING": "CONTRIBUTING.md",
       "tuna-mail/SECURITY": "SECURITY.md",
-      "tuna-mail/CONTRIBUTING": "docs/CONTRIBUTING.md",
+      "tuna-mail/docs-CONTRIBUTING": "docs/CONTRIBUTING.md",
       "tuna-mail/HOW-TO-DOCUMENT": "docs/HOW-TO-DOCUMENT.md",
       "tuna-mail/docs-README": "docs/README.md",
       "tuna-mail/about": "docs/about.md"
     }
   },
   "proton-unofficial-sdk": {
-    "revision": "2a20b8d2eab47c3f0a1f2813a072593fc305aa0e",
-    "lastSuccessfulFetch": "2026-11-18T14:42:36.178Z",
+    "revision": "78e53ca6f1a5e4598978dd64535089cce31fd3ee",
+    "lastSuccessfulFetch": "2026-11-20T09:18:52.327Z",
     "status": "ok",
     "pages": {
       "proton-unofficial-sdk/index": "README.md"

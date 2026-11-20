@@ -10,7 +10,7 @@ status: unknown
 Bootsahi is the Apple Silicon (Asahi Linux) installer path for TunaOS-family
 bootc images — and anyone else's (Dakota, Bluefin, Bazzite). It is a
 macOS-driven install flow for M1/M2 Macs. The repository is
-`tuna-os/bootc-installer-asahi`.
+`tuna-os/bootsahi`.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/tuna-os/bootsahi/main/docs/screenshots/walkthrough.gif"
@@ -32,8 +32,9 @@ installer change — but a ref **must** pass the Asahi golden-manifest harness
 before it is offered, and "appears without touching the installer" must never
 be read as "appears without being verified."
 
-As of 2026-07-30 only `bonito` and `grouper` pass (36/36 each); the other six
-promoted `*-asahi` tags would leave a Mac unbootable
+The catalog verifies only `bonito` and `grouper`: they passed 36/36 on
+2026-07-30 and 37/37 on 2026-11-20 ([verify-asahi runs](https://github.com/tuna-os/bootsahi/blob/main/docs/harness-results.json)). On 2026-07-30 the
+other six promoted `*-asahi` tags would have left a Mac unbootable
 ([tunaOS#776](https://github.com/tuna-os/tunaOS/issues/776)). The catalog
 is an explicit allowlist: every `CatalogEntry` carries a `verified` field
 (`false` by default), and the macOS app only offers entries where it is

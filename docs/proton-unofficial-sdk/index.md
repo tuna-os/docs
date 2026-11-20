@@ -570,12 +570,15 @@ for encryption.
 A card that pins keys for the address decides which key is the recipient's.
 When the API offers keys for that address and none of them is pinned, the
 send is refused with `send_failed` rather than encrypted to the API's key:
-a key the key server swapped is what a pin guards against. This is where
-the table leaves Bridge, which would use the API's key; Proton's web client
-refuses as well. To send again, the user trusts the new key (or removes
-the old one) in the contact. One exception: a card that says not to encrypt
-to keys it does not pin gets cleartext, as it asked, and `secure` delivery
-refuses that as usual.
+a key the key server swapped is what a pin guards against. A pinned key
+the API still lists but no longer marks active counts as not offered while
+another key is active: its owner retired it, as obsolete or compromised,
+and the key that replaced it is not pinned. This is where the table leaves
+Bridge, which would use the API's key, or the retired pinned one; Proton's
+web client refuses as well. To send again, the user trusts the new key (or
+removes the old one) in the contact. One exception: a card that says not to
+encrypt to keys it does not pin gets cleartext, as it asked, and `secure`
+delivery refuses that as usual.
 
 Then a draft is created (body encrypted to the sender's key, Reply-To and
 the Message-ID set), attachments are uploaded encrypted, and the packages
@@ -777,6 +780,20 @@ go vet -mod=vendor ./...
 go vet -mod=vendor -tags tools .          # tools.go is behind a build tag
 go test -mod=vendor ./...
 go build -mod=vendor -trimpath -o proton-helper ./cmd/proton-helper
+```
+
+CI also gates every pull request on `govulncheck`
+(`.github/workflows/govulncheck.yml`). It fails when a known advisory has a
+call path from `protonsdk/` or `cmd/`, which is most likely after a
+dependency bump. Unlike the checks above, it needs the network to fetch
+the vulnerability database. Its standard-library findings depend on the
+Go that runs it, so use the version in `go.mod`, as CI does; a newer local
+Go can report advisories that CI does not:
+
+```sh
+go install golang.org/x/vuln/cmd/govulncheck@v1.9.0
+GOTOOLCHAIN="go$(go list -m -f '{{.GoVersion}}')" GOFLAGS=-mod=vendor \
+  "$(go env GOPATH)/bin/govulncheck" ./protonsdk/... ./cmd/...
 ```
 
 The tests run go-proton-api's own in-process API server

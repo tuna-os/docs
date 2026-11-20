@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 7
 title: "upstream ccusage"
 ---
 
@@ -45,17 +45,21 @@ Suggested filing order: 1 and 2 are small and unblock us the most. 3 is the one 
 In `ccusage-adapter-common` (`collect_usage_files`, `common/src/lib.rs:24-30`), the walker uses `DirEntry::file_type()`, which does not follow symlinks. As a result, a session file or project directory that is a symlink is never read. Only the root passed in through an env var is resolved.
 
 Why it matters:
+
 - Multi-user and containerised setups rely on symlinks. Our hive runs each agent with `HOME=/data/home/agents/<name>`, where `.claude`, `.codex` and `.gemini` are symlinks to a shared store.
 - A filtered view (for example, symlinking only recently modified files to speed up a scan) reads as empty.
 
 Reproduction on v20.0.24:
+
 ```
 mkdir -p v/claude/projects/x && ln -s ~/.claude/projects/<p>/<s>.jsonl v/claude/projects/x/
 CLAUDE_CONFIG_DIR=$PWD/v/claude ccusage claude session --json   # → 0 sessions
 ```
+
 The same thing happens with `ANTIGRAVITY_DATA_DIR` pointing at a directory of symlinked `.db` files: 0 sessions in 0.16 s, against 34 sessions from the same files copied.
 
 Proposal:
+
 - Use `fs::metadata` (which follows links) for entries that are symlinks.
 - Guard against cycles with a visited set of (dev, ino).
 
@@ -70,6 +74,7 @@ I'm happy to implement this.
 Watch out when extracting it: the path sits inside protobuf blobs, so a naive regex picks up neighbouring length/tag bytes (`guid`, `guidej` next to 131× `guide`). It needs to come from the decoded trajectory metadata field, not a string search.
 
 **Performance.** On a real store of 500 conversation DBs (206 MB), `ccusage antigravity session --json --offline` takes about **185 s of single-core CPU** (~0.5 s per DB; 40 DBs / 16 MB took 20 s). Claude (120 MB) takes 1 s and codex (10 homes) takes 6 s. The loader (`loader.rs:19-40`) parses databases sequentially. Two possible fixes:
+
 - Use the same size-balanced parallel reads the JSONL adapters already use.
 - Cache parsed events per (path, size, mtime), since most conversation DBs never change again.
 
@@ -82,6 +87,7 @@ Either would make a 5-minute refresh cadence viable. I can share timings and pro
 Provider limits are windows whose start the provider decides: Anthropic's 5-hour session (for example 12:40→17:40Z), the weekly cap, and Codex's primary/secondary windows. `--since` accepts `YYYYMMDD` only. `blocks` is Claude-only and anchors on the hour of the first message, so it doesn't line up with the provider's reset (`blocks --active` reported 15:00–20:00 while Anthropic's own window was 12:40–17:40).
 
 Either of these would help:
+
 - **(a)** Accept RFC 3339 timestamps in `--since/--until` for every report. `session` totals would then be bounded to the instant (related: #1609, #1791).
 - **(b)** Add `ccusage <source> events --json`: one row per priced request with `timestamp`, `sessionId`, `projectPath`, `model` and the token/cost fields. This is the most general option, and callers can window it however they like.
 
@@ -92,6 +98,7 @@ Today we work around it by differencing cumulative `session` totals between coll
 **Title:** `codex session` rows can't be attributed when `CODEX_HOME` lists several homes
 
 With `CODEX_HOME=a,b,c`, session rows carry `directory: "2026/09/20"` and a `sessionId` that is a date path, but nothing that says which home the row came from. Rollouts do record `cwd` in `session_meta`, though. Please add one of:
+
 - `projectPath` from `session_meta.cwd`, consistent with claude and pi, or
 - a `codexHome` field.
 
@@ -102,6 +109,7 @@ Until then we run ccusage once per `CODEX_HOME` (10 runs, ~0.6 s each).
 **Title:** current Copilot CLI writes usage to `~/.copilot/session-store.db`, which isn't read
 
 On our hosts, current Copilot CLI builds no longer write `session-state/*/events.jsonl`. Usage instead goes to the SQLite table `assistant_usage_events`, with these columns:
+
 - `model`
 - `input_tokens`, `output_tokens`, `cache_read_tokens`, `cache_write_tokens`, `reasoning_tokens`
 - `request_multiplier`, `total_nano_aiu`

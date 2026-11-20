@@ -1,5 +1,5 @@
 ---
-sidebar_position: 9
+sidebar_position: 10
 title: "getting started"
 ---
 
@@ -76,6 +76,7 @@ bluefin-cli shell powershell on
 This updates your shell startup file and tries to install enabled tools.
 Open a new terminal for the changes to take effect, then run `bluefin-cli status`
 to check the result. To disable the integration, use the same command with `off`.
+For per-shell details, see the [shell experience guide](https://github.com/tuna-os/bluefin-cli/blob/main/docs/shell-experience.md).
 
 ### 2. Install a tool bundle
 

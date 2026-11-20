@@ -7,7 +7,7 @@ hide_title: true
 status: unknown
 ---
 
-> **Deprecated:** Development has moved to [shrimply](https://github.com/soirihiroka/shrimply), which is the recommended project for new work. This repository is retained for its history and existing releases; please port useful ideas here rather than starting new feature work in dualcut.
+> **Deprecated:** Development has moved to [shrimply](https://github.com/soirihiroka/shrimply), which is the recommended project for new work. We keep this repository for its history and existing releases. Port useful ideas to shrimply, and do not start new feature work in dualcut.
 
 A GNOME video editor with **dual usage**: edit manually (scene timeline +
 inspector) or programmatically (live JSON document, TypeScript scripts,
@@ -18,7 +18,7 @@ HTTP API for agents) — every surface stays in sync while the app runs.
 
 ![dualcut editor](https://raw.githubusercontent.com/tuna-os/dualcut/main/docs/screenshot.png)
 
-**[📘 User Guide](https://github.com/tuna-os/dualcut/blob/main/docs/USER_GUIDE.md)** — screenshots captured from the real app.
+**[📘 User Guide](https://github.com/tuna-os/dualcut/blob/main/docs/USER_GUIDE.md)** — screenshots captured from the real app. Problems? See [Troubleshooting](https://github.com/tuna-os/dualcut/blob/main/docs/TROUBLESHOOTING.md).
 
 **Install (Flatpak, via the TunaOS remote):**
 

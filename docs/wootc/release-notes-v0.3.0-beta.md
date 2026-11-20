@@ -1,5 +1,5 @@
 ---
-sidebar_position: 39
+sidebar_position: 41
 title: "release notes v0.3.0 beta"
 ---
 

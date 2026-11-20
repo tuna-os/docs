@@ -142,6 +142,7 @@ drawn frame (`FrameCost` in `crates/compositor/src/occlusion.rs`):
 | `rendered` | Scene elements repainted in that frame |
 | `culled` | Elements skipped because they are wholly under opaque elements |
 | `damage_rects`, `damage_area` | Number and total area (physical pixels) of damaged rectangles |
+| `damage_bounds` | `[x, y, w, h]` box around the damaged rectangles (output pixels, before rotation), or `null` |
 | `output_area` | The output's area, for the damage ratio |
 | `drawn_windows` | Window ids with any element showing on the output, repainted or not |
 | `culled_windows` | Window ids entirely hidden behind opaque surfaces |

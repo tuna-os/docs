@@ -14,7 +14,7 @@ automates validation. This text complements `ROADMAP.md` and
 | Unit | Pure logic: parsers, planners, mergetc tables, routing, digest handling, probe classification | `just test` / CI `validate`, every push | seconds |
 | Feature-matrix | Same, with every cargo feature on (`composefs-native` is invisible to the default build) | `just test-all-features` (part of `just check`) | seconds |
 | Integration (host) | Real repositories on loopback filesystems, real podman probes of real images — no VM | developer machines + scheduled canary | minutes |
-| E2E (VM) | Full migrations in QEMU: partition → install → migrate → reboot → assert | e2e-tests.yml, called from ci.yml's `e2e` job: a round-robin slice of the gating cells per PR/push, the full matrix nightly | ~30 min/cell |
+| E2E (VM) | Full migrations in QEMU: partition → install → migrate → reboot → assert | e2e-tests.yml, called from ci.yml's `e2e` job: a round-robin slice of the gating cells per PR/push, alternate cells each night (every cell every other night) | ~30 min/cell |
 
 Rules of thumb:
 
@@ -44,9 +44,12 @@ Current (the four **MVP gates for regressions, which must stay**, plus the M1 ad
 | bluefin stable → bluefin gts (ostree-rebase mode) | OstreeDeploy strategy + rollback presence | PR #69/#70 |
 | bluefin stable → aurora (ostree-rebase mode) | cross-DE native `/etc` merge probe (#80) | active, non-gating |
 | bluefin stable → dakota (tui-migrate mode) | TUI wizard + Config Drift Review event loops on a pty (`tests/tui-e2e-driver.py`), then the full composefs pipeline + all default-mode assertions | active, gating |
-| dakota stable (composefs-native) → fedora-bootc 44 (`composefs-to-ostree` mode) | the reverse backend switch (#260): `--plan` resolves `OstreeInstall`, the target's `bootc install to-existing-root` runs alongside, `/etc` + `/var` + `/var/home` fixtures survive, the reboot lands in the OSTree deployment, and the composefs "Linux Boot Manager" entry and ESP kernel remain as rollback. Then `bootc-rebase commit` (#315) runs as a dry run that deletes nothing, and with `--apply` it removes `/sysroot/state` and `/sysroot/composefs` but keeps the OSTree repo, the deployment and the forensics; a reboot follows, then the health check | active, non-gating |
-| dakota stable (composefs-native) → utah testing (`composefs-to-ostree` mode) | the Dakota → Utah migration through `OstreeInstall` (#302): the same assertions as the fedora-bootc cell, plus the shim/GRUB entry first in `BootOrder`, the booted os-release `ID=hummingbird` and GDM running | active, non-gating |
+| dakota stable (composefs-native) → fedora-bootc 44 (`composefs-to-ostree` mode) | the reverse backend switch (#260): `--plan` resolves `OstreeInstall`; a journal records the hash-verified ESP rollback and observed NVRAM state; the target is armed through `BootNext` while "Linux Boot Manager" stays first; `/etc` + `/var` + `/var/home` fixtures survive; a real new `boot_id` proves the reboot; `commit --apply` promotes GRUB, removes composefs state, and another new `boot_id` proves the persistent target boot | active, non-gating |
+| dakota stable → fedora-bootc 44 (`composefs-to-ostree`, `E2E_BOOT_TXN_FAULT=after-esp-wipe`) | interruption after bootc wipes the ESP is classified `needs-repair`; restart restores both snapshot and ESP to journaled hashes, clears `BootNext`, observes rollback-first `BootOrder`, and a real reboot returns to composefs | active, non-gating |
+| dakota stable → fedora-bootc 44 (`composefs-to-ostree`, `E2E_BOOT_TXN_FAULT=before-arm`) | interruption after durable preparation is classified `resumable`; restart re-observes both entries and ESP hashes, arms `BootNext`, and completes the ordinary route | active, non-gating |
+| dakota stable (composefs-native) → utah testing (`composefs-to-ostree` mode) | the Dakota → Utah migration through `OstreeInstall` (#302): the same transaction assertions as the fedora-bootc cell, plus the booted os-release `ID=hummingbird` and GDM running | active, non-gating |
 | dakota stable (composefs-native) → utah testing (`image-swap` mode) | a composefs image swap across distributions: `--plan` resolves `ImageSwap`, the host's `bootc switch` stages Utah (Bluefin on Fedora Hummingbird), `/etc` + `/var` + `/var/home` fixtures survive, the reboot lands in Utah and the Dakota deployment stays as rollback | active, non-gating |
+| utah testing (OSTree, `btrfs+crypt`) → utah testing | the full conversion with the same image: ESP + ext4 `/boot` + btrfs in a passphrase-unlocked LUKS2 root, the reboot lands in Utah booted from composefs through systemd-boot, and the composefs-migrate fixtures survive | active, non-gating |
 | tunaOS marlin gnome (composefs-native, Arch) → utah testing (`image-swap` mode, `E2E_CROSS_FAMILY=1`) | a cross-family image swap: the swap is refused without `--accept-cross-base`, then the host's `bootc switch` stages Utah, and the same fixture, reboot and rollback checks as the Dakota cell run | active, non-gating |
 | tunaOS marlin gnome (composefs-native, Arch) → utah testing (`composefs-to-ostree` mode) | the OstreeInstall route from a host with no `efibootmgr` and no SELinux: NVRAM through the target's `efibootmgr`, `/boot` labelled with Utah's policy, the apps Marlin preinstalled still installed after Utah's first-boot `flatpak preinstall`, and the commit dry run's `/var` check | active, non-gating |
 | bluefin stable → bootcrew/opensuse-bootc (`composefs-migrate`, `E2E_CROSS_FAMILY=1`) | cross-family gate and `/etc` policy: target defaults, sidecars, machine state and identity merge | active, non-gating |
@@ -248,7 +251,8 @@ python3 tests/tui-e2e-driver.py --mode wizard-expect-failure \
 ## KVM runner options
 
 The E2E matrix needs `/dev/kvm`. GitHub-hosted Linux runners provide KVM access.
-`ubuntu-latest` is the default runner.
+`ubuntu-24.04` is the default runner.
+The workflows do not use `ubuntu-latest`. On `ubuntu-26.04`, the fixture for bluefin LTS fails.
 
 Both workflows set up podman storage. The runner image defaults to
 `Native Overlay Diff: "false"`, which causes slow layer builds. The step
@@ -259,7 +263,7 @@ Runner precedence:
 
 1. **`E2E_RUNSON_SPEC` set**: RunsOn EC2 runners with nested virtualization.
 2. **`E2E_SELF_HOSTED=true`**: self-hosted runner with KVM.
-3. **Default**: `ubuntu-latest`.
+3. **Default**: `ubuntu-24.04`.
 
 Use `KVM_E2E_ENABLED='false'` to disable the E2E matrix.
 
@@ -272,7 +276,7 @@ Keep these constraints:
 - Use `spot=false`, or `retry=when-interrupted`, because spot interruption is risky for a 30–90-minute cell.
 1. **`E2E_SELF_HOSTED=true`** → the `kvm`-labelled self-hosted host
    (kanpur), the original setup.
-2. **Neither** → `ubuntu-latest`.
+2. **Neither** → `ubuntu-24.04`.
 
 Set `KVM_E2E_ENABLED='false'` to stop the matrix.
 The `required-checks` job treats a skipped `e2e` job as a pass.
@@ -292,7 +296,8 @@ also need the existing `tui-migrate` cell. The path list is in
 PRs compare the merge base with the head. Pushes compare `before` with `after`.
 
 A failed diff stops the plan. Tests run with `just test-ci-selection`.
-The nightly schedule and `workflow_dispatch` run every cell.
+The nightly schedule runs alternate cells, so each cell runs every other night.
+`workflow_dispatch` runs every cell.
 
 ### Timeouts, and why they are what they are
 

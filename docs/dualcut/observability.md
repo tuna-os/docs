@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 7
 title: "observability"
 ---
 
@@ -65,6 +65,7 @@ Common `GST_DEBUG` levels: 0=none, 1=error, 2=warning, 3=fixme, 4=info, 5=debug,
 ### HTTP Agent API Diagnostics
 
 While the API server runs (default port 7357):
+
 - Access logs and errors print to standard error
 - Health check endpoint: `GET /status` verifies server responsiveness
 - Project API: `GET /project` validates document structure
@@ -96,6 +97,7 @@ gst-inspect-1.0 | grep -E 'h264|vp8|aac|vorbis'
 ### Proxy Media Cache
 
 Proxy media is cached in `.dualcut-cache/` within the project directory:
+
 - Safe to delete; will be regenerated on next preview
 - Reduces timeline scrubbing latency for large videos
 - Disable with *Preferences → Use proxy media*

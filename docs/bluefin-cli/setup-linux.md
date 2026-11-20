@@ -1,5 +1,5 @@
 ---
-sidebar_position: 14
+sidebar_position: 15
 title: "setup linux"
 ---
 
@@ -18,7 +18,7 @@ This guide shows how to install and set up `bluefin-cli` on Linux.
 
   ```bash
   brew tap tuna-os/tap
-  brew install bluefin-cli
+  brew install tuna-os/tap/bluefin-cli
   ```
 
 ## Alpine Linux and musl

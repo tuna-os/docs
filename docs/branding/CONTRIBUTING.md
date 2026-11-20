@@ -90,6 +90,32 @@ manual `jq`/`sha256sum` checks in `README.md`) before you open a pull request.
 ruff check .
 ```
 
+## Other checks on a pull request
+
+Two more workflows run on pull requests. They can fail a pull request that
+does not change an SVG:
+
+- `actions-security.yml` runs on every pull request. The `lockfile` job
+  compares `.github/workflows/actions.lock` with the `uses:` pins in the
+  workflows. If you change a `uses:` line, update `actions.lock` in the same
+  pull request. The `zizmor` job is a security linter for workflow files. It
+  fails on a security problem.
+- `ste.yml` (the `Prose` workflow) runs when a pull request changes a
+  Markdown file. It checks `README.md` and `CONTRIBUTING.md` with the
+  Simplified Technical English (ASD-STE100) linter from tuna-os/.github. The
+  budget in `.ste-budget` is `0`, so one new STE error fails the check.
+
+To run the prose linter before you push, you need Node.js and a copy of
+tuna-os/.github next to this repository. Run these commands from the root
+of this repository:
+
+```bash
+git clone https://github.com/tuna-os/.github ../tuna-os-github
+node ../tuna-os-github/.github/actions/ste-lint/ste-lint.mjs --max 0
+```
+
+The linter shows each error with its file, line and rule.
+
 ## Branch and PR convention
 
 Use a short, prefixed branch name that describes the change (e.g. `fix/`,

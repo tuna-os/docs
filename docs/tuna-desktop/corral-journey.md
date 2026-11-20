@@ -19,15 +19,22 @@ console frames for each step.
    `tuna-test` account (password `tuna`, the VM lane's public fixture
    account) in the installed system with `--user` and
    `--password-stdin`. The image itself is not changed. The run stops if
-   the booted image differs from the requested digest.
+   the booted image differs from the requested digest. The
+   `corral-bootc` plugin, not the `corral` binary, builds the disk, so
+   the receipt records its path and SHA-256 under
+   `provision.bootc_plugin` (`CORRAL_PLUGIN_DIR` selects another build).
 2. `corral wait` holds the run until the boot is complete, GDM is
    active, its greeter session is on seat0, and the screen is painted.
    `corral info --json` gives the VM facts for the manifest.
 3. `corral console` serves the VM's own console page on a free port and
    prints its URL. Playwright opens that page. The page shows the noVNC
-   canvas at 1:1, so each frame is the canvas's own pixels. Three steps
-   also capture the same frame with `corral screenshot` as an
-   independent check.
+   canvas at 1:1, so each frame is the canvas's own pixels. Five steps
+   (greeter, session, desktop, ScreenCast and lock) also capture the same
+   frame with `corral screenshot`, a fresh VNC session, as an independent
+   check. They also read the guest's own KMS scanout as root with
+   `ffmpeg -f kmsgrab` when the image ships ffmpeg, and compare it with the
+   frame. The receipt records the virt-launcher's QEMU version under
+   `vm.qemu`.
 4. The journey: GDM user list, password, Tuna session (logind
    `gdm-password` session, `tuna-compositor` and `tuna-shell-gtk`
    running, no `gnome-shell`), overview, app grid, search and launch

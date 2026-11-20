@@ -37,7 +37,8 @@ flatpak run --user org.tunaos.Quickcast
 ```
 
 The initial release targets x86_64 and the GNOME 50 Flatpak runtime.
-Alternatively, install the `.flatpak` bundle from this repository's releases.
+Tagged releases also attach a `.flatpak` bundle to this repository's releases
+page; [ROADMAP.md](https://github.com/tuna-os/quickcast/blob/main/ROADMAP.md) tracks whether one has been tagged yet.
 
 ## Record and paste
 
@@ -81,8 +82,9 @@ session. Until it loads, the camera window can still be dragged, but always-on-t
 workspace pinning and window-only recording position tracking need the companion.
 The Shell menu also offers a start/stop recording action.
 
-The extension is included as a separate `.shell-extension.zip` release asset.
-Flatpak does not install host Shell extensions automatically.
+Flatpak does not install host Shell extensions automatically, and releases do
+not ship the extension as a separate asset. Install it from a checkout of this
+repository with the script above.
 
 ## Encoding and clipboard behavior
 

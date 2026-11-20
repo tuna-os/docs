@@ -13,7 +13,7 @@ Leap, Deskflow and other libei receivers. It follows mutter 51
 
 **Admission.** Only the authenticated installed portal backend may call
 `CreateSession` (`Authority::admit_portal`): the same identity check as
-capture, but not the shell PID. Every session method requires the session's
+capture, but not the supervised shell. Every session method requires the session's
 unique owner and is denied while locked (mutter's `check_permission` plus the
 lock); `Close` needs only the owner. Signals go to the owner only. At most 64
 sessions and 1024 barriers per session.

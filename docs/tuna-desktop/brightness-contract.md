@@ -79,6 +79,10 @@ and modesets back; -1 is ignored. `G-POWER-SAVE-MODE` drives gsd 51's
 dim → blank → unblank → undim sequence in the nested proof: the dim lowers
 the controlled backlight, the blank stops frames while the pointer moves,
 the unblank repaints and the undim restores the exact user baseline.
+`D-POWER-SAVE` in `scripts/tuna-drm-smoke` blanks a locked session on vkms:
+3 turns the connector off and the compositor's main loop all but sleeps
+(Mutter's 100 ms dummy flip and the hidden windows' beat, #1122); 0 lights
+the connector again with a full repaint of the still lock screen at once.
 
 The power-save proof waits for an in-flight idle-brightness transaction
 before both dimming and undimming. Only a
