@@ -23,19 +23,20 @@ Yes. Apache 2.0 licenses TunaOS as open source.
 
 **How do I install TunaOS?**
 
-Two ways:
+Three ways. The [download page](https://tunaos.org/download) shows all three:
 
-1. **Fresh install** — Download an ISO from [tunaos.org/download](https://tunaos.org/download) and write it to USB
-2. **Move from an existing bootc system** — use [bootc-migrate](/docs/bootc-migrate), a smarter `bootc switch`: `sudo bootc-migrate --target-image ghcr.io/tuna-os/yellowfin:gnome`, then reboot. It takes the same target, checks it first, carries `/home`, `/var` and `/etc` across, and keeps your old deployment bootable until you `commit`.
+1. **Make a USB installer** — TunaOS Media Writer writes TunaOS to a USB stick (16 GB or more). Then [start your computer from the USB stick](start-from-usb.md) and [install](installer.mdx). This replaces the system on the computer.
+2. **Try it from Windows and keep Windows** — [wootc](https://tunaos.org/wootc) installs TunaOS next to Windows, with no USB stick.
+3. **Move from an existing bootc system** — use [bootc-migrate](/docs/bootc-migrate), a smarter `bootc switch`: `sudo bootc-migrate --target-image ghcr.io/tuna-os/yellowfin:gnome`, then reboot. It takes the same target, checks it first, carries `/home`, `/var` and `/etc` across, and keeps your old deployment bootable until you `commit`.
 
 **Where do I download the ISOs?**
 
-[tunaos.org/download](https://tunaos.org/download) — pick a variant and desktop flavor from the picker. If a specific ISO won't download, use this link instead:
+[tunaos.org/download](https://tunaos.org/download), under **I already run Linux**. If a specific ISO won't download, use this link instead:
 `https://download.tunaos.org/live-isos/<variant>-<flavor>-latest.iso` (for example, `albacore-gnome-latest.iso` or `yellowfin-gnome-latest.iso`). [tuna-os/tunaOS discussion #652](https://github.com/tuna-os/tunaOS/discussions/652) and [#561](https://github.com/tuna-os/tunaOS/issues/561) cover a real download-page outage and its fix.
 
-**Can I dual-boot TunaOS?**
+**Can I keep Windows?**
 
-TunaOS uses bootc which manages the bootloader. Dual-boot is possible but not the primary use case. For multi-OS on one machine, use [Tacklebox](/docs/tacklebox/USER-GUIDE) to create a multi-boot USB.
+Yes, with [wootc](https://tunaos.org/wootc). It installs TunaOS next to Windows, and Windows stays on the boot menu. The USB installer is different: it erases the full drive. For multi-OS on one USB stick, use [Tacklebox](/docs/tacklebox/USER-GUIDE).
 
 **Which variant should I choose?**
 
@@ -65,7 +66,7 @@ TunaOS uses bootc which manages the bootloader. Dual-boot is possible but not th
 
 **Does TunaOS run on Apple Silicon Macs?**
 
-Yes, on M1 and M2 Macs, with [bootc-installer-asahi](https://github.com/tuna-os/bootc-installer-asahi). The installer runs on macOS, then hands off to [Asahi Linux](https://asahilinux.org/) recoveryOS, which boots a TunaOS bootc image. This install path is **experimental**: it offers only the images that pass a golden-manifest check, which now means Bonito and Grouper. M3 and newer Macs are not supported yet, because Asahi upstream does not support them yet. For hardware tiers and test status, see [docs/ASAHI-HARDWARE-TIERS.md](https://github.com/tuna-os/tunaOS/blob/main/docs/ASAHI-HARDWARE-TIERS.md).
+Not yet. An installer for M1 and M2 Macs is in development, but it has no release. M3 and newer Macs need support in [Asahi Linux](https://asahilinux.org/) first. See [Apple Silicon Macs](apple-silicon.md).
 
 **Does TunaOS run on laptops with Snapdragon X Elite? (Does TunaOS run on a "Copilot+ PC"?)**
 

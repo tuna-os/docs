@@ -174,6 +174,6 @@ nvidia-smi --query-gpu=memory.used,memory.free,memory.total --format=csv
 ## See Also
 
 - [System Requirements](../system-requirements.md) — hardware compatibility
-- [Installation Guide](../installation.md) — getting started
+- [Download and install](/download) — getting started
 - [Managing with Bootc](bootc-usage.md) — variant switching and updates
 - [NVIDIA CUDA Documentation](https://docs.nvidia.com/cuda/) — official CUDA docs

@@ -54,26 +54,22 @@ export default function FactoryHealth(): ReactNode {
     };
   }, []);
 
+  // Test results are a detail for people who already know the images. When
+  // they have not loaded, say nothing rather than alarm a first-time visitor.
+  if (state.status !== 'available') return null;
+
   return (
     <section className={styles.health} aria-labelledby="factory-health-title">
       <div className={styles.heading}>
-        <Heading as="h2" id="factory-health-title">Factory health</Heading>
+        <Heading as="h2" id="factory-health-title">Test results</Heading>
         <a href={PROVENANCE_PAGE}>Source data</a>
       </div>
-      {state.status === 'loading' && <p role="status">Loading factory health…</p>}
-      {state.status === 'unavailable' && (
-        <p role="alert">
-          Factory health is unavailable. Missing data does not mean that an image is healthy.
-        </p>
-      )}
-      {state.status === 'available' && (
-        <div className={styles.summary}>
-          <p><strong>Factory health: {state.summary.factory_health.green}/{state.summary.factory_health.total} cells green</strong></p>
-          <p>Install-tested: {state.summary.install.tested}/{state.summary.install.total} · Lifecycle-tested: {state.summary.lifecycle.tested}/{state.summary.lifecycle.total} · Never tested: {state.summary.never_tested}</p>
-          <p>Known regressions: {state.summary.known_regressions.blocking} blocking, {state.summary.known_regressions.advisory} advisory</p>
-          <p>Last full sweep: {sweepAge(state.summary.last_full_sweep)} ({state.summary.last_full_sweep})</p>
-        </div>
-      )}
+      <div className={styles.summary}>
+        <p><strong>Factory health: {state.summary.factory_health.green}/{state.summary.factory_health.total} cells green</strong></p>
+        <p>Install-tested: {state.summary.install.tested}/{state.summary.install.total} · Lifecycle-tested: {state.summary.lifecycle.tested}/{state.summary.lifecycle.total} · Never tested: {state.summary.never_tested}</p>
+        <p>Known regressions: {state.summary.known_regressions.blocking} blocking, {state.summary.known_regressions.advisory} advisory</p>
+        <p>Last full sweep: {sweepAge(state.summary.last_full_sweep)} ({state.summary.last_full_sweep})</p>
+      </div>
     </section>
   );
 }

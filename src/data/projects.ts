@@ -1,4 +1,5 @@
 import type {IconName} from '@site/src/components/Icon';
+import {WOOTC_INSTALLER_SIZE, WOOTC_INSTALLER_URL} from '@site/src/data/wootc';
 
 // Shared metadata for per-project landing pages (src/pages/<project>.tsx),
 // rendered by src/components/ProjectLanding. Copy is sourced from each
@@ -44,6 +45,8 @@ export type Project = {
   docs?: string;
   // Optional primary CTA beyond Docs + GitHub.
   cta?: {label: string; to: string};
+  // One line under the hero buttons: what the CTA downloads and who it is for.
+  ctaNote?: string;
   // Flatpak app ID (renders as install button linking to /install?app=).
   flathub?: string;
   // Rust variant Flatpak app ID (renders as a separate Install button).
@@ -86,35 +89,33 @@ export const PROJECTS: Project[] = [
     emoji: '🪟',
     name: 'wootc',
     status: 'alpha',
-    tagline: 'Try Linux from inside Windows — no repartitioning, nothing deleted, fully reversible.',
+    tagline: 'Install TunaOS next to Windows, without a USB stick. Windows stays.',
     lede:
-      'wootc installs a real bootc Linux desktop into a single file next to your Windows files, and adds a boot menu entry for it. No repartitioning and no point of no return: Windows stays the default boot until you say otherwise, and uninstalling is deleting a folder and a boot entry.',
+      'wootc puts a TunaOS desktop in one file next to your Windows files and adds TunaOS to the start-up menu. It does not change your Windows partitions, and Windows starts by default until you choose otherwise. To remove it, uninstall wootc in Windows Settings › Apps. This is an alpha: the uninstaller tries to remove everything, but it can leave files or a start-up entry behind.',
     accent: '#5dabf0',
     accent2: '#7bbdf5',
     repo: 'https://github.com/tuna-os/wootc',
     docs: '/docs/wootc',
-    cta: {label: 'Download for Windows', to: 'https://github.com/tuna-os/wootc/releases/latest'},
+    cta: {label: 'Download for Windows', to: WOOTC_INSTALLER_URL},
+    ctaNote: `TunaOS-Installer.exe · ${WOOTC_INSTALLER_SIZE} · for Windows 10 and 11 PCs only`,
     stats: [
       {label: 'Runs on', value: 'Windows 10 · 11'},
-      {label: 'Installs to', value: 'root.disk'},
-      {label: 'Reversible', value: 'yes, at every step'},
+      {label: 'Installs to', value: 'one file on C:'},
+      {label: 'Remove it in', value: 'Settings › Apps'},
     ],
     features: [
-      {emoji: '', title: 'A password is the whole form', text: 'Your username and computer name come from your PC, the disk is sized from your free space, and TPM-backed encryption is the default. Everything else is stated on screen and adjustable under Advanced.'},
+      {emoji: '', title: 'A password is the whole form', text: 'Your user name and computer name come from your PC, the size comes from your free space, and the TunaOS drive is encrypted by default. Everything else is on screen, and you can change it under Advanced.'},
       {emoji: '', title: 'Your setup carries over', text: 'Files, Wi-Fi networks, wallpaper, accent colour, keyboard layout, taskbar pins, browser profiles, Steam libraries and WSL packages. Passwords, keys and tokens stay on Windows: you sign in again where it matters.'},
-      {emoji: '', title: 'Secure Boot, not disabled', text: 'The deployer runs under a Microsoft/Fedora-signed boot chain from a one-shot boot entry, so Secure Boot stays on and nothing else on the machine is touched.'},
-      {emoji: '', title: 'A real image catalog', text: 'GNOME, KDE Plasma, Niri and XFCE on Enterprise Linux, Fedora, Arch and Debian bases, or any supported custom OCI image.'},
-      {emoji: '', title: 'Try it before you reboot', text: 'Boot the result in a VM window from inside Windows first.'},
-      {emoji: '', title: 'An honest way back', text: "Uninstall lives in Windows' own Apps list. It removes the boot entry and installer, restores changed settings, and only reclaims a partition wootc itself created."},
+      {emoji: '', title: 'Secure Boot stays on', text: 'wootc starts TunaOS with start-up files signed by Microsoft and Fedora, so you do not turn Secure Boot off and nothing else on the computer changes.'},
+      {emoji: '', title: 'Many images', text: 'GNOME, KDE Plasma, Niri and XFCE on Enterprise Linux, Fedora, Arch and Debian bases, or a custom image.'},
+      {emoji: '', title: 'Try it before you restart', text: 'Open the result in a window inside Windows first.'},
+      {emoji: '', title: 'A way back', text: "Uninstall wootc in Windows Settings › Apps. It removes the start-up entry and the installer, restores the settings it changed, and only removes a partition that wootc itself made. This is an alpha: if the clean-up is not complete, it says so."},
     ],
     highlights: [
-      {title: 'Arm', text: 'The app creates root.disk, stages the signed boot chain on the ESP, and sets a one-shot boot entry.'},
-      {title: 'Deploy', text: 'One reboot: the signed chain launches a small installer that writes the chosen OS image into root.disk, with optional LUKS/TPM2 encryption.'},
-      {title: 'Live in both', text: 'A boot hook attaches root.disk on every boot and pivots into a native Linux system. Windows stays on the boot menu and its drive is there in the file manager.'},
-      {title: 'Commit, or do not', text: 'Graduate Linux onto a real partition when you are sure, dual-boot indefinitely, or uninstall and leave no trace.'},
-    ],
-    install: [
-      {label: 'Install with winget', code: 'winget install TunaOS.wootc'},
+      {title: '1. Prepare', text: 'The app makes the file for TunaOS on drive C: and tells the computer to start the TunaOS installer once.'},
+      {title: '2. Install', text: 'One restart: a small installer writes TunaOS into that file, and can encrypt it.'},
+      {title: '3. Use both', text: 'Choose TunaOS or Windows at each start. In TunaOS, your Windows drive shows in the file manager.'},
+      {title: '4. Decide later', text: 'Move TunaOS to its own partition when you are sure, keep both, or uninstall it.'},
     ],
   },
   {

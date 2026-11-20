@@ -7,6 +7,11 @@ sidebar_label: "Community"
 
 Welcome to the TunaOS community! Whether you are a user, contributor, or curious, here is how to participate.
 
+## How these projects are made
+
+All the projects here are made primarily with LLMs. They span the range of
+slop to not. Some are useful and usable while others are definitely not.
+
 ## Donate AI CLI time
 
 **[Lend your AI CLI through Hive](https://hub.tunaos.org/#contribute)** — no code needed.

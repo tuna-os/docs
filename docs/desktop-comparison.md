@@ -40,7 +40,7 @@ desktop listed as a related product is not automatically a TunaOS variant.
 - [Desktop accessibility](./accessibility.md)
 
 - [System requirements](./system-requirements.md)
-- [Installation guide](./installation.md)
+- [Download and install](/download)
 - [Manage images with bootc](./tunaos/bootc-usage.md)
 - [COSMIC quick-start guide](./cosmic-quickstart.md)
 - [Niri quick-start guide](./niri-quickstart.md)
