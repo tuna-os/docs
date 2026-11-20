@@ -3,8 +3,6 @@ title: SSH and Remote Access
 description: Connect to a TunaOS machine over SSH, with the limits of what this repository can confirm.
 ---
 
-# SSH and Remote Access
-
 This guide shows how to connect to a TunaOS machine from another computer. It uses standard OpenSSH and systemd commands.
 
 :::note
@@ -60,7 +58,7 @@ The repository does not confirm which remote desktop tools ship in each image. F
 
 ## Safety checks
 
-- Keep a second way in, such as the console, when you change SSH settings. The [smart card login guide](smart-card-login.md) gives the same advice.
+- Keep a second way in, such as the console, when you change SSH settings. The [guide for smart card login](smart-card-login.md) gives the same advice.
 - Test a new key from a second terminal before you close the first session.
 - Disable password login only after key login works.
 
