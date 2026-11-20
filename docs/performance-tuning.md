@@ -19,7 +19,7 @@ The desktop has the largest effect on memory use. Pick the lightest desktop that
 - Niri is a tiling compositor that uses little memory. See the [Niri quickstart](./niri-quickstart.md).
 - GNOME, KDE Plasma, and COSMIC give more features and use more memory.
 
-Not every base image offers every desktop. Read [Choosing a variant](./choosing-a-variant.md) to see what is available. For a CPU from before 2013, use a variant that has an `x86_64_v2` build. See [System requirements](./system-requirements.md). Do not use the NVIDIA variant on a low-memory system. It needs 8 GB of memory or more.
+Not every base image offers every desktop. Read the [variant guide](./choosing-a-variant.md) to see what is available. For a CPU from before 2013, use a variant that has an `x86_64_v2` build. See [System requirements](./system-requirements.md). Do not use the NVIDIA variant on a low-memory system. It needs 8 GB of memory or more.
 
 ## Measure first
 
@@ -51,7 +51,7 @@ gsettings set org.gnome.desktop.interface enable-animations false
 
 To restore the default, run `gsettings reset org.gnome.desktop.interface enable-animations`.
 
-On other desktops, open the system settings. Look for the pages for effects, animations, or compositing, and turn them off.
+On other desktops, open the system settings. Look for the pages for effects, animations, or window compositor settings, and turn them off.
 
 ## Tune memory and swap
 
@@ -123,13 +123,13 @@ Each service that runs uses memory.
    systemd-analyze blame
    ```
 
-2. List the running services:
+2. List the services that are active:
 
    ```bash
    systemctl list-units --type=service --state=running
    ```
 
-3. Stop a service that you do not need, and stop it from starting at boot:
+3. Stop a service that you do not need, and stop it so that it does not start at boot:
 
    ```bash
    sudo systemctl disable --now <service-name>
@@ -162,4 +162,4 @@ Read what a service does before you disable it. To undo the change, run `sudo sy
 
 - [System requirements](./system-requirements.md)
 - [Desktop comparison](./desktop-comparison.md)
-- [Layering](./layering.md)
+- [Image layers](./layering.md)
