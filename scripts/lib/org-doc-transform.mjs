@@ -171,6 +171,18 @@ function fixRelativeLinks(content, repo, srcDir = '', branch = 'main') {
     /(<img\b[^>]*?\bsrc=")(?!https?:|\/|data:)([^"]+)(")/gi,
     (_, pre, p, post) => `${pre}${raw}/${clean(p)}${post}`,
   );
+  // Raw HTML <a href="…">, for the same reason: READMEs put centred badge and
+  // link rows in HTML (compass's `href="LICENSE"`, bootsahi's
+  // `href="docs/gui-walkthrough.md"`), and on this site a relative href
+  // resolves against the docs tree and 404s. Anchors, schemes and
+  // site-absolute paths are left alone.
+  c = c.replace(
+    /(<a\b[^>]*?\bhref=")(?![a-z][a-z0-9+.-]*:|\/|#)([^"#]+)(#[^"]*)?(")/gi,
+    (m, pre, p, anchor = '', post) => {
+      const cleaned = clean(p);
+      return cleaned === '' ? m : `${pre}${base}/${cleaned}${anchor}${post}`;
+    },
+  );
   // Rewrite repo-relative markdown links to absolute URLs.
   //
   // A repo-relative link can point at a markdown file, a plain file
