@@ -31,18 +31,6 @@ def validate_iso(root):
             raise ValueError("Invalid ISO entry")
 
 
-def validate_walkthrough(root):
-    directory = root / "docs/tunaos/installer-walkthrough"
-    page = (directory / "index.md").read_text()
-    images = list((directory / "img").glob("*.png"))
-    if not images or not all(image.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")
-                             for image in images):
-        raise ValueError("Walkthrough requires PNG screenshots")
-    links = re.findall(r'!\[[^\]]*\]\(\./img/([^/)]+)\)', page)
-    if not links or any(not (directory / "img" / name).is_file() for name in links):
-        raise ValueError("Walkthrough has missing screenshots")
-
-
 def validate_flatpak(root):
     data = json.loads((root / "static/flatpak/index/static").read_text())
     if data["Registry"] != "https://ghcr.io" or not data["Results"]:
@@ -73,7 +61,6 @@ class Producer:
 
 PRODUCERS = {
     "iso-index": Producer("static/iso-index.json", validate_iso),
-    "installer-walkthrough": Producer("docs/tunaos/installer-walkthrough", validate_walkthrough),
     "flatpak": Producer("static/flatpak/index/static", validate_flatpak),
 }
 

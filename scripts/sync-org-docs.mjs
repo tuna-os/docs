@@ -206,10 +206,10 @@ function slugify(name) {
 //
 // `existingFiles` must already exclude directory entries before it's passed
 // in — a synced repo's targetDir can hold a genuine subdirectory this script
-// never created (docs/iso-builder/img/, docs/tunaos/installer-walkthrough/ —
-// both real, both manually maintained), and this function has no way to
-// re-check that a name it's given isn't one; the caller does that filtering
-// (readdirSync with withFileTypes, keeping only isFile() entries) before ever
+// never created (docs/iso-builder/img/ — real, manually maintained), and this
+// function has no way to re-check that a name it's given isn't one; the
+// caller does that filtering (readdirSync with withFileTypes, keeping only
+// isFile() entries) before ever
 // calling this.
 //
 // `couldWrite(file)` says whether this run could have written `file` at all.
@@ -536,8 +536,8 @@ async function main({
 
       // Snapshot what's already there before writing anything, so removal
       // (below) can tell "was here before, not written this run" from "this
-      // run just created it". Directories are excluded up front — img/,
-      // installer-walkthrough/ and the like are never something this script
+      // run just created it". Directories are excluded up front — img/
+      // and the like are never something this script
       // wrote and must never be candidates for removal.
       const existingFiles = readdirSync(targetDir, {withFileTypes: true})
         .filter(e => e.isFile())
