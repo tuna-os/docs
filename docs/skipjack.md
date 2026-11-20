@@ -8,7 +8,7 @@ sidebar_position: 4
 Prefer a visual tour? See the **[Skipjack overview →](/skipjack)** start page.
 :::
 
-**Based on:** [CentOS Stream 10](https://www.centos.org/centos-stream-10/)
+**Based on:** [CentOS Stream 10](https://www.centos.org/centos-stream/)
 
 Skipjack is the TunaOS variant that follows upstream. CentOS Stream 10 is its
 base. It is where we test the features that go into RHEL and AlmaLinux later.
@@ -32,31 +32,33 @@ To see every variant side by side, read [Choose a variant](./choosing-a-variant)
 - **CentOS Stream 10**: The newest part of the RHEL ecosystem.
 - **Developer Focus**: Ideal for developers who want to stay ahead of the enterprise curve.
 
-## Downloads
+## Images
 
-Skipjack is in active development now. Pre-built ISOs are periodically available.
+Each desktop is a separate image tag:
 
-**Image:** `ghcr.io/tuna-os/skipjack:latest`
+| Desktop | Image |
+| --- | --- |
+| GNOME | `ghcr.io/tuna-os/skipjack:gnome` |
+| KDE Plasma | `ghcr.io/tuna-os/skipjack:kde` |
+| COSMIC | `ghcr.io/tuna-os/skipjack:cosmic` |
+| Niri | `ghcr.io/tuna-os/skipjack:niri` |
 
-**ISOs:**
-- [Check Latest Builds](https://download.tunaos.org/)
+## Install
 
-## Installation
+To install Skipjack on a PC, go to [Download TunaOS](/download). That page
+gives you the installer and the steps for your computer.
 
-### Using Container Image
+## Switch from another bootc system
+
+If your computer runs a bootc system now, for example Bluefin or a different
+TunaOS variant, use [bootc-migrate](/docs/bootc-migrate):
+
 ```bash
-podman pull ghcr.io/tuna-os/skipjack:latest
+sudo bootc-migrate --target-image ghcr.io/tuna-os/skipjack:gnome
 ```
 
-### Building ISO with Just
-```bash
-# Clone the repo
-git clone https://github.com/tuna-os/tunaOS.git
-cd tunaOS
-
-# Build Skipjack ISO
-just build-iso skipjack
-```
+Then restart the computer. For a different desktop, change the tag, for
+example to `:kde`. Do not use the `:latest` tag.
 
 ## Community Support
 

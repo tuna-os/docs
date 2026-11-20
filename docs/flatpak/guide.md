@@ -18,10 +18,10 @@ TunaOS publishes its Flatpak applications through a custom OCI remote. Each app 
 | **Mariner** 🛠️ | GTK4 + libadwaita file manager (GNOME Files alternative with type-ahead, dual-pane, Quick Look) | `org.tunaos.mariner` | [GitHub](https://github.com/tuna-os/mariner) |
 | **Mandelbrot** 🌀 | GNOME Matrix messaging client (forked from Fractal, MatrixRTC voice/video) | `org.tunaos.mandelbrot` | [GitHub](https://github.com/tuna-os/mandelbrot) |
 | **Dualcut** ✂️ | GNOME video editor (manual timeline + live JSON/scriptable editing) | `org.tunaos.dualcut` | [GitHub](https://github.com/tuna-os/dualcut) |
-| **TunaOS Installer (COSMIC)** 🚀 | Live-ISO installer frontend | `org.tunaos.InstallerCosmic` | [GitHub](https://github.com/tuna-os/tuna-installer-cosmic) |
-| **TunaOS Installer (KDE)** 🌊 | Live-ISO installer frontend | `org.tunaos.InstallerKde` | [GitHub](https://github.com/tuna-os/tuna-installer-kde) |
-| **TunaOS Installer (Niri)** ⚡ | Live-ISO installer frontend | `org.tunaos.InstallerNiri` | [GitHub](https://github.com/tuna-os/tuna-installer-niri) |
-| **TunaOS Installer (XFCE)** 🐭 | Live-ISO installer frontend | `org.tunaos.InstallerXfce` | [GitHub](https://github.com/tuna-os/tuna-installer-xfce) |
+| **TunaOS Installer (COSMIC)** 🚀 | Live-ISO installer frontend | `org.tunaos.InstallerCosmic` | [GitHub](https://github.com/tuna-os/bootc-installer/tree/dev/frontends/cosmic) |
+| **TunaOS Installer (KDE)** 🌊 | Live-ISO installer frontend | `org.tunaos.InstallerKde` | [GitHub](https://github.com/tuna-os/bootc-installer/tree/dev/frontends/kde) |
+| **TunaOS Installer (Niri)** ⚡ | Live-ISO installer frontend | `org.tunaos.InstallerNiri` | [GitHub](https://github.com/tuna-os/bootc-installer/tree/dev/frontends/niri) |
+| **TunaOS Installer (XFCE)** 🐭 | Live-ISO installer frontend | `org.tunaos.InstallerXfce` | [GitHub](https://github.com/tuna-os/bootc-installer/tree/dev/frontends/xfce) |
 | **bootc-installer** 💾 | GTK4/libadwaita graphical installer (Flatpak) for bootc images | `org.bootcinstaller.Installer` | [GitHub](https://github.com/tuna-os/bootc-installer) |
 
 > The list above mirrors the apps published to the tuna-os OCI index

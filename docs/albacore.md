@@ -32,63 +32,35 @@ To see every variant side by side, read [Choose a variant](./choosing-a-variant)
 - **HWE Variant**: Hardware Enablement kernel for the latest laptops and workstations.
 - **10-Year Lifecycle**: Benefit from the long-term support of AlmaLinux 10.
 
-## Downloads
+## Images
 
-Every two weeks, TunaOS publishes its pre-built ISOs for the GNOME flavors. Other flavors are available as container images only.
+Each desktop is a separate image tag:
 
-### GNOME (Standard)
-The standard experience for most users.
+| Desktop | Image |
+| --- | --- |
+| GNOME | `ghcr.io/tuna-os/albacore:gnome` |
+| GNOME with the HWE (hardware enablement) kernel | `ghcr.io/tuna-os/albacore:gnome-hwe` |
+| KDE Plasma | `ghcr.io/tuna-os/albacore:kde` |
+| COSMIC | `ghcr.io/tuna-os/albacore:cosmic` |
+| Niri | `ghcr.io/tuna-os/albacore:niri` |
+| GNOME with NVIDIA drivers and CUDA | `ghcr.io/tuna-os/albacore:gnome-nvidia` |
 
-**Image:** `ghcr.io/tuna-os/albacore:gnome`
+## Install
 
-**ISOs:** [albacore-gnome-latest.iso](https://download.tunaos.org/live-isos/albacore-gnome-latest.iso)
+To install Albacore on a PC, go to [Download TunaOS](/download). That page
+gives you the installer and the steps for your computer.
 
-<a id="gnome-hwe"></a>
-### GNOME (HWE — Hardware Enablement)
-Features a newer kernel and drivers for recent hardware.
+## Switch from another bootc system
 
-**Image:** `ghcr.io/tuna-os/albacore:gnome-hwe`
+If your computer runs a bootc system now, for example Bluefin or a different
+TunaOS variant, use [bootc-migrate](/docs/bootc-migrate):
 
-**ISOs:** [albacore-gnome-hwe-latest.iso](https://download.tunaos.org/live-isos/albacore-gnome-hwe-latest.iso)
-
-<a id="kde"></a>
-### KDE Plasma
-**Image:** `ghcr.io/tuna-os/albacore:kde`
-
-<a id="cosmic"></a>
-### COSMIC
-**Image:** `ghcr.io/tuna-os/albacore:cosmic`
-
-<a id="niri"></a>
-### Niri
-**Image:** `ghcr.io/tuna-os/albacore:niri`
-
-<a id="gnome-nvidia"></a>
-### NVIDIA (NVIDIA drivers + CUDA)
-Adds NVIDIA drivers and CUDA for AI, graphics, and VFX workloads. (Formerly "GDX".)
-
-**Image:** `ghcr.io/tuna-os/albacore:gnome-nvidia`
-
-## Installation
-
-We recommend the `Justfile` in the
-[TunaOS repository](https://github.com/tuna-os/tunaOS). Use it to build your
-own images.
-
-### Using Container Image
 ```bash
-podman pull ghcr.io/tuna-os/albacore:latest
+sudo bootc-migrate --target-image ghcr.io/tuna-os/albacore:gnome
 ```
 
-### Building ISO with Just
-```bash
-# Clone the repo
-git clone https://github.com/tuna-os/tunaOS.git
-cd tunaOS
-
-# Build Albacore ISO
-just build-iso albacore
-```
+Then restart the computer. For a different desktop, change the tag, for
+example to `:kde`. Do not use the `:latest` tag.
 
 ## Community Support
 

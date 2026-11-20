@@ -37,33 +37,34 @@ To see every variant side by side, read [Choose a variant](./choosing-a-variant)
 
 Grouper is in **Beta**. We publish Grouper images on [tunaos.org/download](/download) for user tests. We do not recommend Grouper for production use yet.
 
-## Downloads
+## Images
 
-**Images:**
+Each desktop is a separate image tag:
 
-- `ghcr.io/tuna-os/grouper:gnome`
-- `ghcr.io/tuna-os/grouper:kde`
-- `ghcr.io/tuna-os/grouper:niri`
-- `ghcr.io/tuna-os/grouper:xfce`
+| Desktop | Image |
+| --- | --- |
+| GNOME | `ghcr.io/tuna-os/grouper:gnome` |
+| KDE Plasma | `ghcr.io/tuna-os/grouper:kde` |
+| Niri | `ghcr.io/tuna-os/grouper:niri` |
+| XFCE | `ghcr.io/tuna-os/grouper:xfce` |
 
-## Installation
+## Install
 
-### Using Container Image
+To install Grouper on a PC, go to [Download TunaOS](/download). That page
+gives you the installer and the steps for your computer. For an Apple Silicon
+Mac, read [Apple Silicon Macs](apple-silicon.md) first.
+
+## Switch from another bootc system
+
+If your computer runs a bootc system now, for example Bluefin or a different
+TunaOS variant, use [bootc-migrate](/docs/bootc-migrate):
 
 ```bash
-podman pull ghcr.io/tuna-os/grouper:gnome
+sudo bootc-migrate --target-image ghcr.io/tuna-os/grouper:gnome
 ```
 
-### Building ISO with Just
-
-```bash
-# Clone the repo
-git clone https://github.com/tuna-os/tunaOS.git
-cd tunaOS
-
-# Build Grouper ISO
-just build-iso grouper
-```
+Then restart the computer. For a different desktop, change the tag, for
+example to `:kde`. Do not use the `:latest` tag.
 
 ## Community Support
 
