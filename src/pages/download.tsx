@@ -4,6 +4,7 @@ import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import Link from '@docusaurus/Link';
 import IsoDownloads from '@site/src/components/IsoDownloads';
+import MediaWriterDownload from '@site/src/components/MediaWriterDownload';
 import FactoryHealth from '@site/src/components/FactoryHealth';
 import page from '@site/src/css/page.module.css';
 import styles from './download.module.css';
@@ -57,6 +58,7 @@ export default function Download(): ReactNode {
       description="Download bootable live ISOs for all TunaOS images — Albacore, Yellowfin, Skipjack, Bonito, Dakota and more.">
       <DownloadHeader />
       <main className={clsx('container', styles.main)}>
+        <MediaWriterDownload />
         <ChooseBanner />
         <FactoryHealth />
         <IsoDownloads />
@@ -71,8 +73,9 @@ export default function Download(): ReactNode {
           </pre>
           <p>
             Replace <code>/dev/sdX</code> with your USB device (double-check with{' '}
-            <code>lsblk</code> — this erases the target). On Windows or macOS,{' '}
-            <a href="https://etcher.balena.io/">balenaEtcher</a> works too. After
+            <code>lsblk</code> — this erases the target). On Windows or macOS, TunaOS
+            Media Writer (above) or{' '}
+            <a href="https://etcher.balena.io/">balenaEtcher</a> writes it for you. After
             booting, follow the <a href="/docs/installer">installer guide</a>.
           </p>
         </div>
