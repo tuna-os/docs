@@ -30,7 +30,9 @@
 }
 
 .optionMuted {
-  opacity: 0.6;
+  /* Quieter border instead of opacity: fading the whole card pushed its
+     text below the 4.5:1 contrast minimum (axe color-contrast). */
+  border-left-color: var(--tu-line);
 }
 
 .optionHead {
@@ -110,6 +112,7 @@
 .notice a,
 .meta a {
   color: var(--tu-accent-soft);
+  text-decoration: underline;
 }
 
 .text {
