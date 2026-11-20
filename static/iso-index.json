@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T07:14:21.562Z",
+  "generatedAt": "2026-11-19T20:09:52.956Z",
   "baseUrl": "https://download.tunaos.org",
   "count": 378,
   "categories": [
@@ -733,6 +733,26 @@
         },
         {
           "category": "live-isos",
+          "name": "yellowfin-niri-10-aarch64",
+          "path": "live-isos/yellowfin-niri-10-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-niri-10-aarch64.iso",
+          "size": 5737873408,
+          "modified": "2026-11-19T19:33:00.634535890Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-niri-latest-arm64",
+          "path": "live-isos/yellowfin-niri-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-niri-latest-arm64.iso",
+          "size": 5737873408,
+          "modified": "2026-11-19T19:33:00.634535890Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
           "name": "gurnard-pantheon-24.04-aarch64",
           "path": "live-isos/gurnard-pantheon-24.04-aarch64.iso",
           "url": "https://download.tunaos.org/live-isos/gurnard-pantheon-24.04-aarch64.iso",
@@ -1119,26 +1139,6 @@
           "size": 6072631296,
           "modified": "2026-11-12T19:01:45.781908689Z",
           "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "yellowfin-niri-10-aarch64",
-          "path": "live-isos/yellowfin-niri-10-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-niri-10-aarch64.iso",
-          "size": 5587664896,
-          "modified": "2026-11-12T18:59:01.613511502Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "yellowfin-niri-latest-arm64",
-          "path": "live-isos/yellowfin-niri-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-niri-latest-arm64.iso",
-          "size": 5587664896,
-          "modified": "2026-11-12T18:59:01.613511502Z",
-          "arch": "aarch64",
           "latest": false
         },
         {
