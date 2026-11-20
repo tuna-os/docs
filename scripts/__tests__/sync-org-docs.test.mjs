@@ -382,6 +382,17 @@ test('leaves an absolute src on an img tag alone', () => {
   assert.equal(fixRelativeLinks(src, 'corral'), src);
 });
 
+test('rewrites a relative href on a raw HTML a tag', () => {
+  const out = fixRelativeLinks('<a href="docs/guide.md#start">guide</a> <a href="LICENSE"><img src="https://x/y.svg"></a>\n', 'corral');
+  assert.match(out, /href="https:\/\/github\.com\/tuna-os\/corral\/blob\/main\/docs\/guide\.md#start"/);
+  assert.match(out, /href="https:\/\/github\.com\/tuna-os\/corral\/blob\/main\/LICENSE"/);
+});
+
+test('leaves absolute, site-absolute and anchor hrefs alone', () => {
+  const src = '<a href="https://example.com/">a</a> <a href="/docs/x">b</a> <a href="#top">c</a> <a href="mailto:a@b.c">d</a>\n';
+  assert.equal(fixRelativeLinks(src, 'corral'), src);
+});
+
 test('leaves a site-absolute img src alone, it belongs to static/', () => {
   const src = '<img src="/img/screenshots/a.png" alt="x" />\n';
   assert.equal(fixRelativeLinks(src, 'corral'), src);

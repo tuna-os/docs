@@ -22,8 +22,8 @@ status: unknown
 
 <p align="center">
   <a href="https://hylki.hyprlab.co">Website</a> ·
-  <a href="docs/FEATURES.md">Features</a> ·
-  <a href="docs/DOCUMENTATION.md">Documentation</a> ·
+  <a href="https://github.com/tuna-os/lifafa/blob/main/docs/FEATURES.md">Features</a> ·
+  <a href="https://github.com/tuna-os/lifafa/blob/main/docs/DOCUMENTATION.md">Documentation</a> ·
   <a href="https://github.com/hyprlab/hylki/releases">Releases</a> ·
   <a href="https://discord.gg/YfEJ4b6PFW">Discord</a>
   <br />

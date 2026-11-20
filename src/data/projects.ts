@@ -754,8 +754,6 @@ export const PROJECTS: Project[] = [
     docs: '',
     external: true,
     externalLink: 'https://github.com/projectbluefin/dakota',
-    logo: 'https://docs.projectbluefin.io/assets/images/01b99cdf-2b10-4be4-88bf-23da3a945be8-ea4ce28757013465dc1434aaa7a18742.png',
-    logoLight: true,
     stats: [
       {label: 'Desktop', value: 'GNOME'},
       {label: 'Built with', value: 'BuildStream'},

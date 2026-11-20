@@ -20,7 +20,7 @@ macOS-driven install flow for M1/M2 Macs. The repository is
 
 <p align="center">
   <em>Every frame is rendered in CI from the real SwiftUI views — see the
-  <a href="docs/gui-walkthrough.md">step-by-step walkthrough</a>.</em>
+  <a href="https://github.com/tuna-os/bootsahi/blob/main/docs/gui-walkthrough.md">step-by-step walkthrough</a>.</em>
 </p>
 
 **Architecture** (see [docs/DESIGN.md](https://github.com/tuna-os/bootsahi/blob/main/docs/DESIGN.md)): instead of one

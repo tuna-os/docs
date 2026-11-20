@@ -180,4 +180,4 @@ podman rmi <old-image>
 - [bootc-dev/bootc](https://github.com/bootc-dev/bootc) — official project
 - [Bootc Resources](/docs/bootc-resources) — curated links and references
 - [Building TunaOS images](building.md) — how TunaOS images are built
-- [Containerfile reference](https://github.com/tuna-os/tunaOS/blob/main/Containerfile) — the TunaOS source Containerfile
+- [Containerfile reference](https://github.com/tuna-os/tunaOS/blob/main/Containerfile.el10) — the Containerfile for the EL10 variants (the repository root has one for each base)
