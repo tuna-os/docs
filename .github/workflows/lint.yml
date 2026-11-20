@@ -17,6 +17,8 @@ name: Lint
 # used to report a no-op `Markdown Lint` on every other pull request.
 on:
   pull_request:
+    # labeled/unlabeled: the ste job's ratchet-raise label must re-run it.
+    types: [opened, synchronize, reopened, labeled, unlabeled]
   push:
     branches: [main]
   workflow_dispatch:
@@ -228,7 +230,12 @@ jobs:
     # is reverted by the next sync, and the author is another repository), so
     # that prose is only ever checked where it is written. Same rules, applied
     # at the source.
-    uses: tuna-os/.github/.github/workflows/ste-lint.yml@4078f531ac74703f203bde835ef6c25e9321b97b # main # zizmor: ignore[ref-version-mismatch] pinned to a reviewed main commit; Renovate bumps the digest, so main may be ahead
+    uses: tuna-os/.github/.github/workflows/ste-lint.yml@d9ad7fd18176220c56fbf13a36eaf11de00c12a5 # main # zizmor: ignore[ref-version-mismatch] pinned to a reviewed main commit; Renovate bumps the digest, so main may be ahead
+    # ratchet: the budget is exact. A count under it fails and names the new
+    # number for .ste-budget; a pull request that raises it needs the
+    # `ratchet-raise` label (labeled/unlabeled above re-run the check).
+    with:
+      ratchet: true
 
   link-check:
     needs: changes

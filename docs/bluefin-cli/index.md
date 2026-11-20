@@ -76,24 +76,13 @@ bluefin-cli shell powershell on
 
 ### Homebrew (Linux / macOS)
 
-The preview formula is available from `ublue-os/homebrew-experimental-tap`,
-synced from the source-build formula in
-[`contrib/homebrew/bluefin-cli.rb`](https://github.com/tuna-os/bluefin-cli/blob/main/contrib/homebrew/bluefin-cli.rb):
+The formula is published in [`tuna-os/homebrew-tap`](https://github.com/tuna-os/homebrew-tap),
+built from the GoReleaser configuration on each release:
 
 ```bash
-brew tap ublue-os/homebrew-experimental-tap
+brew tap tuna-os/tap
 brew install bluefin-cli
 ```
-
-> **Status (2026-10-17):** use `ublue-os/homebrew-experimental-tap` above.
-> The primary tap [`tuna-os/homebrew-tap`](https://github.com/tuna-os/homebrew-tap)
-> is not available yet. The GoReleaser configuration includes the Homebrew
-> publisher. It pushes to the tap with the `HOMEBREW_TAP_SSH_KEY` deploy key,
-> but the team has not verified a publication yet
-> ([#295](https://github.com/tuna-os/bluefin-cli/issues/295)). For maintainer
-> key and setup details, see
-> [`docs/release-publishing.md`](https://github.com/tuna-os/bluefin-cli/blob/main/docs/release-publishing.md). Once published,
-> `brew tap tuna-os/tap && brew install bluefin-cli` will be the primary path.
 
 ### Winget (Windows)
 
