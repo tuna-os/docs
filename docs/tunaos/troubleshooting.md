@@ -199,4 +199,4 @@ bootc rollback
 
 - **GitHub Issues:** [Report a bug](https://github.com/tuna-os/tunaOS/issues)
 - **Matrix Chat:** [#tunaos:reilly.asia](https://matrix.to/#/%23tunaos:reilly.asia)
-- **Universal Blue Discord:** [Discord](https://discord.gg/WEu6BdFEtp)
+- **Bazzite Discord (Universal Blue):** [Discord](https://discord.gg/WEu6BdFEtp)

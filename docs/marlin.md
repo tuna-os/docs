@@ -120,4 +120,4 @@ just build-iso marlin
 
 - **TunaOS**: [Matrix Chat](https://matrix.to/#/%23tunaos:reilly.asia)
 - **Arch Linux**: [Arch Linux Forums](https://bbs.archlinux.org/)
-- **Universal Blue**: [Discord Community](https://discord.gg/WEu6BdFEtp)
+- **Bazzite (Universal Blue)**: [Bazzite Discord](https://discord.gg/WEu6BdFEtp)
