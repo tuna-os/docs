@@ -72,6 +72,8 @@ const sidebars: SidebarsConfig = {
       items: [
         {type: 'category', label: 'Tromsø', link: {type: 'doc', id: 'tromso/index'}, items: []},
         {type: 'category', label: 'XFCE Linux', className: 'sidebar-alpha', link: {type: 'doc', id: 'xfce-linux/index'}, items: []},
+        {type: 'category', label: 'Brussels', link: {type: 'doc', id: 'brussels/index'}, items: []},
+        {type: 'category', label: 'Athens', link: {type: 'doc', id: 'athens/index'}, items: []},
       ],
     },
     {
@@ -92,6 +94,7 @@ const sidebars: SidebarsConfig = {
         },
         {type: 'category', label: 'bootc-migrate', link: {type: 'doc', id: 'bootc-migrate/index'}, items: ['bootc-migrate/filesystem-support']},
         {type: 'category', label: 'Flatpak', link: {type: 'doc', id: 'flatpak/index'}, items: ['flatpak/guide']},
+        {type: 'category', label: 'FlatPark', link: {type: 'doc', id: 'flatpark/index'}, items: []},
       ],
     },
     {
@@ -119,6 +122,8 @@ const sidebars: SidebarsConfig = {
           'bootc-installer/gui-walkthrough', 'bootc-installer/live-iso']},
         {type: 'category', label: 'bootc-installer-asahi', link: {type: 'doc', id: 'bootc-installer-asahi/index'}, items: [
           'bootc-installer-asahi/gui-walkthrough']},
+        {type: 'category', label: 'Bootsahi', link: {type: 'doc', id: 'bootsahi/index'}, items: [
+          'bootsahi/gui-walkthrough']},
       ],
     },
     {
@@ -140,6 +145,8 @@ const sidebars: SidebarsConfig = {
         {type: 'category', label: 'Ghostty', className: 'sidebar-external', link: {type: 'doc', id: 'ghostty/index'}, items: []},
         {type: 'category', label: 'GNOME Hive Monitor', link: {type: 'doc', id: 'gnome-hive-monitor/index'}, items: ['gnome-hive-monitor/observability']},
         {type: 'category', label: 'Quickcast', link: {type: 'doc', id: 'quickcast/index'}, items: []},
+        {type: 'category', label: 'tuna-desktop', link: {type: 'doc', id: 'tuna-desktop/index'}, items: []},
+        {type: 'category', label: 'Tuna Mail', link: {type: 'doc', id: 'tuna-mail/index'}, items: []},
       ],
     },
     {
@@ -189,6 +196,9 @@ const sidebars: SidebarsConfig = {
         {type: 'category', label: 'Apps', items: [
           'tavern/ROADMAP', 'tavern/CONTRIBUTING', 'compass/CONTRIBUTING',
           'gnome-hive-monitor/CONTRIBUTING', 'gnome-hive-monitor/ROADMAP']},
+        {type: 'category', label: 'Libraries', items: [
+          {type: 'doc', id: 'proton-unofficial-sdk/index', label: 'proton-unofficial-sdk'},
+          {type: 'doc', id: 'tuta-unofficial-sdk/index', label: 'tuta-unofficial-sdk'}]},
         {
           type: 'category',
           label: 'Archived',
@@ -204,6 +214,7 @@ const sidebars: SidebarsConfig = {
             {type: 'doc', id: 'ubuntu/index', label: 'Ubuntu'},
             {type: 'doc', id: 'bootc-installer-tui/index', label: 'bootc-installer-tui'},
             {type: 'doc', id: 'chunkah/index', label: 'chunkah'},
+            {type: 'doc', id: 'lifafa/index', label: 'lifafa'},
             {type: 'doc', id: 'tuna-installer-cosmic/gui-walkthrough', label: 'COSMIC installer walkthrough'},
             {type: 'doc', id: 'tuna-installer-kde/gui-walkthrough', label: 'KDE installer walkthrough'},
             {type: 'doc', id: 'tuna-installer-niri/gui-walkthrough', label: 'Niri installer walkthrough'},
