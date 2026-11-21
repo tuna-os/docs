@@ -1,15 +1,15 @@
 {
   "rust-atomicwrites": {
     "revision": "7e18cf3045168c9e57368470d9d9dfb582d67d8a",
-    "lastSuccessfulFetch": "2026-11-20T09:18:42.447Z",
+    "lastSuccessfulFetch": "2026-11-21T14:27:22.427Z",
     "status": "ok",
     "pages": {
       "rust-atomicwrites/index": "README.md"
     }
   },
   "tunaOS": {
-    "revision": "d54be5f2f2f243eb285ed52e8105896ef3ddef32",
-    "lastSuccessfulFetch": "2026-11-20T09:18:27.450Z",
+    "revision": "aa33bb59574ed2b5a0dfd79dfcf096de30efd69c",
+    "lastSuccessfulFetch": "2026-11-21T14:27:03.648Z",
     "status": "ok",
     "pages": {
       "tunaos/index": "README.md",
@@ -19,8 +19,8 @@
     }
   },
   "bluefin-cli": {
-    "revision": "5c68295ebc1d35c43eb7aae518267fa70ffedbd5",
-    "lastSuccessfulFetch": "2026-11-20T09:18:27.702Z",
+    "revision": "4ec30bca77997d625b5f90629d16d0841467f396",
+    "lastSuccessfulFetch": "2026-11-21T14:27:04.047Z",
     "status": "ok",
     "pages": {
       "bluefin-cli/index": "README.md",
@@ -48,8 +48,8 @@
     }
   },
   "tunaos-packages": {
-    "revision": "688b37edb2710c9ffe3a2124bf201adf1f79ee36",
-    "lastSuccessfulFetch": "2026-11-20T09:18:28.235Z",
+    "revision": "28eb87dbff8f9735530192671c2069dac4113fec",
+    "lastSuccessfulFetch": "2026-11-21T14:27:04.662Z",
     "status": "ok",
     "pages": {
       "tunaos-packages/index": "README.md",
@@ -86,8 +86,8 @@
     }
   },
   "tromso": {
-    "revision": "45f735fc3e8f7a3c8bfa82c07ff7e632df4822a0",
-    "lastSuccessfulFetch": "2026-11-20T09:18:28.589Z",
+    "revision": "e4b11ab648c906d5116d03a97c57359a356d33e4",
+    "lastSuccessfulFetch": "2026-11-21T14:27:05.170Z",
     "status": "ok",
     "pages": {
       "tromso/index": "README.md",
@@ -104,8 +104,8 @@
     }
   },
   "brussels": {
-    "revision": "28d375ac5fcbf0edd68a0c377eb6a812cb21d8fc",
-    "lastSuccessfulFetch": "2026-11-20T09:18:28.845Z",
+    "revision": "f44211601bd107284b70c4d0511b50a337b5ec80",
+    "lastSuccessfulFetch": "2026-11-21T14:27:05.405Z",
     "status": "ok",
     "pages": {
       "brussels/index": "README.md",
@@ -122,8 +122,8 @@
     }
   },
   "tacklebox": {
-    "revision": "a64cbd3088292aee09d45039537e80e3f74a7d00",
-    "lastSuccessfulFetch": "2026-11-20T09:18:29.107Z",
+    "revision": "02e12e8687c5fde78b0c801851216bc278057143",
+    "lastSuccessfulFetch": "2026-11-21T14:27:05.673Z",
     "status": "ok",
     "pages": {
       "tacklebox/index": "README.md",
@@ -147,8 +147,8 @@
     }
   },
   "Tavern": {
-    "revision": "5e77e0c40239d6bcb3be8b3d1167658390835a05",
-    "lastSuccessfulFetch": "2026-11-20T09:18:29.756Z",
+    "revision": "25314ab7464a6c627eeba2ae4b88bb7d8c3cd038",
+    "lastSuccessfulFetch": "2026-11-21T14:27:05.951Z",
     "status": "ok",
     "pages": {
       "tavern/index": "README.md",
@@ -166,8 +166,8 @@
     }
   },
   "corral": {
-    "revision": "37662fe0bc8c6842bd38f5dceb584d7752e54c44",
-    "lastSuccessfulFetch": "2026-11-20T09:18:30.546Z",
+    "revision": "0f1fc7682210bda4077f9cda9f3dfbbe5f7306a9",
+    "lastSuccessfulFetch": "2026-11-21T14:27:06.504Z",
     "status": "ok",
     "pages": {
       "corral/index": "README.md",
@@ -201,7 +201,7 @@
   },
   "bootc-migrate": {
     "revision": "8c9b551b135ca784a180a08e2624e472ce815891",
-    "lastSuccessfulFetch": "2026-11-20T09:18:30.974Z",
+    "lastSuccessfulFetch": "2026-11-21T14:27:06.925Z",
     "status": "ok",
     "pages": {
       "bootc-migrate/index": "README.md",
@@ -221,7 +221,7 @@
   },
   "flatpak-index": {
     "revision": "56f5cfd316f9832d389dcc0343bf8298b7031b87",
-    "lastSuccessfulFetch": "2026-11-20T09:18:31.231Z",
+    "lastSuccessfulFetch": "2026-11-21T14:27:07.124Z",
     "status": "ok",
     "pages": {
       "flatpak-index/index": "README.md",
@@ -238,7 +238,7 @@
   },
   "changelog-action": {
     "revision": "68295f376aef8f3d789ff18da86463bbb937796b",
-    "lastSuccessfulFetch": "2026-11-20T09:18:31.432Z",
+    "lastSuccessfulFetch": "2026-11-21T14:27:07.290Z",
     "status": "ok",
     "pages": {
       "changelog-action/index": "README.md",
@@ -247,8 +247,8 @@
     }
   },
   "branding": {
-    "revision": "f8d35fe10bc5edba41f55e44142ae1f6bc7dccf7",
-    "lastSuccessfulFetch": "2026-11-20T09:18:31.634Z",
+    "revision": "08b11030d0c0567e1fc8ac967d9ff77eda9bb88b",
+    "lastSuccessfulFetch": "2026-11-21T14:27:07.443Z",
     "status": "ok",
     "pages": {
       "branding/index": "README.md",
@@ -257,8 +257,8 @@
     }
   },
   "wootc": {
-    "revision": "dfd5da290c60ae07c1b9e2bddada055c3608aec8",
-    "lastSuccessfulFetch": "2026-11-20T09:18:32.474Z",
+    "revision": "95c5265aa13ea00a688ca7a240c484e369e7af09",
+    "lastSuccessfulFetch": "2026-11-21T14:27:08.386Z",
     "status": "ok",
     "pages": {
       "wootc/index": "README.md",
@@ -283,6 +283,7 @@
       "wootc/distro-adoption": "docs/distro-adoption.md",
       "wootc/docs-truth-pass": "docs/docs-truth-pass.md",
       "wootc/e2e-architecture": "docs/e2e-architecture.md",
+      "wootc/e2e-coverage": "docs/e2e-coverage.md",
       "wootc/finish-plan": "docs/finish-plan.md",
       "wootc/firstboot-evidence": "docs/firstboot-evidence.md",
       "wootc/getting-started": "docs/getting-started.md",
@@ -316,8 +317,8 @@
     }
   },
   "bootc-installer": {
-    "revision": "bf92bfe8eeff29d7386826739b138b1a7b086443",
-    "lastSuccessfulFetch": "2026-11-20T09:18:33.603Z",
+    "revision": "133cafe41f4d0b6202e2f199b389faf4c7816ed7",
+    "lastSuccessfulFetch": "2026-11-21T14:27:09.870Z",
     "status": "ok",
     "pages": {
       "bootc-installer/index": "README.md",
@@ -332,8 +333,8 @@
     }
   },
   "dualcut": {
-    "revision": "404a5c9d4c0bcf978766d28bb716432d7516fc93",
-    "lastSuccessfulFetch": "2026-11-20T09:18:33.855Z",
+    "revision": "88122cd74480fd6844af6975618c4422ab19ce33",
+    "lastSuccessfulFetch": "2026-11-21T14:27:10.666Z",
     "status": "ok",
     "pages": {
       "dualcut/index": "README.md",
@@ -346,8 +347,8 @@
     }
   },
   "iso-builder": {
-    "revision": "a36466ea5323e7eff7dc4964c37a614d0ecf3d5d",
-    "lastSuccessfulFetch": "2026-11-20T09:18:34.181Z",
+    "revision": "0d5e2bd9faa0a7c7feb561c7804c7d3eb064ecc8",
+    "lastSuccessfulFetch": "2026-11-21T14:27:11.560Z",
     "status": "ok",
     "pages": {
       "iso-builder/index": "README.md",
@@ -364,8 +365,8 @@
     }
   },
   "homebrew-tap": {
-    "revision": "5c12770b578a20e804d37cfbcfbc52b0a302d55d",
-    "lastSuccessfulFetch": "2026-11-20T09:18:34.321Z",
+    "revision": "9c4323e0353457aa80b6bee8a72a949b3ba40eba",
+    "lastSuccessfulFetch": "2026-11-21T14:27:12.297Z",
     "status": "ok",
     "pages": {
       "homebrew-tap/index": "README.md",
@@ -374,8 +375,8 @@
     }
   },
   "scoop-bucket": {
-    "revision": "0478bc9006649f80562b4c52559482e1a1f1c4a3",
-    "lastSuccessfulFetch": "2026-11-20T09:18:34.475Z",
+    "revision": "0ef3085b8cba8e104342cb23e40edc6dc4446aaf",
+    "lastSuccessfulFetch": "2026-11-21T14:27:13.166Z",
     "status": "ok",
     "pages": {
       "scoop-bucket/index": "README.md",
@@ -384,8 +385,8 @@
     }
   },
   "bootsahi": {
-    "revision": "0dd71cda178ec9e890898ca8ce9aade61084d935",
-    "lastSuccessfulFetch": "2026-11-20T09:18:34.687Z",
+    "revision": "04c2a3f109941a3fd56f3b9e88bfd6640ede8faf",
+    "lastSuccessfulFetch": "2026-11-21T14:27:13.559Z",
     "status": "ok",
     "pages": {
       "bootsahi/index": "README.md",
@@ -401,7 +402,7 @@
   },
   "bst-ci": {
     "revision": "a3d350fe74bb053eb9b09de76232fa644ce513a7",
-    "lastSuccessfulFetch": "2026-11-20T09:18:34.838Z",
+    "lastSuccessfulFetch": "2026-11-21T14:27:13.786Z",
     "status": "ok",
     "pages": {
       "bst-ci/index": "README.md",
@@ -410,8 +411,8 @@
     }
   },
   "protota": {
-    "revision": "adbe603ad7da152dba6cd2a7bd571813ad5a8255",
-    "lastSuccessfulFetch": "2026-11-20T09:18:35.771Z",
+    "revision": "ceb27b1efb0f38e4564fc4ad693bf38891dad1f8",
+    "lastSuccessfulFetch": "2026-11-21T14:27:14.730Z",
     "status": "ok",
     "pages": {
       "protota/index": "README.md",
@@ -435,8 +436,8 @@
     }
   },
   "hive": {
-    "revision": "f8d87a95ae611af1a00c1e5461a9eec138afd2cb",
-    "lastSuccessfulFetch": "2026-11-20T09:18:37.559Z",
+    "revision": "d286e639bf029de13234ecf7555deeec648318b4",
+    "lastSuccessfulFetch": "2026-11-21T14:27:16.764Z",
     "status": "ok",
     "pages": {
       "hive/index": "README.md",
@@ -462,8 +463,8 @@
     }
   },
   "spindle": {
-    "revision": "98cf50efa729f474c729bf63d0eca1e90afa3a1c",
-    "lastSuccessfulFetch": "2026-11-20T09:18:38.699Z",
+    "revision": "471de7728025e163ba5c0207e7831cdc1ba84249",
+    "lastSuccessfulFetch": "2026-11-21T14:27:18.147Z",
     "status": "ok",
     "pages": {
       "spindle/index": "README.md",
@@ -506,8 +507,8 @@
     }
   },
   "gnome-hive-monitor": {
-    "revision": "a658a259fe711ede2c9f62396367042c49743a4b",
-    "lastSuccessfulFetch": "2026-11-20T09:18:38.881Z",
+    "revision": "5f9ba5cb5b767e375ea4b63e6e4e07ba2d3ca3d3",
+    "lastSuccessfulFetch": "2026-11-21T14:27:18.352Z",
     "status": "ok",
     "pages": {
       "gnome-hive-monitor/index": "README.md",
@@ -517,8 +518,8 @@
     }
   },
   "hive-operator": {
-    "revision": "198fa964d768c7ecdd1c8c5412a9656942771f5c",
-    "lastSuccessfulFetch": "2026-11-20T09:18:39.068Z",
+    "revision": "9aea0d9ce0090836f8b18c0bbfa2d99d434a4810",
+    "lastSuccessfulFetch": "2026-11-21T14:27:18.543Z",
     "status": "ok",
     "pages": {
       "hive-operator/index": "README.md",
@@ -532,15 +533,15 @@
   },
   "rdocx": {
     "revision": "9e9cbd5e8447d7a7f50e19dd9193e8b3ac5960b5",
-    "lastSuccessfulFetch": "2026-11-20T09:18:40.488Z",
+    "lastSuccessfulFetch": "2026-11-21T14:27:20.016Z",
     "status": "ok",
     "pages": {
       "rdocx/index": "README.md"
     }
   },
   "compass": {
-    "revision": "d5bcdebc5e209f258c2a7c8ea2cea7298be222ef",
-    "lastSuccessfulFetch": "2026-11-20T09:18:41.641Z",
+    "revision": "1aad96d214a8be2b5b9393f871f53e8c3da46cac",
+    "lastSuccessfulFetch": "2026-11-21T14:27:21.363Z",
     "status": "ok",
     "pages": {
       "compass/index": "README.md",
@@ -555,7 +556,7 @@
   },
   "quickcast": {
     "revision": "7a2255478ac32b9c930b7ac44c2032d40ba9a722",
-    "lastSuccessfulFetch": "2026-11-20T09:18:41.974Z",
+    "lastSuccessfulFetch": "2026-11-21T14:27:21.825Z",
     "status": "ok",
     "pages": {
       "quickcast/index": "README.md",
@@ -567,7 +568,7 @@
   },
   "libcosmic": {
     "revision": "ed6bffbd8cff8233f9dee5915a474b5599bd402c",
-    "lastSuccessfulFetch": "2026-11-20T09:18:42.290Z",
+    "lastSuccessfulFetch": "2026-11-21T14:27:22.247Z",
     "status": "ok",
     "pages": {
       "libcosmic/index": "README.md"
@@ -575,7 +576,7 @@
   },
   "iced": {
     "revision": "a34895c8bc57810c30beceac2ecda08be1c20846",
-    "lastSuccessfulFetch": "2026-11-20T09:18:42.938Z",
+    "lastSuccessfulFetch": "2026-11-21T14:27:22.906Z",
     "status": "ok",
     "pages": {
       "iced/index": "README.md",
@@ -584,8 +585,8 @@
     }
   },
   "PaperWM": {
-    "revision": "b72c9beba8c6482d988383dd37ff85093c632b63",
-    "lastSuccessfulFetch": "2026-11-20T09:18:43.182Z",
+    "revision": "946652369f7568c1c799d427f9ae82b34787183f",
+    "lastSuccessfulFetch": "2026-11-21T14:27:23.157Z",
     "status": "ok",
     "pages": {
       "paperwm/index": "README.md",
@@ -593,8 +594,8 @@
     }
   },
   "ccleft": {
-    "revision": "989a7e822a2f996aacac0d555d428ea337252b5b",
-    "lastSuccessfulFetch": "2026-11-20T09:18:43.342Z",
+    "revision": "66fc5eaf0c59922af11bada0b3a6d23dede3a4a6",
+    "lastSuccessfulFetch": "2026-11-21T14:27:23.343Z",
     "status": "ok",
     "pages": {
       "ccleft/index": "README.md",
@@ -603,8 +604,8 @@
     }
   },
   "tuna-desktop": {
-    "revision": "7b48e425d50dc9eb6b706b52bcbd271d51fe33ab",
-    "lastSuccessfulFetch": "2026-11-20T09:18:46.825Z",
+    "revision": "94f2e92bfb8df3624c3422fe7d4e9fd46f31f6d9",
+    "lastSuccessfulFetch": "2026-11-21T14:27:27.930Z",
     "status": "ok",
     "pages": {
       "tuna-desktop/index": "README.md",
@@ -616,6 +617,7 @@
       "tuna-desktop/architecture": "docs/architecture.md",
       "tuna-desktop/brightness-contract": "docs/brightness-contract.md",
       "tuna-desktop/capture-security": "docs/capture-security.md",
+      "tuna-desktop/ci-fast-iteration": "docs/ci-fast-iteration.md",
       "tuna-desktop/ci-runners": "docs/ci-runners.md",
       "tuna-desktop/corral-benchmark-disk": "docs/corral-benchmark-disk.md",
       "tuna-desktop/corral-journey": "docs/corral-journey.md",
@@ -678,15 +680,15 @@
   },
   "athens": {
     "revision": "bcf2c5afed681c6d552b3d44770bad4e00983e3a",
-    "lastSuccessfulFetch": "2026-11-20T09:18:47.106Z",
+    "lastSuccessfulFetch": "2026-11-21T14:27:28.292Z",
     "status": "ok",
     "pages": {
       "athens/index": "README.md"
     }
   },
   "lifafa": {
-    "revision": "8e0fb0dfd7aa3c8d4c503fff2ae197ba3caec89c",
-    "lastSuccessfulFetch": "2026-11-20T09:18:48.300Z",
+    "revision": "7b120dc1268f4b61681e08fdbf65bab8cd79a0df",
+    "lastSuccessfulFetch": "2026-11-21T14:27:29.616Z",
     "status": "ok",
     "pages": {
       "lifafa/index": "README.md",
@@ -707,7 +709,7 @@
   },
   "tuta-unofficial-sdk": {
     "revision": "62a4cca48d1d48b5155ba3c1c4f2f4cdb3b8d859",
-    "lastSuccessfulFetch": "2026-11-20T09:18:48.575Z",
+    "lastSuccessfulFetch": "2026-11-21T14:27:29.894Z",
     "status": "ok",
     "pages": {
       "tuta-unofficial-sdk/index": "README.md"
@@ -715,7 +717,7 @@
   },
   "flatpark": {
     "revision": "97dda79a7ab404ca885d761e7f3051a98a7c99f9",
-    "lastSuccessfulFetch": "2026-11-20T09:18:49.037Z",
+    "lastSuccessfulFetch": "2026-11-21T14:27:30.508Z",
     "status": "ok",
     "pages": {
       "flatpark/index": "README.md",
@@ -725,8 +727,8 @@
     }
   },
   "tuna-mail": {
-    "revision": "28e9804a58534f144442be7b04845df028b48457",
-    "lastSuccessfulFetch": "2026-11-20T09:18:51.537Z",
+    "revision": "5f50eba2feb845bbe65f092fe27f5b3cf5dee09e",
+    "lastSuccessfulFetch": "2026-11-21T14:27:33.002Z",
     "status": "ok",
     "pages": {
       "tuna-mail/index": "README.md",
@@ -739,8 +741,8 @@
     }
   },
   "proton-unofficial-sdk": {
-    "revision": "78e53ca6f1a5e4598978dd64535089cce31fd3ee",
-    "lastSuccessfulFetch": "2026-11-20T09:18:52.327Z",
+    "revision": "f0ef8815495d0680f5631d971e4441bbbae3ec9b",
+    "lastSuccessfulFetch": "2026-11-21T14:27:34.113Z",
     "status": "ok",
     "pages": {
       "proton-unofficial-sdk/index": "README.md"

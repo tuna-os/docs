@@ -296,6 +296,10 @@ fails if they drift.
   date, download that artifact and commit it to `docs/guide/` in your pull
   request.
 - Recipes (e.g. auto-captions) live in `docs/recipes/`.
+- CI checks Markdown against Simplified Technical English (ASD-STE100).
+  The number of findings must equal the value in `.ste-budget`. If your
+  change removes findings, lower that value in the same PR. See
+  [docs/TESTING.md](https://github.com/tuna-os/dualcut/blob/main/docs/TESTING.md#which-ci-steps-block-a-pr).
 - Architectural decisions go in `docs/adr/`.
 
 ## Code of conduct

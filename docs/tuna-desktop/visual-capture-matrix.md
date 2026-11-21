@@ -1,5 +1,5 @@
 ---
-sidebar_position: 58
+sidebar_position: 59
 title: "visual capture matrix"
 ---
 
@@ -163,6 +163,10 @@ state records its state observation next to its stills and clips.
 | P-SY-13 | InputCapture portal backend | `nonvisual` | No adequate capture | D-Bus and EIS behaviour; capture is wired on the DRM input path only |
 | P-SY-14 | Thunderbolt authorisation notices | `unsupported-in-nested` | No adequate capture | needs boltd and a Thunderbolt device or an emulated one (ADR 0008) |
 | P-ST-12 | Captive-portal sign-in | `unproven` | No adequate capture | notification and helper launch need NetworkManager reporting a portal |
+| P-IN-07 | Busy cursor while a launch is pending | `unproven` | No adequate capture | the wait cursor is cargo-tested over theme cursors; no capture state films a pending launch's cursor yet |
+| P-WM-12 | Auto-maximize and edge resistance | `unproven` | No adequate capture | first-map maximize, pointer and keyboard move resistance are cargo-tested; no capture state films a large first map or a move held at an edge yet |
+| P-OV-07 | `overlay-key` rebinding | `nonvisual` | No adequate capture | which key toggles the overview has no pixels of its own; the overview it opens is covered by stage:overview |
+| P-OV-08 | App drag-and-drop through the overview | `unproven` | No adequate capture | the G-DND-* gates drive real GTK drags in the nested proof and read compositor state; no capture state films a drag held over the hot corner, Activities, a preview or a thumbnail yet |
 
 ## Walkthrough states
 

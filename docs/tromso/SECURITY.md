@@ -5,7 +5,8 @@ title: "Security"
 
 ## Supported Versions
 
-Tromso images are built on every push to `main` and published to GHCR.
+Tromso images are built from `main` each day at 00:30 UTC, or on manual dispatch,
+and published to GHCR.
 Only the most recent build of each tag has active support. A periodic job
 removes older tags.
 
@@ -26,6 +27,7 @@ Instead, report them privately via GitHub Security Advisories:
 3. Provide a detailed description of the issue, including steps to reproduce
 
 You can expect:
+
 - **Acknowledgment** within 48 hours
 - **Status update** within 5 business days
 - **Resolution timeline** based on severity
@@ -33,6 +35,7 @@ You can expect:
 ## Security Model
 
 Tromso images are:
+
 - Built in CI from fixed BuildStream elements with a content-addressed cache
 - Published as OCI images to `ghcr.io/tuna-os/tromso`
 - Built inside a pinned `bst2` container with local CASD
@@ -49,6 +52,7 @@ Tromso images are:
 ## Disclosure Policy
 
 We follow coordinated disclosure:
+
 1. The reporter submits a vulnerability through a private channel.
 2. We investigate and develop a fix.
 3. We deploy the fix to new builds.

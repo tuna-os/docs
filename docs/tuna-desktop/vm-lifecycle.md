@@ -1,5 +1,5 @@
 ---
-sidebar_position: 60
+sidebar_position: 61
 title: "vm lifecycle"
 mdx:
   format: md
@@ -65,6 +65,20 @@ then fails the case. In marlin-vm run 44442598008, uupd failed three times
 and queued three critical "Some System Updates Failed" banners. The probe
 closed only the first, and the next one covered the frame until
 `V-STRIP-INSTALLED` timed out.
+
+A banner can also drop in while a strip step holds a button. No key reaches
+the shell then, so the probe acts as a user who lets the drag go first. The
+stationary edge hold stops at the first observation that shows a banner. The
+probe then cancels the held titlebar move with the actual VT round trip of the
+`07-vt-cancel` step. That cancel restores the strip viewport, and every
+original rectangle must match the pre-drag ones before the button comes up.
+With no button held, the probe closes each banner with the same focused Close
+sequence and records it as `released-12-stationary-delta-revealed`. It then
+runs the edge hold again from the banner-free sample, and
+`held_step_interruptions` counts each restart. The 120-second phase deadline
+bounds the retries. In marlin-vm run 44656894802, uupd's fourth start hit
+its start limit. Its `OnFailure` banner arrived 7 s into the edge hold, and
+the capture refused to send keys while the button was held.
 
 The column-height capture also submits a real critical notification through
 the session's public notification service. It cannot pass until the original

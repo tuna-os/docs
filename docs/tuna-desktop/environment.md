@@ -1,5 +1,5 @@
 ---
-sidebar_position: 15
+sidebar_position: 16
 title: "environment"
 ---
 
@@ -32,6 +32,7 @@ environment `tuna-session` or `tuna-compositor` starts from.
 | `TUNA_DRM_DEVICE` | compositor (DRM/KMS) | DRM device node to drive, for example `/dev/dri/card1`, instead of the seat's primary GPU. | `crates/compositor/src/drm.rs:399-405` |
 | `TUNA_IBUS` | compositor | `0` does not start the IBus bridge. By default the bridge starts whenever `ibus-daemon` is on `PATH` and a bridge binary can be found. | `crates/compositor/src/ime.rs:47-62` |
 | `TUNA_IBUS_BRIDGE_BIN` | compositor | Path of the `tuna-ibus-bridge` binary. Without it the compositor looks beside its own executable, then on `PATH`. | `crates/compositor/src/ime.rs:62-69` |
+| `TUNA_IBUS_UNIT` | `tuna-ibus-bridge` | The systemd user unit that owns the session's `ibus-daemon`. The compositor sets it to `org.freedesktop.IBus.session.GNOME.service` in a hardware session; the bridge then starts no daemon of its own, waits for the unit and, if the unit is down once `gnome-session-initialized.target` is up, asks the user manager to start it once. Unset, or naming a unit that is not installed or is masked, the bridge starts `ibus-daemon --panel disable` as its own child. | `crates/shell-host/src/ibus.rs:56-164`, `crates/compositor/src/ime.rs:447-452` |
 | `TUNA_BELL` | compositor | `0` silences the audible bell. The visual bell still follows its setting. | `crates/compositor/src/bell.rs:80-85` |
 | `TUNA_PAM_SERVICE` | compositor | PAM service the lock screen authenticates against, instead of `tuna-lock`. An empty value uses the default. | `crates/compositor/src/pam.rs:23-26`, `crates/compositor/src/pam.rs:254-270` |
 | `TUNA_PAM_FINGERPRINT_SERVICE` | compositor | PAM service the lock screen's fingerprint conversation runs, instead of `tuna-lock-fingerprint`. An empty value uses the default. | `crates/compositor/src/pam.rs:27-30`, `crates/compositor/src/pam.rs:259-270` |

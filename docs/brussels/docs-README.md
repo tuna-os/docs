@@ -3,10 +3,12 @@ sidebar_position: 5
 title: "README"
 ---
 
-This directory holds two kinds of documentation: infrastructure docs (image
-and artifact signatures, the CI/ISO pipeline, ADRs) and archived session
-reports. For the project overview, build and run instructions, and current
-status, start with the top-level docs instead:
+This directory holds three kinds of documentation. Design docs tell about
+the XFCE components, the session, the screen lock and the image variants.
+Infrastructure docs tell about signatures, the CI/ISO pipeline and ADRs. Old
+session reports from early development are the third kind. For the project
+overview, build and run instructions, and current status, start with the
+top-level docs instead:
 
 - **[../README.md](https://github.com/tuna-os/brussels/blob/main/README.md)** — what this image is, how to pull or
   build it, the stable release channel, and signature verification.
@@ -18,6 +20,15 @@ status, start with the top-level docs instead:
 
 ## In this directory
 
+- **[`xfce-component-set.md`](https://github.com/tuna-os/brussels/blob/main/docs/xfce-component-set.md)** — the version of
+  each XFCE component, and the reason for each version that is not a 4.21
+  release tag.
+- **[`session-and-locking.md`](https://github.com/tuna-os/brussels/blob/main/docs/session-and-locking.md)** — how a session
+  starts from GDM, and how the screen locks.
+- **[`winblues.md`](https://github.com/tuna-os/brussels/blob/main/docs/winblues.md)** — the `brussels-winblues` variant
+  (the Chicago95 theme on the same image), and how CI builds it.
+- **[`auto-qa-tuning.md`](https://github.com/tuna-os/brussels/blob/main/docs/auto-qa-tuning.md)** — the policy for the timeouts
+  of the install test jobs. No workflow uses this policy at this time.
 - **[ci-and-iso-pipeline.md](https://github.com/tuna-os/brussels/blob/main/docs/ci-and-iso-pipeline.md)** — the full CI to
   image to ISO chain, with a log of past problems and fixes. Update this
   file when you fix a CI or ISO bug (see AGENTS.md's CI gate rules).

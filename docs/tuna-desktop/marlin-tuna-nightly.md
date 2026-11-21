@@ -1,5 +1,5 @@
 ---
-sidebar_position: 26
+sidebar_position: 27
 title: "marlin tuna nightly"
 ---
 
@@ -143,9 +143,8 @@ digest and a bounded journal excerpt containing only lifecycle/health
 markers; it is retained with the other evidence instead of sending
 messages or filing issues.
 
-The workflow must produce an actual green published-flavor run before
-issue #68 is accepted. These checks do not qualify physical hardware or
-output hotplug, and the bounded soak is not the 24-hour soak.
+These checks do not qualify physical hardware or output hotplug, and the
+bounded soak is not the [24-hour soak](https://github.com/tuna-os/tuna-desktop/blob/main/docs/soak.md#endurance-soak-reports).
 
 Source references: [TunaOS GDM switch for Tuna flavors](https://github.com/tuna-os/tunaOS/blob/main/experiences/tuna/README.md),
 [TunaOS session hiding](https://github.com/tuna-os/tunaOS/blob/main/build_scripts/desktop/tuna-hide-other-sessions.sh),

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 52
+sidebar_position: 53
 title: "testing"
 ---
 
@@ -219,6 +219,34 @@ subsurface, a grabbing popup and uploaded shm buffers, closed by destroying
 every object or by disconnecting, must drop every surface's server-side
 data, and the window manager must name the window nowhere.
 
+`scripts/tuna-gtk-shell-proof --dnd-overview-only --artifacts DIR` runs
+G-DND-OVERVIEW (#1189), the same function the full GTK proof calls after
+G-OV-DND: a client drag through the overview as GNOME 51 handles it
+(`overview.js` `_onDragBegin`/`_onDragMotion`/`_onDragEnd`, `panel.js`
+`ActivitiesButton.handleDragOver`, `layout.js` `HotCorner.handleDragOver`,
+`workspaceThumbnail.js` `handleDragOverInternal`). The drags are real:
+`scripts/lib/tuna-test-window.py` with `TUNA_TEST_DRAG=LOG` is a GTK 4 window
+whose label starts a `Gtk.DragSource` drag and takes its drop, and every
+button and move is X11 input through the nested window. Gates:
+G-DND-HOT-CORNER (the pointer to the corner opens the overview and the drag
+survives it), G-DND-WINDOW-SWITCH (a drag resting on the target window's
+preview activates and raises it no sooner than 750 ms after the last motion,
+and the drop lands in it), G-DND-ACTIVITIES (resting on the Activities button
+opens the overview no sooner than 250 ms after the last motion),
+G-DND-CANCEL-RETURNS and G-DND-DROP-RETURNS (a workspace activated by
+hovering a thumbnail is left for the starting workspace, the overview
+closing, when Escape cancels the drag or the button is released). Elapsed
+times are lower bounds from just before the last motion: the compositor's
+timer cannot fire sooner, and the state file is polled, so nothing tighter
+is claimed. The nested session opens its corner by hover (a native seat by
+barrier pressure), so G-DND-HOT-CORNER guards the end-to-end path and the
+hover-under-pressure rule is tested by `cargo test -p tuna-compositor --test
+data_device` (`a_client_drag_opens_the_hot_corner_even_where_only_pressure_does`,
+driving real `wl_data_device` drags between two clients, as the other rules
+are: the Activities and window-preview timers, the thumbnail switch, the
+return on cancel and on drop, and the supervised shell's own drags
+being left alone).
+
 `scripts/tuna-gtk-shell-proof --grid-hover-only --artifacts DIR` runs the same
 held-button hover and persisted reorder assertions as the full GTK proof,
 without the unrelated earlier gates. It adds no target motion or timing
@@ -245,6 +273,19 @@ artifacts. The compositor side is `cargo test -p tuna-compositor --test
 buffer_release`: an uploaded `wl_shm` buffer comes back with
 `wl_buffer.release` at once, as Mutter's do, and its pool closes once the
 client destroys it and the surface moves on to another buffer.
+
+`scripts/tuna-gtk-shell-proof --subsurface-only --artifacts DIR` runs
+G-SUBSURFACE-STACKING: `tuna-subsurface-client` (a compositor example)
+maps an opaque red 400x300 window with an opaque green subsurface placed
+above it and an opaque blue one placed below it, half past its right
+edge. On the desktop, in the overview's preview and in its Alt+Print
+window screenshot the green one must show over the parent and the parent
+over the blue one, which shows past the parent's edge only; every sampled
+pixel is kept in `subsurface-pixels.txt` with `subsurface-desktop.png`,
+`subsurface-overview.png` and `subsurface-window-capture.png`. It takes
+under a minute. The compositor side is `cargo test -p tuna-compositor --lib
+surface_order_tests`: windows, popups and layer surfaces append their
+trees bottom to top, a drag icon keeps Smithay's front-to-back order.
 
 Every build uses its own checkout's `target/` (an inherited
 `CARGO_TARGET_DIR` is ignored; set `TUNA_TARGET_DIR` to choose one) and no
@@ -535,16 +576,19 @@ TUNA_REQUIRE_PAM_WRAPPER=1 scripts/tuna-gtk-shell-proof --artifacts gtk-shell-ar
 ```
 
 `--notify-lock-only` stops after panel readiness and runs just the
-lock-screen notification, notification sound and disabled-app restore
-gates (G-NOTIFY-LOCK, G-NOTIFY-LOCK-PIXELS, G-NOTIFY-LOCK-LIVE,
-G-NOTIFY-SOUND, G-NOTIFY-RESTORE); it needs pam_wrapper to unlock. The
-proof's `canberra-gtk-play` stand-in records every event sound the shell
-asks for in `canberra-calls`.
+lock-screen notification, notification sound, disabled-app restore and
+banner expansion gates (G-NOTIFY-LOCK, G-NOTIFY-LOCK-PIXELS,
+G-NOTIFY-LOCK-LIVE, G-NOTIFY-SOUND, G-NOTIFY-RESTORE, G-NOTIFY-EXPANDED);
+it needs pam_wrapper to unlock. The proof's `canberra-gtk-play` stand-in
+records every event sound the shell asks for in `canberra-calls`.
 The restore gate opens the real message-tray binding after retaining the
 long-word redaction-test notifications in history. Card text must wrap at
 character boundaries when needed, and collapsed groups must measure only
 their visible page horizontally, so hidden expanded content cannot force
 the date popup wider than the nested output.
+The full proof expands wellbeing banners with the real Super+N binding
+before pressing Take, Delay or Skip: non-critical notices open collapsed
+and keep their action rows hidden until the user expands them.
 
 The full GTK proof's media callback barrier waits at most 25 seconds:
 one key can execute four serialized `wpctl` subprocesses with five-second
@@ -817,6 +861,9 @@ To drive the published image through GDM in a KubeVirt VM with keyboard
 and pointer input and save a console frame for every step, see
 [Published-image journey through Corral](https://github.com/tuna-os/tuna-desktop/blob/main/docs/corral-journey.md).
 
+To try guest-side code in a running VM before pushing, without the CI
+queue or an image rebuild, see [Fast iteration on karnataka](https://github.com/tuna-os/tuna-desktop/blob/main/docs/ci-fast-iteration.md).
+
 ## Pointer motion barriers and input aids
 
 Backend motion is coalesced once per output frame, but a raw non-motion
@@ -1033,6 +1080,35 @@ closed; finalizer inode/type/ownership checks and the primary UI error stay
 unchanged. Real-process regressions cover delayed descendant teardown,
 abnormal compositor exit, and preserving an existing proof failure.
 
+## One IBus daemon owner
+
+`just proof ibus-owner-proof` (`scripts/tuna-ibus-owner-proof`) runs the
+real nested compositor twice and checks that exactly one party owns the
+session's `ibus-daemon` (#1014). With no IBus unit, as in every nested
+session, the bridge starts one `ibus-daemon --panel disable`: not
+daemonized, its own child, in its process group, and the only daemon
+for the display, named by the bus file. Before that session ends,
+G-IBUS-OWNER-RESTART kills the daemon (the same bridge must start a new
+child of its own within 10 s, as systemd's `Restart=on-abnormal` would),
+kills the bridge while its daemon runs (nothing of the bridge's group, the
+daemon or its config component may be left, and the compositor's
+replacement bridge starts its own daemon, whose start the proof slows by
+15 s through an `ibus-daemon` shim on `PATH`: the bridge must wait it out,
+not give it up), runs `ibus exit` (no daemon may return for 7 s, longer
+than the bridge's longest IBus retry) and kills that bridge too (its
+replacement starts a daemon again); there are never two daemons. A
+daemon's own start-up, up to its bus file and its config component, gets
+90 s: what GNOME's session gives its IBus unit (`Type=dbus`, systemd's
+`DefaultTimeoutStartSec`), and what the bridge waits for a daemon of its
+own. On a loaded host that start-up has taken over 30 s with the new
+daemon already the bridge's child. With a unit (`TUNA_IBUS_UNIT`
+and a stub `systemctl`) the bridge starts none, asks the manager once
+the session is up, and the one daemon is the unit's. After SIGTERM to
+the compositor no `ibus-*` process of the display is left: the
+compositor retires the bridge's group, and in the unit run the stub
+manager stops its unit. It writes `assertions.txt` (`G-IBUS-OWNER-*`),
+which the parity-ledger job reads.
+
 ## Parity ledger check
 
 The `parity-ledger` job runs `scripts/tuna-ledger` against the test list
@@ -1183,9 +1259,12 @@ Phases, in order (`--phases` runs a subset):
 - `scale`: 40 `ApplyMonitorsConfig` scale changes while clients map.
 - `services`: NetworkManager, BlueZ and power-profiles stubs vanish (half
   killed) and return ten times; the shell must read each returned daemon
-  again without restarting. `ibus-daemon` is killed five times under a
-  focused field: typing continues without it, and the IBus bridge must
-  focus the returned daemon's new input context.
+  again without restarting. The IBus bridge's own `ibus-daemon` is killed
+  five times under a focused field: typing continues, the bridge starts a
+  replacement (never two daemons) and focuses its new input context. After
+  `ibus exit` typing goes on without IBus and no daemon returns; a killed
+  bridge is restarted by the compositor with its own new daemon, and
+  nothing is left in the dead bridge's process group.
 - `input`: 1,000 typed keys must arrive exactly once; 2,000 pointer moves;
   a held key's repeat must stop when focus leaves, not resume on refocus
   and not leak into the window that gains focus.
@@ -1206,7 +1285,7 @@ PSS split by mapping kind (heap, anonymous, shared memory, GPU, files), in
 the process and kind that grew. Final PSS must stay within
 warmup × 1.25 + 64 MiB, fds within warmup + 32 and mappings within
 warmup × 1.25 + 1024. These diagnostic bounds catch unbounded growth;
-they are separate from the GNOME performance targets in #73. A panic,
+they are separate from the GNOME performance targets in #503. A panic,
 compositor exit, lost input response, orphaned window or hung worker
 fails the lane. Pull requests touching the suite run ten churn rounds;
 the nightly run uses 300.
@@ -1240,9 +1319,9 @@ regression test in the protocol crate before its fix is merged.
 To reproduce locally, install the pinned tool and toolchain, then run:
 
 ```sh
-rustup toolchain install nightly-2026-08-28
+rustup toolchain install nightly-2026-11-13
 cargo install cargo-fuzz --version 0.13.2 --locked
-cargo +nightly-2026-08-28 fuzz run control_body -- -max_total_time=60 -max_len=1048580 -timeout=5 -rss_limit_mb=2048
+cargo +nightly-2026-11-13 fuzz run control_body -- -max_total_time=60 -max_len=1048580 -timeout=5 -rss_limit_mb=2048
 ```
 
 This covers the control decoders of #203; Wayland request handlers are
