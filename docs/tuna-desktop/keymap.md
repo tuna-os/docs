@@ -1,5 +1,5 @@
 ---
-sidebar_position: 24
+sidebar_position: 25
 title: "keymap"
 mdx:
   format: md
@@ -129,7 +129,7 @@ focused control.
 | Date menu | Notification close button | Delete/BackSpace on the focused message, or Tab to Close + Enter | messageList.js Message bindings (`_closeIfAllowed`) | G-NOTIFICATION-KEYS | Done |
 | Date menu | Collapsed group click (expand), Collapse button | Enter expands with focus inside; Escape collapses back onto the group before the menu closes | messageList.js group `clicked`; calendar.js `_keyController` Escape | G-NOTIFICATION-KEYS | Done |
 | Date menu | Message body click (activate) | — | Message `vfunc_clicked` (Enter) | — | Pointer action itself absent from Tuna's list cards (P-NT row) |
-| Banner | Banner click (default action), action buttons, Close | Super+N focuses the banner itself (Enter activates it); Tab + Enter its buttons; Delete closes; Escape releases and expires it | `focus-active-notification`; messageTray.js Escape `close` binding; messageList.js Delete | G-NOTIFICATION-FOCUS-KEY, G-NOTIFICATION-KEYS, G-ORCA-SPEECH-NOTIFY | Done |
+| Banner | Banner click (default action), expand button, action buttons, Close | Super+N expands the banner and focuses it (Enter activates it); Tab + Enter its buttons, Close first (the expand arrow is not `can_focus`); Delete closes; Escape releases and expires it | `focus-active-notification` (`_expandActiveNotification`); messageTray.js Escape `close` binding; messageList.js Delete | G-NOTIFICATION-FOCUS-KEY, G-NOTIFICATION-KEYS, G-ORCA-SPEECH-NOTIFY | Done |
 | Overview | Search entry, result click | Typing, Enter (top hit), Tab/Down to a row + Enter | searchController.js `_onKeyPress` | G-OV-LAUNCH, G-SEARCH-ACTIVATE | Done |
 | Overview | Window preview click | Super, Tab/Down from the search entry, arrows/Tab + Enter (Up or Shift+Tab back to the entry); or Alt+Tab | windowPreview.js Return `activate`, focus chain overviewControls.js `vfunc_navigate_focus` | G-ORCA-SPEECH-PREVIEWS, G-WINDOW-SWITCHER, G-SWITCHER | Done |
 | Overview | Window preview close button | Alt+Tab to the window, Alt+F4 | none: the close St.Button is not `can_focus` (windowPreview.js) | G-WM-KEYS | Parity |

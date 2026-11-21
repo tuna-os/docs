@@ -1,5 +1,5 @@
 ---
-sidebar_position: 48
+sidebar_position: 49
 title: "settings desktop inventory"
 ---
 
@@ -330,7 +330,7 @@ Consumers re-checked against gnome-shell 51.0, gnome-session 51.0 and gnome-sett
 | details-in-lock-screen | Honored | Lock-screen titles and bodies only with it (or for an all-`x-gnome-privacy-scope=system` source); otherwise name and count only, absent from pixels and the accessible tree; live while locked. Proofs G-NOTIFY-LOCK, G-NOTIFY-LOCK-PIXELS | implemented — gnome-shell 51 `js/ui/messageTray.js:314`; proof:G-NOTIFY-LOCK, proof:G-NOTIFY-LOCK-PIXELS, cargo:lock_screen_details_are_per_app |
 | enable | Honored | Off hides the app's arrivals, critical included, and live (or at startup) what it already filed; on again brings them all back to the list with no banner, as messageTray.js `_onSourceEnableChanged` removes and re-adds the source. Hidden ones persist across a shell restart. Proofs G-NOTIFY-POLICY, G-NOTIFY-RESTORE | implemented — gnome-shell 51 `js/ui/messageTray.js:292`; proof:G-NOTIFY-POLICY, proof:G-NOTIFY-RESTORE, cargo:app_policy_combines_global_and_app_gates |
 | enable-sound-alerts | Honored | Read as each banner shows; off keeps its `sound-name`/`sound-file` silent (messageTray.js `playSound`). Proof G-NOTIFY-SOUND | implemented — gnome-shell 51 `js/ui/messageTray.js:296`; proof:G-NOTIFY-SOUND |
-| force-expanded | Ignored | Read per arrival into the store's expanded flag, but the GTK banner always shows the whole body: it has no collapsed state to expand from | unimplemented — gnome-shell 51 `js/ui/messageTray.js:1176`; #348 |
+| force-expanded | Honored | Read as each banner shows: on, the banner opens expanded (the body up to six lines and its action buttons) instead of collapsed to one body line, as critical ones always do (messageTray.js `_updateShowingNotification`). Proof G-NOTIFY-EXPANDED | implemented — gnome-shell 51 `js/ui/messageTray.js:1176`; proof:G-NOTIFY-EXPANDED, cargo:force_expanded_is_read_as_the_banner_shows |
 | show-banners | Honored | Combined with the global key at arrival; critical notifications break through. Proof G-NOTIFY-POLICY (enable) and the store's unit tests | implemented — gnome-shell 51 `js/ui/messageTray.js:300`; proof:G-NOTIFY-POLICY, cargo:app_policy_combines_global_and_app_gates |
 | show-in-lock-screen | Honored | See the global key above. Proofs G-NOTIFY-LOCK, G-NOTIFY-LOCK-LIVE | implemented — gnome-shell 51 `js/ui/messageTray.js:309`; proof:G-NOTIFY-LOCK, proof:G-NOTIFY-LOCK-LIVE, cargo:app_policy_combines_global_and_app_gates |
 

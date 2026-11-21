@@ -214,8 +214,9 @@ is the binary. Start with [CONTRIBUTING.md](https://github.com/tuna-os/compass/b
 [architecture decisions](https://github.com/tuna-os/compass/blob/main/docs/rust-engine/adr/README.md) and the
 [render harnesses](https://github.com/tuna-os/compass/blob/main/docs/rust-engine/RENDER-HARNESSES.md).
 
-The original C++/Qt engine is still in `src/` as a behavioural reference. It is not built into
-any Compass package.
+The original C++/Qt engine has been removed
+([ADR-0021](https://github.com/tuna-os/compass/blob/main/docs/rust-engine/adr/0021-remove-the-cpp-engine.md)). The pinned upstream Vicinae
+release is now the behavioural and benchmark reference.
 
 ## Credits
 

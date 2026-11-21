@@ -1,13 +1,16 @@
 ---
-sidebar_position: 55
+sidebar_position: 56
 title: "v1 variant qualification"
 ---
 
-**No all-variant v1 qualification is claimed.** Package publication, an enabled
-image build, and an image boot gate are not real-GDM/session/portal/lock proof.
+**No all-variant v1 qualification is claimed.** On the current `:tuna`
+digests, 14 of the 15 required variants pass all 13 core gates and sailfin
+fails logout ([below](#beta3-qualification-on-current-tuna-digests-2026-11-16-to-2026-11-19)).
+Package publication, an enabled image build, and an image boot gate are not
+real-GDM/session/portal/lock proof.
 The [v1 checklist](https://github.com/tuna-os/tuna-desktop/blob/main/docs/v1.md) and [ADR 0008](https://github.com/tuna-os/tuna-desktop/blob/main/docs/adr/0008-v1-beta-track-and-release-scope.md)
-remain unchanged. Marlin remains the GNOME 51 comparison target; the other
-variants still need their own immutable-image runtime evidence.
+remain unchanged. Marlin remains the GNOME 51 comparison target; every
+variant needs its own immutable-image runtime evidence.
 
 ## Owner decisions, 2026-11-14
 
@@ -16,8 +19,9 @@ as revised the same day on [#1050](https://github.com/tuna-os/tuna-desktop/issue
 after two of its premises were corrected, sets the v1 required set to
 **15 variants**: all fourteen matrix variants plus stingray. That is
 yellowfin, albacore, skipjack, wahoo, bonito, bonito-rawhide, sailfin, grouper,
-marlin, flounder, flounder-sid, hummingbird, guppy, gurnard and stingray. None
-of them is qualified yet.
+marlin, flounder, flounder-sid, hummingbird, guppy, gurnard and stingray. The
+prerequisites below are as recorded on 2026-11-14; the beta.3 runs in the
+next section supersede them.
 
 - **gurnard: required.** Noble publishes no gtk4-layer-shell source
   ([Launchpad query](https://api.launchpad.net/1.0/ubuntu/+archive/primary?ws.op=getPublishedSources&distro_series=https%3A%2F%2Fapi.launchpad.net%2F1.0%2Fubuntu%2Fnoble&source_name=gtk4-layer-shell&exact_match=true&status=Published),
@@ -44,7 +48,54 @@ of them is qualified yet.
   2026-11-14. Its `tuna` cell keeps building and publishing, and it is to be
   qualified like the others.
 
-## Current source inventory
+## Beta.3 qualification on current `:tuna` digests, 2026-11-16 to 2026-11-19
+
+Every required variant was run through the 13-step GDM journey
+(`tuna-corral-journey --qualification-only`: digest-pinned bootc install,
+GDM greeter, fresh-account `tuna` default, `gdm-password` login into Tuna,
+portal availability, functional Screenshot and ScreenCast, lock with
+`LockedHint=yes`, refused and accepted unlock, power menu, Log Out dialog,
+logout) on the `:tuna` image built with `tuna-desktop` v1.0.0-beta.3
+packages ([tunaOS #4663](https://github.com/tuna-os/tunaOS/pull/4663)).
+Results were posted on [#1050](https://github.com/tuna-os/tuna-desktop/issues/1050#issuecomment-7003191134);
+each variant's `verdict.md`, manifests and frames are kept with the
+qualification evidence, not in this repository.
+
+| Variant | Image digest (`ghcr.io/tuna-os/`) | Core gates |
+|---|---|---|
+| yellowfin | `yellowfin@sha256:6b1f78d9645adcb4832579beb5a387afc0ec50730ebae67d516e86355e002c44` | 13/13 |
+| guppy | candidate `guppy@sha256:9f4f5f7e0eb64851ffcdef74c23a649f896e196178277f0272e633dd6266b7c1` | 13/13; admitted afterwards by [tunaOS #3883](https://github.com/tuna-os/tunaOS/pull/3883) |
+| skipjack | `skipjack@sha256:62fa42e25f02fe712498a89ac8110899b1c20432df55dfab8b6b1d79cd6caa5d` | 13/13 |
+| albacore | `albacore@sha256:235e8444214ee8029793a7a9937d5e39a09570b45f689477ec0bf56eecd7926f` | 13/13 |
+| grouper | `grouper@sha256:85828ed6deaa664ab2274e485f3c3bd4b48db4810ae8ee9b76dbeefd80cef8e2` | 13/13 |
+| stingray | `stingray@sha256:7376e00da965d958c8c0bc7f22565ac6468cd83df5e5d74a2e44339252aa7689` | 13/13 |
+| bonito-rawhide | `bonito@sha256:84bb34a76ba27f97cb9b634f702b69b6ce86fb3b8c50b87d1be98f64580b15fb` | 13/13 |
+| wahoo | `wahoo@sha256:c4957539ef95f91dda32506e0be7920c10704bdce3926bf290dc6d15ac37c46a` | 13/13; provisioning needed the bootc relabel fix, merged as [corral #725](https://github.com/tuna-os/corral/pull/725) |
+| gurnard | `gurnard@sha256:3a54b4cfb0343bff087821a338ab0b426a1d2752e6e4c1612c56fda33ce4cfb2` | 13/13 |
+| bonito | `bonito@sha256:3925899dafd2b697218e17bf7d07ccbe4dafa23b1ce1e9fec86770af9d7e9c28` | 13/13; same corral #725 relabel fix |
+| flounder | `flounder@sha256:0c6078c47fdc4af59224ffdfa18990e070b2ca133168e02b5afa5cdf878bc2d9` | 13/13 |
+| marlin | `marlin@sha256:326ed4ac880e6e0ac5cb126171f5b7ac6322ab28fa409e2ea6301b452e2ba777` | 13/13 |
+| flounder-sid (`:tuna-sid`) | `flounder@sha256:4c9336ae98f3e4f13309a9d966f55c4d32d78e8fa855cdb08523ade30b66dd60` | 13/13; GDM's `FallbackSession=tuna` ([tunaOS #4728](https://github.com/tuna-os/tunaOS/pull/4728)) selects Tuna for an account with no saved session |
+| hummingbird | `hummingbird@sha256:fa4c5dd88e173405fa555d0eefba4e69b6ffdcd6badc65bcc3771edd72e1ee5e` | 13/13, after [tunaOS #4771](https://github.com/tuna-os/tunaOS/pull/4771) enabled the PipeWire user units |
+| sailfin | `sailfin@sha256:b18e16d5b34020e48fbaebcd728e852bd747b6a208fe87af63fde4f0190a3b80` | **12/13**: logout never completes; a bridge-spawned `ibus-daemon` stays in the logind session scope ([#1014](https://github.com/tuna-os/tuna-desktop/issues/1014)) |
+
+Open items from these runs:
+
+- sailfin's logout gate: [#1235](https://github.com/tuna-os/tuna-desktop/pull/1235)
+  gives the session's `ibus-daemon` one owner. It is open, and the fix
+  then needs a release and a sailfin rerun.
+- A beta.3 image does not contain fixes merged after the tag. The navy
+  lock frame seen in visual review on most variants (not a gate) is fixed
+  on main by [#1194](https://github.com/tuna-os/tuna-desktop/pull/1194)
+  and also needs a release.
+- The journey logs in through each variant's GDM greeter; the Tuna
+  greeter is a separate v1 item ([#1164](https://github.com/tuna-os/tuna-desktop/issues/1164)).
+
+The sections below record the earlier beta.1/beta.2 receipts of
+2026-10-31 and 2026-11-01. They stay as dated evidence; their pass/fail
+states describe those older digests, not the table above.
+
+## Source inventory, 2026-11-14
 
 The primary inventory is [TunaOS `tunaos.toml` at
 `124cc32623ce084580a2ef888350be07bd83508d`](https://github.com/tuna-os/tunaOS/blob/124cc32623ce084580a2ef888350be07bd83508d/tunaos.toml).
@@ -126,7 +177,7 @@ package build/install and immutable image runtime receipts are still
 required. No compiler from another target, third-party binary injection or
 target substitution is permitted.
 
-## Current required-cell accounting
+## Required-cell accounting, 2026-11-01
 
 The [exact-subject ledger](https://github.com/tuna-os/tuna-desktop/blob/main/docs/variants/2026-10-31/current-accounting.json), as of
 2026-11-01 01:09 UTC, separates **0 qualified required cells**, **1 failed required

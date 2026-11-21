@@ -1,5 +1,5 @@
 ---
-sidebar_position: 50
+sidebar_position: 51
 title: "soak"
 ---
 
@@ -17,7 +17,7 @@ same 10-second deadline and 64 KiB output budget; a failure names its endpoint
 and method. Removing helper-created PAM session churn is a harness correction,
 not proof that PAM/audit activity caused an earlier service timeout.
 
-After a ten-minute warmup, every sample must remain below the baseline PSS multiplied by 1.5 plus 16 MiB, the baseline fd count multiplied by 1.5 plus 32, and the baseline process count plus 12. These explicit endurance limits detect large growth; they are not a performance parity threshold. The baseline includes that UID's activated services and applications, so use a controlled, unchanged workload. The optional native workload below adds actual frame pacing. The observer cannot measure compositor object counts, GPU memory, input latency or service fault recovery. Issues #203 and #73 remain open for the remaining requirements and for the completed actual 24-hour report.
+After a ten-minute warmup, every sample must remain below the baseline PSS multiplied by 1.5 plus 16 MiB, the baseline fd count multiplied by 1.5 plus 32, and the baseline process count plus 12. These explicit endurance limits detect large growth; they are not a performance parity threshold. The baseline includes that UID's activated services and applications, so use a controlled, unchanged workload. The optional native workload below adds actual frame pacing. The observer cannot measure compositor object counts, GPU memory, input latency or service fault recovery. The completed 24-hour report is listed [below](#endurance-soak-reports); issue #203 stays open for its remaining stress requirements.
 
 Copy the script to the VM and run it as a root transient service, supplying the UID's account and the exact source revision from the deployment record:
 
@@ -26,6 +26,10 @@ sudo systemd-run --unit=tuna-soak --property=Type=exec \
   /usr/local/libexec/tuna-vm-soak --user tuna-test \
   --source-revision EXACT_INSTALLED_REVISION --out /var/tmp/tuna-soak-NEW_RUN
 ```
+
+On the published Marlin bootc image `/usr/local` is on the read-only root, so
+the 2026-11-16 run installed the observer and its `lib/` in
+`/var/lib/tuna-soak/` (root-owned) instead.
 
 Each output directory must be fresh. `provenance.json` contains bootc status, boot ID, actual installed binary hashes, supplied source revision, requested duration and growth limits. `samples.jsonl` grows after each successful sample. `report.json` is written on normal completion or a handled failure. A successful report requires `complete: true` and the full requested elapsed duration. For qualification require `requested_duration_s: 86400`; shorter rehearsal runs are not 24-hour evidence. Interrupting the observer or rebooting the VM cannot qualify a run.
 
@@ -125,10 +129,19 @@ the job runs. `provenance.json` keeps the measured binary hashes.
 These runs measure one idle desktop with one controlled native client on
 virtio-gpu under KVM. They show growth and pacing trends between nightlies;
 they are not GNOME-relative thresholds, hardware evidence or a substitute for
-the 24-hour run that #203 and #73 still require.
+the 24-hour run.
 
 ## Endurance soak reports
 
 - [2026-10-31 24-hour endurance soak run](https://github.com/tuna-os/tuna-desktop/blob/main/docs/soak/2026-10-31-24h/README.md):
   Published `marlin:tuna` flavor (`sha256:ae6363c1`), source revision `d28578e5`.
   **FAILED / not qualified:** observed for 6,644 s (107 samples), then the health helper's 10-second deadline expired. The timeout's root cause is unresolved; PAM/audit causality has not been established. Retained samples stayed within growth limits, but this is not evidence of completed 24-hour endurance.
+- 2026-11-16 24-hour endurance soak on v1.0.0-beta.3
+  ([report on #203](https://github.com/tuna-os/tuna-desktop/issues/203#issuecomment-6995888909)):
+  published `marlin:tuna` (`sha256:f7859108a9a3a4538929a8b9a34913bf37ba5d6396e51bb8538a7e59af2581db`),
+  source revision `721c5503`, Corral VM `tuna-q-variant-soak-b3-20261116`, with the native workload.
+  **Passed:** 86 400 s observed of 86 400 s requested, 1436 samples, `complete: true`. Session PSS
+  452.7 MiB at the warmup baseline, 464.4 MiB at the end, peak 467.2 MiB against a 695.0 MiB
+  limit; trend +0.39 MiB/h after warmup. fds 1038 → 1044, processes 54 → 55. 6 479 405 presented
+  frames; interval p50 13.33 ms, p95 13.34 ms, p99 13.34 ms, max 173.35 ms. The raw samples,
+  presentation capture and journals are kept with the qualification evidence, not in this repository.

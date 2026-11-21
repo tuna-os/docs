@@ -96,16 +96,23 @@ control protocol. Floating windows, workspaces, Alt-Tab, half tiling, scrollable
 tiling and XWayland are covered by graphical CI journeys.
 
 The DRM/KMS backend starts hardware sessions and is tested with virtual KMS
-in CI. Physical GPU, VT, suspend and long-running release qualification remain
-open. See [the parity ledger](https://github.com/tuna-os/tuna-desktop/blob/main/docs/parity-ledger.md) for measured behavior and
-remaining gaps.
+in CI. Physical GPU, VT and suspend qualification remain open. On beta.3, a
+24-hour soak in a VM passed and 14 of the 15 TunaOS variants pass the GDM
+qualification journey; [the v1 status](https://github.com/tuna-os/tuna-desktop/blob/main/docs/v1.md#status-2026-11-20) lists
+the evidence and what is left. See [the parity ledger](https://github.com/tuna-os/tuna-desktop/blob/main/docs/parity-ledger.md)
+for measured behavior and remaining gaps.
 
 **Parity target:** GNOME 51. Native GNOME 51 captures provide the visual
-reference. The published Marlin image was verified as GNOME Shell 50.5 on
-2026-10-04; a GNOME 51 Marlin benchmark image is being validated separately.
+reference. The paired performance benchmark measures a pinned GNOME 51.0
+Marlin baseline ([docs/perf](https://github.com/tuna-os/tuna-desktop/blob/main/docs/perf/README.md)); the published Marlin
+image was GNOME Shell 50.5 when first measured on 2026-10-04, and its
+beta.3 `marlin:tuna` image carries GNOME Shell 51.1.
 
-**Target platform:** Tuna Desktop is being tested as a TunaOS Marlin flavor (Arch
-base, bootc image). The Debian package remains for local development hosts.
+**Target platform:** Tuna Desktop ships as the `tuna` flavor of the TunaOS
+bootc images; v1 covers every TunaOS variant
+([ADR 0008](https://github.com/tuna-os/tuna-desktop/blob/main/docs/adr/0008-v1-beta-track-and-release-scope.md)), with Marlin
+(Arch base) as the GNOME 51 comparison platform. The Debian package remains
+for local development hosts.
 
 **Roadmap:** tracked as GitHub issues on the Tuna Desktop roadmap project board;
 [docs/roadmap.md](https://github.com/tuna-os/tuna-desktop/blob/main/docs/roadmap.md) keeps the program structure, gates, and

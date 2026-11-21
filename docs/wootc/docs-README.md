@@ -68,6 +68,7 @@ and plans are context, not current operating instructions.
 - [WSL migration](https://github.com/tuna-os/wootc/blob/main/docs/wsl-migration.md) — manual transfer boundaries; no automatic WSL distro or account import.
 - [IT-admin quick start](https://github.com/tuna-os/wootc/blob/main/docs/it-admin-quick-start.md) — bounded single-machine evaluation, not fleet rollout.
 - [Adoption outreach](https://github.com/tuna-os/wootc/blob/main/docs/adoption-outreach.md) — approval-gated invitations and scenario briefs, not claimed success stories.
+- [E2E migration coverage](https://github.com/tuna-os/wootc/blob/main/docs/e2e-coverage.md) — each migrated item, its code, and its hosted E2E check.
 - [Native GUI soak](https://github.com/tuna-os/wootc/blob/main/docs/soak.md) — shell stability ledger for long runs.
 - [Agent lessons](https://github.com/tuna-os/wootc/blob/main/docs/agent-lessons.md) — operational traps from E2E work.
 - [Docs truth pass](https://github.com/tuna-os/wootc/blob/main/docs/docs-truth-pass.md) — dated documentation-versus-build checks.

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 45
+sidebar_position: 46
 title: "status"
 ---
 
@@ -234,6 +234,11 @@ composefs full chain, run `30710282014` (2026-08-02);
 root-caused for v0.2.0-alpha. `marlin`/`flounder` fail in
 `bootc install` with *"bootupd is required for ostree-based installs"*: they are
 ostree images that ship no `bootupd`.
+
+On 2026-11-20 `dakota` went back to `experimental` in `app/data/catalog-policy.json`.
+The `dakota:stable` re-run 44702635033 deployed and booted Phase 2.
+Then user data, the first-boot record and the return to Windows all failed ([#752](https://github.com/tuna-os/wootc/issues/752)).
+It returns to green when a run passes.
 
 **Axes** (against the EL10 / `bluefin:lts` baseline):
 

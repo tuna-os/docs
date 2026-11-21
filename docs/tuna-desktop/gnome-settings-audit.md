@@ -1,5 +1,5 @@
 ---
-sidebar_position: 19
+sidebar_position: 20
 title: "gnome settings audit"
 ---
 
@@ -102,7 +102,7 @@ Every issue identifies source evidence, affected controls, expected behavior and
 
 The Settings catalog is not an application acceptance matrix. [#397](https://github.com/tuna-os/tuna-desktop/issues/397) tracks the 28 apps in the current official GNOME Core catalog; all remain awaiting complete per-app acceptance. Its scope includes principal operations, native/Flatpak launch, file/link handlers, portals and permissions, input/scaling, and lock/restart recovery. It does not replace the broader goal of GNOME app interoperability or cover every Circle/third-party app.
 
-[#395](https://github.com/tuna-os/tuna-desktop/issues/395) tracks missing typed Mutter ServiceChannel provider paths for the GNOME file chooser and global-shortcuts provider. The current installed GNOME portal/type-1 path does not establish those additional roles. The native VM retains a GlobalShortcutsProvider access-denied warning; this is evidence of the missing provider contract, not proof that every Settings action or application fails. Provider identity and capture authorization must remain distinct when these paths are added.
+At this audit, [#395](https://github.com/tuna-os/tuna-desktop/issues/395) tracked missing typed Mutter ServiceChannel provider paths for the GNOME file chooser and global-shortcuts provider. Typed admission has since landed ([ServiceChannel contract](https://github.com/tuna-os/tuna-desktop/blob/main/docs/portal-service-channel.md)); #395 is closed and the remaining provider acceptance is open in [#776](https://github.com/tuna-os/tuna-desktop/issues/776). At the audit, the installed GNOME portal/type-1 path did not establish those additional roles. The native VM retained a GlobalShortcutsProvider access-denied warning; this was evidence of the missing provider contract, not proof that every Settings action or application fails. Provider identity and capture authorization must remain distinct when these paths are added.
 
 Qualified evidence retained so far:
 
@@ -112,6 +112,13 @@ Qualified evidence retained so far:
 - The consumed-key-state follow-up [#394](https://github.com/tuna-os/tuna-desktop/pull/394) and native Wayland wakeup fix [#399](https://github.com/tuna-os/tuna-desktop/pull/399) are merged. The current GTK/native qualifications above include lock input and wake behavior; broader physical and shipped-image acceptance remains separate.
 
 ## Existing production acceptance blockers
+
+As of 2026-11-20 this section is the 2026-10-06 record: of the issues it
+names, only #203 and #315 are still open (#265, #273 and #461 merged; #8,
+# 62, #68, #73, #313, #314, #434 and #460 closed), and the 24-hour soak has
+since passed on
+v1.0.0-beta.3 ([soak reports](https://github.com/tuna-os/tuna-desktop/blob/main/docs/soak.md#endurance-soak-reports)). Current
+release blockers are in the [v1 status](https://github.com/tuna-os/tuna-desktop/blob/main/docs/v1.md#status-2026-11-20).
 
 Lifecycle/suspend/VT/logout qualification remains in #62/#68; same-image performance and enforceable budgets in #73/#315; broader stress and final 24-hour soak in #203; test-strategy/security requirements in #8; physical hardware matrix in #314; release support commitments in #313. The strict native VM lane for merged PR #265 now passes lock repaint, stale successful PAM rejection after S3, fresh unlock, client repaint and painted greeter logout. Current native preview qualification is recorded above with its actual boot/lifecycle counts. The published-nightly lane for #273 previously failed final PAM unlock; the fresh signed package and image must still qualify the actual shipped payload. A negative owned presentation interval remains unresolved in [#434](https://github.com/tuna-os/tuna-desktop/issues/434); the full 24-hour soak has not completed. Coherent Arch image transactions and image-kernel receipts are pending in [#461](https://github.com/tuna-os/tuna-desktop/pull/461) / [#460](https://github.com/tuna-os/tuna-desktop/issues/460). Native preview evidence and passing initial logins do not establish final published-image acceptance.
 
