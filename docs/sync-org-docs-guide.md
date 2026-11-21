@@ -21,7 +21,7 @@ The `sync-org-docs` workflow runs at **06:00 UTC each day** (`0 6 * * *`).
 Maintainers can also run it through `workflow_dispatch`. Its job runs only in
 `tuna-os/docs`, so a fork does not run the sync job.
 
-1. The workflow checks out the site, sets up Node.js 24, and runs `npm ci`.
+1. The workflow checks out the site, sets up Node.js 26, and runs `npm ci`.
 2. The script uses `gh api` to list repositories in the organization, across
    all pages. It excludes archived repositories and names in `SKIP`.
 3. It maps each remaining repository to a lowercase slug. `PROJECTS` can
@@ -36,7 +36,12 @@ Maintainers can also run it through `workflow_dispatch`. Its job runs only in
 7. It checks each page written by this run for MDX compatibility. A page that
    cannot compile gets `mdx: {format: md}` in its front matter. Docusaurus then
    reads it as CommonMark; raw HTML can appear as text.
-8. The workflow runs `npm run build`. Only after that succeeds does it create
+8. The workflow applies the automatic markdownlint fixes to the changed and
+   new Markdown files under `docs/`. It uses the same `markdownlint-cli`
+   release as `lint.yml`. These fixes can change list markers and blank lines,
+   so a synced page can differ from its source file. The step skips the MD034
+   fix. That fix wraps a bare URL in `<...>`, and MDX cannot compile it.
+9. The workflow runs `npm run build`. Only after that succeeds does it create
    or update a PR from `automation/sync-org-docs`, titled
    `chore: sync org-wide project docs`. It opens no PR when nothing changed.
 
@@ -257,11 +262,14 @@ skip list.
 To reproduce a sync locally, follow the repository's
 [setup and validation instructions](https://github.com/tuna-os/docs/blob/main/CONTRIBUTING.md).
 Use a clean, disposable worktree with dependencies installed, GitHub CLI,
-Git, Node.js 24, and a configured `GH_TOKEN`. The command contacts GitHub,
-clones repositories, and **writes and removes files under `docs/`**:
+Git, Node.js 26, and a configured `GH_TOKEN`. The command contacts GitHub,
+clones repositories, and **writes and removes files under `docs/`**. The
+second and third lines apply the same markdownlint fixes as the workflow:
 
 ```bash
 node scripts/sync-org-docs.mjs
+mapfile -t synced < <( { git diff --name-only -- 'docs/**/*.md'; git ls-files --others --exclude-standard -- 'docs/**/*.md'; } | sort -u)
+[ "${#synced[@]}" -eq 0 ] || npx --yes markdownlint-cli@0.49.1 --fix "${synced[@]}" --disable MD034
 git diff --stat
 git diff -- docs/
 node scripts/__tests__/sync-org-docs.test.mjs
