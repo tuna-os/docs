@@ -19,7 +19,7 @@ Never post account credentials or API keys in issues or pull requests.
 
 ### Local Environment Setup
 
-Install Node.js 24, npm, and the
+Install Node.js 26, npm, and the
 [repository command runner](https://github.com/casey/just).
 Check them with `node --version`, `npm --version`, and `just --version`.
 
