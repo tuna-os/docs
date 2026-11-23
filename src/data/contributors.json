@@ -1,11 +1,11 @@
 {
   "org": "tuna-os",
-  "generated_at": "2026-11-16T15:36:23.511Z",
+  "generated_at": "2026-11-23T17:55:59.514Z",
   "contributors": [
     {
       "login": "hanthor",
       "id": 5840441,
-      "merged_prs": 6145,
+      "merged_prs": 6656,
       "repos": [
         "tunaOS",
         "docs",
@@ -53,17 +53,19 @@
         "athens",
         "lifafa",
         "tuta-unofficial-sdk",
+        "tuna-mail",
         "proton-unofficial-sdk"
       ]
     },
     {
       "login": "thatguywob",
       "id": 343366780,
-      "merged_prs": 152,
+      "merged_prs": 156,
       "repos": [
         "tunaOS",
         "docs",
         "bluefin-cli",
+        "tunaos-packages",
         ".github",
         "tromso",
         "brussels",
@@ -81,7 +83,7 @@
     {
       "login": "castrojo",
       "id": 1264109,
-      "merged_prs": 49,
+      "merged_prs": 58,
       "repos": [
         "docs",
         "bluefin-cli",
@@ -98,7 +100,7 @@
     {
       "login": "repires",
       "id": 867660,
-      "merged_prs": 33,
+      "merged_prs": 34,
       "repos": [
         "docs",
         "bluefin-cli",
@@ -135,7 +137,7 @@
     {
       "login": "HuntedRaven7",
       "id": 128195750,
-      "merged_prs": 6,
+      "merged_prs": 18,
       "repos": [
         "docs",
         "compass"
