@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-19T20:09:52.956Z",
+  "generatedAt": "2026-11-24T08:57:28.113Z",
   "baseUrl": "https://download.tunaos.org",
-  "count": 378,
+  "count": 382,
   "categories": [
     {
       "id": "live-isos",
@@ -733,6 +733,246 @@
         },
         {
           "category": "live-isos",
+          "name": "marlin-gnome--aarch64",
+          "path": "live-isos/marlin-gnome--aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-gnome--aarch64.iso",
+          "size": 6619725824,
+          "modified": "2026-11-22T11:49:17.503243432Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "marlin-gnome-latest-arm64",
+          "path": "live-isos/marlin-gnome-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/marlin-gnome-latest-arm64.iso",
+          "size": 6619725824,
+          "modified": "2026-11-22T11:49:17.503243432Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-kde-10-aarch64",
+          "path": "live-isos/skipjack-kde-10-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-kde-10-aarch64.iso",
+          "size": 8667136000,
+          "modified": "2026-11-22T02:22:18.955460356Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-kde-latest-arm64",
+          "path": "live-isos/skipjack-kde-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-kde-latest-arm64.iso",
+          "size": 8667136000,
+          "modified": "2026-11-22T02:22:18.955460356Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-niri-10-aarch64",
+          "path": "live-isos/skipjack-niri-10-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-niri-10-aarch64.iso",
+          "size": 5865930752,
+          "modified": "2026-11-22T02:18:38.873833354Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "skipjack-niri-latest-arm64",
+          "path": "live-isos/skipjack-niri-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/skipjack-niri-latest-arm64.iso",
+          "size": 5865930752,
+          "modified": "2026-11-22T02:18:38.873833354Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-kde-46-aarch64",
+          "path": "live-isos/bonito-rawhide-kde-46-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-kde-46-aarch64.iso",
+          "size": 9467920384,
+          "modified": "2026-11-20T22:30:25.839069621Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-kde-latest-arm64",
+          "path": "live-isos/bonito-rawhide-kde-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-kde-latest-arm64.iso",
+          "size": 9467920384,
+          "modified": "2026-11-20T22:30:25.839069621Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-xfce-46-aarch64",
+          "path": "live-isos/bonito-rawhide-xfce-46-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-xfce-46-aarch64.iso",
+          "size": 7806124032,
+          "modified": "2026-11-20T22:27:56.714745225Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-xfce-latest-arm64",
+          "path": "live-isos/bonito-rawhide-xfce-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-xfce-latest-arm64.iso",
+          "size": 7806124032,
+          "modified": "2026-11-20T22:27:56.714745225Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-niri-46-aarch64",
+          "path": "live-isos/bonito-rawhide-niri-46-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-niri-46-aarch64.iso",
+          "size": 7033978880,
+          "modified": "2026-11-20T22:27:50.004902551Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-niri-latest-arm64",
+          "path": "live-isos/bonito-rawhide-niri-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-niri-latest-arm64.iso",
+          "size": 7033978880,
+          "modified": "2026-11-20T22:27:50.004902551Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-cosmic-46-aarch64",
+          "path": "live-isos/bonito-rawhide-cosmic-46-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-cosmic-46-aarch64.iso",
+          "size": 7602765824,
+          "modified": "2026-11-20T22:27:05.945890832Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-cosmic-latest-arm64",
+          "path": "live-isos/bonito-rawhide-cosmic-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-cosmic-latest-arm64.iso",
+          "size": 7602765824,
+          "modified": "2026-11-20T22:27:05.945890832Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-gnome-46-aarch64",
+          "path": "live-isos/bonito-rawhide-gnome-46-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-gnome-46-aarch64.iso",
+          "size": 7720599552,
+          "modified": "2026-11-20T22:26:25.142333063Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "bonito-rawhide-gnome-latest-arm64",
+          "path": "live-isos/bonito-rawhide-gnome-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-gnome-latest-arm64.iso",
+          "size": 7720599552,
+          "modified": "2026-11-20T22:26:25.142333063Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-kde-26.04-aarch64",
+          "path": "live-isos/grouper-kde-26.04-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-kde-26.04-aarch64.iso",
+          "size": 5364252672,
+          "modified": "2026-11-20T22:11:40.262220220Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-kde-latest-arm64",
+          "path": "live-isos/grouper-kde-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-kde-latest-arm64.iso",
+          "size": 5364252672,
+          "modified": "2026-11-20T22:11:40.262220220Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-gnome-26.04-aarch64",
+          "path": "live-isos/grouper-gnome-26.04-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-gnome-26.04-aarch64.iso",
+          "size": 5806489600,
+          "modified": "2026-11-20T22:08:22.709544267Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-gnome-latest-arm64",
+          "path": "live-isos/grouper-gnome-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-gnome-latest-arm64.iso",
+          "size": 5806489600,
+          "modified": "2026-11-20T22:08:22.709544267Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-xfce-26.04-aarch64",
+          "path": "live-isos/grouper-xfce-26.04-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-xfce-26.04-aarch64.iso",
+          "size": 4976672768,
+          "modified": "2026-11-20T22:07:18.691575365Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "grouper-xfce-latest-arm64",
+          "path": "live-isos/grouper-xfce-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/grouper-xfce-latest-arm64.iso",
+          "size": 4976672768,
+          "modified": "2026-11-20T22:07:18.691575365Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-kde-10-aarch64",
+          "path": "live-isos/yellowfin-kde-10-aarch64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-10-aarch64.iso",
+          "size": 8467906560,
+          "modified": "2026-11-19T19:38:32.431106273Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
+          "name": "yellowfin-kde-latest-arm64",
+          "path": "live-isos/yellowfin-kde-latest-arm64.iso",
+          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-latest-arm64.iso",
+          "size": 8467906560,
+          "modified": "2026-11-19T19:38:32.431106273Z",
+          "arch": "aarch64",
+          "latest": false
+        },
+        {
+          "category": "live-isos",
           "name": "yellowfin-niri-10-aarch64",
           "path": "live-isos/yellowfin-niri-10-aarch64.iso",
           "url": "https://download.tunaos.org/live-isos/yellowfin-niri-10-aarch64.iso",
@@ -903,26 +1143,6 @@
         },
         {
           "category": "live-isos",
-          "name": "marlin-gnome--aarch64",
-          "path": "live-isos/marlin-gnome--aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-gnome--aarch64.iso",
-          "size": 6600654848,
-          "modified": "2026-11-15T11:07:35.123593614Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "marlin-gnome-latest-arm64",
-          "path": "live-isos/marlin-gnome-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/marlin-gnome-latest-arm64.iso",
-          "size": 6600654848,
-          "modified": "2026-11-15T11:07:35.123593614Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
           "name": "marlin-kde--x86_64",
           "path": "live-isos/marlin-kde--x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/marlin-kde--x86_64.iso",
@@ -963,52 +1183,12 @@
         },
         {
           "category": "live-isos",
-          "name": "skipjack-kde-10-aarch64",
-          "path": "live-isos/skipjack-kde-10-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-kde-10-aarch64.iso",
-          "size": 8507359232,
-          "modified": "2026-11-14T18:23:44.271301529Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-kde-latest-arm64",
-          "path": "live-isos/skipjack-kde-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-kde-latest-arm64.iso",
-          "size": 8507359232,
-          "modified": "2026-11-14T18:23:44.271301529Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
           "name": "skipjack-niri-10-x86_64",
           "path": "live-isos/skipjack-niri-10-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/skipjack-niri-10-x86_64.iso",
           "size": 6096617472,
           "modified": "2026-11-14T18:20:48.359444689Z",
           "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-niri-10-aarch64",
-          "path": "live-isos/skipjack-niri-10-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-niri-10-aarch64.iso",
-          "size": 5710544896,
-          "modified": "2026-11-14T18:19:59.165819685Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "skipjack-niri-latest-arm64",
-          "path": "live-isos/skipjack-niri-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/skipjack-niri-latest-arm64.iso",
-          "size": 5710544896,
-          "modified": "2026-11-14T18:19:59.165819685Z",
-          "arch": "aarch64",
           "latest": false
         },
         {
@@ -1099,26 +1279,6 @@
           "size": 8716550144,
           "modified": "2026-11-12T19:02:55.051622437Z",
           "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "yellowfin-kde-10-aarch64",
-          "path": "live-isos/yellowfin-kde-10-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-10-aarch64.iso",
-          "size": 8313896960,
-          "modified": "2026-11-12T19:02:36.487506554Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "yellowfin-kde-latest-arm64",
-          "path": "live-isos/yellowfin-kde-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/yellowfin-kde-latest-arm64.iso",
-          "size": 8313896960,
-          "modified": "2026-11-12T19:02:36.487506554Z",
-          "arch": "aarch64",
           "latest": false
         },
         {
@@ -1393,16 +1553,6 @@
         },
         {
           "category": "live-isos",
-          "name": "bonito-rawhide-niri-nvidia-46-x86_64",
-          "path": "live-isos/bonito-rawhide-niri-nvidia-46-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-niri-nvidia-46-x86_64.iso",
-          "size": 9274327040,
-          "modified": "2026-11-07T03:52:56.518802867Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
           "name": "bonito-rawhide-xfce-nvidia-46-x86_64",
           "path": "live-isos/bonito-rawhide-xfce-nvidia-46-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/bonito-rawhide-xfce-nvidia-46-x86_64.iso",
@@ -1463,66 +1613,6 @@
         },
         {
           "category": "live-isos",
-          "name": "grouper-kde-26.04-aarch64",
-          "path": "live-isos/grouper-kde-26.04-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-kde-26.04-aarch64.iso",
-          "size": 5322833920,
-          "modified": "2026-11-07T02:36:00.698828399Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-kde-latest-arm64",
-          "path": "live-isos/grouper-kde-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-kde-latest-arm64.iso",
-          "size": 5322833920,
-          "modified": "2026-11-07T02:36:00.698828399Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-gnome-26.04-aarch64",
-          "path": "live-isos/grouper-gnome-26.04-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-gnome-26.04-aarch64.iso",
-          "size": 5798887424,
-          "modified": "2026-11-07T02:34:15.408479179Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-gnome-latest-arm64",
-          "path": "live-isos/grouper-gnome-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-gnome-latest-arm64.iso",
-          "size": 5798887424,
-          "modified": "2026-11-07T02:34:15.408479179Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-xfce-26.04-aarch64",
-          "path": "live-isos/grouper-xfce-26.04-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-xfce-26.04-aarch64.iso",
-          "size": 4938006528,
-          "modified": "2026-11-07T02:31:49.934929036Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "grouper-xfce-latest-arm64",
-          "path": "live-isos/grouper-xfce-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/grouper-xfce-latest-arm64.iso",
-          "size": 4938006528,
-          "modified": "2026-11-07T02:31:49.934929036Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
           "name": "bonito-rawhide-kde-46-x86_64",
           "path": "live-isos/bonito-rawhide-kde-46-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/bonito-rawhide-kde-46-x86_64.iso",
@@ -1543,102 +1633,12 @@
         },
         {
           "category": "live-isos",
-          "name": "bonito-rawhide-niri-46-x86_64",
-          "path": "live-isos/bonito-rawhide-niri-46-x86_64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-niri-46-x86_64.iso",
-          "size": 7252738048,
-          "modified": "2026-11-07T01:25:29.373897695Z",
-          "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
           "name": "bonito-rawhide-xfce-46-x86_64",
           "path": "live-isos/bonito-rawhide-xfce-46-x86_64.iso",
           "url": "https://download.tunaos.org/live-isos/bonito-rawhide-xfce-46-x86_64.iso",
           "size": 8441561088,
           "modified": "2026-11-07T01:24:58.736077595Z",
           "arch": "x86_64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-rawhide-kde-46-aarch64",
-          "path": "live-isos/bonito-rawhide-kde-46-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-kde-46-aarch64.iso",
-          "size": 9326362624,
-          "modified": "2026-11-07T01:23:57.938845652Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-rawhide-kde-latest-arm64",
-          "path": "live-isos/bonito-rawhide-kde-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-kde-latest-arm64.iso",
-          "size": 9326362624,
-          "modified": "2026-11-07T01:23:57.938845652Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-rawhide-cosmic-46-aarch64",
-          "path": "live-isos/bonito-rawhide-cosmic-46-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-cosmic-46-aarch64.iso",
-          "size": 7608074240,
-          "modified": "2026-11-07T01:22:06.987141264Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-rawhide-cosmic-latest-arm64",
-          "path": "live-isos/bonito-rawhide-cosmic-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-cosmic-latest-arm64.iso",
-          "size": 7608074240,
-          "modified": "2026-11-07T01:22:06.987141264Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-rawhide-niri-46-aarch64",
-          "path": "live-isos/bonito-rawhide-niri-46-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-niri-46-aarch64.iso",
-          "size": 6861357056,
-          "modified": "2026-11-07T01:20:16.651653890Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-rawhide-niri-latest-arm64",
-          "path": "live-isos/bonito-rawhide-niri-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-niri-latest-arm64.iso",
-          "size": 6861357056,
-          "modified": "2026-11-07T01:20:16.651653890Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-rawhide-xfce-46-aarch64",
-          "path": "live-isos/bonito-rawhide-xfce-46-aarch64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-xfce-46-aarch64.iso",
-          "size": 8016166912,
-          "modified": "2026-11-07T01:18:43.109465110Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-rawhide-xfce-latest-arm64",
-          "path": "live-isos/bonito-rawhide-xfce-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-xfce-latest-arm64.iso",
-          "size": 8016166912,
-          "modified": "2026-11-07T01:18:43.109465110Z",
-          "arch": "aarch64",
           "latest": false
         },
         {
@@ -1738,16 +1738,6 @@
           "url": "https://download.tunaos.org/live-isos/yellowfin-cosmic-latest-arm64.iso",
           "size": 4726521856,
           "modified": "2026-10-06T07:11:06.968000289Z",
-          "arch": "aarch64",
-          "latest": false
-        },
-        {
-          "category": "live-isos",
-          "name": "bonito-rawhide-gnome-latest-arm64",
-          "path": "live-isos/bonito-rawhide-gnome-latest-arm64.iso",
-          "url": "https://download.tunaos.org/live-isos/bonito-rawhide-gnome-latest-arm64.iso",
-          "size": 6880690176,
-          "modified": "2026-10-04T01:32:26.767334675Z",
           "arch": "aarch64",
           "latest": false
         }
@@ -2546,10 +2536,40 @@
           "name": "xfce-linux-live-latest",
           "path": "xfce-linux/xfce-linux-live-latest.iso",
           "url": "https://download.tunaos.org/xfce-linux/xfce-linux-live-latest.iso",
-          "size": 6629199872,
-          "modified": "2026-11-18T18:55:04.357527293Z",
+          "size": 6629234688,
+          "modified": "2026-11-24T06:52:20.577111405Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "xfce-linux",
+          "name": "xfce-linux-live-20261124-6321d00",
+          "path": "xfce-linux/xfce-linux-live-20261124-6321d00.iso",
+          "url": "https://download.tunaos.org/xfce-linux/xfce-linux-live-20261124-6321d00.iso",
+          "size": 6629234688,
+          "modified": "2026-11-24T06:52:20.577111405Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "xfce-linux",
+          "name": "xfce-linux-live-20261120-62cfd61",
+          "path": "xfce-linux/xfce-linux-live-20261120-62cfd61.iso",
+          "url": "https://download.tunaos.org/xfce-linux/xfce-linux-live-20261120-62cfd61.iso",
+          "size": 6629265408,
+          "modified": "2026-11-20T05:56:53.070475373Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "xfce-linux",
+          "name": "xfce-linux-live-20261120-927c0d7",
+          "path": "xfce-linux/xfce-linux-live-20261120-927c0d7.iso",
+          "url": "https://download.tunaos.org/xfce-linux/xfce-linux-live-20261120-927c0d7.iso",
+          "size": 6629265408,
+          "modified": "2026-11-20T04:22:32.796855085Z",
+          "arch": "",
+          "latest": false
         },
         {
           "category": "xfce-linux",
@@ -2829,25 +2849,15 @@
       "blurb": "",
       "icon": "📀",
       "order": 99,
-      "checksums": "https://download.tunaos.org/tacklebox/bazzite-kde-SHA256SUMS-20261118-bf3d813",
+      "checksums": "https://download.tunaos.org/tacklebox/SHA256SUMS-20261123-02e12e8",
       "isos": [
-        {
-          "category": "tacklebox",
-          "name": "bazzite-kde-latest",
-          "path": "tacklebox/bazzite-kde-latest.iso",
-          "url": "https://download.tunaos.org/tacklebox/bazzite-kde-latest.iso",
-          "size": 9190768640,
-          "modified": "2026-11-18T13:47:28.067313656Z",
-          "arch": "",
-          "latest": true
-        },
         {
           "category": "tacklebox",
           "name": "tacklebox-poc-dedup-latest",
           "path": "tacklebox/tacklebox-poc-dedup-latest.iso",
           "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-latest.iso",
-          "size": 1735983104,
-          "modified": "2026-11-16T13:34:28.086581007Z",
+          "size": 1736769536,
+          "modified": "2026-11-23T15:54:22.005477067Z",
           "arch": "",
           "latest": true
         },
@@ -2856,8 +2866,18 @@
           "name": "tacklebox-poc-perenv-latest",
           "path": "tacklebox/tacklebox-poc-perenv-latest.iso",
           "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-latest.iso",
-          "size": 2816344064,
-          "modified": "2026-11-16T13:33:37.019792845Z",
+          "size": 2817785856,
+          "modified": "2026-11-23T15:53:25.039282407Z",
+          "arch": "",
+          "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "bazzite-kde-latest",
+          "path": "tacklebox/bazzite-kde-latest.iso",
+          "url": "https://download.tunaos.org/tacklebox/bazzite-kde-latest.iso",
+          "size": 9190768640,
+          "modified": "2026-11-18T13:47:28.067313656Z",
           "arch": "",
           "latest": true
         },
@@ -2890,6 +2910,26 @@
           "modified": "2026-07-31T12:34:11.169892931Z",
           "arch": "",
           "latest": true
+        },
+        {
+          "category": "tacklebox",
+          "name": "tacklebox-poc-dedup-20261123-02e12e8",
+          "path": "tacklebox/tacklebox-poc-dedup-20261123-02e12e8.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-dedup-20261123-02e12e8.iso",
+          "size": 1736769536,
+          "modified": "2026-11-23T15:54:22.005477067Z",
+          "arch": "",
+          "latest": false
+        },
+        {
+          "category": "tacklebox",
+          "name": "tacklebox-poc-perenv-20261123-02e12e8",
+          "path": "tacklebox/tacklebox-poc-perenv-20261123-02e12e8.iso",
+          "url": "https://download.tunaos.org/tacklebox/tacklebox-poc-perenv-20261123-02e12e8.iso",
+          "size": 2817785856,
+          "modified": "2026-11-23T15:53:25.039282407Z",
+          "arch": "",
+          "latest": false
         },
         {
           "category": "tacklebox",
