@@ -2,55 +2,22 @@
 sidebar_position: 6.5
 sidebar_label: "Verifying downloads"
 title: "Verify TunaOS downloads and images"
-description: "Verify ISO checksums, inspect Software Bills of Materials (SBOMs), and check keyless signatures with cosign on TunaOS."
+description: "Verify the image behind a TunaOS ISO, inspect Software Bills of Materials (SBOMs), and check keyless signatures with cosign."
 ---
 
 # Verify TunaOS Downloads and Images
 
-TunaOS gives you several ways to check what you downloaded. This guide covers checksums, Software Bills of Materials (SBOMs), and Cosign signatures. It applies to ISO downloads, container images, and package repositories.
+TunaOS gives you several ways to check what you downloaded. This guide covers the signatures from Cosign and the Software Bills of Materials (SBOMs). It applies to ISOs, container images, and package repositories.
 
 ---
 
-## 1. Verify ISO Checksums (SHA-256)
+## 1. Verify an ISO
 
-Not every ISO category on the download server publishes a checksum file today. The [download page](/download) shows a **checksums** link for each category that has one, and no link for a category that does not. The `tacklebox` category is the one that publishes checksums now; the main `live-isos` lineup does not yet.
-
-:::note[No checksum file for your ISO?]
-Where no checksum file exists, the strongest check available is the Cosign signature on the container image the ISO was built from. See [section 2](#2-verify-container-image-signatures-with-cosign).
-:::
-
-### Verify on Linux and macOS
-
-1. Open the [download page](/download), then select the **checksums** link for the category you downloaded from. That link gives you the exact file to fetch. Its name carries a date and a build hash:
-   ```bash
-   curl -O https://download.tunaos.org/tacklebox/bazzite-gnome-latest.iso
-   curl -O https://download.tunaos.org/tacklebox/bazzite-gnome-SHA256SUMS-20260902-b37b7a2
-   ```
-
-2. Check the ISO against the list:
-   ```bash
-   sha256sum -c bazzite-gnome-SHA256SUMS-20260902-b37b7a2 --ignore-missing
-   ```
-
-   A good file gives you this output:
-   ```text
-   bazzite-gnome-latest.iso: OK
-   ```
-
-3. To print the hash and compare it yourself:
-   ```bash
-   sha256sum bazzite-gnome-latest.iso
-   ```
-
-### Verify on Windows (PowerShell)
-
-Run `Get-FileHash` in PowerShell:
-
-```powershell
-Get-FileHash .\albacore-gnome-latest.iso -Algorithm SHA256
-```
-
-Compare the printed hash string with the hash in the `SHA256SUMS` file.
+TunaOS has no prebuilt ISOs, so the download server has no ISO checksum files.
+TunaOS Media Writer or the [ISO builder](https://iso.tunaos.org) makes the ISO
+from a container image on GitHub Container Registry (GHCR). To check what went
+into your ISO, verify the signature of that container image. See
+[section 2](#2-verify-container-image-signatures-with-cosign).
 
 ---
 

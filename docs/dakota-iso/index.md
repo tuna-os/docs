@@ -10,13 +10,12 @@ status: archived
 :::caution[Archived]
 
 The `tuna-os/dakota-iso` repository was **archived on 2026-06-13**.
-This page is kept for historical reference only. The latest build remains
-available at the link below, but no new releases are published from this repo.
+This page is kept for historical reference only. Its ISO is removed from the
+download server, and this repository publishes no new releases. See
+[the download page](/download#linux).
 :::
 
 [![Build and Publish](https://github.com/tuna-os/dakota-iso/actions/workflows/build-iso.yml/badge.svg)](https://github.com/tuna-os/dakota-iso/actions/workflows/build-iso.yml)
-
-**[⬇ Download Latest ISO](https://download.tunaos.org/dakota/dakota-live-latest.iso)**
 
 Builds a bootable UEFI live ISO from the [Dakota](https://github.com/tuna-os/tunaos) image — a GNOME OS-based workstation using composefs and systemd-boot. The live environment boots straight to GDM with a full GNOME session and launches the Dakota installer automatically.
 
