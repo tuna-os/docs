@@ -731,6 +731,7 @@ export const PROJECTS: Project[] = [
       {emoji: '🧱', title: 'freedesktop-sdk base', text: 'The same SDK base family used by <a href="/tromso">Tromsø</a>, built in a separate BuildStream repository.'},
       {emoji: '🔁', title: 'Pinned BuildStream graph', text: 'The project maintains its own source pins and build pipeline.'},
       {emoji: '🐳', title: 'bootc OCI image', text: 'The project publishes a bootc OCI image at <code>ghcr.io/tuna-os/brussels</code>.'},
+      {emoji: '🖱️', title: 'A 1990s look, in preview', text: 'The <a href="/docs/brussels/winblues">brussels-winblues</a> variant gives the Wayland session the Chicago95 look. There is no public image yet.'},
       {emoji: '🎨', title: 'Brussels and Xfce', text: 'The original iris motif references the Brussels region. The wordmark names Xfce. This is TunaOS artwork, not the official regional emblem or an Xfce project logo.'},
     ],
     install: [
