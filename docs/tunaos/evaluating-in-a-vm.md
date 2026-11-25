@@ -5,7 +5,7 @@ existing disk, you can snapshot before every experiment, and undoing the whole
 thing is deleting one file.
 
 This guide takes about 15–20 minutes end to end, most of it waiting on the ISO
-download.
+build.
 
 ## Why a VM first
 
@@ -23,13 +23,17 @@ that entirely:
 If you decide to install on real hardware afterwards, see
 [Download and install](/download).
 
-## 1. Pick and download an ISO
+## 1. Pick an image and build its ISO
 
-Open [Download and install](/download), then **I already run Linux**. The
-recommended ISO is **Yellowfin (AlmaLinux Kitten 10) with GNOME**:
-[yellowfin-gnome-latest.iso](https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso).
-**All images** lists the ISOs for every image and desktop (GNOME, KDE, COSMIC,
-Niri, XFCE, NVIDIA), for x86_64 and arm64. New ISOs come out every week.
+TunaOS has no prebuilt ISOs to download. You build the ISO from the current
+image. Open [Download and install](/download#linux), then select
+**Open the ISO builder** under **Build your own ISO**. The builder runs in your
+browser. Select the image, then save the ISO. The
+[browser quickstart](../iso-builder/browser-quickstart.md) gives the browser,
+memory and disk requirements.
+
+The recommended image is **Yellowfin (AlmaLinux Kitten 10) with GNOME**,
+`ghcr.io/tuna-os/yellowfin:gnome`.
 
 If you are unsure which variant to evaluate, start with **Yellowfin** with
 GNOME — see [Choosing Your TunaOS Variant](../choosing-a-variant.md).
@@ -79,7 +83,7 @@ this before.
 2. Launch **Virtual Machine Manager** and choose
    **File → New Virtual Machine**.
 3. Select **Local install media (ISO image or CDROM)** and point it at the ISO
-   you downloaded.
+   you built.
 4. Set memory and CPUs (8192 MB, 2 cores).
 5. Set the disk size (50 GB).
 6. On the final screen, tick **Customize configuration before install**, then in
@@ -95,7 +99,8 @@ Create the disk once:
 qemu-img create -f qcow2 tunaos.qcow2 50G
 ```
 
-Boot the installer:
+Boot the installer. Replace `tunaos.iso` with the name of the ISO that you
+saved:
 
 ```bash
 qemu-system-x86_64 \
@@ -104,7 +109,7 @@ qemu-system-x86_64 \
   -smp 2 \
   -bios /usr/share/OVMF/OVMF_CODE.fd \
   -drive file=tunaos.qcow2,format=qcow2,if=virtio \
-  -cdrom albacore-gnome-latest.iso \
+  -cdrom tunaos.iso \
   -boot d \
   -device virtio-vga-gl -display gtk,gl=on \
   -netdev user,id=net0 -device virtio-net-pci,netdev=net0
