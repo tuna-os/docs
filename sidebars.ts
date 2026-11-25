@@ -161,7 +161,7 @@ const sidebars: SidebarsConfig = {
           'architecture', 'site-architecture', 'tunaos/building', 'tunaos/platform-engineering',
           'tunaos/live-iso-generation', 'tunaos/ci-cd', 'sync-org-docs-guide']},
         {type: 'category', label: 'Tromsø', items: ['tromso/SPEC', 'tromso/ROADMAP', 'tromso/SECURITY', 'tromso/CONTRIBUTING', 'tromso/ci-and-iso-pipeline']},
-        {type: 'category', label: 'Brussels', items: ['brussels/docs-README', 'brussels/CONTRIBUTING', 'brussels/ROADMAP', 'brussels/SECURITY', 'brussels/ci-and-iso-pipeline', 'brussels/signing']},
+        {type: 'category', label: 'Brussels', items: ['brussels/docs-README', 'brussels/CONTRIBUTING', 'brussels/ROADMAP', 'brussels/SECURITY', 'brussels/ci-and-iso-pipeline', 'brussels/signing', 'brussels/winblues']},
         {type: 'category', label: 'wootc', items: ['wootc/ROADMAP', 'wootc/CONTRIBUTING']},
         {type: 'category', label: 'Tacklebox', items: ['tacklebox/ARCHITECTURE', 'tacklebox/github-iso-setup', 'tacklebox/TODO', 'tacklebox/ROADMAP', 'tacklebox/SECURITY', 'tacklebox/CONTRIBUTING', 'tacklebox/opfs-streaming-handoff']},
         {type: 'category', label: 'Corral', items: [
