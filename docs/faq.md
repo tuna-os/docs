@@ -31,8 +31,7 @@ Three ways. The [download page](https://tunaos.org/download) shows all three:
 
 **Where do I download the ISOs?**
 
-[tunaos.org/download](https://tunaos.org/download), under **I already run Linux**. If a specific ISO won't download, use this link instead:
-`https://download.tunaos.org/live-isos/<variant>-<flavor>-latest.iso` (for example, `albacore-gnome-latest.iso` or `yellowfin-gnome-latest.iso`). [tuna-os/tunaOS discussion #652](https://github.com/tuna-os/tunaOS/discussions/652) and [#561](https://github.com/tuna-os/tunaOS/issues/561) cover a real download-page outage and its fix.
+TunaOS has no prebuilt ISOs. The ISO is built for you from the current image: use TunaOS Media Writer from [tunaos.org/download](https://tunaos.org/download), or [build it in your browser](https://iso.tunaos.org).
 
 **Can I keep Windows?**
 

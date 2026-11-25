@@ -135,9 +135,9 @@ function ResultCard({sel, onReset}: {sel: Selection; onReset: () => void}) {
               Download ISO
             </a>
           ) : (
-            <div className={styles.resultNoIso}>
-              No ISO available yet for {productName}.
-            </div>
+            <a href={getBuilderUrl(imageName)} className="button button--primary button--lg">
+              Build this ISO in the browser
+            </a>
           )}
         </div>
         <button className={styles.resetBtn} onClick={onReset} type="button">

@@ -11,7 +11,6 @@ import {
   type Platform,
 } from '@site/src/data/media-writer';
 import {WOOTC_INSTALLER_SIZE, WOOTC_INSTALLER_URL} from '@site/src/data/wootc';
-import IsoDownloads from '@site/src/components/IsoDownloads';
 import {X13S_BUILDER_URL, X13S_GUIDE_URL, X13S_REPORT_URL} from '@site/src/data/x13s';
 import FactoryHealth from '@site/src/components/FactoryHealth';
 import page from '@site/src/css/page.module.css';
@@ -23,8 +22,6 @@ const BROWSER_BUILDER_URL = 'https://iso.tunaos.org/';
 const ETCHER_URL = 'https://etcher.balena.io/';
 const RECOMMENDED_ISO = {
   name: 'Yellowfin (AlmaLinux Kitten 10) with GNOME',
-  url: 'https://download.tunaos.org/live-isos/yellowfin-gnome-latest.iso',
-  size: '6.2 GB',
 };
 const REBASE_COMMAND = 'sudo bootc-migrate --target-image ghcr.io/tuna-os/yellowfin:gnome';
 const FLATPAK_SETUP = [
@@ -247,8 +244,8 @@ function UsbCard({visitor, release}: {visitor: Visitor; release: MediaWriterRele
         </li>
         {platform?.kind !== 'mobile' && (
           <li>
-            Or use <a href={ETCHER_URL}>balenaEtcher</a> with the{' '}
-            <a href={RECOMMENDED_ISO.url}>Yellowfin GNOME ISO ({RECOMMENDED_ISO.size})</a>
+            Or <a href={BROWSER_BUILDER_URL}>build the ISO in your browser</a> and write it with{' '}
+            <a href={ETCHER_URL}>balenaEtcher</a>
           </li>
         )}
       </ul>
@@ -360,8 +357,7 @@ function LinuxCard(): ReactNode {
               I already run Linux
             </span>
             <span className={styles.optionLede}>
-              Switch a bootc system such as Bluefin or Fedora Atomic to TunaOS, download an ISO
-              file, or build your own ISO.
+              Switch a bootc system such as Bluefin or Fedora Atomic to TunaOS, or build an ISO.
             </span>
           </span>
         </summary>
@@ -379,24 +375,6 @@ function LinuxCard(): ReactNode {
           Replace <code>yellowfin:gnome</code> with the image and desktop you want, for example{' '}
           <code>albacore:kde</code>. Plain <code>sudo bootc switch</code> takes the same image name.
         </p>
-
-        <h3 className={styles.subTitle}>Download an ISO file</h3>
-        <p className={styles.text}>
-          Write the ISO to a USB stick (16 GB or larger) with TunaOS Media Writer or{' '}
-          <a href={ETCHER_URL}>balenaEtcher</a>, then{' '}
-          <Link to="/docs/start-from-usb">start the computer from it</Link>.
-        </p>
-        <IsoDownloads />
-        <details className={styles.fold}>
-          <summary>Command line: write the ISO with dd</summary>
-          <pre className={page.code}>
-            <code>sudo dd if=tunaos.iso of=/dev/sdX bs=4M status=progress oflag=direct</code>
-          </pre>
-          <p className={styles.text}>
-            Replace <code>/dev/sdX</code> with your USB stick. Check it with <code>lsblk</code>{' '}
-            first: dd erases the device that you name.
-          </p>
-        </details>
 
         <X13sDownload />
 

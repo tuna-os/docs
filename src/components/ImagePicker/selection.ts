@@ -226,7 +226,16 @@ export function getPrevStep(step: StepId, sel: Selection): StepId | null {
   return null;
 }
 
+// The GHCR image of each non-tunaOS product; the builder makes its ISO.
+const PRODUCT_IMAGES: Partial<Record<Product, string>> = {
+  dakota: 'ghcr.io/projectbluefin/dakota:stable',
+  tromso: 'ghcr.io/tuna-os/tromso:latest',
+  xfce: 'ghcr.io/tuna-os/xfce-linux:latest',
+};
+
 export function buildImageName(sel: Selection): string {
+  const productImage = sel.product && PRODUCT_IMAGES[sel.product];
+  if (productImage) return productImage;
   const variant = sel.variant ?? 'albacore';
   // Base-only variants (e.g. Hummingbird) have no desktop step; fall back to
   // their sole published flavor tag instead of a desktop that doesn't exist.
@@ -235,10 +244,8 @@ export function buildImageName(sel: Selection): string {
 }
 
 export function getIsoUrl(sel: Selection, isoNames: Set<string> | null): string | null {
-  // Non-tunaOS products
-  if (sel.product === 'dakota') return 'https://download.tunaos.org/dakota/dakota-live-latest.iso';
-  if (sel.product === 'tromso') return 'https://download.tunaos.org/tromso/tromso-live-latest.iso';
-  if (sel.product === 'xfce') return 'https://download.tunaos.org/xfce-linux/xfce-linux-live-latest.iso';
+  // No prebuilt ISOs for the other products; they build from GHCR images.
+  if (sel.product && sel.product !== 'tunaos') return null;
   // TunaOS variants — validated against the live ISO index (static/iso-index.json)
   // rather than guessed, so this never wrongly claims an HWE/NVIDIA/GNOME 50
   // combo is or isn't downloadable. (HWE ISOs, for example, do exist for some
