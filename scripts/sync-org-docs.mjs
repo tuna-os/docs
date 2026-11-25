@@ -36,6 +36,11 @@ const PROJECTS = {
   // tuna-os/xfce-linux was renamed to tuna-os/brussels. The old docs/xfce-linux/
   // tree was removed; static/_redirects sends its URLs to docs/brussels/.
   brussels:    {label: 'Brussels',         icon: '🖥️', slug: 'brussels',        status: 'alpha'},
+  // tuna-os/bootc-installer was renamed to tuna-os/installer. The slug stays
+  // 'bootc-installer': the default slug 'installer' would write docs/installer/,
+  // whose index has the same route as docs/installer.mdx, and it would leave
+  // docs/bootc-installer/ behind with no source.
+  installer:   {label: 'TunaOS installer', icon: '💿', slug: 'bootc-installer'},
   // NOTE: 'github-copr' was renamed to 'tunaos-packages'; the listing picks
   // it up under its real name (default slug 'tunaos-packages'). The old
   // docs/copr/ tree was hand-maintained leftovers from before the rename
