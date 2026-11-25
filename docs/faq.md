@@ -69,9 +69,9 @@ Not yet. An installer for M1 and M2 Macs is in development, but it has no releas
 
 **Does TunaOS run on laptops with Snapdragon X Elite? (Does TunaOS run on a "Copilot+ PC"?)**
 
-No. TunaOS has no support for laptops with Snapdragon X Elite. The Lenovo ThinkPad X13s Gen 1 is a different laptop: it has a Snapdragon 8cx Gen 3 (SC8280XP). TunaOS has a preview image for it, `bonito:gnome-x13s`, and nobody has started that image on an X13s yet. See [ThinkPad X13s in the User Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/USER-GUIDE.md#thinkpad-x13s-preview-unverified-on-hardware). The [download page](/download#linux) links to the ISO builder for it.
+No. TunaOS has no support for laptops with Snapdragon X Elite. The ThinkPad X13s from Lenovo is a different laptop. It has a Snapdragon 8cx Gen 3 (SC8280XP). TunaOS has a preview image for it, `bonito:gnome-x13s`, and nobody has started that image on an X13s yet. See [ThinkPad X13s in the User Guide](https://github.com/tuna-os/tunaOS/blob/main/docs/USER-GUIDE.md#thinkpad-x13s-preview-unverified-on-hardware). The [download page](/download#linux) links to the ISO builder for it.
 
-The guide pages for [Bonito X13s](/docs/bonito-x13s) and [Dakota X13s](/docs/dakota-x13s) are **archived**. Their ISOs are removed.
+The guide pages for [Bonito X13s](/docs/bonito-x13s) and [Dakota X13s](/docs/dakota-x13s) are **archived**. They have no ISOs now.
 
 The X13s guide does not cover the NPU (the "AI" accelerator behind the Copilot+ name). No page here documents NPU access from Linux on this hardware yet. Treat NPU support as unconfirmed until a page for the variant says otherwise. See [tuna-os/tunaOS discussion #93](https://github.com/tuna-os/tunaOS/discussions/93) for the original question.
 
