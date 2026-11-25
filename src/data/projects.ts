@@ -730,12 +730,12 @@ export const PROJECTS: Project[] = [
       {emoji: '🪶', title: 'Xfce on Wayland', text: 'A Wayland session with the Xfce desktop.'},
       {emoji: '🧱', title: 'freedesktop-sdk base', text: 'The same SDK base family used by <a href="/tromso">Tromsø</a>, built in a separate BuildStream repository.'},
       {emoji: '🔁', title: 'Pinned BuildStream graph', text: 'The project maintains its own source pins and build pipeline.'},
-      {emoji: '🐳', title: 'bootc OCI image', text: 'The project publishes a bootc OCI image at <code>ghcr.io/tuna-os/brussels</code>.'},
+      {emoji: '🐳', title: 'bootc OCI image', text: 'The bootc OCI image is <code>ghcr.io/tuna-os/brussels</code>. Not published yet: until the first build at that name is public, use the earlier name <code>ghcr.io/tuna-os/xfce-linux</code>, which gets the same image.'},
       {emoji: '🎨', title: 'Brussels and Xfce', text: 'The original iris motif references the Brussels region. The wordmark names Xfce. This is TunaOS artwork, not the official regional emblem or an Xfce project logo.'},
     ],
     install: [
       {label: 'Build from source', code: 'git clone https://github.com/tuna-os/brussels.git\ncd brussels\njust build'},
-      {label: 'Move an existing bootc system (bootc-migrate)', code: 'sudo bootc-migrate --target-image ghcr.io/tuna-os/brussels:latest'},
+      {label: 'Move an existing bootc system (bootc-migrate; ghcr.io/tuna-os/brussels is not published yet, so use ghcr.io/tuna-os/xfce-linux until then)', code: 'sudo bootc-migrate --target-image ghcr.io/tuna-os/brussels:latest'},
     ],
   },
 

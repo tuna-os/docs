@@ -53,6 +53,8 @@ Start from a published image in a light TunaOS variant. Brussels gives a full de
 
 Make the kiosk image on top of the base. Add the kiosk app. Set it to run full-screen. Build the image with `podman build`.
 
+> **Not published yet:** `ghcr.io/tuna-os/brussels` has no public image yet. Until it has, use the earlier name `ghcr.io/tuna-os/xfce-linux:latest`, which gets the same image.
+
 ```dockerfile
 FROM ghcr.io/tuna-os/brussels:latest
 
