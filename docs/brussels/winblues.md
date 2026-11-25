@@ -1,17 +1,82 @@
 ---
-sidebar_position: 10
+sidebar_position: 12
 title: "winblues"
 ---
 
-brussels-winblues is a variant of the brussels image. It has the same
-operating system and the same XFCE session on xfwl4. The variant adds the
-Chicago95 theme, which gives a look like the classic desktops of the 1990s.
-The variant follows the example of the winblues project, specially blue95.
-It is not a copy of winblues, and it does not use the winblues names or
-logos.
+Remember when a window had an edge that you could feel? brussels-winblues
+brings the desktop of the 1990s to a modern operating system. It has gray
+bevels, navy title bars, pixel icons, and an hourglass pointer. A penguin sits
+on the Start button.
 
-Image: `ghcr.io/tuna-os/brussels-winblues`, with the same tags as the base
-image (`latest`, `nightly`, `nightly-<date>`, `<commit>`, and `stable`).
+Below that look is Brussels: an immutable bootc image with XFCE and a Wayland
+session. xfwl4, the Wayland compositor of XFCE, draws the window frames of the
+[Chicago95](https://github.com/grassmunk/Chicago95) theme by grassmunk and its
+contributors. The Start menu, the taskbar, and the applications are the XFCE
+programs, with no changes.
+
+![The desktop with the open Start menu, the file manager, and the appearance settings](https://raw.githubusercontent.com/tuna-os/brussels/main/docs/images/winblues/hero.webp)
+
+**There is no public image yet.** You cannot pull or install it. The build
+pipeline will publish it as `ghcr.io/tuna-os/brussels-winblues`, with the same
+tags as the base image.
+
+The variant follows the example of the
+[winblues](https://github.com/winblues) project, especially blue95. It is a
+separate project. It does not include winblues code or artwork.
+
+## Gallery
+
+These pictures are from a virtual machine that booted the image. They show the
+default settings, and nobody edited them. They show a local build on an
+earlier base: see [How to make the pictures](#how-to-make-the-pictures).
+
+| | |
+| --- | --- |
+| ![The Start menu](https://raw.githubusercontent.com/tuna-os/brussels/main/docs/images/winblues/start-menu.webp) The Start menu | ![The file manager Thunar](https://raw.githubusercontent.com/tuna-os/brussels/main/docs/images/winblues/file-manager.webp) Files, in Thunar |
+| ![The XFCE settings manager](https://raw.githubusercontent.com/tuna-os/brussels/main/docs/images/winblues/settings.webp) Settings | ![The appearance settings](https://raw.githubusercontent.com/tuna-os/brussels/main/docs/images/winblues/appearance.webp) Appearance |
+| ![The window About Xfce](https://raw.githubusercontent.com/tuna-os/brussels/main/docs/images/winblues/about.webp) About Xfce | ![The desktop](https://raw.githubusercontent.com/tuna-os/brussels/main/docs/images/winblues/desktop.webp) The desktop |
+
+There is no picture of the terminal. `xfce4-terminal` cannot start in this
+base, because the library `libvte-2.91` is missing. The current source tree
+builds that library.
+
+The login screen is the default GDM screen. The theme does not change it.
+
+![The GDM login screen](https://raw.githubusercontent.com/tuna-os/brussels/main/docs/images/winblues/login.webp)
+
+The image logs in automatically, so this picture has the automatic login off.
+[Issue 290](https://github.com/tuna-os/brussels/issues/290) is about that
+default and other development defaults.
+
+## How to make the pictures
+
+`scripts/capture-screenshots.py` boots a disk image in QEMU, moves the mouse,
+opens the programs, and saves the screen. It uses a snapshot, so the disk
+image does not change. It needs Linux, KVM, and OVMF files.
+
+1. Build and export the base image, and run `just export-variant winblues`.
+2. Run `just image_name=brussels-winblues generate-bootable-image`.
+3. Run the script:
+
+   ```bash
+   scripts/capture-screenshots.py bootable.raw shots \
+     --ovmf-code /usr/share/edk2/ovmf/OVMF_CODE.fd \
+     --ovmf-vars /usr/share/edk2/ovmf/OVMF_VARS.fd
+   ```
+
+4. Look at each picture. Then run `cwebp -lossless -metadata none` for each
+   picture, and put the result in `docs/images/winblues/`.
+
+The pictures of 2026-11-25 show this image:
+
+- Base: `ghcr.io/tuna-os/xfce-linux:nightly-20261102`, digest
+  `sha256:6409a488869c09e7a327483f710d9cbfe7f7da30b8bbf763a23f93ab5c9e3056`.
+  It is older than the XFCE source build in this repository, and it has xfwl4
+  0.1.0. Its `os-release` file still has the name GNOME OS.
+- Layer (local image ID `628c61934c23`): the commands of `elements/winblues/chicago95.bst` and the files in
+  `files/winblues/`, added with `variants/winblues/Containerfile`.
+  BuildStream did not run. The commands ran in the base image, as
+  `scripts/winblues-layer.sh` does.
 
 ## How the variant is built
 
@@ -59,20 +124,36 @@ The variant does not ship artwork that shows Microsoft trademarks:
 
 - The Chicago95 start-button images and the `misc/` folder of the theme.
   These images show the Windows logo.
-- The `branding_W95.png` image of the theme.
-- Icons that show the Windows logo, the Internet Explorer logo, or the
-  Office document marks. The element finds these icons by name. Then it
-  removes each icon with the same image content, under any name.
+- The `branding_W95` images of the GTK theme, its flag and Internet Explorer
+  badges, and its busy animation. The animation is a waving Windows flag.
+- Icons that show the Windows or Internet Explorer logo, or the Office marks.
+  Icons that show the MSN, MS-DOS, or Visual Studio logos. The theme also uses
+  these marks for LibreOffice, Wine, and software updates. The element finds
+  these icons by name. Then it removes each icon with the same image content,
+  under any name.
 - The Chicago95 sound theme and the startup sound. These sounds come from
   Windows 95.
 - The Chicago95 Plymouth theme. It copies the Windows 95 boot screen.
+- The Chicago95 fonts, `Extras/`, and wallpapers, except the terminal color
+  scheme.
 
 The start menu icon is Tux, from the `Chicago95-tux` icon theme of the same
-project. The build stops if one of the removed images is still in the
-installed files.
+project. The download folder icon is the plain folder. The build stops if one
+of the removed images is still in the installed files.
 
-Nobody has examined the other 15,000 icons one at a time. Report an icon
-that shows a trademark, and we will add it to the list in
+We looked at each different image of the icon theme on contact sheets on
+2026-11-25. That is not a legal review. These risks remain:
+
+- Many icons copy the style of Windows 95 icons, for example the trash and
+  the folders. They are not logos, but they can be similar to copyrighted
+  artwork.
+- Some icons show the marks of other products, for example Firefox, Netscape,
+  Yahoo, Adobe, WinRAR, and ZoneAlarm.
+- Two names refer to Microsoft products. "Chicago95" is the name of the
+  theme, and "winblues" is the name of the variant.
+
+[Issue 330](https://github.com/tuna-os/brussels/issues/330) asks the owner about these risks. Report an icon that
+shows a Microsoft trademark, and we will add it to the list in
 `elements/winblues/chicago95.bst`.
 
 ## Gaps under xfwl4
@@ -99,13 +180,18 @@ These items do not work, or nobody has tested them yet:
   the default background.
 - **Title bar height.** blue95 changes the Chicago95 theme to make 28 px
   title bars. This variant uses the upstream theme without changes.
-- **Not tested on hardware.** The configuration files pass the checks in
-  CI. Nobody has examined the variant in a session yet.
+- **Not tested on hardware.** We examined the variant in a virtual machine
+  only.
+- **Window frame.** In the pictures, part of the frame is missing on some
+  windows. Refer to [issue 329](https://github.com/tuna-os/brussels/issues/329).
+- **Free space.** Thunar shows 0 bytes of free space for `/usr`, because the
+  root file system is a read-only composefs image.
 
 ## Credits
 
 - [Chicago95](https://github.com/grassmunk/Chicago95) by grassmunk and its
-  contributors. GPL-3.0-or-later and MIT. This includes the GTK, xfwm4,
+  contributors. The license is GPL-3.0+/MIT, as its README says. The image has the
+  license text in `/usr/share/licenses/chicago95`. This includes the GTK, xfwm4,
   and notification themes, the icons, the cursors, and the terminal color
   scheme.
 - Tux by Larry Ewing, made with The GIMP. The pixel version comes from
