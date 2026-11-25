@@ -12,8 +12,7 @@ import {
 } from '@site/src/data/media-writer';
 import {WOOTC_INSTALLER_SIZE, WOOTC_INSTALLER_URL} from '@site/src/data/wootc';
 import IsoDownloads from '@site/src/components/IsoDownloads';
-import useIsoIndex from '@site/src/hooks/useIsoIndex';
-import {findX13sIso, X13S_GUIDE_URL, X13S_REPORT_URL} from '@site/src/data/x13s';
+import {X13S_BUILDER_URL, X13S_GUIDE_URL, X13S_REPORT_URL} from '@site/src/data/x13s';
 import FactoryHealth from '@site/src/components/FactoryHealth';
 import page from '@site/src/css/page.module.css';
 import styles from './styles.module.css';
@@ -318,31 +317,24 @@ function WindowsCard({platform}: {platform: Platform | null}): ReactNode {
   );
 }
 
-// Shown only once the ISO is in the live index, so the link cannot be a 404.
-// No "build in the browser" link: a generic ISO of this image does not start
-// on the X13s.
 function X13sDownload(): ReactNode {
-  const iso = findX13sIso(useIsoIndex());
-  if (!iso) return null;
   return (
     <>
       <h3 id="x13s" className={styles.subTitle}>
         ThinkPad X13s (preview)
       </h3>
       <p className={styles.text}>
-        Bonito GNOME for the Lenovo ThinkPad X13s Gen 1 (Snapdragon 8cx Gen 3).{' '}
-        <strong>Nobody has started it on an X13s yet.</strong> It runs from the USB stick only: the
-        internal disk is read-only, so it cannot install to it. It is not for laptops with
-        Snapdragon X Elite.
+        Bonito GNOME for the Lenovo ThinkPad X13s Gen 1 (Snapdragon 8cx Gen 3). Build the ISO in
+        your browser, or choose Bonito GNOME X13s (ARM64) in TunaOS Media Writer.{' '}
+        <strong>Nobody has started it on an X13s yet.</strong> Turn off Secure Boot first. It is not
+        for laptops with Snapdragon X Elite.
       </p>
       <div className={clsx(page.btnRow, page.btnRowLeft, styles.actions)}>
-        <a className={clsx('button', page.btnGhost, page.btnSmall)} href={iso.url} download>
-          Download the X13s preview ISO
+        <a className={clsx('button', page.btnGhost, page.btnSmall)} href={X13S_BUILDER_URL}>
+          Build the X13s ISO
         </a>
       </div>
       <p className={styles.meta}>
-        {(iso.size / 1e9).toFixed(1)} GB · ARM64 ·{' '}
-        <a href={`${iso.url}.sha256`}>Checksum</a> ·{' '}
         <a href={X13S_GUIDE_URL}>What to expect</a> · <a href={X13S_REPORT_URL}>Report your result</a>
       </p>
     </>
