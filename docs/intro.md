@@ -71,7 +71,7 @@ install them, and distribute them:
 
 - **[Tacklebox](/docs/tacklebox)** — makes multi-boot USB drives, disk images,
   and deduplicated ISOs from OCI images.
-- **[Tromsø](/docs/tromso)** (KDE), **[XFCE Linux](/docs/xfce-linux)**, and
+- **[Tromsø](/docs/tromso)** (KDE), **[Brussels](/docs/brussels)**, and
   **[Dakota](/dakota)** (GNOME) — "distroless"
   desktops. A declarative BuildStream pipeline makes them on top of the
   [Freedesktop SDK](https://freedesktop-sdk.io/).

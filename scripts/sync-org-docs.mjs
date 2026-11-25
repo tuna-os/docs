@@ -33,7 +33,9 @@ const PROJECTS = {
   tunaOS:      {label: 'TunaOS',           icon: '🐟', slug: 'tunaos',          status: 'stable'},
   tacklebox:   {label: 'Tacklebox',        icon: '🧰', slug: 'tacklebox',       status: 'stable'},
   tromso:      {label: 'Tromsø',           icon: '🏔️', slug: 'tromso',           status: 'alpha'},
-  'xfce-linux': {label: 'XFCE Linux',      icon: '🖥️', slug: 'xfce-linux',      status: 'alpha'},
+  // tuna-os/xfce-linux was renamed to tuna-os/brussels. The old docs/xfce-linux/
+  // tree was removed; static/_redirects sends its URLs to docs/brussels/.
+  brussels:    {label: 'Brussels',         icon: '🖥️', slug: 'brussels',        status: 'alpha'},
   // NOTE: 'github-copr' was renamed to 'tunaos-packages'; the listing picks
   // it up under its real name (default slug 'tunaos-packages'). The old
   // docs/copr/ tree was hand-maintained leftovers from before the rename

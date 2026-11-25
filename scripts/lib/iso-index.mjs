@@ -40,7 +40,7 @@ export const CATEGORIES = {
     order: 4,
   },
   'xfce-linux': {
-    label: 'XFCE Linux',
+    label: 'Brussels',
     blurb: 'Lightweight XFCE Wayland desktop — built from source on freedesktop-sdk.',
     icon: '🖥️',
     order: 5,

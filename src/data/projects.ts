@@ -696,18 +696,18 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
-    id: 'xfce-linux',
+    id: 'brussels',
     icon: 'monitor',
     emoji: '🖥️',
     name: 'Brussels',
     status: 'alpha',
     tagline: 'Xfce on Wayland, built with BuildStream for TunaOS.',
     lede:
-      'Brussels is an independent TunaOS bootc image with Xfce on Wayland. It shares a freedesktop-sdk base with Tromsø but has its own BuildStream project and build pipeline. The repository and registry retain the xfce-linux identifier.',
+      'Brussels is an independent TunaOS bootc image with Xfce on Wayland. It shares a freedesktop-sdk base with Tromsø but has its own BuildStream project and build pipeline. The project was named XFCE Linux before. The earlier image name, ghcr.io/tuna-os/xfce-linux, stays an alias of the same image for installed systems.',
     accent: '#efb36c',
     accent2: '#d47755',
-    repo: 'https://github.com/tuna-os/xfce-linux',
-    docs: '/docs/xfce-linux',
+    repo: 'https://github.com/tuna-os/brussels',
+    docs: '/docs/brussels',
     logo: '/img/buildstream/brussels/xfce-linux-wordmark.svg',
     logoLight: true,
     mark: '/img/buildstream/brussels/brussels-logo.svg',
@@ -718,7 +718,7 @@ export const PROJECTS: Project[] = [
     buildstream: {
       base: 'freedesktop-sdk',
       desktop: 'Xfce Wayland',
-      image: 'ghcr.io/tuna-os/xfce-linux:latest',
+      image: 'ghcr.io/tuna-os/brussels:latest',
     },
     stats: [
       {label: 'Desktop', value: 'Xfce Wayland'},
@@ -730,12 +730,12 @@ export const PROJECTS: Project[] = [
       {emoji: '🪶', title: 'Xfce on Wayland', text: 'A Wayland session with the Xfce desktop.'},
       {emoji: '🧱', title: 'freedesktop-sdk base', text: 'The same SDK base family used by <a href="/tromso">Tromsø</a>, built in a separate BuildStream repository.'},
       {emoji: '🔁', title: 'Pinned BuildStream graph', text: 'The project maintains its own source pins and build pipeline.'},
-      {emoji: '🐳', title: 'bootc OCI image', text: 'The project publishes a bootc OCI image at <code>ghcr.io/tuna-os/xfce-linux</code>.'},
+      {emoji: '🐳', title: 'bootc OCI image', text: 'The project publishes a bootc OCI image at <code>ghcr.io/tuna-os/brussels</code>.'},
       {emoji: '🎨', title: 'Brussels and Xfce', text: 'The original iris motif references the Brussels region. The wordmark names Xfce. This is TunaOS artwork, not the official regional emblem or an Xfce project logo.'},
     ],
     install: [
-      {label: 'Build from source', code: 'git clone https://github.com/tuna-os/xfce-linux.git\ncd xfce-linux\njust build'},
-      {label: 'Move an existing bootc system (bootc-migrate)', code: 'sudo bootc-migrate --target-image ghcr.io/tuna-os/xfce-linux:latest'},
+      {label: 'Build from source', code: 'git clone https://github.com/tuna-os/brussels.git\ncd brussels\njust build'},
+      {label: 'Move an existing bootc system (bootc-migrate)', code: 'sudo bootc-migrate --target-image ghcr.io/tuna-os/brussels:latest'},
     ],
   },
 

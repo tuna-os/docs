@@ -71,8 +71,7 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         {type: 'category', label: 'Tromsø', link: {type: 'doc', id: 'tromso/index'}, items: []},
-        {type: 'category', label: 'XFCE Linux', className: 'sidebar-alpha', link: {type: 'doc', id: 'xfce-linux/index'}, items: []},
-        {type: 'category', label: 'Brussels', link: {type: 'doc', id: 'brussels/index'}, items: []},
+        {type: 'category', label: 'Brussels', className: 'sidebar-alpha', link: {type: 'doc', id: 'brussels/index'}, items: []},
         {type: 'category', label: 'Athens', link: {type: 'doc', id: 'athens/index'}, items: []},
       ],
     },
@@ -162,7 +161,7 @@ const sidebars: SidebarsConfig = {
           'architecture', 'site-architecture', 'tunaos/building', 'tunaos/platform-engineering',
           'tunaos/live-iso-generation', 'tunaos/ci-cd', 'sync-org-docs-guide']},
         {type: 'category', label: 'Tromsø', items: ['tromso/SPEC', 'tromso/ROADMAP', 'tromso/SECURITY', 'tromso/CONTRIBUTING', 'tromso/ci-and-iso-pipeline']},
-        {type: 'category', label: 'XFCE Linux', items: ['xfce-linux/docs-README', 'xfce-linux/PROJECT_STATUS', 'xfce-linux/CONTRIBUTING', 'xfce-linux/ROADMAP', 'xfce-linux/SECURITY', 'xfce-linux/ci-and-iso-pipeline']},
+        {type: 'category', label: 'Brussels', items: ['brussels/docs-README', 'brussels/CONTRIBUTING', 'brussels/ROADMAP', 'brussels/SECURITY', 'brussels/ci-and-iso-pipeline', 'brussels/signing']},
         {type: 'category', label: 'wootc', items: ['wootc/ROADMAP', 'wootc/CONTRIBUTING']},
         {type: 'category', label: 'Tacklebox', items: ['tacklebox/ARCHITECTURE', 'tacklebox/github-iso-setup', 'tacklebox/TODO', 'tacklebox/ROADMAP', 'tacklebox/SECURITY', 'tacklebox/CONTRIBUTING', 'tacklebox/opfs-streaming-handoff']},
         {type: 'category', label: 'Corral', items: [

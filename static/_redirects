@@ -9,3 +9,11 @@
 # The old Niri-only installer walkthrough was a stale copy of /docs/installer.
 /docs/tunaos/installer-walkthrough /docs/installer 301
 /docs/tunaos/installer-walkthrough/ /docs/installer 301
+
+# XFCE Linux was renamed to Brussels (tuna-os/xfce-linux -> tuna-os/brussels).
+/xfce-linux /brussels 301
+/xfce-linux/ /brussels 301
+/docs/xfce-linux /docs/brussels 301
+/docs/xfce-linux/ /docs/brussels 301
+/docs/xfce-linux/PROJECT_STATUS /docs/brussels/ROADMAP 301
+/docs/xfce-linux/* /docs/brussels/:splat 301
