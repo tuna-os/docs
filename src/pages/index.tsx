@@ -42,7 +42,7 @@ const FEATURED_PROJECTS: Array<{
   {
     name: 'Brussels',
     desc: 'Xfce Wayland · BuildStream image',
-    to: '/xfce-linux',
+    to: '/brussels',
     icon: 'monitor',
     mark: '/img/buildstream/brussels/brussels-logo.svg',
   },

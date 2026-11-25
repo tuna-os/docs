@@ -10,7 +10,7 @@ Prefer a visual tour? See the **[Dakota overview →](/dakota)** page.
 
 > 🦖 **External project** — maintained by [Project Bluefin](https://projectbluefin.io). See [projectbluefin/dakota](https://github.com/tuna-os/tunaos).
 
-Dakota is a freedesktop.org and GNOME OS image, designed from the ground up by Project Bluefin. It is **the reference BuildStream desktop** — the model that Tromsø and XFCE Linux follow.
+Dakota is a freedesktop.org and GNOME OS image, designed from the ground up by Project Bluefin. It is **the reference BuildStream desktop** — the model that Tromsø and Brussels follow.
 
 ## Built-in feedback loop
 
@@ -33,4 +33,4 @@ tool and its interactive wizard.
 ## See also
 
 - [Tromsø](/tromso) — KDE Plasma on the same freedesktop-sdk base
-- [XFCE Linux](/xfce-linux) — XFCE on the same freedesktop-sdk base
+- [Brussels](/brussels) — XFCE on the same freedesktop-sdk base

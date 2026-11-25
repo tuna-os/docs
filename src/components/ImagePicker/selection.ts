@@ -343,7 +343,7 @@ export function getDeliveryRoute(
 export function getDocsUrl(sel: Selection): string {
   if (sel.product === 'dakota') return '/dakota';
   if (sel.product === 'tromso') return '/tromso';
-  if (sel.product === 'xfce') return '/xfce-linux';
+  if (sel.product === 'xfce') return '/brussels';
   const variant = sel.variant ?? 'albacore';
   const desktop = sel.desktop ?? (getDesktopOptions(sel.variant)[0]?.value ?? 'base');
   return `/docs/${variant}#${desktop}${editionSuffix(sel.edition)}`;

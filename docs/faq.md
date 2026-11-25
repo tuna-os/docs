@@ -55,7 +55,7 @@ Yes, with [wootc](https://tunaos.org/wootc). It installs TunaOS next to Windows,
 | KDE Plasma | Any `:kde` or Tromsø | — |
 | COSMIC | Any `:cosmic` tag | — |
 | Pantheon | Any `:pantheon` tag (Gurnard) | — |
-| Lightweight | XFCE Linux | freedesktop-sdk |
+| Lightweight | Brussels | freedesktop-sdk |
 | Tiling WM | Any `:niri` tag | — |
 | RHEL (local build) | Redfin | RHEL 10 |
 

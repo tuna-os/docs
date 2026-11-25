@@ -140,7 +140,7 @@ test('builder and docs URLs', () => {
     'https://iso.tunaos.org/?image=tuna-os%2Falbacore%3Agnome-hwe',
   );
   assert.equal(sel.getDocsUrl({product: 'tunaos', variant: 'bonito', desktop: 'kde', edition: 'nvidia'}), '/docs/bonito#kde-nvidia');
-  assert.equal(sel.getDocsUrl({product: 'xfce'}), '/xfce-linux');
+  assert.equal(sel.getDocsUrl({product: 'xfce'}), '/brussels');
 });
 
 // --- Delivery routing: public downloads vs qualified builder presets ---

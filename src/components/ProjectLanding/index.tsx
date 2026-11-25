@@ -248,7 +248,7 @@ function Install({project}: {project: Project}): ReactNode {
 // next step rather than a directory (the full list is one click away).
 const KINDS: Record<string, string[]> = {
   apps: ['tables', 'letters', 'decks', 'mariner', 'blueshell', 'ghostty', 'tavern', 'mandelbrot'],
-  images: ['tunaos', 'tromso', 'xfce-linux', 'dakota', 'wootc'],
+  images: ['tunaos', 'tromso', 'brussels', 'dakota', 'wootc'],
   tools: ['tacklebox', 'bootc-migrate', 'bluefin-cli', 'corral', 'wootc'],
 };
 

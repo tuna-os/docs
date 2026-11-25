@@ -14,7 +14,7 @@ A signage or kiosk fleet runs many screens with no operator at each one. TunaOS 
 
 You build one image that holds the base OS and the kiosk app. You push it to a registry. Each screen pulls it on a timer. When you change the app or the content, you rebuild the image and push a new tag. The screens take the new image on their next update. You never touch a screen by hand.
 
-The base OS is a light TunaOS variant such as XFCE Linux or Bonito Niri. Set it to log in on its own with no desktop shell. Pick one base and keep the fleet on it.
+The base OS is a light TunaOS variant such as Brussels or Bonito Niri. Set it to log in on its own with no desktop shell. Pick one base and keep the fleet on it.
 
 ```text
              ┌───────────────────────────────────┐
@@ -47,14 +47,14 @@ Before you build the image, gather these items:
 
 ### Step 1: Choose the base image
 
-Start from a published image in a light TunaOS variant. XFCE Linux gives a full desktop you can hide. Bonito Niri gives a light shell for the app. Pick one base and use it for the whole fleet.
+Start from a published image in a light TunaOS variant. Brussels gives a full desktop you can hide. Bonito Niri gives a light shell for the app. Pick one base and use it for the whole fleet.
 
 ### Step 2: Build the kiosk image
 
 Make the kiosk image on top of the base. Add the kiosk app. Set it to run full-screen. Build the image with `podman build`.
 
 ```dockerfile
-FROM ghcr.io/tuna-os/xfce-linux:latest
+FROM ghcr.io/tuna-os/brussels:latest
 
 # Add the kiosk app as a Flatpak and launch it full-screen.
 RUN dnf install -y flatpak && \
