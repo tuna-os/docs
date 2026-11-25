@@ -19,9 +19,7 @@ A [bootc](https://containers.github.io/bootc/) image for the **Lenovo ThinkPad X
 
 ## Download Live ISO
 
-> **[⬇ Download bonito-x13s-latest.iso](https://download.tunaos.org/bonito-x13s/bonito-x13s-latest.iso)**
-
-The ISO is rebuilt automatically on every push to `main`. Write it to a USB stick and boot to install or try the live desktop.
+The ISO is removed. See [the download page](/download#linux).
 
 ## What's Included
 

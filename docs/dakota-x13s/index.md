@@ -21,8 +21,7 @@ for current guidance.
 
 | File | Link |
 |------|------|
-| **Live ISO (latest)** | [x13s-live-latest.iso](https://download.tunaos.org/dakota-x13s/x13s-live-latest.iso) |
-| Checksums | [CHECKSUMS-latest.txt](https://download.tunaos.org/dakota-x13s/CHECKSUMS-latest.txt) |
+| **Live ISO** | Removed. See [the download page](/download#linux) |
 
 ## Status
 

@@ -83,7 +83,8 @@ test('non-tunaOS products jump straight to the result', () => {
     assert.equal(sel.getNextStep('product', s), 'result');
     assert.equal(sel.getPrevStep('result', s), 'product');
     assert.deepEqual(sel.getVisibleSteps(s), ['product', 'result']);
-    assert.match(sel.getIsoUrl(s, null), /^https:\/\/download\.tunaos\.org\/.+-live-latest\.iso$/);
+    assert.equal(sel.getIsoUrl(s, null), null, 'no prebuilt ISO');
+    assert.doesNotMatch(sel.buildImageName(s), /albacore/, 'builder gets the product image');
   }
 });
 
@@ -274,8 +275,8 @@ test('rollback: removing the cut-over entry restores prebuilt routing', () => {
   assert.equal(rolledBack.url, ISO_URL);
 });
 
-test('non-tunaOS products stay on prebuilt even with a cut-over policy', () => {
+test('non-tunaOS products build their own image', () => {
   const route = sel.getDeliveryRoute({product: 'dakota'}, null, cutoverPolicy());
-  assert.equal(route.kind, 'prebuilt');
-  assert.match(route.url, /^https:\/\/download\.tunaos\.org\/dakota\//);
+  assert.equal(route.kind, 'unsupported');
+  assert.ok(route.builderUrl.includes(encodeURIComponent('projectbluefin/dakota:stable')));
 });

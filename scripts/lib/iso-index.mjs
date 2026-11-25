@@ -21,18 +21,6 @@ export const CATEGORIES = {
     icon: '🎣',
     order: 1,
   },
-  'dakota-x13s': {
-    label: 'Dakota — ThinkPad X13s',
-    blurb: 'Dakota for the Lenovo ThinkPad X13s (Qualcomm SC8280XP, aarch64).',
-    icon: '💪',
-    order: 2,
-  },
-  'bonito-x13s': {
-    label: 'Bonito — ThinkPad X13s',
-    blurb: 'Bonito bootc image + live ISO for the ThinkPad X13s (aarch64).',
-    icon: '💪',
-    order: 3,
-  },
   tromso: {
     label: 'Tromsø',
     blurb: 'Aurora KDE Plasma 6 — built from source on freedesktop-sdk with BuildStream.',
