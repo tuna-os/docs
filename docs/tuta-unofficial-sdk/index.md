@@ -365,7 +365,8 @@ An error carries a fixed code, never SDK or server text:
   (Tuta is throttling this account or client, HTTP 429, or too many wrong
   second-factor codes: wait a few minutes; any operation can answer it).
 - Content: `decryption_failed`, `unsupported_legacy_body`,
-  `attachment_failed`, `body_too_large`.
+  `attachment_failed`, `body_too_large`, `incomplete_response` (the
+  server's reply lacked a field it always carries).
 - Requests: `invalid_request`, `unsupported_version`, `invalid_id`,
   `invalid_page`, `invalid_batch`, `invalid_thread` (a malformed Message-ID
   in `in_reply_to` or `references`, more than 100 references, or an `action`

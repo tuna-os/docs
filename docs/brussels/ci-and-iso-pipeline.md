@@ -3,17 +3,29 @@ sidebar_position: 7
 title: "ci and iso pipeline"
 ---
 
-How xfce-linux gets from `.bst` elements to a bootable, installable live ISO —
-and how to debug it when it breaks. (Same architecture as tuna-os/xfce-linux;
+How Brussels gets from `.bst` elements to a bootable, installable live ISO —
+and how to debug it when it breaks. (Same architecture as tuna-os/tromso;
 patterns originate in projectbluefin/dakota and dakota-iso.)
+
+## Secure Boot layer and the image installer
+
+The publish path of `build-multirunner.yml` adds the Secure Boot files to the
+image as one layer, before the variant images and the push. BuildStream does
+not sign with the tunaOS key. Read [Secure Boot](https://github.com/tuna-os/brussels/blob/main/docs/secure-boot.md) for the
+chain, the limits and the test state.
+
+`image-installer.yml` calls the 7-stage installer workflow of tuna-os/tunaOS
+for the cell `brussels:xfce`. It is dispatch-only, and it does not publish by
+default. The ISO workflows below stay the release path
+([#315](https://github.com/tuna-os/brussels/issues/315)).
 
 ## Build chain
 
 ```
-elements/**  ──►  Build xfce-linux (Multi-Runner)  ──►  ghcr.io/tuna-os/xfce-linux:latest
+elements/**  ──►  Build Brussels (Multi-Runner)  ──►  ghcr.io/tuna-os/brussels:latest
                         │ (workflow_run)
                         ▼
-              Build and Publish xfce-linux Live ISO  ──►  R2: xfce-linux/xfce-linux-live-*.iso
+              Build and Publish Brussels Live ISO  ──►  R2: xfce-linux/xfce-linux-live-*.iso
                         │
                         ▼ (boot gate: XFCE_LINUX_LIVE_READY on serial + screenshot)
               LUKS Install End-to-End Test (PR round-robin / weekly / dispatch)
@@ -25,11 +37,19 @@ The plan, core, and parallel dependency chunks (steps 1-3) use the shared
 [tuna-os/bst-ci](https://github.com/tuna-os/bst-ci) reusable workflow. Each
 BuildStream desktop repository uses this workflow, with different image names,
 targets, and chunk counts. On main and stable, the local `build_final` job
-(step 4) signs the image digest with a cosign key from the `SIGNING_SECRET`
-secret. If that secret has no value, the job skips the sign step and logs a
-warning. For the key setup and the current state, see [`signing.md`](https://github.com/tuna-os/brussels/blob/main/docs/signing.md).
-The keyless instructions in README.md apply only to the live ISOs that
-`build-iso.yml` signs.
+(step 4) pushes the image. The `sign_final` job then signs the digest under
+each name with cosign and no key, and checks the result. `sign_final` has the
+only `id-token` permission, and it runs no repository code. See
+[`signing.md`](https://github.com/tuna-os/brussels/blob/main/docs/signing.md).
+
+`build_final` pushes the image as `ghcr.io/tuna-os/brussels` (`PUBLISH_NAME`).
+It then runs `scripts/publish-alias.sh`, which copies each tag to
+`ghcr.io/tuna-os/xfce-linux` (`ALIAS_NAMES`) with
+`skopeo copy --preserve-digests` and compares the two digests on the
+registry. Installed systems that track the earlier name thus get the same
+image. `IMAGE_NAME` stays `xfce-linux`: it names the BuildStream target and
+the CAS cache artifacts, not the published image. See
+[`migration-brussels.md`](https://github.com/tuna-os/brussels/blob/main/docs/migration-brussels.md).
 
 Free GitHub runners can't hold the whole GNOME+XFCE build, so the workflow
 splits it:
@@ -91,6 +111,36 @@ installed system boot. The workflow publishes screenshots to the
 `ci-screenshots` branch and PR comments. They show the live desktop, Plymouth
 prompt, and installed desktop.
 
+## Local builds from the CI cache
+
+CI publishes the BuildStream cache of each build stage on GHCR as a public
+package: `ghcr.io/tuna-os/brussels/cache-xfce-linux-<stage>:latest`. The
+recipes in `just/local-cache.just` copy that cache to your machine. A local
+build then compiles only the elements that differ from `main`.
+
+```bash
+just cache-list                    # size, date and digest of the core archive
+just bootstrap-cache               # download the core stage (about 13 GiB)
+just bootstrap-cache core chunk0-json-c   # add a chunk stage by name
+just cache-status                  # count the cached elements of the image
+just build-local                   # build oci/xfce-linux.bst from the cache
+```
+
+The recipes only read the registry, and they need no login. The download
+continues after a cut connection and checks the SHA-256 of the archive.
+Set `BST_CACHE_DIR` to use a cache directory other than
+`~/.cache/buildstream`.
+
+The script is `scripts/cas_bootstrap.py` from
+[tuna-os/bst-ci](https://github.com/tuna-os/bst-ci), shared with tromso.
+The recipe downloads it at a pinned commit and checks its SHA-256 before it
+runs. `tests/pytest/test_local_cache_pinned.py` guards the pin.
+
+`cache-status` and `build-local` stop if `files/`, `patches/`, `include/` or
+`elements/` contain untracked or ignored files. BuildStream puts each file
+of a local source directory into the cache key, so one stray file makes the
+build miss the cache.
+
 ## Source updates
 
 - **Renovate** (`renovate.json`) — GitHub Actions, container tags. Automerge
@@ -118,6 +168,10 @@ prompt, and installed desktop.
 | 2026-10-25 | Merged commits retain cancelled required checks (#140); ISO triggers can also evict each other | Ref-based concurrency groups cancel running work and replace pending work during merge trains | Test uses PR numbers only for PRs and unique run IDs otherwise; ISO uses unique run IDs for automatic triggers and branch groups only for manual reruns. Event-scoped cancellation preserves automatic verdicts; `test_automatic_checks_and_iso_builds_preserve_every_run` guards both policies |
 | 2026-09-10 | `build_final` dies with no job log and no uploaded build log; `:latest` last published ~2026-07-19, so every LUKS/Plain E2E run fails with `manifest unknown` | Runner disk exhaustion, not a build error: the check-run annotation on runs 34072176433, 34176106533 and 34298830711 is the runner agent's own `System.IO.IOException: No space left on device` on its `_diag` log. Core plus ten chunk CAS tarballs measured ~266 GB compressed on 2026-09-10 (chunks 20-29 GB each) against ~100-110 GB of runner disk, because each chunk tarball embeds a full copy of core, nothing expires (no `cache.quota`), and `oras pull -o .` staged each tarball on disk before extracting. Run 34298830711 is decisive: the build itself succeeded in 18 min and the runner died in `Export OCI image` | Stream restores via `scripts/cas-restore-stream.sh` (`oras blob fetch --output -`); `cache: quota: 60G` in `buildstream-ci.conf`; check the artifact out and delete the CAS before `just export` (`EXPORT_REUSE_CHECKOUT=1`); log `df -h /` around every merge. Invariants in `tests/pytest/test_ci_disk_invariants.py` |
 | 2026-10-25 | Live ISO builds but signing fails with `create bundle file: open : no such file or directory` (run 40116760576) | cosign 3 defaults to signing-config/bundle mode and ignores detached signature/certificate output flags | Explicitly disable signing-config and new-bundle modes for the existing detached-output contract; require nonempty `.sig` and `.cert` before upload. OCI publishing already recovered in merged PR #241 (successful multi-runner run 40051281113). Invariant: `test_iso_signing_preserves_detached_outputs_with_cosign3` |
+| 2026-11-25 | Trivy scan and cosign get `MANIFEST_UNKNOWN` for the published image; a tag that fails to push leaves the job green (#308) | `podman inspect` gives the digest of the local copy, not of the manifest on the registry; the retry loop ends with `sleep 5` and returns 0 | Read the digest from `podman push --digestfile`, stop when a tag fails three times, and require one digest for all tags. The alias copy (`scripts/publish-alias.sh`) compares registry digests. Invariant: `test_publish_digest_comes_from_the_registry` |
+| 2026-11-25 | A cache restore in `build_core` or a chunk job stops with `stream error: stream ID 1; PROTOCOL_ERROR` and `tar: Error is not recoverable` (each nightly run since 2026-11-02, for example run 45344668715) | GHCR cuts the download of a large blob, and `oras blob fetch` cannot continue it | tuna-os/bst-ci#130: the restore continues with HTTP `Range` and checks the SHA-256 of the stream; the workflow pin moves to that commit |
+| 2026-11-25 | Chunk jobs fail at `xfce-linux/xfce4-screensaver.bst`: `meson.build:44:12: ERROR: Dependency "dbus-glib-1" not found, tried pkgconfig` (run 45344668715) | `dbus-glib.bst` ran a bare `./configure --prefix=/usr`, so the library and `dbus-glib-1.pc` went to `/usr/lib`; pkg-config in the SDK reads `%{libdir}` (`/usr/lib/<multiarch>`) | Remove the `configure-commands` override and pass the flags in `conf-local`, which keeps the project's configure arguments. Invariant: `test_dbus_glib_installs_into_the_project_libdir` |
+||||||| 7e20435
 
 Add rows to this table as you change CI. See the organization `ci-fix-loop`
 skill. The
@@ -162,7 +216,7 @@ not a required check, and it runs only when a PR changes a `.bst` element.
 Post-merge: salvage-enabled nightly world build → ISO boot gate
 (ready-marker + screenshot artifact) → weekly LUKS install e2e
 (screenshots on the `ci-screenshots` branch + PR comments). A cloud
-routine ("tromso + xfce-linux CI babysitter", every 3 h) diagnoses
+routine ("tromso + brussels CI babysitter", every 3 h) diagnoses
 completed failures from logs and pushes fixes.
 
 **Rules that keep this healthy:** do not add `paths:` filters to workflows with
@@ -218,14 +272,15 @@ image exists. Then, `skopeo copy --preserve-digests` sets `:stable` and a dated
 
 The workflow force-pushes the stable branch to the same commit so the branch and
 tag cannot differ. It shares the concurrency group of the promotion workflow,
-so both cannot run at once. Dakota-pattern note: add a cosign verification step
-before the retag after cosign support lands.
+so both cannot run at once. The workflow does not check a signature
+before the retag. An image from before the keyless signature has none.
 
 ### Serial log permissions in install E2E (#135)
 
 | Symptom | Cause | Fix / invariant |
 | --- | --- | --- |
 | Plain installed boot times out, then `tail` reports `Permission denied` (run 39399656661) | QEMU runs under sudo and can create root-owned 0600 serial logs; unprivileged grep hides the read error and never sees readiness or emergency markers | Read live and plain-installed serial logs with sudo, matching QEMU and the LUKS unlock helper; `test_qemu_serial_readers_use_qemu_privileges` guards both readiness and diagnostic reads. |
+| The ISO boot gate fails with "the XFCE session did not come up", and the screenshot shows GNOME Shell (run 45545036042) | `configure-live.sh` set `DefaultSession=xfwl4`. The ISO is built from the last published image, and that image (2026-11-02) names the session `xfce-wayland`. GDM does not find the name and uses the GNOME session of gnome-build-meta, with no error. | `configure-live.sh` takes the session name from the image and stops the build when the image has no XFCE Wayland session. `test_live_session_name_comes_from_the_payload_image` |
 
 The earlier missing `:latest` publication failure is distinct: merged #147
 unblocked the build and #241 restored scheduled publication. The October 20

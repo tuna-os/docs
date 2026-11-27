@@ -34,7 +34,7 @@ reply out, usable three ways:
 > account](#watching-an-account)), don't bulk-process mailboxes, and expect
 > that Proton can change or close the API at any time.
 
-The current release is 0.1.3. The protocol follows the needs of its
+The current release is 0.1.4. The protocol follows the needs of its
 first two users, Hylki's Proton support and the Tuna Mail Android app, and
 may still change; the envelope's `version` field guards incompatible
 changes.
@@ -138,7 +138,7 @@ dependencyResolutionManagement {
 
 // build.gradle.kts
 dependencies {
-    implementation("org.tunaos.proton:proton-sdk-android:0.1.3")
+    implementation("org.tunaos.proton:proton-sdk-android:0.1.4")
 }
 ```
 
@@ -782,10 +782,20 @@ go test -mod=vendor ./...
 go build -mod=vendor -trimpath -o proton-helper ./cmd/proton-helper
 ```
 
+CI first checks that `vendor/` is exactly what `go mod vendor` builds from
+`go.mod` and `go.sum`, because `-mod=vendor` compares only
+`vendor/modules.txt` with `go.mod`. This check needs the network or a
+filled module cache. After a dependency change, run it before you push:
+
+```sh
+go mod vendor
+git status --porcelain -- go.mod go.sum vendor   # must print nothing
+```
+
 CI also gates every pull request on `govulncheck`
 (`.github/workflows/govulncheck.yml`). It fails when a known advisory has a
 call path from `protonsdk/` or `cmd/`, which is most likely after a
-dependency bump. Unlike the checks above, it needs the network to fetch
+dependency bump. Like the vendor check, it needs the network to fetch
 the vulnerability database. Its standard-library findings depend on the
 Go that runs it, so use the version in `go.mod`, as CI does; a newer local
 Go can report advisories that CI does not:
@@ -851,15 +861,23 @@ Hylki builds the helper from a submodule, offline, from `vendor/`:
 
 ## Dependencies
 
-- `go-proton-api` is pinned at
-  `v0.4.1-0.20260901104215-8a62023d3e38`, the revision Proton Mail Bridge
-  ships. The last tagged release, `v0.4.0`, is from 2022 and pulls
-  gopenpgp 2.4 and a 2022 go-crypto; the pinned revision is what the
-  official client currently runs against the live API, with gopenpgp
-  `v2.10.0-proton` and go-crypto `v1.4.1-proton`. Its `go.mod` replaces
-  resty with Proton's fork, and a dependency's replace does not apply to
-  us, so `go.mod` repeats it:
-  `github.com/go-resty/resty/v2 => github.com/ProtonMail/resty/v2`.
+- `go.mod` is the source of truth for the versions below; Renovate
+  proposes updates within the limits in `renovate.json`.
+- `go-proton-api` is pinned at a master pseudo-version
+  (`v0.0.0-20261102101905-79fbe0626d9b` at the time of writing). Its tags
+  sort higher than the pseudo-version but are older code, and they pull a
+  years-old gopenpgp and go-crypto, so Renovate does not offer them.
+  gluon is tracked the same way, by its dev pseudo-version. Its `go.mod`
+  replaces resty with Proton's fork, and a dependency's replace does not
+  apply to us, so `go.mod` repeats it:
+  `github.com/go-resty/resty/v2 => github.com/ProtonMail/resty/v2`. That
+  replace moves only with go-proton-api, never on its own.
+- gopenpgp and go-crypto stay on Proton's `-proton` builds
+  (`v2.11.1-proton` and `v1.5.2-proton`), which go-proton-api requires.
+  A plain build with the same number, such as gopenpgp `v2.11.1`, sorts
+  higher but is different code: it has no forwarding keys and no limit on
+  how much an incoming message may decompress to. Do not accept it as an
+  update.
 - `golang.org/x/mobile` is required (through the build-tagged `tools.go`)
   at the version the build image's gomobile and gobind come from, so the
   generator and the `bind/seq` runtime always match. Minimum version
@@ -869,7 +887,8 @@ Hylki builds the helper from a submodule, offline, from `vendor/`:
   About two thirds of it is the test server's own dependencies: `go mod
   vendor` includes test imports, though the library links none of them.
   After any `go.mod` change run `go mod tidy && go mod vendor` and commit
-  both. gomobile cannot use `vendor/` (it binds from a temporary module of
+  both; CI fails a PR whose `vendor/` differs from what `go mod vendor`
+  builds. gomobile cannot use `vendor/` (it binds from a temporary module of
   its own), so `scripts/build-aar.sh` resolves the same versions from
   `go.sum` through the module cache.
 

@@ -16,7 +16,7 @@ So CI generates them from the real app and references them from
 .github/workflows/screenshots.yml     runs on push to main
   │  builds the app, then for each screen:
   ▼
-tuna-os/flatpak-index/.github/actions/capture-screenshots
+tuna-os/.github/.github/actions/capture-screenshots
   │  Xvfb + target readiness + ImageMagick
   ▼
 docs/screenshots/NN-name.png          committed back to main
@@ -33,7 +33,7 @@ further upkeep.
 ## Using the shared action
 
 ```yaml
-- uses: tuna-os/flatpak-index/.github/actions/capture-screenshots@main
+- uses: tuna-os/.github/.github/actions/capture-screenshots@5896bac69433b8a2483a45acb5f5d3ec8cd2a5e7 # pin the full commit SHA
   id: capture
   with:
     command: ./target/release/myapp

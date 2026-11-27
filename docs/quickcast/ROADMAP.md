@@ -3,7 +3,7 @@ sidebar_position: 3
 title: "Roadmap"
 ---
 
-**Last updated**: 2026-11-16 | **Maintainer**: tuna-os maintainers
+**Last updated**: 2026-11-25 | **Maintainer**: tuna-os maintainers
 
 ## Mission
 
@@ -24,7 +24,7 @@ behavior still require manual testing.
 
 | Priority | Item | Tracking | Status |
 |---|---|---|---|
-| P0 | Restore a reliable Flatpak export and publishing path | [#17](https://github.com/tuna-os/quickcast/issues/17) | 🟡 In progress |
+| P0 | Restore a reliable Flatpak export and publishing path | [#17](https://github.com/tuna-os/quickcast/issues/17) | ✅ Done |
 | P0 | Pin reusable workflow dependencies to immutable revisions | [#27](https://github.com/tuna-os/quickcast/issues/27) | ✅ Done |
 | P1 | Add direct tests for the recording lifecycle | [#23](https://github.com/tuna-os/quickcast/issues/23) | ⬜ Not started |
 
@@ -36,10 +36,10 @@ behavior still require manual testing.
 
 | Goal | Owner | Tracking | Status |
 |---|---|---|---|
-| Keep Flatpak export and central-index publication green | tuna-os maintainers | [#17](https://github.com/tuna-os/quickcast/issues/17) | 🟡 In progress |
+| Keep Flatpak export and central-index publication green | tuna-os maintainers | [#17](https://github.com/tuna-os/quickcast/issues/17) | ✅ Done |
 | Remove mutable workflow references from the release path | tuna-os maintainers | [#27](https://github.com/tuna-os/quickcast/issues/27) | ✅ Done |
 | Test recording lifecycle behavior independently of the UI | tuna-os maintainers | [#23](https://github.com/tuna-os/quickcast/issues/23) | ⬜ Not started |
-| Publish developer setup and contribution guidance | tuna-os maintainers | [#66](https://github.com/tuna-os/quickcast/issues/66) | ⬜ Not started |
+| Publish developer setup and contribution guidance | tuna-os maintainers | [#66](https://github.com/tuna-os/quickcast/issues/66) | ✅ Done |
 
 ### 2027 Q1
 
@@ -51,9 +51,7 @@ portal and pipeline behavior testable without a physical desktop where possible.
 
 | Item | Issue | Priority | Effort |
 |---|---|---|---|
-| Recording lifecycle couples portal state, GStreamer, and file output | [#29](https://github.com/tuna-os/quickcast/issues/29) | P1 | L |
-| Window code couples presentation, state, and recording orchestration | [#20](https://github.com/tuna-os/quickcast/issues/20) | P1 | L |
-| GStreamer input depends on a UI-layer selection type | [#21](https://github.com/tuna-os/quickcast/issues/21) | P2 | M |
+| Window code couples presentation, state, and recording orchestration | None open ([#4](https://github.com/tuna-os/quickcast/issues/4) and [#20](https://github.com/tuna-os/quickcast/issues/20) were closed as duplicates in [#74](https://github.com/tuna-os/quickcast/issues/74)) | P1 | L |
 | Portal abstraction exposes D-Bus types to callers | [#22](https://github.com/tuna-os/quickcast/issues/22) | P2 | M |
 
 ## How to Contribute

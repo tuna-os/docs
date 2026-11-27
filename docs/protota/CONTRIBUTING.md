@@ -75,6 +75,16 @@ The renderer is **generic**: presets must not add branches for one app. An impor
 - User-facing behavior belongs in `docs/` and the README.
 - A script makes the component catalog — edit the source, not the output file.
 
+### Prose check
+
+The **Prose** workflow (`.github/workflows/ste.yml`) checks Markdown against Simplified Technical English. It runs on pull requests and on pushes to `main` that change a Markdown file or `.ste-budget`.
+
+- The check counts findings in all Markdown files, not only the files that your PR changes. A PR can fail on prose that it did not change.
+- `.ste-budget` sets the count. The count must be equal to the budget.
+- If your PR removes findings, the check fails and gives the new count. Write that number in `.ste-budget` in the same PR.
+- The budget only goes down. Do not raise `.ste-budget` to make a PR pass. A PR that raises it needs the `ratchet-raise` label from a maintainer.
+- The failure message suggests `just ste`. This repository has no `ste` recipe. Use the job log instead. It gives the file, line, and rule for each finding.
+
 ## Code of conduct
 
 Be respectful and constructive — see [CODE_OF_CONDUCT.md](https://github.com/tuna-os/protota/blob/main/CODE_OF_CONDUCT.md) (Contributor Covenant 2.1).

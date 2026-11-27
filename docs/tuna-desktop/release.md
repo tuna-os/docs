@@ -1,5 +1,5 @@
 ---
-sidebar_position: 40
+sidebar_position: 39
 title: "release"
 ---
 
@@ -59,6 +59,47 @@ not provide Marlin or physical hardware qualification.
 
 The package version, the binaries' `--version` output, and the notes must
 agree — the release script enforces the first two by construction.
+
+## Re-baselining on a new GNOME release
+
+The session runs GNOME's daemons and serves GNOME-private D-Bus interfaces,
+which carry no compatibility promise
+([v1 definition](https://github.com/tuna-os/tuna-desktop/blob/main/docs/v1.md#what-the-session-still-takes-from-gnome), #1051). So
+each GNOME release (a new major such as 52, or the Marlin GNOME image moving
+to one) is re-baselined before any Tuna release claims parity with it. Each
+step diffs the new release against the pinned GNOME 51 inputs. Every
+difference becomes an issue or a recorded deviation. The pinned inputs and
+[ADR 0007](https://github.com/tuna-os/tuna-desktop/blob/main/docs/adr/0007-gnome51-marlin-baseline.md) then move to the new release
+in one reviewed change.
+
+1. **Wayland protocol capture.** Point `tests/gnome-reference/Containerfile`
+   at the new release and run `scripts/tuna-gnome-wayland-info --out FILE`
+   (default `tests/protocols/gnome51-wayland-info.txt`). Carry every new or
+   re-versioned global into `tests/protocols/gnome51-globals.tsv`, and the
+   native Marlin capture into `tests/protocols/marlin-gnome51-globals.tsv`
+   (`tests/protocols/marlin-gnome51-source.json` names the run that made
+   the current one). `scripts/tuna-wayland-info-compare`, run by the
+   G-WAYLAND-INFO stage of `scripts/tuna-gtk-shell-proof`, then fails on
+   any `match` or `min:` global Tuna does not meet.
+2. **D-Bus interface diff.** No script does this yet. Diff the interface
+   XML between the old and new release tags of mutter and gnome-shell
+   (`git diff 51.0 <new tag> -- data/dbus-interfaces/` in each source tree)
+   for every interface listed in
+   [protocols.md](https://github.com/tuna-os/tuna-desktop/blob/main/docs/protocols.md#gnome-d-bus-interfaces). A changed method,
+   signal or property that gnome-settings-daemon, gnome-session or
+   xdg-desktop-portal-gnome uses needs an issue before the release.
+3. **GSettings schema diff.** Diff the schemas between the two tags of
+   gsettings-desktop-schemas (`schemas/`), mutter and gnome-shell (`data/`).
+   Regenerate `tests/settings/gnome51-desktop-keys.json` from the new
+   release's gsettings-desktop-schemas package; no script writes it. Then
+   `scripts/tuna-settings-inventory-check` (CI `check` job) names every
+   added or removed key until `docs/settings-desktop-inventory.md` gives it a
+   disposition. Refresh the `tests/settings/gnome51-*.gschema.xml` fixtures
+   that the proofs install from the new release.
+4. **Visual and journey references.** Recapture GNOME itself with
+   `scripts/tuna-gnome-reference` (pixel parity), `scripts/tuna-baseline`
+   (journey bundle from the Marlin GNOME live ISO) and
+   `scripts/tuna-a11y-baseline` (AT-SPI trees).
 
 ## Pristine launcher VM assets
 

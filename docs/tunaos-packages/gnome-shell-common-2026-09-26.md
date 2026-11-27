@@ -1,5 +1,5 @@
 ---
-sidebar_position: 26
+sidebar_position: 27
 title: "gnome shell common 2026 09 26"
 ---
 

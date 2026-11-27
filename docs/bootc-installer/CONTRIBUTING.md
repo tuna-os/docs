@@ -91,7 +91,7 @@ workflow: GitHub leaves skipped PR workflows pending.
 
 ## Adding images to the catalog
 
-The image catalog lives in [`fisherman/data/images.json`](https://github.com/tuna-os/fisherman/blob/dev/data/images.json). Refer to [the guidebook](https://github.com/tuna-os/bootc-installer/blob/dev/docs/guide/customising.md#add-an-image-to-the-default-catalog) for the JSON schema.
+The image catalog lives in [`fisherman/data/images.json`](https://github.com/tuna-os/fisherman/blob/dev/data/images.json). Refer to [the guidebook](https://github.com/tuna-os/installer/blob/dev/docs/guide/customising.md#add-an-image-to-the-default-catalog) for the JSON schema.
 
 > `fisherman/` is a git submodule that points to [`tuna-os/fisherman`](https://github.com/tuna-os/fisherman). Commit and push changes to the catalog **separately** to the fisherman repo, then update the submodule pointer here.
 
@@ -102,11 +102,11 @@ The image catalog lives in [`fisherman/data/images.json`](https://github.com/tun
 | `fisherman/fisherman/` | Go | Root-level CLI; reads JSON recipe, executes the disk install pipeline |
 | `bootc_installer/` | Python | GTK4/Adwaita GUI; collects user choices, writes recipe JSON, drives fisherman |
 
-See [CLAUDE.md](https://github.com/tuna-os/bootc-installer/blob/dev/CLAUDE.md) and [AGENTS.md](https://github.com/tuna-os/bootc-installer/blob/dev/AGENTS.md) for deeper architecture documentation.
+See [CLAUDE.md](https://github.com/tuna-os/installer/blob/dev/CLAUDE.md) and [AGENTS.md](https://github.com/tuna-os/installer/blob/dev/AGENTS.md) for deeper architecture documentation.
 
 ## Code style
 
-- Python: [Ruff](https://docs.astral.sh/ruff/) (`python3 -m ruff check bootc_installer/ tests/`). CI runs it. `ruff.toml` names the rules; see [the developer guide](https://github.com/tuna-os/bootc-installer/blob/dev/docs/guide/developing.md#lint-with-ruff).
+- Python: [Ruff](https://docs.astral.sh/ruff/) (`python3 -m ruff check bootc_installer/ tests/`). CI runs it. `ruff.toml` names the rules; see [the developer guide](https://github.com/tuna-os/installer/blob/dev/docs/guide/developing.md#lint-with-ruff).
 - Go: `gofmt` + `go vet`
 - Commit messages: Conventional Commits
 

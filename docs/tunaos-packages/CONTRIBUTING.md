@@ -41,17 +41,23 @@ Useful pipeline references:
   packages
 - [Upstream parity register](https://github.com/tuna-os/tunaos-packages/blob/main/docs/UPSTREAM_PARITY.md) — source and behavior
   differences that need explicit records
-- [Withdrawing a shadowed package](https://github.com/tuna-os/tunaos-packages/blob/main/docs/WITHDRAWN-PACKAGES.md) — removing a
-  served build from a target's index without deleting it, when upstream
-  ships a newer one
+- [Withdraw a shadowed package](https://github.com/tuna-os/tunaos-packages/blob/main/docs/WITHDRAWN-PACKAGES.md) — hide a served
+  build in a target's index. Keep the file. Do this when upstream ships a
+  newer build.
 
 `AGENTS.md` contains additional GNOME 49/50 conventions. Its scope note lists
 the package families it does and does not cover.
 
 ## Choose the correct package layout
 
-Do not create a generic source directory or tarball unless the package spec
-needs one. Existing packages use one of these layouts:
+Do not add source tarballs to the repository. Fetch sources at build time from a
+pinned URL with a sha256 checksum. The test suite fails when a tracked file
+under `src/` is larger than 5 MB (`scripts/check_src_blob_size.py`). We did not
+rewrite history; 11 old tarballs (163 MB) stay in it
+([#654](https://github.com/tuna-os/tunaos-packages/issues/654)).
+
+Do not create a generic source directory unless the package spec needs one.
+Existing packages use one of these layouts:
 
 | Path | Use |
 | --- | --- |
@@ -106,6 +112,22 @@ build-order manifest. CI also checks YAML, shell scripts, every build-order
 manifest, and the Bats suite. If your change touches shell workflows, install Bats and run
 the relevant file under `tests/bats/`; see
 [`tests/bats/README.md`](https://github.com/tuna-os/tunaos-packages/blob/main/tests/bats/README.md) for setup and examples.
+
+The Python test suite also needs these items. CI supplies them. Without them,
+`just check` reports failures that CI does not show:
+
+- A checkout of tuna-os/tunaOS at the revision in `tests/consumer-source.json`.
+  Set `TUNAOS_CONSUMER_ROOT` to its path, or put it at `.test-deps/tunaos`. See
+  [`tests/README-consumer-contracts.md`](https://github.com/tuna-os/tunaos-packages/blob/main/tests/README-consumer-contracts.md).
+- The native tools that the `Python Tests` job in `.github/workflows/lint.yml`
+  installs. On Ubuntu, run the same command as CI:
+
+  ```bash
+  sudo apt-get update
+  sudo apt-get install -y rpm rpm2cpio gnupg binutils gcc libc6-dev qemu-user createrepo-c debhelper fakeroot dpkg-dev make
+  ```
+
+- `cargo`. CI uses the Rust toolchain that comes with the runner image.
 
 Two other CI checks can fail a pull request:
 

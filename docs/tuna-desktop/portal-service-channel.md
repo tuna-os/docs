@@ -1,5 +1,5 @@
 ---
-sidebar_position: 34
+sidebar_position: 33
 title: "portal service channel"
 ---
 
@@ -21,7 +21,7 @@ The corrected ordering passed the actual GNOME 51 reference journey with the ret
 
 ## Remaining GNOME interoperability qualification
 
-Typed display admission is a prerequisite, not proof that GNOME's file picker or global shortcuts work end to end. Issue [#395](https://github.com/tuna-os/tuna-desktop/issues/395) remains open for genuine GNOME provider startup and operations on the shipped VM, file-picker Open/Save and sandbox grants, shortcut consent/rebinding/activation, and lock/capture negative checks. The `mutter_x11_interop` dialog-parenting protocol remains a separate contract in #404; neither display method implements it. Current acceptance evidence must identify the installed GNOME versions and actual provider executables.
+Typed display admission is a prerequisite, not proof that GNOME's file picker or global shortcuts work end to end. Issue [#395](https://github.com/tuna-os/tuna-desktop/issues/395) was closed by automation with its acceptance unfinished; [#776](https://github.com/tuna-os/tuna-desktop/issues/776) is open for genuine GNOME provider startup and operations on the shipped VM, file-picker Open/Save and sandbox grants, shortcut consent/rebinding/activation, and lock/capture negative checks. The `mutter_x11_interop` dialog-parenting protocol remains a separate contract in #404; neither display method implements it. Current acceptance evidence must identify the installed GNOME versions and actual provider executables.
 
 Source contracts: [Mutter 51 typed service interface](https://github.com/GNOME/mutter/blob/51.0/data/dbus-interfaces/org.gnome.Mutter.ServiceChannel.xml), [Nautilus 51 file-chooser initialization](https://github.com/GNOME/nautilus/blob/51.0/src/nautilus-application.c), and [GNOME control-center provider installation](https://github.com/GNOME/gnome-control-center/blob/6ae712c0454f2586f00821c3486150c1e8feb3e7/global-shortcuts-provider/meson.build).
 

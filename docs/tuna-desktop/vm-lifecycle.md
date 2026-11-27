@@ -1,5 +1,5 @@
 ---
-sidebar_position: 60
+sidebar_position: 57
 title: "vm lifecycle"
 mdx:
   format: md
@@ -66,6 +66,28 @@ and queued three critical "Some System Updates Failed" banners. The probe
 closed only the first, and the next one covered the frame until
 `V-STRIP-INSTALLED` timed out.
 
+A banner can also drop in while a strip step holds a button. No key reaches
+the shell then, so the probe acts as a user who lets the drag go first. The
+stationary edge hold stops at the first observation that shows a banner. The
+probe then cancels the held titlebar move with the actual VT round trip of the
+`07-vt-cancel` step. That cancel restores the strip viewport, and every
+original rectangle must match the pre-drag ones before the button comes up.
+With no button held, the probe closes each banner with the same focused Close
+sequence and records it as `released-12-stationary-delta-revealed`. It then
+runs the edge hold again from the banner-free sample, and
+`held_step_interruptions` counts each restart. The 120-second phase deadline
+bounds the retries. In marlin-vm run 44656894802, uupd's fourth start hit
+its start limit. Its `OnFailure` banner arrived 7 s into the edge hold, and
+the capture refused to send keys while the button was held.
+
+Those uupd runs were the lane's own doing. The G-DATETIME-MANUAL probe that
+runs just before the strip used to set the guest clock 2 h 7 min ahead, and
+a jump forward fires every calendar timer it skips: uupd.timer
+(`OnCalendar=*-*-* 04:00:00`) started uupd whenever the probe ran between
+about 01:53 and 04:15 UTC. The probe now sets the clock back, and its gate
+fails if any timer fires ahead of the real time (docs/datetime-proof.md).
+The banner handling stays for banners the image raises on its own.
+
 The column-height capture also submits a real critical notification through
 the session's public notification service. It cannot pass until the original
 shell shows the fixed public fixture title, its sensitive Close button receives
@@ -112,8 +134,15 @@ The root `autotz DOMAIN OPERATION JSON` route delegates to the installed
 standalone observer. QGA acquisition and nested commands share finite
 absolute deadlines; reconnecting cannot renew them. Failure diagnostics
 contain only bounded domain/operation/type/sites and optional numeric codes,
-never raw arguments or exception text. Unconfirmed guest-child retirement
-remains fatal. `V-AUTOTZ` requires the consumer's explicit complete qualified
+never raw arguments or exception text. An operation that misses its deadline
+still fails; afterwards the agent polls only the timed-out child's
+`guest-exec-status` for a bounded 10 s grace (on a fresh connection if the
+old one was cut mid-reply) and clears it once the child is seen exiting.
+Unconfirmed guest-child retirement remains fatal. A readiness wait whose
+poll the readiness deadline cut short, with the child retired, fails with its
+own `actual readiness absolute deadline expired` verdict and last
+observation; a timeout with budget left propagates unchanged (#1013).
+`V-AUTOTZ` requires the consumer's explicit complete qualified
 result; an exception, missing native session or missing result fails the
 row and therefore the existing aggregate CI gate. The consumer retains its
 actual original-shell AddAgent, source/provider, daemon location/timezone
@@ -500,7 +529,16 @@ The final `gdm51` overlay runs after every `pacman -Syu` and Orca step.
 It checks both archive hashes and package metadata.
 It installs both packages in one transaction.
 It checks their versions, owners and installed bytes.
-It checks the existing shipped-payload manifest without changes.
+It checks the existing shipped-payload manifest without changes,
+with one narrow exception.
+The receipt is taken from the repository's own `gdm`, while the candidate is a
+fixed native build, so their `gdm.service` units can differ for benign upstream
+reasons (`gdm` 51.2-1 added `After=accounts-daemon.service`).
+A mismatch on that one unit is accepted only when the installed bytes are the
+candidate archive's own copy.
+The receipt's entry is then updated, and the old and new digests and a unified
+diff are kept in `install-provenance.json` and `gdm.service.diff`.
+Any other mismatch, including every PAM and session file, still fails the build.
 No package upgrade follows.
 
 CI retains this evidence in `vm-lane-artifacts/gdm51/`.
@@ -985,6 +1023,7 @@ feature tour:
 | V-GSD-PLUGINS | Each of the thirteen gnome-settings-daemon plugins the session target wants, MediaKeys included, is the packaged `gsd-*` binary, running as the session user as its unit's main PID and owning its bus name; `org.gnome.SettingsDaemon.Color` belongs to the compositor; A11ySettings has no owner; the session targets are active and the compositor holds `gnome-session-leader-fifo` (lifecycle/gsd-plugins.json, #355, #589) |
 | V-GSD-POWER-IDLE | With `idle-delay` set to 20 s and no input, dbus-monitor records gsd-power's own `SetDimming(true)` before its `PowerSaveMode=3`; the compositor snapshot reports locked and `power_save_mode` 3; Return wakes it to 0 and gsd-power undims; the original delay is restored (lifecycle/gsd-power-idle.json, #355) |
 | V-LOCKED-HINT | logind's `LockedHint` for the login session reads `no`; the session user's `loginctl lock-session` locks the compositor and the hint turns `yes`; the real password unlocks and it reads `no`; Super+L locks with `yes`; `loginctl unlock-session` unlocks with `no`, as GNOME 51's `screenShield.js` does (lifecycle/locked-hint.json, #846). Required on both acquisitions |
+| V-UNLOCK-WAKE | After V-LOCKED-HINT: Super+L locks (the gate's last input) and gsd-power blanks the output once the shield is active (PowerSaveMode 3 in the compositor snapshot); the session user's `loginctl unlock-session`, with no input, unlocks and gsd-power's answer to the shell's `WakeUpScreen` brings PowerSaveMode back to 0 within 15 s, and the snapshot's rendered frame count advances past the blanked output's, as GNOME 51's `screenShield.js` `_continueDeactivate` wakes the screen on every unlock (lifecycle/unlock-wake.json, #1194; `scripts/lib/vm_unlock_wake.py`). Whatever the verdict, the session is then unlocked by password or woken by a key so the tour goes on |
 | V-POWER-BUTTON | gsd-media-keys (its unit's main PID, the session user) holds logind's `block` inhibitor on `handle-power-key:handle-suspend-key:handle-hibernate-key` with Why "GNOME handling keypresses". On a fixture desktop chassis, after each gsd restart a new gsd-media-keys must own its name, hold that inhibitor, have `XF86PowerOff` granted by `GrabAccelerators` and the shell must log that it yielded the bindings. QMP `system_powerdown` (ACPI power button) with `power-button-action` `interactive`: `AcceleratorActivated` reaches gsd, gsd calls `org.gnome.SessionManager.Shutdown`, the compositor calls `EndSessionDialog.Open(1, …)` and the `tuna-shell-end-session` layer shows within 15 s; 5 s after the press QEMU is `running` with the same compositor process and logind session and no logind power request; Escape (always sent, far inside the 60 s countdown) removes the layer, the shell emits `Canceled` and logs its D-Bus Power Off dialog. `nothing`: gsd receives the key, and for at least 8 s no Shutdown, dialog call, layer or logind request follows. On the image's `vm` chassis with a fixture `shutdown` block inhibitor held by root: the key reaches gsd and gsd's own process calls logind `PowerOffWithFlags(0)`; gsd sends it without a reply callback (NO_REPLY_EXPECTED), so logind's refusal has no bus reply, and 5 s later logind has emitted no `PrepareForShutdown`/`PrepareForSleep`, `PreparingForShutdown` is still false with the fixture inhibitor held, no other logind request or non-error reply followed, no dialog opened and QEMU, compositor and session are unchanged. Setting, chassis and `/etc/machine-info` are restored (lifecycle/power-button.json, #353, #589) |
 | V-RESTART-DIALOG | Both current-build and published guests must exercise the shell's own power menu by physical keys on the unlocked desktop after V-POWER-BUTTON (#589): Super+S opens quick settings; physical Tab moves until the shell's AT-SPI tree (`tuna-vm-shell-focus` end-session mode, observation only) reports Power Off Menu focused, Return opens the menu with Suspend, Restart…, Power Off… and Log Out… showing, and Tab/Return chooses Restart…. Within 15 s the shell (the `org.gnome.Shell` owner, not the compositor) has called `org.gnome.SessionManager.Reboot` and the compositor's manager has answered with the shell's `EndSessionDialog.Open(2, 0, 60, …)`, with the `tuna-shell-end-session` layer up; the dialog reads "The system will restart automatically in 60 seconds" with Cancel focused, as GNOME 51's endSessionDialog.js. It steps to 50 seconds with QEMU running, the session and compositor identity unchanged, no logind power request, `PrepareFor*` signal or `PreparingForShutdown`, and the request still unanswered; Return on the focused Cancel then emits the shell's `Canceled`, fails `Reboot` with gnome-session's `G_IO_ERROR_CANCELLED` and takes the layer down, still with logind untouched. Any failure presses Escape so no countdown is left running (lifecycle/end-session-menu.json). An older published shell does not waive the gate |
 | V-POWER-OFF-DIALOG | As V-RESTART-DIALOG for Power Off…: `org.gnome.SessionManager.Shutdown`, `Open(1, 0, 60, …)`, "The system will power off automatically in 60 seconds" stepping to 50, Cancel by Return, `Shutdown` failed as cancelled, logind untouched |

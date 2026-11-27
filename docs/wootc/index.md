@@ -32,21 +32,22 @@ status: unknown
 
 wootc installs a real Linux desktop from a [bootc](https://github.com/containers/bootc)
 image into `root.disk`, a file beside your Windows files. The latest full release,
-`v0.1.0-alpha.1`, uses Wails. Native WinUI packaging is implemented on `main`,
-but a released native setup and its acceptance evidence remain outstanding.
+`v0.1.0-alpha.2`, installs the native WinUI shell. Before the publish, this
+build installed from its GUI in a Windows 11 VM. Hardware, offline and soak acceptance remain open.
 [Verification status](https://github.com/tuna-os/wootc/blob/main/docs/status.md) distinguishes these builds and their limits.
 
 The setup form asks for **a password**. The app suggests your username and
-computer name from your PC. It sizes the disk from available space and selects TPM encryption by default.
+computer name from your PC. It sizes the disk from available space. Encryption defaults to **No encryption**.
+TPM auto-unlock is not available yet; LUKS with a passphrase is an option.
 Advanced lets you change those choices. Supported migration helpers can carry files,
 Wi-Fi networks, wallpaper, and taskbar choices. Results depend on the image and helper.
 
 ## Get it
 
 **[⬇ Download TunaOS-Installer.exe](https://github.com/tuna-os/wootc/releases/latest/download/TunaOS-Installer.exe)**
-(12 MB) from the latest release, `v0.1.0-alpha.1`. The installer downloads its
-boot files during the install, so this one file is enough. This release uses
-the Wails UI and needs WebView2. Windows 11 includes WebView2.
+(70 MB) from the latest release, `v0.1.0-alpha.2`. It is the native setup for
+the WinUI shell and its engine. The engine downloads the boot files during
+the install, so this one file is enough. The native shell does not need WebView2.
 
 Before you start:
 
@@ -71,17 +72,15 @@ uninstaller can leave files or a start-up entry behind; see the
 [First steps](https://github.com/tuna-os/wootc/blob/main/docs/getting-started.md) shows each Windows prompt. For a
 hardware trial, read the [manual test guide](https://github.com/tuna-os/wootc/blob/main/docs/manual-testing.md) first.
 
-The same release has `wootc.exe` and the branded `Bazzite-Installer.exe`,
-`Bluefin-Installer.exe` and `Aurora-Installer.exe` on the
-[release page](https://github.com/tuna-os/wootc/releases/latest). A branded
-build is not evidence of upstream endorsement; see
-[the approval record](https://github.com/tuna-os/wootc/blob/main/docs/upstream-blessings.md).
-
-> **No published release has the native setup yet.** The code on `main`
-> prepares the native WinUI shell as `wootc-Installer-Setup.exe` and branded
-> `*-Installer-Setup.exe` assets. They come with the first release after the
-> native shell cutover (#661). There is no winget package yet
-> ([#221](https://github.com/tuna-os/wootc/issues/221)).
+The same release has `wootc-Installer-Setup.exe` and the branded
+`Bazzite-Installer-Setup.exe`, `Bluefin-Installer-Setup.exe` and
+`Aurora-Installer-Setup.exe` on the
+[release page](https://github.com/tuna-os/wootc/releases/latest). Each setup is
+also there under its earlier name, for example `Bluefin-Installer.exe`.
+The Wails build (`wootc-legacy.exe`, shipped once in `v0.1.0-alpha.2`) is removed from source (#346).
+A branded build is not evidence of upstream endorsement; see
+[the approval record](https://github.com/tuna-os/wootc/blob/main/docs/upstream-blessings.md). There is no winget package
+yet ([#221](https://github.com/tuna-os/wootc/issues/221)).
 
 ## Contribute compute — no code needed
 
@@ -166,20 +165,20 @@ See the **[ROADMAP](https://github.com/tuna-os/wootc/blob/main/ROADMAP.md)** for
 | [Architecture boundary](https://github.com/tuna-os/wootc/blob/main/docs/architecture-boundary.md) | the generic-migration / bootc seam |
 | [NTFS on Linux](https://github.com/tuna-os/wootc/blob/main/docs/ntfs-on-linux.md) | the known hazards, and why the design survives them |
 | [Borrowed from Libertix](https://github.com/tuna-os/wootc/blob/main/docs/borrowed-from-libertix.md) | six boot-chain and recovery designs, specified against wootc's code, with task lists |
-| [WinUI 3 shell](https://github.com/tuna-os/wootc/blob/main/docs/winui-shell.md) | the native Windows shell that replaces Wails: architecture, engine protocol, cut-over |
+| [WinUI 3 shell](https://github.com/tuna-os/wootc/blob/main/docs/winui-shell.md) | the native Windows shell (replaced the removed Wails app): architecture, engine protocol, cut-over |
 | [Branding & distribution](https://github.com/tuna-os/wootc/blob/main/docs/branding-and-distribution.md) | one engine, five installers |
 | [Manual testing](https://github.com/tuna-os/wootc/blob/main/docs/manual-testing.md) | pre-flight for real-hardware runs |
 
 ## Contributing
 
-The current Windows app uses [Wails](https://wails.io) (Go + web).
+The Windows installer is a native WinUI 3 shell over a Go engine (`app/`).
 The stack also has a dracut deployer initramfs, POSIX-shell migration tools, and a KVM E2E harness.
-That harness drives the real GUI in Windows VMs.
+That harness drives the real native shell in Windows VMs.
 
 ```bash
 just test                              # fast tier: bats + go, no containers
 just build                             # deployer initramfs + custom GRUB
-cd tests/gui && npx playwright test    # GUI suite over the built frontend
+just check                             # shellcheck the harness
 ```
 
 See **[the contribution guide](https://github.com/tuna-os/wootc/blob/main/CONTRIBUTING.md)**.

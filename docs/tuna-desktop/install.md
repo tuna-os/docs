@@ -1,5 +1,5 @@
 ---
-sidebar_position: 21
+sidebar_position: 22
 title: "install"
 ---
 
@@ -17,7 +17,7 @@ On Linux or macOS, evaluate Tuna Desktop without building it or installing Tuna 
 
 - QEMU (`qemu-system-x86_64` or `qemu-system-aarch64`, matching the host architecture, plus `qemu-img`). On Linux, `/dev/kvm` is strongly recommended; without it QEMU falls back to very slow TCG emulation.
 - Podman with working rootless user namespaces (on macOS, an initialized and running `podman machine`).
-- cosign, to verify the image signature.
+- cosign v3 or later, to verify the image signature. TunaOS signs with cosign v3's bundle format, which cosign 2.x reports as "no signatures found", so the script refuses a 2.x cosign and asks you to upgrade (`brew upgrade cosign`, or `go install github.com/sigstore/cosign/v3/cmd/cosign@latest`).
 - About 10 GiB free in `$HOME` and `/var/tmp`, and network access to GitHub, `ghcr.io` and the Sigstore verification services.
 
 The guest architecture follows the host (x86_64 or aarch64). Corral and its bootc plugin are the only components the script installs for you.

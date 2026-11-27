@@ -5,7 +5,7 @@ title: "Roadmap"
 
 **Last updated**: 2026-11-13 | **Status**: Alpha — first release blocked
 
-Part of the [TunaOS](https://tunaos.org) ecosystem. XFCE Linux is the
+Part of the [TunaOS](https://tunaos.org) ecosystem. Brussels is the
 lightweight XFCE Wayland OCI image, built from source with BuildStream.
 
 ## Current strategic focus

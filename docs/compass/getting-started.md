@@ -254,6 +254,35 @@ comes back the next time Compass starts or the file changes.
 `compass ext sync --dry-run` only says what it would install. `compass doctor` lists the entries
 that are not installed yet and the ones that cannot be.
 
+### Blocking extensions
+
+A deny list keeps an extension out of search and the stores, and stops an installed one from being
+run. Add rules under `extensions.deny` in your own `compass.json`:
+
+```json
+{
+  "extensions": {
+    "deny": [
+      {"id": "store.raycast.news"},
+      {"author": "spammer-*", "store": "raycast"},
+      {"store": "vicinae", "reason": "this image uses Raycast extensions only"}
+    ]
+  }
+}
+```
+
+A rule matches when every field it sets matches: `id` (installed or listing id), `name` (extension
+name or command title), `author` (author or owner handle), and `store` (`raycast`, `vicinae` or
+`local`). The first three are case-insensitive globs, so `*` and `?` work. An optional `reason` is
+shown when Compass refuses an install. A rule with no fields is ignored.
+
+Distributions and fleet admins can block extensions for every user with `extensions.admin_deny` in
+`/etc/xdg/compass/compass.json` (or another `$XDG_CONFIG_DIRS` directory). The admin list is added
+to the user's, never replaced by it: a user cannot clear an admin block by setting `admin_deny` in
+their own file. Both lists take effect on the next search, install or config reload; an extension
+that is already installed stays on disk with its preferences, but its commands disappear and
+cannot be launched until the rule is removed.
+
 ### Signing in to a service
 
 Some extensions connect to an account, such as GitHub or Linear. The first time you use one, Compass

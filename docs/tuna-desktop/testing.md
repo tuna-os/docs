@@ -1,5 +1,5 @@
 ---
-sidebar_position: 52
+sidebar_position: 49
 title: "testing"
 ---
 
@@ -70,6 +70,31 @@ wait for their producing proof jobs.
 `ci-gate` requires both infrastructure jobs to succeed and fails when any
 selected job fails or is cancelled. Only unselected proof lanes may be
 skipped. To run every lane on a branch, dispatch `ci` on it.
+
+### Merge queue
+
+`ci` also runs on `merge_group`, the event GitHub raises for each merge
+queue entry: a temporary branch holding `main` plus the queued pull
+requests ahead of that entry. A merge group is not a `pull_request`, so
+`scripts/ci-select-lanes` selects every lane, the Marlin VM matrix adds the
+main-only legs, and the jobs run on the repository's own runners. Its
+`ci-gate` is the status a merge queue rule should require.
+
+The trigger does nothing until a repository rule turns the queue on. Two
+things to settle when it does:
+
+- A full run takes far longer than a pull request's selected lanes. Set
+  the rule's merge-group size above one so one run lands several pull
+  requests, and check runner capacity first
+  ([ci-runners.md](https://github.com/tuna-os/tuna-desktop/blob/main/docs/ci-runners.md)): each group adds a full run to the
+  pull-request runs already queued.
+- Only `ci` reports on a merge group. `Ratchet`, `actions-security` and
+  `Measured test coverage` still run on pull requests and on `main` only;
+  requiring one of them from the queue without adding `merge_group` to its
+  workflow holds every queued pull request forever.
+
+`WorkflowSync.test_the_merge_queue_gets_its_required_check` in
+`scripts/lib/ci-select-lanes-tests.py` fails if the trigger is removed.
 
 ## Native Orca speech proof
 
@@ -176,6 +201,7 @@ settings local builds need (`just` lists the recipes):
 | `just check` | `fmt-check`, `clippy` and `test`, like the `check` job's core |
 | `just test [cargo args]` | `cargo test --workspace`, or e.g. `just test -p tuna-compositor --lib orca::` |
 | `just clippy` / `just fmt` / `just build [args]` | the matching cargo command |
+| `just doc-refs [base]` | `scripts/tuna-doc-refs --base <base>` (default `origin/main`): relative links and backticked repository paths in the Markdown changed since `base` must resolve, as in the `check` job |
 | `just proof <name> [args]` | `scripts/tuna-<name> --artifacts <tmp>`, e.g. `just proof gtk-shell-proof` |
 | `just ci-artifacts <run> [name]` | downloads a CI run's artifacts and prints the directory |
 | `just clean` / `just gc` | deletes this worktree's target / frees disk (below) |
@@ -219,6 +245,52 @@ subsurface, a grabbing popup and uploaded shm buffers, closed by destroying
 every object or by disconnecting, must drop every surface's server-side
 data, and the window manager must name the window nowhere.
 
+`scripts/tuna-gtk-shell-proof --protocols-only --artifacts DIR` runs
+G-WAYLAND-INFO and the Mutter 51 protocol gates (#364, #588), each driven by
+a real client, `crates/compositor/examples/protocol-probe.rs`, that exits
+with a `FAIL` line when the session answers otherwise than Mutter 51 does.
+G-XDG-WM-BASE-7: a version 7 bind sees a maximized window tiled and
+constrained on every edge, a version 6 bind the tiled states alone.
+G-XDG-FOREIGN-V1: a GTK 3 `zxdg_exporter_v1` handle imported through
+`zxdg_importer_v2` parents the dialog (the compositor state's
+`parent_window_id`), revoking the export destroys the import and unparents,
+a v2 handle imports through v1 and an unknown v1 handle is destroyed.
+G-WL-FIXES: `wl_fixes` 1 destroys a second registry and the connection
+carries on. G-BACKGROUND-BLUR: `ext_background_effect_manager_v1` offers
+blur, and a clear window whose surface is a blur region smooths the
+one-pixel stripes of a maximized window behind it (mean step between
+neighbouring pixels below 16) while beside it they stay sharp (above 128),
+from `background-blur.png`. CI runs the slice in the `gtk-shell` job; its
+`protocols/assertions.txt` feeds the ledger.
+
+`scripts/tuna-gtk-shell-proof --dnd-overview-only --artifacts DIR` runs
+G-DND-OVERVIEW (#1189), the same function the full GTK proof calls after
+G-OV-DND: a client drag through the overview as GNOME 51 handles it
+(`overview.js` `_onDragBegin`/`_onDragMotion`/`_onDragEnd`, `panel.js`
+`ActivitiesButton.handleDragOver`, `layout.js` `HotCorner.handleDragOver`,
+`workspaceThumbnail.js` `handleDragOverInternal`). The drags are real:
+`scripts/lib/tuna-test-window.py` with `TUNA_TEST_DRAG=LOG` is a GTK 4 window
+whose label starts a `Gtk.DragSource` drag and takes its drop, and every
+button and move is X11 input through the nested window. Gates:
+G-DND-HOT-CORNER (the pointer to the corner opens the overview and the drag
+survives it), G-DND-WINDOW-SWITCH (a drag resting on the target window's
+preview activates and raises it no sooner than 750 ms after the last motion,
+and the drop lands in it), G-DND-ACTIVITIES (resting on the Activities button
+opens the overview no sooner than 250 ms after the last motion),
+G-DND-CANCEL-RETURNS and G-DND-DROP-RETURNS (a workspace activated by
+hovering a thumbnail is left for the starting workspace, the overview
+closing, when Escape cancels the drag or the button is released). Elapsed
+times are lower bounds from just before the last motion: the compositor's
+timer cannot fire sooner, and the state file is polled, so nothing tighter
+is claimed. The nested session opens its corner by hover (a native seat by
+barrier pressure), so G-DND-HOT-CORNER guards the end-to-end path and the
+hover-under-pressure rule is tested by `cargo test -p tuna-compositor --test
+data_device` (`a_client_drag_opens_the_hot_corner_even_where_only_pressure_does`,
+driving real `wl_data_device` drags between two clients, as the other rules
+are: the Activities and window-preview timers, the thumbnail switch, the
+return on cancel and on drop, and the supervised shell's own drags
+being left alone).
+
 `scripts/tuna-gtk-shell-proof --grid-hover-only --artifacts DIR` runs the same
 held-button hover and persisted reorder assertions as the full GTK proof,
 without the unrelated earlier gates. It adds no target motion or timing
@@ -234,6 +306,27 @@ menu's gates alone, the same functions the full GTK proof calls
 wall clock's next minute to see the world clocks tick. The Weather card is
 fed from `TUNA_WEATHER_FIXTURE`, so the slice needs no network.
 
+`scripts/tuna-gtk-shell-proof --panel-dash-only --artifacts DIR` runs
+GNOME 51's top bar and dash checks (`scripts/lib/tuna-panel-dash-proof.sh`,
+measured by `scripts/lib/tuna-panel-dash-check.py`). G-PANEL-LAYOUT (#1199)
+reads Activities, Date and Time and System from the bar's accessible tree,
+in the reading direction, with the clock's centre within one physical pixel
+of the output's; then it hovers each control and measures its drawn pill:
+Activities starts and the system menu ends within GNOME's 3px panel-button
+border of the output's edges, and the clock's pill is centred to a physical
+pixel. GTK reports a padded button's accessible origin at its content box, so
+the edges come from pixels. G-DASH-FAVORITES-RUNNING (#1198) sets
+`org.gnome.shell favorite-apps` (two apps and a missing one between them)
+before the shell starts, with no Tuna pins, runs one favourite and one other
+app, and opens the overview: the dash's accessible tree must list the
+favourites in schema order, then the running app after a separator, then
+Show Apps, along the reading direction, with the running dot (in the tree
+and as near-white pixels under the tile) under exactly the two running apps.
+The slice runs at `TUNA_SCALE` in the proof's locale: a scale other than 1
+adds `-FRACTIONAL` and a right-to-left locale `-RTL` to both gate names. CI
+runs it at 100%, at 125% and under `he_IL.UTF-8`, mirrored as GNOME mirrors
+it; the locale must be generated, or the slice fails.
+
 `scripts/tuna-gtk-shell-proof --search-leak-only --artifacts DIR` runs
 G-SEARCH-LEAK (#1084): after five warm-up searches, 50 overview searches
 with results (`TUNA_SEARCH_LEAK_SEARCHES` sets the count), each typed with
@@ -245,6 +338,19 @@ artifacts. The compositor side is `cargo test -p tuna-compositor --test
 buffer_release`: an uploaded `wl_shm` buffer comes back with
 `wl_buffer.release` at once, as Mutter's do, and its pool closes once the
 client destroys it and the surface moves on to another buffer.
+
+`scripts/tuna-gtk-shell-proof --subsurface-only --artifacts DIR` runs
+G-SUBSURFACE-STACKING: `tuna-subsurface-client` (a compositor example)
+maps an opaque red 400x300 window with an opaque green subsurface placed
+above it and an opaque blue one placed below it, half past its right
+edge. On the desktop, in the overview's preview and in its Alt+Print
+window screenshot the green one must show over the parent and the parent
+over the blue one, which shows past the parent's edge only; every sampled
+pixel is kept in `subsurface-pixels.txt` with `subsurface-desktop.png`,
+`subsurface-overview.png` and `subsurface-window-capture.png`. It takes
+under a minute. The compositor side is `cargo test -p tuna-compositor --lib
+surface_order_tests`: windows, popups and layer surfaces append their
+trees bottom to top, a drag icon keeps Smithay's front-to-back order.
 
 Every build uses its own checkout's `target/` (an inherited
 `CARGO_TARGET_DIR` is ignored; set `TUNA_TARGET_DIR` to choose one) and no
@@ -259,7 +365,7 @@ Nothing waits forever. These defaults bound every recipe:
 | What | Default | Knob |
 |---|---|---|
 | `just build`, `test`, `clippy` | stopped after 60 min: TERM to cargo's process group (every `rustc` and test binary), KILL 30 s later, slot freed, exit 124 with `TIMED OUT` | `TUNA_BUILD_TIMEOUT` (minutes) |
-| `just proof <name>` | stopped the same way after its CI job's `timeout-minutes` (gtk-shell-proof: 60), at least 45 min; leftovers it started are reaped | `TUNA_PROOF_TIMEOUT` (minutes) |
+| `just proof <name>` | stopped the same way after its CI job's `timeout-minutes` (gtk-shell-proof: 80), at least 45 min; leftovers it started are reaped | `TUNA_PROOF_TIMEOUT` (minutes) |
 | waiting for a build or proof slot | gives up after 120 min with exit 75 | `TUNA_SLOT_WAIT` (minutes) |
 | a slot held past its timeout + 15 min | `scripts/tuna-reaper` reports it and kills the holder, the processes below it with the process groups they lead, and everything carrying its `TUNA_PROOF_RUN` marker | run by `scripts/tuna-disk-guard` on every pass |
 
@@ -493,6 +599,32 @@ and writes frames, logs, and usually an `assertions.txt` into the
 artifacts directory. A nonzero exit is a failure; the frames are for human
 review. CI shellchecks each script before running it.
 
+Every nested proof that starts a private bus, AT-SPI bus, IBus, PipeWire,
+Xvfb or other helper daemons runs as one owned session in
+`scripts/lib/tuna-proof-session` (#1082): the proof re-runs itself under
+it (`--bus` gives it the private session bus `dbus-run-session` used to).
+The helper is the subreaper of the session and marks every process with
+`TUNA_PROOF_SESSION`, so daemons that detach (`ibus-daemon --daemonize`,
+`dbus-daemon --fork`) stay findable. When the proof exits, passing,
+failing or stopped by INT/TERM/HUP (forwarded to it, with
+`TUNA_PROOF_SESSION_GRACE` seconds for its own cleanup), the helper stops
+what is left by PID, never over a bus: everything but message buses, then
+the remaining buses, then the private session bus, each with TERM, a
+bounded wait and KILL. A process still alive after KILL fails the proof.
+The gtk-shell proof also checks after its own cleanup
+(`tuna-proof-session --check`) that nothing it started escaped it, and
+fails naming what did.
+
+Before starting, the helper runs `scripts/lib/tuna-proof-preflight`. It
+reports session daemons that earlier proofs left running for this user
+(processes whose run has ended, or orphaned buses, IBus, AT-SPI, PipeWire
+and X servers carrying a proof's environment) and the user's inotify
+instances against `fs.inotify.max_user_instances`. With fewer than
+`TUNA_PROOF_INOTIFY_NEED` (32) free it refuses to start (exit 75) and says
+what to stop: at the limit GIO has no file monitors, so the shell misses
+new `.desktop` files and keyfile settings and gates fail for reasons
+unrelated to the change under test.
+
 Magnifier focus checks wait for the probe's focused entry to have allocated
 widget bounds before comparing its GTK geometry with the live AT-SPI extent.
 The OSK show/hide and lock checks wait for their asynchronous watcher to
@@ -508,6 +640,138 @@ is rejected, and the existing five-second polling budget must still obtain
 a valid tree. Persistent transport errors, wrong owners and incomplete trees
 cannot satisfy the gate.
 
+For folder-drag diagnosis, `just proof gtk-shell-proof --folder-dnd-only`
+runs panel readiness and the same `G-FOLDER-DND` journey/assertions as the
+full proof, then checks shell stability and exits. It creates a folder by
+dragging one app onto another, opens it, and requires dragging the second
+app onto the shade to remove exactly that app. This slice does not qualify
+the rest of the GTK journey or installed-image behavior.
+
+The three actual-GTK grid cases below are ordinary tests that skip unless
+`TUNA_REQUIRE_GRID_ZOOM=1` admits them. The lane runs each one alone with
+`--exact --include-ignored` and fails unless its pass marker appears, so a
+skip cannot pass there.
+
+The GTK CI lane also runs
+`grid_animation::gtk_zoom_tests::actual_gtk_zoom_applies_all_properties_including_terminal_frame`
+on its admitted test binary under private Xvfb/D-Bus with
+`TUNA_REQUIRE_GRID_ZOOM=1`. It checks combined translation/scale/opacity
+updates, including a frame jumping past the 200 ms folder ease, and
+combined drag scale/fade updates. Each property is applied before deciding
+whether to queue damage: a changed translation must not short-circuit the
+scale or opacity writes, including on the last animation tick. This is
+widget-state coverage, not a frame-scheduling latency guarantee.
+
+The same admitted GTK binary also runs
+`overview::gtk_page_dot_tests::actual_gtk_page_dot_samples_observe_stored_look`
+under that admission flag. Its `grid-page-dots` output and receipt cover the
+page indicator's actual stored scale/opacity through page, hover and pressed
+updates. The per-frame page-dot trace reads these stored drawing properties,
+not the requested setter inputs; it emits no sample for a disposed drawing.
+
+The admitted `grid-tick-trace` case runs a real GTK frame clock and reads
+Linux main-thread scheduler counters. With `TUNA_GRID_TRACE` only, page
+ticks also retain frame-clock and monotonic timestamps, cumulative CPU/runqueue
+counters and their deltas, per-thread accounting availability, and time spent
+reading the observation. The proc handle is opened once per traced thread;
+subsequent reads use a fixed stack buffer. Without tracing, no proc files or
+clock observations are read. Unreadable, malformed, unpopulated (zero runtime
+or timeslices), or regressing counters are explicitly unavailable, never guessed
+zeros. A populated thread's runqueue wait can legitimately remain zero.
+
+The matcher repeats these tick observations from the same log offset.
+`run_delta_ns` includes shell work and prior observer/logging overhead.
+`wait_delta_ns` measures runnable wait from populated, monotonic per-thread
+`/proc/thread-self/schedstat` counters (`schedstat=available`), not the unrelated
+`kernel.sched_schedstats` switch for extended scheduler statistics. The kernel's
+[per-task proc implementation](https://github.com/torvalds/linux/blob/v6.8/fs/proc/base.c#L479-L495)
+reads runtime and `CONFIG_SCHED_INFO` run-delay/timeslice counters; its
+[accounting updates](https://github.com/torvalds/linux/blob/v6.8/kernel/sched/stats.h#L208-L292)
+do not depend on that switch. No host-wide sysctl is changed for this observer.
+Low CPU/runqueue deltas alone cannot identify a compositor, renderer, protocol
+or presentation stall. These observations attribute callback gaps only within
+their measured scope and do not replace the unchanged frame/dot coverage gate.
+
+With tracing enabled, the grid window also records its GDK before-paint,
+update, layout, paint and after-paint phases with monotonic/frame-clock times,
+frame counter and native Wayland surface ID (explicitly unavailable on X11).
+Handlers are attached only to the traced realized grid and disconnected on
+unrealize. These are toolkit phase observations, **not** client protocol issue,
+flush, callback receipt or presentation timestamps. Server-side request-arrival,
+applied-commit, callback-drain and flush observations must establish those
+separate boundaries before attributing a gap to compositor scheduling.
+Compositor records use `tuna-grid-compositor:` and the same CLOCK_MONOTONIC
+microseconds. `commit_arrival` is the server precommit hook after frame requests
+have populated pending state, not their socket or client-issue time;
+`commit_applied` reports current state, possibly including older callbacks.
+`callback_drained` records actual callback identities removed by the unchanged
+Smithay sender with before/after-send times. It establishes `done` queued,
+not client receipt. Nested bind, render-finish, submit, no-repaint decisions and
+client-flush boundaries retain their real outcomes. `tick_stage` records split
+the loop between its pre-dispatch flush and repaint into named stages, each
+with the compositor main thread's runtime, runqueue wait and timeslices, so a
+stalled stage is classified as compositor CPU, runnable wait or off-CPU time.
+Consecutive stage gaps include the preceding observer write, so they alone
+cannot distinguish a blocked trace sink from the named operation. Attribution
+run 41249875435 therefore bracketed snapshot serialization, write and rename
+with direct `operation` clocks and checked scheduler-counter deltas, with no
+trace output inside the measured interval. Serialization still has that direct
+observer; file operations now belong to the snapshot worker rather than the
+compositor thread.
+
+Run 41227591692 (head e39b95b2) retained a real sparse switch: the shell's
+callback monotonic gaps were 137.958/226.450 ms with only ~2 ms CPU and almost
+no runqueue wait, while the compositor spent 106–112 ms between its client flush and
+repaint and then queued `done` without flushing until the next loop wake
+(~16 ms). The compositor now flushes the events a render queued on every
+backend, as native sessions already did (regression:
+`runtime::rendered_event_tests`).
+This render-then-flush order also matches
+[Niri's `refresh_and_flush_clients`](https://github.com/niri-wm/niri/blob/main/src/niri.rs#L825-L840).
+Disabled tracing performs no observer clock reads, allocation or surface walks.
+
+Run 41249875435's merge-source installed evidence
+(`4850b19cdc70d3c217dd5e1c3082d090a190ab13`) then isolated the larger delay:
+`controls/nested.log:693850` records `state_rename` taking 217.082 ms wall time,
+0.510131 ms CPU and zero runnable wait; line 693738 records 209.122 ms wall,
+0.460597 ms CPU and zero runnable wait. No logger write occurred inside either
+measurement. Across 21,408 samples, write took at most 3.041 ms and serialization
+at most 0.200 ms. This is filesystem blocking on the compositor's publication
+path, not shell CPU, runnable starvation, or an attributed rendering fence.
+
+`TUNA_COMPOSITOR_STATE` now uses one owned background writer with one replaceable
+latest waiting body. It atomically publishes complete producer snapshots without
+mixing clocks, geometry or actual `rendered_frames`; intermediate snapshots may
+coalesce, but the unchanged frame/evidence floors still apply. Only successful
+write-and-rename updates the worker's deduplication baseline. Failure is surfaced
+by the worker and an unchanged body remains eligible on the next submission,
+without an autonomous retry loop. Graceful shutdown drains the latest body and
+joins the writer, so terminal publication does not require another input/tick
+and no old writer can publish afterward. Real filesystem, concurrent reader,
+failure, bounded-latest and shutdown regressions live in `state_snapshot::tests`;
+the VM inventory consumer still fails closed on malformed JSON. No source-text
+assertion substitutes for these behaviors.
+
+The installed `journey` qualification intentionally checks out the pull-request
+merge commit. Its companion receipt records that actual `git rev-parse HEAD`
+alongside the pull-request head SHA, so merge-source installed evidence remains
+distinct from the exact-head native GTK proof.
+G-TRAY's absence check works the same way. After the probe item is killed,
+an AT-SPI child of that item that is already unexported while the walk
+reaches it (`No such interface`) means the item is still being torn down,
+so the check observes again. The deadline is unchanged: 30 fresh
+owner-bound observations, 0.5 s apart. An error anywhere else, or of another
+kind, is still refused, and an item still showing or still being torn down
+at the deadline fails.
+
+`tuna-gtk-shell-proof` runs the whole session (the script, its private
+buses and the nested session) in a fixed-offset `TZ` where it is about
+15:00 local time when the proof starts (`scripts/lib/proof-session-tz.py`).
+The screen-time day starts at 03:00 local time, as in GNOME. A proof that
+crossed that boundary would reset the day's usage in the middle of a
+wellbeing gate: a reached daily limit would turn Active and grayscale would
+drop mid-bracket. The bracket checks themselves are unchanged.
+
 | CI job | Command | Extra packages | What it asserts |
 |---|---|---|---|
 | `journey` | `scripts/tuna-journey --artifacts journey-artifacts` | `xvfb xdotool x11-apps scrot jq dbus`, Mesa EGL (`libegl1 libgl1-mesa-dri`) | Overview, search, launch from search, Escape, workspace switch, Alt+Tab; writes `assertions.txt` |
@@ -517,10 +781,34 @@ cannot satisfy the gate.
 | `gtk-shell` | `TUNA_REQUIRE_PAM_WRAPPER=1 scripts/tuna-gtk-shell-proof --artifacts gtk-shell-artifacts` | gtk4-layer-shell (`scripts/ci-install-gtk4-layer-shell`), `xwayland pipewire wireplumber at-spi2-core python3-pyatspi fonts-cantarell ffmpeg libpam-wrapper` and the GStreamer PipeWire plugins; see the job for the full list | GTK shell panel, calendar, quick settings, overview, notifications, lock and unlock, AT-SPI trees; writes `assertions.txt` |
 | `gtk-shell` | `scripts/tuna-scale-proof --artifacts gtk-shell-artifacts/scale` | as above | The same session at 150 percent scale; writes `assertions.txt` |
 | `gtk-shell` | `scripts/tuna-slow-portal-proof --artifacts gtk-shell-artifacts/slow-portal` | as above | On a dbus-daemon bus whose portal activation hangs, the shell owns `org.gnome.Shell` within 15 s (40 s on GTK before 4.17, whose GtkApplication always waits on the inhibit portal) and makes no GDK portal call; writes `assertions.txt` |
-| `drm-smoke` | `scripts/tuna-drm-smoke --artifacts drm-smoke-artifacts` | `seatd jq ffmpeg kmod python3-evdev python3-gi gir1.2-gtk-4.0 gsettings-desktop-schemas`; run `scripts/ci-install-vkms` after `apt-get update` to ensure vkms for the running kernel | Hardware backend on the vkms virtual KMS device; needs `sudo` for `modprobe`, seatd and uinput |
+| `drm-smoke` | `scripts/tuna-drm-smoke --artifacts drm-smoke-artifacts` | `seatd jq ffmpeg kmod python3-evdev python3-gi gir1.2-gtk-4.0 gsettings-desktop-schemas acl`; run `scripts/ci-install-vkms` after `apt-get update` to ensure vkms for the running kernel | Hardware backend on the vkms virtual KMS device; needs `sudo` for `modprobe`, seatd, uinput and the card's seat ACL (`setfacl`, which a logind seat session would grant; the DRM lease device opens its own non-master fd) |
+| `drm-smoke` | `scripts/tuna-drm-dual --artifacts drm-smoke-artifacts/dual --assertions drm-smoke-artifacts/assertions.txt` | as above; Linux 6.19 or newer for vkms configfs (the job pins `ubuntu-26.04`) | Two connectors of a vkms configfs device: mirroring, disabling and kept layouts, workspaces on the primary only, mixed fractional/integer scale; appends to drm-smoke's `assertions.txt` |
+| `hotplug` | `scripts/tuna-hotplug-stress --rounds 4 --out hotplug-artifacts` | as for `drm-smoke`, plus `libpam-wrapper colord pipewire wireplumber gstreamer1.0-pipewire gstreamer1.0-tools xdg-desktop-portal-gnome`; Linux 6.19+ for vkms configfs (the job pins `ubuntu-26.04`) | Connector hotplug on vkms: outputs, window re-homing, a full unplug, lock, colord and screencast gates (see [Output hotplug storm](#output-hotplug-storm)); writes `assertions.txt` |
 
 `app-content` and `scroll-proof` download Playwright and Chromium into a
 temporary venv on every run, so they need network access.
+
+`G-GRID-PAGE-ANIM` keeps the raw frame and page-dot trace in `nested.log`
+and the matcher's combined output (including mismatch stderr) in
+`grid-anim-samples-{next,off,next-again}.txt`. On mismatch the proof also
+prints that output and its actual artifact path to stderr, without changing
+the assertion or its exit status. The `gtk-shell` upload retains these files
+at its root. In the `journey` job the installed GTK proof writes them under
+`package-artifacts/installed/controls` (`tuna-deb-installed-proof`); the
+always-run artifact preparation also copies just these diagnostics into
+`journey-shots/installed-controls`, including on an early proof failure.
+
+Each animated-switch report also gives the source byte offset, intermediate
+page/dot counts against the unchanged minimum of two, the largest logged
+frame-clock gap, repeated frame times, and maximum error against GNOME's
+curve. This distinguishes missing intermediate samples from wrong sampled
+positions; **either still fails**. Two zero-time records are normal:
+initialization and the first tick. A sparse callback trace alone cannot
+attribute a gap to shell work, compositor delivery, runner scheduling or
+presentation. Correct sampled endpoints are not proof of smooth presentation.
+The shared `Zoom::set_look` setter does control page-dot drawing, so its
+combined scale/opacity fix is required for accurate indicators; it does not
+control the pager's frame callback cadence.
 
 **Start `tuna-gtk-shell-proof` from a fresh artifacts directory.** The
 script points `XDG_STATE_HOME` at `gtk-shell-artifacts/state`, and the
@@ -535,16 +823,22 @@ TUNA_REQUIRE_PAM_WRAPPER=1 scripts/tuna-gtk-shell-proof --artifacts gtk-shell-ar
 ```
 
 `--notify-lock-only` stops after panel readiness and runs just the
-lock-screen notification, notification sound and disabled-app restore
-gates (G-NOTIFY-LOCK, G-NOTIFY-LOCK-PIXELS, G-NOTIFY-LOCK-LIVE,
-G-NOTIFY-SOUND, G-NOTIFY-RESTORE); it needs pam_wrapper to unlock. The
-proof's `canberra-gtk-play` stand-in records every event sound the shell
-asks for in `canberra-calls`.
+lock-screen notification, media player, notification sound,
+disabled-app restore, banner expansion and date-menu media gates
+(G-NOTIFY-LOCK, G-NOTIFY-LOCK-PIXELS, G-NOTIFY-LOCK-PUSH,
+G-NOTIFY-LOCK-LIVE, G-NOTIFY-LOCK-MEDIA, G-NOTIFY-SOUND,
+G-NOTIFY-RESTORE, G-NOTIFY-EXPANDED, G-NOTIFY-CALENDAR-MEDIA); it needs
+pam_wrapper to unlock. The proof's `canberra-gtk-play` stand-in records
+every event sound the shell asks for in `canberra-calls`, and
+`tuna-mpris-player-stub.py` is the media player.
 The restore gate opens the real message-tray binding after retaining the
 long-word redaction-test notifications in history. Card text must wrap at
 character boundaries when needed, and collapsed groups must measure only
 their visible page horizontally, so hidden expanded content cannot force
 the date popup wider than the nested output.
+The full proof expands wellbeing banners with the real Super+N binding
+before pressing Take, Delay or Skip: non-critical notices open collapsed
+and keep their action rows hidden until the user expands them.
 
 The full GTK proof's media callback barrier waits at most 25 seconds:
 one key can execute four serialized `wpctl` subprocesses with five-second
@@ -556,6 +850,41 @@ writes finish: only the explicit pending-transaction reply waits, for at
 most ten seconds. Other errors still fail immediately, and exact backlight
 readbacks remain required before blanking and fixture teardown.
 
+`--sound-alerts-only` runs just the bell and sound-feedback gates after the
+session starts (`just proof gtk-shell-proof --sound-alerts-only`):
+G-VISUAL-BELL (a real xdg-system-bell client; host pixels of the frame and
+whole-output flashes, none with `visual-bell` off, the original pixels after
+every case; `bell-window-system` only with `audible-bell` and
+`event-sounds`), G-X11-BELL (an X11 client's `XkbBell` through Xwayland, the
+same policy, Mutter's 100 ms repeat drop), G-XSETTINGS-SOUNDS (the
+distribution gsd-xsettings owns XSETTINGS and publishes
+`input-feedback-sounds` as `Net/EnableInputFeedbackSounds`) and
+G-QS-VOLUME-FEEDBACK (a real drag of the quick-settings volume slider sounds
+once at its end, a scroll once, a playing sink or `event-sounds` off never).
+The feedback gate first makes the built-in sink, the one the fixture can
+idle, the default again: the full proof's G-QS-SOUND-MENU leaves the HDMI
+output selected. Its scroll is one wheel notch through the compositor's proof
+input, because the nested winit backend turns an `xdotool click 5` into two
+notches (button press and release).
+A `canberra-gtk-play` stand-in logs every event sound to `canberra-calls`;
+none of these gates plays or captures audio.
+The `gtk-shell` CI job runs this focused slice before the full shell proof,
+so an unrelated earlier full-shell gate cannot prevent sound qualification.
+Its `sound-alerts/` artifacts and the retained `bin/examples/tuna-bell-client`
+belong to the same exact PR head as the compositor and shell binaries.
+
+The bell timeline presents each 50 ms leg's endpoint before reversing,
+including when a frame arrives late, as Mutter's Clutter timeline does.
+Deterministic bell tests cover delayed samples and a first frame after the
+nominal flash lifetime; the host-pixel coverage and intensity gates remain
+unchanged.
+
+The full GTK proof's media callback barrier waits at most 25 seconds:
+one key can execute four serialized `wpctl` subprocesses with five-second
+production timeouts, plus callback dispatch. It still requires accepted
+tokens to finish successfully and the actual scheduler to be idle; a
+fixture volume write alone never proves completion.
+
 `scripts/tuna-drm-smoke` loads a kernel module and starts seatd as root.
 Run it in a VM or a disposable machine rather than your desktop session.
 The Ubuntu setup helper first checks whether vkms is already installed for
@@ -566,6 +895,18 @@ includes vkms without a separate extra-modules package. No usable candidate
 or a still-missing module fails setup, and package installation errors are
 fatal. Module loading and the real vkms device and presentation assertions
 remain mandatory in the smoke test.
+
+`D-INPUT-AT-STARTUP` (P-IN-04) creates a uinput mouse before the main
+session's compositor starts (`scripts/lib/drm_input_startup.py hold`) and
+requires it among the compositor state's `input_devices` within 10 s of
+the launch, while nothing produces input. libinput queues the devices
+already present when the compositor assigns its seat without making its
+fd readable; the compositor drains that queue on the loop's first
+dispatch and after every session resume
+(`crates/compositor/src/drm/input_drain.rs`). Before that, devices present
+at login were added, and got their settings, only at the first input or
+hotplug: drm-smoke's sessions without input hotplug reported
+`input_devices` `[]` throughout.
 
 The smoke test also drives real libinput with uinput devices (ADR 0008),
 so it needs `python3-evdev` and the GTK 4 PyGObject client packages the
@@ -592,6 +933,58 @@ also runs on its own and reads
 commands (`down N`, `move DX DY MS`, `hold MS`, `up`, `swipe N DX DY MS
 [PAUSE]`, `scroll`, `tap`, `click`) on stdin, in millimetres and
 milliseconds. Other phases can import `create_touchpad()` from it.
+
+`D-OVERVIEW-EXIT` starts a session in the overview, as a GDM login does,
+and presses Escape once on an emulated USB keyboard
+(`scripts/lib/tuna-uinput-keyboard.py`, `tap KEY...` on stdin). After
+that it sends no input. `GNOME_SHELL_SLOWDOWN_FACTOR=4` stretches the
+250 ms exit to one second, past the 500 ms that display-rate ticks
+outlive an input event. The exit must therefore draw its own frames until
+it settles. The frame counter must then hold still, and the kernel's
+scanout, read with ffmpeg `kmsgrab`, must be the settled desktop: one
+colour below the top bar, with no workspace card and no overview
+backdrop. This rules out a DRM-side stall behind the part-way card in the
+VM journeys' frame 06. Those frames come from the QEMU VNC console, which
+can keep stale pixels for page-flipping virtio-gpu guests (QEMU's
+"ui/vnc: recover a job dropped by vnc_abort_display_jobs()").
+
+`scripts/tuna-drm-dual` is the two-output leg the `drm-smoke` job runs
+after the smoke test. It creates a vkms configfs device (`tuna-dual`,
+Linux 6.19 or newer) with two connected CRTC/connector pipes, A and B,
+and runs `tuna-compositor --backend drm` on it with the GTK shell, a
+uinput keyboard and mouse and undecorated GTK 4 clients that report
+their frames, surface scale and pointer motion. The kernel side is read
+with KMS GET ioctls by `scripts/lib/drm_kms_readback.py` (each
+connector's CRTC, mode, `ACTIVE` and framebuffer), never from the
+compositor. Its checks live in `scripts/lib/drm_dual.py`, whose unit
+tests (`scripts/tests/test_drm_dual.py`) also feed each check what the
+old behaviour produces:
+
+- `D-MIRROR-DISABLE` (P-DS-02): A and B enumerate side by side on their
+  own CRTCs; `ApplyMonitorsConfig` mirroring them lights both CRTCs in
+  one mode, disabling B leaves it connected but on no enabled CRTC while
+  A scans out, and extending again relights B;
+- `D-LAYOUT-KEEP` (P-DS-02): a persistent mirror, then a persistent
+  disable, each kept with Enter on the shell's "Keep these display
+  settings?" dialog, land in `tuna/monitors.xml`, and the next session
+  starts mirrored, then with B off, in the kernel;
+- `D-WORKSPACES-PRIMARY` (P-WM-08): with `workspaces-only-on-primary`,
+  Super+Page_Down hides A's window (throttled frame callbacks) while B's
+  stays on the active workspace and keeps drawing; with the key false
+  both hide; a window Alt-dragged from B onto A stays on the workspace
+  it was carried on. Client frame rates (a shown window at least 10/s,
+  a hidden one at most 3/s against the compositor's 995 ms hidden-frame
+  interval) are counted from the clients' heartbeats over 3 s starting
+  1.5 s after each switch ends, past the callbacks owed from the slide;
+- `D-SCALE-MIXED` (P-SY-03): a GNOME `monitors.xml` gives A a fractional
+  scale and B scale 2 in the smallest mode Mutter allows both in; a GTK
+  window Alt-dragged to span them gets B's scale over
+  `wp_fractional_scale` when it overlaps B most and A's when it overlaps
+  A most, and its pointer events carry the compositor's logical pointer
+  position each time.
+
+On a kernel without vkms configfs the leg fails with the running kernel
+named; `scripts/tuna-drm-smoke` alone still runs there.
 
 Private colord startup failures in `D-COLORD` retain `colord-startup.txt`:
 the intended user/group, private bus and binary identity, boundary markers
@@ -817,6 +1210,9 @@ To drive the published image through GDM in a KubeVirt VM with keyboard
 and pointer input and save a console frame for every step, see
 [Published-image journey through Corral](https://github.com/tuna-os/tuna-desktop/blob/main/docs/corral-journey.md).
 
+To try guest-side code in a running VM before pushing, without the CI
+queue or an image rebuild, see [Fast iteration on karnataka](https://github.com/tuna-os/tuna-desktop/blob/main/docs/ci-fast-iteration.md).
+
 ## Pointer motion barriers and input aids
 
 Backend motion is coalesced once per output frame, but a raw non-motion
@@ -1033,11 +1429,45 @@ closed; finalizer inode/type/ownership checks and the primary UI error stay
 unchanged. Real-process regressions cover delayed descendant teardown,
 abnormal compositor exit, and preserving an existing proof failure.
 
+## One IBus daemon owner
+
+`just proof ibus-owner-proof` (`scripts/tuna-ibus-owner-proof`) runs the
+real nested compositor twice and checks that exactly one party owns the
+session's `ibus-daemon` (#1014). With no IBus unit, as in every nested
+session, the bridge starts one `ibus-daemon --panel disable`: not
+daemonized, its own child, in its process group, and the only daemon
+for the display, named by the bus file. Before that session ends,
+G-IBUS-OWNER-RESTART kills the daemon (the same bridge must start a new
+child of its own within 10 s, as systemd's `Restart=on-abnormal` would),
+kills the bridge while its daemon runs (nothing of the bridge's group, the
+daemon or its config component may be left, and the compositor's
+replacement bridge starts its own daemon, whose start the proof slows by
+15 s through an `ibus-daemon` shim on `PATH`: the bridge must wait it out,
+not give it up), runs `ibus exit` (no daemon may return for 7 s, longer
+than the bridge's longest IBus retry) and kills that bridge too (its
+replacement starts a daemon again); there are never two daemons. A
+daemon's own start-up, up to its bus file and its config component, gets
+90 s: what GNOME's session gives its IBus unit (`Type=dbus`, systemd's
+`DefaultTimeoutStartSec`), and what the bridge waits for a daemon of its
+own. On a loaded host that start-up has taken over 30 s with the new
+daemon already the bridge's child. With a unit (`TUNA_IBUS_UNIT`
+and a stub `systemctl`) the bridge starts none, asks the manager once
+the session is up, and the one daemon is the unit's. After SIGTERM to
+the compositor no `ibus-*` process of the display is left: the
+compositor retires the bridge's group, and in the unit run the stub
+manager stops its unit. It writes `assertions.txt` (`G-IBUS-OWNER-*`),
+which the parity-ledger job reads.
+
 ## Parity ledger check
 
 The `parity-ledger` job runs `scripts/tuna-ledger` against the test list
-from `check` and the `assertions.txt` files from the proofs. Reproduce it
-after running the proofs above:
+from `check` and the `assertions.txt` files from the proofs, including all
+three marlin-vm legs it cites: `marlin-vm` (with `app-integration/`),
+`marlin-vm-autotz` (V-AUTOTZ) and `marlin-vm-orca51` (V-ORCA-*with upstream
+Orca 51). A pull request that runs `parity-ledger` therefore also runs the
+Orca 51 leg (`vm_matrix` in `scripts/ci-select-lanes`). The `nested stress`
+workflow's `hotplug` H-* results are a separate workflow and not a ledger
+input. Reproduce it after running the proofs above:
 
 ```sh
 cargo test --workspace -q -- --list --format terse > test-list.txt
@@ -1046,6 +1476,7 @@ scripts/tuna-ledger check --tests test-list.txt \
   --assertions gtk-shell-artifacts/assertions.txt \
   --assertions gtk-shell-artifacts/scale/assertions.txt \
   --assertions drm-smoke-artifacts/assertions.txt \
+  --assertions hotplug-artifacts/assertions.txt \
   --assertions vm-lane-artifacts/assertions.txt
 ```
 
@@ -1078,13 +1509,16 @@ the states are in [pixel parity with GNOME 51](https://github.com/tuna-os/tuna-d
 ## Output hotplug storm
 
 The nested backend has one fixed output, so hotplug runs on real DRM: the
-`hotplug` job of the `nested stress` workflow (nightly, on
+`hotplug` lane of `ci.yml` (4 rounds; `scripts/ci-select-lanes` selects it
+for the harness and for the DRM, window, lock, colord, ScreenCast and
+DisplayConfig code, and its `H-*` assertions feed the parity ledger), and
+the `hotplug` job of the `nested stress` workflow (nightly at 30 rounds, on
 `workflow_dispatch`, and on pull requests touching
 `scripts/tuna-hotplug-stress` or the workflow). `scripts/tuna-hotplug-stress`
 creates a vkms configfs instance (Linux 6.19 or newer; the job pins
-`ubuntu-26.04`) with three CRTC/connector pipes. Connector A stays
-connected; writing a connector's configfs `status` plugs or unplugs B and
-C and makes the kernel send a real udev `HOTPLUG=1` change for the card.
+`ubuntu-26.04`) with three CRTC/connector pipes. Connector A starts
+connected; writing a connector's configfs `status` plugs or unplugs any of
+them and makes the kernel send a real udev `HOTPLUG=1` change for the card.
 `tuna-compositor --backend drm` runs on that card under a private seatd
 and session bus with the GTK shell. Three GTK 4 clients animate every
 frame; each is placed on its own output by moving a uinput mouse there,
@@ -1107,7 +1541,31 @@ show:
 - `H-SCALE` and `H-STORED`: the applied scale and arrangement, and the
   rewritten `monitors.xml`, reach the outputs;
 - `H-INPUT`, `H-LIVE`: the overview answers the keyboard, the compositor
-  never exits or panics and the shell never exits.
+  never exits or panics and the shell never exits;
+- `H-ALL-UNPLUGGED`: after the rounds, A, B and C in a row at scale 1 are
+  all unplugged at once. With no connector the compositor, shell and
+  clients stay alive, every window keeps its geometry and its own output
+  and the pointer holds (Mutter's `meta_window_update_for_monitors_changed`
+  finds no monitor and moves nothing). Plugged back, the arrangement and
+  every window's pre-unplug geometry return, the clients draw again and
+  the overview and pointer answer;
+- `H-COLORD`: the real colord, on a private system bus as in
+  `tuna-drm-smoke`'s D-COLORD, lists exactly one display device per
+  connected output (`GetDevices`, `Kind` and `XRANDR_name`), and a
+  replugged output gets its device id back (Mutter's
+  `meta_color_manager_monitors_changed` → `update_devices`).
+
+After the rounds, `H-CAST-REMOVED` plugs B and shares it through the
+installed `xdg-desktop-portal-gnome` (the backend's restore data stands in
+for the picker) to a `pipewiresrc` consumer on a private PipeWire, then
+unplugs B. As Mutter's `meta-stream-monitor.c` `on_monitors_changed`
+stops the stream (`meta_stream_stop`, then `on_stream_closed` closes the
+session), Mutter's `Session.Closed` and the portal session's `Closed`
+must arrive within 5 s, the PipeWire node and the compositor's capture
+stream must go, the log must show the stop and no frame attempted for B,
+and a new cast of A must stream. Monitor casts survive only a change that
+keeps their logical rect (Mutter's `update_monitor`); area casts stay
+open and get no frames while no output lies under them.
 
 `H-GROWTH` bounds the compositor and shell as the churn lane does: final
 PSS within round-0 PSS × 1.25 + 64 MiB and fds within round-0 + 32. Each
@@ -1119,6 +1577,17 @@ the gate's line names the processes and kinds that rose most since round
 0. `smaps-round0-*` and `smaps-final-*` are each process's mappings after
 the first and the last round, `state-round0.json` the compositor state
 after the first, and every step in `report.json` has each process's PSS.
+
+After the storm, `H-LOCK-HOTPLUG` locks the session with a uinput
+Super+L and plugs B in: the state's `lock_outputs` must list B (the GTK
+shell made B its own ext-session-lock surface, as GNOME's unlock dialog
+covers every monitor on `monitors-changed`), and every locked frame B
+draws (`frame_cost`) must hold no window or layer (`content_roots` 0, no
+`drawn_windows`) though client B's window is re-homed onto B. B is
+unplugged, then the session unlocks through a real PAM stack (pam_wrapper
+serving `tuna-lock` from a private password file, typed on the uinput
+keyboard); the clients must draw on A again and Super open the overview.
+
 Pull requests and dispatches run 4 rounds, nightly 30; a dispatch's
 `hotplug_rounds` input (and `churn_rounds` for the churn lane) runs
 another count, and its `hotplug_heaptrack` input runs the storm a second
@@ -1129,7 +1598,7 @@ counts in its `H-GROWTH`. The artifacts keep the compositor, shell and
 client logs, every step's outputs and window rectangles (`report.json`),
 the metrics and the state at a failure.
 
-To run it on a host with Linux 6.19+ and sudo, after building
+To run it on a host with Linux 6.19+, colord and sudo, after building
 `tuna-compositor` and `tuna-shell-gtk`:
 
 ```sh
@@ -1142,8 +1611,7 @@ configuration for exactly the connected monitors, else the current or
 previous configuration covering them, else a linear one with the primary
 kept first. Unlike Mutter, which reads `monitors.xml` once at startup,
 the stored configuration is read from the file at each hotplug. Real
-panels, EDIDs, colord device registration on hotplug and multiple GPUs
-are not covered.
+panels, EDIDs and multiple GPUs are not covered.
 
 ## When a run fails
 
@@ -1152,6 +1620,14 @@ Read `nested.log` in the artifacts directory first (`compositor.log` for
 [nested session troubleshooting](https://github.com/tuna-os/tuna-desktop/blob/main/docs/nested-session.md#troubleshooting). Do not
 retry a deterministic test until it passes: the timing rule in the
 [development guide](https://github.com/tuna-os/tuna-desktop/blob/main/docs/development.md#writing-a-test) applies.
+
+If the compositor cannot start the shell at all, for example because
+`--shell-bin` or `TUNA_PROOF_BIN_DIR` names a missing binary, `nested.log`
+says `shell supervision: SpawnFailed { kind: NotFound }` and has no
+`tuna-shell-gtk:` lines. Every gate that waits for the shell then times out,
+usually first as A11Y-PANEL. In CI, the `gtk-shell` slices that use
+`TUNA_PROOF_BIN_DIR` run only after the `proof-binaries` build step
+succeeds.
 
 ## Nested stress and torture suite
 
@@ -1183,9 +1659,12 @@ Phases, in order (`--phases` runs a subset):
 - `scale`: 40 `ApplyMonitorsConfig` scale changes while clients map.
 - `services`: NetworkManager, BlueZ and power-profiles stubs vanish (half
   killed) and return ten times; the shell must read each returned daemon
-  again without restarting. `ibus-daemon` is killed five times under a
-  focused field: typing continues without it, and the IBus bridge must
-  focus the returned daemon's new input context.
+  again without restarting. The IBus bridge's own `ibus-daemon` is killed
+  five times under a focused field: typing continues, the bridge starts a
+  replacement (never two daemons) and focuses its new input context. After
+  `ibus exit` typing goes on without IBus and no daemon returns; a killed
+  bridge is restarted by the compositor with its own new daemon, and
+  nothing is left in the dead bridge's process group.
 - `input`: 1,000 typed keys must arrive exactly once; 2,000 pointer moves;
   a held key's repeat must stop when focus leaves, not resume on refocus
   and not leak into the window that gains focus.
@@ -1206,7 +1685,7 @@ PSS split by mapping kind (heap, anonymous, shared memory, GPU, files), in
 the process and kind that grew. Final PSS must stay within
 warmup × 1.25 + 64 MiB, fds within warmup + 32 and mappings within
 warmup × 1.25 + 1024. These diagnostic bounds catch unbounded growth;
-they are separate from the GNOME performance targets in #73. A panic,
+they are separate from the GNOME performance targets in #503. A panic,
 compositor exit, lost input response, orphaned window or hung worker
 fails the lane. Pull requests touching the suite run ten churn rounds;
 the nightly run uses 300.
@@ -1240,9 +1719,9 @@ regression test in the protocol crate before its fix is merged.
 To reproduce locally, install the pinned tool and toolchain, then run:
 
 ```sh
-rustup toolchain install nightly-2026-08-28
+rustup toolchain install nightly-2026-11-13
 cargo install cargo-fuzz --version 0.13.2 --locked
-cargo +nightly-2026-08-28 fuzz run control_body -- -max_total_time=60 -max_len=1048580 -timeout=5 -rss_limit_mb=2048
+cargo +nightly-2026-11-13 fuzz run control_body -- -max_total_time=60 -max_len=1048580 -timeout=5 -rss_limit_mb=2048
 ```
 
 This covers the control decoders of #203; Wayland request handlers are

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 31
+sidebar_position: 32
 title: "troubleshooting"
 ---
 
@@ -95,19 +95,20 @@ with expected tree digest
 but actual digest
 `b71256f1f4aaf8dc42af9e95b3843f3b70e3869366167c0a8ae90cf31e6e3107`.
 
-**Cause:** The retained failing archive inventories three directories as `0775`
-and its `built once\n` message as `0664`. Python's `tarfile` data filter clears
-group-write from the message, extracting it as `0644`; it also ignores archived
-directory permissions and instead uses the extraction process's umask. The
-inventory includes permissions, so a byte-identical payload can fail verification.
+**Cause:** The archive that failed has three directories listed as `0775` and its
+`built once\n` message as `0664`. The `tarfile` data filter of Python clears
+group-write from the message and extracts it as `0644`. The filter also ignores
+the permissions of archived directories and uses the umask of the extraction
+process. The inventory includes permissions, so a byte-identical payload can
+fail verification.
 
-**Fix:** Verification and carrier extraction share `extract_payload`, which
-retains ordinary `0777` permission bits after the data filter's path, link, file
-type and ownership checks. Creation and extraction reject setuid, setgid and
-sticky modes instead of silently normalizing them. The consumer regression
-explicitly stages `0775` directories and a `0664` file, tests a different verifier
-umask and read-only file permissions, and retains rejection coverage for unsafe
-archive members. Do not replace the expected digest or drop modes from the
+**Fix:** Verification and carrier extraction share `extract_payload`. It keeps
+the normal `0777` permission bits after the filter checks path, link, file
+type and ownership. Creation and extraction reject setuid, setgid and sticky
+modes; the regression test for the consumer
+stages `0775` directories and a `0664` file. It tests a different verifier umask
+and read-only files. It also keeps the tests for unsafe archive
+members. Do not replace the expected digest or drop modes from the
 inventory.
 
 ## Source archives after an upstream rename

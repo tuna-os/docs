@@ -1,5 +1,5 @@
 ---
-sidebar_position: 53
+sidebar_position: 50
 title: "troubleshooting"
 ---
 
@@ -236,6 +236,14 @@ just ci-artifacts <run-id>
 - The `parity-ledger` job fails when a test that a row of
   `docs/parity-ledger.md` cites is renamed or removed. Update the row in the
   same PR ([parity ledger check](https://github.com/tuna-os/tuna-desktop/blob/main/docs/testing.md#parity-ledger-check)).
+- A `gtk-shell` job uploads its evidence (logs, frames, receipts) as the
+  `gtk-shell` artifact and its executables as `gtk-shell-binaries`, at the
+  same relative paths, with their SHA-256 sums in the evidence's
+  `ci-detached-entries.txt`. Both uploads run after a failure too. The step
+  that collects the executables copies only what was built: after an
+  earlier failure, a `not collected, never built or installed` warning is a
+  consequence, and the first failed step is the cause. A missing executable
+  fails that step only when nothing failed before it (#1124).
 - Do not re-run a deterministic test until it passes. `gh run rerun <run-id>
   --failed` tells you whether a failure is intermittent; it does not fix one.
   The [timing rule](https://github.com/tuna-os/tuna-desktop/blob/main/docs/development.md#writing-a-test) explains how to remove the

@@ -78,9 +78,10 @@ The [roadmap](https://github.com/tuna-os/wootc/blob/main/ROADMAP.md#native-shell
 WinUI default change before 1.0. Phases B and C contain native packaging,
 consumer and VM implementation, but their open trackers still require actual
 acceptance evidence. Phase D's packaging cutover merged on 2026-10-31 and
-prepares native setups plus one `wootc-legacy.exe` fallback. It has not changed
-the assets of the latest full release, `v0.1.0-alpha.1`. Phase E follows a clean
-native release and the docs audit; do not remove the fallback before that gate.
+prepared native setups plus one `wootc-legacy.exe` fallback. `v0.1.0-alpha.2`
+(2026-11-21) is the first full release with these assets. Phase E (#346) removed
+the Wails build from source after that clean native release; later releases do not
+ship `wootc-legacy.exe`.
 
 A release cannot use old Wails passes as native UI or setup proof. Carry only
 component evidence whose engine code and contract did not change. Re-run the
@@ -168,7 +169,7 @@ Its file-copy fallback does not prove setup installation.
 ### Artifact set
 
 The current workflows prepare the following **native artifact set**. This
-describes a future release that passes its gates, not the published `v0.1.0-alpha.1`.
+is the asset set of `v0.1.0-alpha.2`, the first release to ship it.
 Its primary GUI downloads are one Inno setup per eligible
 brand: `wootc-Installer-Setup.exe`, `TunaOS-Installer-Setup.exe`,
 `Bluefin-Installer-Setup.exe`, `Bazzite-Installer-Setup.exe`, and
@@ -179,16 +180,25 @@ used for that brand: `TunaOS-Installer.exe`, `wootc.exe`, and so on.
 External pages link `releases/latest/download/TunaOS-Installer.exe`, so this
 name must stay on the current setup.
 
-The cut-over release is configured to publish the Wails build once as `wootc-legacy.exe`.
-It is a compatibility fallback, not a branded primary installer. It needs
-WebView2.
+`v0.1.0-alpha.2` published the Wails build once as `wootc-legacy.exe`. The release
+workflow no longer builds it (#346).
 
 The shared boot artifacts are `deployer-vmlinuz`, `deployer-initramfs.img`,
 `shimx64.efi`, `grubx64.efi`, and `mmx64.efi`.
 The set also includes `wubildr.efi` when its build succeeds.
-`SHA256SUMS` lists the boot artifacts and `wootc-legacy.exe`.
+`SHA256SUMS` lists the boot artifacts.
 `native-SHA256SUMS` lists the setup assets that the workflow attaches.
 `skip_e2e` exists for emergencies and documents itself in the release notes.
+
+After the upload, the publish job downloads `SHA256SUMS`, its signature and
+every listed asset from the public URLs of the tag. These files must be the
+signed bytes and must agree with the key of the job. The job then starts the
+setup workflow.
+
+The publish job does not make a full release `latest`. The setup
+workflow attaches `TunaOS-Installer.exe` and the other setup files. Then it
+makes the release `latest` and starts winget. Until then, the `latest` link
+serves the previous release and does not give 404.
 
 ## Full-matrix evidence at the RC SHA (v1.0 criterion 3)
 
@@ -201,7 +211,10 @@ A green from an earlier commit does not count. [#240] records this set.
    `E2E matrix (full, gui)`.
 2. If a cell fails, read its flake notice. The harness writes this notice only
    for a known infra signature. Re-dispatch that cell with `grep=<cell>`, or
-   re-run the failed job. Do not re-run a red cell that has no flake notice.
+   re-run it. For a native GUI cell, use **Re-run all jobs**.
+   Each e2e run signs with a new key. Thus it cannot use a native-shell job
+   from an earlier run of the cell. Its wait stops with that message.
+   Do not re-run a red cell that has no flake notice.
    Diagnose it, because it is a real failure.
 3. Grade the run set and paste the output into [#240] and the release notes:
 
@@ -278,6 +291,21 @@ credentials. Until that setup and fresh-machine verification pass, signatures
 and SmartScreen acceptance remain unproven; a signing decision is not a signed
 release.
 
+**Decision record** ([#229], maintainer decision in [#597], option B):
+
+| Item | Record |
+|------|--------|
+| Choice | Azure Trusted Signing (Microsoft now calls it Artifact Signing) |
+| Why | No hardware token or HSM to manage, the lowest cost, and the release pipeline already supports it |
+| Cost | About $10 per month for the Azure account. Check the current price before you rely on it |
+| Signer identity | The organization name that Microsoft validates. It becomes the `CN` and `O` of each certificate |
+| Renewal owner | The maintainer who owns the Azure subscription. The service renews its short-lived certificates, but identity validation and the subscription need a person |
+| Not chosen | An EV certificate on a hardware token, which is hard to use in CI, and the SignPath OSS program |
+
+A signature does not remove the SmartScreen warning at once. SmartScreen
+reputation grows with the number of downloads, so a new signed release can
+still show a warning for a while. Do not promise users that it is gone.
+
 The pipeline side ([#230]) supports the selected service through jsign and
 GitHub OIDC. See [the owner setup](#setting-up-azure-trusted-signing).
 The release step `Authenticode-sign the installers` runs
@@ -349,8 +377,7 @@ When `WOOTC_SIGN_STORETYPE` is `TRUSTEDSIGNING` and `AZURE_CLIENT_ID` is set,
 no secret for this login. Immediately before the first signature,
 `packaging/sign-exes.sh` gets an access token for `https://codesigning.azure.net`.
 
-jsign signs the Wails compatibility asset `wootc-legacy.exe` in the release
-assets. The workflow for native setups embeds the public release key in each
+jsign signs the engine executables in the release assets. The workflow for native setups embeds the public release key in each
 protected engine. It publishes the setup hashes as `native-SHA256SUMS`.
 MSIX signatures remain gated on #229/#230. The timestamp server is
 `http://timestamp.acs.microsoft.com`.
@@ -447,12 +474,12 @@ The build uses the brand's `icon.ico` when present. Otherwise, it converts
 icon fallback. A conversion error stops the build. The release job installs
 `rsvg-convert`, so brands with a logo get their own icon.
 
-The helper builds the one-release Wails compatibility asset from a temporary
+The helper builds the branded engine executable from a temporary
 copy of the app. It does not change the resource file in the source tree:
 
 ```sh
 python3 packaging/build-windows.py --brand wootc \
-    --version v1.2.3 --output /tmp/wootc-legacy.exe
+    --version v1.2.3 --output /tmp/wootc.exe
 ```
 
 The resource tool keeps the administrator manifest, Windows compatibility,
@@ -465,6 +492,7 @@ Use the field verifier and attach screenshots for the published files.
 [#241]: https://github.com/tuna-os/wootc/issues/241
 [#240]: https://github.com/tuna-os/wootc/issues/240
 [#229]: https://github.com/tuna-os/wootc/issues/229
+[#597]: https://github.com/tuna-os/wootc/issues/597
 [#230]: https://github.com/tuna-os/wootc/issues/230
 [jsign]: https://ebourg.github.io/jsign/
 
@@ -493,8 +521,8 @@ Do these steps in order:
 2. Dispatch `release.yml` with `release_tag: v1.0.0` from the final green SHA
    of the soak. Do not set `skip_e2e`. The E2E gate of the tagged channel
    runs again before the publish.
-3. Monitor the `winget-publish.yml` run that the publish job dispatches, until
-   `winget show TunaOS.wootc` reports `1.0.0`.
+3. Monitor the `winget-publish.yml` run that the setup workflow dispatches,
+   until `winget show TunaOS.wootc` reports `1.0.0`.
 4. Change `ROADMAP.md` to the post-1.0 plan. Close the milestone issues
    #210 to #213, each with links to its evidence.
 5. Announce the release in the channels that each brand agreed to
@@ -520,8 +548,11 @@ sets the decision order and verification steps for a bad release.
 1. Download `wootc-Installer-Setup.exe` (or the branded setup for your
    distribution). It is not code-signed yet (alpha) — SmartScreen will warn;
    *More info → Run anyway*. The native shell does not need WebView2.
-2. The setup checks for Windows 10/11 64-bit, UEFI + Secure Boot, TPM 2.0,
-   and **BitLocker off** (alpha). It also needs at least 35 GB free on `C:`.
+2. The setup itself only requires 64-bit Windows 10 build 17763 or later.
+   The installed app checks the rest at startup: UEFI, Secure Boot, **BitLocker
+   off** (alpha) and free space on `C:`. It needs at least 42 GB free for the
+   smallest image (a 20 GB Linux disk plus a 22 GB install reserve). Larger
+   images need more.
 3. Run the setup, pick Bluefin, set a username + password, and click Install.
    Install creates the Linux disk file and changes the boot setup before you
    click **Reboot Now**. Save your work before you restart.

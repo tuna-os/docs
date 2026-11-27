@@ -100,9 +100,10 @@ expiry and let the server decide.
 model long after both calls returned `ok`. The authority is
 `hive.yaml.runtime` and `hive-state.json` (`model_override`/`backend_override`).
 
-**Switching backend and model is two calls with no transaction.** Between them
-the agent sits on the new backend with the old model — `codex/claude-sonnet-5`
-cannot launch. Verify after, and expect to retry.
+**Switching backend and model is one atomic call.** Placement goes through
+`PUT /api/config/agent/{name}/models`, so the agent never sits on the new
+backend with the old model. `/api/status` still lags the write, so verify
+against `hive.yaml.runtime` and `hive-state.json`.
 
 **Rotation's own pauses are byte-identical to an operator's.** Rotation
 authenticates with the owner session cookie, so a strand records as

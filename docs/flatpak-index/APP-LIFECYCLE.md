@@ -141,9 +141,9 @@ local `index/static`, so the recovery source is the prior commit to
 5. Record the incident in the change record: the bad commit SHA, what you
    restored, the date, and the owner.
 
-The incident owner is the production-source owner named by the governance
-decision in ROADMAP.md. Until then, any `tuna-os/docs` maintainer with
-`FLATPAK_INDEX_TOKEN` may do the rollback. Run this procedure as a live
+The incident owner is a `tuna-os/docs` maintainer: `tuna-os/docs` is the
+canonical catalog owner (decision record in ROADMAP.md, #171). Any maintainer
+with `FLATPAK_INDEX_TOKEN` may do the rollback. Run this procedure as a live
 exercise at least once. A rollback nobody has exercised is not one.
 
 ## Checks

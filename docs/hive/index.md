@@ -570,7 +570,9 @@ for keybindings, pane cadence, and v1 boundaries, and
 
 ## Tuna OS deployment
 
-TunaOS runs this fork on a Kubernetes cluster in AWS with Talos Linux nodes.
+TunaOS runs this fork on one VPS. Since 2026-10-25, the hub and both hives
+are Docker Compose services, not Kubernetes workloads.
+[FORK.md](https://github.com/tuna-os/hive/blob/v4/FORK.md#what-the-fleet-runs) tells which binary each service runs.
 The hub lists two official hives and their public contribution guide.
 
 | Host | Role |

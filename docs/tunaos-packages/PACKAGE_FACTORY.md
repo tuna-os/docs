@@ -59,7 +59,7 @@ Two things are deliberately *not* built here.  **GNOME on Hummingbird** is
 consumed from `projectbluefin/utah-packages`, pinned by digest on the
 hummingbird target as a `consumed_indexes` entry: whatever it ships is
 counted as already had, never rebuilt (`docs/HUMMINGBIRD-TARGET.md` §7-8).
-**tromso and xfce-linux** (KDE and XFCE on freedesktop-sdk, BuildStream)
+**tromso and brussels** (KDE and XFCE on freedesktop-sdk, BuildStream)
 are whole-OS images built in their own repositories; they are products in
 tunaOS's family, not package sources for any target here.
 
