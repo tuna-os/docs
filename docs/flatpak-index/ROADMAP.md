@@ -29,9 +29,8 @@ retired. Metadata checks in this repository validate the live served catalog at
 
 Target: one planning cycle.
 
-- Name an accountable owner for the remote and choose its long-term source
-  repository: move production ownership here, or formally retire this
-  repository as an index host.
+- ~~Name an accountable owner and choose the source repository.~~ Decided in
+  #171: `tuna-os/docs` (see the decision record below).
 - Inventory every documented app ID, OCI reference, supported architecture,
   and publisher workflow against the served production index.
 - Define a freshness SLO from a successful app publish to remote availability.
@@ -40,8 +39,8 @@ Target: one planning cycle.
 - Document an incident owner and a tested rollback procedure for a bad index
   publication.
 
-Exit gate: the ownership decision is recorded, the production source is named
-in both repositories, and drift is measured from the user-facing endpoint.
+Exit gate: the ownership decision is recorded (done), the production source is
+named in both repositories, and drift is measured from the user-facing endpoint.
 
 ## Mid term: consolidate publication
 
@@ -84,6 +83,14 @@ and non-authoritative copies cannot be mistaken for the live remote.
 
 ## Decision record
 
-Record the ownership decision and dates here when approved. Until then, this
-roadmap describes direction rather than a commitment to move production out of
-`tuna-os/docs`.
+**Catalog ownership (#171, decided by the maintainer):**
+
+- Canonical catalog: `static/flatpak/` in `tuna-os/docs` (entry point
+  `static/flatpak/index/static`), served by the `tunaos-org` Cloudflare Worker
+  at `https://tunaos.org/flatpak/`. It was already production, so this carries
+  the least migration risk.
+- `tuna-os/flatpak-index` is tooling and checks only. It keeps no hand-maintained
+  or generated copy of the catalog (retired in #173).
+- Application publish workflows write only to `tuna-os/docs`.
+- Owner and rollback: `tuna-os/docs` maintainers own the catalog and perform
+  rollback, as in [docs/APP-LIFECYCLE.md](https://github.com/tuna-os/flatpak-index/blob/main/docs/APP-LIFECYCLE.md).

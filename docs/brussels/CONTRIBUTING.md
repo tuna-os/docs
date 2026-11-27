@@ -3,7 +3,7 @@ sidebar_position: 2
 title: "Contributing"
 ---
 
-Thank you for your interest in the BuildStream project for XFCE Linux!
+Thank you for your interest in the BuildStream project for Brussels!
 
 ## Contribute compute — no code needed
 
@@ -33,8 +33,8 @@ Never post account credentials or API keys in issues or pull requests.
 
 ```bash
 # Clone repository
-git clone https://github.com/tuna-os/xfce-linux.git
-cd xfce-linux
+git clone https://github.com/tuna-os/brussels.git
+cd brussels
 
 # Verify the recipe files parse
 just --summary >/dev/null

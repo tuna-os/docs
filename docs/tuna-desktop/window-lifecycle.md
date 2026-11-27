@@ -1,5 +1,5 @@
 ---
-sidebar_position: 65
+sidebar_position: 61
 title: "window lifecycle"
 ---
 
@@ -67,7 +67,7 @@ flock /tmp/tuna-v1-build-and-freeze.lock bash -c '
   cp "${CARGO_TARGET_DIR:-target}/debug/tuna-compositor" \
      "${CARGO_TARGET_DIR:-target}/debug/tuna-shell-gtk" /tmp/tuna-window-binaries/
 '
-dbus-run-session -- scripts/tuna-window-lifecycle-proof \
+scripts/tuna-window-lifecycle-proof \
   --bin-dir /tmp/tuna-window-binaries --artifacts /tmp/tuna-window-lifecycle
 ```
 
@@ -76,10 +76,15 @@ A dedicated accessibility bus is launched and its explicit address is passed
 to every GTK process. The manifest records both bus identities and owned
 cleanup, following the project isolation convention.
 It freezes the existing compositor animation clock, maps a real GTK native
-window and transient, advances the clock through their durations, exits the
-client, and checks screenshots for the retained final frame, half-way fade
-and absence of stale pixels at completion. It also checks reduced-motion
-normal-window transforms and immediate map/destroy with animations off.
+window and transient, advances the clock through their durations (letting the
+parent undim after its attached dialog closes), exits the client, and checks
+screenshots for the retained final frame, half-way fade and absence of stale
+pixels at completion. The retained frame is the whole buffer, client shadows
+included, as GNOME retains the actor: its right and bottom edges must match
+the live window. It also checks reduced-motion normal-window transforms and
+immediate map/destroy with animations off. CI's gtk-shell job runs it against
+the frozen `scripts/tuna-minimize-ci-proof` bundle; its WL-* assertions feed
+the parity ledger.
 The proof copies the supplied binaries into its artifact directory and records
 SHA-256 hashes, source revision, dirty status and renderer in `manifest.json`.
 Build both binaries from the same checkout before running it. Clean workspace

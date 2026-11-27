@@ -242,9 +242,10 @@ PR 234 head `bd18c76`). The full GTK proof, including `G-WS-INSERT`,
 passed. Capture with `--workspace-insertion-only` isolates this state
 from screenshot-helper startup and fails if the placeholder is absent.
 
-The candidate XWayland activation journey (#219) additionally checks native GTK
+The XWayland activation journey (#219, closed) additionally checks native GTK
 startup without an XWayland process, the first real X11 app launched from search,
 a killed compatibility process followed by same-display reconnect, preserved
 native window IDs, and listening-socket/display-lock cleanup on graceful exit.
 See `xwayland-on-demand.md`. These are runtime/lifecycle gates, separate from
-GNOME screenshot pixel comparisons; their exact-head CI qualification is pending.
+GNOME screenshot pixel comparisons; they run in `scripts/tuna-gtk-shell-proof`
+(`G-X11-DEMAND`, `G-X11-RESTART`, `G-X11-CLEANUP`; ledger P-SY-04).

@@ -43,6 +43,17 @@ Hashes must use SHA-256 or SHA-512 — either a bare SHA-256 digest of 64 charac
 length. The validator rejects MD5 and SHA-1 digests: both are collision-broken,
 so a pin with one of them does not verify the download.
 
+Write all manifest keys in lower case. Scoop reads a key in any letter case,
+so the validator rejects a key that is not lower-case ASCII. Scoop uses a
+top-level `url` for each architecture that the `architecture` object does not
+list. Thus the validator applies the same URL and hash rules to a top-level
+download when `architecture` is also there. The validator checks each `.json`
+file in `bucket/` and in its subdirectories.
+
+Do not set `version` to `nightly`. Scoop does not do the hash check for that
+version, so the validator rejects it. Use only ASCII letters, digits, and the
+characters `.`, `-`, `+`, and `_` in a version.
+
 Follow the upstream tool's supported Windows architectures and use release
 artifacts from its official TunaOS repository. Do not add manifests for
 third-party projects or unpublished artifacts.

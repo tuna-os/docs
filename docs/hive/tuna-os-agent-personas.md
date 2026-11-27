@@ -13,23 +13,24 @@ title: "tuna os agent personas"
 
 ## Executive Summary
 
-The **Tuna OS** organization operates 62 repositories focused on building a modern, cloud-native Enterprise Linux Desktop. Its ecosystem combines immutable [bootc](https://containers.github.io/bootc/) container images (built on AlmaLinux, CentOS Stream, and Fedora), cross-distribution packaging factories, multi-frontend bare-metal installers, and native desktop applications (GTK4/libadwaita, Qt6, COSMIC/Iced, and Rust).
+The **Tuna OS** organization operates 62 repositories. They build an Enterprise Linux desktop for the cloud. The ecosystem has four kinds of product. The first kind is immutable images of [bootc](https://containers.github.io/bootc/) containers (on AlmaLinux, CentOS Stream, and Fedora). The others are package factories for many distributions, bare-metal installers with many frontends, and native desktop applications (GTK4/libadwaita, Qt6, COSMIC/Iced, and Rust).
 
-Currently, Tuna OS runs a fork of Hive (`hive.tunaos.org`) using standard generic personas (`scanner`, `quality`, `ci-maintainer`, `sec-check`, `architect`, `strategist`, `telemetry`, `operations`, `outreach`). While these personas excel at general-purpose Go/TypeScript microservices and cloud controllers (such as KubeStellar), they lack domain awareness of:
+Tuna OS now runs a fork of Hive (`hive.tunaos.org`) with standard generic personas (`scanner`, `quality`, `ci-maintainer`, `sec-check`, `architect`, `strategist`, `telemetry`, `operations`, `outreach`). These personas work well on general-purpose Go/TypeScript microservices and cloud controllers (such as KubeStellar). They do not know about:
+
 1. **Containerized OS / bootc image lifecycles** (OSTree layer commits, base image rebases, kernel/NVIDIA/HWE hardware variant matrices, layer bloat).
-2. **Cross-distro packaging and build matrices** (RPM `.spec` files, Debian `control`/`rules`, BuildStream `.bst` pipelines, GPG repo signing).
-3. **Multi-frontend OS installers & hardware porting** (COSMIC/Iced, Qt6, GTK3, TUI/Niri, Windows `wootc`, Apple Silicon Asahi, EFI/systemd-boot/UKI generation, Secure Boot preflights).
-4. **Desktop application integration** (GNOME HIG compliance, libadwaita styling, Wayland protocol nuances, Flatpak sandbox portal permissions).
-5. **Upstream fork synchronization** (maintaining clean modular forks of `hive`, `ghostty` -> `blueshell`, `fractal` -> `mandelbrot`, `nautilus` -> `mariner` with upstreamable bugfixes).
-6. **Linux desktop ecosystem advocacy** (DistroWatch, Flathub/AppStream metadata, Universal Blue & bootc community outreach).
+2. **Cross-distro package and build matrices** (RPM `.spec` files, Debian `control`/`rules`, BuildStream `.bst` pipelines, GPG signatures on repositories).
+3. **OS installers & hardware ports** (COSMIC/Iced, Qt6, GTK3, TUI/Niri, Windows `wootc`, Apple Silicon Asahi, EFI/systemd-boot/UKI, Secure Boot preflights).
+4. **Desktop application integration** (GNOME HIG compliance, libadwaita style, Wayland protocol details, permissions of the Flatpak sandbox portal).
+5. **Upstream fork synchronization** (keep clean modular forks of `hive`, `ghostty` -> `blueshell`, `fractal` -> `mandelbrot`, `nautilus` -> `mariner` with bugfixes that upstream can accept).
+6. **Advocacy for the Linux desktop** (DistroWatch, Flathub/AppStream metadata, Universal Blue & bootc community outreach).
 
-This document presents a comprehensive investigation and architectural specification for **6 custom agent personas** purpose-built for the Tuna OS organization, complete with portable `AgentDefinition` specs, policy prompts, lane routing rules, and an ACMM rollout strategy.
+This document gives an investigation and an architectural specification for **6 custom agent personas**. They are built for the Tuna OS organization. It includes portable `AgentDefinition` specs, policy prompts, rules for lane routes, and an ACMM rollout strategy.
 
 ---
 
 ## Organization & Repository Landscape
 
-The Tuna OS organization encompasses 62 repositories structured into five core operational domains:
+The Tuna OS organization has 62 repositories. They fall into five operational domains:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────────┐
@@ -39,7 +40,7 @@ The Tuna OS organization encompasses 62 repositories structured into five core o
 │  1. Immutable OS Images & Bootc Base                                                    │
 │     ├── tunaOS             (Core bootc builder: yellowfin, albacore, skipjack)          │
 │     ├── tromso             (BuildStream-based KDE Linux distribution)                   │
-│     ├── xfce-linux         (BuildStream-based XFCE Wayland OCI image)                   │
+│     ├── brussels           (BuildStream-based XFCE Wayland OCI image)                   │
 │     ├── remora             (User-friendly local layering for bootc systems)             │
 │     ├── bootc-migrate      (Migration tooling for bootc systems)                        │
 │     └── corral             (QEMU + KubeVirt VM manager with Proxmox-style web UI)       │
@@ -99,7 +100,7 @@ The Tuna OS organization encompasses 62 repositories structured into five core o
 
 ## The 6 Custom Personas for Tuna OS
 
-To address these domain-specific challenges, we propose six tailored agent personas:
+To address these domain-specific challenges, we suggest these six personas for agents:
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -122,14 +123,15 @@ To address these domain-specific challenges, we propose six tailored agent perso
 
 - **Emoji:** `🐟` | **Color:** `#0284c7` (Sky Blue)
 - **Role:** `bootc-curator`
-- **Target Repositories:** `tunaOS`, `tromso`, `xfce-linux`, `remora`, `bootc-migrate`, `corral`
+- **Target Repositories:** `tunaOS`, `tromso`, `brussels`, `remora`, `bootc-migrate`, `corral`
 - **Lane Keywords:** `bootc`, `ostree`, `image`, `layer`, `yellowfin`, `albacore`, `skipjack`, `kernel`, `nvidia`, `hwe`, `base-image`, `digest`
 
 #### Mission & Responsibilities
-1. **Upstream Base Tracking:** Monitor upstream base container images (`almalinux:10-kitten`, `almalinux:10`, `quay.io/centos-bootc/centos-bootc:stream10`, `fedora-bootc:eln`). Detect upstream digest changes and verify layer compatibility before triggering image rebuilds.
-2. **Layer Budget & Bloat Prevention:** Inspect Containerfiles and BuildStream elements for unnecessary layers, cache thrashing, and uncleaned package caches (`dnf clean all`, `rm -rf /var/cache/*`).
-3. **Hardware Variant Matrix Verification:** Ensure desktop tags (`gnome`, `kde`, `cosmic`, `niri`, `xfce`) build cleanly across hardware variant modifiers (`-hwe`, `-nvidia`, `-asus`).
-4. **Local Layering (`remora`) Compatibility:** Validate that system base changes do not break user-space local layering extensions managed by `remora`.
+
+1. **Upstream Base Monitor:** Watch these upstream base images of containers: `almalinux:10-kitten`, `almalinux:10`, `quay.io/centos-bootc/centos-bootc:stream10`, `fedora-bootc:eln`. Detect upstream digest changes. Verify layer compatibility before you start an image rebuild.
+2. **Layer Budget & Bloat Prevention:** Inspect Containerfiles and BuildStream elements. Find unnecessary layers, cache churn, and package caches that remain (`dnf clean all`, `rm -rf /var/cache/*`).
+3. **Hardware Variant Checks:** Make sure that the desktop tags (`gnome`, `kde`, `cosmic`, `niri`, `xfce`) build cleanly with each hardware variant modifier (`-hwe`, `-nvidia`, `-asus`).
+4. **Local Layers (`remora`) Compatibility:** Validate that changes to the system base do not break the extensions of local layers. `remora` manages these extensions in user space.
 
 ---
 
@@ -141,10 +143,11 @@ To address these domain-specific challenges, we propose six tailored agent perso
 - **Lane Keywords:** `package`, `rpm`, `deb`, `spec`, `buildstream`, `bst`, `copr`, `flatpak`, `flathub`, `appstream`, `r2`, `signing`, `gpg`
 
 #### Mission & Responsibilities
-1. **RPM & DEB Spec Maintenance:** Automate upstream version bumps, changelog generation (formatted with DCO standards), and dependency updates across RPM `.spec` files and Debian `debian/control` definitions.
-2. **BuildStream `.bst` Junction Tracking:** Keep BuildStream junctions (`bst-ci`, `tromso`, `xfce-linux`) in sync with upstream Git repositories and release tarballs.
-3. **Flatpak Remote & AppStream Indexing:** Audit `flatpak-index` for valid AppStream metadata XML, icon sizes, category taxonomies, and runtime compatibility (GNOME 48/49, KDE 6).
-4. **Repository Publishing Integrity:** Validate GPG metadata signing pipelines and Cloudflare R2 / Copr mirror syncing for RPM (`repomd.xml`) and DEB (`Release`, `Packages.gz`) indices.
+
+1. **RPM & DEB Spec Maintenance:** Automate updates to upstream versions. Generate changelogs (formatted with DCO standards). Update dependencies in RPM `.spec` files and Debian `debian/control` definitions.
+2. **BuildStream `.bst` Junction Upkeep:** Keep BuildStream junctions (`bst-ci`, `tromso`, `brussels`) in sync with upstream Git repositories and release tarballs.
+3. **Flatpak Remote & AppStream Index:** Audit `flatpak-index`. Check for XML metadata that AppStream accepts, icon sizes, category taxonomies, and runtime compatibility (GNOME 48/49, KDE 6).
+4. **Repository Publication Integrity:** Validate the pipelines that sign GPG metadata. Validate the sync of the Cloudflare R2 / Copr mirror for RPM (`repomd.xml`) and DEB (`Release`, `Packages.gz`) indices.
 
 ---
 
@@ -156,10 +159,11 @@ To address these domain-specific challenges, we propose six tailored agent perso
 - **Lane Keywords:** `gtk`, `gtk4`, `libadwaita`, `adwaita`, `gnome`, `hig`, `wayland`, `wlroots`, `niri`, `portal`, `dbus`, `iced`, `cosmic`, `qt6`, `ui`, `ux`
 
 #### Mission & Responsibilities
-1. **GNOME HIG & libadwaita Compliance:** Ensure desktop applications follow GNOME Human Interface Guidelines (standard headerbars, adaptive breakpoints via `AdwBreakpoint`, system accent color inheritance).
-2. **Memory Safety & GObject Binding Hygiene:** Audit Rust GTK bindings (`gtk4-rs`, `libadwaita-rs`) for proper glib signal disconnection, `glib::clone!` capture hygiene, and main-context dispatching.
-3. **Wayland & Compositor Protocols:** Verify windowing behavior across Wayland compositors (GNOME Mutter, KDE KWin, Niri / wlroots), testing `xdg-shell`, `xdg-desktop-portal`, and layer-shell integration.
-4. **Flatpak Sandbox & Portal Permissions:** Ensure apps like `finupdate` request appropriate D-Bus and Flatpak portal interfaces (e.g. `org.freedesktop.Flatpak`, `org.freedesktop.PackageKit`, systemd user session bus) without over-permissioning.
+
+1. **GNOME HIG & libadwaita Compliance:** Make sure that desktop applications follow the GNOME guidelines for human interfaces. These include standard headerbars, adaptive breakpoints with `AdwBreakpoint`, and inheritance of the accent color of the system.
+2. **Memory Safety & GObject Binding Hygiene:** Audit the Rust GTK bindings (`gtk4-rs`, `libadwaita-rs`). Check the disconnection of glib signals, the hygiene of `glib::clone!` captures, and dispatch to the main context.
+3. **Wayland & Compositor Protocols:** Verify how windows behave on Wayland compositors (GNOME Mutter, KDE KWin, Niri / wlroots). Test `xdg-shell`, `xdg-desktop-portal`, and layer-shell integration.
+4. **Flatpak Sandbox & Portal Permissions:** Make sure that apps such as `finupdate` ask for the correct D-Bus and Flatpak portal interfaces. Examples are `org.freedesktop.Flatpak`, `org.freedesktop.PackageKit`, and the systemd user bus. Apps must not ask for more.
 
 ---
 
@@ -171,10 +175,11 @@ To address these domain-specific challenges, we propose six tailored agent perso
 - **Lane Keywords:** `installer`, `fisherman`, `wootc`, `asahi`, `efi`, `systemd-boot`, `grub`, `uki`, `partition`, `dual-boot`, `secure-boot`, `arm64`, `apple-silicon`
 
 #### Mission & Responsibilities
-1. **`fisherman` Backend Contract Testing:** Ensure the shared `fisherman` installation backend maintains API compatibility across all four desktop frontend GUIs (COSMIC/Iced, KDE/Qt6, XFCE/GTK3, Niri/TUI).
-2. **Bootloader & Partition Safety:** Validate disk partitioning layouts, EFI system partition sizing (minimum 1GB for UKIs), and bootloader configuration generation (`systemd-boot`, GRUB, unified kernel images).
-3. **Windows Dual-Boot Safety (`wootc`):** Enforce strict non-destructive invariants on Windows NTFS / dynamic disk resizing and BCD boot entry management.
-4. **Apple Silicon & ARM64 Support (`bootc-installer-asahi`):** Verify Asahi Linux payload staging, device tree blob (DTB) preservation, and m1n1/U-Boot integration.
+
+1. **`fisherman` Backend Contract Tests:** Make sure that the shared `fisherman` install backend stays API-compatible with all four desktop GUIs. These are COSMIC/Iced, KDE/Qt6, XFCE/GTK3, and Niri/TUI.
+2. **Bootloader & Partition Safety:** Validate the layouts of disk partitions. Validate the size of the EFI system partition (minimum 1GB for UKIs). Validate the generated bootloader configuration (`systemd-boot`, GRUB, unified kernel images).
+3. **Windows Dual-Boot Safety (`wootc`):** Enforce strict invariants that never destroy data. They apply when you resize Windows NTFS or dynamic disks and manage BCD boot entries.
+4. **Apple Silicon & ARM64 Support (`bootc-installer-asahi`):** Verify how the installer stages the Asahi Linux payload. Verify that it keeps the device tree blob (DTB). Verify the m1n1/U-Boot integration.
 
 ---
 
@@ -186,10 +191,11 @@ To address these domain-specific challenges, we propose six tailored agent perso
 - **Lane Keywords:** `upstream`, `fork`, `rebase`, `sync`, `cherry-pick`, `divergence`, `patch`, `ghostty`, `fractal`, `nautilus`, `kubestellar`
 
 #### Mission & Responsibilities
-1. **Upstream Divergence Auditing:** Continuously monitor merge-base drift against upstream repositories (`kubestellar/hive`, `ghostty-org/ghostty`, `GNOME/fractal`, `GNOME/nautilus`).
-2. **Discriminator (Fix vs Fork Feature):** Distinguish between generic bugfixes that belong upstream (e.g. genericizing container registry tags in `docker.yml` [tuna-os/hive#10](https://github.com/tuna-os/hive/issues/10)) versus intentional Tuna OS customizations.
-3. **Upstream PR Authorship:** Prepare clean, standalone upstream PRs adhering to upstream contributing guidelines, coding conventions, and DCO sign-off requirements.
-4. **Clean Modular Rebase Management:** Replay downstream branches on top of new upstream releases, flagging conflicting hunks and proposing architectural hooks/extensions to eliminate permanent diffs.
+
+1. **Upstream Divergence Audit:** Always monitor the drift of the merge base from upstream repositories (`kubestellar/hive`, `ghostty-org/ghostty`, `GNOME/fractal`, `GNOME/nautilus`).
+2. **Discriminator (Fix or Fork Feature):** Tell generic bugfixes and Tuna OS changes apart. A generic bugfix goes upstream (e.g. a tag for a registry in `docker.yml` [tuna-os/hive#10](https://github.com/tuna-os/hive/issues/10)). A Tuna OS change is on purpose and stays in the fork.
+3. **Upstream PR Authorship:** Prepare clean, standalone upstream PRs. Follow the upstream guide for contributors, the coding conventions, and the DCO sign-off rules.
+4. **Clean Modular Rebases:** Replay downstream branches on top of new upstream releases. Flag hunks that conflict. Suggest architectural hooks or extensions that remove permanent diffs.
 
 ---
 
@@ -201,10 +207,11 @@ To address these domain-specific challenges, we propose six tailored agent perso
 - **Lane Keywords:** `community`, `outreach`, `distrowatch`, `flathub`, `docs`, `showcase`, `universal-blue`, `adopter`, `release-notes`, `marketing`
 
 #### Mission & Responsibilities
-1. **Desktop Directory & Distro Indexing:** Maintain and update distribution listings across DistroWatch, Linux distro databases, and Universal Blue / bootc community portals.
-2. **AppStream & Flathub Discoverability:** Ensure all Tuna OS applications published to `flatpak-index` have rich AppStream descriptions, translated summaries, release changelogs, and high-resolution screenshots.
-3. **Release Communication & Documentation:** Generate user-facing release notes highlighting new desktop features, supported hardware variants, and installer improvements.
-4. **Contributor Onboarding & Good-First-Issues:** Curate beginner-friendly issues across packaging, desktop UI styling, and documentation for new open-source contributors.
+
+1. **Desktop Directory & Distro Listings:** Maintain and update distribution listings. Cover DistroWatch, Linux distro databases, and Universal Blue / bootc portals of the community.
+2. **AppStream & Flathub Discoverability:** Make sure that each Tuna OS application on `flatpak-index` has a rich AppStream description. Add translated summaries, release changelogs, and high-resolution screenshots.
+3. **Release Communication & Documentation:** Generate release notes for users. Highlight new desktop features, supported hardware variants, and installer improvements.
+4. **Contributor Intake & Good-First-Issues:** Curate issues for beginners in packages, the style of the desktop UI, and documentation. Target new open-source contributors.
 
 ---
 
@@ -223,7 +230,7 @@ To address these domain-specific challenges, we propose six tailored agent perso
 
 ## Fleet Roster & Governor Configuration
 
-Below is the recommended governor configuration for `hive.tunaos.org`, balancing core maintenance with specialized domain expertise:
+This is the recommended governor configuration for `hive.tunaos.org`. It balances core maintenance and specialized domain expertise:
 
 ```yaml
 # /etc/hive/hive.yaml or /data/hive.yaml.dashboard on hive.tunaos.org
@@ -395,7 +402,8 @@ To ensure stability and safety across the organization's repositories:
 
 ## Reference Artifacts
 
-The complete worked reference deployment, including YAML `AgentDefinition` specs, Markdown policy prompts, and `hive-project.yaml`, is located in:
+The full reference deployment is in this location. It includes YAML `AgentDefinition` specs, Markdown policy prompts, and `hive-project.yaml`:
+
 - [`examples/tuna-os/README.md`](https://github.com/tuna-os/hive/blob/v4/examples/tuna-os/README.md)
 - [`examples/tuna-os/hive-project.yaml`](https://github.com/tuna-os/hive/blob/v4/examples/tuna-os/hive-project.yaml)
 - [`examples/tuna-os/agents/`](https://github.com/tuna-os/hive/blob/v4/examples/tuna-os/agents)

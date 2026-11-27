@@ -1,5 +1,5 @@
 ---
-sidebar_position: 13
+sidebar_position: 14
 title: "datetime proof"
 ---
 
@@ -23,7 +23,7 @@ keeps the bundle).
 | G-DATETIME-RTC | The RTC is kept in UTC (`LocalRTC=no`). No claim about RTC hardware accuracy; `SetLocalRTC` is never called. | — |
 | G-DATETIME-CLOCK | The panel clock (an AT-SPI dump of `tuna-shell-gtk`, 24-hour or 12-hour text) shows the system time within 120 s. | — |
 | G-DATETIME-CLOCK-TZ | Within 10 s of `SetTimezone` the panel clock shows the new zone's wall time and no longer the old one. | gnome-desktop 51.0 `libgnome-desktop/gnome-wall-clock.c` lines 77-85 and 449-486 (a monitor on `/etc/localtime` re-reads the zone) |
-| G-DATETIME-MANUAL | Manual time as the panel sets it: `SetTime` is refused while NTP is on (why the Date & Time row is insensitive then); `SetNTP(false)` stops the provider; an absolute `SetTime` moves the clock; the real time (carried on the monotonic clock) and NTP are written back, and the provider's enablement is unchanged. | `cc-datetime-page.c` `queue_set_ntp`, `on_timezone_changed`, `on_permission_changed` |
+| G-DATETIME-MANUAL | Manual time as the panel sets it: `SetTime` is refused while NTP is on (why the Date & Time row is insensitive then); `SetNTP(false)` stops the provider; an absolute `SetTime` moves the clock back 2 h 7 min; the real time (carried on the monotonic clock) and NTP are written back, the provider's enablement is unchanged, and no systemd timer's last trigger (`systemctl list-timers --output=json`, read before and after) lies ahead of the restored real time. | `cc-datetime-page.c` `queue_set_ntp`, `on_timezone_changed`, `on_permission_changed` |
 | G-DATETIME-CLOCK-SET | Within 10 s of the manual `SetTime` the panel clock shows the new time. | `gnome-wall-clock.c` (timerfd cancelled on clock set) |
 | G-DATETIME-POLKIT | The desktop user's own non-interactive `SetTimezone`, run from the user's systemd manager outside any logind session as GNOME launches apps, is allowed exactly when GNOME's rule grants it (member of the rule's privileged group) and otherwise refused with polkit's demand for interactive authentication; the zone is restored. | gnome-control-center 51.0 `panels/common/gnome-control-center.rules.in`, `panels/system/datetime/org.gnome.controlcenter.system.policy.in` (`datetime.configure` implies the timedate1 actions) |
 | G-DATETIME-NTP-ABSENT | A stopped provider reads `NTP=no`, `CanNTP=yes`; a missing one (runtime mask) reads `CanNTP=no` and `SetNTP(true)` is refused, the state in which Settings hides Automatic Date & Time; the provider is restored. | `cc-datetime-page.c` `is_ntp_available`, `on_can_ntp_changed` |
@@ -31,6 +31,19 @@ keeps the bundle).
 A gate with missing inputs fails as unevaluable; missing evidence is
 never a pass. A probe that fails halfway keeps its partial record, and
 the gate's detail carries the probe error.
+
+The manual time goes back, never forward. systemd fires a calendar timer
+once the realtime clock passes its next elapse, so a forward jump fires
+every `OnCalendar=` timer it skips, early. Marlin's `uupd.timer`
+(`OnCalendar=*-*-* 04:00:00`, `RandomizedDelaySec=15m`) did so whenever
+the old +2 h 7 min jump ran between about 01:53 and 04:15 UTC: uupd's
+update failed in the VM, and its "Some System Updates Failed" banners
+covered `V-STRIP-INSTALLED` (21 of 60 marlin-vm runs started 01:40–04:10
+UTC failed it, against 0 of 443 at other hours, 2026-11-07 to 11-21).
+A calendar timer's next elapse comes from its last trigger or activation,
+not from the jumped clock, so a jump back reaches none, and the restore
+ends at the real time. uupd and its timer stay untouched; the gate fails
+if any timer fires while the clock is ahead of the real time.
 
 The published-flavor lane reads the installed `tuna-desktop` package version
 with Marlin's native `pacman -Q` into `desktop_package_version` in that evidence

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 47
+sidebar_position: 44
 title: "session operations"
 ---
 
@@ -19,7 +19,8 @@ A session is one long-lived compositor and a shell it supervises:
 | `tuna-compositor` | The Smithay compositor. It owns outputs, input, focus, windows, workspaces, the lock state and the GNOME D-Bus services it serves. Its exit ends the session. | `tuna-session`, or you |
 | `tuna-shell-gtk` (or the legacy `tuna-shell-host`) | The panel, overview, app grid, quick settings, notifications and the lock screen's drawing and password entry. An ordinary Wayland client of the compositor. | the compositor, as a supervised child |
 | `tuna-compositor --internal-pam-conversation` | A private, short-lived helper that runs one PAM conversation for the lock screen. | the compositor, at each unlock attempt |
-| `tuna-ibus-bridge`, `ibus-daemon`, `ibus-x11` | Input methods, when IBus is installed. | the compositor |
+| `tuna-ibus-bridge`, `ibus-x11` | Input methods, when IBus is installed. | the compositor |
+| `ibus-daemon` | The IBus daemon, with `--panel disable` (the shell is IBus's panel). Exactly one runs. | in a hardware session, GNOME's `IBus Daemon for GNOME` user unit (`org.freedesktop.IBus.session.GNOME.service`), which systemd stops with the session; only where that unit does not exist, and in nested sessions, the IBus bridge, as its own child, which the compositor retires at session end |
 | `Xwayland` | X11 applications, when it is installed. | the compositor |
 | `orca` | The screen reader, when it is turned on. | the compositor |
 

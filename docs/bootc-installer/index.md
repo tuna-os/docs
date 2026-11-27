@@ -1,14 +1,14 @@
 ---
 sidebar_position: 1
-sidebar_label: "bootc-installer"
-title: "bootc-installer"
+sidebar_label: "TunaOS installer"
+title: "TunaOS installer"
 hide_title: true
 
 status: unknown
 ---
 
 <div>
-    <img src="https://raw.githubusercontent.com/tuna-os/bootc-installer/dev/data/icons/hicolor/scalable/apps/org.bootcinstaller.Installer.svg" height="64" />
+    <img src="https://raw.githubusercontent.com/tuna-os/installer/dev/data/icons/hicolor/scalable/apps/org.bootcinstaller.Installer.svg" height="64" />
     <h1>bootc-installer</h1>
     <p>Graphical installers that put a <a href="https://bootc-dev.github.io/bootc/">bootc</a> container image on a disk.<br />One backend, five desktop frontends, your brand.</p>
     <hr />
@@ -19,7 +19,7 @@ A wizard asks for a disk, an encryption mode and a user account.
 Then the [fisherman](https://github.com/tuna-os/fisherman) backend partitions the disk, installs the image and prepares the first boot.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/tuna-os/bootc-installer/dev/docs/screenshots/walkthrough.gif" alt="The GNOME installer, screen by screen" width="720" />
+  <img src="https://raw.githubusercontent.com/tuna-os/installer/dev/docs/screenshots/walkthrough.gif" alt="The GNOME installer, screen by screen" width="720" />
 </p>
 
 ## Why you need it
@@ -46,10 +46,10 @@ You supply the image.
 
 | You are | You get |
 |---|---|
-| The builder of a bootc image | An installer for your live ISO. You set the name, the artwork, the text and the image catalog in `/etc/bootc-installer/`. You do not fork the code. Refer to [Customise the installer for your image](https://github.com/tuna-os/bootc-installer/blob/dev/docs/guide/customising.md). |
+| The builder of a bootc image | An installer for your live ISO. You set the name, the artwork, the text and the image catalog in `/etc/bootc-installer/`. You do not fork the code. Refer to [Customise the installer for your image](https://github.com/tuna-os/installer/blob/dev/docs/guide/customising.md). |
 | The maintainer of a desktop spin | A frontend in the toolkit of your desktop: GNOME, KDE Plasma, COSMIC, Niri or XFCE. All five drive the same backend with the same recipe. |
 | A person with a computer | The installer on the live ISO of your distribution. You can also run it as a Flatpak on a Linux system that you have now. |
-| An administrator | An unattended install from a JSON recipe. Refer to [Recipes and autoinstall](https://github.com/tuna-os/bootc-installer/blob/dev/docs/guide/recipes.md). |
+| An administrator | An unattended install from a JSON recipe. Refer to [Recipes and autoinstall](https://github.com/tuna-os/installer/blob/dev/docs/guide/recipes.md). |
 
 > [!WARNING]
 > An install erases the disk that you select.
@@ -65,7 +65,7 @@ curl -Lo installer.flatpak \
 flatpak run org.bootcinstaller.Installer
 ```
 
-For the devel build and a tour of each screen, refer to [Install and use the installer](https://github.com/tuna-os/bootc-installer/blob/dev/docs/guide/installing.md).
+For the devel build and a tour of each screen, refer to [Install and use the installer](https://github.com/tuna-os/installer/blob/dev/docs/guide/installing.md).
 
 ## Features
 
@@ -81,7 +81,7 @@ For the devel build and a tour of each screen, refer to [Install and use the ins
 - **A phone companion** (GNOME, COSMIC and XFCE). Scan a QR code and type your account data on a phone.
 
 The frontends do not have all features yet, and some features have open defects.
-[`docs/PARITY.md`](https://github.com/tuna-os/bootc-installer/blob/dev/docs/PARITY.md) shows what each frontend does and links the issues.
+[`docs/PARITY.md`](https://github.com/tuna-os/installer/blob/dev/docs/PARITY.md) shows what each frontend does and links the issues.
 The installer does not set the language, the keyboard layout or the time zone of the new system yet.
 
 ## How it works
@@ -99,30 +99,30 @@ The installer does not set the language, the keyboard layout or the time zone of
 5. The frontend shows the progress, then the recovery key and the restart button.
 
 In a Flatpak, the frontend starts fisherman on the host with `flatpak-spawn --host pkexec`.
-[How an install works](https://github.com/tuna-os/bootc-installer/blob/dev/docs/guide/how-it-works.md) gives each step.
+[How an install works](https://github.com/tuna-os/installer/blob/dev/docs/guide/how-it-works.md) gives each step.
 
 ## Guidebook
 
-The [guidebook](https://github.com/tuna-os/bootc-installer/blob/dev/docs/guide/README.md) has the full documentation:
+The [guidebook](https://github.com/tuna-os/installer/blob/dev/docs/guide/README.md) has the full documentation:
 
 | Page | Contents |
 |---|---|
-| [Install and use the installer](https://github.com/tuna-os/bootc-installer/blob/dev/docs/guide/installing.md) | Production and devel builds, and the wizard screen by screen |
-| [How an install works](https://github.com/tuna-os/bootc-installer/blob/dev/docs/guide/how-it-works.md) | Boot stacks, the install steps, encryption and first boot |
-| [Recipes and autoinstall](https://github.com/tuna-os/bootc-installer/blob/dev/docs/guide/recipes.md) | Recipe examples, field reference and unattended install |
-| [Customise the installer for your image](https://github.com/tuna-os/bootc-installer/blob/dev/docs/guide/customising.md) | Your own catalog and defaults in `/etc/bootc-installer/`, and new catalog images |
-| [Build, test and release](https://github.com/tuna-os/bootc-installer/blob/dev/docs/guide/developing.md) | Build, demo mode, tests, screenshots and the release flow |
+| [Install and use the installer](https://github.com/tuna-os/installer/blob/dev/docs/guide/installing.md) | Production and devel builds, and the wizard screen by screen |
+| [How an install works](https://github.com/tuna-os/installer/blob/dev/docs/guide/how-it-works.md) | Boot stacks, the install steps, encryption and first boot |
+| [Recipes and autoinstall](https://github.com/tuna-os/installer/blob/dev/docs/guide/recipes.md) | Recipe examples, field reference and unattended install |
+| [Customise the installer for your image](https://github.com/tuna-os/installer/blob/dev/docs/guide/customising.md) | Your own catalog and defaults in `/etc/bootc-installer/`, and new catalog images |
+| [Build, test and release](https://github.com/tuna-os/installer/blob/dev/docs/guide/developing.md) | Build, demo mode, tests, screenshots and the release flow |
 
 ## Frontends
 
 This repository holds all five frontends.
-They share the fisherman backend, the recipe schema and the screen contract in [`shared/`](https://github.com/tuna-os/bootc-installer/blob/dev/shared).
-CI renders all five frontends in [`docs/walkthrough/`](https://github.com/tuna-os/bootc-installer/blob/dev/docs/walkthrough/README.md).
+They share the fisherman backend, the recipe schema and the screen contract in [`shared/`](https://github.com/tuna-os/installer/blob/dev/shared).
+CI renders all five frontends in [`docs/walkthrough/`](https://github.com/tuna-os/installer/blob/dev/docs/walkthrough/README.md).
 
 On a live ISO, each frontend starts fisherman on the host.
 The file `/etc/bootc-installer/live-iso-mode` tells fisherman that the image is on the media.
 fisherman then checks the image on the media before it reads a disk or uses the network.
-[`docs/live-iso.md`](https://github.com/tuna-os/bootc-installer/blob/dev/docs/live-iso.md) tells you how to build such an ISO.
+[`docs/live-iso.md`](https://github.com/tuna-os/installer/blob/dev/docs/live-iso.md) tells you how to build such an ISO.
 
 fisherman is a git submodule.
 Every Flatpak builds fisherman from that submodule, so the gitlink is the only pin.
@@ -132,18 +132,18 @@ To move it by hand, run `shared/ci/fisherman_pins.py`.
 
 | Frontend | Path | Toolkit | Walkthrough |
 |---|---|---|---|
-| GNOME | `bootc_installer/` | GTK4 / libadwaita (Python) | [docs/gui-walkthrough.md](https://github.com/tuna-os/bootc-installer/blob/dev/docs/gui-walkthrough.md) |
-| KDE Plasma | `frontends/kde/` | Qt 6 / Kirigami | [frontends/kde/docs/gui-walkthrough.md](https://github.com/tuna-os/bootc-installer/blob/dev/frontends/kde/docs/gui-walkthrough.md) |
-| COSMIC | `frontends/cosmic/` | libcosmic (Rust) | [frontends/cosmic/docs/gui-walkthrough.md](https://github.com/tuna-os/bootc-installer/blob/dev/frontends/cosmic/docs/gui-walkthrough.md) |
-| Niri | `frontends/niri/` | Quickshell QML + Go | [frontends/niri/docs/gui-walkthrough.md](https://github.com/tuna-os/bootc-installer/blob/dev/frontends/niri/docs/gui-walkthrough.md) |
-| XFCE | `frontends/xfce/` | GTK3 / PyGObject | [frontends/xfce/docs/gui-walkthrough.md](https://github.com/tuna-os/bootc-installer/blob/dev/frontends/xfce/docs/gui-walkthrough.md) |
+| GNOME | `bootc_installer/` | GTK4 / libadwaita (Python) | [docs/gui-walkthrough.md](https://github.com/tuna-os/installer/blob/dev/docs/gui-walkthrough.md) |
+| KDE Plasma | `frontends/kde/` | Qt 6 / Kirigami | [frontends/kde/docs/gui-walkthrough.md](https://github.com/tuna-os/installer/blob/dev/frontends/kde/docs/gui-walkthrough.md) |
+| COSMIC | `frontends/cosmic/` | libcosmic (Rust) | [frontends/cosmic/docs/gui-walkthrough.md](https://github.com/tuna-os/installer/blob/dev/frontends/cosmic/docs/gui-walkthrough.md) |
+| Niri | `frontends/niri/` | Quickshell QML + Go | [frontends/niri/docs/gui-walkthrough.md](https://github.com/tuna-os/installer/blob/dev/frontends/niri/docs/gui-walkthrough.md) |
+| XFCE | `frontends/xfce/` | GTK3 / PyGObject | [frontends/xfce/docs/gui-walkthrough.md](https://github.com/tuna-os/installer/blob/dev/frontends/xfce/docs/gui-walkthrough.md) |
 
-CI moves a release from `dev` to `prod` when all checks pass: [`docs/RELEASE.md`](https://github.com/tuna-os/bootc-installer/blob/dev/docs/RELEASE.md).
-For the merge of the old repositories, refer to [`docs/MIGRATION.md`](https://github.com/tuna-os/bootc-installer/blob/dev/docs/MIGRATION.md).
+CI moves a release from `dev` to `prod` when all checks pass: [`docs/RELEASE.md`](https://github.com/tuna-os/installer/blob/dev/docs/RELEASE.md).
+For the merge of the old repositories, refer to [`docs/MIGRATION.md`](https://github.com/tuna-os/installer/blob/dev/docs/MIGRATION.md).
 
 ## Contribute
 
-Read the [contribution guide](https://github.com/tuna-os/bootc-installer/blob/dev/CONTRIBUTING.md) and [Build, test and release](https://github.com/tuna-os/bootc-installer/blob/dev/docs/guide/developing.md).
+Read the [contribution guide](https://github.com/tuna-os/installer/blob/dev/CONTRIBUTING.md) and [Build, test and release](https://github.com/tuna-os/installer/blob/dev/docs/guide/developing.md).
 Open pull requests against `dev`.
 
 ## Contribute compute — no code needed

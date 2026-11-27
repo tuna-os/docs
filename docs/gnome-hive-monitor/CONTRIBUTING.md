@@ -81,8 +81,7 @@ Use Node.js 24 and Python 3. You do not need npm packages:
 
 ```bash
 python3 -m unittest discover -s tests -v
-node --experimental-vm-modules --test tests/test_widget.cjs
-node --experimental-vm-modules --test tests/behavior.cjs
+node --experimental-vm-modules --test 'tests/*.cjs' 'tests/*.mjs'
 ```
 
 The JavaScript tests load the production ESM modules with the VM module

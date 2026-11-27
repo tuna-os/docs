@@ -3,7 +3,7 @@ sidebar_position: 3
 title: "Roadmap"
 ---
 
-**Last updated:** 2026-08-28  
+**Last updated:** 2026-11-21  
 **Owner:** tuna-os  
 **Mission:** Give Windows users a verified, current package-manager path to
 TunaOS command-line tools.
@@ -12,8 +12,11 @@ TunaOS command-line tools.
 
 The bucket is initialized but publishes no manifests. `bluefin-cli` is the
 first declared producer and has shipped Windows amd64 and arm64 archives with
-checksums since v0.10.6, but its release pipeline skips Scoop publication when
-the producer-local credential is unavailable.
+checksums since v0.10.6. The maintainer ruling on #4 makes the bucket own
+publication with only the repository `GITHUB_TOKEN`:
+`scripts/update_manifest.py` (#105) generates the manifest and checks its
+freshness. The scheduled workflow that runs it and opens the manifest PR has
+not landed yet (#110).
 
 The near-term objective is therefore not catalog growth. It is proving one
 complete install-and-update loop for `bluefin-cli`, with ownership and failure
@@ -23,10 +26,10 @@ signals that can be reused safely by later producers.
 
 | Outcome | Evidence required | Tracking | Status |
 | --- | --- | --- | --- |
-| Decide bucket publication ownership and credential model | Named owner, least-privilege write identity, and producer/consumer failure contract documented | #4 | Open |
+| Decide bucket publication ownership and credential model | Named owner, least-privilege write identity, and producer/consumer failure contract documented | #4 | Done: the bucket publishes with its own `GITHUB_TOKEN` ([`AGENTS.md`](https://github.com/tuna-os/scoop-bucket/blob/main/AGENTS.md)) |
 | Publish the first `bluefin-cli` manifest | Manifest on `main` targets the current stable Windows amd64 and arm64 assets and passes repository validation | #14 | Open |
 | Verify the user journey | Clean Windows amd64 run completes `scoop bucket add`, `scoop install bluefin-cli`, and `bluefin-cli --version` | #14 | Open |
-| Make release drift visible | A declared stable upstream release older than 24 hours without a matching manifest produces an owner-visible failure | #4, #14 | Open |
+| Make release drift visible | A declared stable upstream release older than 24 hours without a matching manifest produces an owner-visible failure | #110, #14 | Open |
 
 ## Mid term: operate a dependable channel
 

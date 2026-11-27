@@ -1,5 +1,5 @@
 ---
-sidebar_position: 67
+sidebar_position: 63
 title: "xwayland on demand"
 ---
 

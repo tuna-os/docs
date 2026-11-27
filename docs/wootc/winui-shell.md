@@ -1,5 +1,5 @@
 ---
-sidebar_position: 51
+sidebar_position: 52
 title: "winui shell"
 ---
 
@@ -16,8 +16,8 @@ See [getting started](https://github.com/tuna-os/wootc/blob/main/docs/getting-st
 | A: engine protocol | Go stdio RPC, generated DTOs, authenticated native sessions and one-shot operation grants exist | Full native acceptance is separate from protocol/component tests |
 | B: scaffold (#343) | Native projects, authenticated assessment RPC, startup UI tests, and five branded preview packages pass hosted component checks. Each installed package shows its palette and logo and refuses Windows builds before 17763. Windows policy refuses elevation for a standard user, and the shell keeps the branded assessment and the retry ([run 38776425860](https://github.com/tuna-os/wootc/actions/runs/38776425860)) | Interactive UAC consent on the secure desktop, proof on build 17763, and preview release assets (#608). The native E2E now installs the real preview installer in the guest ([run 38888315334](https://github.com/tuna-os/wootc/actions/runs/38888315334)) |
 | C: experience (#344) | A read-only startup view, a configuration form, a route for an interrupted install, an install route that needs an engine grant and a confirmation, progress and done views fed by that install session, manage and recovery views whose uninstall and boot repair need their own engine grant in an install session, Linux window views whose VM actions each need an engine grant, UI Automation controls, a screen gallery, and an E2E drive mode (`WOOTC_E2E_DRIVE=1`) that operates these views exist. The GUI E2E can install the native shell in the guest and drive it (`WOOTC_E2E_GUI_FRONTEND=native`, see [Native shell E2E](#native-shell-e2e)). [Run 38857241312](https://github.com/tuna-os/wootc/actions/runs/38857241312) drove a full Windows, deployer, Linux and Windows cycle through it | Consumer screens, VM and migration flows, interactive UAC consent, accessibility, persistence, and the full journey. An unelevated shell with an elevated install engine, installed by the real preview installer, drove a full cycle ([run 38923119161](https://github.com/tuna-os/wootc/actions/runs/38923119161)) |
-| D: release (#345) | Issue closed 2026-10-31; source builds branded Inno native setup as the primary artifact and retains one legacy artifact | A workflow/package definition is not a clean published native release; inspect retained build, install and removal evidence |
-| E: removal (#346) | Wails remains in the source | Remove it only after a clean native release; closing D alone is not that proof |
+| D: release (#345) | Issue closed 2026-10-31; source builds branded Inno native setup as the primary artifact; `v0.1.0-alpha.2` retained one legacy artifact | A workflow/package definition is not a clean published native release; inspect retained build, install and removal evidence |
+| E: removal (#346) | Wails, its web frontend, the Linux dashboard build and the Playwright GUI tests are removed from source after `v0.1.0-alpha.2` | The shell is the only GUI; text and drive-mode pins now live in the shell tests and `tests/unit` |
 
 This preview candidate retains [run 36328543336](https://github.com/tuna-os/wootc/actions/runs/36328543336).
 It tested merge `68e6f452` from head `7aee354`.
@@ -344,6 +344,12 @@ The second observation also selects the state root again, and the grant contract
 Run 38857241312 passed, but it did not record the margin.
 If a slow disk causes a timeout, measure each part before you change a limit.
 
+The shell waits 110 seconds for `ConfirmNativeInstall`.
+In that time the engine observes the storage again, and `StartInstall` validates the plan again.
+This validation reads only the plan facts and does not analyze the defragmentation of C:.
+In native gate probe 44764569187, the plan check took about 85 seconds.
+A wait of 60 seconds for the confirmation then stopped the install with a cancellation error.
+
 ### Drive reports during the plan check
 
 In runs 38923119161 and 38931058878 the harness read no drive report for about two minutes.
@@ -393,7 +399,7 @@ That time is too much for each branded package job.
 | Transport | Native authenticated-peer tests; refusal of wrong SID/session/process; cancellation during mutation |
 | Build | Windows CI builds and packages every eligible brand; generated DTOs remain current |
 | UI parity | Real controls, screenshots, accessible names, keyboard flow, truthful blocked reasons |
-| Drive contract | Existing `e2e-drive.json` directives operate view-models; image mismatch fails closed; an install directive must name its target volume (`storageId`: an engine storage id or a drive letter such as `C:`), and a missing, unknown or ambiguous target is refused as a drive error |
+| Drive contract | Existing `e2e-drive.json` directives operate view-models; image mismatch fails closed; an install directive must name its target volume (`storageId`: an engine storage id or a drive letter such as `C:`), and a missing, unknown or ambiguous target is refused as a drive error. Optional `windowsLook` (boolean) sets the Windows look checkbox; absent keeps the engine default. Optional `flatpaks` (array of at most 64 Flatpak IDs) is the exact set of checked apps; absent keeps every detected app checked. An ID the engine did not detect, or an ID named two times, is refused as a drive error that names the ID |
 | Migration | Same plan/result fixtures on native Windows and GTK; partial results and retry stay visible |
 | Deployment | Shell-driven Windows → deployer → Linux → Windows cycle, including offline and BitLocker cohorts |
 | Recovery | Kill shell at safe test points; cancel; restart; inspect durable state; repair; uninstall |
@@ -553,7 +559,7 @@ booleans JSON booleans, and passwords strings. Never log request payloads.
 
 | Type/call | JSON object fields and constraints |
 |---|---|
-| `InstallConfig` / `StartInstall` | `imageRef:string`, `diskSizeGB:integer`, `username:string`, `password:string`, `hostname:string`, `bootloader:string` (`auto`, `grub2`, `systemd-boot`), `composeFs:boolean`, `storageDrive:string` (letter without colon; legacy empty means C), `encryption:string` (`none`, `luks-passphrase`, or currently refused `tpm2-luks`), `luksPassphrase:string`, `windowsLook:boolean`; optional `sessionConsent:object<string,boolean>` is per-app opt-in, optional `profileAccounts:array<ProfileAccount>` is the reviewed complete mapping, optional `faultInject:string` is a test-only boundary |
+| `InstallConfig` / `StartInstall` | `imageRef:string`, `diskSizeGB:integer`, `username:string`, `password:string`, `hostname:string`, `bootloader:string` (`auto`, `grub2`, `systemd-boot`), `composeFs:boolean`, `storageDrive:string` (letter without colon; legacy empty means C), `encryption:string` (`none`, `luks-passphrase`, or currently refused `tpm2-luks`), `luksPassphrase:string`, `windowsLook:boolean`, `flatpaks:array<string>` (checked detected apps; each must be in the engine's own detection, no duplicates, at most 64; empty installs none); optional `sessionConsent:object<string,boolean>` is per-app opt-in, optional `profileAccounts:array<ProfileAccount>` is the reviewed complete mapping, optional `faultInject:string` is a test-only boundary |
 | `PrepareNativeInstall` | Same install object **except** `sessionConsent` and `faultInject` are forbidden. Object only, at most 16 KiB; unknown/duplicate/null fields refused. Nonempty image, username, password and storage drive and positive disk size required. Admission further checks policy, image and physical storage observations |
 | `ProfileAccount` | `{"windowsDir":"<observed raw profile directory>","linuxUser":"<reviewed account name>"}`; only Linux account names are editable, all discovered profiles must remain represented, and duplicates/invalid/reserved names refuse |
 | `GetNativeInstallSpace` | `{"imageRef":"<observed ref>","storageDrive":"C"}`; must name one admitted image/drive from the last configuration read |
@@ -609,7 +615,7 @@ This map covers every result and nested schema used by the methods above:
 | `Image`, `InstallConfig`, `InstallStatus`, `ProgressEvent`, `ProfileAccount` | [`install_contract.go`](https://github.com/tuna-os/wootc/blob/main/app/install_contract.go), [`profiles.go`](https://github.com/tuna-os/wootc/blob/main/app/profiles.go), [golden DTO JSON](https://github.com/tuna-os/wootc/blob/main/app/testdata/dto) |
 | `StepDefinition` (`id`, `owner`, `label`, all strings) | [`steps_gen.go`](https://github.com/tuna-os/wootc/blob/main/app/steps_gen.go); generated phase vocabulary, not prose matching |
 | `SessionCandidate` (`app`, `kind`, `portable`, `recommend`, `note`, `consentRequired`) | [`session.go`](https://github.com/tuna-os/wootc/blob/main/app/session.go), [candidate example](https://github.com/tuna-os/wootc/blob/main/app/testdata/dto/session_candidate.json) |
-| `NativeConfigurationSnapshot`, image/default/bundle/storage records | [`native_configuration.go`](https://github.com/tuna-os/wootc/blob/main/app/native_configuration.go), [configuration fixture](https://github.com/tuna-os/wootc/blob/main/tests/unit/fixtures/native-gallery/configuration.json) |
+| `NativeConfigurationSnapshot`, image/default/bundle/storage records, `DetectedApp` (`flatpak`, `name`, `displayName`; `detectedApps` is never null) | [`native_configuration.go`](https://github.com/tuna-os/wootc/blob/main/app/native_configuration.go), [`app_flatpaks.go`](https://github.com/tuna-os/wootc/blob/main/app/app_flatpaks.go), [configuration fixture](https://github.com/tuna-os/wootc/blob/main/tests/unit/fixtures/native-gallery/configuration.json) |
 | `InstallSpace` (`imageRef`, `compressedBytes`, `sizeSource`, `scratchGiB`, `bundleGiB`, `reserveGiB`) | [`install_space.go`](https://github.com/tuna-os/wootc/blob/main/app/install_space.go); reserve is space **beside** the Linux disk |
 | `NativeInstallGrant` | [`native_install_session.go`](https://github.com/tuna-os/wootc/blob/main/app/native_install_session.go) |
 | `NativeMaintenancePlan`, `NativeMaintenanceGrant` | [`native_maintenance.go`](https://github.com/tuna-os/wootc/blob/main/app/native_maintenance.go), [maintenance exchanges](https://github.com/tuna-os/wootc/blob/main/tests/unit/fixtures/native-maintenance/responses.ndjson) |

@@ -154,13 +154,14 @@ Replace `/path/to/copy/of/data/home` with a read-only copy and provide a compati
 
 1. Keep changes focused. Update generated CRDs, RBAC, or deepcopy output when their source changes.
 2. Add or update tests for controller transitions, policy boundaries, and parity rules. Preserve golden fixtures when they document live shell output.
-3. Run the relevant `make` targets locally and inspect `git diff` before committing.
-4. Sign commits with the Developer Certificate of Origin:
+3. Add a changelog fragment under `changelog.d/` for a user-visible change. [changelog.d/README.md](https://github.com/tuna-os/hive-operator/blob/main/changelog.d/README.md) gives the name and content format.
+4. Run the relevant `make` targets locally and inspect `git diff` before committing.
+5. Sign commits with the Developer Certificate of Origin:
 
    ```sh
    git commit -s -m "docs: describe the change"
    ```
 
-5. Open a pull request against `main` with a summary, verification commands, cluster-impact notes, and any required rollout or rollback procedure. Never include credentials, kubeconfigs, API keys, or copied production state.
+6. Open a pull request against `main` with a summary, verification commands, cluster-impact notes, and any required rollout or rollback procedure. Never include credentials, kubeconfigs, API keys, or copied production state.
 
 Changes that alter promotion order, controller authority, image rollout, credentials, or production manifests need explicit maintainer review. Keep operational decisions in the relevant `docs/` runbook and update the README or sample comments when behaviour changes.

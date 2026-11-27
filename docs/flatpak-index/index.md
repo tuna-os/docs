@@ -291,7 +291,7 @@ as a bare application ID with an "Unknown" licence and no screenshots.
   It follows [Flathub's quality guidelines](https://docs.flathub.org/docs/for-app-authors/metainfo-guidelines/quality-guidelines),
   which sets the standard for software centres.
 - **Screenshots:** [`docs/SCREENSHOTS.md`](https://github.com/tuna-os/flatpak-index/blob/main/docs/SCREENSHOTS.md). The shared
-  [capture action](https://github.com/tuna-os/flatpak-index/blob/main/.github/actions/capture-screenshots) takes pictures of an app
+  [capture action](https://github.com/tuna-os/.github/tree/5896bac69433b8a2483a45acb5f5d3ec8cd2a5e7/.github/actions/capture-screenshots) takes pictures of an app
   window under a headless X server. CI generates screenshots from the app directly
   instead of by hand. The audit below reports apps that declare none.
 - **Audit the live remote:**
@@ -372,6 +372,19 @@ ghcr.io/tuna-os/<app>         → OCI images with flatpak metadata
   ├── tuna-os/letters:latest
   └── ...
 ```
+
+## Catalog ownership
+
+| | |
+|---|---|
+| Canonical catalog | `static/flatpak/` in [tuna-os/docs](https://github.com/tuna-os/docs) |
+| Entry point | `static/flatpak/index/static` |
+| Served URL | [https://tunaos.org/flatpak/index/static](https://tunaos.org/flatpak/index/static) (`tunaos-org` Cloudflare Worker) |
+| Writers | Application publish workflows, only into `tuna-os/docs` |
+| Owner and rollback | `tuna-os/docs` maintainers; see [docs/APP-LIFECYCLE.md](https://github.com/tuna-os/flatpak-index/blob/main/docs/APP-LIFECYCLE.md) |
+
+This repository holds tooling and checks only, and keeps no copy of the catalog.
+Decision: [#171](https://github.com/tuna-os/flatpak-index/issues/171).
 
 ## Index format
 

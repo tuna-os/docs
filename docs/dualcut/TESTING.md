@@ -67,6 +67,32 @@ step that fails makes the job fail. The schema sync check, clippy, unit tests, t
 render smoke suite, and the app start smoke all count. Branch protection rules
 are set in repository settings, not in this tree.
 
+Other workflows also run on pull requests. Each one can make a PR fail:
+
+| Workflow | When it runs on a PR | It fails when |
+|---|---|---|
+| `cargo-deny.yml` | On every PR | An advisory in the RustSec database matches a crate in `engine/Cargo.lock`, and `engine/deny.toml` does not ignore it. |
+| `ste.yml` (Prose) | When a PR changes a Markdown file or `.ste-budget` | The number of STE findings is not equal to the value in `.ste-budget`. |
+| `actions-security.yml` | On every PR | `.github/workflows/actions.lock` does not agree with the workflows, or zizmor finds a problem in a workflow. |
+| `screenshots.yml` | When a PR changes `engine/src/` or `scripts/walkthrough.sh` | The walkthrough capture fails, or a screenshot that the metainfo uses shows a codec error. |
+
+To do the advisory check on your machine, install `cargo-deny` and run it
+from `engine/`:
+
+```sh
+cargo install --locked cargo-deny
+cd engine && cargo deny --all-features check advisories
+```
+
+To ignore an advisory, add an entry to `engine/deny.toml`. Give a reason and
+a date to examine it again.
+
+The STE budget is exact. If your change removes findings, lower
+`.ste-budget` to the new count in the same PR. The job log gives that count.
+A PR that raises the budget needs the `ratchet-raise` label. The linter is
+in a shared workflow in `tuna-os/.github`, so this repository has no local
+command for it.
+
 The nightly `coverage` workflow runs on a schedule, not on PRs.
 
 ## Coverage

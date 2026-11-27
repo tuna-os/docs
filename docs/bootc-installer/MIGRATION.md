@@ -35,7 +35,7 @@ nothing is lost in the shuffle. Tracking epic:
   write their page text to `texts.json`, and `report_from_pngs.py` makes
   their report with this module.
 - `shared/walkthrough/aggregate.py`: builds
-  [`docs/walkthrough/`](https://github.com/tuna-os/bootc-installer/blob/dev/docs/walkthrough/README.md), the one page that shows all
+  [`docs/walkthrough/`](https://github.com/tuna-os/installer/blob/dev/docs/walkthrough/README.md), the one page that shows all
   five installers screen by screen with the parity matrix on top.
 
 ## What moved, mechanically
@@ -50,7 +50,7 @@ nothing is lost in the shuffle. Tracking epic:
   (`tests/gui/capture-screens.py`, `screenshots-gnome.yml`).
 - Publishing to the tuna-os Flatpak remote no longer happens on every push.
   It happens on promotion to `prod`, for every frontend, see
-  [`RELEASE.md`](https://github.com/tuna-os/bootc-installer/blob/dev/docs/RELEASE.md).
+  [`RELEASE.md`](https://github.com/tuna-os/installer/blob/dev/docs/RELEASE.md).
 - `.ste-budget` is the sum of the five repos' budgets (368 + 54 + 60 + 25 +
   36 = 543). The per-frontend `.ste-budget` files are left in place as a
   record; only the root one is read.

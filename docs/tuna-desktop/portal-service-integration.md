@@ -1,5 +1,5 @@
 ---
-sidebar_position: 35
+sidebar_position: 34
 title: "portal service integration"
 ---
 

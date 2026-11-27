@@ -1,5 +1,5 @@
 ---
-sidebar_position: 15
+sidebar_position: 16
 title: "environment"
 ---
 
@@ -32,6 +32,7 @@ environment `tuna-session` or `tuna-compositor` starts from.
 | `TUNA_DRM_DEVICE` | compositor (DRM/KMS) | DRM device node to drive, for example `/dev/dri/card1`, instead of the seat's primary GPU. | `crates/compositor/src/drm.rs:399-405` |
 | `TUNA_IBUS` | compositor | `0` does not start the IBus bridge. By default the bridge starts whenever `ibus-daemon` is on `PATH` and a bridge binary can be found. | `crates/compositor/src/ime.rs:47-62` |
 | `TUNA_IBUS_BRIDGE_BIN` | compositor | Path of the `tuna-ibus-bridge` binary. Without it the compositor looks beside its own executable, then on `PATH`. | `crates/compositor/src/ime.rs:62-69` |
+| `TUNA_IBUS_UNIT` | `tuna-ibus-bridge` | The systemd user unit that owns the session's `ibus-daemon`. The compositor sets it to `org.freedesktop.IBus.session.GNOME.service` in a hardware session; the bridge then starts no daemon of its own, waits for the unit and, if the unit is down once `gnome-session-initialized.target` is up, asks the user manager to start it once. Unset, or naming a unit that is not installed or is masked, the bridge starts `ibus-daemon --panel disable` as its own child. | `crates/shell-host/src/ibus.rs:56-164`, `crates/compositor/src/ime.rs:447-452` |
 | `TUNA_BELL` | compositor | `0` silences the audible bell. The visual bell still follows its setting. | `crates/compositor/src/bell.rs:80-85` |
 | `TUNA_PAM_SERVICE` | compositor | PAM service the lock screen authenticates against, instead of `tuna-lock`. An empty value uses the default. | `crates/compositor/src/pam.rs:23-26`, `crates/compositor/src/pam.rs:254-270` |
 | `TUNA_PAM_FINGERPRINT_SERVICE` | compositor | PAM service the lock screen's fingerprint conversation runs, instead of `tuna-lock-fingerprint`. An empty value uses the default. | `crates/compositor/src/pam.rs:27-30`, `crates/compositor/src/pam.rs:259-270` |
@@ -83,7 +84,7 @@ fragmented emission by accepting partial lines.
 | `TUNA_XWAYLAND_DEBUG` | compositor | `1` passes Xwayland's own standard output and error through instead of discarding them. | `crates/compositor/src/xwayland.rs:257-266` |
 | `TUNA_IBUS_DEBUG` | `tuna-shell-gtk` | When set, logs IBus property-menu diagnostics, except while the screen is locked. | `crates/shell-host/src/ibus.rs:51-54`, `crates/shell-gtk/src/ibus_property_menu.rs:560` |
 | `TUNA_PERF_TRACE` | compositor | `1` sends up to 64 timing records per run, from an accepted overview action to the scanout that shows it, straight to the journal under the identifier `tuna-perf-native`. | `crates/compositor/src/performance_trace.rs:1-32`, `crates/compositor/src/performance_trace.rs:88-90` |
-| `TUNA_GRID_TRACE` | `tuna-shell-gtk` | When set, logs app-grid animation and paging samples. Read once at startup. | `crates/shell-gtk/src/grid_animation.rs:411-418`, `crates/shell-gtk/src/overview.rs:1543` |
+| `TUNA_GRID_TRACE` | compositor, `tuna-shell-gtk` | When set, logs app-grid animation/paging samples, real main-thread scheduler counters, grid GDK paint phases and compositor grid-surface commit/callback/repaint/flush boundaries on CLOCK_MONOTONIC. Each short record is written atomically to stderr; compositor records are bounded to 512 bytes. Gates are cached. These are callback/phase observations, not presentation or client-receipt proof. | `crates/shell-gtk/src/grid_animation.rs:412-429`, `crates/compositor/src/grid_trace.rs:1-35` |
 | `TUNA_TRANSIENT_TRACE` | `tuna-shell-gtk` | When set, logs menu and popover transitions and the unlock dialog's curtain progress. | `crates/shell-gtk/src/transient.rs:216-220`, `crates/shell-gtk/src/lock_curtain.rs:361-365` |
 | `TUNA_MEDIA_DIAGNOSTICS` | compositor, `tuna-shell-gtk` | When it names an existing file, logs `tuna-media-diagnostic:` records for media-key routing. The file's contents are not read. | `crates/compositor/src/windows.rs:45-47`, `crates/shell-gtk/src/media_keys.rs:45-48` |
 | `TUNA_FOLDER_CREATE_TRACE`, `TUNA_FOLDER_CREATE_SOURCE_COMMIT`, `TUNA_FOLDER_CREATE_PROOF_CONFIG` | `tuna-shell-gtk` | With the first set to `1` and the second a 40-hex-digit commit, records app-folder creation steps for a proof. The third is a file path recorded alongside them. | `crates/shell-gtk/src/folders.rs:369-385` |
@@ -99,7 +100,8 @@ these emitters (all paths below are under `crates/`):
 | Compositor lock conversation and authentication retirement | `compositor/src/runtime/auth.rs`, `compositor/src/runtime.rs` |
 | `screen reader retired` | `compositor/src/orca.rs` |
 | Shell grid, transient, unlock-dialog, switcher fade | `shell-gtk/src/grid_animation.rs`, `transient.rs`, `lock_curtain.rs`, `switcher.rs` |
-| Shell lock/auth, command results, password-submission **markers** (not passwords) | `shell-gtk/src/lock.rs`, `lock_auth.rs` |
+| Shell lock/auth, command results, password-submission **markers** (not passwords) | `shell-gtk/src/lock.rs`, `auth-prompt/src/lib.rs` |
+| Greeter conversation, user list and session start **markers** (not answers) | `greeter/src/main.rs`, `greeter/src/conversation.rs` |
 | Shell keybindings, media-key setup, policy refusals, screenshot-clipboard marker | `shell-gtk/src/main.rs`, `power.rs`, `run_dialog.rs` |
 | Shell audio-recording, wellbeing, end-session diagnostics | `shell-gtk/src/services.rs`, `wellbeing.rs`, `power.rs` |
 | Shell IBus candidate bounds/clicks and applied properties | `shell-gtk/src/ibus_panel.rs`, `ibus_property_menu.rs` |
@@ -158,6 +160,7 @@ start. They have no effect on an installed session.
 | `TUNA_REQUIRE_LOCKDOWN_SCHEMA` | Fails the lockdown test when GNOME's lockdown schema is missing instead of skipping. | `crates/shell-gtk/tests/lockdown.rs:34-38` |
 | `TUNA_REQUIRE_AUTH_OWNER_RUNTIME` | Fails the auth-owner runtime test when there is no `DISPLAY`. | `crates/compositor/tests/auth_owner_runtime.rs:342-347` |
 | `TUNA_REQUIRE_NATIVE_PRIVACY` | Runs the PipeWire privacy test instead of skipping it. | `crates/shell-gtk/src/privacy.rs:1737-1742` |
+| `TUNA_REQUIRE_REMOTE_ACCESS_INDICATOR` | Runs the top bar's Stop Screen Sharing button and recording icon test instead of skipping it. | `crates/shell-gtk/src/remote_access.rs:300-307` |
 | `TUNA_REQUIRE_AUTH_TRANSPORT_GTK`, `TUNA_REQUIRE_AUTH_PROMPT_GTK`, `TUNA_REQUIRE_COUNTDOWN_OSD`, `TUNA_REQUIRE_LOCK_CURTAIN`, `TUNA_REQUIRE_LOCK_IDLE_FRAMES`, `TUNA_REQUIRE_MEDIA_COMPLETION`, `TUNA_REQUIRE_MENU_MOTION`, `TUNA_REQUIRE_NOTIFY_UI`, `TUNA_REQUIRE_OSD_FADE` | Admission checks for `#[ignore]`d GTK tests that need a private X display and session bus. CI's `gtk-shell` job sets them and runs those tests with `--ignored`. | `crates/shell-gtk/src/lock.rs:1165`, `crates/shell-gtk/src/lock.rs:1233`, `crates/shell-gtk/src/osd.rs:400`, `crates/shell-gtk/src/lock_curtain.rs:989`, `crates/shell-gtk/src/lock.rs:1591`, `crates/shell-gtk/src/media_keys.rs:697`, `crates/shell-gtk/src/transient.rs:907`, `crates/shell-gtk/src/notify.rs:1892`, `crates/shell-gtk/src/osd.rs:542` |
 | `TUNA_PAM_TEST_CHILD`, `TUNA_PRIVATE_PAM_TEST_CHILD`, `TUNA_NIGHT_LIGHT_TZ_CHILD`, `TUNA_AUTH_OWNER_CLIENT` | Set by a test for a copy of itself that it runs as a child process. | `crates/compositor/tests/pam_unlock.rs:18`, `crates/compositor/tests/pam_helper.rs:14`, `crates/compositor/src/night_light.rs:3232`, `crates/compositor/tests/auth_owner_runtime.rs:12` |
 | `TUNA_AUTH_OWNER_ROOT`, `TUNA_AUTH_OWNER_TEST_BIN`, `TUNA_AUTH_OWNER_PROBE_BIN`, `TUNA_AUTH_OWNER_ARTIFACTS` | Fixture paths for `scripts/tuna-auth-owner-ci-proof`. | `crates/compositor/examples/native-auth-owner-probe.rs:18-23`, `crates/compositor/tests/auth_owner_runtime.rs:98`, `crates/compositor/tests/auth_owner_runtime.rs:350`, `crates/compositor/tests/auth_owner_runtime.rs:589` |
@@ -202,8 +205,9 @@ uses each one for.
 | `CUPS_SERVER`, `CUPS_DATADIR` | Which CUPS server to talk to, and where the test page lives. | `crates/shell-gtk/src/printers.rs:900-907`, `crates/shell-gtk/src/printers.rs:1985-1991` |
 | `GSK_RENDERER` | When set, the shell keeps the GTK renderer you chose. Otherwise it switches to the cairo renderer when OpenGL is a software rasterizer such as llvmpipe. | `crates/shell-gtk/src/renderer.rs:20-30` |
 | `GNOME_SHELL_SLOWDOWN_FACTOR` | A positive number multiplies every animation duration, as in GNOME Shell. Read when the shell starts. | `crates/shell-control-schema/src/motion.rs:16`, `crates/shell-gtk/src/motion.rs:62` |
-| `GDM_MESSAGE_TIME_MULTIPLIER` | A positive number multiplies how long each lock-screen message stays up, as in GDM. | `crates/shell-gtk/src/lock.rs:295-297`, `crates/shell-gtk/src/lock_auth.rs:93-99` |
+| `GDM_MESSAGE_TIME_MULTIPLIER` | A positive number multiplies how long each lock-screen and login-screen message stays up, as in GDM. | `crates/shell-gtk/src/lock.rs:312-314`, `crates/greeter/src/main.rs`, `crates/auth-prompt/src/lib.rs:97-103` |
 | `GLYCIN_DATA_DIR` | Glycin loader configuration directory, hashed by the SVG wallpaper helper so a loader change invalidates its cache. | `crates/wallpaper-svg/src/provenance.rs:60-67` |
+| `NOTIFY_SOCKET` | systemd's notify socket: `tuna-compositor --greeter` sends `READY=1` once the login screen first maps (`Type=notify`). | `crates/compositor/src/session_services.rs` (`notify_ready`) |
 
 ## Scripts and builds
 
@@ -258,7 +262,7 @@ Options a proof script reads from your environment:
 
 | Variable | Read by | Effect |
 |---|---|---|
-| `TUNA_PROOF_BIN_DIR` | `scripts/tuna-gtk-shell-proof`, `scripts/tuna-lock-auth-proof`, `scripts/tuna-visual-capture`, `scripts/lib/tuna-proof-session-launch` | Run prebuilt binaries from this directory instead of building them. |
+| `TUNA_PROOF_BIN_DIR` | `scripts/tuna-gtk-shell-proof`, `scripts/tuna-lock-auth-proof`, `scripts/tuna-greeter-proof`, `scripts/tuna-visual-capture`, `scripts/lib/tuna-proof-session-launch` | Run prebuilt binaries from this directory instead of building them. |
 | `TUNA_PROOF_SHELL_BIN` | `scripts/tuna-gtk-shell-proof`, `scripts/lib/tuna-proof-session-launch` | Shell binary for the proof session. |
 | `TUNA_PROOF_COMPANIONS` | `scripts/tuna-gtk-shell-proof:356` | Directory of the compositor's example clients (default `target/debug/examples`). |
 | `TUNA_PROOF_BINARY_SOURCE_COMMIT` | `scripts/tuna-gtk-shell-proof` | Commit recorded for prebuilt binaries in the proof manifest. |
@@ -266,6 +270,8 @@ Options a proof script reads from your environment:
 | `TUNA_STUB_SERVICES` | `scripts/lib/tuna-service-stubs.py:38`, `:587` | Comma-separated system services to stub: `nm`, `bluez`, `ppd`, `logind`, `polkit`, `gdm`. |
 | `TUNA_POLKIT_TEST_PASSWORD` | `scripts/lib/tuna-polkit-helper-stub.py:8-18` | Password the stub polkit helper accepts (default `tuna-proof`). |
 | `TUNA_REQUIRE_IBUS`, `TUNA_REQUIRE_WAYLAND_INFO`, `TUNA_REQUIRE_GSD_MEDIA_KEYS` | `scripts/tuna-gtk-shell-proof` | `1` fails the matching stage when its tool is missing instead of skipping it. |
+| `TUNA_PROOF_SESSION_GRACE` | `scripts/lib/tuna-proof-session` | Seconds (default 10) a stopped proof has for its own cleanup, and teardown waits after TERM before KILL. |
+| `TUNA_PROOF_INOTIFY_NEED` | `scripts/lib/tuna-proof-preflight` | Free inotify instances (default 32) a proof needs; with fewer it refuses to start. |
 | `TUNA_WALKTHROUGH_REPO_ROOT` | `scripts/tuna-walkthrough:393` | Repository the walkthrough freshness check reads. |
 | `TUNA_TRACE_WORK_DEADLINE` | `scripts/lib/perf_operation_budget.py:44-48` | Deadline handed from a performance script to its helpers. |
 | `XDG_STATE_HOME` | `scripts/tuna-nested` | Parent of the default artifacts directory, `$XDG_STATE_HOME/tuna-nested/<socket>`. |
@@ -273,7 +279,8 @@ Options a proof script reads from your environment:
 The other `TUNA_*` names in `scripts/` are set by a proof for its own child
 processes and are not options: the `TUNA_*_PRIVATE_BUS` and
 `TUNA_A11Y_PRIVATE_SESSION` markers that stop a script re-running itself
-under `dbus-run-session`, the `TUNA_STUB_*_LOG` call logs, the
+under `scripts/lib/tuna-proof-session`, that helper's `TUNA_PROOF_SESSION`
+run marker and `TUNA_PROOF_SESSION_BUS_PID`, the `TUNA_STUB_*_LOG` call logs, the
 `TUNA_TEST_*` controls for `scripts/lib/tuna-test-window.py`,
 `TUNA_FLASH_PROOF_ARTIFACTS` and `TUNA_PROOF_SOURCE_SHA` for proof helper
 scripts, and the ownership marker `TUNA_GRID_COMPARISON_OWNER`.

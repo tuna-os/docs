@@ -83,6 +83,29 @@ just bst-build
 just build
 ```
 
+### Start from the CI cache
+
+A build from an empty cache takes many hours. CI publishes its BuildStream
+cache on GHCR, and you can copy it to your machine first:
+
+```bash
+# Download, verify and extract the core cache (about 14 GB to download)
+just bootstrap-cache
+
+# Show how many elements of the image are now in the local cache
+just cache-status
+
+# Build a target and print what the cache saved
+just build-local kde/frameworks/kio.bst
+```
+
+`just bootstrap-cache` needs no login. It continues a download that stopped,
+checks the SHA-256 of the archive before it extracts it, and skips a stage
+that it already copied. It only reads the registry. After that, BuildStream
+rebuilds only the elements that you changed and the elements that depend on
+them. [The pipeline guide](https://github.com/tuna-os/tromso/blob/main/docs/ci-and-iso-pipeline.md#local-builds-from-the-ci-cache)
+has the details and the sizes.
+
 ### Boot a VM for testing
 
 ```bash
@@ -100,7 +123,7 @@ ssh -p 2222 root@localhost
 
 | Recipe | Description |
 |---|---|
-| `just bst-build` | Background build, logs to `/var/tmp/tromso-build.log` |
+| `just bst-build` | Background build, logs to `/tmp/tromso-build.log` |
 | `just build` | Foreground build + OCI export |
 | `just log` | Tail the build log |
 | `just generate-bootable-image` | Create a bootable raw disk image via bootc |
@@ -108,6 +131,9 @@ ssh -p 2222 root@localhost
 | `just test` | Run local BATS and Pytest unit test suites |
 | `just lint` | Run bootc container lint on the built OCI image |
 | `just bst <args>` | Run any arbitrary `bst` command inside the build container |
+| `just bootstrap-cache [stages]` | Copy the published CI cache to the local BuildStream cache |
+| `just cache-status [target]` | Count the elements of a target that are in the local cache |
+| `just build-local [target]` | Build a target and print what the cache saved |
 
 ## CI/CD — multi-runner BuildStream
 
@@ -117,7 +143,8 @@ the final target, and pushes the result to GHCR:
 
 ```
 ghcr.io/tuna-os/tromso:latest
-ghcr.io/tuna-os/tromso:<date>
+ghcr.io/tuna-os/tromso:nightly
+ghcr.io/tuna-os/tromso:nightly-<YYYYMMDD>
 ghcr.io/tuna-os/tromso:<git-sha>
 ```
 
@@ -143,11 +170,15 @@ GitHub Actions OIDC uses [cosign](https://github.com/sigstore/cosign) to sign OC
 images and live ISOs without a key. Thus, no long-lived signer key can leak or
 need rotation.
 
+Each identity pattern ends with `@refs/heads/main$`. The certificate records
+the branch that ran the workflow, and `main` is the only protected branch. A
+signature from a different branch does not pass.
+
 **OCI images:**
 
 ```bash
 cosign verify ghcr.io/tuna-os/tromso:latest \
-  --certificate-identity-regexp 'https://github.com/tuna-os/tromso/\.github/workflows/build-tromso-multirunner\.yml@.*' \
+  --certificate-identity-regexp '^https://github\.com/tuna-os/tromso/\.github/workflows/build-tromso-multirunner\.yml@refs/heads/main$' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
 ```
 
@@ -158,7 +189,7 @@ for example `tromso-live-<date>-<sha>.iso.sig`):
 cosign verify-blob tromso-live-<date>-<sha>.iso \
   --certificate tromso-live-<date>-<sha>.iso.cert \
   --signature tromso-live-<date>-<sha>.iso.sig \
-  --certificate-identity-regexp 'https://github.com/tuna-os/tromso/\.github/workflows/build-iso\.yml@.*' \
+  --certificate-identity-regexp '^https://github\.com/tuna-os/tromso/\.github/workflows/build-iso\.yml@refs/heads/main$' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
 ```
 

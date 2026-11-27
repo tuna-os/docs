@@ -1,5 +1,5 @@
 ---
-sidebar_position: 41
+sidebar_position: 40
 title: "remote desktop"
 ---
 
@@ -80,13 +80,49 @@ never calls NotifyKeyboardKeysym.
 Admission: RemoteDesktop.CreateSession, and only a ScreenCast session linked
 to that caller's own grant, also accept a same-user caller whose
 `/proc/<pid>/exe` is the root-owned, non-writable
-`/usr/{libexec,lib}/gnome-remote-desktop-daemon` and that owns one of grd's
-bus names (`org.gnome.RemoteDesktop.User`, `.Handover`, `.Headless`). A
-process that merely takes those names, or a user-owned copy of the binary, is
-refused; grd gets no Screenshot, Introspect or unlinked ScreenCast access.
-Settings' configured credentials are the consent, as in GNOME. The grant is
-revoked when that identity or name is lost, on Stop, on EIS disconnect and on
-lock; grd's own Stop after its EIS client left succeeds and does nothing.
+`/usr/{libexec,lib}/gnome-remote-desktop-daemon`, that owns one of grd's
+bus names, and whose sharing is enabled in GSettings (#1162 F1): the
+user-mode `org.gnome.RemoteDesktop.User` daemon needs
+`org.gnome.desktop.remote-desktop.rdp` or `.vnc` `enable` (what Settings >
+System > Remote Desktop > Desktop Sharing writes; grd 51
+`grd-settings-user.c`), the `.Headless` daemon `rdp.headless` or
+`vnc.headless` `enable` (`grd-settings-headless.c`). A missing schema counts
+as off. The remote-login `org.gnome.RemoteDesktop.Handover` daemon is never
+admitted: its sessions always extend onto a virtual monitor
+(`grd-settings-handover.c`, RecordVirtual), which Tuna Desktop does not
+serve, so in a Tuna Desktop session that name can only be a pretender.
+Mutter 51 gates none of this (its RemoteDesktop admits any session-bus
+caller and gnome-shell 51 adds no check); the settings gate is deliberate
+Tuna Desktop hardening. It does not stop a same-user process that turns
+sharing on itself (ADR-level same-UID scope), but the genuine binary
+started under LD_PRELOAD while the user has sharing off is refused, and
+turning sharing off revokes a running grd grant within the 100 ms scan.
+A process that merely takes grd's names, or a user-owned copy of the
+binary, is refused; grd gets no Screenshot, Introspect or unlinked
+ScreenCast access. Settings' configured credentials are the consent, as in
+GNOME. The grant is revoked when that identity, name or setting is lost, on
+Stop, on EIS disconnect, on lock and from the panel's Stop Screen Sharing
+button; grd's own Stop after its EIS client left succeeds and does nothing.
+
+Indicator: a started RemoteDesktop session and its linked ScreenCast
+session are remote access grants the compositor publishes to the shell
+(wire 0.54 `RemoteAccess`), which shows GNOME 51's orange "Stop Screen
+Sharing" panel button while any is active; pressing it revokes them for
+good (see [Capture admission](https://github.com/tuna-os/tuna-desktop/blob/main/docs/capture-security.md)).
+
+Evidence: the remote-security job (`tests/remote-desktop-reference/run.sh`)
+runs grd 51's own Desktop Sharing daemon on a private settings backend that
+has RDP and remote control on, with its credentials in gnome-keyring, and
+connects a real FreeRDP client. While the user's
+`org.gnome.desktop.remote-desktop.rdp` `enable` (dconf) is off, grd's
+CreateSession is refused and the client is dropped; once it is on, grd
+streams to the client and the panel shows Stop Screen Sharing; switching it
+off drops the client and hides the button (R-GRD-ENABLE,
+R-REMOTE-INDICATOR). The in-binary probe
+(`scripts/lib/tuna-service-identity-probe.c`, LD_PRELOAD into the genuine
+grd executable) shows the Handover name refused with every switch on, the
+Headless name following only `rdp.headless` and the User name `rdp` or
+`vnc`.
 
 Lock matches GNOME for the shared desktop. gnome-shell 51 `main.js`
 `_sessionUpdated` calls `inhibit_remote_access()` whenever the session mode

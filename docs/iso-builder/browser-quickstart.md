@@ -9,20 +9,36 @@ title: "browser quickstart"
 optionally change **Based on**, and press the one button. What the button does
 depends on evidence, not preference (`app/public/quick-start.js`):
 
-1. **Download ISO, built in your browser.** The page uses this route only when
-   two conditions are true. The catalog has a complete receipt of browser
-   qualification for the image. This browser can build it. The browser needs
-   WebAssembly and private browser storage. It needs at least 4 GB of device
-   memory, when the browser reports it. It needs 9.5 GB of free storage, or
-   19 GB without the save dialog. The save dialog opens first. Then the build
-   runs in the tab with the default apps of the desktop.
-2. **Download ISO, ready-made.** The page uses this route when
-   download.tunaos.org has an ISO for the image.
-3. **Get TunaOS Media Writer.** The page uses this route when the native app
-   (`desktop/`) has a release. The app builds the image on your computer. It
-   also writes the USB stick.
-4. **Build on your computer.** The page shows the local instructions of the
+1. **Download the installer image.** The page uses this route when the
+   catalog pins an installer image for the cell. CI built the image and
+   qualified it. The tab streams its chunks into the file you pick, verifies
+   the digest and receipt, and saves one file. The file boots as an ISO and
+   also works with `dd`. The browser needs WebAssembly and private browser
+   storage. It needs free space for the file size, twice without the save
+   dialog. There is no device-memory gate and no 9.5 GB build gate. The save
+   dialog opens first. The page shows the digest, the receipt and the fixed
+   app set before it downloads.
+2. **Download ISO, built in your browser.** The page uses this route only for
+   cells with no installer pin. Two conditions gate it. The catalog has
+   a complete receipt of browser qualification for the image. This browser
+   can build it. The browser needs WebAssembly and private browser storage.
+   It needs at least 4 GB of device memory, when the browser reports it. It
+   needs 9.5 GB of free storage, or 19 GB without the save dialog. The save
+   dialog opens first. Then the build runs in the tab with the default apps
+   of the desktop.
+3. **Download ISO, ready-made.** The page uses this route only for cells with
+   no installer pin. It needs an ISO for the image in `downloads.json`. No
+   cell has one today: download.tunaos.org holds no ISOs, so `downloads.json`
+   lists none (#676).
+4. **Get TunaOS Media Writer.** The page uses this route when the native app
+   (`desktop/`) has a release. The app writes the USB stick on your computer.
+5. **Build on your computer.** The page shows the local instructions of the
    full builder.
+
+On a phone, the page does not use these routes and offers no ISO. It says
+that you need a Windows, Mac or Linux PC and a USB stick of 16 GB or larger.
+Its button sends the page link to your computer, or copies the link when the
+phone cannot share it. The link opens the page on the same desktop and base.
 
 TunaOS Media Writer can have a release for your operating system. Then the
 page also shows it under the button on every route: **Write it to a USB stick
@@ -40,13 +56,13 @@ On macOS 15 and newer, an unsigned app opens only after you choose
 **Open Anyway** in **System Settings → Privacy & Security**. The app writes a
 USB stick for a PC. A Mac with Apple Silicon cannot start from that stick.
 
-The links to ready-made ISOs and app releases come from `downloads.json`.
-The deploy job makes this file with `scripts/generate-downloads.py`. The
-script reads the published ISO index and the GitHub releases. If the script
-cannot read a source, the page does not show that route. Thus the page never
-links to a missing file. tunaos.org reads the same file from its download
-page, so `app/public/_headers` serves it (and `catalog-snapshot.json`) with
-`Access-Control-Allow-Origin: *`.
+The links to app releases come from `downloads.json`. The deploy job makes
+this file with `scripts/generate-downloads.py`. The script reads the GitHub
+releases. Its `prebuilt` section stays in the file and is always empty. If
+the script cannot read the releases, the page does not show the app route.
+Thus the page never links to a missing file. tunaos.org reads the same file
+from its download page, so `app/public/_headers` serves it (and
+`catalog-snapshot.json`) with `Access-Control-Allow-Origin: *`.
 
 This page shows only standard, generic x86-64 images. A link that names only
 a TunaOS image, as tunaos.org sends
@@ -55,14 +71,20 @@ this page on that desktop and base. If the page does not offer that image,
 the link opens the full builder.
 **Customize apps and settings** (or any other URL parameter, such as
 `?customize=1` or a share link) opens the full builder described below, on
-the same image.
+the same image. Cells with a pin hide this link: CI bakes
+the desktop's fixed Flatpak set into the image, so there is nothing to
+customize. The page lists that set and says to add more apps from Flathub
+after install.
 
 ## The full builder
 
 Open the full builder ([iso.tunaos.org/?customize=1](https://iso.tunaos.org/?customize=1))
-to choose any image and check whether you can build it in your browser. The
-build runs on your computer and saves an ISO file. You must then write that
-file to a USB drive to make it bootable.
+to choose any image. A cell with a pinned installer image offers
+**Download the installer image**: the tab fetches the image, verifies it,
+and saves one file. The file boots as an ISO and also works with `dd`.
+**Add your apps** and **Advanced settings** stay hidden for that cell, and
+**Build ISO** stays off: CI bakes the fixed app set into the image. Cells with no pin
+keep the check-and-build flow below.
 
 ## Choose and check an image
 
@@ -94,9 +116,12 @@ neither inspection nor saving an ISO proves that it boots or installs.
 
 ## Build and save when enabled
 
-When the status says **Image inspected — ready to build.** and **Build ISO**
-is enabled, click **Build ISO**. If you change the selection, check it again
-before you build. Keep the page open until the build and save finish.
+When the cell carries a pinned installer image, the card offers
+**Download the installer image** instead. Skip the check step: the pin
+qualifies the cell. Click it and keep the tab open until the save ends.
+The tab verifies the digest and receipt before it saves, then shows the
+installer digest and the raw sha256. The saved file boots as an ISO and
+also works with `dd`.
 
 - **Direct file saving:** The browser uses the `File System Access API`
   (`showSaveFilePicker`) when available. Choose a folder and `.iso` filename
@@ -150,8 +175,10 @@ before you post them; remove tokens, credentials, private URLs and personal path
 We compared control labels and save/storage behavior with
 [`index.html`](https://github.com/tuna-os/iso-builder/blob/main/app/public/index.html), [`app.js`](https://github.com/tuna-os/iso-builder/blob/main/app/public/app.js),
 [`guided-picker.js`](https://github.com/tuna-os/iso-builder/blob/main/app/public/guided-picker.js) and
-[`builder-config.json`](https://github.com/tuna-os/iso-builder/blob/main/app/public/builder-config.json) at `d2521c7`.
-We checked relative links. We did not run a full ISO build, USB write or
+[`builder-config.json`](https://github.com/tuna-os/iso-builder/blob/main/app/public/builder-config.json). We checked
+relative links. We drove the installer download against a synthetic
+`tacklebox cmd/mkinstaller` image in Playwright
+(`e2e/tests/write-medium.spec.js`); we did not run a USB write or an
 installation to validate this guide.
 
 ### Interpreting output delivery
@@ -160,6 +187,11 @@ installation to validate this guide.
 `Download started` means the browser accepted a download request.
 The page cannot confirm that the download finished or that the file persists.
 Check the download list in your browser before you write media.
+
+The installer download reports its receipt instead: the catalog-pinned
+installer digest and the raw sha256 of the saved bytes. A mismatch refuses
+the write. The digests do not prove who published the image; cosign
+verification remains a stub upstream (tacklebox docs/write-medium.md).
 
 If a user cancels a save, or a write fails, the page must hide the installation card.
 Neither message proves a checksum match, publisher identity, or a successful installation.

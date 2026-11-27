@@ -1,94 +1,94 @@
 ---
-sidebar_position: 9
+sidebar_position: 11
 title: "signing"
 ---
 
-XFCE Linux will sign its OCI images with a cosign key, not a keyless
-signature. CI does not sign images yet: no key pair exists, `cosign.pub` is
-not in the repository, and the sign step skips (see "Before the key exists").
+CI signs the OCI images with cosign and no key (keyless). The `sign_final`
+job of `build-multirunner.yml` gets a certificate from Fulcio for the GitHub
+Actions identity of that workflow. The certificate is valid for minutes, and
+Rekor logs the signature. CI holds no key for this, so no key can leak.
 
-## Why a key
-
-`bootc` verifies an image through
-[containers-policy(5)](https://github.com/containers/image/blob/main/docs/containers-policy.json.5.md).
-Its `sigstoreSigned` requirement takes a public key on disk:
-
-```json
-{ "type": "sigstoreSigned", "keyPath": "/usr/share/pki/containers/xfce-linux.pub" }
-```
-
-No policy type can express both a Fulcio certificate identity and an OIDC
-issuer, which is what a keyless signature carries. A person who runs
-`cosign verify` can check such a signature. The tool that consumes the
-image cannot. This repository moved off keyless for that reason.
-
-`zirconium-dev/zirconium-hawaii` reached the same conclusion. Its
-`cosign.pub` and `/usr/share/pki/containers/` layout is the model here.
-
-## Create the key
-
-A maintainer with repository admin runs one command. It creates the pair and
-sends the private half straight to GitHub Actions secrets. The key therefore
-stays out of a shell history, and out of a file that someone must remember
-to delete:
-
-```bash
-cosign generate-key-pair github://tuna-os/xfce-linux
-```
-
-That command writes `cosign.pub` to the current directory. It also sets two
-repository secrets, `COSIGN_PRIVATE_KEY` and `COSIGN_PASSWORD`.
-
-This repository's workflow reads `SIGNING_SECRET` and
-`SIGNING_SECRET_PASSWORD`. So either rename those two secrets, or create the
-pair locally and set them by hand:
-
-```bash
-cosign generate-key-pair
-gh secret set SIGNING_SECRET          -R tuna-os/xfce-linux < cosign.key
-gh secret set SIGNING_SECRET_PASSWORD -R tuna-os/xfce-linux
-rm -f cosign.key
-git add cosign.pub && git commit -m "chore: add the image signature public key"
-```
-
-Commit `cosign.pub`. It is the public half, and it belongs in the repository.
-
-## Before the key exists
-
-The workflow runs its sign step only when `SIGNING_SECRET` holds a value.
-Without that secret the build still publishes and the sign step reports
-skipped. The build logs a warning:
-
-```
-::warning::SIGNING_SECRET is not set — published an unsigned image.
-```
-
-You can therefore see an unsigned publish in the log.
-
-## Still to do
-
-The image does not yet carry the public key or a policy file, and that
-change cannot land before `cosign.pub` exists. It needs an element much like
-zirconium's `elements/zirconium/common.bst`:
-
-- copy `cosign.pub` to `/usr/share/pki/containers/xfce-linux.pub`
-- ship `/etc/containers/policy.json` with a `sigstoreSigned` entry for
-  `ghcr.io/tuna-os/xfce-linux` that names that `keyPath`
-- add `/etc/containers/policy.json` to the element's `overlap-whitelist`,
-  because the base layer ships one
-
-Until that change lands, the installed system does not enforce a signature,
-even after CI signs images.
+Images from before the first build with this job have no signature.
+`cosign verify` fails for them.
 
 ## Verify an image
 
+Use cosign 3. For `:latest` and the nightly tags, which come from `main`:
+
 ```bash
-cosign verify --key cosign.pub ghcr.io/tuna-os/xfce-linux:latest
+cosign verify ghcr.io/tuna-os/brussels:latest \
+  --certificate-identity https://github.com/tuna-os/brussels/.github/workflows/build-multirunner.yml@refs/heads/main \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com
 ```
+
+For `:stable`, which a build on the branch `stable` makes:
+
+```bash
+cosign verify ghcr.io/tuna-os/brussels:stable \
+  --certificate-identity https://github.com/tuna-os/brussels/.github/workflows/build-multirunner.yml@refs/heads/stable \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com
+```
+
+The same commands work for `ghcr.io/tuna-os/xfce-linux` (the alias) and for
+`ghcr.io/tuna-os/brussels-winblues`.
+
+Give the full identity. Do not use a pattern that accepts each ref. A
+workflow on any branch of this repository gets a certificate. Only the ref
+tells the branches apart.
+
+## What the signature proves
+
+It proves that `build-multirunner.yml` on that branch signed the digest. It
+does not prove that the installed system checked it.
+
+The two branches do not give the same proof. No branch `stable` exists on
+2026-11-25, and no ruleset protects that name. A person with write access
+can create it and run a changed workflow there. The result has the `stable`
+identity. See "The limits that stay" in [`secure-boot.md`](https://github.com/tuna-os/brussels/blob/main/docs/secure-boot.md).
+
+## Why bootc does not enforce it
+
+`bootc` verifies an image through
+[containers-policy(5)](https://github.com/containers/image/blob/main/docs/containers-policy.json.5.md).
+Its `sigstoreSigned` requirement accepts a public key (`keyPath`), a Fulcio
+identity (`fulcio`) or a certificate chain (`pki`). The `fulcio` form needs
+`oidcIssuer` and `subjectEmail`, and compares the second with the e-mail
+address in the certificate. A GitHub Actions certificate holds no e-mail
+address. It holds the URI of the workflow, and no field matches that URI.
+
+`policy.json` thus cannot demand this workflow identity. The image ships no
+such policy, and an update installs with no signature check. The check above
+is a manual one.
+
+A `fulcio` entry that drops the identity is not possible, and it would be no
+help: each GitHub repository can get a certificate.
+
+## If enforcement is necessary
+
+Enforcement needs a key pair in addition to the keyless signature:
+
+1. A maintainer makes the pair with `cosign generate-key-pair`. The private
+   half goes in an environment that admits protected branches only, as for
+   the Secure Boot key. `cosign.pub` goes in this repository.
+2. `sign_final` makes a second signature with the key, in the format that
+   `containers-policy(5)` reads.
+3. The image ships `/usr/share/pki/containers/brussels.pub`, and
+   `/etc/containers/policy.json` with one `sigstoreSigned` entry for
+   `ghcr.io/tuna-os/brussels` and one for the alias. Do not enable one name
+   only. A system on the other name would then fail each update.
+
+No one has decided to do this. `zirconium-dev/zirconium-hawaii` is a model.
+
+## Two names
+
+The image has two names during the transition in
+[`migration-brussels.md`](https://github.com/tuna-os/brussels/blob/main/docs/migration-brussels.md): `ghcr.io/tuna-os/brussels`
+and the alias `ghcr.io/tuna-os/xfce-linux`. Both names point to one digest.
+A signature does not move with the digest: cosign stores it in the
+repository that it signs. So `sign_final` signs the digest one time for each
+name in `PUBLISH_NAME` and `ALIAS_NAMES`.
 
 ## Live ISOs
 
-`build-iso.yml` still signs ISO artifacts without a key, which is correct. A
-person verifies an ISO; `bootc` does not. The
-`--certificate-identity-regexp` instructions in README.md still apply to
-those files.
+`build-iso.yml` signs the ISO files in the same keyless way. README.md gives
+the command.

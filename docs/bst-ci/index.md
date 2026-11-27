@@ -31,7 +31,7 @@ The pipeline for a chunked build on many runners has three stages: plan,
 core, and parallel dependency chunks. The stages keep their CAS state in zstd
 tarballs on GHCR. This pipeline is the same in each desktop repo, except for
 the image name, the build target, and the number of chunks. Maintainers
-copied it by hand between `tromso` and `xfce-linux`, and the copies drifted.
+copied it by hand between `tromso` and `brussels`, and the copies drifted.
 Each CI fix had to go in twice, and it was easy to forget one copy.
 
 ## Usage
@@ -61,7 +61,7 @@ calls it.
 
 `multirunner-build.yml` checks this repo out into `.bst-ci/` next to the
 checkout of the caller, and runs the script from there. Thus **consumers must
-not keep their own copy** of this script. tromso and xfce-linux both had a
+not keep their own copy** of this script. tromso and brussels both had a
 copy. Both repos removed it when this workflow no longer used it.
 
 ### Stop chunks from a rebuild of the same expensive elements
@@ -72,7 +72,7 @@ end, and their transitive closure is almost everything. A chunk builds each
 dependency that is not already in the core CAS that it restored. Thus
 different chunks do the same work again.
 
-A measurement on tuna-os/xfce-linux found 2.6× (487 distinct elements, 1281
+A measurement on tuna-os/brussels found 2.6× (487 distinct elements, 1281
 element builds in one run). On tuna-os/tromso, the factor was 3.4×. In each
 run, 4–5 chunks built LLVM, and each LLVM build took about 2 hours.
 
@@ -109,6 +109,11 @@ They do not keep a compressed copy beside the expanded CAS.
 Legacy source archives, logs and temporary CAS files do not enter the restore.
 This avoids the extra disk copy that exhausted an Athens runner during restore.
 A missing cache leads to a fresh build; a corrupt download or extraction fails.
+
+The registry can stop a large download before the end. The restore then
+continues from the last byte with an HTTP `Range` request, and the job does
+not fail. The restore calculates the SHA-256 of the full stream. If the value
+is not the layer digest in the manifest, the step fails.
 
 Enable `soft_chunk_budget` when chunks often reach their budget but still
 make useful progress. A chunk that times out publishes only its
@@ -214,9 +219,9 @@ Python 3 and PyYAML (`python3 -m pip install pyyaml`):
    not know if the name is real.
 
    The script found this type of gap on its first use. A new `cage.bst` for
-   tuna-os/xfce-linux#39 referred to
+   tuna-os/brussels#39 referred to
    `freedesktop-sdk.bst:components/wlroots.bst`. No other element in
-   `tromso` or `xfce-linux` used that dependency. Thus that PR needed a
+   `tromso` or `brussels` used that dependency. Thus that PR needed a
    second look before the merge.
 
 ```sh
@@ -258,6 +263,61 @@ request or a merge group, the workflow lints the full tree. It also checks
 the added or modified `.bst` files under `elements_roots` for unconfirmed
 dependencies. For other events, it does only the structural checks on the
 full tree.
+
+## Local builds from the CI cache
+
+`scripts/cas_bootstrap.py` copies the CAS archives that the workflow
+publishes into the BuildStream cache of a developer machine. After that,
+`bst build` rebuilds only the elements whose cache key is different from the
+published key. The script reads the registry. It cannot write to it.
+
+It needs Python 3, `zstd` and `tar`. It does not need `oras` or a login. The
+cache packages of `tromso` and `xfce-linux` are public. The script asks GHCR
+for an anonymous token with the `pull` scope only.
+
+```bash
+# Show the published archives, their sizes and dates
+python3 scripts/cas_bootstrap.py list tuna-os/tromso tromso core
+
+# Download, verify and extract the core archive into a cache directory
+python3 scripts/cas_bootstrap.py pull tuna-os/tromso tromso ~/.cache/buildstream core
+
+# Count the cached elements of a target
+bst show --deps all --format '%{name}||%{state}' oci/tromso.bst \
+  | python3 scripts/cas_bootstrap.py states
+```
+
+The script gives these guarantees:
+
+- **Integrity**: the script calculates the SHA-256 of the downloaded file.
+  It extracts the archive only when the value equals the layer digest in the
+  registry manifest.
+- **Resume**: a download that stops continues from the last byte with an HTTP
+  `Range` request. The registry stops a large download after some minutes,
+  and `oras` cannot continue it. Thus the script does not call `oras`.
+- **No repeated work**: the script records the digest of each stage in
+  `<cache_dir>/.cas-bootstrap/`. A second run skips a stage when the
+  published digest is the same.
+- **Disk check**: the script stops before a download when the disk is too
+  small. It needs room for the archive and for three times that size.
+- **No push**: the script has no command that writes to the registry.
+
+The default stage is `core`. It holds the shared spine of the graph and each
+chunk job starts from it. A chunk stage has a name from the planner, for
+example `chunk0-cmake`. The log of the `planning` job of a nightly run shows
+the names. Each chunk archive is a full snapshot that also contains the core
+elements, so one chunk archive is 12 GB to 24 GB. Get a chunk only when you
+work on its elements.
+
+Use the same pinned `bst2` image as CI, or the cache keys do not match. If a
+cache package is private, make a token with the `read:packages` scope, write
+it to a Docker-style auth file, and give that file with `--auth-file`.
+
+A consumer repository must not keep a copy of this script. Get it at a
+pinned commit of this repository and check its SHA-256 before you run it.
+`tromso` does this in `just/local-cache.just` (`just bootstrap-cache` and
+`just build-local`). To port it to a different repository, copy that file
+and change the repository name, the image name and the default target.
 
 ## Scope
 

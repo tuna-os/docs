@@ -1,5 +1,5 @@
 ---
-sidebar_position: 10
+sidebar_position: 12
 title: "ci runners"
 ---
 
@@ -40,7 +40,7 @@ schedule, dispatch or a pull request whose head repository is
 | --- | --- |
 | `tuna-ci-24.04` | select-lanes, check, app-content, scroll-proof, grid-cancel-comparison, gtk-shell, native-reference-context, parity-ledger, docs-shots, ci-gate |
 | `tuna-ci-26.04` | journey, orca-speech, portal-security, remote-security, niri-parity |
-| GitHub-hosted, always | arch-package, drm-smoke, marlin-vm (pull requests: the primary lifecycle leg only; push, schedule and dispatch add the Orca 51 leg and both paired reference members), marlin-image (push, schedule and dispatch only), gdm51-native-package |
+| GitHub-hosted, always | arch-package, drm-smoke, hotplug (`ubuntu-26.04`), marlin-vm (pull requests: the primary lifecycle and automatic-timezone legs, plus the Orca 51 leg when parity-ledger runs; push, schedule and dispatch add the Orca 51 leg and both paired reference members), marlin-image (push, schedule and dispatch only), gdm51-native-package |
 
 Why the always-hosted lanes stay hosted:
 
@@ -50,6 +50,8 @@ Why the always-hosted lanes stay hosted:
   runner's kernel. On karnataka that is the shared host kernel under punjab
   and KubeVirt, a Fedora kernel the Ubuntu module install cannot target, and
   the module would expose a DRM device to the whole node.
+- **hotplug** loads `vkms` the same way and needs vkms configfs (Linux
+  6.19+), so it runs on the hosted `ubuntu-26.04` image's 7.0 kernel.
 - **marlin-vm** needs more than `/dev/kvm`: it runs
   `podman run --privileged --pid=host -v /dev:/dev … bootc install to-disk
   --via-loopback`, i.e. loop devices and a privileged container, which is
@@ -185,15 +187,26 @@ it can affect:
 
 - `select-lanes` and `check` always run; a **draft** pull request runs nothing
   else (marking it ready for review starts the proof lanes).
-- Every proof lane waits for `check` (`needs: check`, directly or through
-  `arch-package`), so a red `check` does not also burn the lanes.
+- The GitHub-hosted lanes (`arch-package`, `drm-smoke`,
+  `gdm51-native-package`, and through them `marlin-vm`, `marlin-image` and
+  the `arch-package` consumers) wait for `check`, so a red `check` does not
+  also burn hosted minutes. `check` takes about 10 minutes (run
+  42332450103: `cargo test` 194 s, `maintained-media-tests` 69 s, apt 52 s).
+  The self-hosted `journey`, `app-content`, `scroll-proof` and `orca-speech`
+  run beside it; `ci-gate` still fails when `check` does.
+  `fprint-phase-proof`, `grid-cancel-comparison` and `gtk-shell` also wait
+  for `check`: they check out its `tested_sha` output.
 - `scripts/ci-select-lanes` picks the lanes: docs, other non-runtime files and
   the tooling of other workflows (its `NO_LANE` list) pick none, a lane's own
-  proof script picks that lane, an edit confined to some lane jobs of `ci.yml`
-  picks those lanes, and any other code picks `gtk-shell` plus a rotating
+  proof script picks that lane, an edit confined to some jobs of `ci.yml`
+  picks those jobs' lanes plus every job that downloads their artifacts
+  (derived from `needs:` and `download-artifact` in `ci.yml`: an
+  `arch-package` edit also picks its package consumers, a `check` edit picks
+  `parity-ledger`), and any other code picks `gtk-shell` plus a rotating
   slice. Shared CI inputs still pick every lane.
 - A newer push supersedes the older run (`concurrency` with
-  `cancel-in-progress`, except for `main`).
+  `cancel-in-progress`, except for `main`). The superseded run queues no
+  `ci-gate` ([below](#queue-supersession-and-closed-pull-requests)).
 - `marlin-tuna-nightly` qualifies the published image on schedule and
   dispatch only; dispatch it on a branch to test a change to it.
 
@@ -208,6 +221,14 @@ performance baseline. Native concurrency keeps at most one running and one
 pending run per group; it replaces older pending runs, not every main run
 finishing in order. Existing schedule, manual and performance concurrency
 policies remain unchanged.
+
+`ci-gate` runs `if: ${{ !cancelled() }}`, so a cancelled run (superseded, or
+cancelled by hand) skips it instead of queueing it. With `if: always()` the
+superseded run's gate still waited for a `tuna-ci-24.04` slot, and its
+replacement in the same concurrency group stayed `pending` until that slot
+came, for hours while the queue was full (#1258). In a run that is not
+cancelled the gate still runs and still fails when a selected job failed,
+timed out or was cancelled on its own.
 
 Closing a PR does not create a newer run in its concurrency group, so native
 supersession cannot retire its queued work. The repository-owned
@@ -304,10 +325,13 @@ code as root inside its pod.
    address), the kubelet, other namespaces' pods and Services (corral-web,
    punjab, KubeVirt) and link-local metadata are unreachable.
 5. **Headroom.** ResourceQuota `runner-ceiling` caps the namespace at 14 pods,
-   56 CPU / 196 GiB limits, 28 CPU / 82 GiB requests: up to 14 runners
-   run at once (karnataka: 28 CPU / 125 GiB allocatable; punjab is sized at
-   12 cores / 24 GiB). Each runner asks for
-   1.5 CPU / 5 GiB and is limited to 4 CPU / 14 GiB. The 45 GiB
+   56 CPU / 276 GiB limits, 28 CPU / 82 GiB requests (karnataka: 28 CPU /
+   125 GiB allocatable; punjab is sized at 12 cores / 24 GiB). Each runner
+   asks for 1.5 CPU / 5 GiB and is limited to 4 CPU / 24 GiB (shellcheck on
+   `scripts/tuna-gtk-shell-proof` peaks near 14 GiB). The limit quota fits
+   every configured runner at its own limit: 8 tuna-desktop runners at 24 GiB
+   and 3 iso-gpu runners at 28 GiB; when it does not, ARC logs "exceeded
+   quota", creates no pod, and jobs queue behind idle slots. The 45 GiB
    ephemeral-storage limit covers the container writable layer/logs, **not**
    the separate scratch PVCs (see below). Runner pods use PriorityClass
    `tuna-ci-runner` (-100, never preempts): new VMs and cluster services
@@ -328,7 +352,8 @@ pods never mount it and cannot reach the API to read it.
 `/home/runner/work` (including Cargo targets and rust-cache restore),
 `/var/lib/containers`, and `/home/runner/.local/share/containers` are three
 fresh generic ephemeral volumes per runner, requesting 40 / 10 / 10 GiB.
-`/dev/shm` remains a 2 GiB memory emptyDir. All 14 runners request 840 GiB
+`/dev/shm` remains a 2 GiB memory emptyDir. At `maxRunners` (6 + 2) the
+8 runners request 480 GiB
 on the 900 GiB ext4 LV `vg1/tuna_ci_scratch`, mounted at
 `/var/lib/tuna-ci-scratch` on nvme1n1; nvme0n1 still holds the unchanged
 kubelet/containerd roots and unrelated workloads.
@@ -581,8 +606,9 @@ page), then run `.github/runners/deploy`: it upgrades the controller first.
 ## Scale
 
 `minRunners` (idle, pre-registered pods) and `maxRunners` live in the values
-files: 24.04 is 1–10, 26.04 is 0–4. Keep `maxRunners` of both sets within the
-quota's 14 pods; the scheduler can still withhold slots for VM reservations.
+files: 24.04 is 1–6, 26.04 is 0–2. Keep `maxRunners` of both sets within the
+quota's 14 pods and the limit quota's 276 GiB (each runner at its 24 GiB
+limit); the scheduler can still withhold slots for VM reservations.
 Change the quota in `cluster.yaml` only after checking punjab and KubeVirt
 (`kubectl describe node karnataka`). Apply guard rails with
 `kubectl --context karnataka-k3s apply -f .github/runners/cluster.yaml`, then

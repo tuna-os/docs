@@ -37,7 +37,7 @@ has the full rules.
 | Crate | What it is |
 |---|---|
 | `compass-db` | Schema migrations shared by every database. The migrations match upstream Vicinae's, so an existing profile keeps working. |
-| `compass-sqlcipher-sys` | Opens Compass's databases: rusqlite over SQLCipher, keyed. One of the two crates allowed `unsafe` ([ADR-0019](https://github.com/tuna-os/compass/blob/main/docs/rust-engine/adr/0019-an-unsafe-bridge-for-the-launchers-surface.md)). |
+| `compass-sqlcipher-sys` | Opens Compass's databases: rusqlite over SQLCipher, keyed. One of the three crates allowed `unsafe` ([ADR-0019](https://github.com/tuna-os/compass/blob/main/docs/rust-engine/adr/0019-an-unsafe-bridge-for-the-launchers-surface.md)). |
 | `compass-crypto` | The clipboard history's encryption at rest, and the keys kept in the desktop keyring. |
 | `compass-clipboard` | The clipboard history store. |
 | `compass-local-storage` | Per-extension key/value storage, as the Raycast `LocalStorage` API sees it. |
@@ -61,8 +61,8 @@ has the full rules.
 | `compass-platform` | What the platform can be asked to do, as traits, so other platforms can be added as backends. |
 | `compass-platform-linux` | The Linux implementations: launching, and compositor IPC for KWin, Hyprland and niri, among others. Linux-bound. |
 | `compass-wayland` | Wayland protocols beyond what Iced provides: activation, layer shell, foreign toplevels, data control, hotkeys, the virtual keyboard. Used on wlroots compositors, never on GNOME. Linux-bound. |
-| `compass-wayland-protocols` | Generated bindings for Wayland protocols no published crate carries yet. Linux-bound. |
-| `compass-wayland-foreign` | Turns the toolkit window's raw Wayland handles into proxies. The other crate allowed `unsafe`. Linux-bound. |
+| `compass-wayland-protocols` | Generated bindings for Wayland protocols no published crate carries yet. Allowed `unsafe` in the generated interface tables only. Linux-bound. |
+| `compass-wayland-foreign` | Turns the toolkit window's raw Wayland handles into proxies. The third crate allowed `unsafe`. Linux-bound. |
 | `compass-portals` | The XDG desktop portals Compass uses, such as GlobalShortcuts. Linux-bound. |
 | `compass-shell` | The client for the Compass GNOME Shell extension (`extensions/gnome-shell`). Linux-bound. |
 | `compass-power` | Power actions over systemd-logind. Linux-bound. |

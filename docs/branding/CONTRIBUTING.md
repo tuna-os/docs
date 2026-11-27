@@ -105,6 +105,23 @@ does not change an SVG:
   Simplified Technical English (ASD-STE100) linter from tuna-os/.github. The
   budget in `.ste-budget` is `0`, so one new STE error fails the check.
 
+A third workflow, `upstream-sync.yml`, runs when a pull request changes
+`marks/`, `wordmarks/` or `scripts/check_upstream.py`. It also runs every day
+at 06:17 UTC. It compares each copy in `marks/` and `wordmarks/` with its
+tuna-os/tunaos source, as `NOTICE` maps it. It fails if a copy is missing,
+extra or different. It is not in `required-checks`.
+
+Do not edit a copy by hand. Change the source in tuna-os/tunaos, then copy it
+here byte for byte.
+
+To run the same check before you push, you need a copy of tuna-os/tunaos.
+Run these commands from the root of this repository:
+
+```bash
+git clone --depth 1 https://github.com/tuna-os/tunaos ../tunaos
+python3 scripts/check_upstream.py ../tunaos
+```
+
 To run the prose linter before you push, you need Node.js and a copy of
 tuna-os/.github next to this repository. Run these commands from the root
 of this repository:
